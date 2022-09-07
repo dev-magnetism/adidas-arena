@@ -1,0 +1,129 @@
+@mixin font-tuskerGrotesk-bold() {
+  font-family: "TuskerGrotesk-Bold";
+}
+
+@mixin font-tuskerGrotesk-medium() {
+  font-family: "TuskerGrotesk-Medium";
+}
+
+@mixin font-adihausDIN-cn-bold() {
+  font-family: "AdihausDIN Cn Bold";
+}
+
+@mixin font-adihausDIN-bold() {
+  font-family: "AdihausDIN Bold";
+}
+
+@mixin font-adihausDIN-medium() {
+  font-family: "AdihausDIN Medium";
+}
+
+@mixin font-adihausDIN-regular() {
+  font-family: "AdihausDIN";
+}
+
+@mixin h1() {
+  font-size: 130px;
+  line-height: 140px;
+  text-transform: uppercase;
+
+  &.medium {
+    @include font-tuskerGrotesk-medium();
+    font-weight: 500;
+  }
+  &.bold {
+    @include font-tuskerGrotesk-bold();
+      font-weight: 700;
+  }
+
+  @include media('<=sm') {
+    // font-size: 200px;
+    // line-height: 155px;
+    // letter-spacing: -0.01em;
+  }
+}
+
+@mixin h2() {
+  font-size: 100px;
+  line-height: 110px;  
+  text-transform: uppercase;
+
+  &.medium {
+    @include font-tuskerGrotesk-medium();
+    font-weight: 500;
+  }
+    
+  &.bold {
+    @include font-tuskerGrotesk-bold();
+    font-weight: 700;
+  }
+
+  @include media('<=sm') {
+    // font-size: 120px;
+    // line-height: 96px;
+    // letter-spacing: 0.01em;
+  }
+}
+
+@mixin h3() {
+  font-size: 72px;
+  line-height: 72px;
+  letter-spacing: -0.02em;
+  @include font-adihausDIN-cn-bold();
+
+  @include media('<=sm') {
+    // font-size: 100px;
+    // line-height: 80px;
+    // letter-spacing: 0.01em;
+  }
+}
+
+@mixin h4() {
+  font-size: 32px;
+  line-height: 41px;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  @include font-adihausDIN-bold();
+
+  @include media('<=sm') {
+    // font-size: 100px;
+    // line-height: 80px;
+    // letter-spacing: 0.01em;
+  }
+}
+
+@mixin p1() {
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  @include font-adihausDIN-regular();
+
+  @include media('<=sm') {
+    // font-size: 100px;
+    // line-height: 80px;
+    // letter-spacing: 0.01em;
+  }
+}
+
+@mixin p2() {
+  font-size: 14px;
+  line-height: 20px;
+
+  &.regular {
+    @include font-adihausDIN-regular();
+    font-weight: 500;
+  }
+  
+  &.bold {
+    @include font-adihausDIN-bold();
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  @include media('<=sm') {
+    // font-size: 100px;
+    // line-height: 80px;
+    // letter-spacing: 0.01em;
+  }
+}
