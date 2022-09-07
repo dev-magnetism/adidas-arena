@@ -9,7 +9,13 @@
     <TP1>P1 - Lorem ipsum dolor sit amet</TP1>
     <TP2>P2 - Lorem ipsum dolor sit amet</TP2>
     <TP2 weight="bold">P2 - Lorem ipsum dolor sit amet</TP2>
-    <AtomsCTA>P2 - Lorem ipsum dolor sit amet</AtomsCTA>
+    <AtomsCTA>Devenir partenaire</AtomsCTA>
+    <AtomsCTA bg="transparent" color="black" :link="false">
+      DES MATCHS, DES EVENEMENTS, DES RESTAURANTS, DES JEUX, DES SALLES DE
+      RÉUNIONS POUR TOUS
+    </AtomsCTA>
+    <AtomsCTA bg="red-adidas" color="beige">Devenir partenaire</AtomsCTA>
+    <AtomsCTA bg="beige" color="black">Devenir partenaire</AtomsCTA>
   </div>
 </template>
 

@@ -5,7 +5,7 @@
     :class="classes"
     :style="{ color: `var(--c-${color})` }"
   >
-    <slot></slot>
+    <slot />
   </component>
 </template>
 

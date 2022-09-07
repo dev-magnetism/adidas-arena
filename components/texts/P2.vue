@@ -15,7 +15,7 @@ export default {
     tag: {
       type: String,
       required: false,
-      default: 'p2',
+      default: 'p',
     },
     color: {
       type: String,

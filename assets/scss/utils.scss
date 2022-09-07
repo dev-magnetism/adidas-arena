@@ -1,0 +1,29 @@
+.hide-on-desktop {
+    @include desktop {
+        display: none;
+    }
+}
+
+.full-width {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+.hide-on-mobile {
+    @include mobile {
+        display: none;
+    }
+}
+
+.webgl-component {
+    display: none;
+    position: absolute;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    user-select: none;
+}
