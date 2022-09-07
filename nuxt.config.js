@@ -1,4 +1,5 @@
 export default {
+  target: 'static',
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'adidas-arena',
@@ -18,7 +19,10 @@ export default {
   css: ['~assets/scss/global.scss', '~assets/scss/main.scss'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: '~/plugins/gsap.js', mode: 'client' }],
+  plugins: [
+    { src: '~/plugins/gsap.js', mode: 'client' },
+    { src: '~/plugins/utils.js', mode: 'client' },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: [
@@ -66,7 +70,18 @@ export default {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
+    '@nuxt/image',
   ],
+
+  image: {
+    // The screen sizes predefined by `@nuxt/image`:
+    screens: {
+      sm: 800,
+      lg: 1440,
+      xl: 1920,
+      xxl: 2560,
+    },
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [

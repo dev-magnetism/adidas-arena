@@ -1,6 +1,6 @@
 @mixin h1() {
-  font-size: 130px;
-  line-height: 140px;
+  font-size: min(130px, desktop-vw(130px));
+  line-height: min(140px, desktop-vw(140px));
   text-transform: uppercase;
 
   &.medium {
@@ -11,7 +11,6 @@
     @include font-tuskerGrotesk-bold();
       font-weight: 700;
   }
-
 }
 
 @mixin h2() {
@@ -50,8 +49,8 @@
 }
 
 @mixin p1() {
-  font-size: 16px;
-  line-height: 20px;
+  font-size: desktop-vw(16px);
+  line-height: desktop-vw(20px);
   letter-spacing: -0.02em;
   text-transform: uppercase;
   @include font-adihausDIN-regular();

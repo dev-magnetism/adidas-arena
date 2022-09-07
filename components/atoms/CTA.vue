@@ -1,18 +1,41 @@
 <template>
-  <div
+  <nuxt-link
+    v-if="!isExternal && link"
+    :target="target"
+    class="app-atoms-cta"
+    :class="classes"
+    :style="{ 'background-color': `var(--c-${bg})` }"
+    :to="link"
+  >
+    <TP2 weight="bold" :color="color"><slot /></TP2>
+    <SvgCtaUnion v-if="arrow" :color="color" />
+  </nuxt-link>
+  <a
+    v-else-if="isExternal && link"
+    :target="target"
+    :href="link"
     class="app-atoms-cta"
     :class="classes"
     :style="{ 'background-color': `var(--c-${bg})` }"
   >
     <TP2 weight="bold" :color="color"><slot /></TP2>
-    <SvgCtaUnion v-if="link" :color="color" />
-  </div>
+    <SvgCtaUnion v-if="arrow" :color="color" />
+  </a>
+  <button
+    v-else-if="!link"
+    class="app-atoms-cta"
+    :class="classes"
+    :style="{ 'background-color': `var(--c-${bg})` }"
+  >
+    <TP2 weight="bold" :color="color"><slot /></TP2>
+    <SvgCtaUnion v-if="arrow" :color="color" />
+  </button>
 </template>
 
 <script>
 export default {
   props: {
-    link: {
+    arrow: {
       type: Boolean,
       required: false,
       default: true,
@@ -22,20 +45,33 @@ export default {
       required: false,
       default: 'blue-adidas',
     },
+    link: {
+      type: String,
+      required: false,
+      default: undefined,
+    },
     color: {
       type: String,
       required: false,
       default: 'beige',
+    },
+    target: {
+      type: String,
+      required: false,
+      default: '',
     },
   },
   computed: {
     classes() {
       return [
         {
-          'no-link': !this.link,
+          // 'no-link': !this.link,
           // medium: this.weight === 'medium',
         },
       ]
+    },
+    isExternal() {
+      return this.$utils.isValidHttpUrl(this.link) && this.link !== undefined
     },
   },
 }
