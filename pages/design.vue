@@ -11,12 +11,7 @@
     <TP2 weight="bold">P2 - Lorem ipsum dolor sit amet</TP2>
     <AtomsCTA>Devenir partenaire</AtomsCTA>
     <AtomsCTA link="/" :arrow="false">Devenir partenaire</AtomsCTA>
-    <AtomsCTA
-      :arrow="false"
-      link="https://translate.google.fr/"
-      bg="red-adidas"
-      color="beige"
-    >
+    <AtomsCTA :arrow="false" bg="red-adidas" color="beige">
       Devenir partenaire
     </AtomsCTA>
     <AtomsCTA bg="beige" color="black">Devenir partenaire</AtomsCTA>

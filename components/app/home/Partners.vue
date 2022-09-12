@@ -1,0 +1,53 @@
+<template>
+  <div class="app-home-partners grid">
+    <div class="app-home-partners__content">
+      <TH1 class="app-home-partners__title">
+        Un écosystème complémentaire de partenaires
+      </TH1>
+      <TP2 class="app-home-partners__principal-paragraph" weight="bold">
+        Aujourd’hui près de 20 marques leaders sur leur marché font confiance à
+        l’Accor Arena et à ses équipes. Ces marques ont investi pour profiter de
+        l’exposition d’une programmation riche et diversifiée de plus de 135
+        séances par an.
+      </TP2>
+      <TP2 class="app-home-partners__secondary-paragraph">
+        Après les travaux de rénovation, l’Accor Arena est devenu l’un des
+        terrains d’animation et d’engagement favori des marques aux côtés de
+        Roland-Garros ou du PSG. Les équipes de l’Arena ont le privilège et
+        l’exigence d’accompagner AccorHotels, DHL, American Express, Heineken,
+        Coca Cola, Pierre Hermé, Moet Hennessy, Samsung, et bien d’autres encore
+        dans le déploiement de leur politique partenariale.
+      </TP2>
+      <AtomsCTA>Devenir partenaire</AtomsCTA>
+    </div>
+  </div>
+</template>
+
+<style lang="scss">
+.app-home-partners {
+  &__content {
+    grid-column: 1 / span 6;
+
+    .app-atoms-cta {
+      .P2 {
+        @include font-tuskerGrotesk-bold();
+        font-size: desktop-vw(24px);
+        line-height: desktop-vw(32px);
+        letter-spacing: 0.04em;
+      }
+    }
+  }
+
+  &__title {
+    margin-bottom: desktop-vw(25px);
+  }
+  &__principal-paragraph {
+    margin-bottom: desktop-vw(25px);
+    width: 50%;
+  }
+  &__secondary-paragraph {
+    margin-bottom: desktop-vw(50px);
+    width: 52.5%;
+  }
+}
+</style>

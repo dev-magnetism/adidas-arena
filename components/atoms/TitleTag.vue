@@ -1,50 +1,25 @@
 <template>
-  <SmartLink
-    class="app-atoms-cta"
+  <div
+    class="app-atoms-title-tag"
     :class="classes"
     :style="{ 'background-color': `var(--c-${bg})` }"
-    :href="link"
-    :internal="!external"
-    :external="external"
-    :blank="target"
   >
     <TP2 weight="bold" :color="color"><slot /></TP2>
-    <SvgCtaUnion v-if="arrow" :color="color" />
-  </SmartLink>
+  </div>
 </template>
 
 <script>
 export default {
   props: {
-    arrow: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
     bg: {
       type: String,
       required: false,
       default: 'blue-adidas',
     },
-    external: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    link: {
-      type: String,
-      required: false,
-      default: undefined,
-    },
     color: {
       type: String,
       required: false,
       default: 'beige',
-    },
-    target: {
-      type: Boolean,
-      required: false,
-      default: false,
     },
   },
   computed: {
@@ -62,24 +37,20 @@ export default {
 </script>
 
 <style lang="scss">
-.app-atoms-cta {
+.app-atoms-title-tag {
   border: 1px solid var(--c-black);
-  padding: desktop-vw(15px) desktop-vw(25px);
+  padding: desktop-vw(12px) desktop-vw(20px);
   display: inline-flex;
   align-items: center;
 
   @include hover {
-    cursor: pointer;
+    // cursor: pointer;
   }
 
   .P2 {
-    font-size: desktop-vw(24px);
-    line-height: desktop-vw(32px);
+    font-size: desktop-vw(18px);
+    line-height: desktop-vw(20px);
     @include font-adihausDIN-cn-bold();
-  }
-
-  svg {
-    margin-left: desktop-vw(80px);
   }
 }
 </style>
