@@ -7,8 +7,6 @@
 </template>
 
 <script>
-// import { raf } from '@studio-freight/tempus'
-
 import Lenis from '@studio-freight/lenis'
 
 export default {
@@ -20,16 +18,15 @@ export default {
       easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
       smooth: true,
     })
-    console.log(this.lenis, 'here')
 
-    this.raf = raf.add(this.onFrame, 0)
+    this.$raf.add('scroller', this.onFrame, 0)
   },
   beforeDestroy() {
-    raf.remove(this.raf)
+    this.$raf.remove('scroller', this.onFrame)
   },
   methods: {
-    onFrame(time, deltaTime) {
-      this.lenis.raf(time)
+    onFrame({ time, deltaTime }) {
+      this.lenis.raf(time * 1000)
     },
   },
 }

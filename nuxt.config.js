@@ -22,6 +22,7 @@ export default {
   plugins: [
     { src: '~/plugins/gsap.js', mode: 'client' },
     { src: '~/plugins/utils.js', mode: 'client' },
+    { src: '~/plugins/raf.js', mode: 'client' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

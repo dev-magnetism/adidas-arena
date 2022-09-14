@@ -1,8 +1,9 @@
 <template>
   <div class="app">
-    <!-- <AppScroller> -->
-    <nuxt />
-    <!-- </AppScroller> -->
+    <AppHeader />
+    <AppScroller>
+      <nuxt />
+    </AppScroller>
     <AppFooter />
   </div>
 </template>

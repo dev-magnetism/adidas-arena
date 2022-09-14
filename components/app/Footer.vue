@@ -107,7 +107,7 @@
       .P2 {
         font-size: desktop-vw(16px);
         line-height: desktop-vw(21px);
-        color: rgba(24, 24, 24, 0.25);
+        color: rgba(24, 24, 24, 0.25) !important;
         cursor: pointer;
       }
 

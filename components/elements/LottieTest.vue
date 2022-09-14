@@ -30,7 +30,7 @@ export default {
         trigger: target,
         start: vars.start || 'top center',
         end: vars.end || '+=1000',
-        markers: true,
+        // markers: true,
         scrub: vars.scrub,
       }
 
