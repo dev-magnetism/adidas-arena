@@ -1,6 +1,6 @@
 <template>
   <div class="app-home-le-block grid-inner">
-    <div class="placeholder-plan"></div>
+    <div class="placeholder-plan"><TH1>LE BLOC</TH1></div>
   </div>
 </template>
 
@@ -13,9 +13,12 @@
   margin-bottom: desktop-vw(130px);
 
   .placeholder-plan {
-    background: red;
+    background: blue;
     grid-column: 1 / span 12;
     aspect-ratio: 1300 / 905;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 </style>

@@ -3,6 +3,7 @@
     <!-- <AppScroller> -->
     <nuxt />
     <!-- </AppScroller> -->
+    <AppFooter />
   </div>
 </template>
 

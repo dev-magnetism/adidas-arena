@@ -62,6 +62,8 @@ export default {
 
   &.top.right.bottom.left {
     border: 1px solid var(--c-black);
+    // outline: 1px solid var(--c-black);
+    // outline-offset: 0px;
   }
 
   &__item {
@@ -71,23 +73,23 @@ export default {
     background: var(--c-black);
 
     &--top-left {
-      left: 0;
-      top: 0;
+      left: -1px;
+      top: -1px;
       transform: translate(-50%, -50%);
     }
     &--top-right {
-      right: 0;
-      top: 0;
+      right: -1px;
+      top: -1px;
       transform: translate(50%, -50%);
     }
     &--bottom-left {
-      left: 0;
-      bottom: 0;
+      left: -1px;
+      bottom: -1px;
       transform: translate(-50%, 50%);
     }
     &--bottom-right {
-      right: 0;
-      bottom: 0;
+      right: -1px;
+      bottom: -1px;
       transform: translate(50%, 50%);
     }
   }

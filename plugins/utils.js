@@ -13,6 +13,10 @@ import SmartLink from '@lihbr/utils-nuxt.smart-link'
 //   return url.protocol === 'http:' || url.protocol === 'https:'
 // }
 
-// Vue.prototype.$utils = { isValidHttpUrl }
+// export const randomIntFromInterval = (min, max) => {
+//   return Math.floor(Math.random() * (max - min + 1) + min)
+// }
+
+// Vue.prototype.$utils = { randomIntFromInterval }
 
 Vue.component('SmartLink', SmartLink)

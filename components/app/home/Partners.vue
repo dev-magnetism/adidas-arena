@@ -20,17 +20,20 @@
       </TP2>
       <AtomsCTA>Devenir partenaire</AtomsCTA>
     </div>
+    <EGridLogos class="app-home-partners__grid-logos" />
   </div>
 </template>
 
 <style lang="scss">
 .app-home-partners {
+  position: relative;
+
   &__content {
     grid-column: 1 / span 6;
 
     .app-atoms-cta {
       .P2 {
-        @include font-tuskerGrotesk-bold();
+        @include font-tuskerGrotesk-medium();
         font-size: desktop-vw(24px);
         line-height: desktop-vw(32px);
         letter-spacing: 0.04em;
@@ -48,6 +51,13 @@
   &__secondary-paragraph {
     margin-bottom: desktop-vw(50px);
     width: 52.5%;
+  }
+
+  &__grid-logos {
+    grid-column: 6 / span 8;
+    position: absolute;
+    top: desktop-vw(140px);
+    left: 0;
   }
 }
 </style>

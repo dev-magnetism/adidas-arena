@@ -41,9 +41,9 @@ export default {
       trigger: this.$refs.marquee,
       start: 'top bottom',
       end: 'bottom top',
-      markers: true,
+      // markers: true,
       onUpdate: (self) => {
-        console.log(self.getVelocity())
+        // console.log(self.getVelocity())
       },
     })
   },

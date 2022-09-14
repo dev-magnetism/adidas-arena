@@ -2,6 +2,7 @@
   <main class="app-home">
     <AppHomeHero />
     <AppHomePresentation />
+    <ELottieTest />
     <EMarquee>
       <TH1 color="red-adidas"> HYBRIDATION </TH1>
       <TH1 color="blue-adidas"> INCLUSIVITé </TH1>

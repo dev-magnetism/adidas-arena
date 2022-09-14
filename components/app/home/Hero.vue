@@ -88,6 +88,11 @@
     align-items: flex-end;
     position: relative;
 
+    .app-atoms-corner-points {
+      border-bottom: none !important;
+      border-right: none !important;
+    }
+
     &__baseline {
       display: flex;
       justify-content: space-between;
