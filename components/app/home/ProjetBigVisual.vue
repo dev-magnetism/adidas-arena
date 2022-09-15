@@ -81,6 +81,9 @@
   &__principal {
     z-index: -2;
     position: relative;
+    height: 100%;
+    width: 100%;
+    display: block;
   }
 
   .app-atoms-title-tag {
@@ -89,20 +92,24 @@
 
   &__tag-top-upper {
     left: columns(1.65);
-    top: -30%;
+    bottom: 115%;
     transform: rotate(6deg);
   }
   &__tag-top {
-    left: columns(-0.25);
+    left: columns(-0.35);
     bottom: 15%;
     transform: rotate(-2.5deg);
   }
   &__tag-middle {
     bottom: -10%;
-    left: columns(0);
+    left: columns(-0.1);
     transform: rotate(1.45deg);
   }
   &__tag-bottom {
+    left: columns(1.85);
+    top: 115%;
+    transform: rotate(-6deg);
+    width: columns(2.6);
   }
 }
 </style>
