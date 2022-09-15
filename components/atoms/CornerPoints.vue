@@ -2,7 +2,11 @@
   <div
     :class="borders"
     class="app-atoms-corner-points"
-    :style="{ '--size-points': sizePoints }"
+    :style="{
+      '--size-points': sizePoints,
+      '--border-color': borderColor,
+      '--points-color': pointsColor,
+    }"
   >
     <span
       v-if="position.includes('1')"
@@ -36,6 +40,16 @@ export default {
       require: false,
       default: 10,
     },
+    borderColor: {
+      type: String,
+      require: false,
+      default: 'black',
+    },
+    pointsColor: {
+      type: String,
+      require: false,
+      default: 'black',
+    },
   },
   computed: {
     borders() {
@@ -61,7 +75,7 @@ export default {
   z-index: 9;
 
   &.top.right.bottom.left {
-    border: 1px solid var(--c-black);
+    border: 1px solid var(--border-color);
     // outline: 1px solid var(--c-black);
     // outline-offset: 0px;
   }
@@ -70,7 +84,7 @@ export default {
     width: calc(var(--size-points) * 1px);
     height: calc(var(--size-points) * 1px);
     position: absolute;
-    background: var(--c-black);
+    background: var(--points-color);
 
     &--top-left {
       left: -1px;

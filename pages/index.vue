@@ -21,7 +21,7 @@
       <TH1> co-création </TH1>
       <TH1> elevation </TH1>
     </EMarqueeScroll>
-    <AppHomePlan />
+    <AppHomeProjet />
     <AppHomeLeBloc />
     <AppHomePartners />
   </main>

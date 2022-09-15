@@ -67,6 +67,7 @@ export default {
   padding: desktop-vw(15px) desktop-vw(25px);
   display: inline-flex;
   align-items: center;
+  justify-content: space-between;
 
   @include hover {
     cursor: pointer;
@@ -79,7 +80,7 @@ export default {
   }
 
   svg {
-    margin-left: desktop-vw(80px);
+    // margin-left: desktop-vw(80px);
   }
 }
 </style>
