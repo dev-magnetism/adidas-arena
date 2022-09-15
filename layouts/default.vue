@@ -5,6 +5,7 @@
       <nuxt />
     </AppScroller>
     <AppFooter />
+    <AppPreloadLayer />
   </div>
 </template>
 
@@ -24,7 +25,6 @@ export default {
 
   watch: {},
 
-  created() {},
   mounted() {},
 
   beforeDestroy() {},

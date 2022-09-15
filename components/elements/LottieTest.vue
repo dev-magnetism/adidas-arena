@@ -1,5 +1,8 @@
 <template>
-  <div ref="lottie" class="app-element-lottie-test"></div>
+  <div class="app-element-lottie">
+    <slot />
+    <div ref="lottie" class="app-element-lottie-test" />
+  </div>
 </template>
 
 <script>
@@ -36,7 +39,8 @@ export default {
 
       const animation = lottie.loadAnimation({
         container: target,
-        renderer: vars.renderer || 'svg',
+        // renderer: vars.renderer || 'svg',
+        renderer: 'canvas',
         loop: false,
         autoplay: false,
         animationData: vars.animation,
@@ -65,8 +69,16 @@ export default {
 </script>
 
 <style lang="scss">
-.app-element-lottie-test {
-  width: 200px;
-  height: 100px;
+.app-element-lottie {
+  position: relative;
+  display: inline-flex;
+  z-index: 9;
+
+  canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translateY(-25%);
+  }
 }
 </style>

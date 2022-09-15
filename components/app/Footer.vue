@@ -72,6 +72,7 @@
   background-repeat: no-repeat;
   background-size: 85% auto;
   background-position: right center;
+  min-height: 100vh;
 
   &__bottom {
     display: flex;

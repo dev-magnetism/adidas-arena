@@ -1,6 +1,4 @@
 @mixin h1() {
-  // font-size: min(130px, desktop-vw(130px));
-  // line-height: min(140px, desktop-vw(140px));
   font-size: desktop-vw(130px);
   line-height: desktop-vw(140px);
   text-transform: uppercase;
@@ -16,8 +14,6 @@
 }
 
 @mixin h2() {
-  // font-size: min(100px, desktop-vw(100px));
-  // line-height: min(100px, desktop-vw(100px));  
   font-size: desktop-vw(100px);
   line-height: desktop-vw(100px);  
   text-transform: uppercase;
@@ -31,12 +27,9 @@
     @include font-tuskerGrotesk-bold();
     font-weight: 700;
   }
-
 }
 
 @mixin h3() {
-  // font-size: min(72px, desktop-vw(72px));
-  // line-height: min(72px, desktop-vw(72px));
   font-size: desktop-vw(72px);
   line-height: desktop-vw(72px);
   letter-spacing: -0.02em;
@@ -45,8 +38,6 @@
 }
 
 @mixin h4() {
-  // font-size: min(32px, desktop-vw(32px));
-  // line-height: min(41px, desktop-vw(41px));
   font-size:desktop-vw(32px);
   line-height: desktop-vw(41px);
   letter-spacing: -0.04em;
