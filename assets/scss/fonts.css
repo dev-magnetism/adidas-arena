@@ -1,0 +1,54 @@
+@font-face {
+  font-family: "TuskerGrotesk-Bold";
+  src: url("~assets/fonts/TuskerGrotesk-Bold/TuskerGrotesk-Bold.woff2") format("woff2"), 
+    url("~assets/fonts/TuskerGrotesk-Bold/TuskerGrotesk-Bold.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "TuskerGrotesk-Medium";
+  src: url("~assets/fonts/TuskerGrotesk-Medium/TuskerGrotesk-Medium.woff2") format("woff2"),
+    url("~assets/fonts/TuskerGrotesk-Medium/TuskerGrotesk-Medium.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "AdihausDIN Cn Bold";
+  src: url("~assets/fonts/AdihausDIN-Cn-Bold/AdihausDIN-Cn-Bold.woff2") format("woff2"),
+    url("~assets/fonts/AdihausDIN-Cn-Bold/AdihausDIN-Cn-Bold.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "AdihausDIN Bold";
+  src: url("~assets/fonts/AdihausDIN-Bold/AdihausDIN-Bold.woff2") format("woff2"),
+    url("~assets/fonts/AdihausDIN-Bold/AdihausDIN-Bold.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "AdihausDIN Medium";
+  src: url("~assets/fonts/AdihausDIN-Medium/AdihausDIN-Medium.woff2") format("woff2"),
+    url("~assets/fonts/AdihausDIN-Medium/AdihausDIN-Medium.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "AdihausDIN";
+  src: url("~assets/fonts/AdihausDIN-Regular/AdihausDIN-Regular.woff2") format("woff2"),
+    url("~assets/fonts/AdihausDIN-Regular/AdihausDIN-Regular.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+

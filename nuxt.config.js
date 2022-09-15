@@ -81,7 +81,7 @@ export default {
   },
 
   fontLoader: {
-    url: '~/assets/scss/fonts.scss',
+    url: '~/assets/scss/fonts.css',
   },
 
   image: {
