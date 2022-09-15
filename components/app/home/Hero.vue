@@ -112,6 +112,12 @@
         line-height: desktop-vw(21px);
       }
     }
+
+    &__visit {
+      > :first-child {
+        @include font-adihausDIN-cn-medium();
+      }
+    }
   }
 
   &__title {

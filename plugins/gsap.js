@@ -6,6 +6,7 @@ import { gsap } from 'gsap'
 // import { ScrollSmoother } from 'gsap/ScrollSmoother'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
+import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin'
 // import { Observer } from 'gsap/Observer'
 
 gsap.config({
@@ -18,7 +19,8 @@ gsap.registerPlugin(
   //   VelocityTracker,
   SplitText,
   //   Observer,
-  ScrollTrigger
+  ScrollTrigger,
+  DrawSVGPlugin
 )
 
 // Vue.prototype.$gsap = gsap

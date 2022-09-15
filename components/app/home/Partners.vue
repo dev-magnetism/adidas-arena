@@ -52,6 +52,9 @@
     margin-bottom: desktop-vw(50px);
     width: 52.5%;
   }
+  .app-atoms-cta {
+    width: 52.5%;
+  }
 
   &__grid-logos {
     grid-column: 6 / span 8;

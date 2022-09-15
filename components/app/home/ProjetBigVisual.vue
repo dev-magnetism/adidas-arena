@@ -45,6 +45,12 @@
       >DES MATCHS, DES EVENEMENTS, DES RESTAURANTS, DES JEUX, DES SALLES DE
       RÉUNIONS POUR TOUS
     </AtomsTitleTag>
+    <AtomsCTA
+      class="app-home-projet__big-visual__cta"
+      color="beige"
+      bg="blue-adidas"
+      >En savoir plus</AtomsCTA
+    >
   </div>
 </template>
 
@@ -52,11 +58,24 @@
 .app-home-projet__big-visual {
   position: absolute;
   grid-column: 1 / span 5;
-  width: 85%;
+  width: 88%;
   aspect-ratio: 450 / 265;
   bottom: calc(desktop-vw(25px) + desktop-vw(150px));
-  left: columns(1);
+  left: columns(0.8);
   transform: rotate(-6deg);
+
+  &__cta {
+    position: absolute;
+    width: columns(2.25);
+    // width: desktop-vw(195px);
+    bottom: -58%;
+    left: columns(3);
+    padding: desktop-vw(20px) desktop-vw(20px);
+
+    .P2 {
+      @include font-adihausDIN-cn-medium();
+    }
+  }
 
   &__left-top {
     position: absolute;
@@ -96,20 +115,29 @@
     transform: rotate(6deg);
   }
   &__tag-top {
-    left: columns(-0.35);
-    bottom: 15%;
+    left: columns(-0.25);
+    bottom: 12%;
     transform: rotate(-2.5deg);
   }
   &__tag-middle {
     bottom: -10%;
     left: columns(-0.1);
     transform: rotate(1.45deg);
+    .P2 {
+      font-size: desktop-vw(15px);
+      line-height: desktop-vw(20px);
+    }
   }
   &__tag-bottom {
-    left: columns(1.85);
-    top: 115%;
+    left: columns(1.4);
+    bottom: -40%;
     transform: rotate(-6deg);
-    width: columns(2.6);
+    width: columns(2.15);
+
+    .P2 {
+      font-size: desktop-vw(14px);
+      line-height: desktop-vw(16px);
+    }
   }
 }
 </style>

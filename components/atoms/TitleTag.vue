@@ -39,7 +39,7 @@ export default {
 <style lang="scss">
 .app-atoms-title-tag {
   border: 1px solid var(--c-black);
-  padding: desktop-vw(12px) desktop-vw(20px);
+  padding: desktop-vw(10px) desktop-vw(18px);
   display: inline-flex;
   align-items: center;
 

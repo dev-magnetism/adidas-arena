@@ -81,6 +81,14 @@
   font-family: "AdihausDIN Cn Bold";
 }
 
+@mixin font-adihausDIN-cn-medium() {
+  font-family: "AdihausDIN Cn Medium";
+}
+
+@mixin font-adihausDIN-cn() {
+  font-family: "AdihausDIN Cn";
+}
+
 @mixin font-adihausDIN-bold() {
   font-family: "AdihausDIN Bold";
 }

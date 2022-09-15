@@ -17,9 +17,8 @@ export default {
     this.LottieScrollTrigger({
       target: this.$refs.lottie,
       animation: lottieAnimation,
-      speed: 'fast',
-      start: 'top center+=10%',
-      end: 'bottom center-=25%',
+      start: 'top center+=25%',
+      end: 'bottom center',
       scrub: 0.5,
     })
   },
@@ -27,12 +26,11 @@ export default {
     LottieScrollTrigger(vars) {
       const playhead = { frame: 0 }
       const target = gsap.utils.toArray(vars.target)[0]
-      // const speeds = { slow: '+=2000', medium: '+=1000', fast: '+=500' }
 
       const st = {
         trigger: target,
         start: vars.start || 'top center',
-        end: vars.end || '+=1000',
+        end: vars.end || 'bottom center',
         // markers: true,
         scrub: vars.scrub,
       }
@@ -40,7 +38,7 @@ export default {
       const animation = lottie.loadAnimation({
         container: target,
         // renderer: vars.renderer || 'svg',
-        renderer: 'canvas',
+        renderer: 'svg',
         loop: false,
         autoplay: false,
         animationData: vars.animation,

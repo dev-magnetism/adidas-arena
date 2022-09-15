@@ -1,18 +1,18 @@
 <template>
   <div class="app-home-projet__header">
     <div class="app-home-projet__header__infos">
-      <div class="app-home-projet__header__info">
-        <TP1>Titre</TP1>
-        <TP2>La chapelle district</TP2>
-      </div>
-      <div class="app-home-projet__header__info">
-        <TP1>Titre</TP1>
-        <TP2>La chapelle district</TP2>
+      <div v-for="i in 2" :key="i" class="app-home-projet__header__info">
+        <TP1 class="app-home-projet__header__info__title">Titre</TP1>
+        <TH2 weight="bold" class="app-home-projet__header__info__content">
+          La chapelle district
+        </TH2>
       </div>
     </div>
     <div class="app-home-projet__header__description">
-      <TP1>Titre</TP1>
-      <TP2>La chapelle district</TP2>
+      <TP1 class="app-home-projet__header__description__title">Description</TP1>
+      <TH3 class="app-home-projet__header__description__content">
+        Un lieu de vie dans un quartier en plein mouvement
+      </TH3>
     </div>
   </div>
 </template>
@@ -42,6 +42,18 @@
     justify-content: center;
     border-left: none;
 
+    &__title {
+      font-size: desktop-vw(12px);
+      line-height: desktop-vw(16px);
+      @include font-adihausDIN-cn-medium();
+    }
+
+    &__content {
+      font-size: desktop-vw(24px);
+      line-height: desktop-vw(20px);
+      margin-top: desktop-vw(5px);
+    }
+
     &:first-child {
       border-top: none;
     }
@@ -55,6 +67,19 @@
     padding: desktop-vw(10px) desktop-vw(12px);
     border-right: 1px solid var(--c-black);
     border-bottom: 1px solid var(--c-black);
+
+    &__title {
+      font-size: desktop-vw(12px);
+      line-height: desktop-vw(16px);
+      @include font-adihausDIN-cn-medium();
+    }
+
+    &__content {
+      font-size: desktop-vw(12px);
+      line-height: desktop-vw(20px);
+      @include font-adihausDIN-regular();
+      margin-top: desktop-vw(10px);
+    }
   }
 }
 </style>

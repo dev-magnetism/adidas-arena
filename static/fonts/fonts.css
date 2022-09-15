@@ -1,6 +1,6 @@
 @font-face {
   font-family: "TuskerGrotesk-Bold";
-  src: url(TuskerGrotesk-Bold/TuskerGrotesk-Bold.woff2") format("woff2"), 
+  src: url("TuskerGrotesk-Bold/TuskerGrotesk-Bold.woff2") format("woff2"), 
     url("TuskerGrotesk-Bold/TuskerGrotesk-Bold.woff") format("woff");
   font-style: normal;
   font-weight: 400;
@@ -20,6 +20,24 @@
   font-family: "AdihausDIN Cn Bold";
   src: url("AdihausDIN-Cn-Bold/AdihausDIN-Cn-Bold.woff2") format("woff2"),
     url("AdihausDIN-Cn-Bold/AdihausDIN-Cn-Bold.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "AdihausDIN Cn Medium";
+  src: url("AdihausDIN-Cn-Medium/AdihausDIN-Cn-Medium.woff2") format("woff2"),
+    url("AdihausDIN-Cn-Medium/AdihausDIN-Cn-Medium.woff") format("woff");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "AdihausDIN Cn";
+  src: url("AdihausDIN-Cn-Regular/AdihausDIN-Cn-Regular.woff2") format("woff2"),
+    url("AdihausDIN-Cn-Regular/AdihausDIN-Cn-Regular.woff") format("woff");
   font-style: normal;
   font-weight: 400;
   font-display: swap;

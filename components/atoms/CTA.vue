@@ -80,7 +80,7 @@ export default {
   }
 
   svg {
-    // margin-left: desktop-vw(80px);
+    margin-left: desktop-vw(20px);
   }
 }
 </style>
