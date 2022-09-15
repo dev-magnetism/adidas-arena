@@ -72,7 +72,17 @@ export default {
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
     '@nuxt/image',
+    '@nuxtjs/device',
+    'nuxt-font-loader',
   ],
+
+  device: {
+    refreshOnResize: true,
+  },
+
+  fontLoader: {
+    url: '~/assets/scss/fonts.scss',
+  },
 
   image: {
     // The screen sizes predefined by `@nuxt/image`:
