@@ -4,7 +4,7 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex'
-
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 export default {
   computed: {
     ...mapState({
@@ -37,10 +37,8 @@ export default {
 
       Promise.all(observers)
         .then((fonts) => {
-          setTimeout(() => {
-            console.log('loaded')
-            this.setFontsLoaded(true)
-          }, 1000)
+          this.setFontsLoaded(true)
+          ScrollTrigger.refresh()
         })
         .catch((err) => {
           console.warn('Some critical font are not available:', err)
