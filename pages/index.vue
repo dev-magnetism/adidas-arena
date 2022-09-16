@@ -32,13 +32,11 @@ export default {}
 </script>
 
 <style lang="scss">
-.test {
-  height: 50vh;
-  width: 100%;
-  background: red;
+.app-home {
+  padding-bottom: desktop-vw(145px);
 
   @include mobile {
-    background: green;
+    // background: green;
   }
 }
 </style>

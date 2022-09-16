@@ -64,7 +64,6 @@
 
 <style lang="scss">
 .app-footer {
-  margin-top: desktop-vw(200px);
   padding-top: desktop-vw(95px);
   padding-bottom: desktop-vw(40px);
   background: var(--c-red-adidas);

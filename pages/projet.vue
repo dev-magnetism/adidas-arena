@@ -5,6 +5,7 @@
     <AppProjetGallery />
     <AppProjetWorkProgress />
     <AppProjetPlan />
+    <AppProjetTwoColumns />
   </main>
 </template>
 
@@ -18,5 +19,6 @@ export default {
 .app-projet {
   // background: black;
   padding-top: desktop-vw(200px);
+  padding-bottom: desktop-vw(80px);
 }
 </style>

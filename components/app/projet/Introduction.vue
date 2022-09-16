@@ -26,6 +26,15 @@
       />
     </div>
 
+    <div class="app-projet-introduction__row-second-visual-transparent">
+      <nuxt-picture
+        src="imgs/placeholder-logo-home.png"
+        format="webp"
+        alt="placeholder"
+      />
+      <AtomsCornerPoints :size-points="6" />
+    </div>
+
     <div class="app-projet-introduction__row-second-content">
       <TH4>POURQUOI ADIDAS ?</TH4>
       <TP2>
@@ -43,6 +52,8 @@
 
 <style lang="scss">
 .app-projet-introduction {
+  position: relative;
+
   &__row-framed-content {
     grid-column: 2 / span 6;
     grid-row: 1;
@@ -72,6 +83,28 @@
     z-index: 2;
   }
 
+  &__row-second-visual-transparent {
+    position: absolute;
+    grid-row: 2;
+    width: 100%;
+    grid-column: 6 / span 2;
+    top: 20%;
+    transform: rotate(-9deg);
+    aspect-ratio: 200 / 130;
+    left: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @include fake-transparent();
+
+    picture {
+      display: block;
+      width: 55%;
+      height: auto;
+    }
+  }
+
   &__row-second-content {
     grid-column: 9 / span 3;
     margin-top: desktop-vw(100px);
@@ -90,6 +123,7 @@
     width: 95%;
     margin-left: desktop-vw(25px);
     grid-row: 2;
+    margin-top: desktop-vw(25px);
 
     .H3 {
       font-size: desktop-vw(22px);

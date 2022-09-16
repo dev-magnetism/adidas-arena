@@ -13,7 +13,7 @@
   margin-bottom: desktop-vw(130px);
 
   .placeholder-plan {
-    background: blue;
+    @include fake-transparent();
     grid-column: 1 / span 12;
     aspect-ratio: 1300 / 905;
     display: flex;

@@ -1,7 +1,7 @@
 <template>
-  <div class="app-element-lottie">
+  <div ref="lottie" :class="y" class="app-element-lottie">
     <slot />
-    <div ref="lottie" class="app-element-lottie-test" />
+    <!-- <div ref="lottie" class="app-element-lottie-wrapper" /> -->
   </div>
 </template>
 
@@ -11,6 +11,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import lottie from 'lottie-web'
 
 export default {
+  props: {
+    y: {
+      type: String,
+      default: 'center',
+    },
+  },
   mounted() {
     const lottieAnimation = require(`@/assets/lotties/circle.json`)
 
@@ -72,18 +78,31 @@ export default {
   display: inline-flex;
   z-index: 9;
 
-  &-test {
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    transform: translateY(-50%);
+  &.center {
+    svg {
+      top: 50%;
+      transform: translateY(-50%) !important;
+    }
   }
 
+  &.bottom {
+    svg {
+      bottom: 0;
+    }
+  }
+
+  &.bottom {
+    svg {
+      bottom: 0;
+    }
+  }
+
+  svg,
   canvas {
     position: absolute;
     left: 0;
-    top: 0;
-    transform: translateY(-25%);
+    width: 100%;
+    height: auto !important;
   }
 }
 </style>

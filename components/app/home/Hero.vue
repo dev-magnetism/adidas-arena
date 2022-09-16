@@ -49,7 +49,7 @@
             >Visiter le lieu
           </AtomsCTA>
         </div>
-        <AtomsCornerPoints position="1,2,3,4" />
+        <AtomsCornerPoints />
       </div>
       <SvgHomeHeroSticker class="app-home-hero__sticker" />
     </div>

@@ -34,7 +34,15 @@
   line-height: desktop-vw(72px);
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  @include font-adihausDIN-cn-bold();
+    @include font-adihausDIN-cn-bold();
+    
+  &.bold {
+    @include font-adihausDIN-cn-bold();
+  }
+
+  &.medium {
+    @include font-adihausDIN-cn-medium();
+  }
 }
 
 @mixin h4() {

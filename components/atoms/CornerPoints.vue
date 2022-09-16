@@ -73,6 +73,8 @@ export default {
   height: 100%;
   pointer-events: none;
   z-index: 9;
+  top: 0;
+  left: 0;
 
   &.top.right.bottom.left {
     border: 1px solid var(--border-color);

@@ -841,7 +841,6 @@ import { gsap } from 'gsap'
 
 export default {
   mounted() {
-    console.log(this.$viewport)
     const svgEls = this.$refs.test.querySelectorAll(
       'path, rect, circle, ellipse, polyline'
     )
