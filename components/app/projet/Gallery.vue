@@ -10,9 +10,9 @@
       <div class="app-projet-gallery__item__content">
         <div class="app-projet-gallery__item__infos">
           <TH3>Les gym's</TH3>
-          <TH4>350 M2</TH4>
+          <TH4 weight="medium">350 M2</TH4>
         </div>
-        <TP1
+        <TP1 weight="regular"
           >Ce parvis est votre point d’arrivée et de passage mais aussi un
           espace de loisirs ! Une expérience vous permettant d’être connecté
           avec l’actualité de l'ADIDAS ARENA : expositions, matchs sportif,
@@ -30,9 +30,9 @@
       <div class="app-projet-gallery__item__content">
         <div class="app-projet-gallery__item__infos">
           <TH3>Les gym's</TH3>
-          <TH4>350 M2</TH4>
+          <TH4 weight="medium">350 M2</TH4>
         </div>
-        <TP1
+        <TP1 weight="regular"
           >Ce parvis est votre point d’arrivée et de passage mais aussi un
           espace de loisirs ! Une expérience vous permettant d’être connecté
           avec l’actualité de l'ADIDAS ARENA : expositions, matchs sportif,
@@ -75,7 +75,6 @@
         line-height: desktop-vw(36px);
         letter-spacing: -0.04em;
         margin-top: desktop-vw(10px);
-        @include font-adihausDIN-cn-bold();
       }
     }
   }

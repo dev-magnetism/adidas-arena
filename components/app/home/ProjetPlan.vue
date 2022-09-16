@@ -32,11 +32,8 @@
   .app-element-lottie {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
     width: 70%;
     left: 0;
-    display: block;
-    height: auto;
   }
 
   &__bottom {

@@ -38,6 +38,9 @@ export default {
       return [
         {
           'P1--noselect': !this.selectable,
+          bold: this.weight === 'bold',
+          medium: this.weight === 'medium',
+          regular: this.weight === 'regular',
         },
       ]
     },

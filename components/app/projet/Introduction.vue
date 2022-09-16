@@ -75,6 +75,7 @@
   &__row-second-content {
     grid-column: 9 / span 3;
     margin-top: desktop-vw(100px);
+    grid-row: 2;
 
     .P2 {
       margin-top: desktop-vw(30px);
@@ -88,6 +89,7 @@
     display: flex;
     width: 95%;
     margin-left: desktop-vw(25px);
+    grid-row: 2;
 
     .H3 {
       font-size: desktop-vw(22px);

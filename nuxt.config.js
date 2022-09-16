@@ -1,3 +1,5 @@
+import webpack from 'webpack'
+
 export default {
   target: 'static',
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -23,6 +25,7 @@ export default {
     { src: '~/plugins/gsap.js', mode: 'client' },
     { src: '~/plugins/utils.js', mode: 'client' },
     { src: '~/plugins/raf.js', mode: 'client' },
+    { src: '~/plugins/viewport.js', mode: 'client' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -116,6 +119,9 @@ export default {
     extractCSS: {
       ignoreOrder: false,
     },
-    transpile: ['gsap'],
+    transpile: ['three', 'gsap'],
+    extend(config, ctx) {
+      config.plugins.push(new webpack.ProvidePlugin({ THREE: 'three' }))
+    },
   },
 }

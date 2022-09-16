@@ -2,7 +2,7 @@
   <component
     :is="tag"
     class="H3"
-    :class="classes"
+    :class="{ classes }"
     :style="{ color: `var(--c-${color})` }"
   >
     <slot></slot>

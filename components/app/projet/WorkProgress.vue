@@ -1,7 +1,7 @@
 <template>
   <div class="app-projet-work-progress">
     <div class="app-projet-work-progress__inner grid-inner">
-      <TH1 class="app-projet-work-progress__title" color="beige">
+      <TH1 weight="bold" class="app-projet-work-progress__title" color="beige">
         <AtomsTextStroke stroke-color="beige"> évolution </AtomsTextStroke> des
         travaux
       </TH1>
@@ -158,7 +158,7 @@
         </div>
       </div>
       <div class="app-projet-work-progress__bottom-description">
-        <TP2 color="beige">
+        <TP2 weight="medium" color="beige">
           Un chantier exceptionnel avec une central à béton sur le chantier et
           la revalorisation de 95% des déchets.<br /><br />
           Un chantier exceptionnel avec une central à béton sur le chantier et
@@ -245,6 +245,7 @@ export default {
       display: flex;
       flex-direction: column;
       flex: 1;
+      cursor: pointer;
 
       &:not(:last-child) {
         margin-right: desktop-vw(25px);
@@ -265,6 +266,7 @@ export default {
         position: relative;
         font-size: desktop-vw(16px);
         line-height: desktop-vw(21px);
+        @include font-adihausDIN-cn-bold();
 
         svg {
           position: absolute;
@@ -281,7 +283,7 @@ export default {
         font-size: desktop-vw(18px);
         line-height: desktop-vw(18px);
         max-width: desktop-vw(150px);
-        @include font-adihausDIN-cn-bold();
+        @include font-adihausDIN-cn();
       }
     }
 
@@ -308,6 +310,7 @@ export default {
     grid-column: 9 / span 4;
     display: flex;
     align-self: center;
+    border: 1px solid var(--c-beige);
 
     &__items {
       flex: 2;
@@ -317,16 +320,21 @@ export default {
 
     &__item {
       padding: desktop-vw(10px) desktop-vw(12px);
-      border: 1px solid white;
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      border-right: 1px solid var(--c-beige);
+
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--c-beige);
+      }
 
       .P2 {
         font-size: desktop-vw(12px);
         line-height: desktop-vw(16px);
         letter-spacing: -0.04em;
+        @include font-adihausDIN-cn-bold();
       }
 
       .H4 {
@@ -334,6 +342,7 @@ export default {
         line-height: desktop-vw(20px);
         letter-spacing: -0.04em;
         margin-top: desktop-vw(5px);
+        @include font-adihausDIN-cn-bold();
       }
     }
 
@@ -341,13 +350,13 @@ export default {
       flex: 1;
       padding: desktop-vw(10px) desktop-vw(12px) desktop-vw(15px)
         desktop-vw(12px);
-      border: 1px solid white;
 
-      &__title {
+      &__title.P2 {
         margin-bottom: desktop-vw(5px);
         font-size: desktop-vw(12px);
         line-height: desktop-vw(16px);
         letter-spacing: -0.04em;
+        @include font-adihausDIN-cn-bold();
       }
 
       &__text {

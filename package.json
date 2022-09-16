@@ -20,7 +20,8 @@
     "gsap": "npm:@gsap/shockingly@^3.11.1",
     "include-media": "^1.4.10",
     "lottie-web": "^5.9.6",
-    "nuxt": "^2.15.7"
+    "nuxt": "^2.15.7",
+    "three": "^0.144.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",

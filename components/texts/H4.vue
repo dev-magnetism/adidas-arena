@@ -38,6 +38,9 @@ export default {
       return [
         {
           'H4--noselect': !this.selectable,
+          bold: this.weight === 'bold',
+          medium: this.weight === 'medium',
+          regular: this.weight === 'regular',
         },
       ]
     },

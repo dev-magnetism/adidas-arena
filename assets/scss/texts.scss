@@ -42,7 +42,21 @@
   line-height: desktop-vw(41px);
   letter-spacing: -0.04em;
   text-transform: uppercase;
-  @include font-adihausDIN-bold();
+
+  &.regular {
+    @include font-adihausDIN-regular();
+    font-weight: 500;
+  }
+    
+  &.bold {
+    @include font-adihausDIN-bold();
+    font-weight: 700;
+  }
+    
+  &.medium {
+    @include font-adihausDIN-medium();
+    font-weight: 500;
+  }
 }
 
 @mixin p1() {
@@ -50,7 +64,21 @@
   line-height: desktop-vw(20px);
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  @include font-adihausDIN-regular();
+
+  &.regular {
+    @include font-adihausDIN-regular();
+    font-weight: 500;
+  }
+  
+  &.bold {
+    @include font-adihausDIN-bold();
+    font-weight: 700;
+  }
+  
+  &.medium {
+    @include font-adihausDIN-medium();
+    font-weight: 500;
+  }
 }
 
 @mixin p2() {
@@ -65,6 +93,12 @@
   &.bold {
     @include font-adihausDIN-bold();
     font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  &.medium {
+    @include font-adihausDIN-medium();
+    font-weight: 500;
     text-transform: uppercase;
   }
 }

@@ -74,7 +74,7 @@
       @include font-adihausDIN-cn-medium();
     }
 
-    &__content {
+    &__content.H3 {
       font-size: desktop-vw(12px);
       line-height: desktop-vw(20px);
       @include font-adihausDIN-regular();

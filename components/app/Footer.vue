@@ -228,7 +228,7 @@
     grid-column: 8 / span 5;
   }
 
-  &__partners-title {
+  &__partners-title.H2 {
     font-size: desktop-vw(32px);
     line-height: desktop-vw(40px);
   }
@@ -239,11 +239,7 @@
     @include font-adihausDIN-cn-bold();
   }
 
-  &__newsletter-title {
-    font-size: desktop-vw(32px);
-    line-height: desktop-vw(40px);
-  }
-  &__newsletter-title {
+  &__newsletter-title.H2 {
     font-size: desktop-vw(32px);
     line-height: desktop-vw(40px);
   }

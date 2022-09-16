@@ -72,6 +72,13 @@ export default {
   display: inline-flex;
   z-index: 9;
 
+  &-test {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
   canvas {
     position: absolute;
     left: 0;
