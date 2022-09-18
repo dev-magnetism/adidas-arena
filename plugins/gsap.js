@@ -7,7 +7,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
 import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin'
-// import { Observer } from 'gsap/Observer'
+import { Observer } from 'gsap/Observer'
 
 gsap.config({
   force3D: true,
@@ -18,7 +18,7 @@ gsap.registerPlugin(
   //   Flip,
   //   VelocityTracker,
   SplitText,
-  //   Observer,
+  Observer,
   ScrollTrigger,
   DrawSVGPlugin
 )

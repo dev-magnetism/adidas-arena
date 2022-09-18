@@ -1,8 +1,8 @@
 <template>
   <div class="app-projet__catch-phrase grid-inner">
     <TH2>
-      Un terrain de jeu laissant place aux rencontres,
-      <ELottieTest> à la création </ELottieTest> et à la fête.
+      Un terrain de jeu <ELottieTest>laissant</ELottieTest> place aux
+      rencontres, <ELottieTest> à la création </ELottieTest> et à la fête.
     </TH2>
   </div>
 </template>

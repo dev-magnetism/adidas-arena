@@ -21,12 +21,28 @@
       <AtomsCTA>Devenir partenaire</AtomsCTA>
     </div>
     <EGridLogos class="app-home-partners__grid-logos" />
+    <div class="app-home-partners__total">
+      <TH1>08</TH1><TH2>partenaires</TH2>
+    </div>
   </div>
 </template>
 
 <style lang="scss">
 .app-home-partners {
   position: relative;
+  padding-bottom: desktop-vw(140px);
+
+  &__total {
+    grid-column: 11 / span 2;
+    text-align: right;
+    justify-self: flex-end;
+
+    .H2 {
+      font-size: desktop-vw(24px);
+      line-height: desktop-vw(24px);
+      opacity: 0.35;
+    }
+  }
 
   &__content {
     grid-column: 1 / span 6;

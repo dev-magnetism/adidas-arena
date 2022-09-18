@@ -6,17 +6,23 @@
       '--rows': rows,
     }"
   >
+    <div class="bloc big visible">
+      <AtomsCornerPoints :size-points="6" position="1,2,3,4" />
+      <img :src="arraytesttest.src" alt="test" />
+    </div>
+    <div class="bloc transparent visible">
+      <AtomsCornerPoints :size-points="6" position="1,2,3,4" />
+    </div>
     <div
-      v-for="(logo, index) in cols * rows - nbElementDelete * 3"
+      v-for="(logo, index) in arraytest"
       :key="index"
-      :class="{
-        big: index <= logos.length - 1 && logos[index].big,
-        visible: index <= logos.length - 1,
-        transparent: index > logos.length - 1,
-      }"
-      :style="{
-        '--order': randomIntFromInterval(1, cols * rows - nbElementDelete * 3),
-      }"
+      :class="[
+        `div${index + 1}`,
+        {
+          visible: index <= logos.length - 1,
+          transparent: index > logos.length - 1,
+        },
+      ]"
       class="bloc"
     >
       <AtomsCornerPoints
@@ -24,11 +30,7 @@
         :size-points="6"
         position="1,2,3,4"
       />
-      <img
-        v-if="index <= logos.length - 1"
-        :src="logos[index].src"
-        alt="test"
-      />
+      <img v-if="index <= logos.length - 1" :src="logo.src" alt="test" />
     </div>
   </div>
 </template>
@@ -42,12 +44,48 @@ export default {
     },
     rows: {
       type: Number,
-      default: 6,
+      default: 7,
     },
   },
   data() {
     return {
       logos: [
+        {
+          src: '/imgs/placeholder-logo-home.png',
+          big: false,
+        },
+        {
+          src: '/imgs/placeholder-logo-home.png',
+          big: false,
+        },
+        {
+          src: '/imgs/placeholder-logo-home.png',
+          big: false,
+        },
+        {
+          src: '/imgs/placeholder-logo-home.png',
+          big: false,
+        },
+        {
+          src: '/imgs/placeholder-logo-home.png',
+          big: false,
+        },
+        {
+          src: '/imgs/placeholder-logo-home.png',
+          big: false,
+        },
+        {
+          src: '/imgs/placeholder-logo-home.png',
+          big: false,
+        },
+        {
+          src: '/imgs/placeholder-logo-home.png',
+          big: false,
+        },
+        {
+          src: '/imgs/placeholder-logo-home.png',
+          big: false,
+        },
         {
           src: '/imgs/placeholder-logo-home.png',
           big: true,
@@ -66,7 +104,7 @@ export default {
         },
         {
           src: '/imgs/placeholder-logo-home.png',
-          big: false,
+          big: true,
         },
         {
           src: '/imgs/placeholder-logo-home.png',
@@ -82,7 +120,7 @@ export default {
         },
         {
           src: '/imgs/placeholder-logo-home.png',
-          big: false,
+          big: true,
         },
         {
           src: '/imgs/placeholder-logo-home.png',
@@ -108,6 +146,12 @@ export default {
     }
   },
   computed: {
+    arraytest() {
+      return this.logos.filter((logo) => !logo.big)
+    },
+    arraytesttest() {
+      return this.logos.find((logo) => logo.big)
+    },
     nbElementDelete() {
       return this.logos.filter((logo) => logo.big).length
     },
@@ -130,17 +174,83 @@ export default {
   grid-auto-flow: row dense;
   grid-gap: 1px;
 
+  .div1 {
+    grid-area: 1 / 2 / 2 / 3;
+  }
+  .div2 {
+    grid-area: 1 / 4 / 2 / 5;
+  }
+  .div3 {
+    grid-area: 2 / 3 / 3 / 4;
+  }
+  .div4 {
+    grid-area: 2 / 4 / 3 / 5;
+  }
+  .div5 {
+    grid-area: 3 / 4 / 4 / 5;
+  }
+  .div6 {
+    grid-area: 3 / 5 / 4 / 6;
+  }
+  .div7 {
+    grid-area: 4 / 6 / 5 / 7;
+  }
+  .div8 {
+    grid-area: 6 / 1 / 7 / 2;
+  }
+  .div9 {
+    grid-area: 6 / 4 / 7 / 5;
+  }
+  .div10 {
+    grid-area: 6 / 5 / 7 / 6;
+  }
+  .div11 {
+    grid-area: 7 / 3 / 8 / 4;
+  }
+  .div12 {
+    grid-area: 7 / 2 / 8 / 3;
+  }
+  .div13 {
+    grid-area: 5 / 4 / 6 / 5;
+  }
+  .div14 {
+    grid-area: 7 / 6 / 8 / 7;
+  }
+  .div15 {
+    grid-area: 2 / 6 / 3 / 7;
+  }
+  .div16 {
+    grid-area: 3 / 2 / 4 / 3;
+  }
+  .div17 {
+    grid-area: 5 / 1 / 6 / 2;
+  }
+  .div18 {
+    grid-area: 5 / 5 / 6 / 6;
+  }
+  .div19 {
+    grid-area: 2 / 5 / 3 / 6;
+  }
+  .div20 {
+    grid-area: 6 / 6 / 7 / 7;
+  }
+
   .bloc {
     aspect-ratio: 128 / 128;
     position: relative;
-    grid-row: span 1;
-    grid-column: span 1;
+    // grid-row: span 1;
+    // grid-column: span 1;
     height: 100%;
     width: 100%;
     // order: var(--order);
     display: flex;
     align-items: center;
     justify-content: center;
+
+    .app-atoms-corner-points {
+      outline: 1px solid var(--border-color) !important;
+      border: none !important;
+    }
 
     img {
       width: 50%;
@@ -152,13 +262,15 @@ export default {
     }
 
     &.transparent {
-      background: transparent;
+      grid-area: 3 / 1 / 4 / 2;
+      @include fake-transparent();
     }
 
     &.big {
-      grid-row: span 2;
-      grid-column: span 2;
+      // grid-row: span 2;
+      // grid-column: span 2;
       aspect-ratio: 256 / 256;
+      grid-area: 4 / 2 / 6 / 4;
     }
   }
 }

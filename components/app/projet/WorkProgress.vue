@@ -3,7 +3,7 @@
     <div class="app-projet-work-progress__inner grid-inner">
       <TH1 weight="bold" class="app-projet-work-progress__title" color="beige">
         <AtomsTextStroke stroke-color="beige"> évolution </AtomsTextStroke> des
-        travaux
+        <ELottieTest> travaux</ELottieTest>
       </TH1>
       <div class="app-projet-work-progress__infos">
         <div class="app-projet-work-progress__infos__items">

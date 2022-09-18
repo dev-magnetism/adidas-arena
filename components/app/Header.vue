@@ -2,6 +2,7 @@
   <div class="app-header">
     <SmartLink href="/">Accueil</SmartLink>
     <SmartLink href="/projet">Projet</SmartLink>
+    <SmartLink href="/arena">Arena</SmartLink>
   </div>
 </template>
 

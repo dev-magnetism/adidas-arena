@@ -1,6 +1,7 @@
 export const strict = false
 
 export const state = () => ({
+  lenis: undefined,
   fontsLoaded: false,
 })
 
@@ -13,5 +14,8 @@ export const getters = {
 export const mutations = {
   setFontsLoaded: (state, value) => {
     state.fontsLoaded = value
+  },
+  setLenis: (state, value) => {
+    state.lenis = value
   },
 }

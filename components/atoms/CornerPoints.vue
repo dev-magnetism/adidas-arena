@@ -4,8 +4,8 @@
     class="app-atoms-corner-points"
     :style="{
       '--size-points': sizePoints,
-      '--border-color': borderColor,
-      '--points-color': pointsColor,
+      '--border-color': `var(--c-${borderColor})`,
+      '--points-color': `var(--c-${pointsColor})`,
     }"
   >
     <span

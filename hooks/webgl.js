@@ -11,9 +11,9 @@ class GL {
   constructor() {
     this.scene = new THREE.Scene()
 
-    this.slider = new THREE.Group()
-    this.slider.name = 'slider'
-    this.scene.add(this.slider)
+    this.gallery = new THREE.Group()
+    this.gallery.name = 'gallery'
+    this.scene.add(this.gallery)
 
     this.renderer = new THREE.WebGLRenderer({
       powerPreference: 'high-performance',
@@ -24,10 +24,19 @@ class GL {
       alpha: true,
     })
 
-    this.camera = new THREE.PerspectiveCamera(
-      45,
-      Viewport.width / Viewport.height,
-      0.1,
+    // this.camera = new THREE.PerspectiveCamera(
+    //   45,
+    //   Viewport.width / Viewport.height,
+    //   0.1,
+    //   1000
+    // )
+
+    this.camera = new THREE.OrthographicCamera(
+      Viewport.width / -2,
+      Viewport.width / 2,
+      Viewport.height / 2,
+      Viewport.height / -2,
+      1,
       1000
     )
 

@@ -83,7 +83,7 @@
               weight="medium"
               class="app-projet-two-columns__s-r__card__content__paragraph"
               >de bouchons en plastique collectés pour la construction des
-              sièges de l'Arena !</TH3
+              <ELottieTest>sièges</ELottieTest> de l'Arena !</TH3
             >
           </div>
         </div>

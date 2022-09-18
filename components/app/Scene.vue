@@ -44,8 +44,8 @@ export default {
   canvas {
     height: 100%;
     width: 100%;
-    touch-action: none;
-    user-select: none;
+    // touch-action: none;
+    // user-select: none;
   }
 }
 </style>
