@@ -21,7 +21,7 @@
       <TH1 color="light-red"> co-création </TH1>
       <TH1 color="light-blue"> elevation </TH1>
     </EMarqueeScroll>
-    <EMarqueeScroll>
+    <EMarqueeScroll :inverted="true">
       <TH1 color="red-adidas"> HYBRIDATION </TH1>
       <TH1 color="blue-adidas"> INCLUSIVITé </TH1>
       <TH1 color="light-red"> co-création </TH1>
