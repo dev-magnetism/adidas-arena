@@ -15,6 +15,7 @@ import { mapState, mapMutations } from 'vuex'
 
 export default {
   layout: 'DefaultLayout',
+  scrollToTop: true,
   data() {
     return {}
   },
