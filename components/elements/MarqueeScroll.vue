@@ -19,7 +19,7 @@ export default {
   props: {
     repeat: {
       type: Number,
-      default: 4,
+      default: 2,
     },
     duration: {
       type: Number,
@@ -40,6 +40,12 @@ export default {
         xPercent: -100 * (this.repeat - 1),
       })
     }
+    // else {
+    //   gsap.set(this.$refs.marquees, {
+    //     xPercent: this.offset * -1,
+    //   })
+    // }
+
     this.tween = gsap.to(this.$refs.marquees, {
       duration: this.duration,
       xPercent: this.inverted ? 0 : -100,
@@ -59,7 +65,7 @@ export default {
       scrub: 5,
       markers: true,
       onUpdate: (self) => {
-        const velocity = Math.abs(self.getVelocity()) * 0.000004
+        const velocity = Math.abs(self.getVelocity()) * 0.0000035
         const progress = this.tween.progress() + velocity
 
         this.tween.progress(progress)
