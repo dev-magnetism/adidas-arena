@@ -21,11 +21,11 @@ export default {
   props: {
     repeat: {
       type: Number,
-      default: 2,
+      default: 3,
     },
     duration: {
       type: Number,
-      default: 20,
+      default: 30,
     },
     offset: {
       type: Number,

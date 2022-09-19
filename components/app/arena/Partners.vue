@@ -1,16 +1,16 @@
 <template>
-  <div class="app-home-partners grid">
-    <div class="app-home-partners__content">
-      <TH1 class="app-home-partners__title">
+  <div class="app-arena-partners grid">
+    <div class="app-arena-partners__content">
+      <TH1 class="app-arena-partners__title">
         Un écosystème complémentaire de partenaires
       </TH1>
-      <TP2 class="app-home-partners__principal-paragraph" weight="bold">
+      <TP2 class="app-arena-partners__principal-paragraph" weight="bold">
         Aujourd’hui près de 20 marques leaders sur leur marché font confiance à
         l’Accor Arena et à ses équipes. Ces marques ont investi pour profiter de
         l’exposition d’une programmation riche et diversifiée de plus de 135
         séances par an.
       </TP2>
-      <TP2 class="app-home-partners__secondary-paragraph">
+      <TP2 class="app-arena-partners__secondary-paragraph">
         Après les travaux de rénovation, l’Accor Arena est devenu l’un des
         terrains d’animation et d’engagement favori des marques aux côtés de
         Roland-Garros ou du PSG. Les équipes de l’Arena ont le privilège et
@@ -20,8 +20,8 @@
       </TP2>
       <AtomsCTA>Devenir partenaire</AtomsCTA>
     </div>
-    <EGridLogos class="app-home-partners__grid-logos" />
-    <div class="app-home-partners__total">
+    <EGridLogos class="app-arena-partners__grid-logos" />
+    <div class="app-arena-partners__total">
       <TH1>08</TH1>
       <TH2>partenaires</TH2>
     </div>
@@ -29,9 +29,10 @@
 </template>
 
 <style lang="scss">
-.app-home-partners {
+.app-arena-partners {
   position: relative;
   padding-bottom: desktop-vw(140px);
+  margin-top: desktop-vw(130px);
 
   &__total {
     grid-column: 11 / span 2;
@@ -46,7 +47,7 @@
   }
 
   &__content {
-    grid-column: 1 / span 6;
+    grid-column: 2 / span 6;
 
     .app-atoms-cta {
       .P2 {
@@ -74,7 +75,7 @@
   }
 
   &__grid-logos {
-    grid-column: 6 / span 8;
+    grid-column: 7 / span 6;
     position: absolute;
     top: desktop-vw(140px);
     left: 0;

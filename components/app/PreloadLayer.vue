@@ -5,6 +5,7 @@
 <script>
 import { mapMutations, mapState } from 'vuex'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
 export default {
   computed: {
     ...mapState({
@@ -18,7 +19,7 @@ export default {
     preloadFonts() {
       const FontFaceObserver = require('fontfaceobserver')
 
-      const exampleFontData = {
+      const fontData = {
         'TuskerGrotesk-Bold': { weight: 400 },
         'TuskerGrotesk-Medium': { weight: 400 },
         'AdihausDIN Cn Bold': { weight: 400 },
@@ -29,8 +30,8 @@ export default {
 
       const observers = []
 
-      Object.keys(exampleFontData).forEach((family) => {
-        const data = exampleFontData[family]
+      Object.keys(fontData).forEach((family) => {
+        const data = fontData[family]
         const obs = new FontFaceObserver(family, data)
         observers.push(obs.load())
       })

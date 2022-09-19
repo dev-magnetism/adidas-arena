@@ -1,9 +1,9 @@
 <template>
   <div class="app">
     <AppHeader />
-    <AppScroller>
-      <nuxt />
-    </AppScroller>
+    <!-- <AppScroller> -->
+    <nuxt />
+    <!-- </AppScroller>  -->
     <AppScene />
     <AppFooter />
     <AppPreloadLayer />
@@ -15,7 +15,7 @@ import { mapState, mapMutations } from 'vuex'
 
 export default {
   layout: 'DefaultLayout',
-  scrollToTop: true,
+  // scrollToTop: true,
   data() {
     return {}
   },

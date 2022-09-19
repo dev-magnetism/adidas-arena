@@ -2,13 +2,16 @@
   <SmartLink
     class="app-atoms-cta"
     :class="classes"
-    :style="{ 'background-color': `var(--c-${bg})` }"
+    :style="{
+      'background-color': `var(--c-${bg})`,
+      '--color-underline': `var(--c-${color})`,
+    }"
     :href="link"
     :internal="!external"
     :external="external"
     :blank="target"
   >
-    <TP2 weight="bold" :color="color"><slot /></TP2>
+    <TP2 class="app-atoms-cta__text" weight="bold" :color="color"><slot /></TP2>
     <SvgCtaUnion v-if="arrow" :color="color" />
   </SmartLink>
 </template>
@@ -68,9 +71,37 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 
   @include hover {
     cursor: pointer;
+
+    &:hover {
+      .app-atoms-cta__text {
+        &::after {
+          transform: scaleX(1) !important;
+        }
+      }
+    }
+  }
+
+  &__text {
+    position: relative;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 3px;
+      position: absolute;
+      background: var(--color-underline);
+      bottom: -2px;
+      left: 0;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.4s var(--ease-out-cubic);
+      will-change: transform;
+    }
   }
 
   .P2 {

@@ -3,12 +3,17 @@
     <AppArenaParisBasketClub />
 
     <EFullwidth></EFullwidth>
+    <AppArenaPartners></AppArenaPartners>
     <AppArenaGallery />
   </main>
 </template>
 
 <script>
-export default {}
+import scroll from '@/mixins/scroll'
+
+export default {
+  mixins: [scroll],
+}
 </script>
 
 <style lang="scss">

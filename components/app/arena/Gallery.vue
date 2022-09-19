@@ -11,6 +11,7 @@
       format="webp"
       alt="placeholder"
     />
+    <span ref="target" class="app-arena-gallery__target" />
   </div>
 </template>
 
@@ -38,7 +39,7 @@ export default {
     this.observer = Observer.create({
       target: this.$el,
       type: 'wheel,touch,pointer',
-      onChangeX: this.onScroll,
+      onChangeX: this.onScrollObserver,
       //   onWheel: this.onScroll,
       //   onDrag: this.onScroll,
       dragMinimum: 5,
@@ -69,9 +70,8 @@ export default {
     onScrollApp({ scroll, limit, velocity, direction, progress }) {
       const { gallery } = useWebGL()
       gallery.position.y = scroll
-      //   console.log({ scroll, limit, velocity, direction, progress })
     },
-    onScroll(self) {
+    onScrollObserver(self) {
       console.log(self, 'scroll')
 
       const delta = self.isDragging ? self.deltaX * -2 : self.deltaY
@@ -125,6 +125,19 @@ export default {
   justify-content: center;
   position: relative;
   overflow: hidden;
+
+  &__target {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 1px;
+    height: 1px;
+    background: transparent;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+  }
 
   &__inner {
     width: 100%;
