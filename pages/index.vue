@@ -16,10 +16,16 @@
       <TH1 color="light-blue"> elevation </TH1>
     </EMarquee>
     <EMarqueeScroll>
-      <TH1> HYBRIDATION </TH1>
-      <TH1> INCLUSIVITé </TH1>
-      <TH1> co-création </TH1>
-      <TH1> elevation </TH1>
+      <TH1 color="red-adidas"> HYBRIDATION </TH1>
+      <TH1 color="blue-adidas"> INCLUSIVITé </TH1>
+      <TH1 color="light-red"> co-création </TH1>
+      <TH1 color="light-blue"> elevation </TH1>
+    </EMarqueeScroll>
+    <EMarqueeScroll>
+      <TH1 color="red-adidas"> HYBRIDATION </TH1>
+      <TH1 color="blue-adidas"> INCLUSIVITé </TH1>
+      <TH1 color="light-red"> co-création </TH1>
+      <TH1 color="light-blue"> elevation </TH1>
     </EMarqueeScroll>
     <AppHomeProjet />
     <AppHomeLeBloc />

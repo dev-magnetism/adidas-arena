@@ -3,6 +3,7 @@
     <SmartLink href="/">Accueil</SmartLink>
     <SmartLink href="/projet">Projet</SmartLink>
     <SmartLink href="/arena">Arena</SmartLink>
+    <SmartLink href="/le-bloc">Le bloc</SmartLink>
   </div>
 </template>
 
