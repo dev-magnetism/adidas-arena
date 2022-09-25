@@ -93,6 +93,10 @@
   font-size: desktop-vw(14px);
   line-height: desktop-vw(20px);
 
+  &.uppercase {
+    text-transform: uppercase;
+  }
+
   &.regular {
     @include font-adihausDIN-regular();
     font-weight: 500;
@@ -101,13 +105,11 @@
   &.bold {
     @include font-adihausDIN-bold();
     font-weight: 700;
-    text-transform: uppercase;
   }
 
   &.medium {
     @include font-adihausDIN-medium();
     font-weight: 500;
-    text-transform: uppercase;
   }
 }
 

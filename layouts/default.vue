@@ -2,7 +2,7 @@
   <div class="app">
     <AppHeader />
     <!-- <AppScroller> -->
-    <nuxt />
+    <nuxt v-if="fontsLoaded" />
     <!-- </AppScroller>  -->
     <AppScene />
     <AppFooter />
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
@@ -21,16 +22,22 @@ export default {
   },
   computed: {
     ...mapState({
-      //   background: (state) => state.background,
+      fontsLoaded: (state) => state.fontsLoaded,
     }),
   },
 
   watch: {},
 
-  mounted() {},
+  mounted() {
+    this.$nuxt.$on('app:beforeEnter', this.onBeforeEnter)
+  },
 
   beforeDestroy() {},
   methods: {
+    onBeforeEnter() {
+      ScrollTrigger.refresh()
+      console.log('before')
+    },
     ...mapMutations({
       //   setProductGalleryOpen: 'setProductGalleryOpen',
       //   setNavbarHidden: 'setNavbarHidden',

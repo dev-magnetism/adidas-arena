@@ -1,8 +1,9 @@
 <template>
   <div class="app-arena-paris-basket-club grid-inner">
-    <div
+    <EParallax
       ref="frameWrapper"
       class="app-arena-paris-basket-club__visual-with-frame"
+      :speed="0.25"
     >
       <nuxt-picture
         ref="picture"
@@ -11,7 +12,7 @@
         alt="placeholder"
       />
       <SvgArenaFrame ref="frame" />
-    </div>
+    </EParallax>
     <div class="app-arena-paris-basket-club__visual-transparent">
       <nuxt-picture
         src="imgs/placeholder-logo-home.png"
@@ -20,27 +21,34 @@
       />
       <AtomsCornerPoints :size-points="6" />
     </div>
-    <nuxt-picture
-      ref="picture"
+    <EParallax
       class="app-arena-paris-basket-club__visual-without-frame"
-      src="imgs/placeholder.png"
-      format="webp"
-      alt="placeholder"
-    />
+      :speed="0.5"
+    >
+      <nuxt-picture
+        ref="picture"
+        src="imgs/placeholder.png"
+        format="webp"
+        alt="placeholder"
+      />
+    </EParallax>
+    <ELottie id="arrow"></ELottie>
     <div class="app-arena-paris-basket-club__content">
       <TH2>PARIS BASKETBALL CLUB</TH2>
-      <TP2
+      <TP1 weight="bold"
         >L'ADIDAS ARENA disposera de son club de basketball résident à l’année :
         le Paris Basketball. Un effectif jeune, au jeu spectaculaire et
-        offensif</TP2
+        offensif</TP1
       >
-      <TP2
+      <TP2 weight="medium"
         >Ce club, créé en 2018 incarne une des facettes phares du lifestyle
         urbain parisien : pour preuve, le grand Paris compte le plus grand
-        nombre de licenciés en France ! Avec 35 rencontres annuelles, les matchs
-        du Paris Basketball vous permettront de vibrer autour d’un sport fort en
-        show, exploits techniques et émotions !
+        nombre de licenciés en France ! <br /><br />
+        Avec 35 rencontres annuelles, les matchs du Paris Basketball vous
+        permettront de vibrer autour d’un sport fort en show, exploits
+        techniques et émotions !
       </TP2>
+      <AtomsLinkUnderline>EN SAVOIR PLUS SUR LE CLUB</AtomsLinkUnderline>
     </div>
   </div>
 </template>
@@ -78,6 +86,16 @@ export default {
   position: relative;
   margin-top: 100vh;
   //   margin-top: desktop-vw(1080px);
+
+  .app-element-lottie {
+    position: absolute;
+    grid-column: 6 / span 1;
+    width: 40%;
+    top: desktop-vw(180px);
+    left: desktop-vw(45px);
+    transform: rotate(45deg);
+    aspect-ratio: 12 / 48;
+  }
 
   &__visual-transparent {
     position: absolute;
@@ -133,6 +151,22 @@ export default {
 
   &__content {
     grid-column: 9 / span 4;
+
+    :not(.H2) {
+      opacity: 0.8;
+    }
+
+    :nth-child(2) {
+      margin-bottom: desktop-vw(15px);
+    }
+
+    .app-atoms-link-underline {
+      margin-top: desktop-vw(50px);
+    }
+
+    .P2 {
+      text-transform: initial;
+    }
 
     .H2 {
       margin-bottom: desktop-vw(25px);

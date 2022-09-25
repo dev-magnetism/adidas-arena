@@ -1,13 +1,14 @@
+#define PI 3.14159265359
+
 varying vec2 vUv;
-uniform float uDiff;
+uniform float uVelocity;
 
 void main()	{
-    vec3 pos = position;
-  
-    pos.y *= 1. - uDiff;
-    pos.x *= 1. - uDiff;
-
     vUv = uv;
+    
+    vec3 pos = position;
+    // pos.x += uVelocity * uv.y * 0.00005;
 
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+
 }

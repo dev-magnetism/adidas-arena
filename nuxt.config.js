@@ -131,7 +131,27 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    [
+      '~/modules/directus',
+      {
+        url: 'https://nws6fqcy.directus.app/',
+        auth: {
+          email: 'email',
+          password: 'mot de passe',
+          // token: process.env.DIRECTUS_STATIC_TOKEN,
+        },
+      },
+    ],
   ],
+
+  // directus: {
+  //   url: 'https://nws6fqcy.directus.app/',
+  //   auth: {
+  //      email: 'email',
+  //      password: 'mot de passe',
+  //     // token: process.env.DIRECTUS_STATIC_TOKEN,
+  //   },
+  // },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},

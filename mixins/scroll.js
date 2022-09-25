@@ -27,6 +27,8 @@ export default {
 
     this.lenis.destroy()
 
+    // window.lenis = null
+
     ScrollTrigger.getAll().forEach((t) => t.kill())
   },
   methods: {

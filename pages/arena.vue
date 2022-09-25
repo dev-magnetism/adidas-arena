@@ -1,7 +1,6 @@
 <template>
   <main class="app-arena">
     <AppArenaParisBasketClub />
-
     <EFullwidth></EFullwidth>
     <AppArenaPartners></AppArenaPartners>
     <AppArenaGallery />

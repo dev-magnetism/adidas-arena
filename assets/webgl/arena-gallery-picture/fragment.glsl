@@ -4,10 +4,12 @@ uniform sampler2D uMap;
 uniform vec2 uRatio;
 uniform vec2 uResolutionEl;
 uniform float uOpacity;
+uniform float uZoom;
+uniform float uOffset;
 varying vec2 vUv;
 
-// aspect ratio = ratio de l'image
-// resolution = ratio de la div
+// uRatio = ratio de l'image
+// uResolutionEl = ratio de la div
 
 vec2 resizedUv(vec2 inital_uv, vec2 aspect_ratio)
 {
@@ -26,8 +28,13 @@ vec2 resizedUv(vec2 inital_uv, vec2 aspect_ratio)
 
 void main() {   
     vec2 uv = resizedUv(vUv, uRatio);
+
+	vec2 zoomedUv = vec2(
+        mix(0.6, uv.x, uZoom),
+        mix(0.6, uv.y, uZoom)
+    );
   
-	vec4 color = texture2D(uMap, uv);
+	vec4 color = texture2D(uMap, zoomedUv);
 
 	gl_FragColor = color;
 	// gl_FragColor = vec4(.2, .84, 1., 1.);

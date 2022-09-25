@@ -21,10 +21,7 @@
       <AtomsCTA>Devenir partenaire</AtomsCTA>
     </div>
     <EGridLogos class="app-arena-partners__grid-logos" />
-    <div class="app-arena-partners__total">
-      <TH1>08</TH1>
-      <TH2>partenaires</TH2>
-    </div>
+    <EPartnersTotal />
   </div>
 </template>
 
@@ -33,18 +30,6 @@
   position: relative;
   padding-bottom: desktop-vw(140px);
   margin-top: desktop-vw(130px);
-
-  &__total {
-    grid-column: 11 / span 2;
-    text-align: right;
-    justify-self: flex-end;
-
-    .H2 {
-      font-size: desktop-vw(24px);
-      line-height: desktop-vw(24px);
-      opacity: 0.35;
-    }
-  }
 
   &__content {
     grid-column: 2 / span 6;
@@ -72,13 +57,18 @@
   }
   .app-atoms-cta {
     width: 52.5%;
+
+    &__text.P2 {
+      @include font-adihausDIN-cn-bold();
+    }
   }
 
   &__grid-logos {
     grid-column: 7 / span 6;
     position: absolute;
-    top: desktop-vw(140px);
-    left: 0;
+    top: desktop-vw(260px);
+    left: 5%;
+    width: 95%;
   }
 }
 </style>

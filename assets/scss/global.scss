@@ -113,5 +113,11 @@ picture {
   display: block;
 }
 
-
-
+.tp-rotv {
+  z-index: 999999;
+  position: fixed;
+  right: 0;
+  top: 0;
+  min-width: 225px;
+  overflow-x: hidden;
+}

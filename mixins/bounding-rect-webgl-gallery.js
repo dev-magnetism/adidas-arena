@@ -20,7 +20,7 @@ export default {
       this.boundingRect.height = contentRect.height
 
       this.boundingRect.top = this.offsetTop(el)
-      this.boundingRect.left = this.offsetLeft(el)
+      this.boundingRect.left = this.offsetLeft(el, -this.$viewport.width)
 
       this.updateBoundingRect()
     })
@@ -35,6 +35,7 @@ export default {
       if (element.offsetParent) {
         return this.offsetTop(element.offsetParent, top)
       }
+
       return top
     },
     offsetLeft(element, accumulator = 0) {
@@ -43,6 +44,7 @@ export default {
       if (element.offsetParent) {
         return this.offsetLeft(element.offsetParent, left)
       }
+
       return left
     },
     updateBoundingRect() {
@@ -76,7 +78,7 @@ export default {
       this.mesh.position.set(
         this.boundingRect.xThree,
         this.boundingRect.yThree,
-        0
+        -(1 - this.mesh.scale.x * 0.001) + -(1 - this.mesh.scale.y * 0.001)
       )
 
       this.mesh.initialPosition = this.mesh.position.clone()

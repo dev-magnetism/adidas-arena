@@ -47,8 +47,10 @@ export default {
       default: 7,
     },
   },
+
   data() {
     return {
+      partners: null,
       logos: [
         {
           src: '/imgs/placeholder-logo-home.png',
@@ -144,6 +146,17 @@ export default {
         },
       ],
     }
+  },
+  async fetch() {
+    this.partners = await this.$directus.items('Partners').readByQuery({
+      limit: -1,
+    })
+
+    const test = await this.$directus.files.readOne(this.partners.data[0].logo)
+
+    console.log(test)
+
+    console.log(this.partners)
   },
   computed: {
     arraytest() {

@@ -14,6 +14,7 @@
 <script>
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { SplitText } from 'gsap/SplitText'
 
 export default {
   props: {
@@ -35,16 +36,36 @@ export default {
     },
   },
   mounted() {
+    const wordCount = this.countWords(this.$slots.default[0].elm.innerHTML)
+
+    const colors = [...new Array(wordCount)].map(() => {
+      const color =
+        Math.random() < 0.45
+          ? '#181818'
+          : Math.random() < 0.5
+          ? '#0000FF'
+          : '#FF4A48'
+
+      return color
+    })
+
+    console.log(colors)
+
+    this.$refs.marquees.forEach((marquee) => {
+      const split = new SplitText(marquee.children[0], {
+        type: 'words, lines',
+      })
+
+      split.words.forEach((el, index) => {
+        el.style.color = colors[index]
+      })
+    })
+
     if (this.inverted) {
       gsap.set(this.$refs.marquees, {
         xPercent: -100 * (this.repeat - 1),
       })
     }
-    // else {
-    //   gsap.set(this.$refs.marquees, {
-    //     xPercent: this.offset * -1,
-    //   })
-    // }
 
     this.tween = gsap.to(this.$refs.marquees, {
       duration: this.duration,
@@ -63,14 +84,23 @@ export default {
     ScrollTrigger.create({
       trigger: this.$refs.marquee,
       scrub: 5,
-      markers: true,
       onUpdate: (self) => {
-        const velocity = Math.abs(self.getVelocity()) * 0.0000035
+        const velocity = Math.abs(self.getVelocity()) * 0.0000015
         const progress = this.tween.progress() + velocity
 
         this.tween.progress(progress)
       },
     })
+  },
+  beforeDestroy() {
+    this.tween?.kill()
+  },
+  methods: {
+    countWords(str) {
+      const arr = str.split(' ')
+
+      return arr.filter((word) => word !== '').length
+    },
   },
 }
 </script>
@@ -87,6 +117,7 @@ export default {
     // animation: marquee calc(var(--duration) * var(--marquee-progress)) linear
     //   infinite;
     transform: translate3d(calc(var(--offset) * -1), 0, 0);
+    will-change: transform;
 
     .H1 {
       margin-right: desktop-vw(15px);
