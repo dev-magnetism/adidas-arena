@@ -50,7 +50,7 @@ export default {
       animation: this.src,
       start: 'top center+=25%',
       end: 'bottom top',
-      markers: true,
+      // markers: true,
       scrub: 0.5,
     })
   },
@@ -105,6 +105,8 @@ export default {
   position: relative;
   display: inline-flex;
   z-index: 9;
+  width: 100%;
+  height: 100%;
 
   &.center {
     svg {
@@ -129,8 +131,9 @@ export default {
   canvas {
     position: absolute;
     left: 0;
+    top: 0;
     width: 100%;
-    height: auto !important;
+    height: 100% !important;
   }
 }
 </style>

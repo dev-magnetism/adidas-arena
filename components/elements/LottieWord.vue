@@ -1,7 +1,7 @@
 <template>
-  <div ref="lottie" :class="y" class="app-element-lottie">
+  <div ref="lottie" :class="y" class="app-element-lottie-word">
     <slot />
-    <!-- <div ref="lottie" class="app-element-lottie-wrapper" /> -->
+    <!-- <div ref="lottie" class="app-element-lottie-word-wrapper" /> -->
   </div>
 </template>
 
@@ -16,17 +16,47 @@ export default {
       type: String,
       default: 'center',
     },
+    id: {
+      type: String,
+      default: null,
+      require: true,
+    },
+  },
+  computed: {
+    src() {
+      switch (this.id) {
+        case 'crossArrowCircle':
+          return require(`@/assets/lotties/crossArrowCircle.json`)
+        case 'arrow':
+          return require(`@/assets/lotties/arrow.json`)
+        case 'surroundedBlue':
+          return require(`@/assets/lotties/surroundedBlue.json`)
+        // case 4:
+        //   return "It's thursday"
+        // case 5:
+        //   return "It's friday"
+        // case 6:
+        //   return "It's saturday"
+        // case 7:
+        //   return "It's sunday"
+        default:
+          return null
+      }
+    },
   },
   mounted() {
-    const lottieAnimation = require(`@/assets/lotties/circle.json`)
-
     this.LottieScrollTrigger({
       target: this.$refs.lottie,
-      animation: lottieAnimation,
+      animation: this.src,
       start: 'top center+=25%',
-      end: 'bottom center',
+      end: 'bottom top',
+      // markers: true,
       scrub: 0.5,
     })
+  },
+  beforeDestroy() {
+    this.animation.destroy()
+    this.tween?.kill()
   },
   methods: {
     LottieScrollTrigger(vars) {
@@ -41,7 +71,7 @@ export default {
         scrub: vars.scrub,
       }
 
-      const animation = lottie.loadAnimation({
+      this.animation = lottie.loadAnimation({
         container: target,
         // renderer: vars.renderer || 'svg',
         renderer: 'svg',
@@ -53,27 +83,25 @@ export default {
       for (const p in vars) {
         st[p] = vars[p]
       }
-      gsap.to(playhead, {
+      this.tween = gsap.to(playhead, {
         duration: vars.duration || 0.5,
         delay: vars.delay || 0,
-        frame: animation.totalFrames - 1,
+        frame: this.animation.totalFrames - 1,
         ease: vars.ease || 'none',
-        onUpdate: () => animation.goToAndStop(playhead.frame, true),
+        onUpdate: () => this.animation.goToAndStop(playhead.frame, true),
         scrollTrigger: st,
       })
 
       // in case there are any other ScrollTriggers on the page and the loading of this Lottie asset caused layout changes
       ScrollTrigger.sort()
       ScrollTrigger.refresh()
-
-      return animation
     },
   },
 }
 </script>
 
 <style lang="scss">
-.app-element-lottie {
+.app-element-lottie-word {
   position: relative;
   display: inline-flex;
   z-index: 9;

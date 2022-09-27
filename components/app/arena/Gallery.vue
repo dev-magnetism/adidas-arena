@@ -109,7 +109,7 @@ export default {
       this.scroll.target += delta * 0.5
     },
 
-    onFrame() {
+    onFrame({ deltaTime }) {
       if (!this.pictureIsSelected) {
         if (this.directionDrag === 'x') this.scroll.target += this.scroll.speed
         else this.scroll.target -= this.scroll.speed

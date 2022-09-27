@@ -2,7 +2,7 @@
   <div class="app">
     <AppHeader />
     <!-- <AppScroller> -->
-    <nuxt v-if="fontsLoaded" />
+    <nuxt />
     <!-- </AppScroller>  -->
     <AppScene />
     <AppFooter />
@@ -36,7 +36,7 @@ export default {
   methods: {
     onBeforeEnter() {
       ScrollTrigger.refresh()
-      console.log('before')
+      // console.log('before')
     },
     ...mapMutations({
       //   setProductGalleryOpen: 'setProductGalleryOpen',

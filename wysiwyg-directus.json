@@ -1,0 +1,49 @@
+[
+  {
+    "title": "H1",
+    "block": "div",
+    "classes": "H1 wysiwyg-text",
+    "styles": {
+      "color": "#FFFFFF",
+      "font-size": "35px"
+    }
+  },
+  {
+    "title": "H2",
+    "block": "div",
+    "classes": "H2 wysiwyg-text",
+    "styles": {
+      "color": "#FFFFFF",
+      "font-size": "30px"
+    }
+  },
+  {
+    "title": "H3",
+    "block": "div",
+    "classes": "H3 wysiwyg-text",
+    "styles": {
+      "color": "#FFFFFF",
+      "font-size": "28px"
+    }
+  },
+  {
+    "title": "H4",
+    "block": "div",
+    "classes": "H4 wysiwyg-text",
+    "styles": {
+      "color": "#FFFFFF",
+      "font-size": "25px"
+    }
+  },
+  {
+    "title": "Lottie arrow",
+    "inline": "span",
+    "classes": "lottie-word",
+    "styles": {
+      "color": "#FF5733"
+    },
+    "attributes": {
+      "id": "surroundedBlue"
+    }
+  }
+]

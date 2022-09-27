@@ -4,7 +4,9 @@
       Un terrain de jeu laissant place aux rencontres, à la création et à la
       fête.
     </TH2>
-    <ELottie id="crossArrowCircle"></ELottie>
+    <EParallax :speed="0.125" class="app-projet__catch-phrase__lottie">
+      <ELottie id="crossArrowCircle"></ELottie>
+    </EParallax>
   </div>
 </template>
 
@@ -17,7 +19,7 @@
     text-align: center;
     line-height: desktop-vw(110px);
   }
-  .app-element-lottie {
+  &__lottie {
     grid-column: 10 / span 2;
     position: absolute;
     top: 0;

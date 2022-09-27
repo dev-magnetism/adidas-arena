@@ -9,7 +9,6 @@
       </div>
     </div>
     <div class="app-home-projet__plan__bottom">
-      <ELottieTest />
       <nuxt-picture src="imgs/projet/plan.png" format="webp" alt="alt" />
     </div>
   </div>

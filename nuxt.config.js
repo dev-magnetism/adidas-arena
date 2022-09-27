@@ -131,13 +131,14 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    // 'nuxt-runtime-compiler',
     [
       '~/modules/directus',
       {
         url: 'https://nws6fqcy.directus.app/',
         auth: {
           email: 'email',
-          password: 'mot de passe',
+          password: 'mdp',
           // token: process.env.DIRECTUS_STATIC_TOKEN,
         },
       },
@@ -171,6 +172,7 @@ export default {
     },
     transpile: ['three', 'gsap'],
     extend(config, ctx) {
+      config.resolve.alias.vue = 'vue/dist/vue.common'
       config.plugins.push(new webpack.ProvidePlugin({ THREE: 'three' }))
       config.module.rules.push({
         test: /\.(glsl|vs|fs)$/,

@@ -6,6 +6,7 @@
       '--rows': rows,
     }"
   >
+    <!-- <ERichText :content="partners?.data[0].test_wysiwyg"></ERichText> -->
     <div class="bloc big visible">
       <AtomsCornerPoints :size-points="6" position="1,2,3,4" />
       <img :src="arraytesttest.src" alt="test" />
@@ -152,9 +153,9 @@ export default {
       limit: -1,
     })
 
-    const test = await this.$directus.files.readOne(this.partners.data[0].logo)
+    // const test = await this.$directus.files.readOne(this.partners.data[0].logo)
 
-    console.log(test)
+    // console.log(test)
 
     console.log(this.partners)
   },

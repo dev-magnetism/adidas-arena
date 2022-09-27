@@ -3,30 +3,32 @@
     <div class="app-projet-two-columns__f-r grid">
       <div class="app-projet-two-columns__f-r__visuals">
         <div class="app-projet-two-columns__f-r__fake-transparent" />
-        <div class="app-projet-two-columns__f-r__card">
-          <AtomsCornerPoints :size-points="8" />
-          <div class="app-projet-two-columns__f-r__card__content">
-            <TH2
-              weight="bold"
-              class="app-projet-two-columns__f-r__card__content__title"
-              >06</TH2
-            >
-            <TH2
-              weight="bold"
-              class="app-projet-two-columns__f-r__card__content__subtitle"
-              >Millions</TH2
-            >
-            <TH3
-              weight="medium"
-              class="app-projet-two-columns__f-r__card__content__paragraph"
-              >de bouchons en plastique collectés pour la construction des
-              sièges de l'Arena !</TH3
-            >
+        <EParallax :speed="0.5">
+          <div class="app-projet-two-columns__f-r__card">
+            <AtomsCornerPoints :size-points="8" />
+            <div class="app-projet-two-columns__f-r__card__content">
+              <TH2
+                weight="bold"
+                class="app-projet-two-columns__f-r__card__content__title"
+                >06</TH2
+              >
+              <TH2
+                weight="bold"
+                class="app-projet-two-columns__f-r__card__content__subtitle"
+                >Millions</TH2
+              >
+              <TH3
+                weight="medium"
+                class="app-projet-two-columns__f-r__card__content__paragraph"
+                >de bouchons en plastique collectés pour la construction des
+                sièges de l'Arena !</TH3
+              >
+            </div>
+            <AtomsCTA bg="blue-adidas" color="white"
+              >Les points de collecte
+            </AtomsCTA>
           </div>
-          <AtomsCTA bg="blue-adidas" color="white"
-            >Les points de collecte
-          </AtomsCTA>
-        </div>
+        </EParallax>
       </div>
       <div class="app-projet-two-columns__f-r__content">
         <TH2 class="app-projet-two-columns__f-r__content__title"
@@ -58,6 +60,7 @@
           qui souhaitent atteindre l’excellence éco-responsable.
         </TP1>
       </div>
+
       <div class="app-projet-two-columns__s-r__visuals">
         <nuxt-picture
           class="app-projet-two-columns__s-r__visual"
@@ -65,28 +68,30 @@
           format="webp"
           alt="alt"
         />
-        <div class="app-projet-two-columns__s-r__card">
-          <AtomsCornerPoints :size-points="8" />
-          <div class="app-projet-two-columns__s-r__card__content">
-            <TH2
-              weight="bold"
-              class="app-projet-two-columns__s-r__card__content__title"
-              ><ELottieTest>06</ELottieTest></TH2
-            >
-            <TH2
-              weight="bold"
-              class="app-projet-two-columns__s-r__card__content__subtitle"
-            >
-              Millions</TH2
-            >
-            <TH3
-              weight="medium"
-              class="app-projet-two-columns__s-r__card__content__paragraph"
-              >de bouchons en plastique collectés pour la construction des
-              <ELottieTest>sièges</ELottieTest> de l'Arena !</TH3
-            >
+        <EParallax position="top" :speed="0.5">
+          <div class="app-projet-two-columns__s-r__card">
+            <AtomsCornerPoints :size-points="8" />
+            <div class="app-projet-two-columns__s-r__card__content">
+              <TH2
+                weight="bold"
+                class="app-projet-two-columns__s-r__card__content__title"
+                >06</TH2
+              >
+              <TH2
+                weight="bold"
+                class="app-projet-two-columns__s-r__card__content__subtitle"
+              >
+                Millions</TH2
+              >
+              <TH3
+                weight="medium"
+                class="app-projet-two-columns__s-r__card__content__paragraph"
+                >de bouchons en plastique collectés pour la construction des
+                sièges de l'Arena !</TH3
+              >
+            </div>
           </div>
-        </div>
+        </EParallax>
       </div>
     </div>
   </div>
@@ -126,7 +131,17 @@
       &__content {
         padding: desktop-vw(45px) desktop-vw(40px) desktop-vw(45px)
           desktop-vw(40px);
-        background: white;
+        background: linear-gradient(
+            rgba(251, 245, 238, 0.8) 0.1em,
+            transparent 0.1em
+          ),
+          linear-gradient(
+            90deg,
+            rgba(251, 245, 238, 0.8) 0.1em,
+            transparent 0.1em
+          ),
+          white;
+        background-size: 1.3em 1.3em;
 
         &__title {
           font-size: desktop-vw(160px);
@@ -185,6 +200,17 @@
       &__content {
         padding: desktop-vw(25px) desktop-vw(40px) desktop-vw(15px)
           desktop-vw(40px);
+        background: linear-gradient(
+            rgba(251, 245, 238, 0.8) 0.1em,
+            transparent 0.1em
+          ),
+          linear-gradient(
+            90deg,
+            rgba(251, 245, 238, 0.8) 0.1em,
+            transparent 0.1em
+          ),
+          white;
+        background-size: 1.3em 1.3em;
 
         &__title {
           font-size: desktop-vw(160px);

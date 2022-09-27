@@ -49,8 +49,6 @@ export default {
       return color
     })
 
-    console.log(colors)
-
     this.$refs.marquees.forEach((marquee) => {
       const split = new SplitText(marquee.children[0], {
         type: 'words, lines',
@@ -76,7 +74,7 @@ export default {
         trigger: this.$refs.marquee,
         start: 'top-=100% bottom',
         end: 'bottom top',
-        markers: true,
+        // markers: true,
         toggleActions: 'play pause resume pause',
       },
     })
