@@ -2,18 +2,6 @@
   <main class="app-home">
     <AppHomeHero />
     <AppHomePresentation />
-    <!-- <EMarquee>
-      <TH1 color="red-adidas"> HYBRIDATION </TH1>
-      <TH1 color="blue-adidas"> INCLUSIVITé </TH1>
-      <TH1 color="light-red"> co-création </TH1>
-      <TH1 color="light-blue"> elevation </TH1>
-    </EMarquee>
-    <EMarquee :inverted="true">
-      <TH1 color="red-adidas"> HYBRIDATION </TH1>
-      <TH1 color="blue-adidas"> INCLUSIVITé </TH1>
-      <TH1 color="light-red"> co-création </TH1>
-      <TH1 color="light-blue"> elevation </TH1>
-    </EMarquee> -->
     <EMarqueeScroll>
       <TH1 color="red-adidas">
         HYBRIDATION INCLUSIVITé co-création elevation
@@ -27,6 +15,7 @@
     <AppHomeProjet />
     <AppHomeLeBloc />
     <AppHomePartners />
+    <AppFooter />
   </main>
 </template>
 

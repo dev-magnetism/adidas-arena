@@ -5,7 +5,7 @@
     <nuxt />
     <!-- </AppScroller>  -->
     <AppScene />
-    <AppFooter />
+    <!-- <AppFooter /> -->
     <AppPreloadLayer />
   </div>
 </template>

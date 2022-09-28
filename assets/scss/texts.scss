@@ -52,17 +52,17 @@
   text-transform: uppercase;
 
   &.regular {
-    @include font-adihausDIN-regular();
+    @include font-adihausDIN-cn();
     font-weight: 500;
   }
     
   &.bold {
-    @include font-adihausDIN-bold();
+    @include font-adihausDIN-cn-bold();
     font-weight: 700;
   }
     
   &.medium {
-    @include font-adihausDIN-medium();
+    @include font-adihausDIN-cn-medium();
     font-weight: 500;
   }
 }
@@ -92,10 +92,6 @@
 @mixin p2() {
   font-size: desktop-vw(14px);
   line-height: desktop-vw(20px);
-
-  &.uppercase {
-    text-transform: uppercase;
-  }
 
   &.regular {
     @include font-adihausDIN-regular();

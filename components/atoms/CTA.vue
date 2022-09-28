@@ -107,6 +107,7 @@ export default {
   .P2 {
     font-size: desktop-vw(24px);
     line-height: desktop-vw(32px);
+    text-transform: uppercase;
     @include font-adihausDIN-cn-bold();
   }
 

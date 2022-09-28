@@ -5,18 +5,24 @@
       :right-content="partners.data.Key_words_right"
     />
 
-    <EMarqueeScroll>
-      <TH1 color="red-adidas">
-        HYBRIDATION INCLUSIVITé co-création elevation
-      </TH1>
-    </EMarqueeScroll>
-    <EMarqueeScroll :inverted="true">
-      <TH1 color="red-adidas">
-        HYBRIDATION INCLUSIVITé co-création elevation
-      </TH1>
-    </EMarqueeScroll>
+    <AppLeblocPresentation />
+
+    <div class="app-le-bloc__marquees">
+      <EMarqueeScroll>
+        <TH1 color="red-adidas">
+          HYBRIDATION INCLUSIVITé co-création elevation
+        </TH1>
+      </EMarqueeScroll>
+      <EMarqueeScroll :inverted="true">
+        <TH1 color="red-adidas">
+          HYBRIDATION INCLUSIVITé co-création elevation
+        </TH1>
+      </EMarqueeScroll>
+    </div>
 
     <EFullwidth></EFullwidth>
+
+    <AppFooter />
   </main>
 </template>
 
@@ -32,7 +38,6 @@ export default {
 
     return {
       partners,
-      test: { name: 'test' },
     }
   },
   data() {
@@ -46,5 +51,9 @@ export default {
 <style lang="scss">
 .app-le-bloc {
   padding-top: 80vh;
+
+  &__marquees {
+    margin-bottom: desktop-vw(200px);
+  }
 }
 </style>

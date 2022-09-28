@@ -30,7 +30,7 @@ export default {
     weight: {
       required: false,
       type: String,
-      default: 'medium',
+      default: 'regular',
     },
   },
   computed: {

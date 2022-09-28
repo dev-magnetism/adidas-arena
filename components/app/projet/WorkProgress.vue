@@ -202,7 +202,7 @@ export default {
         transparent 0.1em
       ),
       linear-gradient(90deg, rgba(251, 245, 238, 0.01) 0.1em, transparent 0.1em);
-    background-size: 3em 3em;
+    background-size: 2em 2em;
     position: absolute;
     top: 0;
     left: 0;
