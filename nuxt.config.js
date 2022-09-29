@@ -167,7 +167,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    extractCSS: false,
+    extractCSS: true,
     transpile: ['three', 'gsap'],
     extend(config, ctx) {
       config.resolve.alias.vue = 'vue/dist/vue.common'
