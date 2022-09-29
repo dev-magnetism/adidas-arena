@@ -6,6 +6,7 @@
     <AppProjetWorkProgress />
     <AppProjetPlan />
     <AppProjetTwoColumns />
+    <AppFooter />
   </main>
 </template>
 

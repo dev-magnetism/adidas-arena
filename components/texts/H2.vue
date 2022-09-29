@@ -1,10 +1,5 @@
 <template>
-  <component
-    :is="tag"
-    class="H2"
-    :class="classes"
-    :style="{ color: `var(--c-${color})` }"
-  >
+  <component :is="tag" :class="classes" :style="{ color: `var(--c-${color})` }">
     <slot></slot>
   </component>
 </template>
@@ -36,6 +31,7 @@ export default {
   computed: {
     classes() {
       return [
+        'H2',
         {
           'H2--noselect': !this.selectable,
           bold: this.weight !== 'medium',
