@@ -29,8 +29,9 @@ export default {
 
 <style lang="scss">
 .app-home {
-  padding-bottom: desktop-vw(145px);
-
+  .app-footer {
+    margin-top: desktop-vw(205px);
+  }
   @include mobile {
     // background: green;
   }

@@ -104,9 +104,10 @@ export default {
   width: 100%;
 
   &__inner {
-    padding-top: desktop-vw(190px);
     position: sticky;
     top: 0;
+    align-items: center;
+    height: 100vh;
   }
 
   &__content {

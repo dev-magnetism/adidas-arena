@@ -59,7 +59,7 @@ export default {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: this.$el,
-        markers: true,
+        // markers: true,
         start: 'top+=30% center',
         end: 'bottom-=35% center',
         scrub: 0.5,
