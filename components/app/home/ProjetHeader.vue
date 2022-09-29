@@ -6,7 +6,9 @@
         <TH2 weight="bold" class="app-home-projet__header__info__content">
           La chapelle district
         </TH2>
+        <span class="line-info-border-bottom header-line header-line-1" />
       </div>
+      <span class="line-infos-border-right header-line header-line-3" />
     </div>
     <div class="app-home-projet__header__description">
       <TP1 class="app-home-projet__header__description__title">Description</TP1>
@@ -14,6 +16,8 @@
         Un lieu de vie dans un quartier en plein mouvement
       </TH3>
     </div>
+    <span class="line-header-border-bottom header-line header-line-2" />
+    <span class="line-header-border-right header-line header-line-4" />
   </div>
 </template>
 
@@ -27,20 +31,66 @@
   left: 0;
   top: desktop-vw(25px);
 
+  span.line-header-border-bottom {
+    position: absolute;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    left: 0;
+    background: var(--c-black);
+    transform-origin: left center;
+    transform: scaleX(0);
+  }
+  span.line-header-border-right {
+    position: absolute;
+    bottom: 0;
+    height: 100%;
+    width: 1px;
+    right: 0;
+    background: var(--c-black);
+    transform-origin: center bottom;
+    transform: scaleY(0);
+  }
+
   &__infos {
     flex: 2;
     display: flex;
     flex-direction: column;
+    position: relative;
+
+    span.line-infos-border-right {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 1px;
+      right: 0;
+      background: var(--c-black);
+      transform-origin: center bottom;
+      transform: scaleY(0);
+    }
   }
 
   &__info {
-    padding: desktop-vw(10px) desktop-vw(12px);
-    border: 1px solid var(--c-black);
+    padding: desktop-vw(10px) desktop-vw(12px) desktop-vw(10px) desktop-vw(0px);
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     border-left: none;
+    position: relative;
+
+    &:first-child {
+      span.line-info-border-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: var(--c-black);
+        transform-origin: left center;
+        transform: scaleX(0);
+      }
+    }
 
     &__title {
       font-size: desktop-vw(12px);
@@ -65,8 +115,6 @@
   &__description {
     flex: 1;
     padding: desktop-vw(10px) desktop-vw(12px);
-    border-right: 1px solid var(--c-black);
-    border-bottom: 1px solid var(--c-black);
 
     &__title {
       font-size: desktop-vw(12px);

@@ -1,39 +1,39 @@
 <template>
   <div class="app-home-projet__big-visual">
     <nuxt-picture
-      class="app-home-projet__big-visual__left-top"
+      class="app-home-projet__big-visual__left-top projet-visual"
       src="imgs/placeholder.png"
       format="webp"
       alt="placeholder"
     />
     <nuxt-picture
-      class="app-home-projet__big-visual__left-top-upper"
+      class="app-home-projet__big-visual__left-top-upper projet-visual"
       src="imgs/placeholder.png"
       format="webp"
       alt="placeholder"
     />
 
     <nuxt-picture
-      class="app-home-projet__big-visual__principal"
+      class="app-home-projet__big-visual__principal projet-visual"
       src="imgs/placeholder.png"
       format="webp"
       alt="placeholder"
     />
 
     <AtomsTitleTag
-      class="app-home-projet__big-visual__tag-top-upper"
+      class="app-home-projet__big-visual__tag-top-upper app-projet-tag-4"
       bg="beige"
       color="black"
       >PARIS porte de la chapelle</AtomsTitleTag
     >
     <AtomsTitleTag
-      class="app-home-projet__big-visual__tag-top"
+      class="app-home-projet__big-visual__tag-top app-projet-tag-3"
       bg="beige"
       color="black"
       >Coton recyclé pour l’isolation</AtomsTitleTag
     >
     <AtomsTitleTag
-      class="app-home-projet__big-visual__tag-middle"
+      class="app-home-projet__big-visual__tag-middle app-projet-tag-2"
       bg="beige"
       color="black"
       >aluminium recyclable
@@ -41,7 +41,7 @@
     <AtomsTitleTag
       bg="beige"
       color="black"
-      class="app-home-projet__big-visual__tag-bottom"
+      class="app-home-projet__big-visual__tag-bottom app-projet-tag-1"
       >DES MATCHS, DES EVENEMENTS, DES RESTAURANTS, DES JEUX, DES SALLES DE
       RÉUNIONS POUR TOUS
     </AtomsTitleTag>
