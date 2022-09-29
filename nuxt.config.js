@@ -167,9 +167,9 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    // extractCSS: {
-    //   ignoreOrder: false,
-    // },
+    extractCSS: {
+      ignoreOrder: false,
+    },
     transpile: ['three', 'gsap'],
     extend(config, ctx) {
       config.resolve.alias.vue = 'vue/dist/vue.common'
