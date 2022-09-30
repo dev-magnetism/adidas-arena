@@ -1,4 +1,4 @@
-// import Stats from 'stats.js'
+import Stats from 'stats.js'
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 import Raf from '~/plugins/raf'
@@ -51,12 +51,16 @@ class GL {
     this.camera.position.z = 500
     // this.camera.position.y = 0
 
-    const light = new THREE.PointLight(0xff0000, 1, 100)
-    light.position.set(50, 10, 50)
-    this.scene.add(light)
+    // const light = new THREE.PointLight(0xffffff, 1, 250)
+    // light.position.set(50, 10, 50)
+    // this.scene.add(light)
 
     this.axesHelper = new THREE.AxesHelper(35)
     this.scene.add(this.axesHelper)
+
+    this.stats = new Stats()
+
+    document.body.appendChild(this.stats.dom)
 
     // this.controls = new OrbitControls(
     //   this.camera,
@@ -174,9 +178,13 @@ class GL {
   }
 
   update({ deltaTime }) {
+    this.stats.begin()
+
     // this.controls.update()
 
     this.renderer.render(this.scene, this.camera)
+
+    this.stats.end()
   }
 
   destroy() {

@@ -16,7 +16,7 @@
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/style-resources": "^1.2.1",
     "@studio-freight/lenis": "^0.2.1",
-    "@use-gesture/vanilla": "^10.2.20",
+    "@tweakpane/plugin-essentials": "^0.1.5",
     "core-js": "^3.15.1",
     "fontfaceobserver": "^2.3.0",
     "glslify-loader": "^2.0.0",
@@ -27,6 +27,7 @@
     "nuxt": "^2.15.7",
     "nuxt-runtime-compiler": "^1.1.0",
     "raw-loader": "^4.0.2",
+    "stats.js": "^0.17.0",
     "three": "^0.144.0",
     "three.interactive": "^1.4.0",
     "tweakpane": "^3.1.0"
