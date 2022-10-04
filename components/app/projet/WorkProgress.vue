@@ -150,7 +150,10 @@
             class="app-projet-work-progress__timeline__item"
             @click="onChangeIndex(i)"
           >
-            <TP1 color="beige"> <SvgWorkProgressCross /> Ete 2022</TP1>
+            <TP1 color="beige">
+              <div ref="cross" class="app-projet-work-progress__cross" />
+              Ete 2022</TP1
+            >
             <TP2 weight="bold" color="beige"
               >Travaux de structure & Gros œuvre</TP2
             >
@@ -170,11 +173,40 @@
 </template>
 
 <script>
+import lottie from 'lottie-web'
+
 export default {
   data() {
     return {
       indexSketch: 0,
+      lottiesAnimation: [],
     }
+  },
+  watch: {
+    indexSketch(newVal, oldVal) {
+      console.log(oldVal, this.lottiesAnimation[oldVal])
+
+      this.lottiesAnimation[oldVal].setDirection(-1)
+      this.lottiesAnimation[oldVal].play()
+
+      this.lottiesAnimation[newVal].setDirection(1)
+      this.lottiesAnimation[newVal].play()
+    },
+  },
+  mounted() {
+    const lottieAnimation = require(`@/assets/lotties/Croix_01.json`)
+
+    this.$refs.cross.forEach((cross, index) => {
+      const animation = lottie.loadAnimation({
+        container: cross,
+        renderer: 'svg',
+        animationData: lottieAnimation,
+        autoplay: !index,
+        loop: false,
+      })
+
+      this.lottiesAnimation.push(animation)
+    })
   },
   methods: {
     onChangeIndex(i) {
@@ -193,6 +225,21 @@ export default {
   padding-bottom: desktop-vw(80px);
   z-index: 1;
   position: relative;
+
+  &__cross {
+    position: absolute;
+    bottom: calc(100% + 1.2vw);
+    left: 50%;
+    transform: translate(-50%, 50%);
+    width: desktop-vw(25px);
+    height: auto;
+
+    svg {
+      path {
+        stroke: var(--c-white);
+      }
+    }
+  }
 
   &::before {
     content: '';
@@ -253,12 +300,6 @@ export default {
 
       &:not(.active) {
         opacity: 0.5;
-
-        .P1 {
-          svg {
-            display: none;
-          }
-        }
       }
 
       .P1 {
@@ -267,15 +308,6 @@ export default {
         font-size: desktop-vw(16px);
         line-height: desktop-vw(21px);
         @include font-adihausDIN-cn-bold();
-
-        svg {
-          position: absolute;
-          bottom: calc(100% + 1.3888888889vw);
-          left: 50%;
-          transform: translate(-50%, 50%);
-          width: desktop-vw(13px);
-          height: auto;
-        }
       }
 
       .P2 {

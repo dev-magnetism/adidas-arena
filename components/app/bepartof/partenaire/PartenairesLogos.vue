@@ -1,6 +1,6 @@
 <template>
   <div
-    class="app-element-grid-logos"
+    class="app-bepartof-partenaire-logos"
     :style="{
       '--cols': cols,
       '--rows': rows,
@@ -12,6 +12,7 @@
       <img :src="arraytesttest.src" alt="test" />
     </div>
     <div class="bloc transparent visible">
+      <SvgYou />
       <AtomsCornerPoints :size-points="6" position="1,2,3,4" />
     </div>
     <div
@@ -148,17 +149,17 @@ export default {
       ],
     }
   },
-  async fetch() {
-    this.partners = await this.$directus.items('Partners').readByQuery({
-      limit: -1,
-    })
+  // async fetch() {
+  //   this.partners = await this.$directus.items('Partners').readByQuery({
+  //     limit: -1,
+  //   })
 
-    // const test = await this.$directus.files.readOne(this.partners.data[0].logo)
+  //   // const test = await this.$directus.files.readOne(this.partners.data[0].logo)
 
-    // console.log(test)
+  //   // console.log(test)
 
-    console.log(this.partners)
-  },
+  //   console.log(this.partners)
+  // },
   computed: {
     arraytest() {
       return this.logos.filter((logo) => !logo.big)
@@ -180,7 +181,7 @@ export default {
 </script>
 
 <style lang="scss">
-.app-element-grid-logos {
+.app-bepartof-partenaire-logos {
   display: grid;
   width: 100%;
   grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
@@ -189,64 +190,64 @@ export default {
   grid-gap: 1px;
 
   .div1 {
-    grid-area: 1 / 2 / 2 / 3;
+    grid-area: 6 / 9 / 7 / 10;
   }
   .div2 {
-    grid-area: 1 / 4 / 2 / 5;
+    grid-area: 5 / 8 / 6 / 9;
   }
   .div3 {
-    grid-area: 2 / 3 / 3 / 4;
+    grid-area: 1 / 8 / 2 / 9;
   }
   .div4 {
-    grid-area: 2 / 4 / 3 / 5;
+    grid-area: 2 / 8 / 3 / 9;
   }
   .div5 {
-    grid-area: 3 / 4 / 4 / 5;
+    grid-area: 2 / 9 / 3 / 10;
   }
   .div6 {
-    grid-area: 3 / 5 / 4 / 6;
+    grid-area: 5 / 2 / 6 / 3;
   }
   .div7 {
-    grid-area: 4 / 6 / 5 / 7;
+    grid-area: 6 / 3 / 7 / 4;
   }
   .div8 {
-    grid-area: 6 / 1 / 7 / 2;
-  }
-  .div9 {
     grid-area: 6 / 4 / 7 / 5;
   }
-  .div10 {
-    grid-area: 6 / 5 / 7 / 6;
-  }
-  .div11 {
-    grid-area: 7 / 3 / 8 / 4;
-  }
-  .div12 {
-    grid-area: 7 / 2 / 8 / 3;
-  }
-  .div13 {
-    grid-area: 5 / 4 / 6 / 5;
-  }
-  .div14 {
-    grid-area: 7 / 6 / 8 / 7;
-  }
-  .div15 {
-    grid-area: 2 / 6 / 3 / 7;
-  }
-  .div16 {
-    grid-area: 3 / 2 / 4 / 3;
-  }
-  .div17 {
-    grid-area: 5 / 1 / 6 / 2;
-  }
-  .div18 {
+  .div9 {
     grid-area: 5 / 5 / 6 / 6;
   }
+  .div10 {
+    grid-area: 4 / 5 / 5 / 6;
+  }
+  .div11 {
+    grid-area: 4 / 2 / 5 / 3;
+  }
+  .div12 {
+    grid-area: 3 / 3 / 4 / 4;
+  }
+  .div13 {
+    grid-area: 2 / 3 / 3 / 4;
+  }
+  .div14 {
+    grid-area: 2 / 10 / 3 / 11;
+  }
+  .div15 {
+    grid-area: 3 / 10 / 4 / 11;
+  }
+  .div16 {
+    grid-area: 4 / 9 / 5 / 10;
+  }
+  .div17 {
+    grid-area: 6 / 7 / 7 / 8;
+  }
+  .div18 {
+    grid-area: 3 / 2 / 4 / 3;
+  }
   .div19 {
-    grid-area: 2 / 5 / 3 / 6;
+    grid-area: 3 / 5 / 4 / 6;
   }
   .div20 {
-    grid-area: 6 / 6 / 7 / 7;
+    grid-area: 3 / 8 / 4 / 9;
   }
 
   .bloc {
@@ -276,15 +277,20 @@ export default {
     }
 
     &.transparent {
-      grid-area: 3 / 1 / 4 / 2;
+      grid-area: 2 / 5 / 3 / 6;
       @include fake-transparent();
+
+      svg {
+        width: 65%;
+        height: auto;
+      }
     }
 
     &.big {
       // grid-row: span 2;
       // grid-column: span 2;
       aspect-ratio: 256 / 256;
-      grid-area: 4 / 2 / 6 / 4;
+      grid-area: 3 / 6 / 5 / 8;
     }
   }
 }

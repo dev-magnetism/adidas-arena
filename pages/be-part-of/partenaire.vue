@@ -2,6 +2,7 @@
   <main class="page-be-part-of-partenaire">
     <AppBepartofPartenaireIntroduction />
     <AppBepartofPartenairePartenaires />
+    <AppArenaGallery />
     <AppContactQuestion />
     <AppContactNewsletter />
     <AppFooter />

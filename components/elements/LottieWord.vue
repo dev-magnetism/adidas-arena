@@ -24,24 +24,18 @@ export default {
   },
   computed: {
     src() {
-      switch (this.id) {
-        case 'crossArrowCircle':
-          return require(`@/assets/lotties/crossArrowCircle.json`)
-        case 'arrow':
-          return require(`@/assets/lotties/arrow.json`)
-        case 'surroundedBlue':
-          return require(`@/assets/lotties/surroundedBlue.json`)
-        // case 4:
-        //   return "It's thursday"
-        // case 5:
-        //   return "It's friday"
-        // case 6:
-        //   return "It's saturday"
-        // case 7:
-        //   return "It's sunday"
-        default:
-          return null
-      }
+      //   switch (this.id) {
+      //     case 'crossArrowCircle':
+      //       return require(`@/assets/lotties/crossArrowCircle.json`)
+      //     case 'arrow':
+      //       return require(`@/assets/lotties/arrow.json`)
+      //     case 'surroundedBlue':
+      //       return require(`@/assets/lotties/surroundedBlue.json`)
+
+      //     default:
+      //       return null
+      //   }
+      return true
     },
   },
   mounted() {

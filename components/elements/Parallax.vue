@@ -21,6 +21,11 @@ export default {
       require: false,
       type: String,
     },
+    scrub: {
+      default: 1,
+      require: false,
+      type: Number,
+    },
     position: {
       default: '',
       require: false,
@@ -31,13 +36,12 @@ export default {
     const y = this.$viewport.width * this.speed * 0.1
 
     this.setY = gsap.quickSetter(this.$refs.trigger, 'y', 'px')
-    // const set3D = gsap.quickSetter(this.$refs.trigger, 'force3D')
 
     this.tl = gsap.timeline({
       scrollTrigger: {
         id: this.id,
         trigger: this.$refs.trigger,
-        scrub: true,
+        scrub: this.scrub,
         // markers: true,
         start: 'top bottom',
         end: 'bottom top',
@@ -47,8 +51,6 @@ export default {
           } else {
             this.setY(-gsap.utils.mapRange(0, 1, -y, y, e.progress))
           }
-
-          // set3D(e.progress > 0 && e.progress < 1)
         },
       },
     })
@@ -73,6 +75,7 @@ export default {
     // display: flex;
     // align-items: center;
     // justify-content: center;
+    will-change: transform;
   }
 }
 </style>

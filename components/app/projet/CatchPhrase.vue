@@ -5,7 +5,7 @@
       fête.
     </TH2>
     <EParallax :speed="0.125" class="app-projet__catch-phrase__lottie">
-      <ELottie id="crossArrowCircle"></ELottie>
+      <ELottie id="Fleche_Match" start="top bottom" end="bottom center" />
     </EParallax>
   </div>
 </template>

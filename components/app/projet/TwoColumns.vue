@@ -43,6 +43,10 @@
           tout le parcours des visiteurs.
         </TP1>
       </div>
+      <ELottie
+        id="Petite_Fleche_02"
+        class="app-projet-two-columns__f-r__lottie-arrow"
+      />
     </div>
 
     <div class="app-projet-two-columns__s-r grid">
@@ -181,6 +185,20 @@
     grid-row: 1;
     grid-column: 1 / span 12;
     margin-bottom: desktop-vw(200px);
+    position: relative;
+
+    &__lottie-arrow {
+      position: absolute;
+      grid-column: 6 / span 1;
+      width: 135%;
+      aspect-ratio: 85 / 35;
+
+      svg {
+        path {
+          stroke: var(--c-blue-adidas);
+        }
+      }
+    }
 
     &__visuals {
       grid-column: 2 / span 4;

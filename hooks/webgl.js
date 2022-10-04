@@ -28,6 +28,10 @@ class GL {
       alpha: true,
     })
 
+    this.renderer.shadowMap.enabled = true
+    // this.renderer.outputEncoding = THREE.sRGBEncoding
+    // this.renderer.toneMapping = THREE.LinearToneMapping
+
     // this.camera = new THREE.PerspectiveCamera(
     //   45,
     //   Viewport.width / Viewport.height,
@@ -49,14 +53,9 @@ class GL {
     this.camera.lookAt(0, 0, 0)
 
     this.camera.position.z = 500
-    // this.camera.position.y = 0
 
-    // const light = new THREE.PointLight(0xffffff, 1, 250)
-    // light.position.set(50, 10, 50)
-    // this.scene.add(light)
-
-    this.axesHelper = new THREE.AxesHelper(35)
-    this.scene.add(this.axesHelper)
+    // this.axesHelper = new THREE.AxesHelper(35)
+    // this.scene.add(this.axesHelper)
 
     this.stats = new Stats()
 
@@ -72,7 +71,7 @@ class GL {
 
     Viewport.events.on('resize', this.onWindowResize.bind(this))
 
-    this.initGUI()
+    // this.initGUI()
 
     Raf.add('webgl', this.update.bind(this), 1)
   }
@@ -188,8 +187,8 @@ class GL {
   }
 
   destroy() {
-    this.guiCamera.dispose()
-    this.gui.dispose()
+    this.guiCamera?.dispose()
+    this.gui?.dispose()
 
     Viewport.events.off('resize', this.onWindowResize.bind(this))
 

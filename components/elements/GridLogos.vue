@@ -10,8 +10,10 @@
     <div class="bloc big visible">
       <AtomsCornerPoints :size-points="6" position="1,2,3,4" />
       <img :src="arraytesttest.src" alt="test" />
+      <span class="bloc__overlay" />
     </div>
     <div class="bloc transparent visible">
+      <span class="bloc__overlay" />
       <AtomsCornerPoints :size-points="6" position="1,2,3,4" />
     </div>
     <div
@@ -26,6 +28,8 @@
       ]"
       class="bloc"
     >
+      <span class="bloc__overlay" />
+
       <AtomsCornerPoints
         v-if="index <= logos.length - 1"
         :size-points="6"
@@ -148,17 +152,17 @@ export default {
       ],
     }
   },
-  async fetch() {
-    this.partners = await this.$directus.items('Partners').readByQuery({
-      limit: -1,
-    })
+  // async fetch() {
+  //   this.partners = await this.$directus.items('Partners').readByQuery({
+  //     limit: -1,
+  //   })
 
-    // const test = await this.$directus.files.readOne(this.partners.data[0].logo)
+  //   // const test = await this.$directus.files.readOne(this.partners.data[0].logo)
 
-    // console.log(test)
+  //   // console.log(test)
 
-    console.log(this.partners)
-  },
+  //   console.log(this.partners)
+  // },
   computed: {
     arraytest() {
       return this.logos.filter((logo) => !logo.big)

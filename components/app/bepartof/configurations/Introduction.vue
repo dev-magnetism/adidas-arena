@@ -21,7 +21,7 @@
         alt="placeholder"
         class="picture-absolute"
       />
-      <SvgConfigurationsFrame />
+      <ELottie id="Cadre_02" />
     </div>
 
     <div class="app-be-part-of-configurations-introduction__s-row__visual">
@@ -86,12 +86,13 @@
         z-index: 0;
       }
 
-      svg {
+      svg,
+      canvas {
         position: absolute;
         top: 50%;
         left: 0;
-        height: 105%;
-        width: auto;
+        height: 105% !important;
+        width: auto !important;
         left: 50%;
         transform: translate(-50%, -50%);
       }
@@ -124,16 +125,6 @@
 
       picture {
         z-index: 0;
-      }
-
-      svg {
-        position: absolute;
-        top: 50%;
-        left: 0;
-        height: 105%;
-        width: auto;
-        left: 50%;
-        transform: translate(-50%, -50%);
       }
     }
   }

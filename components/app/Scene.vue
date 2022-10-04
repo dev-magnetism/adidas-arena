@@ -1,5 +1,7 @@
 <template>
-  <div :class="{ 'app-webgl--front': webglInFront }" class="app-webgl"></div>
+  <div :class="{ 'app-webgl--front': webglInFront }" class="app-webgl">
+    <WebglInfo />
+  </div>
 </template>
 
 <script>

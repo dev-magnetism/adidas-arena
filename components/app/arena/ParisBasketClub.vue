@@ -10,8 +10,9 @@
         src="imgs/placeholder.png"
         format="webp"
         alt="placeholder"
+        class="picture-absolute"
       />
-      <SvgArenaFrame ref="frame" />
+      <ELottie start="top bottom-=15%" id="Cadre_01" />
     </EParallax>
     <div class="app-arena-paris-basket-club__visual-transparent">
       <nuxt-picture
@@ -19,7 +20,7 @@
         format="webp"
         alt="placeholder"
       />
-      <AtomsCornerPoints :size-points="6" />
+      <AtomsCornerPoints :size-points="8" />
     </div>
     <EParallax
       class="app-arena-paris-basket-club__visual-without-frame"
@@ -32,7 +33,12 @@
         alt="placeholder"
       />
     </EParallax>
-    <ELottie id="arrow"></ELottie>
+    <ELottie
+      id="Fleche_2"
+      :markers="true"
+      start="top bottom-=15%"
+      class="app-arena-paris-basket-club__lottie-arrow"
+    />
     <div class="app-arena-paris-basket-club__content">
       <TH2>PARIS BASKETBALL CLUB</TH2>
       <TP1 weight="bold"
@@ -54,30 +60,8 @@
 </template>
 
 <script>
-// import { gsap } from 'gsap'
-
 export default {
-  mounted() {
-    // const svgEls = this.$refs.frame.$el.querySelectorAll(
-    //   'path, rect, circle, ellipse, polyline'
-    // )
-    // gsap.fromTo(
-    //   svgEls,
-    //   { drawSVG: false },
-    //   {
-    //     ease: 'power3.inOut',
-    //     duration: 0.65,
-    //     drawSVG: true,
-    //     scrollTrigger: {
-    //       trigger: this.$refs.frameWrapper,
-    //       markers: true,
-    //       start: 'top top',
-    //       end: 'bottom top',
-    //       scrub: 0.5,
-    //     },
-    //   }
-    // )
-  },
+  mounted() {},
 }
 </script>
 
@@ -87,7 +71,7 @@ export default {
   margin-top: 100vh;
   //   margin-top: desktop-vw(1080px);
 
-  .app-element-lottie {
+  &__lottie-arrow {
     position: absolute;
     grid-column: 6 / span 1;
     width: 40%;
@@ -95,6 +79,7 @@ export default {
     left: desktop-vw(45px);
     transform: rotate(45deg);
     aspect-ratio: 12 / 48;
+    height: auto !important;
   }
 
   &__visual-transparent {
@@ -128,13 +113,12 @@ export default {
     transform: rotate(-6deg);
     margin-bottom: desktop-vw(300px);
 
-    svg {
-      position: absolute;
-      left: 50%;
+    .app-element-lottie {
+      width: 110%;
       top: 50%;
-      width: auto;
-      height: 100%;
-      transform: translate(-50%, -50%) rotate(-3deg);
+      left: 50%;
+      height: auto;
+      transform: translate(-50%, -50%) rotate(6deg);
     }
   }
   &__visual-without-frame {

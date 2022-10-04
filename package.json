@@ -29,6 +29,7 @@
     "raw-loader": "^4.0.2",
     "stats.js": "^0.17.0",
     "three": "^0.144.0",
+    "three-custom-shader-material": "^4.0.0",
     "three.interactive": "^1.4.0",
     "tweakpane": "^3.1.0"
   },
