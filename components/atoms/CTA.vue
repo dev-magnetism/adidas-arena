@@ -71,17 +71,17 @@ export default {
     this.tl = gsap.timeline({ paused: true })
 
     this.tl.to(this.$refs.arrow.$el, {
-      xPercent: 175,
-      duration: 0.6,
-      ease: 'power4.out',
+      xPercent: 75,
+      duration: 0.5,
+      ease: 'power3.inOut',
     })
     this.tl.set(this.$refs.arrow.$el, {
-      xPercent: -175,
+      xPercent: -75,
     })
     this.tl.to(this.$refs.arrow.$el, {
       xPercent: 0,
-      duration: 0.45,
-      ease: 'power4.out',
+      duration: 0.25,
+      ease: 'power3.out',
     })
   },
   methods: {
@@ -147,12 +147,10 @@ export default {
   }
 
   &__arrow {
-    margin-left: desktop-vw(20px);
-    padding-right: desktop-vw(20px);
-    width: desktop-vw(45px);
     overflow: hidden;
 
     svg {
+      padding: 0px desktop-vw(15px);
       width: 100%;
     }
   }

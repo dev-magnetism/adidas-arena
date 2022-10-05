@@ -64,13 +64,13 @@
   left: columns(0.8);
   transform: rotate(-6deg);
 
-  &__cta {
+  &__cta.app-atoms-cta {
     position: absolute;
     width: columns(2.25);
     // width: desktop-vw(195px);
     bottom: -58%;
     left: columns(3);
-    padding: desktop-vw(20px) desktop-vw(20px);
+    padding: desktop-vw(20px) desktop-vw(0px) desktop-vw(20px) desktop-vw(20px);
     position: absolute;
 
     > .P2 {

@@ -54,7 +54,7 @@
     transform: rotate(-2deg);
   }
 
-  &__framed-visual {
+  &__framed-visual.app-element-framed-picture {
     position: absolute;
     grid-column: 7 / span 4;
     width: 100%;

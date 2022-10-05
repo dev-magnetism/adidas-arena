@@ -63,7 +63,7 @@ export default {
 
 <style lang="scss">
 .app-parallax {
-  position: relative;
+  // position: relative;
   width: 100%;
   // display: block;
   // align-items: center;
