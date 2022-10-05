@@ -110,16 +110,16 @@ export default {
     '@nuxtjs/style-resources',
     '@nuxt/image',
     '@nuxtjs/device',
-    'nuxt-font-loader',
+    // 'nuxt-font-loader',
   ],
 
   device: {
     refreshOnResize: true,
   },
 
-  fontLoader: {
-    url: 'fonts/fonts.css',
-  },
+  // fontLoader: {
+  //   url: 'fonts/fonts.css',
+  // },
 
   image: {
     // The screen sizes predefined by `@nuxt/image`:
