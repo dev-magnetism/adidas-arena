@@ -71,6 +71,7 @@
     bottom: -58%;
     left: columns(3);
     padding: desktop-vw(20px) desktop-vw(20px);
+    position: absolute;
 
     > .P2 {
       text-transform: uppercase;
