@@ -130,7 +130,7 @@ export default {
       content: '';
       display: block;
       width: 100%;
-      height: 3px;
+      height: 2px;
       position: absolute;
       background: var(--color-underline);
       bottom: -2px;
@@ -155,6 +155,8 @@ export default {
     svg {
       padding: 0px desktop-vw(15px);
       width: 100%;
+      vertical-align: middle;
+      will-change: transform;
     }
   }
 }
