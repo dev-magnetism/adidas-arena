@@ -53,7 +53,7 @@
 <style lang="scss">
 .app-be-part-of-partenaire-introduction {
   position: relative;
-  margin-bottom: desktop-vw(120px);
+  margin-bottom: desktop-vw(-120px);
 
   &__f-row {
     &__content {

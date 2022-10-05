@@ -55,7 +55,7 @@
 <style lang="scss">
 .app-be-part-of-configurations-introduction {
   position: relative;
-  margin-bottom: desktop-vw(130px);
+  margin-bottom: desktop-vw(-130px);
   row-gap: desktop-vw(125px);
 
   &__f-row {
@@ -91,10 +91,10 @@
         position: absolute;
         top: 50%;
         left: 0;
-        height: 105% !important;
+        height: 115% !important;
         width: auto !important;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%) rotate(4deg) !important;
       }
     }
   }

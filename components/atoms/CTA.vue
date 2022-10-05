@@ -84,6 +84,9 @@ export default {
       ease: 'power3.out',
     })
   },
+  beforeDestroy() {
+    this.tl?.kill()
+  },
   methods: {
     onMouseEnter() {
       this.tl?.play()

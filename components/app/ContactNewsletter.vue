@@ -7,6 +7,7 @@
 
       <form action="#" class="app-contact-newsletter__newsletter__form">
         <input
+          v-model="email"
           class="app-contact-newsletter__newsletter__form__field-mail"
           placeholder="email@email.com"
           type="email"
@@ -14,10 +15,14 @@
           required
         />
         <button
+          :class="{ valid: validateForm }"
           class="app-contact-newsletter__newsletter__form__submit"
           type="submit"
+          @mouseenter="onMouseEnter"
+          @mouseleave="onMouseLeave"
         >
-          <SvgFooterUnion />
+          <span class="app-footer__newsletter__submit__overlay" />
+          <SvgFooterUnion ref="union" />
         </button>
       </form>
     </div>
@@ -25,6 +30,62 @@
     <div class="app-contact-newsletter__visual-transparent"></div>
   </div>
 </template>
+
+<script>
+import { gsap } from 'gsap'
+
+export default {
+  data() {
+    return {
+      email: '',
+    }
+  },
+  computed: {
+    validateForm() {
+      /* eslint-disable-next-line */ const reg =
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
+
+      return reg.test(this.email)
+    },
+  },
+  mounted() {
+    this.tl = gsap.timeline({
+      paused: true,
+    })
+
+    this.tl.to(this.$refs.union.$el, {
+      xPercent: 100,
+      duration: 0.25,
+      ease: 'power1.out',
+    })
+
+    this.tl.set(this.$refs.union.$el, {
+      xPercent: -100,
+    })
+
+    this.tl.to(this.$refs.union.$el, {
+      xPercent: 0,
+      duration: 0.25,
+      ease: 'power1.out',
+    })
+  },
+  beforeDestroy() {
+    this.tl?.kill()
+  },
+  methods: {
+    onMouseEnter() {
+      if (!this.validateForm) return
+
+      this.tl.play()
+    },
+    onMouseLeave() {
+      if (!this.validateForm) return
+
+      this.tl.reverse()
+    },
+  },
+}
+</script>
 
 <style lang="scss">
 .app-contact-newsletter {
@@ -82,20 +143,54 @@
       }
 
       &__submit {
-        border: 1px solid var(--c-black);
+        border: 1px solid rgb(24 24 24 / 25%);
         width: desktop-vw(55px);
         height: desktop-vw(55px);
         display: flex;
         align-items: center;
         justify-content: center;
         margin-left: desktop-vw(40px);
-        opacity: 0.25;
-        cursor: pointer;
+        cursor: not-allowed;
+        overflow: hidden;
         align-self: center;
+        position: relative;
+
+        &.valid {
+          cursor: pointer;
+
+          .app-footer__newsletter__submit__overlay {
+            transform: scaleY(1);
+          }
+
+          svg {
+            opacity: 1;
+
+            path {
+              fill: var(--c-white);
+            }
+          }
+        }
+
+        &__overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: var(--c-black);
+          z-index: 0;
+          transform: scaleY(0);
+          transform-origin: top center;
+          transition: transform 0.4s var(--ease-out-cubic);
+        }
 
         svg {
-          width: 50%;
+          width: 100%;
+          padding: desktop-vw(15px);
           height: auto;
+          opacity: 0.25;
+          z-index: 1;
+          transition: opacity 0.2s var(--ease-out-cubic);
         }
       }
     }

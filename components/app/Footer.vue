@@ -177,6 +177,17 @@ export default {
       user-select: none;
       margin-top: desktop-vw(10px);
 
+      &:hover {
+        input {
+          &:not(:checked) ~ .checkmark {
+            &::after {
+              content: '';
+              transform: translate(-50%, -50%) scale(0.5);
+            }
+          }
+        }
+      }
+
       &.valid {
         .P2 {
           color: rgba(24, 24, 24, 1) !important;
@@ -208,7 +219,12 @@ export default {
         cursor: pointer;
 
         &:checked ~ .checkmark {
-          background-color: var(--c-black);
+          // background-color: var(--c-black);
+
+          &::after {
+            content: '';
+            transform: translate(-50%, -50%) scale(1);
+          }
         }
       }
 
@@ -221,6 +237,20 @@ export default {
         border: 1px solid var(--c-black);
         pointer-events: none;
         cursor: pointer;
+
+        &::after {
+          content: '';
+          width: 75%;
+          height: 75%;
+          background: var(--c-black);
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) scale(0);
+          transform-origin: center;
+          transition: transform 0.3s var(--ease-out-cubic);
+          will-change: transform;
+        }
       }
     }
 
