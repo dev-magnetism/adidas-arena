@@ -72,8 +72,10 @@
     left: columns(3);
     padding: desktop-vw(20px) desktop-vw(20px);
 
-    .P2 {
-      @include font-adihausDIN-cn-medium();
+    > .P2 {
+      text-transform: uppercase;
+      font-size: desktop-vw(24px);
+      line-height: desktop-vw(23px);
     }
   }
 
@@ -113,19 +115,32 @@
     left: columns(1.65);
     bottom: 115%;
     transform: rotate(6deg);
+
+    > .P2 {
+      text-transform: uppercase;
+      font-size: desktop-vw(18px);
+      line-height: desktop-vw(20px);
+    }
   }
   &__tag-top {
     left: columns(-0.25);
     bottom: 12%;
     transform: rotate(-2.5deg);
+
+    > .P2 {
+      text-transform: uppercase;
+      font-size: desktop-vw(18px);
+      line-height: desktop-vw(20px);
+    }
   }
   &__tag-middle {
     bottom: -10%;
     left: columns(-0.1);
     transform: rotate(1.45deg);
-    .P2 {
+    > .P2 {
       font-size: desktop-vw(15px);
       line-height: desktop-vw(20px);
+      text-transform: uppercase;
     }
   }
   &__tag-bottom {
@@ -134,7 +149,7 @@
     transform: rotate(-6deg);
     width: columns(2.15);
 
-    .P2 {
+    > .P2 {
       font-size: desktop-vw(14px);
       line-height: desktop-vw(16px);
     }

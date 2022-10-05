@@ -290,6 +290,12 @@ export default {
     grid-column: 6 / span 4;
     top: 15%;
     padding: desktop-vw(10px);
+
+    > .P2 {
+      text-transform: uppercase;
+      font-size: desktop-vw(18px);
+      line-height: desktop-vw(20px);
+    }
   }
 
   &__framed-picture {

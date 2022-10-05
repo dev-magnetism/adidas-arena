@@ -48,8 +48,6 @@ export default {
   }
 
   .P2 {
-    font-size: desktop-vw(18px);
-    line-height: desktop-vw(20px);
     @include font-adihausDIN-cn-bold();
   }
 }

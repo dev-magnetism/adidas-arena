@@ -116,7 +116,7 @@
     flex: 1;
     padding: desktop-vw(10px) desktop-vw(12px);
 
-    &__title {
+    &__title.P1 {
       font-size: desktop-vw(12px);
       line-height: desktop-vw(16px);
       @include font-adihausDIN-cn-medium();

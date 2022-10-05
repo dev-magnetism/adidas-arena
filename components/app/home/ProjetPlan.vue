@@ -54,14 +54,15 @@
       padding: desktop-vw(12px);
       border-bottom: 1px solid var(--c-black);
       border-right: 1px solid var(--c-black);
-      font-size: desktop-vw(24px);
-      line-height: desktop-vw(20px);
+
       display: flex;
       align-items: center;
       justify-content: center;
 
       &.P2 {
         text-transform: uppercase;
+        font-size: desktop-vw(24px);
+        line-height: desktop-vw(20px);
         @include font-adihausDIN-cn-bold();
       }
     }
