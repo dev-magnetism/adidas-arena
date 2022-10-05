@@ -59,7 +59,7 @@ export default {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: this.$el,
-        markers: true,
+        // markers: true,
         start: 'top+=30% center',
         end: 'center center',
         scrub: 0.5,
@@ -311,7 +311,7 @@ export default {
     width: desktop-vw(200px);
   }
 
-  &__title {
+  &__title.H2 {
     writing-mode: vertical-rl;
     transform: scale(-1);
     display: inline-block;

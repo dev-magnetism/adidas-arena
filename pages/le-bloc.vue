@@ -1,9 +1,9 @@
 <template>
   <main class="app-le-bloc">
-    <ETwoColumnsStick
+    <!-- <ETwoColumnsStick
       :left-content="partners.data.Key_words_left"
       :right-content="partners.data.Key_words_right"
-    />
+    /> -->
 
     <AppLeblocPresentation />
 
@@ -32,13 +32,12 @@ import scroll from '@/mixins/scroll'
 export default {
   mixins: [scroll],
   async asyncData({ $directus }) {
-    const partners = await $directus.items('le_bloc_page').readByQuery({
-      limit: -1,
-    })
-
-    return {
-      partners,
-    }
+    // const partners = await $directus.items('le_bloc_page').readByQuery({
+    //   limit: -1,
+    // })
+    // return {
+    //   partners,
+    // }
   },
   data() {
     return {}

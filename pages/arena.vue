@@ -1,9 +1,10 @@
 <template>
   <main class="app-arena">
     <AppArenaParisBasketClub />
-    <EFullwidth></EFullwidth>
-    <AppArenaPartners></AppArenaPartners>
+    <EFullwidth />
+    <AppArenaPartners />
     <AppArenaGallery />
+    <AppFooter />
   </main>
 </template>
 
@@ -17,5 +18,7 @@ export default {
 
 <style lang="scss">
 .app-arena {
+  .app-footer {
+  }
 }
 </style>

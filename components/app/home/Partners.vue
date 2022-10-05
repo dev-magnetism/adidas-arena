@@ -1,7 +1,7 @@
 <template>
   <div class="app-home-partners grid">
     <div class="app-home-partners__content">
-      <TH1 class="app-home-partners__title">
+      <TH1 :split="true" class="app-home-partners__title">
         Un écosystème complémentaire de partenaires
       </TH1>
       <TP2 class="app-home-partners__principal-paragraph" weight="bold">

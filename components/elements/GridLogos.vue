@@ -7,40 +7,24 @@
     }"
   >
     <!-- <ERichText :content="partners?.data[0].test_wysiwyg"></ERichText> -->
-    <div class="bloc big visible">
-      <AtomsCornerPoints :size-points="6" position="1,2,3,4" />
-      <img :src="arraytesttest.src" alt="test" />
-      <span class="bloc__overlay" />
-    </div>
-    <div class="bloc transparent visible">
-      <span class="bloc__overlay" />
-      <AtomsCornerPoints :size-points="6" position="1,2,3,4" />
-    </div>
-    <div
+    <EGridLogosBloc :big="true" :src="arraytesttest.src" />
+    <EGridLogosBloc
+      :transparent="true"
+      :src="'/imgs/placeholder-logo-home.png'"
+    />
+    <EGridLogosBloc
       v-for="(logo, index) in arraytest"
       :key="index"
-      :class="[
-        `div${index + 1}`,
-        {
-          visible: index <= logos.length - 1,
-          transparent: index > logos.length - 1,
-        },
-      ]"
-      class="bloc"
-    >
-      <span class="bloc__overlay" />
-
-      <AtomsCornerPoints
-        v-if="index <= logos.length - 1"
-        :size-points="6"
-        position="1,2,3,4"
-      />
-      <img v-if="index <= logos.length - 1" :src="logo.src" alt="test" />
-    </div>
+      :class="[`app-element-grid-logos-bloc-${index + 1}`]"
+      :src="logo.src"
+    />
   </div>
 </template>
 
 <script>
+// import { gsap } from 'gsap'
+// import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
 export default {
   props: {
     cols: {
@@ -174,6 +158,7 @@ export default {
       return this.logos.filter((logo) => logo.big).length
     },
   },
+  mounted() {},
   methods: {
     randomIntFromInterval(min, max) {
       // min and max included
@@ -192,103 +177,72 @@ export default {
   grid-auto-flow: row dense;
   grid-gap: 1px;
 
-  .div1 {
-    grid-area: 1 / 2 / 2 / 3;
-  }
-  .div2 {
-    grid-area: 1 / 4 / 2 / 5;
-  }
-  .div3 {
-    grid-area: 2 / 3 / 3 / 4;
-  }
-  .div4 {
-    grid-area: 2 / 4 / 3 / 5;
-  }
-  .div5 {
-    grid-area: 3 / 4 / 4 / 5;
-  }
-  .div6 {
-    grid-area: 3 / 5 / 4 / 6;
-  }
-  .div7 {
-    grid-area: 4 / 6 / 5 / 7;
-  }
-  .div8 {
-    grid-area: 6 / 1 / 7 / 2;
-  }
-  .div9 {
-    grid-area: 6 / 4 / 7 / 5;
-  }
-  .div10 {
-    grid-area: 6 / 5 / 7 / 6;
-  }
-  .div11 {
-    grid-area: 7 / 3 / 8 / 4;
-  }
-  .div12 {
-    grid-area: 7 / 2 / 8 / 3;
-  }
-  .div13 {
-    grid-area: 5 / 4 / 6 / 5;
-  }
-  .div14 {
-    grid-area: 7 / 6 / 8 / 7;
-  }
-  .div15 {
-    grid-area: 2 / 6 / 3 / 7;
-  }
-  .div16 {
-    grid-area: 3 / 2 / 4 / 3;
-  }
-  .div17 {
-    grid-area: 5 / 1 / 6 / 2;
-  }
-  .div18 {
-    grid-area: 5 / 5 / 6 / 6;
-  }
-  .div19 {
-    grid-area: 2 / 5 / 3 / 6;
-  }
-  .div20 {
-    grid-area: 6 / 6 / 7 / 7;
-  }
-
-  .bloc {
-    aspect-ratio: 128 / 128;
-    position: relative;
-    // grid-row: span 1;
-    // grid-column: span 1;
-    height: 100%;
-    width: 100%;
-    // order: var(--order);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .app-atoms-corner-points {
-      outline: 1px solid var(--border-color) !important;
-      border: none !important;
-    }
-
-    img {
-      width: 50%;
-      height: auto;
-    }
-
-    &.visible {
-      background: var(--c-white);
-    }
-
+  .app-element-grid-logos-bloc {
     &.transparent {
       grid-area: 3 / 1 / 4 / 2;
-      @include fake-transparent();
     }
-
     &.big {
-      // grid-row: span 2;
-      // grid-column: span 2;
-      aspect-ratio: 256 / 256;
       grid-area: 4 / 2 / 6 / 4;
+    }
+    &-1 {
+      grid-area: 1 / 2 / 2 / 3;
+    }
+    &-2 {
+      grid-area: 1 / 4 / 2 / 5;
+    }
+    &-3 {
+      grid-area: 2 / 3 / 3 / 4;
+    }
+    &-4 {
+      grid-area: 2 / 4 / 3 / 5;
+    }
+    &-5 {
+      grid-area: 3 / 4 / 4 / 5;
+    }
+    &-6 {
+      grid-area: 3 / 5 / 4 / 6;
+    }
+    &-7 {
+      grid-area: 4 / 6 / 5 / 7;
+    }
+    &-8 {
+      grid-area: 6 / 1 / 7 / 2;
+    }
+    &-9 {
+      grid-area: 6 / 4 / 7 / 5;
+    }
+    &-10 {
+      grid-area: 6 / 5 / 7 / 6;
+    }
+    &-11 {
+      grid-area: 7 / 3 / 8 / 4;
+    }
+    &-12 {
+      grid-area: 7 / 2 / 8 / 3;
+    }
+    &-13 {
+      grid-area: 5 / 4 / 6 / 5;
+    }
+    &-14 {
+      grid-area: 7 / 6 / 8 / 7;
+    }
+    &-15 {
+      grid-area: 2 / 6 / 3 / 7;
+    }
+    &-16 {
+      grid-area: 3 / 2 / 4 / 3;
+    }
+    &-17 {
+      grid-area: 5 / 1 / 6 / 2;
+    }
+    &-18 {
+      grid-area: 5 / 5 / 6 / 6;
+    }
+    &-19 {
+      grid-area: 2 / 5 / 3 / 6;
+    }
+    &-20 {
+      grid-area: 6 / 6 / 7 / 7;
     }
   }
 }

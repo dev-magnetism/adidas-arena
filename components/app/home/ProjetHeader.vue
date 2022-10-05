@@ -92,13 +92,13 @@
       }
     }
 
-    &__title {
+    &__title.P1 {
       font-size: desktop-vw(12px);
       line-height: desktop-vw(16px);
       @include font-adihausDIN-cn-medium();
     }
 
-    &__content {
+    &__content.H2 {
       font-size: desktop-vw(24px);
       line-height: desktop-vw(20px);
       margin-top: desktop-vw(5px);

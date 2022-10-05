@@ -4,20 +4,36 @@
       <TH2 class="app-footer__newsletter-title">
         Restez au courant, inscrivez-vous à notre newsletter
       </TH2>
-      <form action="#" class="app-footer__newsletter" id="form1">
+      <form id="form1" action="#" class="app-footer__newsletter">
         <input
+          v-model="email"
           class="app-footer__newsletter__field-mail"
           placeholder="email@email.com"
           type="email"
           name="name"
           required
         />
-        <button class="app-footer__newsletter__submit" type="submit">
-          <SvgFooterUnion />
+        <button
+          :class="{ valid: validateForm }"
+          class="app-footer__newsletter__submit"
+          type="submit"
+          @mouseenter="onMouseEnter"
+          @mouseleave="onMouseLeave"
+        >
+          <span class="app-footer__newsletter__submit__overlay" />
+          <SvgFooterUnion ref="union" />
         </button>
 
-        <div class="app-footer__newsletter__accept-politic">
-          <input id="accept-politic" type="checkbox" required />
+        <div
+          :class="{ valid: accept }"
+          class="app-footer__newsletter__accept-politic"
+        >
+          <input
+            id="accept-politic"
+            v-model="accept"
+            type="checkbox"
+            required
+          />
           <label for="accept-politic">
             <TP2>
               J’accepte la
@@ -62,6 +78,63 @@
   </div>
 </template>
 
+<script>
+import { gsap } from 'gsap'
+
+export default {
+  data() {
+    return {
+      email: '',
+      accept: false,
+    }
+  },
+  computed: {
+    validateForm() {
+      /* eslint-disable-next-line */ const reg =
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
+
+      return reg.test(this.email) && this.accept
+    },
+  },
+  mounted() {
+    this.tl = gsap.timeline({
+      paused: true,
+    })
+
+    this.tl.to(this.$refs.union.$el, {
+      xPercent: 100,
+      duration: 0.25,
+      ease: 'power1.out',
+    })
+
+    this.tl.set(this.$refs.union.$el, {
+      xPercent: -100,
+    })
+
+    this.tl.to(this.$refs.union.$el, {
+      xPercent: 0,
+      duration: 0.25,
+      ease: 'power1.out',
+    })
+  },
+  beforeDestroy() {
+    this.tl?.kill()
+  },
+  methods: {
+    onMouseEnter() {
+      if (!this.validateForm) return
+
+      this.tl.play()
+    },
+    onMouseLeave() {
+      if (!this.validateForm) return
+
+      this.tl.reverse()
+    },
+  },
+}
+</script>
+
 <style lang="scss">
 .app-footer {
   padding-top: desktop-vw(95px);
@@ -104,11 +177,18 @@
       user-select: none;
       margin-top: desktop-vw(10px);
 
+      &.valid {
+        .P2 {
+          color: rgba(24, 24, 24, 1) !important;
+        }
+      }
+
       .P2 {
         font-size: desktop-vw(16px);
         line-height: desktop-vw(21px);
         color: rgba(24, 24, 24, 0.25) !important;
         cursor: pointer;
+        transition: color 0.4s var(--ease-out-cubic);
       }
 
       a {
@@ -158,20 +238,55 @@
     }
 
     &__submit {
-      border: 1px solid var(--c-black);
+      border: 1px solid rgb(24 24 24 / 25%);
       width: desktop-vw(56px);
       height: desktop-vw(56px);
       display: flex;
       align-items: center;
       justify-content: center;
       margin-left: desktop-vw(40px);
-      opacity: 0.25;
       cursor: pointer;
       align-self: center;
+      position: relative;
+      cursor: not-allowed;
+      overflow: hidden;
+
+      &.valid {
+        cursor: pointer;
+
+        .app-footer__newsletter__submit__overlay {
+          transform: scaleY(1);
+        }
+
+        svg {
+          opacity: 1;
+
+          path {
+            fill: var(--c-red-adidas);
+          }
+        }
+      }
+
+      &__overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--c-black);
+        z-index: 0;
+        transform: scaleY(0);
+        transform-origin: top center;
+        transition: transform 0.4s var(--ease-out-cubic);
+      }
 
       svg {
-        width: 50%;
+        width: 100%;
+        padding: desktop-vw(15px);
         height: auto;
+        opacity: 0.25;
+        z-index: 1;
+        transition: opacity 0.2s var(--ease-out-cubic);
       }
     }
   }
@@ -231,7 +346,7 @@
     font-size: desktop-vw(32px);
     line-height: desktop-vw(40px);
   }
-  &__links-title {
+  &__links-title.P2 {
     font-size: desktop-vw(26px);
     line-height: desktop-vw(33px);
     margin-right: desktop-vw(100px);

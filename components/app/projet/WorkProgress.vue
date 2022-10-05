@@ -184,11 +184,11 @@ export default {
   },
   watch: {
     indexSketch(newVal, oldVal) {
-      console.log(oldVal, this.lottiesAnimation[oldVal])
-
+      this.lottiesAnimation[oldVal].setSpeed(3.5)
       this.lottiesAnimation[oldVal].setDirection(-1)
       this.lottiesAnimation[oldVal].play()
 
+      this.lottiesAnimation[newVal].setSpeed(1)
       this.lottiesAnimation[newVal].setDirection(1)
       this.lottiesAnimation[newVal].play()
     },

@@ -60,10 +60,13 @@ export default {
   mounted() {
     this.offsetX = this.$viewport.width * 1.5 // 300vw en CSS
     this.initTexture()
+    document.addEventListener('click', this.onClickDocument)
   },
 
   beforeDestroy() {
     this.mesh.removeEventListener('click', this.onClickPicture)
+    document.removeEventListener('click', this.onClickDocument)
+
     this.$parent.interactionManager.remove(this.mesh)
 
     const { gallery } = useWebGL()
@@ -75,6 +78,15 @@ export default {
   },
 
   methods: {
+    onClickDocument(e) {
+      if (!this.open) return
+
+      setTimeout(() => {
+        this.open = false
+
+        e.stopPropagation()
+      }, 100)
+    },
     focusPicture() {
       this.$parent.pictureIsSelected = true
       this.$parent.pictureSelected = this
@@ -168,6 +180,8 @@ export default {
 
       this.texture = await this.loadTexture(this.currentSrc)
 
+      this.textureCadre = await this.loadTexture('/imgs/cadre-webgl.png')
+
       this.initMesh()
     },
     initMesh() {
@@ -180,6 +194,9 @@ export default {
           },
           uMap: {
             value: this.texture,
+          },
+          uMapCadre: {
+            value: this.textureCadre,
           },
           uRatio: {
             value: new THREE.Vector2(0, 0),
@@ -223,13 +240,15 @@ export default {
     onClickPicture(e) {
       if (this.$parent.onDrag) return
 
-      if (this.open && this.$parent.pictureIndexSelected === this.index) {
-        this.open = false
-      } else if (!this.open && !this.$parent.pictureIsSelected) {
-        this.open = true
-      }
+      console.log('click onClickPicture')
 
-      e.stopPropagation()
+      setTimeout(() => {
+        if (!this.open && !this.$parent.pictureIsSelected) {
+          this.open = true
+        }
+
+        e.stopPropagation()
+      }, 100)
     },
     update({ scroll, velocity }) {
       if (!this.mesh) return

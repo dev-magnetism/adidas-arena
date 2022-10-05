@@ -12,7 +12,7 @@
         alt="placeholder"
         class="picture-absolute"
       />
-      <ELottie start="top bottom-=15%" id="Cadre_01" />
+      <ELottie id="Cadre_01" start="top bottom-=15%" />
     </EParallax>
     <div class="app-arena-paris-basket-club__visual-transparent">
       <nuxt-picture
@@ -35,7 +35,6 @@
     </EParallax>
     <ELottie
       id="Fleche_2"
-      :markers="true"
       start="top bottom-=15%"
       class="app-arena-paris-basket-club__lottie-arrow"
     />

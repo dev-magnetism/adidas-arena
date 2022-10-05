@@ -85,6 +85,10 @@ export default {
     },
   ],
 
+  generate: {
+    fallback: true,
+  },
+
   static: {
     prefix: false,
   },

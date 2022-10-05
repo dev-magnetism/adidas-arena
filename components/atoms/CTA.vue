@@ -10,13 +10,18 @@
     :internal="!external"
     :external="external"
     :blank="target"
+    @mouseenter="onMouseEnter"
+    @mouseleave="onMouseLeave"
   >
     <TP2 class="app-atoms-cta__text" weight="bold" :color="color"><slot /></TP2>
-    <SvgCtaUnion v-if="arrow" :color="color" />
+    <div v-if="arrow" class="app-atoms-cta__arrow">
+      <SvgCtaUnion ref="arrow" :color="color" />
+    </div>
   </SmartLink>
 </template>
 
 <script>
+import { gsap } from 'gsap'
 export default {
   props: {
     arrow: {
@@ -54,13 +59,39 @@ export default {
     classes() {
       return [
         {
-          // 'no-link': !this.link,
+          arrow: this.arrow,
           // medium: this.weight === 'medium',
         },
       ]
     },
   },
-  mounted() {},
+  mounted() {
+    if (!this.arrow) return
+
+    this.tl = gsap.timeline({ paused: true })
+
+    this.tl.to(this.$refs.arrow.$el, {
+      xPercent: 175,
+      duration: 0.6,
+      ease: 'power4.out',
+    })
+    this.tl.set(this.$refs.arrow.$el, {
+      xPercent: -175,
+    })
+    this.tl.to(this.$refs.arrow.$el, {
+      xPercent: 0,
+      duration: 0.45,
+      ease: 'power4.out',
+    })
+  },
+  methods: {
+    onMouseEnter() {
+      this.tl?.play()
+    },
+    onMouseLeave() {
+      this.tl?.reverse()
+    },
+  },
 }
 </script>
 
@@ -72,6 +103,10 @@ export default {
   align-items: center;
   justify-content: space-between;
   position: relative;
+
+  &.arrow {
+    padding: desktop-vw(15px) desktop-vw(0px) desktop-vw(15px) desktop-vw(25px);
+  }
 
   @include hover {
     cursor: pointer;
@@ -111,8 +146,15 @@ export default {
     @include font-adihausDIN-cn-bold();
   }
 
-  svg {
+  &__arrow {
     margin-left: desktop-vw(20px);
+    padding-right: desktop-vw(20px);
+    width: desktop-vw(45px);
+    overflow: hidden;
+
+    svg {
+      width: 100%;
+    }
   }
 }
 </style>

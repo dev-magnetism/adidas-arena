@@ -1,6 +1,7 @@
 <template>
   <component
     :is="tag"
+    ref="h1"
     class="H1"
     :class="classes"
     :style="{ color: `var(--c-${color})` }"
@@ -10,6 +11,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import { gsap } from 'gsap'
+import { SplitText } from 'gsap/SplitText'
+
 export default {
   props: {
     tag: {
@@ -32,8 +37,17 @@ export default {
       type: String,
       default: 'medium',
     },
+    split: {
+      required: false,
+      type: Boolean,
+      default: false,
+    },
   },
+
   computed: {
+    ...mapState({
+      fontsLoaded: (state) => state.fontsLoaded,
+    }),
     classes() {
       return [
         {
@@ -44,6 +58,46 @@ export default {
       ]
     },
   },
+  watch: {
+    fontsLoaded() {
+      if (!this.split) return
+
+      this.initSplitText()
+    },
+  },
+  mounted() {},
+  methods: {
+    initSplitText() {
+      this.splitChild = new SplitText(this.$refs.h1, {
+        type: 'lines',
+        linesClass: 'H1__child ',
+      })
+
+      this.splitParent = new SplitText(this.$refs.h1, {
+        type: 'lines',
+        linesClass: 'H1__parent ',
+      })
+
+      gsap.fromTo(
+        this.splitChild.lines,
+        {
+          yPercent: -100,
+        },
+        {
+          delay: 0.3,
+          yPercent: 0,
+          stagger: 0.2,
+          duration: 0.4,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: this.$el,
+            toggleActions: 'play none none reset',
+            // markers: true,
+          },
+        }
+      )
+    },
+  },
 }
 </script>
 
@@ -52,6 +106,17 @@ export default {
   @include h1();
 
   &--type {
+  }
+
+  &__parent {
+    // display: inline-block !important;
+    overflow: hidden;
+  }
+
+  &__child {
+    // display: inline-block !important;
+
+    // transform: translateY(120%);
   }
 }
 </style>

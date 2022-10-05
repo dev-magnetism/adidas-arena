@@ -13,7 +13,7 @@
       </TH1>
     </EMarqueeScroll>
     <AppHomeProjet />
-    <AppHomeLeBloc />
+    <!-- <AppHomeLeBloc /> -->
     <AppHomePartners />
     <AppFooter />
   </main>

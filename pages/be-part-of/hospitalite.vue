@@ -1,9 +1,9 @@
 <template>
   <main class="page-be-part-of-hospitalite">
-    <ETwoColumnsStick
+    <!-- <ETwoColumnsStick
       :left-content="partners.data.Key_words_left"
       :right-content="partners.data.Key_words_right"
-    />
+    /> -->
     <AppBepartofHospitalitePresentation />
     <ESlider />
     <AppContactQuestion />
@@ -17,15 +17,15 @@ import scroll from '@/mixins/scroll'
 
 export default {
   mixins: [scroll],
-  async asyncData({ $directus }) {
-    const partners = await $directus.items('le_bloc_page').readByQuery({
-      limit: -1,
-    })
+  // async asyncData({ $directus }) {
+  //   const partners = await $directus.items('le_bloc_page').readByQuery({
+  //     limit: -1,
+  //   })
 
-    return {
-      partners,
-    }
-  },
+  //   return {
+  //     partners,
+  //   }
+  // },
   data() {
     return {}
   },

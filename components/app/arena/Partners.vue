@@ -1,7 +1,7 @@
 <template>
   <div class="app-arena-partners grid">
     <div class="app-arena-partners__content">
-      <TH1 class="app-arena-partners__title">
+      <TH1 :split="true" class="app-arena-partners__title">
         Un écosystème complémentaire de partenaires
       </TH1>
       <TP2 class="app-arena-partners__principal-paragraph" weight="bold">
