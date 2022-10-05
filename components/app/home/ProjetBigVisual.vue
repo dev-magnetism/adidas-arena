@@ -60,7 +60,7 @@
   grid-column: 1 / span 5;
   width: 88%;
   aspect-ratio: 450 / 265;
-  bottom: calc(desktop-vw(25px) + desktop-vw(150px));
+  top: desktop-vw(300px);
   left: columns(0.8);
   transform: rotate(-6deg);
 
