@@ -64,6 +64,7 @@
         />
       </div>
       <SvgHomeHeroSticker class="app-home-hero__sticker" />
+      <SvgHomeHeroStars class="app-home-hero__stars" />
     </div>
   </div>
 </template>
@@ -126,6 +127,15 @@ export default {
     grid-column: 8 / span 5;
     transform: translate(-50%, -50%);
     top: 40%;
+    z-index: 9;
+  }
+
+  &__stars {
+    position: absolute;
+    grid-column: 7 / span 2;
+    transform: translate(-50%, -50%);
+    left: 30%;
+    top: 32%;
     z-index: 9;
   }
 
