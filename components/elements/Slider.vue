@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <div ref="inner" class="app-element-slider__wrapper">
+    <div ref="inner" :class="{ hold }" class="app-element-slider__wrapper">
       <div class="app-element-slider__inner">
         <div
           v-for="i in 15"
@@ -52,7 +52,8 @@ import useGUI from '~/hooks/gui'
 export default {
   data() {
     return {
-      parallaxFactor: 2.5,
+      parallaxFactor: 1.25,
+      hold: false,
     }
   },
   mounted() {
@@ -67,6 +68,8 @@ export default {
     this.embla.on('init', this.setParallax)
     this.embla.on('scroll', this.setParallax)
     this.embla.on('resize', this.setParallax)
+    this.embla.on('pointerUp', this.onPointerUp)
+    this.embla.on('pointerDown', this.onPointerDown)
 
     // this.initGUI()
   },
@@ -74,12 +77,20 @@ export default {
     this.embla.off('init', this.setParallax)
     this.embla.off('scroll', this.setParallax)
     this.embla.off('resize', this.setParallax)
+    this.embla.off('pointerUp', this.onPointerUp)
+    this.embla.off('pointerDown', this.onPointerDown)
 
     this.embla?.destroy()
 
     this.gui?.dispose()
   },
   methods: {
+    onPointerUp() {
+      this.hold = false
+    },
+    onPointerDown() {
+      this.hold = true
+    },
     calculateParallaxTransforms() {
       const engine = this.embla.internalEngine()
       const scrollProgress = this.embla.scrollProgress()
@@ -138,6 +149,14 @@ export default {
   &__wrapper {
     overflow: hidden;
     padding-left: desktop-vw(40px);
+
+    &.hold {
+      .app-element-slider__item__visual {
+        img {
+          transform: scale(1.25);
+        }
+      }
+    }
   }
 
   &__heading {
@@ -194,21 +213,22 @@ export default {
       height: auto;
       position: relative;
       overflow: hidden;
+      @include noise();
     }
 
     &__visual {
-      @include noise();
       position: absolute;
       top: 0;
       left: 0;
       display: block;
       width: 100%;
       height: 100%;
-      // transition: transform 0.2s linear;
       will-change: transform;
 
       img {
-        transform: scale(1.25);
+        transition: transform 0.95s var(--ease-out-quart);
+
+        transform: scale(1.3);
       }
     }
   }

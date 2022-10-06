@@ -25,7 +25,7 @@ export default {
     onMouseMove(e) {
       this.xTo(e.clientX)
       this.yTo(e.clientY)
-      console.log('here', e)
+      //   console.log('here', e)
     },
   },
 }

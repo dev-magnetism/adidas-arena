@@ -21,9 +21,15 @@
           alt="placeholder"
         />
       </div>
-      <div class="app-home-hero__scroll-indicator">
+      <div
+        class="app-home-hero__scroll-indicator"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave"
+      >
         <TP1>Scroll</TP1>
-        <SvgHomeHeroUnion />
+        <div class="app-home-hero__scroll-indicator__icon">
+          <SvgHomeHeroUnion ref="union" />
+        </div>
       </div>
       <div class="app-home-hero__localisation">
         <TP1 class="app-home-hero__localisation__city">Paris</TP1>
@@ -50,11 +56,56 @@
           </AtomsCTA>
         </div>
         <AtomsCornerPoints />
+        <nuxt-picture
+          class="picture-absolute"
+          src="imgs/map.png"
+          format="webp"
+          alt="placeholder"
+        />
       </div>
       <SvgHomeHeroSticker class="app-home-hero__sticker" />
     </div>
   </div>
 </template>
+
+<script>
+import { gsap } from 'gsap'
+export default {
+  mounted() {
+    this.tl = gsap.timeline({ repeat: -1, paused: true })
+
+    this.tl.to(this.$refs.union.$el, {
+      yPercent: 105,
+      duration: 0.675,
+    })
+    this.tl.set(this.$refs.union.$el, {
+      yPercent: -105,
+    })
+    this.tl.to(this.$refs.union.$el, {
+      yPercent: 0,
+      duration: 0.675,
+    })
+  },
+  beforeDestroy() {
+    this.tl?.kill()
+  },
+  methods: {
+    onMouseEnter() {
+      console.log(this.tl, this.tl.time())
+
+      if (this.tl._repeat === 0) {
+        this.tl.repeat(-1)
+        this.tl.restart()
+      } else {
+        this.tl.play()
+      }
+    },
+    onMouseLeave() {
+      this.tl.repeat(0)
+    },
+  },
+}
+</script>
 
 <style lang="scss" scoped>
 .app-home-hero {
@@ -81,7 +132,6 @@
   &__map {
     grid-column: 8 / span 5;
     height: 80%;
-    background: green;
     align-self: flex-end;
     display: flex;
     justify-content: space-between;
@@ -100,6 +150,7 @@
       padding-bottom: 20px;
       padding: desktop-vw(0px) desktop-vw(20px) desktop-vw(20px)
         desktop-vw(20px);
+      z-index: 1;
     }
 
     &__coordinate,
@@ -185,8 +236,13 @@
       line-height: 15px;
     }
 
-    svg {
+    &__icon {
       margin-top: desktop-vw(25px);
+      overflow: hidden;
+    }
+
+    svg {
+      // margin-top: desktop-vw(25px);
     }
   }
 }

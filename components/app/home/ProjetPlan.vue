@@ -1,15 +1,29 @@
 <template>
   <div class="app-home-projet__plan">
-    <div class="app-home-projet__plan__header">
-      <TP2 class="app-home-projet__plan__header__f-c">Plan n°34</TP2>
-      <div class="app-home-projet__plan__header__s-c">
-        <TP2>Ref</TP2>
-        <span class="app-home-projet__plan__header__dot" />
-        <TP2>908765</TP2>
+    <div class="app-home-projet__plan__header__wrapper">
+      <div class="app-home-projet__plan__header">
+        <TP2 class="app-home-projet__plan__header__f-c">Plan n°34</TP2>
+        <div class="app-home-projet__plan__header__s-c">
+          <TP2>Ref</TP2>
+          <span class="app-home-projet__plan__header__dot" />
+          <TP2>908765</TP2>
+        </div>
       </div>
+      <div class="app-home-projet__plan__header-fake" />
+      <TP2 color="transparent" class="app-home-projet__plan__border"
+        >Plan n°34</TP2
+      >
     </div>
-    <div class="app-home-projet__plan__bottom">
-      <nuxt-picture src="imgs/projet/plan.png" format="webp" alt="alt" />
+
+    <div class="app-home-projet__plan__body">
+      <div class="app-home-projet__plan__body__visual-wrapper">
+        <nuxt-picture
+          class="app-home-projet__plan__body__visual"
+          src="imgs/projet/plan.png"
+          format="webp"
+          alt="alt"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -19,14 +33,13 @@
   position: absolute;
   grid-column: 5 / span 5;
   width: 92.5%;
-  aspect-ratio: 495/475;
+  aspect-ratio: 495/435;
   bottom: 40%;
   left: columns(0.5);
   transform: rotate(-6deg);
   transform: translateY(50%) rotate(4deg);
   z-index: -1;
-  border: 1px solid var(--c-black);
-  background: var(--c-white);
+  transform-origin: left bottom;
 
   .app-element-lottie {
     position: absolute;
@@ -43,17 +56,91 @@
     padding: desktop-vw(20px) desktop-vw(40px) desktop-vw(45px) desktop-vw(40px);
 
     transform: rotate(5deg);
+
+    picture {
+      display: block;
+    }
+  }
+
+  &__border {
+    height: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: desktop-vw(12px);
+    border-right: 1px solid var(--c-black);
+    transform-origin: center bottom;
+
+    &.P2 {
+      text-transform: uppercase;
+      font-size: desktop-vw(24px);
+      line-height: desktop-vw(20px);
+      position: absolute;
+      left: 0;
+      height: 3.8194444444vw;
+      @include font-adihausDIN-cn-bold();
+    }
+  }
+
+  &__body {
+    aspect-ratio: 375 / 425;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: desktop-vw(20px) desktop-vw(40px) desktop-vw(45px) desktop-vw(40px);
+    overflow: hidden;
+    background: var(--c-white);
+    border: 1px solid var(--c-black);
+    border-top: none;
+
+    &__visual-wrapper {
+      width: 100%;
+      height: 100%;
+      transform-origin: left bottom;
+    }
+
+    &__visual {
+      transform: rotate(5deg);
+      display: block;
+    }
+  }
+
+  &__header-fake {
+    display: flex;
+    flex-direction: row;
+    transform: scaleY(1);
+    transform-origin: center bottom;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    background: white;
+    left: 0;
+    border: 1px solid var(--c-black);
+    height: desktop-vw(55px);
+  }
+
+  &__header__wrapper {
+    height: desktop-vw(55px);
+    position: relative;
+    width: 100%;
+    z-index: 1;
   }
 
   &__header {
     display: flex;
     flex-direction: row;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    height: 60%;
+    overflow: hidden;
 
     &__f-c {
       flex: 1;
       padding: desktop-vw(12px);
-      border-bottom: 1px solid var(--c-black);
-      border-right: 1px solid var(--c-black);
 
       display: flex;
       align-items: center;
@@ -63,6 +150,10 @@
         text-transform: uppercase;
         font-size: desktop-vw(24px);
         line-height: desktop-vw(20px);
+        position: absolute;
+        left: 0;
+        height: 3.8194444444vw;
+
         @include font-adihausDIN-cn-bold();
       }
     }
@@ -70,15 +161,18 @@
     &__s-c {
       flex: 3;
       padding: 12px;
-      border-bottom: 1px solid var(--c-black);
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      position: absolute;
+      right: 0;
+      height: 3.8194444444vw;
 
       .P2 {
         font-size: desktop-vw(18px);
         line-height: desktop-vw(20px);
         text-transform: uppercase;
+
         @include font-adihausDIN-cn-bold();
       }
     }

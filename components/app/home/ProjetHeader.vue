@@ -1,9 +1,26 @@
 <template>
   <div class="app-home-projet__header">
     <div class="app-home-projet__header__infos">
-      <div v-for="i in 2" :key="i" class="app-home-projet__header__info">
-        <TP1 class="app-home-projet__header__info__title">Titre</TP1>
-        <TH2 weight="bold" class="app-home-projet__header__info__content">
+      <div class="app-home-projet__header__info">
+        <TP1 class="app-home-projet__header__info__title info-text-1"
+          >Titre</TP1
+        >
+        <TH2
+          weight="bold"
+          class="app-home-projet__header__info__content info-text-2"
+        >
+          La chapelle district
+        </TH2>
+        <span class="line-info-border-bottom header-line header-line-1" />
+      </div>
+      <div class="app-home-projet__header__info">
+        <TP1 class="app-home-projet__header__info__title info-text-3"
+          >Titre</TP1
+        >
+        <TH2
+          weight="bold"
+          class="app-home-projet__header__info__content info-text-4"
+        >
           La chapelle district
         </TH2>
         <span class="line-info-border-bottom header-line header-line-1" />
@@ -11,8 +28,10 @@
       <span class="line-infos-border-right header-line header-line-3" />
     </div>
     <div class="app-home-projet__header__description">
-      <TP1 class="app-home-projet__header__description__title">Description</TP1>
-      <TH3 class="app-home-projet__header__description__content">
+      <TP1 class="app-home-projet__header__description__title info-text-5"
+        >Description</TP1
+      >
+      <TH3 class="app-home-projet__header__description__content info-text-6">
         Un lieu de vie dans un quartier en plein mouvement
       </TH3>
     </div>
