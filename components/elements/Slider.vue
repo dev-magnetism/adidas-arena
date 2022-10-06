@@ -52,7 +52,7 @@ import useGUI from '~/hooks/gui'
 export default {
   data() {
     return {
-      parallaxFactor: 2.85,
+      parallaxFactor: 2.5,
     }
   },
   mounted() {
@@ -197,14 +197,14 @@ export default {
     }
 
     &__visual {
+      @include noise();
       position: absolute;
       top: 0;
       left: 0;
       display: block;
       width: 100%;
       height: 100%;
-      @include noise();
-      transition: transform 0.2s linear;
+      // transition: transform 0.2s linear;
       will-change: transform;
 
       img {

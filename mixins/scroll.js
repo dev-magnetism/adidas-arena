@@ -11,6 +11,8 @@ export default {
     this.lenis = new Lenis({
       duration: 1.2,
       easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
       smooth: true,
     })
 

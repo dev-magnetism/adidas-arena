@@ -1,12 +1,10 @@
 <template>
   <div class="app">
     <AppHeader />
-    <!-- <AppScroller> -->
     <nuxt />
-    <!-- </AppScroller>  -->
     <AppScene />
-    <!-- <AppFooter /> -->
     <AppPreloadLayer />
+    <AppCursor />
   </div>
 </template>
 

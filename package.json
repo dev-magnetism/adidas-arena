@@ -15,7 +15,7 @@
     "@lihbr/utils-nuxt.smart-link": "^0.2.2",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/style-resources": "^1.2.1",
-    "@studio-freight/lenis": "^0.2.1",
+    "@studio-freight/lenis": "^0.2.9",
     "@tweakpane/plugin-essentials": "^0.1.5",
     "core-js": "^3.15.1",
     "embla-carousel": "^7.0.3",
