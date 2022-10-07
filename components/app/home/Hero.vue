@@ -6,20 +6,24 @@
         C'EST CHEZ VOUS !
       </TH1>
       <div class="app-home-hero__first-visual">
-        <nuxt-picture
-          class="picture-absolute"
-          src="imgs/placeholder.png"
-          format="webp"
-          alt="placeholder"
-        />
+        <EKinesis :speed="-10">
+          <nuxt-picture
+            class="picture-absolute"
+            src="imgs/placeholder.png"
+            format="webp"
+            alt="placeholder"
+          />
+        </EKinesis>
       </div>
       <div class="app-home-hero__second-visual">
-        <nuxt-picture
-          class="picture-absolute"
-          src="imgs/placeholder.png"
-          format="webp"
-          alt="placeholder"
-        />
+        <EKinesis :speed="25">
+          <nuxt-picture
+            class="picture-absolute"
+            src="imgs/placeholder.png"
+            format="webp"
+            alt="placeholder"
+          />
+        </EKinesis>
       </div>
       <div
         v-if="$mq !== 'sm'"
@@ -257,7 +261,7 @@ export default {
   &__first-visual {
     position: absolute !important;
     left: 0;
-    top: desktop-vw(-200px);
+    top: desktop-vw(-250px);
     // max-width: 350px;
     min-width: 250px;
     grid-column: 1 / span 3;

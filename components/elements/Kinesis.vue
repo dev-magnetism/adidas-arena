@@ -42,5 +42,6 @@ export default {
 .app-element-kinesis {
   width: 100%;
   height: 100%;
+  will-change: transform;
 }
 </style>

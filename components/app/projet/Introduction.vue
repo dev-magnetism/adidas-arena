@@ -10,30 +10,39 @@
         paysage francilien et mondial.
       </TP2>
     </div>
-    <EFramedPicture
-      class="app-projet-introduction__row-framed-visual"
-      color="red-adidas"
-    >
-      <nuxt-picture src="imgs/placeholder.png" format="webp" alt="alt" />
-    </EFramedPicture>
+
+    <EParallax :speed="0.2" class="app-projet-introduction__row-framed-visual">
+      <EKinesis :speed="20">
+        <EFramedPicture color="red-adidas">
+          <EKinesis :speed="-10">
+            <nuxt-picture src="imgs/placeholder.png" format="webp" alt="alt" />
+          </EKinesis>
+        </EFramedPicture>
+      </EKinesis>
+    </EParallax>
 
     <div class="app-projet-introduction__row-second-visual-principal">
-      <TH3>lorem ipsum dolor</TH3>
-      <nuxt-picture
-        src="imgs/placeholder.png"
-        format="webp"
-        alt="placeholder"
-      />
+      <TH3> <EKinesis :speed="-5">lorem ipsum dolor </EKinesis></TH3>
+      <EKinesis :speed="5">
+        <nuxt-picture
+          src="imgs/placeholder.png"
+          format="webp"
+          alt="placeholder"
+        />
+      </EKinesis>
     </div>
 
-    <div class="app-projet-introduction__row-second-visual-transparent">
+    <EKinesis
+      :speed="10"
+      class="app-projet-introduction__row-second-visual-transparent"
+    >
       <nuxt-picture
         src="imgs/placeholder-logo-home.png"
         format="webp"
         alt="placeholder"
       />
       <AtomsCornerPoints :size-points="6" />
-    </div>
+    </EKinesis>
 
     <div class="app-projet-introduction__row-second-content">
       <TH4>POURQUOI ADIDAS ?</TH4>
@@ -41,10 +50,10 @@
         Le naming de l’Arena par adidas est un partenariat construit autour de
         valeurs partagées par nos deux marques:<br /><br />
         l’inclusion, l’accès au sport pour tous, le respect de l’environnement,
-        la création et l’élévation des talents. <br /><br />Ensemble, nous
-        souhaitons faire briller un territoire et ses jeunes générations en leur
-        offrant un rayonnement plus important et une ouverture sur
-        l’international !
+        la création et l’élévation des talents.
+        <br /><br />Ensemble, nous souhaitons faire briller un territoire et ses
+        jeunes générations en leur offrant un rayonnement plus important et une
+        ouverture sur l’international !
       </TP2>
     </div>
   </div>
@@ -72,15 +81,18 @@
   }
 
   &__row-framed-visual {
-    background-color: var(--c-red-adidas);
     grid-column: 7 / span 5;
     grid-row: 1;
-    transform: rotate(4deg);
     aspect-ratio: 545 / 670;
     margin-top: desktop-vw(50px);
     width: 95%;
     margin-left: desktop-vw(50px);
     z-index: 2;
+
+    .app-element-framed-picture {
+      transform: rotate(4deg);
+      height: 100%;
+    }
   }
 
   &__row-second-visual-transparent {
@@ -95,6 +107,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    height: auto;
 
     @include fake-transparent();
 
@@ -139,6 +152,7 @@
     picture {
       aspect-ratio: 595 / 740;
       width: 100%;
+      display: block;
     }
   }
 }

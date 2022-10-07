@@ -1,29 +1,33 @@
 <template>
   <div class="app-le-bloc-presentation grid-inner">
-    <TH2 class="app-le-bloc-presentation__title"
-      >Au cœur du lieu de vie : <br />
-      le Bloc !</TH2
-    >
-    <nuxt-picture
-      class="app-le-bloc-presentation__visual"
-      src="imgs/placeholder.png"
-      format="webp"
-      alt="placeholder"
-      loading="lazy"
-      preload
-    />
-    <EFramedPicture
-      class="app-le-bloc-presentation__framed-visual"
-      color="blue-adidas"
-    >
+    <TH2 class="app-le-bloc-presentation__title">
+      Au cœur du lieu de vie : <br />
+      le Bloc !
+    </TH2>
+    <EKinesis class="app-le-bloc-presentation__visual" :speed="5">
       <nuxt-picture
-        class="picture-absolute"
         src="imgs/placeholder.png"
         format="webp"
-        alt="alt"
+        alt="placeholder"
+        loading="lazy"
+        preload
+        class="picture-absolute"
       />
-    </EFramedPicture>
-    <div class="app-le-bloc-presentation__text">
+    </EKinesis>
+
+    <EKinesis class="app-le-bloc-presentation__framed-visual" :speed="20">
+      <EFramedPicture color="blue-adidas">
+        <EKinesis :speed="-10">
+          <nuxt-picture
+            class="picture-absolute"
+            src="imgs/placeholder.png"
+            format="webp"
+            alt="alt"
+          />
+        </EKinesis>
+      </EFramedPicture>
+    </EKinesis>
+    <EKinesis :speed="5" class="app-le-bloc-presentation__text">
       <TH4>Le visiteur du bloc</TH4>
       <TP2 weight="medium"
         >C’est le lieu de vie et d’expériences pour tous : spectateurs et
@@ -32,7 +36,7 @@
         Des activités & services viennent animer ce lieu à différents moments de
         la journée.</TP2
       >
-    </div>
+    </EKinesis>
   </div>
 </template>
 
@@ -52,15 +56,20 @@
     aspect-ratio: 440 / 545;
     top: desktop-vw(250px);
     transform: rotate(-2deg);
+    height: auto;
   }
 
-  &__framed-visual.app-element-framed-picture {
+  &__framed-visual {
     position: absolute;
     grid-column: 7 / span 4;
     width: 100%;
     aspect-ratio: 405 / 500;
-    transform: rotate(4deg);
     top: desktop-vw(550px);
+    height: auto;
+
+    .app-element-framed-picture {
+      transform: rotate(4deg);
+    }
   }
 
   &__text {

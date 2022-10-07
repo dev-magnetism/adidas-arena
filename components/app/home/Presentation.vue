@@ -12,9 +12,11 @@
     </EParallax>
 
     <EParallax :speed="0.7" class="app-home-presentation__visual-framed">
-      <EKinesis :speed="35">
+      <EKinesis :speed="20">
         <EFramedPicture color="red-adidas">
-          <nuxt-picture src="imgs/placeholder.png" format="webp" alt="alt" />
+          <EKinesis :speed="-10">
+            <nuxt-picture src="imgs/placeholder.png" format="webp" alt="alt" />
+          </EKinesis>
         </EFramedPicture>
       </EKinesis>
     </EParallax>

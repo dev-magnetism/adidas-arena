@@ -29,6 +29,9 @@ export default {
 .app-element-framed-picture {
   padding: desktop-vw(20px);
   position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: auto;
 
   picture {
     position: relative;
