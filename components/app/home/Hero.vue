@@ -2,8 +2,8 @@
   <div class="app-home-hero block-inner">
     <div class="app-home-hero__inner grid">
       <TH1 class="app-home-hero__title">
-        <AtomsTextStroke>BIENVENUE À</AtomsTextStroke> L'ADIDAS ARENA, ICI C'EST
-        CHEZ VOUS !
+        <AtomsTextStroke>BIENVENUE À </AtomsTextStroke> L'ADIDAS ARENA, ICI
+        C'EST CHEZ VOUS !
       </TH1>
       <div class="app-home-hero__first-visual">
         <nuxt-picture
@@ -22,6 +22,7 @@
         />
       </div>
       <div
+        v-if="$mq !== 'sm'"
         class="app-home-hero__scroll-indicator"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
@@ -63,8 +64,8 @@
           alt="placeholder"
         />
       </div>
-      <SvgHomeHeroSticker class="app-home-hero__sticker" />
-      <SvgHomeHeroStars class="app-home-hero__stars" />
+      <SvgHomeHeroSticker v-if="$mq !== 'sm'" class="app-home-hero__sticker" />
+      <SvgHomeHeroStars v-if="$mq !== 'sm'" class="app-home-hero__stars" />
     </div>
   </div>
 </template>
@@ -73,18 +74,22 @@
 import { gsap } from 'gsap'
 export default {
   mounted() {
-    this.tl = gsap.timeline({ repeat: -1, paused: true })
+    const mm = gsap.matchMedia()
 
-    this.tl.to(this.$refs.union.$el, {
-      yPercent: 105,
-      duration: 0.675,
-    })
-    this.tl.set(this.$refs.union.$el, {
-      yPercent: -105,
-    })
-    this.tl.to(this.$refs.union.$el, {
-      yPercent: 0,
-      duration: 0.675,
+    mm.add('(min-width: 800px)', () => {
+      this.tl = gsap.timeline({ repeat: -1, paused: true })
+
+      this.tl.to(this.$refs.union.$el, {
+        yPercent: 105,
+        duration: 0.675,
+      })
+      this.tl.set(this.$refs.union.$el, {
+        yPercent: -105,
+      })
+      this.tl.to(this.$refs.union.$el, {
+        yPercent: 0,
+        duration: 0.675,
+      })
     })
   },
   beforeDestroy() {
@@ -92,7 +97,7 @@ export default {
   },
   methods: {
     onMouseEnter() {
-      console.log(this.tl, this.tl.time())
+      if (this.$mq === 'sm') return
 
       if (this.tl._repeat === 0) {
         this.tl.repeat(-1)
@@ -102,6 +107,8 @@ export default {
       }
     },
     onMouseLeave() {
+      if (this.$mq === 'sm') return
+
       this.tl.repeat(0)
     },
   },
@@ -115,11 +122,21 @@ export default {
   padding-top: desktop-vw(40px);
   padding-bottom: desktop-vw(40px);
 
+  @include mobile {
+    height: 100%;
+    padding-top: mobile-vw(190px);
+    padding-bottom: 0px;
+  }
+
   &__inner {
     width: 100%;
     height: 100%;
     border: 1px solid #181818;
     position: relative;
+
+    @include mobile {
+      border: none;
+    }
   }
 
   &__sticker {
@@ -128,6 +145,10 @@ export default {
     transform: translate(-50%, -50%);
     top: 40%;
     z-index: 9;
+
+    @include mobile {
+      display: none;
+    }
   }
 
   &__stars {
@@ -137,6 +158,10 @@ export default {
     left: 30%;
     top: 32%;
     z-index: 9;
+
+    @include mobile {
+      display: none;
+    }
   }
 
   &__map {
@@ -148,33 +173,65 @@ export default {
     align-items: flex-end;
     position: relative;
 
-    .app-atoms-corner-points {
-      border-bottom: none !important;
-      border-right: none !important;
+    @include mobile {
+      grid-column: 1 / span 6;
+      height: auto;
+      aspect-ratio: 345 / 665;
+      margin-top: mobile-vw(135px);
+      width: 100%;
+    }
+
+    @include desktop {
+      .app-atoms-corner-points {
+        border-bottom: none !important;
+        border-right: none !important;
+      }
     }
 
     &__baseline {
       display: flex;
       justify-content: space-between;
       width: 100%;
-      padding-bottom: 20px;
       padding: desktop-vw(0px) desktop-vw(20px) desktop-vw(20px)
         desktop-vw(20px);
       z-index: 1;
+
+      @include mobile {
+        height: 100%;
+        padding: mobile-vw(18px) mobile-vw(18px) mobile-vw(18px) mobile-vw(18px);
+      }
     }
 
     &__coordinate,
     &__visit {
       padding: desktop-vw(10px) desktop-vw(15px);
 
+      @include mobile {
+        padding: mobile-vw(10px) mobile-vw(15px);
+      }
+
       > :first-child {
         @include font-adihausDIN-medium();
         font-size: desktop-vw(16px);
         line-height: desktop-vw(21px);
+
+        @include mobile {
+          font-size: mobile-vw(16px);
+          line-height: mobile-vw(16px);
+        }
+      }
+    }
+
+    &__coordinate {
+      @include mobile {
+        align-self: flex-start;
       }
     }
 
     &__visit {
+      @include mobile {
+        align-self: flex-end;
+      }
       > :first-child {
         @include font-adihausDIN-cn-medium();
       }
@@ -185,10 +242,16 @@ export default {
     grid-column: 2 / span 6;
     align-self: center;
     z-index: 1;
+    max-width: min(565px, desktop-vw(565px));
     font-size: min(130px, desktop-vw(130px));
     line-height: min(140px, desktop-vw(140px));
-    max-width: 565px;
-    // max-width: columns(5.5);
+
+    @include mobile {
+      grid-column: 1 / span 6;
+      max-width: 100%;
+      font-size: min(80px, mobile-vw(80px));
+      line-height: min(86px, mobile-vw(86px));
+    }
   }
 
   &__first-visual {
@@ -201,6 +264,14 @@ export default {
     width: 100%;
     aspect-ratio: 350 / 440;
     transform: rotate(5deg);
+
+    @include mobile {
+      grid-column: 1 / span 4;
+      width: 80%;
+      min-width: 75%;
+      aspect-ratio: 185 / 235;
+      top: mobile-vw(-225px);
+    }
   }
   &__second-visual {
     position: absolute !important;
@@ -208,10 +279,17 @@ export default {
     bottom: calc(min(-20px, desktop-vw(65px)));
     grid-column: 4 / span 3;
     width: 75%;
-    // max-width: 255px;
     min-width: 200px;
     aspect-ratio: 255 / 320;
     transform: rotate(-6deg);
+
+    @include mobile {
+      grid-column: 4 / span 2;
+      width: 100%;
+      min-width: 100%;
+      aspect-ratio: 115 / 145;
+      top: mobile-vw(300px);
+    }
   }
 
   &__localisation {
@@ -221,6 +299,10 @@ export default {
     grid-column: 2 / span 6;
     display: flex;
     flex-direction: column;
+
+    @include mobile {
+      display: none;
+    }
 
     &__city {
       @include font-adihausDIN-bold();
@@ -240,6 +322,10 @@ export default {
     justify-content: center;
     border-top: 1px solid #181818;
     border-right: 1px solid #181818;
+
+    @include mobile {
+      display: none;
+    }
 
     .P1 {
       font-size: 12px;

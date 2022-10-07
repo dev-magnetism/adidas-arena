@@ -4,27 +4,33 @@
       Futur lieu de référence des cultures urbaines, l'ADIDAS ARENA fait se
       rencontrer musique, sport, culture & lifestyle pour tous.
     </TH3>
-    <EFramedPicture
-      color="red-adidas"
-      class="app-home-presentation__visual-framed"
-    >
-      <nuxt-picture src="imgs/placeholder.png" format="webp" alt="alt" />
-    </EFramedPicture>
 
-    <nuxt-picture
-      class="app-home-presentation__visual-bigger"
-      src="imgs/placeholder.png"
-      format="webp"
-      alt="alt"
-    />
-    <ECornerPointsPicture :size-points="6">
-      <nuxt-picture
-        class="app-home-presentation__visual-smaller picture-absolute"
-        src="imgs/placeholder.png"
-        format="webp"
-        alt="alt"
-      />
-    </ECornerPointsPicture>
+    <EParallax :speed="1.35" class="app-home-presentation__visual-bigger">
+      <EKinesis :speed="20">
+        <nuxt-picture src="imgs/placeholder.png" format="webp" alt="alt" />
+      </EKinesis>
+    </EParallax>
+
+    <EParallax :speed="0.7" class="app-home-presentation__visual-framed">
+      <EKinesis :speed="35">
+        <EFramedPicture color="red-adidas">
+          <nuxt-picture src="imgs/placeholder.png" format="webp" alt="alt" />
+        </EFramedPicture>
+      </EKinesis>
+    </EParallax>
+
+    <EParallax :speed="1" class="app-home-presentation__picture-corner-points">
+      <EKinesis :speed="50">
+        <ECornerPointsPicture :size-points="6">
+          <nuxt-picture
+            class="app-home-presentation__visual-smaller picture-absolute"
+            src="imgs/placeholder.png"
+            format="webp"
+            alt="alt"
+          />
+        </ECornerPointsPicture>
+      </EKinesis>
+    </EParallax>
   </div>
 </template>
 
@@ -46,6 +52,11 @@
     width: 100%;
     transform: translateY(-50%) rotate(2deg);
     z-index: 1;
+
+    .app-element-framed-picture {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   &__visual-bigger {
@@ -58,14 +69,21 @@
     z-index: 0;
   }
 
-  .app-element-corner-points-picture {
+  &__picture-corner-points {
     position: absolute;
     aspect-ratio: 320 / 210;
-    top: 47vw;
-    grid-column: 7 / span 3;
+    top: 40vw;
+    grid-column: 6 / span 3;
+    left: columns(1);
     width: 100%;
     transform: rotate(5deg);
     z-index: 2;
+
+    .app-element-corner-points-picture {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
 
     .app-home-presentation__visual-smaller {
       position: absolute;

@@ -36,58 +36,60 @@ export default {
     },
   },
   mounted() {
-    const wordCount = this.countWords(this.$slots.default[0].elm.innerHTML)
+    document.fonts.ready.then(() => {
+      const wordCount = this.countWords(this.$slots.default[0].elm.innerHTML)
 
-    const colors = [...new Array(wordCount)].map(() => {
-      const color =
-        Math.random() < 0.45
-          ? '#181818'
-          : Math.random() < 0.5
-          ? '#0000FF'
-          : '#FF4A48'
+      const colors = [...new Array(wordCount)].map(() => {
+        const color =
+          Math.random() < 0.45
+            ? '#181818'
+            : Math.random() < 0.5
+            ? '#0000FF'
+            : '#FF4A48'
 
-      return color
-    })
-
-    this.$refs.marquees.forEach((marquee) => {
-      const split = new SplitText(marquee.children[0], {
-        type: 'words, lines',
+        return color
       })
 
-      split.words.forEach((el, index) => {
-        el.style.color = colors[index]
-      })
-    })
+      this.$refs.marquees.forEach((marquee) => {
+        const split = new SplitText(marquee.children[0], {
+          type: 'words, lines',
+        })
 
-    if (this.inverted) {
-      gsap.set(this.$refs.marquees, {
-        xPercent: -100 * (this.repeat - 1),
+        split.words.forEach((el, index) => {
+          el.style.color = colors[index]
+        })
       })
-    }
 
-    this.tween = gsap.to(this.$refs.marquees, {
-      duration: this.duration,
-      xPercent: this.inverted ? 0 : -100,
-      ease: 'none',
-      repeat: -1,
-      scrollTrigger: {
+      if (this.inverted) {
+        gsap.set(this.$refs.marquees, {
+          xPercent: -100 * (this.repeat - 1),
+        })
+      }
+
+      this.tween = gsap.to(this.$refs.marquees, {
+        duration: this.duration,
+        xPercent: this.inverted ? 0 : -100,
+        ease: 'none',
+        repeat: -1,
+        scrollTrigger: {
+          trigger: this.$refs.marquee,
+          start: 'top-=100% bottom',
+          end: 'bottom top',
+          // markers: true,
+          toggleActions: 'play pause resume pause',
+        },
+      })
+
+      ScrollTrigger.create({
         trigger: this.$refs.marquee,
-        start: 'top-=100% bottom',
-        end: 'bottom top',
-        // markers: true,
-        toggleActions: 'play pause resume pause',
-      },
-    })
+        scrub: 5,
+        onUpdate: (self) => {
+          const velocity = Math.abs(self.getVelocity()) * 0.0000015
+          const progress = this.tween.progress() + velocity
 
-    ScrollTrigger.create({
-      trigger: this.$refs.marquee,
-      scrub: 5,
-      onUpdate: (self) => {
-        const velocity = Math.abs(self.getVelocity()) * 0.0000015
-        const progress = this.tween.progress() + velocity
-
-        this.tween.progress(progress)
-      },
+          this.tween.progress(progress)
+        },
+      })
     })
   },
   beforeDestroy() {

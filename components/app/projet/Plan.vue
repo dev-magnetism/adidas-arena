@@ -105,7 +105,7 @@ export default {
         trigger: this.$el,
         start: 'top+=15% bottom',
         end: 'bottom-=10% bottom',
-        scrub: 2,
+        scrub: 1,
       },
     })
 

@@ -14,11 +14,21 @@
       v-if="!transparent"
       ref="overlay"
       :style="{
-        'background-color': isBlue
+        'background-color': big
+          ? `var(--c-red-adidas)`
+          : isBlue
           ? `var(--c-blue-adidas)`
           : `var(--c-red-adidas)`,
       }"
       class="app-element-grid-logos-bloc__overlay"
+    />
+    <span
+      v-if="!transparent && big"
+      ref="overlayTwin"
+      :style="{
+        'background-color': `var(--c-blue-adidas)`,
+      }"
+      class="app-element-grid-logos-bloc__overlay twin"
     />
   </div>
 </template>
@@ -64,30 +74,70 @@ export default {
       opacity: 0,
     })
 
+    this.tl.addLabel('overlayEnter')
+
     this.tl.fromTo(
       this.$refs.overlay,
       {
         scaleY: 0,
       },
       {
-        delay: 0.25,
+        delay: 0.3,
         scaleY: 1,
-        duration: 0.375,
-        ease: 'power4.out',
+        duration: 0.45,
+        ease: 'power3.out',
         transformOrigin: 'top center',
-      }
+      },
+      'overlayEnter'
     )
+
+    if (this.big) {
+      this.tl.fromTo(
+        this.$refs.overlayTwin,
+        {
+          scaleY: 0,
+        },
+        {
+          delay: 0.15,
+          scaleY: 1,
+          duration: 0.45,
+          ease: 'power3.out',
+          transformOrigin: 'top center',
+        },
+        'overlayEnter'
+      )
+    }
 
     this.tl.set(this.$refs.img.$el, {
       opacity: 1,
     })
 
-    this.tl.to(this.$refs.overlay, {
-      scaleY: 0,
-      duration: 0.45,
-      ease: 'power4.out',
-      transformOrigin: 'bottom center',
-    })
+    this.tl.addLabel('overlayLeave')
+
+    this.tl.to(
+      this.$refs.overlay,
+      {
+        scaleY: 0,
+        duration: 0.45,
+        ease: 'power3.inOut',
+        transformOrigin: 'bottom center',
+      },
+      'overlayLeave'
+    )
+    if (this.big) {
+      this.tl.to(
+        this.$refs.overlayTwin,
+        {
+          scaleY: 0,
+          duration: 0.45,
+          delay: 0.15,
+
+          ease: 'power3.inOut',
+          transformOrigin: 'bottom center',
+        },
+        'overlayLeave'
+      )
+    }
   },
 }
 </script>
@@ -135,6 +185,11 @@ export default {
     width: 100%;
     height: 100%;
     transform: scaleY(0);
+    z-index: 1;
+
+    &.twin {
+      z-index: 0;
+    }
   }
 
   &.transparent {

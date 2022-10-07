@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 
@@ -45,9 +44,6 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      fontsLoaded: (state) => state.fontsLoaded,
-    }),
     classes() {
       return [
         {
@@ -58,14 +54,14 @@ export default {
       ]
     },
   },
-  watch: {
-    fontsLoaded() {
+
+  mounted() {
+    document.fonts.ready.then(() => {
       if (!this.split) return
 
       this.initSplitText()
-    },
+    })
   },
-  mounted() {},
   methods: {
     initSplitText() {
       this.splitChild = new SplitText(this.$refs.h1, {
@@ -91,8 +87,7 @@ export default {
           ease: 'power4.out',
           scrollTrigger: {
             trigger: this.$el,
-            toggleActions: 'play none none reset',
-            // markers: true,
+            toggleActions: 'play none none none',
           },
         }
       )

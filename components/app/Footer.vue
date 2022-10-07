@@ -274,7 +274,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-left: desktop-vw(40px);
+      margin-left: desktop-vw(30px);
       cursor: pointer;
       align-self: center;
       position: relative;

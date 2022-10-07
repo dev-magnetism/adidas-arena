@@ -3,8 +3,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { mapState } from 'vuex'
 
 export default {
   computed: {
@@ -12,43 +11,8 @@ export default {
       fontsLoaded: (state) => state.fontsLoaded,
     }),
   },
-  mounted() {
-    this.preloadFonts()
-  },
-  methods: {
-    preloadFonts() {
-      const FontFaceObserver = require('fontfaceobserver')
-
-      const fontData = {
-        'TuskerGrotesk-Bold': { weight: 400 },
-        'TuskerGrotesk-Medium': { weight: 400 },
-        'AdihausDIN Cn Bold': { weight: 400 },
-        'AdihausDIN Bold': { weight: 400 },
-        'AdihausDIN Medium': { weight: 400 },
-        AdihausDIN: { weight: 400 },
-      }
-
-      const observers = []
-
-      Object.keys(fontData).forEach((family) => {
-        const data = fontData[family]
-        const obs = new FontFaceObserver(family, data)
-        observers.push(obs.load())
-      })
-
-      Promise.all(observers)
-        .then((fonts) => {
-          this.setFontsLoaded(true)
-          ScrollTrigger.refresh()
-        })
-        .catch((err) => {
-          console.warn('Some critical font are not available:', err)
-        })
-    },
-    ...mapMutations({
-      setFontsLoaded: 'setFontsLoaded',
-    }),
-  },
+  mounted() {},
+  methods: {},
 }
 </script>
 

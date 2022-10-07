@@ -135,6 +135,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    'nuxt-mq',
     // 'nuxt-runtime-compiler',
     [
       '~/modules/directus',
@@ -148,6 +149,14 @@ export default {
       },
     ],
   ],
+
+  mq: {
+    defaultBreakpoint: 'sm',
+    breakpoints: {
+      sm: 800,
+      lg: Infinity,
+    },
+  },
 
   // directus: {
   //   url: 'https://nws6fqcy.directus.app/',

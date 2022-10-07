@@ -54,6 +54,7 @@
 <script>
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
+
 import lottie from 'lottie-web'
 
 export default {
@@ -70,28 +71,34 @@ export default {
       },
     }
   },
+
   mounted() {
-    this.split = new SplitText(this.$refs.title.$el, {
-      type: 'chars',
+    document.fonts.ready.then(() => {
+      this.initSplitText()
     })
-
-    this.initLottieAnimations()
-
-    this.tl = gsap.timeline({
-      defaults: { duration: 0.75, ease: 'elastic.out(1, .65)' },
-      scrollTrigger: {
-        trigger: this.$el,
-        start: 'top center',
-        toggleActions: 'play none none none',
-      },
-    })
-
-    this.initTimeline()
   },
   beforeDestroy() {
     this.tl?.kill()
   },
   methods: {
+    initSplitText() {
+      this.split = new SplitText(this.$refs.title.$el, {
+        type: 'chars',
+      })
+
+      this.tl = gsap.timeline({
+        defaults: { duration: 0.75, ease: 'elastic.out(1, .65)' },
+        scrollTrigger: {
+          trigger: this.$el,
+          start: 'top center',
+          toggleActions: 'play none none none',
+        },
+      })
+
+      this.initLottieAnimations()
+
+      this.initTimeline()
+    },
     initTimeline() {
       this.tl.fromTo(
         [this.$refs.wrapper, this.$refs.fakeVisual],
@@ -393,7 +400,8 @@ export default {
         {
           opacity: 1,
           yPercent: 0,
-        }
+        },
+        'charsHeader+=100%'
       )
     },
     initLottieAnimations() {

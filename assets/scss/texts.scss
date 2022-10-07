@@ -3,6 +3,11 @@
   line-height: desktop-vw(140px);
   text-transform: uppercase;
 
+  @include mobile {
+    font-size: mobile-vw(80px);
+    line-height: mobile-vw(86px);
+  }
+
   &.medium {
     @include font-tuskerGrotesk-medium();
     font-weight: 500;
@@ -34,7 +39,12 @@
   line-height: desktop-vw(72px);
   letter-spacing: -0.02em;
   text-transform: uppercase;
-    @include font-adihausDIN-cn-bold();
+  @include font-adihausDIN-cn-bold();
+
+  @include mobile {
+    font-size: mobile-vw(40px);
+    line-height: mobile-vw(40px);
+  }
     
   &.bold {
     @include font-adihausDIN-cn-bold();

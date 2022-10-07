@@ -22,7 +22,7 @@ export default {
       type: String,
     },
     scrub: {
-      default: 1,
+      default: 0.5,
       require: false,
       type: Number,
     },

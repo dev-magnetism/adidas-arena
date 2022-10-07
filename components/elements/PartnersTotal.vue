@@ -1,15 +1,21 @@
 <template>
   <div class="app-element-partners-total">
     <div class="app-element-partners-total__number">
-      <TH1 weight="bold" v-for="(char, index) in totalFinal" :key="index">{{
-        char
-      }}</TH1>
+      <TH1
+        v-for="(char, index) in totalFinal"
+        :key="index"
+        ref="numbers"
+        weight="bold"
+        >{{ char }}</TH1
+      >
     </div>
-    <TH2 class="app-element-partners-total__partners">partenaires</TH2>
+    <TH2 ref="text" class="app-element-partners-total__text">partenaires</TH2>
   </div>
 </template>
 
 <script>
+import { gsap } from 'gsap'
+
 export default {
   data() {
     return {
@@ -21,6 +27,46 @@ export default {
       const value = ('0' + this.total).slice(-2)
       return value.split('')
     },
+  },
+  mounted() {
+    this.tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: this.$el,
+        start: 'bottom bottom',
+        toggleActions: 'play none none none',
+      },
+    })
+
+    const els = this.$refs.numbers.map((el) => el.$el)
+
+    this.tl.fromTo(
+      els,
+      {
+        yPercent: -100,
+      },
+      {
+        delay: 0.1,
+        yPercent: 0,
+        stagger: 0.2,
+        duration: 0.7,
+        ease: 'power3.out',
+      }
+    )
+    this.tl.fromTo(
+      this.$refs.text.$el,
+      {
+        yPercent: -65,
+        opacity: 0,
+      },
+      {
+        yPercent: 0,
+        stagger: 0.1,
+        opacity: 0.35,
+        duration: 0.45,
+        ease: 'power3.out',
+      },
+      '<50%'
+    )
   },
 }
 </script>
@@ -38,6 +84,7 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    overflow: hidden;
 
     .H1 {
       display: inline-block;
@@ -49,7 +96,7 @@ export default {
     }
   }
 
-  .H2 {
+  &__text.H2 {
     font-size: desktop-vw(24px);
     line-height: desktop-vw(24px);
     opacity: 0.35;
