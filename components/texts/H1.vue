@@ -87,6 +87,7 @@ export default {
           ease: 'power4.out',
           scrollTrigger: {
             trigger: this.$el,
+            start: 'center bottom',
             toggleActions: 'play none none none',
           },
         }

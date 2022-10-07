@@ -1,7 +1,6 @@
 precision highp float;
 
 uniform sampler2D uMap;
-uniform sampler2D uMapCadre;
 uniform vec2 uRatio;
 uniform vec2 uResolutionEl;
 uniform float uOpacity;
@@ -48,7 +47,6 @@ strength = step(0.8, strength);
 	
   
 	vec4 color = texture2D(uMap, zoomedUv);
-	vec4 colorb = texture2D(uMapCadre, vUv);
 	vec4 test = vec4(strength, strength, strength, 1.);
 
 	gl_FragColor = color;

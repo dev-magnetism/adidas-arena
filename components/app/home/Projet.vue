@@ -87,7 +87,7 @@ export default {
       })
 
       this.tl = gsap.timeline({
-        defaults: { duration: 0.75, ease: 'elastic.out(1, .65)' },
+        defaults: { duration: 0.3, ease: 'power3.inOut' },
         scrollTrigger: {
           trigger: this.$el,
           start: 'top center',
@@ -109,7 +109,6 @@ export default {
           transformOrigin: 'left bottom',
           scale: 1,
           stagger: 0.05,
-          ease: 'elastic.out(.85, .8)',
           duration: 0.65,
         }
       )
@@ -158,7 +157,7 @@ export default {
         this.playhead,
         {
           circle: this.animationCircle.totalFrames - 1,
-          duration: 8,
+          duration: 0.85,
           onUpdate: () =>
             this.animationCircle.goToAndStop(this.playhead.circle, true),
         },
@@ -168,7 +167,7 @@ export default {
         this.playhead,
         {
           validCircle: this.animationValidCircle.totalFrames - 1,
-          duration: 8,
+          duration: 0.85,
           delay: 0.15,
           onUpdate: () =>
             this.animationValidCircle.goToAndStop(
@@ -182,7 +181,7 @@ export default {
         this.playhead,
         {
           littleArrow: this.animationLittleArrow.totalFrames - 1,
-          duration: 8,
+          duration: 0.85,
           delay: 0.3,
           onUpdate: () =>
             this.animationLittleArrow.goToAndStop(
@@ -195,7 +194,7 @@ export default {
       this.tl.to(
         this.playhead,
         {
-          duration: 8,
+          duration: 0.85,
           delay: 0.45,
           cross: this.animationCross.totalFrames - 1,
           onUpdate: () =>
@@ -206,7 +205,7 @@ export default {
       this.tl.to(
         this.playhead,
         {
-          duration: 8,
+          duration: 0.85,
           delay: 0.6,
           crossCircle: this.animationCrossCircle.totalFrames - 1,
           onUpdate: () =>
@@ -220,7 +219,7 @@ export default {
       this.tl.to(
         this.playhead,
         {
-          duration: 8,
+          duration: 0.85,
           delay: 0.75,
           arrowBlue: this.animationArrowBlue.totalFrames - 1,
           onUpdate: () =>
@@ -231,7 +230,7 @@ export default {
       this.tl.to(
         this.playhead,
         {
-          duration: 8,
+          duration: 0.85,
           delay: 1,
           arrow: this.animationArrow.totalFrames - 1,
           onUpdate: () =>

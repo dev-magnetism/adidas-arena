@@ -6,24 +6,20 @@
         C'EST CHEZ VOUS !
       </TH1>
       <div class="app-home-hero__first-visual">
-        <EKinesis :speed="-10">
-          <nuxt-picture
-            class="picture-absolute"
-            src="imgs/placeholder.png"
-            format="webp"
-            alt="placeholder"
-          />
-        </EKinesis>
+        <nuxt-picture
+          class="picture-absolute"
+          src="imgs/placeholder.png"
+          format="webp"
+          alt="placeholder"
+        />
       </div>
       <div class="app-home-hero__second-visual">
-        <EKinesis :speed="25">
-          <nuxt-picture
-            class="picture-absolute"
-            src="imgs/placeholder.png"
-            format="webp"
-            alt="placeholder"
-          />
-        </EKinesis>
+        <nuxt-picture
+          class="picture-absolute"
+          src="imgs/placeholder.png"
+          format="webp"
+          alt="placeholder"
+        />
       </div>
       <div
         v-if="$mq !== 'sm'"

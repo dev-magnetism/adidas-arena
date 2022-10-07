@@ -180,8 +180,6 @@ export default {
 
       this.texture = await this.loadTexture(this.currentSrc)
 
-      this.textureCadre = await this.loadTexture('/imgs/cadre-webgl.png')
-
       this.initMesh()
     },
     initMesh() {
@@ -195,9 +193,7 @@ export default {
           uMap: {
             value: this.texture,
           },
-          uMapCadre: {
-            value: this.textureCadre,
-          },
+
           uRatio: {
             value: new THREE.Vector2(0, 0),
           },

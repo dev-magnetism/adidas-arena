@@ -184,7 +184,7 @@ export default {
   justify-content: center;
   position: relative;
   overflow: hidden;
-  padding-bottom: desktop-vw(300px);
+  // padding-bottom: desktop-vw(300px);
 
   &__pictures {
     width: 300vw;
