@@ -13,8 +13,20 @@ export default {
   },
   mounted() {
     this.resizeObserver = new ResizeObserver((entries) => {
-      const contentRect = entries[0].contentRect
-      const el = entries[0].target
+      this.onResize(entries)
+    })
+
+    this.resizeObserver.observe(this.$el)
+  },
+  beforeDestroy() {
+    this.resizeObserver.unobserve(this.$el)
+  },
+  methods: {
+    onResize(entries) {
+      const contentRect = entries
+        ? entries[0].contentRect
+        : this.$el.getBoundingClientRect()
+      const el = entries ? entries[0].target : this.$el
 
       this.boundingRect.width = contentRect.width
       this.boundingRect.height = contentRect.height
@@ -23,13 +35,7 @@ export default {
       this.boundingRect.left = this.offsetLeft(el, -this.$viewport.width)
 
       this.updateBoundingRect()
-    })
-    this.resizeObserver.observe(this.$el)
-  },
-  beforeDestroy() {
-    this.resizeObserver.unobserve(this.$el)
-  },
-  methods: {
+    },
     offsetTop(element, accumulator = 0) {
       const top = accumulator + element.offsetTop
       if (element.offsetParent) {

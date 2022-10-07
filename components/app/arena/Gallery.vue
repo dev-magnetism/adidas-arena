@@ -176,8 +176,7 @@ export default {
 <style lang="scss">
 .app-arena-gallery {
   width: 100%;
-  margin-top: desktop-vw(130px);
-  margin-bottom: desktop-vw(165px);
+
   height: desktop-vw(1440px);
   display: flex;
   align-items: center;

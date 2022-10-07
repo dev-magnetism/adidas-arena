@@ -45,7 +45,7 @@
 
 <style lang="scss">
 .app-projet-gallery {
-  margin-top: desktop-vw(200px);
+  margin-top: desktop-vw(230px);
   &__item {
     grid-column: span 6;
 

@@ -18,7 +18,9 @@ export default {
 
 <style lang="scss">
 .app-arena {
-  .app-footer {
+  .app-arena-gallery {
+    margin-top: desktop-vw(130px);
+    margin-bottom: desktop-vw(165px);
   }
 }
 </style>

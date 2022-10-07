@@ -229,7 +229,8 @@ export default {
 
       this.mesh.addEventListener('click', this.onClickPicture)
 
-      this.updateBoundingRect()
+      this.onResize()
+      // this.updateBoundingRect()
 
       this.parallaxCoef = this.mesh.scale.x * 0.001 + this.mesh.scale.y * 0.001
     },

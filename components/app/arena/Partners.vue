@@ -28,7 +28,7 @@
 <style lang="scss">
 .app-arena-partners {
   position: relative;
-  padding-bottom: desktop-vw(140px);
+  margin-bottom: desktop-vw(140px);
   margin-top: desktop-vw(130px);
 
   &__content {
