@@ -20,7 +20,9 @@ export default {
 .app-arena {
   .app-arena-gallery {
     margin-top: desktop-vw(130px);
-    margin-bottom: desktop-vw(165px);
+  }
+  .app-footer {
+    margin-top: desktop-vw(165px);
   }
 }
 </style>

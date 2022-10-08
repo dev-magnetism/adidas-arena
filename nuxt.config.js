@@ -122,12 +122,24 @@ export default {
   // },
 
   image: {
-    // The screen sizes predefined by `@nuxt/image`:
     screens: {
       sm: 800,
       lg: 1440,
       xl: 1920,
       xxl: 2560,
+    },
+    providers: {
+      directus: {
+        name: 'directus',
+        provider: '~/providers/directus',
+        options: {
+          baseURL: 'https://nws6fqcy.directus.app/',
+          modifiers: {
+            format: 'webp',
+            quality: 85,
+          },
+        },
+      },
     },
   },
 
