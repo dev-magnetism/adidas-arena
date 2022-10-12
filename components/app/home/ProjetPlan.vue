@@ -45,10 +45,10 @@
     grid-column: 1 / span 6;
     width: 100%;
     aspect-ratio: 335/320;
-    bottom: 0;
-    left: columns(0.5);
-    transform: translateY(50%) rotate(4deg);
-    z-index: -1;
+    bottom: 23%;
+    left: columns(0.7);
+    transform: translateY(0%) rotate(6deg);
+    z-index: 1;
     transform-origin: left bottom;
   }
 
@@ -73,7 +73,7 @@
     }
   }
 
-  &__border {
+  &__border.P2 {
     height: 100%;
     height: 100%;
     position: absolute;
@@ -83,14 +83,20 @@
     border-right: 1px solid var(--c-black);
     transform-origin: center bottom;
 
-    &.P2 {
-      text-transform: uppercase;
-      font-size: desktop-vw(24px);
-      line-height: desktop-vw(20px);
-      position: absolute;
-      left: 0;
-      height: 3.8194444444vw;
-      @include font-adihausDIN-cn-bold();
+    text-transform: uppercase;
+    font-size: desktop-vw(24px);
+    line-height: desktop-vw(20px);
+    position: absolute;
+    left: 0;
+    height: 3.8194444444vw;
+    @include font-adihausDIN-cn-bold();
+
+    @include mobile {
+      font-size: mobile-vw(16px);
+      line-height: mobile-vw(12px);
+      height: mobile-vw(30px);
+      padding: 0 mobile-vw(10px);
+      z-index: 2;
     }
   }
 
@@ -120,7 +126,7 @@
   &__header-fake {
     display: flex;
     flex-direction: row;
-    transform: scaleY(1);
+    transform: scaleY(0);
     transform-origin: center bottom;
     position: absolute;
     width: 100%;
@@ -129,6 +135,10 @@
     left: 0;
     border: 1px solid var(--c-black);
     height: desktop-vw(55px);
+
+    @include mobile {
+      display: none;
+    }
   }
 
   &__header__wrapper {
@@ -136,6 +146,10 @@
     position: relative;
     width: 100%;
     z-index: 1;
+
+    @include mobile {
+      height: mobile-vw(30px);
+    }
   }
 
   &__header {
@@ -149,6 +163,13 @@
     height: 60%;
     overflow: hidden;
 
+    @include mobile {
+      height: 100%;
+      align-items: center;
+      border: 1px solid var(--c-black);
+      background: var(--c-white);
+    }
+
     &__f-c {
       flex: 1;
       padding: desktop-vw(12px);
@@ -156,6 +177,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
+
+      @include mobile {
+        padding: 0px;
+      }
 
       &.P2 {
         text-transform: uppercase;
@@ -166,6 +191,13 @@
         height: 3.8194444444vw;
 
         @include font-adihausDIN-cn-bold();
+
+        @include mobile {
+          font-size: mobile-vw(16px);
+          line-height: mobile-vw(12px);
+          height: auto;
+          padding: 0 mobile-vw(10px);
+        }
       }
     }
 
@@ -179,12 +211,22 @@
       right: 0;
       height: 3.8194444444vw;
 
+      @include mobile {
+        height: auto;
+        padding: 0px;
+      }
+
       .P2 {
         font-size: desktop-vw(18px);
         line-height: desktop-vw(20px);
         text-transform: uppercase;
 
         @include font-adihausDIN-cn-bold();
+
+        @include mobile {
+          font-size: mobile-vw(16px);
+          line-height: mobile-vw(12px);
+        }
       }
     }
 

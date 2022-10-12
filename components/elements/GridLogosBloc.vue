@@ -154,10 +154,12 @@ export default {
   background-color: var(--c-white);
   cursor: pointer;
 
-  &.transparent {
-    &:hover {
-      .app-element-grid-logos-bloc__you {
-        transform: scale(1);
+  @include hover {
+    &.transparent {
+      &:hover {
+        .app-element-grid-logos-bloc__you {
+          transform: scale(1);
+        }
       }
     }
   }
@@ -166,6 +168,10 @@ export default {
     width: 50%;
     transform: scale(0);
     transition: transform 0.3s var(--ease-in-out-cubic);
+
+    @include mobile {
+      transform: scale(1);
+    }
   }
 
   .app-atoms-corner-points {

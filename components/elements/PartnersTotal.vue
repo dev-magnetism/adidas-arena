@@ -29,6 +29,8 @@ export default {
     },
   },
   mounted() {
+    if (this.$mq === 'sm') return
+
     this.tl = gsap.timeline({
       scrollTrigger: {
         trigger: this.$el,
@@ -79,6 +81,10 @@ export default {
   align-self: start;
   display: flex;
   flex-direction: column;
+
+  @include mobile {
+    display: none;
+  }
 
   &__number {
     display: flex;

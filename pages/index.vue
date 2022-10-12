@@ -77,6 +77,10 @@ export default {
 .app-home {
   .app-footer {
     margin-top: desktop-vw(205px);
+
+    @include mobile {
+      margin-top: mobile-vw(130px);
+    }
   }
   @include mobile {
     // background: green;

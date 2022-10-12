@@ -88,6 +88,10 @@ export default {
   grid-gap: 1px;
   margin-top: desktop-vw(30px);
 
+  @include mobile {
+    width: 100%;
+  }
+
   .bloc {
     aspect-ratio: 90 / 90;
     position: relative;

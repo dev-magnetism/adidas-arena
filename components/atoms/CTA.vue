@@ -109,6 +109,10 @@ export default {
 
   &.arrow {
     padding: desktop-vw(15px) desktop-vw(0px) desktop-vw(15px) desktop-vw(25px);
+
+    @include mobile {
+      padding: mobile-vw(18px) mobile-vw(0px) mobile-vw(18px) mobile-vw(25px);
+    }
   }
 
   @include hover {
@@ -139,6 +143,10 @@ export default {
       transform-origin: left center;
       transition: transform 0.4s var(--ease-out-cubic);
       will-change: transform;
+
+      @include mobile {
+        transform: scaleX(1);
+      }
     }
   }
 
@@ -147,6 +155,11 @@ export default {
     line-height: desktop-vw(32px);
     text-transform: uppercase;
     @include font-adihausDIN-cn-bold();
+
+    @include mobile {
+      font-size: mobile-vw(24px);
+      line-height: mobile-vw(32px);
+    }
   }
 
   &__arrow {
@@ -159,7 +172,7 @@ export default {
       will-change: transform;
 
       @include mobile {
-        padding: 0px mobile-vw(15px);
+        padding: 0px mobile-vw(15px) mobile-vw(0px) mobile-vw(5px);
       }
     }
   }

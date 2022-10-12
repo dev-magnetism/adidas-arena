@@ -17,5 +17,17 @@
   left: 50%;
   transform: translate(-50%, 0);
   z-index: 999;
+
+  a {
+    @include p1();
+    text-transform: uppercase;
+    @include font-adihausDIN-bold();
+
+    margin-right: desktop-vw(10px);
+
+    &:last-child {
+      margin-right: 0px;
+    }
+  }
 }
 </style>

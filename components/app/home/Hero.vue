@@ -264,15 +264,23 @@ export default {
     grid-column: 2 / span 6;
     align-self: center;
     z-index: 1;
-    // max-width: min(565px, desktop-vw(565px));
-    font-size: min(130px, desktop-vw(130px));
-    line-height: min(140px, desktop-vw(140px));
+    max-width: min(565px, desktop-vw(565px));
+    // font-size: min(130px, desktop-vw(130px));
+    // line-height: min(140px, desktop-vw(140px));
+
+    .H1 {
+      font-size: min(130px, desktop-vw(130px));
+      line-height: min(140px, desktop-vw(140px));
+
+      @include mobile {
+        font-size: min(80px, mobile-vw(80px));
+        line-height: min(86px, mobile-vw(86px));
+      }
+    }
 
     @include mobile {
       grid-column: 1 / span 6;
       max-width: 100%;
-      font-size: min(80px, mobile-vw(80px));
-      line-height: min(86px, mobile-vw(86px));
     }
   }
 

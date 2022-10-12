@@ -55,6 +55,21 @@
         <div ref="lottieArrowBlue" class="app-home-projet__arrow-blue" />
         <div ref="lottieArrow" class="app-home-projet__arrow" />
         <div ref="lottieLittleArrow" class="app-home-projet__little-arrow" />
+        <AtomsCTA class="app-home-projet__cta" color="beige" bg="blue-adidas">
+          En savoir plus
+        </AtomsCTA>
+        <AtomsTitleTag
+          class="app-home-projet__tag-top-left app-projet-tag-3"
+          bg="beige"
+          color="black"
+          >Coton recyclé pour l’isolation</AtomsTitleTag
+        >
+        <AtomsTitleTag
+          class="app-home-projet__tag-middle app-projet-tag-2"
+          bg="beige"
+          color="black"
+          >aluminium recyclable
+        </AtomsTitleTag>
       </div>
     </div>
   </div>
@@ -110,310 +125,404 @@ export default {
       this.initTimeline()
     },
     initTimeline() {
-      this.tl.fromTo(
-        [this.$refs.wrapper, this.$refs.fakeVisual],
-        {
-          scale: 0,
-        },
-        {
-          transformOrigin: 'left bottom',
-          scale: 1,
-          stagger: 0.05,
-          duration: 0.65,
-        }
-      )
+      const mmDesktop = gsap.matchMedia()
+      const mmMobile = gsap.matchMedia()
 
-      this.tl.fromTo(
-        '.app-projet-tag-1',
-        {
-          opacity: 0,
-          yPercent: 25,
-          rotate: -12,
-        },
-        {
-          opacity: 1,
-          yPercent: 0,
-          rotate: -6,
-        },
-        '<25%'
-      )
+      // DESKTOP
+      mmDesktop.add('(min-width: 800px)', () => {
+        this.tl.fromTo(
+          [this.$refs.wrapper, this.$refs.fakeVisual],
+          {
+            scale: 0,
+          },
+          {
+            transformOrigin: 'left bottom',
+            scale: 1,
+            stagger: 0.05,
+            duration: 0.65,
+          }
+        )
 
-      this.tl.fromTo(
-        '.projet-visual',
-        {
-          scale: 0,
-        },
-        {
-          transformOrigin: 'left bottom',
-          scale: 1,
-          stagger: 0.2,
-        },
-        '>-100%'
-      )
+        this.tl.fromTo(
+          '.app-projet-tag-1',
+          {
+            opacity: 0,
+            yPercent: 25,
+            rotate: -12,
+          },
+          {
+            opacity: 1,
+            yPercent: 0,
+            rotate: -6,
+          },
+          '<25%'
+        )
 
-      this.tl.addLabel('projet-2-3', '<25%')
-      this.tl.addLabel('lotties', 'projet-2-3+=.65')
-      this.tl.fromTo(
-        this.$refs.plan.$el,
-        {
-          scale: 0,
-        },
-        {
-          scale: 1,
-        },
-        'projet-2-3'
-      )
-      this.tl.to(
-        this.playhead,
-        {
-          circle: this.animationCircle.totalFrames - 1,
-          duration: 0.85,
-          onUpdate: () =>
-            this.animationCircle.goToAndStop(this.playhead.circle, true),
-        },
-        'lotties'
-      )
-      this.tl.to(
-        this.playhead,
-        {
-          validCircle: this.animationValidCircle.totalFrames - 1,
-          duration: 0.85,
-          delay: 0.15,
-          onUpdate: () =>
-            this.animationValidCircle.goToAndStop(
-              this.playhead.validCircle,
-              true
-            ),
-        },
-        'lotties'
-      )
-      this.tl.to(
-        this.playhead,
-        {
-          littleArrow: this.animationLittleArrow.totalFrames - 1,
-          duration: 0.85,
-          delay: 0.3,
-          onUpdate: () =>
-            this.animationLittleArrow.goToAndStop(
-              this.playhead.littleArrow,
-              true
-            ),
-        },
-        'lotties'
-      )
-      this.tl.to(
-        this.playhead,
-        {
-          duration: 0.85,
-          delay: 0.45,
-          cross: this.animationCross.totalFrames - 1,
-          onUpdate: () =>
-            this.animationCross.goToAndStop(this.playhead.cross, true),
-        },
-        'lotties'
-      )
-      this.tl.to(
-        this.playhead,
-        {
-          duration: 0.85,
-          delay: 0.6,
-          crossCircle: this.animationCrossCircle.totalFrames - 1,
-          onUpdate: () =>
-            this.animationCrossCircle.goToAndStop(
-              this.playhead.crossCircle,
-              true
-            ),
-        },
-        'lotties'
-      )
-      this.tl.to(
-        this.playhead,
-        {
-          duration: 0.85,
-          delay: 0.75,
-          arrowBlue: this.animationArrowBlue.totalFrames - 1,
-          onUpdate: () =>
-            this.animationArrowBlue.goToAndStop(this.playhead.arrowBlue, true),
-        },
-        'lotties'
-      )
-      this.tl.to(
-        this.playhead,
-        {
-          duration: 0.85,
-          delay: 1,
-          arrow: this.animationArrow.totalFrames - 1,
-          onUpdate: () =>
-            this.animationArrow.goToAndStop(this.playhead.arrow, true),
-        },
-        'lotties'
-      )
-      this.tl.fromTo(
-        '.app-home-projet__plan__body__visual-wrapper',
-        {
-          scale: 1.65,
-        },
-        {
-          scale: 1,
-        },
-        'projet-2-3-=10%'
-      )
-      this.tl.fromTo(
-        '.app-home-projet__plan__header-fake',
-        {
-          scaleY: 0,
-        },
-        {
-          scaleY: 1,
-        },
-        'projet-2-3+=40%'
-      )
-      this.tl.fromTo(
-        '.app-home-projet__plan__border',
-        {
-          scaleY: 0,
-        },
-        {
-          scaleY: 1,
-        },
-        'projet-2-3+=40%'
-      )
-      this.tl.fromTo(
-        '.app-home-projet__plan__header',
-        {
-          height: 0,
-        },
-        {
-          height: '100%',
-        },
-        'projet-2-3+=30%'
-      )
+        this.tl.fromTo(
+          '.projet-visual',
+          {
+            scale: 0,
+          },
+          {
+            transformOrigin: 'left bottom',
+            scale: 1,
+            stagger: 0.2,
+          },
+          '>-100%'
+        )
 
-      this.tl.fromTo(
-        '.app-projet-tag-2',
-        {
-          opacity: 0,
-          yPercent: 150,
-          rotate: -6,
-        },
-        {
-          opacity: 1,
-          yPercent: 0,
-          rotate: 1.45,
-          transformOrigin: 'center',
-        },
-        'projet-2-3'
-      )
+        this.tl.addLabel('projet-2-3', '<25%')
+        this.tl.addLabel('lotties', 'projet-2-3+=.65')
+        this.tl.fromTo(
+          this.$refs.plan.$el,
+          {
+            scale: 0,
+          },
+          {
+            scale: 1,
+          },
+          'projet-2-3'
+        )
+        this.tl.to(
+          this.playhead,
+          {
+            circle: this.animationCircle.totalFrames - 1,
+            duration: 0.85,
+            onUpdate: () =>
+              this.animationCircle.goToAndStop(this.playhead.circle, true),
+          },
+          'lotties'
+        )
+        this.tl.to(
+          this.playhead,
+          {
+            validCircle: this.animationValidCircle.totalFrames - 1,
+            duration: 0.85,
+            delay: 0.15,
+            onUpdate: () =>
+              this.animationValidCircle.goToAndStop(
+                this.playhead.validCircle,
+                true
+              ),
+          },
+          'lotties'
+        )
+        this.tl.to(
+          this.playhead,
+          {
+            littleArrow: this.animationLittleArrow.totalFrames - 1,
+            duration: 0.85,
+            delay: 0.3,
+            onUpdate: () =>
+              this.animationLittleArrow.goToAndStop(
+                this.playhead.littleArrow,
+                true
+              ),
+          },
+          'lotties'
+        )
+        this.tl.to(
+          this.playhead,
+          {
+            duration: 0.85,
+            delay: 0.45,
+            cross: this.animationCross.totalFrames - 1,
+            onUpdate: () =>
+              this.animationCross.goToAndStop(this.playhead.cross, true),
+          },
+          'lotties'
+        )
+        this.tl.to(
+          this.playhead,
+          {
+            duration: 0.85,
+            delay: 0.6,
+            crossCircle: this.animationCrossCircle.totalFrames - 1,
+            onUpdate: () =>
+              this.animationCrossCircle.goToAndStop(
+                this.playhead.crossCircle,
+                true
+              ),
+          },
+          'lotties'
+        )
+        this.tl.to(
+          this.playhead,
+          {
+            duration: 0.85,
+            delay: 0.75,
+            arrowBlue: this.animationArrowBlue.totalFrames - 1,
+            onUpdate: () =>
+              this.animationArrowBlue.goToAndStop(
+                this.playhead.arrowBlue,
+                true
+              ),
+          },
+          'lotties'
+        )
+        this.tl.to(
+          this.playhead,
+          {
+            duration: 0.85,
+            delay: 1,
+            arrow: this.animationArrow.totalFrames - 1,
+            onUpdate: () =>
+              this.animationArrow.goToAndStop(this.playhead.arrow, true),
+          },
+          'lotties'
+        )
+        this.tl.fromTo(
+          '.app-home-projet__plan__body__visual-wrapper',
+          {
+            scale: 1.65,
+          },
+          {
+            scale: 1,
+          },
+          'projet-2-3-=10%'
+        )
+        this.tl.fromTo(
+          '.app-home-projet__plan__header-fake',
+          {
+            scaleY: 0,
+          },
+          {
+            scaleY: 1,
+          },
+          'projet-2-3+=40%'
+        )
+        this.tl.fromTo(
+          '.app-home-projet__plan__border',
+          {
+            scaleY: 0,
+          },
+          {
+            scaleY: 1,
+          },
+          'projet-2-3+=40%'
+        )
+        this.tl.fromTo(
+          '.app-home-projet__plan__header',
+          {
+            height: 0,
+          },
+          {
+            height: '100%',
+          },
+          'projet-2-3+=30%'
+        )
 
-      this.tl.fromTo(
-        '.app-projet-tag-3',
-        {
-          opacity: 0,
-          yPercent: 100,
-          rotate: 4,
-        },
-        {
-          opacity: 1,
-          yPercent: 0,
-          rotate: -2.5,
-        },
-        'projet-2-3'
-      )
+        this.tl.fromTo(
+          '.app-projet-tag-2',
+          {
+            opacity: 0,
+            yPercent: 150,
+            rotate: -6,
+          },
+          {
+            opacity: 1,
+            yPercent: 0,
+            rotate: 1.45,
+            transformOrigin: 'center',
+          },
+          'projet-2-3'
+        )
 
-      this.tl.fromTo(
-        '.app-projet-tag-4',
-        {
-          opacity: 0,
-          yPercent: 35,
-          rotate: 12,
-        },
-        {
-          opacity: 1,
-          yPercent: 0,
-          rotate: 9,
-        },
-        '>-75%'
-      )
-      this.tl.addLabel('charsHeader', '<20%')
+        this.tl.fromTo(
+          '.app-projet-tag-3',
+          {
+            opacity: 0,
+            yPercent: 100,
+            rotate: 4,
+          },
+          {
+            opacity: 1,
+            yPercent: 0,
+            rotate: -2.5,
+          },
+          'projet-2-3'
+        )
 
-      this.tl.fromTo(
-        this.split.chars,
-        {
-          xPercent: -105,
-        },
-        {
-          xPercent: 0,
-          stagger: 0.09,
-        },
-        'charsHeader'
-      )
-      this.tl.to(
-        ['.header-line-1', '.header-line-2'],
+        this.tl.fromTo(
+          '.app-projet-tag-4',
+          {
+            opacity: 0,
+            yPercent: 35,
+            rotate: 12,
+          },
+          {
+            opacity: 1,
+            yPercent: 0,
+            rotate: 9,
+          },
+          '>-75%'
+        )
+        this.tl.addLabel('charsHeader', '<20%')
 
-        {
-          scaleX: 1,
-          stagger: 0.05,
-        },
-        'charsHeader'
-      )
-      this.tl.to(
-        ['.header-line-3', '.header-line-4'],
+        this.tl.fromTo(
+          this.split.chars,
+          {
+            xPercent: -105,
+          },
+          {
+            xPercent: 0,
+            stagger: 0.09,
+          },
+          'charsHeader'
+        )
+        this.tl.to(
+          ['.header-line-1', '.header-line-2'],
 
-        {
-          scaleY: 1,
-          stagger: 0.2,
-        },
-        'charsHeader+=55%'
-      )
-      this.tl.fromTo(
-        [
-          '.info-text-1',
-          '.info-text-2',
-          '.info-text-3',
-          '.info-text-4',
-          '.info-text-5',
-          '.info-text-6',
-        ],
-        {
-          y: 10,
-          opacity: 0,
-        },
-        {
-          y: 0,
-          opacity: 1,
+          {
+            scaleX: 1,
+            stagger: 0.05,
+          },
+          'charsHeader'
+        )
+        this.tl.to(
+          ['.header-line-3', '.header-line-4'],
 
-          stagger: 0.2,
-        },
-        'charsHeader+=20%'
-      )
-      this.tl.fromTo(
-        '.app-projet-tag-5',
-        {
-          opacity: 0,
-          yPercent: 50,
-          rotate: -6,
-        },
-        {
-          opacity: 1,
-          yPercent: 0,
-          rotate: 0,
-        },
-        '<+=100%'
-      )
-      this.tl.fromTo(
-        '.app-home-projet__big-visual__cta',
-        {
-          opacity: 0,
-          yPercent: 50,
-        },
-        {
-          opacity: 1,
-          yPercent: 0,
-        },
-        'charsHeader+=100%'
-      )
+          {
+            scaleY: 1,
+            stagger: 0.2,
+          },
+          'charsHeader+=55%'
+        )
+        this.tl.fromTo(
+          [
+            '.info-text-1',
+            '.info-text-2',
+            '.info-text-3',
+            '.info-text-4',
+            '.info-text-5',
+            '.info-text-6',
+          ],
+          {
+            y: 10,
+            opacity: 0,
+          },
+          {
+            y: 0,
+            opacity: 1,
+
+            stagger: 0.2,
+          },
+          'charsHeader+=20%'
+        )
+        this.tl.fromTo(
+          '.app-projet-tag-5',
+          {
+            opacity: 0,
+            yPercent: 50,
+            rotate: -6,
+          },
+          {
+            opacity: 1,
+            yPercent: 0,
+            rotate: 0,
+          },
+          '<+=100%'
+        )
+        this.tl.fromTo(
+          '.app-home-projet__cta',
+          {
+            opacity: 0,
+            yPercent: 50,
+          },
+          {
+            opacity: 1,
+            yPercent: 0,
+          },
+          'charsHeader+=100%'
+        )
+      })
+
+      // MOBILE
+      mmMobile.add('(max-width: 800px)', () => {
+        this.tl.addLabel('lotties')
+        this.tl.to(
+          this.playhead,
+          {
+            circle: this.animationCircle.totalFrames - 1,
+            duration: 0.85,
+            onUpdate: () =>
+              this.animationCircle.goToAndStop(this.playhead.circle, true),
+          },
+          'lotties'
+        )
+        this.tl.to(
+          this.playhead,
+          {
+            validCircle: this.animationValidCircle.totalFrames - 1,
+            duration: 0.85,
+            delay: 0.15,
+            onUpdate: () =>
+              this.animationValidCircle.goToAndStop(
+                this.playhead.validCircle,
+                true
+              ),
+          },
+          'lotties'
+        )
+
+        this.tl.to(
+          this.playhead,
+          {
+            duration: 0.85,
+            delay: 0.45,
+            cross: this.animationCross.totalFrames - 1,
+            onUpdate: () =>
+              this.animationCross.goToAndStop(this.playhead.cross, true),
+          },
+          'lotties'
+        )
+
+        this.tl.to(
+          this.playhead,
+          {
+            duration: 0.85,
+            delay: 0.5,
+            arrow: this.animationArrow.totalFrames - 1,
+            onUpdate: () =>
+              this.animationArrow.goToAndStop(this.playhead.arrow, true),
+          },
+          'lotties'
+        )
+      })
     },
     initLottieAnimations() {
+      if (this.$mq !== 'sm') {
+        this.animationCrossCircle = lottie.loadAnimation({
+          container: this.$refs.lottieCrossCircle,
+          renderer: 'svg',
+          loop: false,
+          autoplay: false,
+          animationData: require(`@/assets/lotties/Croix_circle.json`),
+        })
+        this.animationArrowBlue = lottie.loadAnimation({
+          container: this.$refs.lottieArrowBlue,
+          renderer: 'svg',
+          loop: false,
+          autoplay: false,
+          animationData: require(`@/assets/lotties/Fleche_2.json`),
+        })
+        this.animationLittleArrow = lottie.loadAnimation({
+          container: this.$refs.lottieLittleArrow,
+          renderer: 'svg',
+          loop: false,
+          autoplay: false,
+          animationData: require(`@/assets/lotties/Petite_Fleche_01.json`),
+        })
+      }
+
+      this.animationCross = lottie.loadAnimation({
+        container: this.$refs.lottieCross,
+        renderer: 'svg',
+        loop: false,
+        autoplay: false,
+        animationData: require(`@/assets/lotties/Croix_01.json`),
+      })
+
       this.animationCircle = lottie.loadAnimation({
         container: this.$refs.lottieCircle,
         renderer: 'svg',
@@ -428,34 +537,7 @@ export default {
         autoplay: false,
         animationData: require(`@/assets/lotties/Valid_circle.json`),
       })
-      this.animationCross = lottie.loadAnimation({
-        container: this.$refs.lottieCross,
-        renderer: 'svg',
-        loop: false,
-        autoplay: false,
-        animationData: require(`@/assets/lotties/Croix_01.json`),
-      })
-      this.animationCrossCircle = lottie.loadAnimation({
-        container: this.$refs.lottieCrossCircle,
-        renderer: 'svg',
-        loop: false,
-        autoplay: false,
-        animationData: require(`@/assets/lotties/Croix_circle.json`),
-      })
-      this.animationArrowBlue = lottie.loadAnimation({
-        container: this.$refs.lottieArrowBlue,
-        renderer: 'svg',
-        loop: false,
-        autoplay: false,
-        animationData: require(`@/assets/lotties/Fleche_2.json`),
-      })
-      this.animationLittleArrow = lottie.loadAnimation({
-        container: this.$refs.lottieLittleArrow,
-        renderer: 'svg',
-        loop: false,
-        autoplay: false,
-        animationData: require(`@/assets/lotties/Petite_Fleche_01.json`),
-      })
+
       this.animationArrow = lottie.loadAnimation({
         container: this.$refs.lottieArrow,
         renderer: 'svg',
@@ -491,7 +573,7 @@ export default {
     width: 100%;
     height: 100%;
     display: block;
-    transform: scale(0.7);
+    transform: scale(0);
     transform-origin: left bottom;
 
     position: relative;
@@ -527,6 +609,13 @@ export default {
     transform: rotate(6deg);
     aspect-ratio: 195 / 125;
 
+    @include mobile {
+      width: mobile-vw(220px);
+      left: mobile-vw(60px);
+      top: mobile-vw(400px);
+      z-index: 2;
+    }
+
     svg {
       path {
         stroke: var(--c-red-adidas);
@@ -539,6 +628,13 @@ export default {
     top: desktop-vw(30px);
     width: desktop-vw(65px);
     aspect-ratio: 55 / 45;
+
+    @include mobile {
+      right: columns(1);
+      width: mobile-vw(65px);
+      left: initial;
+      top: mobile-vw(110px);
+    }
   }
   &__cross {
     position: absolute;
@@ -547,6 +643,15 @@ export default {
     width: desktop-vw(55px);
     aspect-ratio: 45 / 45;
     transform: scaleY(-1);
+
+    @include mobile {
+      top: mobile-vw(280px);
+      width: mobile-vw(65px);
+      left: initial;
+      right: mobile-vw(65px);
+
+      z-index: 1;
+    }
   }
   &__cross-circle {
     position: absolute;
@@ -554,6 +659,10 @@ export default {
     bottom: desktop-vw(95px);
     width: desktop-vw(60px);
     aspect-ratio: 40 / 40;
+
+    @include mobile {
+      display: none;
+    }
   }
   &__little-arrow {
     position: absolute;
@@ -562,6 +671,10 @@ export default {
     width: desktop-vw(65px);
     aspect-ratio: 40 / 20;
     transform: scaleY(-1) rotate(225deg);
+
+    @include mobile {
+      display: none;
+    }
 
     svg {
       height: auto !important;
@@ -575,6 +688,10 @@ export default {
     aspect-ratio: 30 / 130;
     transform: scaleY(-1) rotate(-35deg);
 
+    @include mobile {
+      display: none;
+    }
+
     svg {
       width: auto !important;
     }
@@ -586,6 +703,15 @@ export default {
     width: desktop-vw(20px);
     aspect-ratio: 15 / 75;
     transform: scaleY(-1) rotate(130deg);
+
+    @include mobile {
+      width: mobile-vw(25px);
+      transform: scaleY(-1) rotate(235deg);
+      left: columns(1);
+      bottom: initial;
+      top: mobile-vw(285px);
+      z-index: 2;
+    }
 
     svg {
       path {
@@ -645,6 +771,82 @@ export default {
     }
   }
 
+  &__tag-top-left {
+    left: columns(0.5);
+    bottom: 25%;
+    transform: rotate(-6deg);
+    position: absolute;
+
+    @include mobile {
+      bottom: 20%;
+      z-index: 2;
+    }
+
+    > .P2 {
+      text-transform: uppercase;
+      font-size: desktop-vw(18px);
+      line-height: desktop-vw(20px);
+
+      @include mobile {
+        font-size: mobile-vw(18px);
+        line-height: mobile-vw(20px);
+      }
+    }
+  }
+
+  &__tag-middle {
+    bottom: 18%;
+    left: columns(0.75);
+    transform: rotate(-3.45deg);
+    position: absolute;
+
+    @include mobile {
+      bottom: 15%;
+      z-index: 3;
+    }
+
+    > .P2 {
+      font-size: desktop-vw(15px);
+      line-height: desktop-vw(20px);
+      text-transform: uppercase;
+
+      @include mobile {
+        font-size: mobile-vw(15px);
+        line-height: mobile-vw(20px);
+      }
+    }
+  }
+
+  &__cta.app-atoms-cta {
+    position: absolute;
+    width: columns(2.25);
+    // width: desktop-vw(195px);
+    bottom: 6.5%;
+    left: columns(4);
+    padding: desktop-vw(20px) desktop-vw(0px) desktop-vw(20px) desktop-vw(20px);
+    position: absolute;
+    transform: rotate(-4deg);
+
+    @include mobile {
+      padding: mobile-vw(15px) mobile-vw(0px) mobile-vw(15px) mobile-vw(20px);
+      left: columns(1);
+      width: columns(3.75);
+      bottom: 2.5%;
+      z-index: 4;
+    }
+
+    > .P2 {
+      text-transform: uppercase;
+      font-size: desktop-vw(24px);
+      line-height: desktop-vw(23px);
+
+      @include mobile {
+        font-size: mobile-vw(24px);
+        line-height: mobile-vw(32px);
+      }
+    }
+  }
+
   &__visual__top-upper {
     position: absolute;
     grid-column: 5 / span 2;
@@ -662,6 +864,14 @@ export default {
     grid-column: 6 / span 4;
     top: 15%;
     padding: desktop-vw(10px);
+
+    @include mobile {
+      padding: mobile-vw(10px);
+      grid-column: 1 / span 6;
+      transform: rotate(1.5deg);
+      top: 18%;
+      width: 110%;
+    }
 
     > .P2 {
       text-transform: uppercase;
@@ -712,6 +922,9 @@ export default {
       font-size: mobile-vw(130px);
       line-height: mobile-vw(130px);
       transform: scale(-1) rotate(355deg);
+      right: mobile-vw(15px);
+      bottom: mobile-vw(20px);
+      z-index: 3;
     }
   }
 }

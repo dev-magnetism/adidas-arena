@@ -20,7 +20,11 @@
       </TP2>
       <AtomsCTA>Devenir partenaire</AtomsCTA>
     </div>
-    <EGridLogos class="app-home-partners__grid-logos" />
+    <EGridLogos
+      :cols="$mq !== 'sm' ? 6 : 4"
+      :rows="$mq !== 'sm' ? 7 : 8"
+      class="app-home-partners__grid-logos"
+    />
     <EPartnersTotal />
   </div>
 </template>
@@ -34,32 +38,54 @@ export default {}
   position: relative;
   padding-bottom: desktop-vw(140px);
 
+  @include mobile {
+    row-gap: 0px;
+    padding-bottom: 0px;
+  }
+
   &__content {
     grid-column: 1 / span 6;
 
     .app-atoms-cta {
       .P2 {
         @include font-tuskerGrotesk-medium();
-        font-size: desktop-vw(24px);
-        line-height: desktop-vw(32px);
+
         letter-spacing: 0.04em;
       }
     }
   }
 
-  &__title {
+  &__title.H1 {
     margin-bottom: desktop-vw(25px);
+
+    @include mobile {
+      margin-bottom: mobile-vw(30px);
+    }
   }
   &__principal-paragraph {
     margin-bottom: desktop-vw(25px);
     width: 50%;
+
+    @include mobile {
+      width: 100%;
+      margin-bottom: mobile-vw(25px);
+    }
   }
   &__secondary-paragraph {
     margin-bottom: desktop-vw(50px);
     width: 52.5%;
+
+    @include mobile {
+      width: 100%;
+      margin-bottom: mobile-vw(50px);
+    }
   }
   .app-atoms-cta {
     width: 52.5%;
+
+    @include mobile {
+      width: 100%;
+    }
   }
 
   &__grid-logos {
@@ -67,6 +93,13 @@ export default {}
     position: absolute;
     top: desktop-vw(140px);
     left: 0;
+
+    @include mobile {
+      position: relative;
+      grid-column: 1 / span 6;
+      top: 0;
+      margin-top: mobile-vw(75px);
+    }
   }
 }
 </style>

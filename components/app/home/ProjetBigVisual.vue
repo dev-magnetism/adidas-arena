@@ -29,18 +29,7 @@
       color="black"
       >PARIS porte de la chapelle</AtomsTitleTag
     >
-    <AtomsTitleTag
-      class="app-home-projet__big-visual__tag-top app-projet-tag-3"
-      bg="beige"
-      color="black"
-      >Coton recyclé pour l’isolation</AtomsTitleTag
-    >
-    <AtomsTitleTag
-      class="app-home-projet__big-visual__tag-middle app-projet-tag-2"
-      bg="beige"
-      color="black"
-      >aluminium recyclable
-    </AtomsTitleTag>
+
     <AtomsTitleTag
       v-if="$mq !== 'sm'"
       bg="beige"
@@ -49,12 +38,6 @@
       >DES MATCHS, DES EVENEMENTS, DES RESTAURANTS, DES JEUX, DES SALLES DE
       RÉUNIONS POUR TOUS
     </AtomsTitleTag>
-    <AtomsCTA
-      class="app-home-projet__big-visual__cta"
-      color="beige"
-      bg="blue-adidas"
-      >En savoir plus</AtomsCTA
-    >
   </div>
 </template>
 
@@ -68,31 +51,13 @@
   left: columns(0.8);
   transform: rotate(-6deg);
 
-  &__cta.app-atoms-cta {
-    position: absolute;
-    width: columns(2.25);
-    // width: desktop-vw(195px);
-    bottom: -58%;
-    left: columns(3);
-    padding: desktop-vw(20px) desktop-vw(0px) desktop-vw(20px) desktop-vw(20px);
-    position: absolute;
-
-    @include mobile {
-      padding: mobile-vw(20px) mobile-vw(0px) mobile-vw(20px) mobile-vw(20px);
-      left: columns(0.5);
-      width: columns(4);
-    }
-
-    > .P2 {
-      text-transform: uppercase;
-      font-size: desktop-vw(24px);
-      line-height: desktop-vw(23px);
-
-      @include mobile {
-        font-size: mobile-vw(24px);
-        line-height: mobile-vw(32px);
-      }
-    }
+  @include mobile {
+    aspect-ratio: 260/155;
+    grid-column: 1 / span 5;
+    width: 100%;
+    left: columns(-0.25);
+    top: mobile-vw(175px);
+    transform: rotate(-4deg);
   }
 
   &__left-top {
@@ -149,37 +114,7 @@
       line-height: desktop-vw(20px);
     }
   }
-  &__tag-top {
-    left: columns(-0.25);
-    bottom: 12%;
-    transform: rotate(-2.5deg);
 
-    > .P2 {
-      text-transform: uppercase;
-      font-size: desktop-vw(18px);
-      line-height: desktop-vw(20px);
-
-      @include mobile {
-        font-size: mobile-vw(18px);
-        line-height: mobile-vw(20px);
-      }
-    }
-  }
-  &__tag-middle {
-    bottom: -10%;
-    left: columns(-0.1);
-    transform: rotate(1.45deg);
-    > .P2 {
-      font-size: desktop-vw(15px);
-      line-height: desktop-vw(20px);
-      text-transform: uppercase;
-
-      @include mobile {
-        font-size: mobile-vw(15px);
-        line-height: mobile-vw(20px);
-      }
-    }
-  }
   &__tag-bottom {
     left: columns(1.4);
     bottom: -40%;

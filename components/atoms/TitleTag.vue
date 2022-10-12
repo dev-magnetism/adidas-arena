@@ -47,6 +47,10 @@ export default {
     // cursor: pointer;
   }
 
+  @include mobile {
+    padding: mobile-vw(10px) mobile-vw(12px);
+  }
+
   .P2 {
     @include font-adihausDIN-cn-bold();
   }

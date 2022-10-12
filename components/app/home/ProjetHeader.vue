@@ -68,6 +68,10 @@
     background: var(--c-black);
     transform-origin: left center;
     transform: scaleX(0);
+
+    @include mobile {
+      transform: scaleX(1);
+    }
   }
   span.line-header-border-right {
     position: absolute;
@@ -78,6 +82,10 @@
     background: var(--c-black);
     transform-origin: center bottom;
     transform: scaleY(0);
+
+    @include mobile {
+      transform: scaleY(1);
+    }
   }
 
   &__infos {
@@ -95,6 +103,10 @@
       background: var(--c-black);
       transform-origin: center bottom;
       transform: scaleY(0);
+
+      @include mobile {
+        transform: scaleY(1);
+      }
     }
   }
 
@@ -121,6 +133,10 @@
         background: var(--c-black);
         transform-origin: left center;
         transform: scaleX(0);
+
+        @include mobile {
+          transform: scaleX(1);
+        }
       }
     }
 
@@ -157,6 +173,10 @@
   &__description {
     flex: 1;
     padding: desktop-vw(10px) desktop-vw(12px);
+
+    @include mobile {
+      padding: mobile-vw(5px) mobile-vw(12px);
+    }
 
     &__title.P1 {
       font-size: desktop-vw(12px);

@@ -15,9 +15,13 @@ export default {
     },
   },
   mounted() {
+    if (this.$mq === 'sm') return
+
     window.addEventListener('mousemove', this.onMouseMove)
   },
   beforeDestroy() {
+    if (this.$mq === 'sm') return
+
     window.removeEventListener('mousemove', this.onMouseMove)
   },
   methods: {

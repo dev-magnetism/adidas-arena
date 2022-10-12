@@ -166,7 +166,7 @@ export default {
     z-index: 1;
 
     @include mobile {
-      grid-column: 1 / span 5;
+      grid-column: 1 / span 6;
     }
   }
 }

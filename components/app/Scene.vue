@@ -1,6 +1,6 @@
 <template>
   <div :class="{ 'app-webgl--front': webglInFront }" class="app-webgl">
-    <WebglInfo />
+    <!-- <WebglInfo /> -->
   </div>
 </template>
 

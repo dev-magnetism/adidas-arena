@@ -146,15 +146,45 @@ export default {
   background-position: right center;
   // min-height: 100vh;
 
+  @include mobile {
+    padding-top: mobile-vw(60px);
+    padding-bottom: mobile-vw(15px);
+  }
+
   &__bottom {
     display: flex;
     grid-column: 1 / span 12;
     margin-left: auto;
     margin-top: desktop-vw(100px);
 
+    @include mobile {
+      grid-column: 1 / span 6;
+      justify-content: space-between;
+      margin-left: initial;
+    }
+
     .P2 {
+      @include font-adihausDIN-cn();
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+
       &:not(:first-child) {
         margin-left: desktop-vw(50px);
+      }
+
+      @include mobile {
+        &:nth-child(1),
+        &:nth-child(3) {
+          flex: 2;
+        }
+        &:nth-child(2) {
+          flex: 1;
+          text-align: center;
+        }
+
+        &:nth-child(3) {
+          text-align: right;
+        }
       }
     }
   }
@@ -164,6 +194,11 @@ export default {
     flex-flow: row wrap;
     align-items: center;
     margin-top: desktop-vw(10px);
+
+    @include mobile {
+      margin-top: mobile-vw(20px);
+      justify-content: space-between;
+    }
 
     &__accept-politic {
       flex-basis: 100%;
@@ -177,12 +212,19 @@ export default {
       user-select: none;
       margin-top: desktop-vw(10px);
 
-      &:hover {
-        input {
-          &:not(:checked) ~ .checkmark {
-            &::after {
-              content: '';
-              transform: translate(-50%, -50%) scale(0.5);
+      @include mobile {
+        padding-left: mobile-vw(25px);
+        margin-top: mobile-vw(20px);
+      }
+
+      @include hover {
+        &:hover {
+          input {
+            &:not(:checked) ~ .checkmark {
+              &::after {
+                content: '';
+                transform: translate(-50%, -50%) scale(0.5);
+              }
             }
           }
         }
@@ -200,6 +242,11 @@ export default {
         color: rgba(24, 24, 24, 0.25) !important;
         cursor: pointer;
         transition: color 0.4s var(--ease-out-cubic);
+
+        @include mobile {
+          font-size: mobile-vw(14px);
+          line-height: mobile-vw(16px);
+        }
       }
 
       a {
@@ -262,6 +309,13 @@ export default {
       letter-spacing: -0.04em;
       width: calc(100% - (desktop-vw(56px) + 60px));
 
+      @include mobile {
+        width: calc(80% - (mobile-vw(20px)));
+        font-size: mobile-vw(40px);
+        line-height: mobile-vw(50px);
+        @include font-adihausDIN-cn-medium();
+      }
+
       &::placeholder {
         color: rgba(24, 24, 24, 0.25);
       }
@@ -280,6 +334,12 @@ export default {
       position: relative;
       cursor: not-allowed;
       overflow: hidden;
+
+      @include mobile {
+        width: mobile-vw(56px);
+        height: mobile-vw(56px);
+        margin-left: mobile-vw(10px);
+      }
 
       &.valid {
         cursor: pointer;
@@ -317,12 +377,20 @@ export default {
         opacity: 0.25;
         z-index: 1;
         transition: opacity 0.2s var(--ease-out-cubic);
+
+        @include mobile {
+          padding: mobile-vw(15px);
+        }
       }
     }
   }
 
   &__principal {
     grid-column: 1 / span 6;
+
+    @include mobile {
+      grid-column: 1 / span 6;
+    }
   }
 
   &__links {
@@ -330,15 +398,35 @@ export default {
     flex-direction: row;
     margin-top: desktop-vw(95px);
 
+    @include mobile {
+      margin-top: mobile-vw(60px);
+      flex-flow: row wrap;
+    }
+
     &__ul {
       list-style: none;
 
+      &:not(:last-child) {
+        @include mobile {
+          margin-right: mobile-vw(70px) !important;
+        }
+      }
+
+      @include mobile {
+        // width: 50%;
+      }
+
       .P2 {
         @include font-adihausDIN-cn-bold();
+        text-transform: uppercase;
       }
 
       &:first-of-type {
         margin-right: 70px;
+
+        @include mobile {
+          margin-right: 0px;
+        }
       }
 
       li:not(:first-child) {
@@ -350,6 +438,10 @@ export default {
   &__social-networks {
     display: flex;
     margin-top: desktop-vw(120px);
+
+    @include mobile {
+      margin-top: mobile-vw(55px);
+    }
   }
 
   &__social-network {
@@ -370,22 +462,46 @@ export default {
 
   &__partners {
     grid-column: 8 / span 5;
+
+    @include mobile {
+      grid-column: 1 / span 6;
+      margin-top: mobile-vw(50px);
+    }
   }
 
   &__partners-title.H2 {
     font-size: desktop-vw(32px);
     line-height: desktop-vw(40px);
+
+    @include mobile {
+      font-size: mobile-vw(32px);
+      line-height: mobile-vw(40px);
+      margin-bottom: mobile-vw(40px);
+    }
   }
   &__links-title.P2 {
     font-size: desktop-vw(26px);
     line-height: desktop-vw(33px);
     margin-right: desktop-vw(100px);
     @include font-adihausDIN-cn-bold();
+
+    @include mobile {
+      margin-right: 0px;
+      margin-bottom: mobile-vw(20px);
+      width: 100%;
+      font-size: mobile-vw(26px);
+      line-height: mobile-vw(24px);
+    }
   }
 
   &__newsletter-title.H2 {
     font-size: desktop-vw(32px);
     line-height: desktop-vw(40px);
+
+    @include mobile {
+      font-size: mobile-vw(32px);
+      line-height: mobile-vw(40px);
+    }
   }
 }
 </style>
