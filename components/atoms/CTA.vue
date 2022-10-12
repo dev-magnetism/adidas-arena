@@ -133,7 +133,7 @@ export default {
       height: 2px;
       position: absolute;
       background: var(--color-underline);
-      bottom: -2px;
+      bottom: -3px;
       left: 0;
       transform: scaleX(0);
       transform-origin: left center;
@@ -157,6 +157,10 @@ export default {
       width: 100%;
       vertical-align: middle;
       will-change: transform;
+
+      @include mobile {
+        padding: 0px mobile-vw(15px);
+      }
     }
   }
 }

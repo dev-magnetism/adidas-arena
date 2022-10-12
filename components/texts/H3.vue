@@ -1,6 +1,7 @@
 <template>
   <component
     :is="tag"
+    ref="h3"
     class="H3"
     :class="classes"
     :style="{ color: `var(--c-${color})` }"
@@ -10,6 +11,9 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
+import { SplitText } from 'gsap/SplitText'
+
 export default {
   props: {
     tag: {
@@ -32,6 +36,11 @@ export default {
       type: String,
       default: 'bold',
     },
+    split: {
+      required: false,
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     classes() {
@@ -44,6 +53,46 @@ export default {
       ]
     },
   },
+
+  mounted() {
+    document.fonts.ready.then(() => {
+      if (!this.split) return
+
+      this.initSplitText()
+    })
+  },
+  methods: {
+    initSplitText() {
+      this.splitChild = new SplitText(this.$refs.h3, {
+        type: 'lines',
+        linesClass: 'H3__child line',
+      })
+
+      this.splitParent = new SplitText(this.$refs.h3, {
+        type: 'lines',
+        linesClass: 'H3__parent ',
+      })
+
+      gsap.fromTo(
+        this.splitChild.lines,
+        {
+          yPercent: -100,
+        },
+        {
+          delay: 0.15,
+          yPercent: 0,
+          stagger: 0.075,
+          duration: 0.4,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: this.$el,
+            start: 'center bottom',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
+    },
+  },
 }
 </script>
 
@@ -52,6 +101,13 @@ export default {
   @include h3();
 
   &--type {
+  }
+
+  &__parent {
+    overflow: hidden;
+  }
+
+  &__child {
   }
 }
 </style>

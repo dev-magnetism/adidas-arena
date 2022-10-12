@@ -40,9 +40,11 @@ export default {
       rotation: '360',
       repeat: -1,
       transformOrigin: 'center',
-      start: 'top bottom',
-      end: 'bottom top',
-      toggleActions: 'play pause resume reset',
+      scrollTrigger: {
+        start: 'top bottom',
+        end: 'bottom top',
+        toggleActions: 'play pause resume reset',
+      },
       ease: 'none',
       duration: 10,
     })

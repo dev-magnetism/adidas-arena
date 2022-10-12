@@ -1,12 +1,14 @@
 <template>
   <div class="app-home-projet__big-visual">
     <nuxt-picture
+      v-if="$mq !== 'sm'"
       class="app-home-projet__big-visual__left-top projet-visual"
       src="imgs/placeholder.png"
       format="webp"
       alt="placeholder"
     />
     <nuxt-picture
+      v-if="$mq !== 'sm'"
       class="app-home-projet__big-visual__left-top-upper projet-visual"
       src="imgs/placeholder.png"
       format="webp"
@@ -21,6 +23,7 @@
     />
 
     <AtomsTitleTag
+      v-if="$mq !== 'sm'"
       class="app-home-projet__big-visual__tag-top-upper app-projet-tag-4"
       bg="beige"
       color="black"
@@ -39,6 +42,7 @@
       >aluminium recyclable
     </AtomsTitleTag>
     <AtomsTitleTag
+      v-if="$mq !== 'sm'"
       bg="beige"
       color="black"
       class="app-home-projet__big-visual__tag-bottom app-projet-tag-1"
@@ -73,10 +77,21 @@
     padding: desktop-vw(20px) desktop-vw(0px) desktop-vw(20px) desktop-vw(20px);
     position: absolute;
 
+    @include mobile {
+      padding: mobile-vw(20px) mobile-vw(0px) mobile-vw(20px) mobile-vw(20px);
+      left: columns(0.5);
+      width: columns(4);
+    }
+
     > .P2 {
       text-transform: uppercase;
       font-size: desktop-vw(24px);
       line-height: desktop-vw(23px);
+
+      @include mobile {
+        font-size: mobile-vw(24px);
+        line-height: mobile-vw(32px);
+      }
     }
   }
 
@@ -87,6 +102,9 @@
     aspect-ratio: 100/92;
     width: 20.5%;
     z-index: 1;
+    @include mobile {
+      display: none;
+    }
     // min-width: 100px;
   }
 
@@ -97,6 +115,10 @@
     top: -42%;
     left: columns(0.55);
     z-index: -1;
+
+    @include mobile {
+      display: none;
+    }
     // min-width: 120px;
   }
 
@@ -117,6 +139,10 @@
     bottom: 115%;
     transform: rotate(6deg);
 
+    @include mobile {
+      display: none;
+    }
+
     > .P2 {
       text-transform: uppercase;
       font-size: desktop-vw(18px);
@@ -132,6 +158,11 @@
       text-transform: uppercase;
       font-size: desktop-vw(18px);
       line-height: desktop-vw(20px);
+
+      @include mobile {
+        font-size: mobile-vw(18px);
+        line-height: mobile-vw(20px);
+      }
     }
   }
   &__tag-middle {
@@ -142,6 +173,11 @@
       font-size: desktop-vw(15px);
       line-height: desktop-vw(20px);
       text-transform: uppercase;
+
+      @include mobile {
+        font-size: mobile-vw(15px);
+        line-height: mobile-vw(20px);
+      }
     }
   }
   &__tag-bottom {
@@ -149,6 +185,10 @@
     bottom: -40%;
     transform: rotate(-6deg);
     width: columns(2.15);
+
+    @include mobile {
+      display: none;
+    }
 
     > .P2 {
       font-size: desktop-vw(14px);

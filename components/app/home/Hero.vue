@@ -1,24 +1,27 @@
 <template>
   <div class="app-home-hero block-inner">
     <div class="app-home-hero__inner grid">
-      <TH1 class="app-home-hero__title">
+      <ERichText class="app-home-hero__title" :content="contents.title" />
+      <!-- <TH1 class="app-home-hero__title">
         <AtomsTextStroke>BIENVENUE À </AtomsTextStroke> L'ADIDAS ARENA, ICI
         C'EST CHEZ VOUS !
-      </TH1>
-      <div class="app-home-hero__first-visual">
+      </TH1> -->
+      <div ref="firstVisual" class="app-home-hero__first-visual">
         <nuxt-picture
           class="picture-absolute"
-          src="imgs/placeholder.png"
+          provider="directus"
+          :src="contents.pictureTop.src"
+          :alt="contents.pictureTop.alt"
           format="webp"
-          alt="placeholder"
         />
       </div>
-      <div class="app-home-hero__second-visual">
+      <div ref="secondVisual" class="app-home-hero__second-visual">
         <nuxt-picture
           class="picture-absolute"
-          src="imgs/placeholder.png"
+          provider="directus"
+          :src="contents.pictureBottom.src"
+          :alt="contents.pictureBottom.alt"
           format="webp"
-          alt="placeholder"
         />
       </div>
       <div
@@ -33,9 +36,11 @@
         </div>
       </div>
       <div class="app-home-hero__localisation">
-        <TP1 class="app-home-hero__localisation__city">Paris</TP1>
+        <TP1 class="app-home-hero__localisation__city">
+          {{ contents.city }}
+        </TP1>
         <TP1 class="app-home-hero__localisation__place">
-          PORTE DE LA CHAPELLE
+          {{ contents.localisation }}
         </TP1>
       </div>
       <div class="app-home-hero__map">
@@ -63,9 +68,12 @@
           format="webp"
           alt="placeholder"
         />
+        <SvgHomeHeroSticker
+          v-if="$mq !== 'sm'"
+          class="app-home-hero__sticker"
+        />
+        <SvgHomeHeroStars v-if="$mq !== 'sm'" class="app-home-hero__stars" />
       </div>
-      <SvgHomeHeroSticker v-if="$mq !== 'sm'" class="app-home-hero__sticker" />
-      <SvgHomeHeroStars v-if="$mq !== 'sm'" class="app-home-hero__stars" />
     </div>
   </div>
 </template>
@@ -73,6 +81,12 @@
 <script>
 import { gsap } from 'gsap'
 export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
   mounted() {
     const mm = gsap.matchMedia()
 
@@ -143,7 +157,8 @@ export default {
     position: absolute;
     grid-column: 8 / span 5;
     transform: translate(-50%, -50%);
-    top: 40%;
+    top: 30%;
+    left: 0;
     z-index: 9;
 
     @include mobile {
@@ -155,8 +170,8 @@ export default {
     position: absolute;
     grid-column: 7 / span 2;
     transform: translate(-50%, -50%);
-    left: 30%;
-    top: 32%;
+    left: -12%;
+    top: 17%;
     z-index: 9;
 
     @include mobile {
@@ -166,12 +181,16 @@ export default {
 
   &__map {
     grid-column: 8 / span 5;
-    height: 80%;
     align-self: flex-end;
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    aspect-ratio: 575/725;
+    height: auto;
     position: relative;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: calc(85vh - desktop-vw(80px));
 
     @include mobile {
       grid-column: 1 / span 6;
@@ -195,6 +214,9 @@ export default {
       padding: desktop-vw(0px) desktop-vw(20px) desktop-vw(20px)
         desktop-vw(20px);
       z-index: 1;
+      position: absolute;
+      bottom: 0;
+      left: 0;
 
       @include mobile {
         height: 100%;
@@ -242,7 +264,7 @@ export default {
     grid-column: 2 / span 6;
     align-self: center;
     z-index: 1;
-    max-width: min(565px, desktop-vw(565px));
+    // max-width: min(565px, desktop-vw(565px));
     font-size: min(130px, desktop-vw(130px));
     line-height: min(140px, desktop-vw(140px));
 

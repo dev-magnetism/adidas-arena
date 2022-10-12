@@ -258,7 +258,7 @@ export default {
         renderer: 'svg',
         loop: false,
         autoplay: false,
-        animationData: require(`@/assets/lotties/Cercle_1.json`),
+        animationData: require(`@/assets/lotties/Cercle_5.json`),
       })
       this.animationCross = lottie.loadAnimation({
         container: this.$refs.cross,
@@ -356,13 +356,13 @@ export default {
     }
 
     &__circle-01 {
-      width: desktop-vw(150px);
+      width: desktop-vw(180px);
       position: relative;
       aspect-ratio: 200 / 100;
-      transform: rotate(-8deg);
+      transform: rotate(6deg);
       position: absolute;
-      top: desktop-vw(150px);
-      right: desktop-vw(245px);
+      top: desktop-vw(140px);
+      right: desktop-vw(225px);
 
       svg {
       }

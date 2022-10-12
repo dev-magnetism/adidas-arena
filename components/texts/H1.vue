@@ -66,12 +66,12 @@ export default {
     initSplitText() {
       this.splitChild = new SplitText(this.$refs.h1, {
         type: 'lines',
-        linesClass: 'H1__child ',
+        linesClass: 'H1__child line',
       })
 
       this.splitParent = new SplitText(this.$refs.h1, {
         type: 'lines',
-        linesClass: 'H1__parent ',
+        linesClass: 'H1__parent',
       })
 
       gsap.fromTo(
@@ -80,11 +80,11 @@ export default {
           yPercent: -100,
         },
         {
-          delay: 0.3,
+          delay: 0.15,
           yPercent: 0,
-          stagger: 0.2,
+          stagger: 0.075,
           duration: 0.4,
-          ease: 'power4.out',
+          ease: 'power3.out',
           scrollTrigger: {
             trigger: this.$el,
             start: 'center bottom',

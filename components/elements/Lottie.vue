@@ -95,6 +95,8 @@ export default {
           return require(`@/assets/lotties/Cercle_3.json`)
         case 'Circle_4':
           return require(`@/assets/lotties/Cercle_4.json`)
+        case 'Circle_5':
+          return require(`@/assets/lotties/Cercle_5.json`)
         case 'Fleche_Match':
           return require(`@/assets/lotties/Fleche_Match.json`)
         default:

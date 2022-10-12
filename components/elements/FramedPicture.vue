@@ -33,6 +33,10 @@ export default {
   width: 100%;
   height: auto;
 
+  @include mobile {
+    padding: mobile-vw(10px);
+  }
+
   picture {
     position: relative;
     height: 100%;

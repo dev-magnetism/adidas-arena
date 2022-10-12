@@ -1,13 +1,24 @@
 <template>
   <div class="app-home-presentation grid-inner">
-    <TH3 class="app-home-presentation__title">
+    <ERichText
+      class="app-home-presentation__title"
+      :content="contents.content"
+      :split="true"
+    />
+
+    <!-- <TH3 :split="true" class="app-home-presentation__title">
       Futur lieu de référence des cultures urbaines, l'ADIDAS ARENA fait se
       rencontrer musique, sport, culture & lifestyle pour tous.
-    </TH3>
+    </TH3> -->
 
     <EParallax :speed="1.35" class="app-home-presentation__visual-bigger">
       <EKinesis :speed="20">
-        <nuxt-picture src="imgs/placeholder.png" format="webp" alt="alt" />
+        <nuxt-picture
+          provider="directus"
+          :src="contents.pictureBigVisual"
+          :alt="contents.pictureBigVisualAlt"
+          format="webp"
+        />
       </EKinesis>
     </EParallax>
 
@@ -15,7 +26,12 @@
       <EKinesis :speed="20">
         <EFramedPicture color="red-adidas">
           <EKinesis :speed="-10">
-            <nuxt-picture src="imgs/placeholder.png" format="webp" alt="alt" />
+            <nuxt-picture
+              provider="directus"
+              :src="contents.pictureFramed"
+              :alt="contents.pictureFramedAlt"
+              format="webp"
+            />
           </EKinesis>
         </EFramedPicture>
       </EKinesis>
@@ -26,9 +42,10 @@
         <ECornerPointsPicture :size-points="6">
           <nuxt-picture
             class="app-home-presentation__visual-smaller picture-absolute"
-            src="imgs/placeholder.png"
+            provider="directus"
+            :src="contents.pictureBorder"
+            :alt="contents.pictureBorderAlt"
             format="webp"
-            alt="alt"
           />
         </ECornerPointsPicture>
       </EKinesis>
@@ -36,14 +53,32 @@
   </div>
 </template>
 
+<script>
+export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  mounted() {
+    console.log(this.contents)
+  },
+}
+</script>
+
 <style lang="scss" scoped>
 .app-home-presentation {
   width: 100%;
   margin-top: desktop-vw(130px);
   position: relative;
-  // height: 150vh;
-  // padding-bottom: 55vw;
   padding-bottom: desktop-vw(800px);
+
+  @include mobile {
+    margin-top: mobile-vw(85px);
+    padding-bottom: 0px;
+    margin-bottom: mobile-vw(150px);
+  }
 
   &__visual-framed {
     position: absolute;
@@ -54,6 +89,18 @@
     width: 100%;
     transform: translateY(-50%) rotate(2deg);
     z-index: 1;
+
+    @include mobile {
+      position: relative;
+      aspect-ratio: 265/325;
+      top: mobile-vw(60px);
+      left: 0;
+      grid-column: 2 / span 5;
+      width: 100%;
+      transform: rotate(2deg);
+      z-index: 1;
+      grid-row: 2;
+    }
 
     .app-element-framed-picture {
       width: 100%;
@@ -69,6 +116,15 @@
     width: 100%;
     transform: rotate(-2deg);
     z-index: 0;
+
+    @include mobile {
+      position: relative;
+      aspect-ratio: 210/265;
+      top: mobile-vw(-30px);
+      grid-column: 1 / span 4;
+      width: 100%;
+      grid-row: 3;
+    }
   }
 
   &__picture-corner-points {
@@ -80,6 +136,17 @@
     width: 100%;
     transform: rotate(5deg);
     z-index: 2;
+
+    @include mobile {
+      position: relative;
+      aspect-ratio: 155/100;
+      grid-column: 4 / span 3;
+      width: 100%;
+      z-index: 2;
+      left: 0;
+      top: 0px;
+      margin-top: mobile-vw(-85px);
+    }
 
     .app-element-corner-points-picture {
       width: 100%;
@@ -97,6 +164,10 @@
   &__title {
     grid-column: 1 / span 6;
     z-index: 1;
+
+    @include mobile {
+      grid-column: 1 / span 5;
+    }
   }
 }
 </style>

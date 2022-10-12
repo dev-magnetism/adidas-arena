@@ -36,7 +36,10 @@
       </TH3>
     </div>
     <span class="line-header-border-bottom header-line header-line-2" />
-    <span class="line-header-border-right header-line header-line-4" />
+    <span
+      v-if="$mq !== 'sm'"
+      class="line-header-border-right header-line header-line-4"
+    />
   </div>
 </template>
 
@@ -49,6 +52,12 @@
   width: 90%;
   left: 0;
   top: desktop-vw(25px);
+
+  @include mobile {
+    grid-column: 1 / span 6;
+    width: 100%;
+    top: mobile-vw(25px);
+  }
 
   span.line-header-border-bottom {
     position: absolute;
@@ -98,6 +107,10 @@
     border-left: none;
     position: relative;
 
+    @include mobile {
+      padding: mobile-vw(5px) mobile-vw(5px) mobile-vw(5px) mobile-vw(0px);
+    }
+
     &:first-child {
       span.line-info-border-bottom {
         position: absolute;
@@ -115,12 +128,22 @@
       font-size: desktop-vw(12px);
       line-height: desktop-vw(16px);
       @include font-adihausDIN-cn-medium();
+
+      @include mobile {
+        font-size: mobile-vw(8px);
+        line-height: mobile-vw(10px);
+      }
     }
 
     &__content.H2 {
       font-size: desktop-vw(24px);
       line-height: desktop-vw(20px);
       margin-top: desktop-vw(5px);
+
+      @include mobile {
+        font-size: mobile-vw(14px);
+        line-height: mobile-vw(20px);
+      }
     }
 
     &:first-child {
@@ -139,6 +162,11 @@
       font-size: desktop-vw(12px);
       line-height: desktop-vw(16px);
       @include font-adihausDIN-cn-medium();
+
+      @include mobile {
+        font-size: mobile-vw(8px);
+        line-height: mobile-vw(10px);
+      }
     }
 
     &__content.H3 {
@@ -146,6 +174,11 @@
       line-height: desktop-vw(20px);
       @include font-adihausDIN-regular();
       margin-top: desktop-vw(10px);
+
+      @include mobile {
+        font-size: mobile-vw(8px);
+        line-height: mobile-vw(11px);
+      }
     }
   }
 }

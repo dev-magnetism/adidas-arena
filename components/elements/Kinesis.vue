@@ -15,10 +15,10 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener('mousemove', this.onMouseMove, false)
+    window.addEventListener('mousemove', this.onMouseMove)
   },
   beforeDestroy() {
-    window.removeEventListener('mousemove', this.onMouseMove, false)
+    window.removeEventListener('mousemove', this.onMouseMove)
   },
   methods: {
     onMouseMove(e) {

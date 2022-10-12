@@ -2,7 +2,10 @@
   <div class="app-home-projet grid-inner">
     <div class="app-home-projet__rotated">
       <div ref="wrapper" class="app-home-projet__wrapper">
-        <AtomsCornerPoints border-color="beige" points-color="beige" />
+        <AtomsCornerPoints
+          :border-color="$mq !== 'sm' ? 'beige' : 'black'"
+          :points-color="$mq !== 'sm' ? 'beige' : 'black'"
+        />
 
         <div class="app-home-projet__inner">
           <AppHomeProjetHeader />
@@ -10,6 +13,7 @@
           <AppHomeProjetPlan ref="plan" />
 
           <EFramedPicture
+            v-if="$mq !== 'sm'"
             :fake-transparent="true"
             color="white"
             class="app-home-projet__framed-picture projet-visual"
@@ -28,6 +32,7 @@
             >80% des surfaces du bâtiment végétalisées.
           </AtomsTitleTag>
           <nuxt-picture
+            v-if="$mq !== 'sm'"
             class="app-home-projet__visual__top-upper projet-visual"
             src="imgs/placeholder.png"
             format="webp"
@@ -38,7 +43,11 @@
             >Projet</TH2
           >
         </div>
-        <div ref="fakeVisual" class="app-home-projet__fake-visual"></div>
+        <div
+          v-if="$mq !== 'sm'"
+          ref="fakeVisual"
+          class="app-home-projet__fake-visual"
+        ></div>
         <div ref="lottieCircle" class="app-home-projet__circle" />
         <div ref="lottieCrossCircle" class="app-home-projet__cross-circle" />
         <div ref="lottieValidCircle" class="app-home-projet__valid-circle" />
@@ -84,6 +93,7 @@ export default {
     initSplitText() {
       this.split = new SplitText(this.$refs.title.$el, {
         type: 'chars',
+        charsClass: 'char',
       })
 
       this.tl = gsap.timeline({
@@ -409,7 +419,7 @@ export default {
         renderer: 'svg',
         loop: false,
         autoplay: false,
-        animationData: require(`@/assets/lotties/Cercle_1.json`),
+        animationData: require(`@/assets/lotties/Cercle_5.json`),
       })
       this.animationValidCircle = lottie.loadAnimation({
         container: this.$refs.lottieValidCircle,
@@ -469,6 +479,14 @@ export default {
   padding-top: desktop-vw(135px);
   padding-bottom: desktop-vw(135px);
 
+  @include mobile {
+    background: none;
+    padding-top: mobile-vw(0px);
+    padding-bottom: mobile-vw(0px);
+    margin-top: mobile-vw(75px);
+    margin-bottom: mobile-vw(100px);
+  }
+
   &__wrapper {
     width: 100%;
     height: 100%;
@@ -505,8 +523,8 @@ export default {
     position: absolute;
     left: columns(5.5);
     top: desktop-vw(420px);
-    width: desktop-vw(195px);
-    transform: rotate(-5deg);
+    width: desktop-vw(200px);
+    transform: rotate(6deg);
     aspect-ratio: 195 / 125;
 
     svg {
@@ -584,6 +602,15 @@ export default {
     aspect-ratio: 1165/760;
     position: relative;
     transform: translateX(-2.5%) rotate(-2deg);
+
+    @include mobile {
+      width: 100%;
+      grid-column: 1 / span 6;
+      aspect-ratio: 345/760;
+      position: relative;
+      transform: none;
+      height: 100vh;
+    }
   }
 
   &__inner {
@@ -595,6 +622,11 @@ export default {
     grid-template-columns: repeat(10, minmax(0, 1fr));
     grid-gap: var(--layout-columns-gap);
     overflow: hidden;
+
+    @include mobile {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      padding: mobile-vw(25px) mobile-vw(20px);
+    }
   }
 
   &__fake-visual {
@@ -607,6 +639,10 @@ export default {
     left: 0;
     width: desktop-vw(110px);
     height: desktop-vw(110px);
+
+    @include mobile {
+      display: none;
+    }
   }
 
   &__visual__top-upper {
@@ -617,6 +653,9 @@ export default {
     top: 4%;
     left: 20%;
     width: 100%;
+    @include mobile {
+      display: none;
+    }
   }
   &__tag-top {
     position: absolute;
@@ -628,6 +667,11 @@ export default {
       text-transform: uppercase;
       font-size: desktop-vw(18px);
       line-height: desktop-vw(20px);
+
+      @include mobile {
+        font-size: mobile-vw(18px);
+        line-height: mobile-vw(20px);
+      }
     }
   }
 
@@ -640,6 +684,10 @@ export default {
     z-index: -2;
     padding: desktop-vw(35px) desktop-vw(35px);
     transform: rotate(-2deg);
+
+    @include mobile {
+      display: none;
+    }
 
     > :first-child {
       transform: rotate(-2deg);
@@ -659,6 +707,12 @@ export default {
     right: desktop-vw(5px);
     font-size: desktop-vw(180px);
     line-height: desktop-vw(180px);
+
+    @include mobile {
+      font-size: mobile-vw(130px);
+      line-height: mobile-vw(130px);
+      transform: scale(-1) rotate(355deg);
+    }
   }
 }
 </style>

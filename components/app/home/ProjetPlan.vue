@@ -41,6 +41,17 @@
   z-index: -1;
   transform-origin: left bottom;
 
+  @include mobile {
+    grid-column: 1 / span 6;
+    width: 100%;
+    aspect-ratio: 335/320;
+    bottom: 0;
+    left: columns(0.5);
+    transform: translateY(50%) rotate(4deg);
+    z-index: -1;
+    transform-origin: left bottom;
+  }
+
   .app-element-lottie {
     position: absolute;
     top: 50%;

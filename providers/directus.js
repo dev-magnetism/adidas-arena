@@ -3,28 +3,30 @@ import { createOperationsGenerator } from '~image'
 
 const operationsGenerator = createOperationsGenerator({
   keyMap: {
+    width: 'width',
+    height: 'height',
     quality: 'quality',
     format: 'format',
   },
-  valueMap: {},
+  valueMap: {
+    format: {
+      jpeg: 'jpg',
+    },
+  },
   joinWith: '&',
   formatter: (key, value) => `${key}=${value}`,
 })
 
 export function getImage(
   src,
-  { modifiers, baseURL } = {},
+  { modifiers = {}, baseURL = {} },
   { options, nuxtContext, $img }
 ) {
-  //   const { width, height, format, fit, ...providerModifiers } = modifiers
   const operations = operationsGenerator(modifiers)
 
-  const finalBaseURL = `${baseURL}assets/`
-
-  const url = joinURL(finalBaseURL, src + (operations ? '?' + operations : ''))
-  console.log(url, operations)
+  const url = `${baseURL}assets/`
 
   return {
-    url,
+    url: joinURL(url, src + (operations ? '?' + operations : '')),
   }
 }

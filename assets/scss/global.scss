@@ -64,23 +64,23 @@ body,
 
 .page-enter-active,
 .page-leave-active {
-  transition: opacity .5s var(--ease-in-out-cubic);
+  transition: transform .25s var(--ease-in-out-cubic);
 }
 
 .page-enter {
-  opacity: 0;
+  transform: translateX(100%);
 }
 
 .page-enter-to {
-  opacity: 1;
-}
+  transform: translateX(0%);}
 
 .page-leave {
   opacity: 1;
+    transform: translateX(0%);
 }
 
 .page-leave-to {
-  opacity: 0;
+  transform: translateX(-100%);
 }
 
 a,
@@ -99,10 +99,10 @@ select {
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   will-change: transform;
-  -webkit-backface-visibility: hidden;
-  -webkit-perspective: 1000;
-  backface-visibility: hidden;
-  perspective: 1000;
+  // -webkit-backface-visibility: hidden;
+  // -webkit-perspective: 1000;
+  // backface-visibility: hidden;
+  // perspective: 1000;
 }
 
 video, img {

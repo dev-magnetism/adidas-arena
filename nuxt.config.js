@@ -33,7 +33,7 @@ export default {
     mode: 'out-in', // when blank: out and in are simultaneous. default: 'out-in'
     // not that when using 'out-in', the outro can be finished before the data has been loaded
     // meaning an empty page will be shown
-    duration: 500,
+    duration: 250,
     beforeEnter(el) {
       this.$nuxt.$emit('app:beforeEnter')
       // console.log("beforeEnter");
@@ -133,7 +133,7 @@ export default {
         name: 'directus',
         provider: '~/providers/directus',
         options: {
-          baseURL: 'https://nws6fqcy.directus.app/',
+          baseURL: 'https://adidasarena.directus.app/',
           modifiers: {
             format: 'webp',
             quality: 85,
@@ -152,12 +152,7 @@ export default {
     [
       '~/modules/directus',
       {
-        url: 'https://nws6fqcy.directus.app/',
-        auth: {
-          email: 'email',
-          password: 'mdp',
-          // token: process.env.DIRECTUS_STATIC_TOKEN,
-        },
+        url: 'https://adidasarena.directus.app/',
       },
     ],
   ],
@@ -171,7 +166,7 @@ export default {
   },
 
   // directus: {
-  //   url: 'https://nws6fqcy.directus.app/',
+  //   url: 'https://adidasarena.directus.app/',
   //   auth: {
   //      email: 'email',
   //      password: 'mot de passe',
