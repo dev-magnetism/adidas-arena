@@ -50,8 +50,8 @@ export default {
         delay: 0.1,
         yPercent: 0,
         stagger: 0.2,
-        duration: 0.7,
-        ease: 'power3.out',
+        duration: 1.2,
+        ease: 'expo.out',
       }
     )
     this.tl.fromTo(
@@ -62,12 +62,11 @@ export default {
       },
       {
         yPercent: 0,
-        stagger: 0.1,
         opacity: 0.35,
-        duration: 0.45,
-        ease: 'power3.out',
+        duration: 1.2,
+        ease: 'expo.out',
       },
-      '<50%'
+      '<30%'
     )
   },
 }
@@ -94,6 +93,7 @@ export default {
 
     .H1 {
       display: inline-block;
+      will-change: transform;
 
       &:first-child {
         -webkit-text-stroke: 1.5px var(--c-black);
@@ -106,6 +106,7 @@ export default {
     font-size: desktop-vw(24px);
     line-height: desktop-vw(24px);
     opacity: 0.35;
+    will-change: transform;
   }
 }
 </style>

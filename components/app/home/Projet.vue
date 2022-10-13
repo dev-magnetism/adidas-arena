@@ -27,7 +27,7 @@
           </EFramedPicture>
           <AtomsTitleTag
             class="app-home-projet__tag-top app-projet-tag-5"
-            bg="beige"
+            bg="white"
             color="black"
             >80% des surfaces du bâtiment végétalisées.
           </AtomsTitleTag>
@@ -60,13 +60,13 @@
         </AtomsCTA>
         <AtomsTitleTag
           class="app-home-projet__tag-top-left app-projet-tag-3"
-          bg="beige"
+          bg="white"
           color="black"
           >Coton recyclé pour l’isolation</AtomsTitleTag
         >
         <AtomsTitleTag
           class="app-home-projet__tag-middle app-projet-tag-2"
-          bg="beige"
+          bg="white"
           color="black"
           >aluminium recyclable
         </AtomsTitleTag>
@@ -112,7 +112,7 @@ export default {
       })
 
       this.tl = gsap.timeline({
-        defaults: { duration: 0.3, ease: 'power3.inOut' },
+        defaults: { duration: 1, ease: 'expo.out' },
         scrollTrigger: {
           trigger: this.$el,
           start: 'top center',
@@ -139,7 +139,6 @@ export default {
             transformOrigin: 'left bottom',
             scale: 1,
             stagger: 0.05,
-            duration: 0.65,
           }
         )
 
@@ -168,11 +167,11 @@ export default {
             scale: 1,
             stagger: 0.2,
           },
-          '>-100%'
+          '>-80%'
         )
 
         this.tl.addLabel('projet-2-3', '<25%')
-        this.tl.addLabel('lotties', 'projet-2-3+=.65')
+        this.tl.addLabel('lotties', 'projet-2-3+=.25')
         this.tl.fromTo(
           this.$refs.plan.$el,
           {
@@ -405,7 +404,7 @@ export default {
             y: 0,
             opacity: 1,
 
-            stagger: 0.2,
+            stagger: 0.085,
           },
           'charsHeader+=20%'
         )

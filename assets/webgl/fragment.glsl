@@ -11,6 +11,7 @@ varying vec2 vUv;
 // uRatio = ratio de l'image
 // uResolutionEl = ratio de la div
 
+
 vec2 resizedUv(vec2 inital_uv, vec2 aspect_ratio)
 {
 	vec2 ratio = vec2(
@@ -34,6 +35,8 @@ vec3 stepBorder(in vec2 _uv, in float _width){
     return pct;
  }
 
+#include "draw/rect.glsl"
+
 void main() {   
     vec2 uv = resizedUv(vUv, uRatio);
 
@@ -47,9 +50,22 @@ strength = step(0.8, strength);
 	
   
 	vec4 color = texture2D(uMap, zoomedUv);
-	vec4 test = vec4(strength, strength, strength, 1.);
+	// vec4 test = vec4s(strength, strength, strength, 1.);
 
-	gl_FragColor = color;
+
+
+float test = rect(uv, 0.99, .005);
+	float testbis = rect(uv - vec2(-.5 + 0.005,-0.5 + 0.005), .01);
+	float testbisbis = rect(uv - vec2(0.5 - 0.005, 0.5 - 0.005), .01);
+	float testbisbisbis = rect(uv - vec2(-0.5 + 0.005, 0.5 - 0.005), .01);
+	float testbisbisbisbis = rect(uv - vec2(0.5 - 0.005, -0.5 + 0.005), .01);
+	float testttt = flip(test + (testbis + testbisbis + testbisbisbis + testbisbisbisbis),1.);
+
+	color.rgb = vec3(testttt);
+
+		gl_FragColor = color;
+
+
 	// gl_FragColor = mix(color,cadre, cadre.a);
 	// gl_FragColor = vec4(.2, .84, 1., 1.);
 	

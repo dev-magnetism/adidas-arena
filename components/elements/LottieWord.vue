@@ -66,7 +66,7 @@ export default {
     this.LottieScrollTrigger({
       target: this.$el,
       animation: this.src,
-      start: 'top-=100% center+=20%',
+      start: 'top-=100% center+=30%',
       end: 'bottom-=100% center',
       scrub: 0.5,
     })

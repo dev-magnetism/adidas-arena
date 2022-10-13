@@ -66,7 +66,7 @@ export default {
       scrollTrigger: {
         trigger: this.$el,
         start: 'top bottom',
-        toggleActions: 'play none none none',
+        toggleActions: 'play none none reset',
       },
     })
 
@@ -84,8 +84,8 @@ export default {
       {
         delay: 0.3,
         scaleY: 1,
-        duration: 0.45,
-        ease: 'power3.out',
+        duration: 0.85,
+        ease: 'expo.out',
         transformOrigin: 'top center',
       },
       'overlayEnter'
@@ -98,10 +98,10 @@ export default {
           scaleY: 0,
         },
         {
-          delay: 0.15,
+          delay: 0.1,
           scaleY: 1,
-          duration: 0.45,
-          ease: 'power3.out',
+          duration: 0.65,
+          ease: 'expo.out',
           transformOrigin: 'top center',
         },
         'overlayEnter'
@@ -118,8 +118,8 @@ export default {
       this.$refs.overlay,
       {
         scaleY: 0,
-        duration: 0.45,
-        ease: 'power3.inOut',
+        duration: 0.7,
+        ease: 'expo.inOut',
         transformOrigin: 'bottom center',
       },
       'overlayLeave'
@@ -129,10 +129,10 @@ export default {
         this.$refs.overlayTwin,
         {
           scaleY: 0,
-          duration: 0.45,
+          duration: 0.6,
           delay: 0.15,
 
-          ease: 'power3.inOut',
+          ease: 'expo.inOut',
           transformOrigin: 'bottom center',
         },
         'overlayLeave'

@@ -82,9 +82,9 @@ export default {
         {
           delay: 0.15,
           yPercent: 0,
-          stagger: 0.075,
-          duration: 0.4,
-          ease: 'power3.out',
+          stagger: 0.2,
+          duration: 1.6,
+          ease: 'expo.out',
           scrollTrigger: {
             trigger: this.$el,
             start: 'center bottom',

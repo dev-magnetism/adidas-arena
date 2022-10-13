@@ -90,12 +90,10 @@ export default {
         this.splitting.lines,
         {
           yPercent: 100,
-          // opacity: 0,
         },
         {
           yPercent: 0,
-          stagger: 0.1,
-          opacity: 1,
+          stagger: 0.08,
           // duration: 0.4,
           ease: 'power3.out',
           scrollTrigger: {

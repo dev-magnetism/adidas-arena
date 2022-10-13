@@ -306,7 +306,7 @@ export default {
       font-size: desktop-vw(82px);
       line-height: desktop-vw(106px);
       letter-spacing: -0.04em;
-      width: calc(100% - (desktop-vw(56px) + 60px));
+      width: calc(100% - (desktop-vw(90px) + 60px));
 
       @include mobile {
         width: calc(80% - (mobile-vw(20px)));

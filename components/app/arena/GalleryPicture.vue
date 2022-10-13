@@ -18,8 +18,8 @@ import { gsap } from 'gsap'
 import boundingRect from '@/mixins/bounding-rect-webgl-gallery'
 import useWebGL from '~/hooks/webgl'
 
-import vertexShader from '~/assets/webgl/arena-gallery-picture/vertex.glsl'
-import fragmentShader from '~/assets/webgl/arena-gallery-picture/fragment.glsl'
+import vertexShader from '~/assets/webgl/vertex.glsl'
+import fragmentShader from '~/assets/webgl/fragment.glsl'
 
 export default {
   mixins: [boundingRect],

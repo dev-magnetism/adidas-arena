@@ -16,7 +16,7 @@
     <div ref="inner" :class="{ hold }" class="app-element-slider__wrapper">
       <div class="app-element-slider__inner">
         <div
-          v-for="i in 15"
+          v-for="i in 5"
           :key="i"
           ref="items"
           class="app-element-slider__item"
@@ -63,6 +63,7 @@ export default {
       slidesToScroll: 1,
       speed: 12,
       inViewThreshold: 1,
+      loop: true,
     })
 
     this.embla.on('init', this.setParallax)
@@ -153,7 +154,7 @@ export default {
     &.hold {
       .app-element-slider__item__visual {
         img {
-          transform: scale(1.25);
+          transform: scale(1.2);
         }
       }
     }

@@ -1,15 +1,11 @@
 <template>
   <div class="app-projet__catch-phrase grid-inner">
     <TH2>
-      <EKinesis :speed="10">
-        Un terrain de jeu laissant place aux rencontres, à la création et à la
-        fête.
-      </EKinesis>
+      Un terrain de jeu laissant place aux rencontres, à la création et à la
+      fête.
     </TH2>
-    <EParallax :speed="0.3" class="app-projet__catch-phrase__lottie">
-      <EKinesis :speed="20">
-        <ELottie id="Fleche_Match" start="center bottom" end="bottom center" />
-      </EKinesis>
+    <EParallax :speed="0.25" class="app-projet__catch-phrase__lottie">
+      <ELottie id="Fleche_Match" start="center bottom" end="bottom center" />
     </EParallax>
   </div>
 </template>

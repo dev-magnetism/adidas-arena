@@ -11,8 +11,12 @@
       rencontrer musique, sport, culture & lifestyle pour tous.
     </TH3> -->
 
-    <EParallax :speed="1.35" class="app-home-presentation__visual-bigger">
-      <EKinesis :speed="20">
+    <EParallax
+      ref="visualBigger"
+      :speed="1.35"
+      class="app-home-presentation__visual-bigger"
+    >
+      <EKinesis :speed="5">
         <nuxt-picture
           provider="directus"
           :src="contents.pictureBigVisual"
@@ -22,10 +26,14 @@
       </EKinesis>
     </EParallax>
 
-    <EParallax :speed="0.7" class="app-home-presentation__visual-framed">
-      <EKinesis :speed="20">
+    <EParallax
+      ref="framed"
+      :speed="0.7"
+      class="app-home-presentation__visual-framed"
+    >
+      <EKinesis :speed="5">
         <EFramedPicture color="red-adidas">
-          <EKinesis :speed="-10">
+          <EKinesis :speed="-2.5">
             <nuxt-picture
               provider="directus"
               :src="contents.pictureFramed"
@@ -38,7 +46,7 @@
     </EParallax>
 
     <EParallax :speed="1" class="app-home-presentation__picture-corner-points">
-      <EKinesis :speed="50">
+      <EKinesis :speed="15">
         <ECornerPointsPicture :size-points="6">
           <nuxt-picture
             class="app-home-presentation__visual-smaller picture-absolute"
@@ -54,6 +62,8 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
+
 export default {
   props: {
     contents: {
@@ -62,7 +72,35 @@ export default {
     },
   },
   mounted() {
-    console.log(this.contents)
+    gsap.fromTo(
+      this.$refs.visualBigger.$el,
+      {
+        rotate: -6,
+      },
+      {
+        rotate: -2,
+        scrollTrigger: {
+          trigger: this.$refs.visualBigger.$el,
+          scrub: 0.5,
+          end: 'center center',
+        },
+      }
+    )
+
+    gsap.fromTo(
+      this.$refs.framed.$el,
+      {
+        rotate: 6,
+      },
+      {
+        rotate: 2,
+        scrollTrigger: {
+          trigger: this.$refs.framed.$el,
+          scrub: 0.5,
+          end: 'center center',
+        },
+      }
+    )
   },
 }
 </script>

@@ -25,14 +25,14 @@
     <AtomsTitleTag
       v-if="$mq !== 'sm'"
       class="app-home-projet__big-visual__tag-top-upper app-projet-tag-4"
-      bg="beige"
+      bg="white"
       color="black"
       >PARIS porte de la chapelle</AtomsTitleTag
     >
 
     <AtomsTitleTag
       v-if="$mq !== 'sm'"
-      bg="beige"
+      bg="white"
       color="black"
       class="app-home-projet__big-visual__tag-bottom app-projet-tag-1"
       >DES MATCHS, DES EVENEMENTS, DES RESTAURANTS, DES JEUX, DES SALLES DE

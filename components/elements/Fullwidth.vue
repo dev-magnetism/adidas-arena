@@ -1,6 +1,5 @@
 <template>
-  <!-- <div class="app-element-fullwidth"> -->
-  <EParallax :speed="0.25" :scrub="2" class="app-element-fullwidth">
+  <div class="app-element-fullwidth">
     <nuxt-picture
       ref="picture"
       class="picture-absolute"
@@ -8,15 +7,23 @@
       format="webp"
       alt="placeholder"
     />
-  </EParallax>
-  <!-- </div> -->
+  </div>
 </template>
 
 <script>
-// import { gsap } from 'gsap'
+import { gsap } from 'gsap'
 
 export default {
-  mounted() {},
+  mounted() {
+    gsap.to(this.$refs.picture.$el, {
+      yPercent: -10,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: this.$el,
+        scrub: 0.5,
+      },
+    })
+  },
 }
 </script>
 
@@ -26,11 +33,10 @@ export default {
   aspect-ratio: 1440 / 680;
   position: relative;
   overflow: hidden;
-
   @include noise();
 
   picture {
-    transform: scale(1.35);
+    transform: translateY(10%) scale(1.35);
   }
 }
 </style>
