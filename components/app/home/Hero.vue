@@ -260,7 +260,7 @@ export default {
     }
   }
 
-  &__title {
+  &__title.app-element-rich-text {
     grid-column: 2 / span 6;
     align-self: center;
     z-index: 1;
@@ -269,12 +269,12 @@ export default {
     // line-height: min(140px, desktop-vw(140px));
 
     .H1 {
-      font-size: min(130px, desktop-vw(130px));
-      line-height: min(140px, desktop-vw(140px));
+      font-size: min(130px, desktop-vw(130px)) !important;
+      line-height: min(140px, desktop-vw(140px)) !important;
 
       @include mobile {
-        font-size: min(80px, mobile-vw(80px));
-        line-height: min(86px, mobile-vw(86px));
+        font-size: min(80px, mobile-vw(80px)) !important;
+        line-height: min(86px, mobile-vw(86px)) !important;
       }
     }
 
