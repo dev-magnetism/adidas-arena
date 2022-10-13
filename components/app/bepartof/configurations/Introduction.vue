@@ -55,7 +55,7 @@
 <style lang="scss">
 .app-be-part-of-configurations-introduction {
   position: relative;
-  margin-bottom: desktop-vw(-130px);
+  margin-bottom: desktop-vw(130px);
   row-gap: desktop-vw(125px);
 
   &__f-row {

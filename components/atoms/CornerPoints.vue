@@ -13,16 +13,28 @@
       class="app-atoms-corner-points__item app-atoms-corner-points__item--top-left"
     />
     <span
+      class="app-atoms-corner-points__line app-atoms-corner-points__line--top"
+    />
+    <span
       v-if="position.includes('2')"
       class="app-atoms-corner-points__item app-atoms-corner-points__item--top-right"
+    />
+    <span
+      class="app-atoms-corner-points__line app-atoms-corner-points__line--right"
     />
     <span
       v-if="position.includes('3')"
       class="app-atoms-corner-points__item app-atoms-corner-points__item--bottom-left"
     />
     <span
+      class="app-atoms-corner-points__line app-atoms-corner-points__line--bottom"
+    />
+    <span
       v-if="position.includes('4')"
       class="app-atoms-corner-points__item app-atoms-corner-points__item--bottom-right"
+    />
+    <span
+      class="app-atoms-corner-points__line app-atoms-corner-points__line--left"
     />
   </div>
 </template>
@@ -77,9 +89,43 @@ export default {
   left: 0;
 
   &.top.right.bottom.left {
-    border: 1px solid var(--border-color);
+    // border: 1px solid var(--border-color);
     // outline: 1px solid var(--c-black);
     // outline-offset: 0px;
+  }
+
+  &__line {
+    background-color: var(--border-color);
+    position: absolute;
+
+    &--top {
+      width: 100%;
+      height: 1px;
+      top: 0;
+      left: 0;
+      transform: translateY(-100%);
+    }
+    &--bottom {
+      width: 100%;
+      height: 1px;
+      bottom: 0;
+      left: 0;
+      transform: translateY(100%);
+    }
+    &--right {
+      width: 1px;
+      height: 100%;
+      top: 0;
+      right: 0;
+      transform: translateX(100%);
+    }
+    &--left {
+      width: 1px;
+      height: 100%;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+    }
   }
 
   &__item {
@@ -89,23 +135,23 @@ export default {
     background: var(--points-color);
 
     &--top-left {
-      left: -1px;
-      top: -1px;
+      left: 0px;
+      top: 0px;
       transform: translate(-50%, -50%);
     }
     &--top-right {
-      right: -1px;
-      top: -1px;
+      right: 0px;
+      top: 0px;
       transform: translate(50%, -50%);
     }
     &--bottom-left {
-      left: -1px;
-      bottom: -1px;
+      left: 0px;
+      bottom: 0px;
       transform: translate(-50%, 50%);
     }
     &--bottom-right {
-      right: -1px;
-      bottom: -1px;
+      right: 0px;
+      bottom: 0px;
       transform: translate(50%, 50%);
     }
   }

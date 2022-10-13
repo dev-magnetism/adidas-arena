@@ -143,8 +143,7 @@ export default {
   background-image: url('/imgs/footer/background.png');
   background-repeat: no-repeat;
   background-size: 85% auto;
-  background-position: right center;
-  // min-height: 100vh;
+  background-position: right bottom;
 
   @include mobile {
     padding-top: mobile-vw(60px);

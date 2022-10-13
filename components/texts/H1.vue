@@ -57,7 +57,7 @@ export default {
 
   mounted() {
     document.fonts.ready.then(() => {
-      if (!this.split) return
+      if (!this.split || this.$mq === 'sm') return
 
       this.initSplitText()
     })

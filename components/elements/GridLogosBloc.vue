@@ -175,7 +175,7 @@ export default {
   }
 
   .app-atoms-corner-points {
-    outline: 1px solid var(--border-color) !important;
+    // outline: 1px solid var(--border-color) !important;
     border: none !important;
   }
 

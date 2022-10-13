@@ -576,6 +576,10 @@ export default {
     transform: scale(0);
     transform-origin: left bottom;
 
+    @include mobile {
+      transform: scale(1);
+    }
+
     position: relative;
 
     &::after {
