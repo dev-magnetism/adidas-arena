@@ -100,9 +100,9 @@ export default {
 
   methods: {
     initSplitText() {
-      if (!process.client) return
-
       console.log(this, this.$el)
+
+      if (!process.client) return
 
       const els = this.$el.querySelectorAll('.wysiwyg-text')
 
