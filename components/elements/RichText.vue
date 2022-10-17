@@ -100,7 +100,6 @@ export default {
 
   methods: {
     initSplitText() {
-      console.log('hgeeee', this)
       this.$children[0].$children.forEach((child) => {
         if (this.overflow) {
           this.splitting = new SplitText(child.$el, {
@@ -136,6 +135,8 @@ export default {
             toggleActions: 'play none none none',
           }
         }
+
+        console.log('hgeeee', child, this.splitting, this.splittingParent)
 
         gsap.fromTo(
           this.splitting.lines,
