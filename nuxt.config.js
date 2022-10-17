@@ -188,7 +188,7 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     extractCSS: {
-      ignoreOrder: true,
+      ignoreOrder: false,
     },
     transpile: ['three', 'gsap'],
     extend(config, ctx) {
