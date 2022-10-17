@@ -260,24 +260,22 @@ export default {
     }
   }
 
-  .H1,
-  h1 {
-    background: red;
-    font-size: min(130px, desktop-vw(130px)) !important;
-    line-height: min(140px, desktop-vw(140px)) !important;
-
-    @include mobile {
-      font-size: min(80px, mobile-vw(80px)) !important;
-      line-height: min(86px, mobile-vw(86px)) !important;
-    }
-  }
   &__title.app-element-rich-text {
     grid-column: 2 / span 6;
     align-self: center;
     z-index: 1;
     max-width: min(565px, desktop-vw(565px));
-    // font-size: min(130px, desktop-vw(130px));
-    // line-height: min(140px, desktop-vw(140px));
+
+    .H1,
+    h1 {
+      font-size: min(130px, desktop-vw(130px)) !important;
+      line-height: min(140px, desktop-vw(140px)) !important;
+
+      @include mobile {
+        font-size: min(80px, mobile-vw(80px)) !important;
+        line-height: min(86px, mobile-vw(86px)) !important;
+      }
+    }
 
     @include mobile {
       grid-column: 1 / span 6;
