@@ -40,6 +40,7 @@
     v-else
     :href="content.logo_link"
     :blank="true"
+    external
     :class="{ big, transparent }"
     class="app-element-grid-logos-bloc"
   >

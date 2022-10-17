@@ -185,14 +185,6 @@ export default {
     },
   },
 
-  vue: {
-    config: {
-      devtools: true,
-    },
-  },
-
-  debug: true,
-
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     extractCSS: {
@@ -201,6 +193,7 @@ export default {
     transpile: ['three', 'gsap'],
     extend(config, ctx) {
       config.resolve.alias.vue = 'vue/dist/vue.common'
+      config.resolve.alias.vue$ = 'vue/dist/vue.esm.js'
       config.plugins.push(new webpack.ProvidePlugin({ THREE: 'three' }))
       config.module.rules.push({
         test: /\.(glsl|vs|fs)$/,

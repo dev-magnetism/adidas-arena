@@ -85,6 +85,7 @@ export default {
       }
     },
   },
+
   created() {
     this.soup = new JSSoup(this.content)
   },
@@ -95,6 +96,7 @@ export default {
       this.initSplitText()
     })
   },
+
   methods: {
     initSplitText() {
       this.$refs.component.$children.forEach((child) => {
