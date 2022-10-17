@@ -185,6 +185,14 @@ export default {
     },
   },
 
+  vue: {
+    config: {
+      devtools: true,
+    },
+  },
+
+  debug: true,
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     extractCSS: {
