@@ -42,8 +42,6 @@ export default {
 
   methods: {
     initSplitText() {
-      console.log(this, this.$el)
-
       const els = this.$el.querySelectorAll('.wysiwyg-text')
 
       els.forEach((child) => {
