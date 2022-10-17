@@ -1,36 +1,90 @@
 <template>
   <div class="app-home-partners grid">
     <div class="app-home-partners__content">
-      <TH1 :split="true" class="app-home-partners__title">
-        Un écosystème complémentaire de partenaires
-      </TH1>
-      <TP2 class="app-home-partners__principal-paragraph" weight="bold">
-        Aujourd’hui près de 20 marques leaders sur leur marché font confiance à
-        l’Accor Arena et à ses équipes. Ces marques ont investi pour profiter de
-        l’exposition d’une programmation riche et diversifiée de plus de 135
-        séances par an.
+      <ERichText
+        :split="true"
+        :scrub="false"
+        :overflow="true"
+        class="app-home-partners__title"
+        :content="contents.title"
+      />
+
+      <TP2
+        class="app-home-partners__principal-paragraph partners-apparition"
+        weight="bold"
+      >
+        {{ contents.subtitle }}
       </TP2>
-      <TP2 class="app-home-partners__secondary-paragraph">
-        Après les travaux de rénovation, l’Accor Arena est devenu l’un des
-        terrains d’animation et d’engagement favori des marques aux côtés de
-        Roland-Garros ou du PSG. Les équipes de l’Arena ont le privilège et
-        l’exigence d’accompagner AccorHotels, DHL, American Express, Heineken,
-        Coca Cola, Pierre Hermé, Moet Hennessy, Samsung, et bien d’autres encore
-        dans le déploiement de leur politique partenariale.
+      <TP2
+        weight="medium"
+        class="app-home-partners__secondary-paragraph partners-apparition"
+      >
+        {{ contents.paragraph }}
       </TP2>
-      <AtomsCTA>Devenir partenaire</AtomsCTA>
+      <AtomsCTA ref="cta" class="partners-apparition"
+        >Devenir partenaire</AtomsCTA
+      >
     </div>
     <EGridLogos
+      :logos="contents.list"
       :cols="$mq !== 'sm' ? 6 : 4"
       :rows="$mq !== 'sm' ? 7 : 8"
       class="app-home-partners__grid-logos"
     />
-    <EPartnersTotal />
+    <EPartnersTotal :total="contents.list.length" />
   </div>
 </template>
 
 <script>
-export default {}
+import { gsap } from 'gsap'
+
+export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  mounted() {
+    const els = this.$el.querySelectorAll('.partners-apparition')
+
+    els.forEach((el) => {
+      const scrollTrigger = {
+        trigger: el,
+        start: 'top+=75px bottom',
+        end: 'top+=75px center',
+        toggleActions: 'play none none none',
+      }
+
+      gsap.fromTo(
+        el,
+        {
+          y: -75,
+        },
+        {
+          y: 0,
+          duration: 1.25,
+          ease: 'expo.out',
+          delay: 0.3,
+          scrollTrigger,
+        }
+      )
+      gsap.fromTo(
+        el,
+        {
+          opacity: 0,
+        },
+        {
+          opacity: 1,
+          duration: 1.45,
+          ease: 'expo.out',
+          delay: 0.3,
+          scrollTrigger,
+        }
+      )
+    })
+  },
+}
 </script>
 
 <style lang="scss">
@@ -55,33 +109,42 @@ export default {}
     }
   }
 
-  &__title.H1 {
+  &__title {
     margin-bottom: desktop-vw(25px);
 
     @include mobile {
       margin-bottom: mobile-vw(30px);
     }
   }
+
   &__principal-paragraph {
     margin-bottom: desktop-vw(25px);
     width: 50%;
+    text-transform: uppercase;
+    opacity: 0.8;
+    will-change: transform;
 
     @include mobile {
       width: 100%;
       margin-bottom: mobile-vw(25px);
     }
   }
+
   &__secondary-paragraph {
     margin-bottom: desktop-vw(50px);
     width: 52.5%;
+    opacity: 0.8;
+    will-change: transform;
 
     @include mobile {
       width: 100%;
       margin-bottom: mobile-vw(50px);
     }
   }
+
   .app-atoms-cta {
     width: 52.5%;
+    will-change: transform;
 
     @include mobile {
       width: 100%;

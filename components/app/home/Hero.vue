@@ -295,6 +295,7 @@ export default {
     width: 100%;
     aspect-ratio: 350 / 440;
     transform: rotate(5deg);
+    @include noise();
 
     @include mobile {
       grid-column: 1 / span 4;
@@ -313,6 +314,7 @@ export default {
     min-width: 200px;
     aspect-ratio: 255 / 320;
     transform: rotate(-6deg);
+    @include noise();
 
     @include mobile {
       grid-column: 4 / span 2;

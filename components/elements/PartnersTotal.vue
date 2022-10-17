@@ -17,11 +17,13 @@
 import { gsap } from 'gsap'
 
 export default {
-  data() {
-    return {
-      total: 8,
-    }
+  props: {
+    total: {
+      type: Number,
+      default: 0,
+    },
   },
+
   computed: {
     totalFinal() {
       const value = ('0' + this.total).slice(-2)
@@ -68,6 +70,9 @@ export default {
       },
       '<30%'
     )
+  },
+  beforeDestroy() {
+    this.tl?.kill()
   },
 }
 </script>

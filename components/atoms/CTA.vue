@@ -106,6 +106,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   position: relative;
+  overflow: hidden;
 
   &.arrow {
     padding: desktop-vw(15px) desktop-vw(0px) desktop-vw(15px) desktop-vw(25px);
@@ -115,13 +116,30 @@ export default {
     }
   }
 
+  &::after {
+    content: '';
+    width: 100%;
+    height: calc(100% + 2px);
+    position: absolute;
+    background: var(--c-red-adidas);
+    left: 0;
+    top: 0;
+    transform: scaleY(0);
+    transform-origin: center bottom;
+    transition: transform 0.65s var(--ease-out-expo);
+    will-change: transform;
+  }
+
   @include hover {
     cursor: pointer;
 
     &:hover {
+      &::after {
+        transform: scaleY(1);
+      }
       .app-atoms-cta__text {
         &::after {
-          transform: scaleX(1) !important;
+          // transform: scaleX(1) !important;
         }
       }
     }
@@ -129,6 +147,7 @@ export default {
 
   &__text {
     position: relative;
+    z-index: 1;
 
     &::after {
       content: '';
@@ -164,12 +183,14 @@ export default {
 
   &__arrow {
     overflow: hidden;
+    z-index: 1;
 
     svg {
       padding: 0px desktop-vw(15px);
       width: 100%;
       vertical-align: middle;
       will-change: transform;
+      z-index: 1;
 
       @include mobile {
         padding: 0px mobile-vw(15px) mobile-vw(0px) mobile-vw(5px);

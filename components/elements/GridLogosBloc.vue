@@ -1,12 +1,17 @@
 <template>
-  <div :class="{ big, transparent }" class="app-element-grid-logos-bloc">
+  <div
+    v-if="transparent"
+    :class="{ big, transparent }"
+    class="app-element-grid-logos-bloc"
+  >
     <AtomsCornerPoints :size-points="6" position="1,2,3,4" />
     <nuxt-img
       v-if="!transparent"
       ref="img"
       format="webp"
-      :src="src"
-      alt="test"
+      :src="content.logo"
+      :alt="content.logo_alt"
+      provider="directus"
     />
     <SvgYou v-if="transparent" class="app-element-grid-logos-bloc__you" />
 
@@ -31,6 +36,45 @@
       class="app-element-grid-logos-bloc__overlay twin"
     />
   </div>
+  <SmartLink
+    v-else
+    :href="content.logo_link"
+    :blank="true"
+    :class="{ big, transparent }"
+    class="app-element-grid-logos-bloc"
+  >
+    <AtomsCornerPoints :size-points="6" position="1,2,3,4" />
+    <nuxt-img
+      v-if="!transparent"
+      ref="img"
+      format="webp"
+      :src="content.logo"
+      :alt="content.logo_alt"
+      provider="directus"
+    />
+    <SvgYou v-if="transparent" class="app-element-grid-logos-bloc__you" />
+
+    <span
+      v-if="!transparent"
+      ref="overlay"
+      :style="{
+        'background-color': big
+          ? `var(--c-red-adidas)`
+          : isBlue
+          ? `var(--c-blue-adidas)`
+          : `var(--c-red-adidas)`,
+      }"
+      class="app-element-grid-logos-bloc__overlay"
+    />
+    <span
+      v-if="!transparent && big"
+      ref="overlayTwin"
+      :style="{
+        'background-color': `var(--c-blue-adidas)`,
+      }"
+      class="app-element-grid-logos-bloc__overlay twin"
+    />
+  </SmartLink>
 </template>
 
 <script>
@@ -50,6 +94,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    content: {
+      type: Object,
+      default: () => {},
+    },
   },
   computed: {
     isBlue() {
@@ -66,7 +114,7 @@ export default {
       scrollTrigger: {
         trigger: this.$el,
         start: 'top bottom',
-        toggleActions: 'play none none reset',
+        toggleActions: 'play none none none',
       },
     })
 
@@ -131,7 +179,6 @@ export default {
           scaleY: 0,
           duration: 0.6,
           delay: 0.15,
-
           ease: 'expo.inOut',
           transformOrigin: 'bottom center',
         },

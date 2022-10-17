@@ -1,12 +1,14 @@
 <template>
   <div ref="marquee" :class="{ inverted }" class="app-element-marquee-scroll">
-    <div
-      v-for="i in repeat"
-      :key="i"
-      ref="marquees"
-      class="app-element-marquee-scroll__inner"
-    >
-      <slot />
+    <div ref="wrapper" class="app-element-marquee-scroll__wrapper">
+      <div
+        v-for="i in repeat"
+        :key="i"
+        ref="marquees"
+        class="app-element-marquee-scroll__inner"
+      >
+        <slot />
+      </div>
     </div>
   </div>
 </template>
@@ -66,6 +68,24 @@ export default {
         })
       }
 
+      gsap.fromTo(
+        this.$refs.wrapper,
+        {
+          x: this.inverted ? -this.$viewport.width : this.$viewport.width,
+        },
+        {
+          duration: 2,
+          x: 0,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: this.$refs.wrapper,
+            start: 'top bottom',
+            end: 'bottom top',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
+
       this.tween = gsap.to(this.$refs.marquees, {
         duration: this.duration,
         xPercent: this.inverted ? 0 : -100,
@@ -111,7 +131,8 @@ export default {
   overflow: hidden;
   will-change: transform;
 
-  &__inner {
+  &__inner,
+  &__wrapper {
     display: flex;
     white-space: nowrap;
     // animation: marquee calc(var(--duration) * var(--marquee-progress)) linear

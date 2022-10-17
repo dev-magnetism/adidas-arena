@@ -3,41 +3,27 @@
     <nuxt-picture
       v-if="$mq !== 'sm'"
       class="app-home-projet__big-visual__left-top projet-visual"
-      src="imgs/placeholder.png"
+      :src="$parent.contents.projetPicture4"
+      provider="directus"
       format="webp"
       alt="placeholder"
     />
     <nuxt-picture
       v-if="$mq !== 'sm'"
       class="app-home-projet__big-visual__left-top-upper projet-visual"
-      src="imgs/placeholder.png"
+      :src="$parent.contents.projetPicture3"
+      provider="directus"
       format="webp"
       alt="placeholder"
     />
 
     <nuxt-picture
       class="app-home-projet__big-visual__principal projet-visual"
-      src="imgs/placeholder.png"
+      :src="$parent.contents.projetPicture5"
+      provider="directus"
       format="webp"
       alt="placeholder"
     />
-
-    <AtomsTitleTag
-      v-if="$mq !== 'sm'"
-      class="app-home-projet__big-visual__tag-top-upper app-projet-tag-4"
-      bg="white"
-      color="black"
-      >PARIS porte de la chapelle</AtomsTitleTag
-    >
-
-    <AtomsTitleTag
-      v-if="$mq !== 'sm'"
-      bg="white"
-      color="black"
-      class="app-home-projet__big-visual__tag-bottom app-projet-tag-1"
-      >DES MATCHS, DES EVENEMENTS, DES RESTAURANTS, DES JEUX, DES SALLES DE
-      RÉUNIONS POUR TOUS
-    </AtomsTitleTag>
   </div>
 </template>
 
@@ -67,6 +53,8 @@
     aspect-ratio: 100/92;
     width: 20.5%;
     z-index: 1;
+    @include noise();
+
     @include mobile {
       display: none;
     }
@@ -80,6 +68,7 @@
     top: -42%;
     left: columns(0.55);
     z-index: -1;
+    @include noise();
 
     @include mobile {
       display: none;
@@ -93,42 +82,11 @@
     height: 100%;
     width: 100%;
     display: block;
+    @include noise();
   }
 
   .app-atoms-title-tag {
     position: absolute;
-  }
-
-  &__tag-top-upper {
-    left: columns(1.65);
-    bottom: 115%;
-    transform: rotate(6deg);
-
-    @include mobile {
-      display: none;
-    }
-
-    > .P2 {
-      text-transform: uppercase;
-      font-size: desktop-vw(18px);
-      line-height: desktop-vw(20px);
-    }
-  }
-
-  &__tag-bottom {
-    left: columns(1.4);
-    bottom: -40%;
-    transform: rotate(-6deg);
-    width: columns(2.15);
-
-    @include mobile {
-      display: none;
-    }
-
-    > .P2 {
-      font-size: desktop-vw(14px);
-      line-height: desktop-vw(16px);
-    }
   }
 }
 </style>

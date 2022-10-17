@@ -4,12 +4,8 @@
       class="app-home-presentation__title"
       :content="contents.content"
       :split="true"
+      :scrub="true"
     />
-
-    <!-- <TH3 :split="true" class="app-home-presentation__title">
-      Futur lieu de référence des cultures urbaines, l'ADIDAS ARENA fait se
-      rencontrer musique, sport, culture & lifestyle pour tous.
-    </TH3> -->
 
     <EParallax
       ref="visualBigger"
@@ -33,7 +29,7 @@
     >
       <EKinesis :speed="5">
         <EFramedPicture color="red-adidas">
-          <EKinesis :speed="-2.5">
+          <EKinesis :speed="-3.5">
             <nuxt-picture
               provider="directus"
               :src="contents.pictureFramed"
@@ -110,7 +106,7 @@ export default {
   width: 100%;
   margin-top: desktop-vw(130px);
   position: relative;
-  padding-bottom: desktop-vw(800px);
+  padding-bottom: desktop-vw(750px);
 
   @include mobile {
     margin-top: mobile-vw(85px);
@@ -143,6 +139,10 @@ export default {
     .app-element-framed-picture {
       width: 100%;
       height: 100%;
+
+      picture {
+        @include noise();
+      }
     }
   }
 
@@ -154,6 +154,10 @@ export default {
     width: 100%;
     transform: rotate(-2deg);
     z-index: 0;
+
+    picture {
+      @include noise();
+    }
 
     @include mobile {
       position: relative;
@@ -196,6 +200,7 @@ export default {
       position: absolute;
       width: 100%;
       height: 100%;
+      @include noise();
     }
   }
 

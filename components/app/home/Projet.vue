@@ -8,7 +8,10 @@
         />
 
         <div class="app-home-projet__inner">
-          <AppHomeProjetHeader />
+          <AppHomeProjetHeader
+            :content-left="contents.headerContentLeft"
+            :content-right="contents.headerContentRight"
+          />
           <AppHomeProjetBigVisual />
           <AppHomeProjetPlan ref="plan" />
 
@@ -20,28 +23,25 @@
           >
             <nuxt-picture
               class="projet-visual"
-              src="imgs/placeholder.png"
               format="webp"
               alt="alt"
+              :src="contents.projetPicture2"
+              provider="directus"
             />
           </EFramedPicture>
-          <AtomsTitleTag
-            class="app-home-projet__tag-top app-projet-tag-5"
-            bg="white"
-            color="black"
-            >80% des surfaces du bâtiment végétalisées.
-          </AtomsTitleTag>
+
           <nuxt-picture
             v-if="$mq !== 'sm'"
             class="app-home-projet__visual__top-upper projet-visual"
-            src="imgs/placeholder.png"
+            :src="contents.projetPicture1"
+            provider="directus"
             format="webp"
             alt="alt"
           />
 
-          <TH2 ref="title" weight="bold" class="app-home-projet__title"
-            >Projet</TH2
-          >
+          <TH2 ref="title" weight="bold" class="app-home-projet__title">{{
+            contents.bigTitle
+          }}</TH2>
         </div>
         <div
           v-if="$mq !== 'sm'"
@@ -55,20 +55,48 @@
         <div ref="lottieArrowBlue" class="app-home-projet__arrow-blue" />
         <div ref="lottieArrow" class="app-home-projet__arrow" />
         <div ref="lottieLittleArrow" class="app-home-projet__little-arrow" />
+
         <AtomsCTA class="app-home-projet__cta" color="beige" bg="blue-adidas">
-          En savoir plus
+          {{ contents.projetCtaTitle }}
         </AtomsCTA>
+
+        <AtomsTitleTag
+          class="app-home-projet__tag-top app-projet-tag-5"
+          bg="white"
+          color="black"
+        >
+          {{ contents.projetTag1 }}
+        </AtomsTitleTag>
+
+        <AtomsTitleTag
+          v-if="$mq !== 'sm'"
+          class="app-home-projet__tag-top-upper app-projet-tag-4"
+          bg="white"
+          color="black"
+        >
+          {{ contents.projetTag2 }}
+        </AtomsTitleTag>
         <AtomsTitleTag
           class="app-home-projet__tag-top-left app-projet-tag-3"
           bg="white"
           color="black"
-          >Coton recyclé pour l’isolation</AtomsTitleTag
         >
+          {{ contents.projetTag3 }}
+        </AtomsTitleTag>
         <AtomsTitleTag
           class="app-home-projet__tag-middle app-projet-tag-2"
           bg="white"
           color="black"
-          >aluminium recyclable
+        >
+          {{ contents.projetTag4 }}
+        </AtomsTitleTag>
+        <AtomsTitleTag
+          v-if="$mq !== 'sm'"
+          bg="white"
+          color="black"
+          class="app-home-projet__tag-bottom app-projet-tag-1"
+        >
+          {{ contents.projetTag5 }}
         </AtomsTitleTag>
       </div>
     </div>
@@ -82,6 +110,12 @@ import { SplitText } from 'gsap/SplitText'
 import lottie from 'lottie-web'
 
 export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
       playhead: {
@@ -99,6 +133,8 @@ export default {
   mounted() {
     document.fonts.ready.then(() => {
       this.initSplitText()
+
+      console.log(this.contents)
     })
   },
   beforeDestroy() {
@@ -143,21 +179,6 @@ export default {
         )
 
         this.tl.fromTo(
-          '.app-projet-tag-1',
-          {
-            opacity: 0,
-            yPercent: 25,
-            rotate: -12,
-          },
-          {
-            opacity: 1,
-            yPercent: 0,
-            rotate: -6,
-          },
-          '<25%'
-        )
-
-        this.tl.fromTo(
           '.projet-visual',
           {
             scale: 0,
@@ -179,6 +200,20 @@ export default {
           },
           {
             scale: 1,
+          },
+          'projet-2-3'
+        )
+        this.tl.fromTo(
+          '.app-projet-tag-1',
+          {
+            opacity: 0,
+            yPercent: 25,
+            rotate: -6,
+          },
+          {
+            opacity: 1,
+            yPercent: 0,
+            rotate: -12,
           },
           'projet-2-3'
         )
@@ -347,12 +382,12 @@ export default {
           {
             opacity: 0,
             yPercent: 35,
-            rotate: 12,
+            rotate: 4,
           },
           {
             opacity: 1,
             yPercent: 0,
-            rotate: 9,
+            rotate: -2,
           },
           '>-75%'
         )
@@ -559,6 +594,12 @@ export default {
   margin-bottom: desktop-vw(70px);
   padding-top: desktop-vw(135px);
   padding-bottom: desktop-vw(135px);
+
+  picture {
+    img {
+      display: block;
+    }
+  }
 
   @include mobile {
     background: none;
@@ -797,6 +838,39 @@ export default {
     }
   }
 
+  &__tag-bottom {
+    left: columns(2.35);
+    bottom: 10%;
+    transform: rotate(-6deg);
+    width: columns(2.15);
+    position: absolute;
+
+    @include mobile {
+      display: none;
+    }
+
+    > .P2 {
+      font-size: desktop-vw(14px);
+      line-height: desktop-vw(16px);
+    }
+  }
+
+  &__tag-top-upper {
+    left: columns(2.15);
+    top: 28%;
+    transform: rotate(6deg);
+    position: absolute;
+
+    @include mobile {
+      display: none;
+    }
+
+    > .P2 {
+      text-transform: uppercase;
+      font-size: desktop-vw(18px);
+      line-height: desktop-vw(20px);
+    }
+  }
   &__tag-middle {
     bottom: 18%;
     left: columns(0.75);
@@ -829,6 +903,7 @@ export default {
     padding: desktop-vw(20px) desktop-vw(0px) desktop-vw(20px) desktop-vw(20px);
     position: absolute;
     transform: rotate(-4deg);
+    z-index: 1;
 
     @include mobile {
       padding: mobile-vw(15px) mobile-vw(0px) mobile-vw(15px) mobile-vw(20px);
@@ -858,14 +933,17 @@ export default {
     top: 4%;
     left: 20%;
     width: 100%;
+    @include noise();
+
     @include mobile {
       display: none;
     }
   }
+
   &__tag-top {
     position: absolute;
-    grid-column: 6 / span 4;
-    top: 15%;
+    left: columns(5.5);
+    top: 13%;
     padding: desktop-vw(10px);
 
     @include mobile {
@@ -897,6 +975,10 @@ export default {
     z-index: -2;
     padding: desktop-vw(35px) desktop-vw(35px);
     transform: rotate(-2deg);
+
+    picture {
+      @include noise();
+    }
 
     @include mobile {
       display: none;

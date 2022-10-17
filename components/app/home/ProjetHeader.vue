@@ -2,37 +2,37 @@
   <div class="app-home-projet__header">
     <div class="app-home-projet__header__infos">
       <div class="app-home-projet__header__info">
-        <TP1 class="app-home-projet__header__info__title info-text-1"
-          >Titre</TP1
-        >
+        <TP1 class="app-home-projet__header__info__title info-text-1">{{
+          contentLeft[0].surtitle
+        }}</TP1>
         <TH2
           weight="bold"
           class="app-home-projet__header__info__content info-text-2"
         >
-          La chapelle district
+          {{ contentLeft[0].title }}
         </TH2>
         <span class="line-info-border-bottom header-line header-line-1" />
       </div>
       <div class="app-home-projet__header__info">
-        <TP1 class="app-home-projet__header__info__title info-text-3"
-          >Titre</TP1
-        >
+        <TP1 class="app-home-projet__header__info__title info-text-3">{{
+          contentLeft[1].surtitle
+        }}</TP1>
         <TH2
           weight="bold"
           class="app-home-projet__header__info__content info-text-4"
         >
-          La chapelle district
+          {{ contentLeft[1].title }}
         </TH2>
         <span class="line-info-border-bottom header-line header-line-1" />
       </div>
       <span class="line-infos-border-right header-line header-line-3" />
     </div>
     <div class="app-home-projet__header__description">
-      <TP1 class="app-home-projet__header__description__title info-text-5"
-        >Description</TP1
-      >
+      <TP1 class="app-home-projet__header__description__title info-text-5">{{
+        contentRight.surtitle
+      }}</TP1>
       <TH3 class="app-home-projet__header__description__content info-text-6">
-        Un lieu de vie dans un quartier en plein mouvement
+        {{ contentRight.title }}
       </TH3>
     </div>
     <span class="line-header-border-bottom header-line header-line-2" />
@@ -42,6 +42,21 @@
     />
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    contentLeft: {
+      type: Array,
+      default: () => [],
+    },
+    contentRight: {
+      type: Object,
+      default: () => {},
+    },
+  },
+}
+</script>
 
 <style lang="scss">
 .app-home-projet__header {

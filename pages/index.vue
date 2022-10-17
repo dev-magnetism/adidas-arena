@@ -3,18 +3,17 @@
     <AppHomeHero :contents="contentHero" />
     <AppHomePresentation :contents="contentPresentation" />
     <EMarqueeScroll>
-      <TH1 color="red-adidas">
+      <TH1 weight="bold">
         {{ contentMarquees.firstRow }}
       </TH1>
     </EMarqueeScroll>
     <EMarqueeScroll :inverted="true">
-      <TH1 color="red-adidas">
+      <TH1 weight="bold">
         {{ contentMarquees.secondRow }}
       </TH1>
     </EMarqueeScroll>
-    <AppHomeProjet />
-    <!-- <AppHomeLeBloc /> -->
-    <AppHomePartners />
+    <AppHomeProjet :contents="contentProjet" />
+    <AppHomePartners :contents="contentPartners" />
     <AppFooter />
   </main>
 </template>
@@ -29,8 +28,13 @@ export default {
       limit: -1,
     })
 
+    const partners = await $directus.items('Partners').readByQuery({
+      limit: -1,
+    })
+
     return {
       content,
+      partners,
     }
   },
   computed: {
@@ -43,6 +47,35 @@ export default {
         pictureBorderAlt: this.content.data.picture_border_alt,
         pictureBigVisual: this.content.data.picture_big_visual,
         pictureBigVisualAlt: this.content.data.picture_big_visual_alt,
+      }
+    },
+    contentPartners() {
+      return {
+        title: this.content.data.partners_title,
+        subtitle: this.content.data.partners_subtitle,
+        paragraph: this.content.data.partners_paragraph,
+        list: this.partners.data,
+      }
+    },
+    contentProjet() {
+      return {
+        bigTitle: this.content.data.projet_big_title,
+        headerContentLeft: this.content.data.projet_header_content_left,
+        headerContentRight: {
+          title: this.content.data.projet_header_description_title,
+          surtitle: this.content.data.projet_header_description_surtitle,
+        },
+        projetTag1: this.content.data.projet_tag_1,
+        projetTag2: this.content.data.projet_tag_2,
+        projetTag3: this.content.data.projet_tag_3,
+        projetTag4: this.content.data.projet_tag_4,
+        projetTag5: this.content.data.projet_tag_5,
+        projetPicture1: this.content.data.projet_picture_1,
+        projetPicture2: this.content.data.projet_picture_2,
+        projetPicture3: this.content.data.projet_picture_3,
+        projetPicture4: this.content.data.projet_picture_4,
+        projetPicture5: this.content.data.projet_picture_5,
+        projetCtaTitle: this.content.data.projet_cta_title,
       }
     },
     contentHero() {
@@ -67,9 +100,7 @@ export default {
       }
     },
   },
-  mounted() {
-    console.log(this.content)
-  },
+  mounted() {},
 }
 </script>
 

@@ -12,7 +12,7 @@
     @include font-tuskerGrotesk-medium();
     font-weight: 500;
   }
-  &.bold, .bold {
+  &.bold, .bold, strong {
     @include font-tuskerGrotesk-bold();
     font-weight: 700;
   }

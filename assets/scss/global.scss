@@ -96,13 +96,12 @@ select {
 .char,
 .word,
 .line {
+  will-change: transform;
+  font-kerning: none;
+  -webkit-text-rendering: optimizeSpeed;
+  text-rendering: optimizeSpeed;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
-  will-change: transform;
-  // -webkit-backface-visibility: hidden;
-  // -webkit-perspective: 1000;
-  // backface-visibility: hidden;
-  // perspective: 1000;
 }
 
 video, img {

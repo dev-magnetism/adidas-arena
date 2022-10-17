@@ -136,7 +136,7 @@ export default {
           baseURL: 'https://adidasarena.directus.app/',
           modifiers: {
             format: 'webp',
-            quality: 85,
+            quality: 80,
           },
         },
       },
