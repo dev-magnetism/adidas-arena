@@ -100,9 +100,9 @@ export default {
 
   methods: {
     initSplitText() {
-      console.log('first', this.$refs.component.children, this.$refs)
+      console.log('first', this.$el.children, this.$refs)
 
-      Object.values(this.$refs.component.children).forEach((child) => {
+      Object.values(this.$el.children).forEach((child) => {
         console.log('first', child)
         if (this.overflow) {
           this.splitting = new SplitText(child, {
