@@ -1,7 +1,7 @@
 <template>
   <div class="app-home-hero block-inner">
     <div class="app-home-hero__inner grid">
-      <!-- <ERichText class="app-home-hero__title" :content="contents.title" /> -->
+      <ERichText class="app-home-hero__title" :content="contents.title" />
 
       <div ref="firstVisual" class="app-home-hero__first-visual">
         <nuxt-picture
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { gsap } from 'gsap'
+// import { gsap } from 'gsap'
 
 export default {
   props: {
@@ -86,23 +86,21 @@ export default {
     },
   },
   mounted() {
-    const mm = gsap.matchMedia()
-
-    mm.add('(min-width: 800px)', () => {
-      this.tl = gsap.timeline({ repeat: -1, paused: true })
-
-      this.tl.to(this.$refs.union.$el, {
-        yPercent: 105,
-        duration: 0.675,
-      })
-      this.tl.set(this.$refs.union.$el, {
-        yPercent: -105,
-      })
-      this.tl.to(this.$refs.union.$el, {
-        yPercent: 0,
-        duration: 0.675,
-      })
-    })
+    // const mm = gsap.matchMedia()
+    // mm.add('(min-width: 800px)', () => {
+    //   this.tl = gsap.timeline({ repeat: -1, paused: true })
+    //   this.tl.to(this.$refs.union.$el, {
+    //     yPercent: 105,
+    //     duration: 0.675,
+    //   })
+    //   this.tl.set(this.$refs.union.$el, {
+    //     yPercent: -105,
+    //   })
+    //   this.tl.to(this.$refs.union.$el, {
+    //     yPercent: 0,
+    //     duration: 0.675,
+    //   })
+    // })
   },
   beforeDestroy() {
     this.tl?.kill()

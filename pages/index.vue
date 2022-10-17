@@ -1,7 +1,7 @@
 <template>
   <main class="app-home">
     <AppHomeHero :contents="contentHero" />
-    <!-- <AppHomePresentation :contents="contentPresentation" />
+    <AppHomePresentation :contents="contentPresentation" />
     <EMarqueeScroll>
       <TH1 weight="bold">
         {{ contentMarquees.firstRow }}
@@ -14,7 +14,7 @@
     </EMarqueeScroll>
     <AppHomeProjet :contents="contentProjet" />
     <AppHomePartners :contents="contentPartners" />
-    <AppFooter /> -->
+    <AppFooter />
   </main>
 </template>
 
