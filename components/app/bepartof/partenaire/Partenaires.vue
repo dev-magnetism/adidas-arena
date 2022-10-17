@@ -3,9 +3,24 @@
     <TH1 class="app-be-part-of-partenaire-partenaires__title"
       >Déjà 12 partenaires</TH1
     >
-    <AppBepartofPartenairePartenairesLogos :rows="6" :cols="10" />
+    <AppBepartofPartenairePartenairesLogos
+      :logos="contents.list"
+      :rows="6"
+      :cols="10"
+    />
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
+}
+</script>
 
 <style lang="scss">
 .app-be-part-of-partenaire-partenaires {

@@ -1,7 +1,7 @@
 <template>
   <main class="page-be-part-of-partenaire">
     <AppBepartofPartenaireIntroduction />
-    <AppBepartofPartenairePartenaires />
+    <AppBepartofPartenairePartenaires :contents="contentPartners" />
     <AppArenaGallery />
     <AppContactQuestion />
     <AppContactNewsletter />
@@ -14,9 +14,22 @@ import scroll from '@/mixins/scroll'
 
 export default {
   mixins: [scroll],
+  async asyncData({ $directus }) {
+    const partners = await $directus.items('Partners').readByQuery({
+      limit: -1,
+    })
 
-  data() {
-    return {}
+    return {
+      partners,
+    }
+  },
+
+  computed: {
+    contentPartners() {
+      return {
+        list: this.partners.data,
+      }
+    },
   },
 
   mounted() {},

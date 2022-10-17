@@ -79,7 +79,7 @@ export default {
         scrollTrigger: {
           trigger: this.$refs.visualBigger.$el,
           scrub: 0.5,
-          end: 'center center',
+          end: 'bottom center',
         },
       }
     )
@@ -94,7 +94,7 @@ export default {
         scrollTrigger: {
           trigger: this.$refs.framed.$el,
           scrub: 0.5,
-          end: 'center center',
+          end: 'bottom center',
         },
       }
     )

@@ -6,14 +6,15 @@
       '--rows': rows,
     }"
   >
-    <!-- <ERichText :content="partners?.data[0].test_wysiwyg"></ERichText> -->
-    <EGridLogosBloc :big="true" :src="arraytesttest.src" />
-    <EGridLogosBloc :transparent="true" :src="arraytesttest.src" />
+    <EGridLogosBloc :big="true" :content="mainPartner" />
+
+    <EGridLogosBloc :transparent="true" />
+
     <EGridLogosBloc
-      v-for="(logo, index) in arraytest"
+      v-for="(logo, index) in secondaryPartners"
       :key="index"
       :class="[`app-element-grid-logos-bloc-${index + 1}`]"
-      :src="logo.src"
+      :content="logo"
     />
   </div>
 </template>
@@ -29,134 +30,21 @@ export default {
       type: Number,
       default: 7,
     },
+    logos: {
+      type: Array,
+      default: () => [],
+    },
   },
 
-  data() {
-    return {
-      partners: null,
-      logos: [
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: true,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: true,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: true,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-      ],
-    }
-  },
-  // async fetch() {
-  //   this.partners = await this.$directus.items('Partners').readByQuery({
-  //     limit: -1,
-  //   })
-
-  //   // const test = await this.$directus.files.readOne(this.partners.data[0].logo)
-
-  //   // console.log(test)
-
-  //   console.log(this.partners)
-  // },
   computed: {
-    arraytest() {
+    secondaryPartners() {
       return this.logos.filter((logo) => !logo.big)
     },
-    arraytesttest() {
+    mainPartner() {
       return this.logos.find((logo) => logo.big)
     },
-    nbElementDelete() {
-      return this.logos.filter((logo) => logo.big).length
-    },
   },
-  methods: {
-    randomIntFromInterval(min, max) {
-      return Math.floor(Math.random() * (max - min + 1) + min)
-    },
-  },
+  methods: {},
 }
 </script>
 

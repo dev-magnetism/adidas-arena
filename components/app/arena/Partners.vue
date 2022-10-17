@@ -20,10 +20,21 @@
       </TP2>
       <AtomsCTA>Devenir partenaire</AtomsCTA>
     </div>
-    <EGridLogos class="app-arena-partners__grid-logos" />
+    <EGridLogos :logos="contents.list" class="app-arena-partners__grid-logos" />
     <EPartnersTotal />
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
+}
+</script>
 
 <style lang="scss">
 .app-arena-partners {

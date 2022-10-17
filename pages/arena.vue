@@ -2,7 +2,7 @@
   <main class="app-arena">
     <AppArenaParisBasketClub />
     <EFullwidth />
-    <AppArenaPartners />
+    <AppArenaPartners :contents="contentPartners" />
     <AppArenaGallery />
     <AppFooter />
   </main>
@@ -13,6 +13,22 @@ import scroll from '@/mixins/scroll'
 
 export default {
   mixins: [scroll],
+  async asyncData({ $directus }) {
+    const partners = await $directus.items('Partners').readByQuery({
+      limit: -1,
+    })
+
+    return {
+      partners,
+    }
+  },
+  computed: {
+    contentPartners() {
+      return {
+        list: this.partners.data,
+      }
+    },
+  },
 }
 </script>
 

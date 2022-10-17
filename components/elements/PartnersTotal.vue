@@ -43,27 +43,22 @@ export default {
 
     const els = this.$refs.numbers.map((el) => el.$el)
 
-    this.tl.fromTo(
+    this.tl.to(
       els,
-      {
-        yPercent: -100,
-      },
+
       {
         delay: 0.1,
-        yPercent: 0,
+        y: 0,
         stagger: 0.2,
         duration: 1.2,
         ease: 'expo.out',
       }
     )
-    this.tl.fromTo(
+    this.tl.to(
       this.$refs.text.$el,
+
       {
-        yPercent: -65,
-        opacity: 0,
-      },
-      {
-        yPercent: 0,
+        y: 0,
         opacity: 0.35,
         duration: 1.2,
         ease: 'expo.out',
@@ -99,6 +94,7 @@ export default {
     .H1 {
       display: inline-block;
       will-change: transform;
+      transform: translateY(-100%);
 
       &:first-child {
         -webkit-text-stroke: 1.5px var(--c-black);
@@ -112,6 +108,7 @@ export default {
     line-height: desktop-vw(24px);
     opacity: 0.35;
     will-change: transform;
+    transform: translateY(-65%);
   }
 }
 </style>
