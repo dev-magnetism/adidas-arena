@@ -1,7 +1,5 @@
 <template>
-  <client-only>
-    <component :is="processedHtml" ref="component" />
-  </client-only>
+  <component :is="processedHtml" ref="component" />
 </template>
 
 <script>
@@ -105,6 +103,7 @@ export default {
       const els = this.$el.querySelectorAll('.wysiwyg-text')
 
       els.forEach((child) => {
+        console.log(child)
         if (this.overflow) {
           this.splitting = new SplitText(child, {
             type: 'lines',
