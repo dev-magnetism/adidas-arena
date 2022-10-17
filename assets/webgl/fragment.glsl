@@ -35,8 +35,6 @@ vec3 stepBorder(in vec2 _uv, in float _width){
     return pct;
  }
 
-#include "draw/rect.glsl"
-
 void main() {   
     vec2 uv = resizedUv(vUv, uRatio);
 
@@ -45,8 +43,8 @@ void main() {
         mix(0.6, uv.y, uZoom)
     );
 
-float strength = mod(vUv.y * 10.0, 1.0);
-strength = step(0.8, strength);
+// float strength = mod(vUv.y * 10.0, 1.0);
+// strength = step(0.8, strength);
 	
   
 	vec4 color = texture2D(uMap, zoomedUv);
@@ -54,14 +52,14 @@ strength = step(0.8, strength);
 
 
 
-float test = rect(uv, 0.99, .005);
-	float testbis = rect(uv - vec2(-.5 + 0.005,-0.5 + 0.005), .01);
-	float testbisbis = rect(uv - vec2(0.5 - 0.005, 0.5 - 0.005), .01);
-	float testbisbisbis = rect(uv - vec2(-0.5 + 0.005, 0.5 - 0.005), .01);
-	float testbisbisbisbis = rect(uv - vec2(0.5 - 0.005, -0.5 + 0.005), .01);
-	float testttt = flip(test + (testbis + testbisbis + testbisbisbis + testbisbisbisbis),1.);
+// float test = rect(uv, 0.99, .005);
+// 	float testbis = rect(uv - vec2(-.5 + 0.005,-0.5 + 0.005), .01);
+// 	float testbisbis = rect(uv - vec2(0.5 - 0.005, 0.5 - 0.005), .01);
+// 	float testbisbisbis = rect(uv - vec2(-0.5 + 0.005, 0.5 - 0.005), .01);
+// 	float testbisbisbisbis = rect(uv - vec2(0.5 - 0.005, -0.5 + 0.005), .01);
+// 	float testttt = flip(test + (testbis + testbisbis + testbisbisbis + testbisbisbisbis),1.);
 
-	color.rgb = vec3(testttt);
+	// color.rgb = vec3(testttt);
 
 		gl_FragColor = color;
 
