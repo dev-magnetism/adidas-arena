@@ -4,6 +4,7 @@
       class="app-home-presentation__title"
       :content="contents.content"
       :split="true"
+      :overflow="false"
       :scrub="true"
     />
 
