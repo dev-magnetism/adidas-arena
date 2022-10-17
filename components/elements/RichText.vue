@@ -100,20 +100,19 @@ export default {
 
   methods: {
     initSplitText() {
-      console.log('first', this, this.$children[0])
-      this.$children[0].$children.forEach((child) => {
+      Object.values(this.$el.children).forEach((child) => {
         if (this.overflow) {
-          this.splitting = new SplitText(child.$el, {
+          this.splitting = new SplitText(child, {
             type: 'lines',
             linesClass: 'H1__child line',
           })
 
-          this.splittingParent = new SplitText(child.$el, {
+          this.splittingParent = new SplitText(child, {
             type: 'lines',
             linesClass: 'H1__parent',
           })
         } else {
-          this.splitting = new SplitText(child.$el, {
+          this.splitting = new SplitText(child, {
             type: 'lines',
             linesClass: 'line',
           })
@@ -123,21 +122,19 @@ export default {
 
         if (this.scrub) {
           scrollTrigger = {
-            trigger: child.$el,
+            trigger: child,
             start: 'top bottom',
             end: 'center center',
             scrub: 0.5,
           }
         } else {
           scrollTrigger = {
-            trigger: child.$el,
+            trigger: child,
             start: 'top bottom',
             end: 'center center',
             toggleActions: 'play none none none',
           }
         }
-
-        console.log('hgeeee', child, this.splitting, this.splittingParent)
 
         gsap.fromTo(
           this.splitting.lines,
