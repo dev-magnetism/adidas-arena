@@ -196,8 +196,9 @@ export default {
 
 <style lang="scss">
 .app-element-rich-text {
-  & > .H1,
-  & > .H2 {
+  & > .H1 {
+    //   font-size: min(130px, desktop-vw(130px)) !important;
+    // line-height: min(140px, desktop-vw(140px)) !important;
     // display: block;
   }
   .line {
