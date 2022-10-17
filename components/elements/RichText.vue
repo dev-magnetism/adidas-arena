@@ -120,6 +120,8 @@ export default {
             type: 'lines',
             linesClass: 'line',
           })
+
+          console.log(this.splitting)
         }
 
         let scrollTrigger
