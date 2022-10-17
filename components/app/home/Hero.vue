@@ -21,7 +21,7 @@
           format="webp"
         />
       </div>
-      <!-- <div
+      <div
         v-if="$mq !== 'sm'"
         class="app-home-hero__scroll-indicator"
         @mouseenter="onMouseEnter"
@@ -31,7 +31,7 @@
         <div class="app-home-hero__scroll-indicator__icon">
           <SvgHomeHeroUnion ref="union" />
         </div>
-      </div> -->
+      </div>
       <div class="app-home-hero__localisation">
         <TP1 class="app-home-hero__localisation__city">
           {{ contents.city }}
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-// import { gsap } from 'gsap'
+import { gsap } from 'gsap'
 export default {
   props: {
     contents: {
@@ -85,21 +85,25 @@ export default {
     },
   },
   mounted() {
-    // const mm = gsap.matchMedia()
-    // mm.add('(min-width: 800px)', () => {
-    //   this.tl = gsap.timeline({ repeat: -1, paused: true })
-    //   this.tl.to(this.$refs.union.$el, {
-    //     yPercent: 105,
-    //     duration: 0.675,
-    //   })
-    //   this.tl.set(this.$refs.union.$el, {
-    //     yPercent: -105,
-    //   })
-    //   this.tl.to(this.$refs.union.$el, {
-    //     yPercent: 0,
-    //     duration: 0.675,
-    //   })
-    // })
+    const mm = gsap.matchMedia()
+
+    mm.add('(min-width: 800px)', () => {
+      this.tl = gsap.timeline({ repeat: -1, paused: true })
+
+      console.log('testrtttt', this.$refs.union.$el, this)
+
+      this.tl.to(this.$refs.union.$el, {
+        yPercent: 105,
+        duration: 0.675,
+      })
+      this.tl.set(this.$refs.union.$el, {
+        yPercent: -105,
+      })
+      this.tl.to(this.$refs.union.$el, {
+        yPercent: 0,
+        duration: 0.675,
+      })
+    })
   },
   beforeDestroy() {
     this.tl?.kill()
