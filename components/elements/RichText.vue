@@ -100,22 +100,20 @@ export default {
 
   methods: {
     initSplitText() {
-      const els = this.$el.querySelectorAll('.wysiwyg-text')
-
-      els.forEach((child) => {
-        console.log(child)
+      console.log('hgeeee', this)
+      this.$children[0].$children.forEach((child) => {
         if (this.overflow) {
-          this.splitting = new SplitText(child, {
+          this.splitting = new SplitText(child.$el, {
             type: 'lines',
             linesClass: 'H1__child line',
           })
 
-          this.splittingParent = new SplitText(child, {
+          this.splittingParent = new SplitText(child.$el, {
             type: 'lines',
             linesClass: 'H1__parent',
           })
         } else {
-          this.splitting = new SplitText(child, {
+          this.splitting = new SplitText(child.$el, {
             type: 'lines',
             linesClass: 'line',
           })
@@ -125,14 +123,14 @@ export default {
 
         if (this.scrub) {
           scrollTrigger = {
-            trigger: child,
+            trigger: child.$el,
             start: 'top bottom',
             end: 'center center',
             scrub: 0.5,
           }
         } else {
           scrollTrigger = {
-            trigger: child,
+            trigger: child.$el,
             start: 'top bottom',
             end: 'center center',
             toggleActions: 'play none none none',
