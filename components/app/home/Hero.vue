@@ -268,8 +268,13 @@ export default {
     // font-size: min(130px, desktop-vw(130px));
     // line-height: min(140px, desktop-vw(140px));
 
+    & > * {
+      background: green;
+    }
+
     .H1,
     h1 {
+      background: red;
       font-size: min(130px, desktop-vw(130px)) !important;
       line-height: min(140px, desktop-vw(140px)) !important;
 
