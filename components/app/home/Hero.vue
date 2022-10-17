@@ -27,7 +27,7 @@
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
       >
-        <TP1>Scroll</TP1>
+        <TP1>{{ contents.scroll }}</TP1>
         <div class="app-home-hero__scroll-indicator__icon">
           <SvgHomeHeroUnion ref="union" />
         </div>
@@ -46,7 +46,7 @@
             class="app-home-hero__map__coordinate"
             bg="beige"
             color="black"
-            >48.897704 - 2.359456
+            >{{ contents.coordinate }}
           </AtomsTitleTag>
           <AtomsCTA
             class="app-home-hero__map__visit"
@@ -55,7 +55,7 @@
             :external="true"
             color="black"
             link="https://translate.google.fr/"
-            >Visiter le lieu
+            >{{ contents.visit }}
           </AtomsCTA>
         </div>
         <AtomsCornerPoints />
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-// import { gsap } from 'gsap'
+import { gsap } from 'gsap'
 
 export default {
   props: {
@@ -86,21 +86,23 @@ export default {
     },
   },
   mounted() {
-    // const mm = gsap.matchMedia()
-    // mm.add('(min-width: 800px)', () => {
-    //   this.tl = gsap.timeline({ repeat: -1, paused: true })
-    //   this.tl.to(this.$refs.union.$el, {
-    //     yPercent: 105,
-    //     duration: 0.675,
-    //   })
-    //   this.tl.set(this.$refs.union.$el, {
-    //     yPercent: -105,
-    //   })
-    //   this.tl.to(this.$refs.union.$el, {
-    //     yPercent: 0,
-    //     duration: 0.675,
-    //   })
-    // })
+    const mm = gsap.matchMedia()
+
+    mm.add('(min-width: 800px)', () => {
+      this.tl = gsap.timeline({ repeat: -1, paused: true })
+
+      this.tl.to(this.$refs.union.$el, {
+        yPercent: 105,
+        duration: 0.675,
+      })
+      this.tl.set(this.$refs.union.$el, {
+        yPercent: -105,
+      })
+      this.tl.to(this.$refs.union.$el, {
+        yPercent: 0,
+        duration: 0.675,
+      })
+    })
   },
   beforeDestroy() {
     this.tl?.kill()

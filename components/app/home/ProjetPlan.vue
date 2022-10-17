@@ -2,17 +2,19 @@
   <div class="app-home-projet__plan">
     <div class="app-home-projet__plan__header__wrapper">
       <div class="app-home-projet__plan__header">
-        <TP2 class="app-home-projet__plan__header__f-c">Plan n°34</TP2>
+        <TP2 class="app-home-projet__plan__header__f-c">{{
+          $parent.contents.projetMapTitle
+        }}</TP2>
         <div class="app-home-projet__plan__header__s-c">
-          <TP2>Ref</TP2>
+          <TP2>{{ $parent.contents.projetMapRef }}</TP2>
           <span class="app-home-projet__plan__header__dot" />
-          <TP2>908765</TP2>
+          <TP2>{{ $parent.contents.projetMapRefNumber }}</TP2>
         </div>
       </div>
       <div class="app-home-projet__plan__header-fake" />
-      <TP2 color="transparent" class="app-home-projet__plan__border"
-        >Plan n°34</TP2
-      >
+      <TP2 color="transparent" class="app-home-projet__plan__border">{{
+        $parent.contents.projetMapTitle
+      }}</TP2>
     </div>
 
     <div class="app-home-projet__plan__body">

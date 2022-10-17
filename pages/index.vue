@@ -76,6 +76,9 @@ export default {
         projetPicture4: this.content.data.projet_picture_4,
         projetPicture5: this.content.data.projet_picture_5,
         projetCtaTitle: this.content.data.projet_cta_title,
+        projetMapTitle: this.content.data.projet_map_title,
+        projetMapRef: this.content.data.projet_map_ref,
+        projetMapRefNumber: this.content.data.projet_map_ref_number,
       }
     },
     contentHero() {
@@ -83,6 +86,9 @@ export default {
         title: this.content.data.hero_title,
         city: this.content.data.hero_place_city,
         localisation: this.content.data.hero_place_localisation,
+        coordinate: this.content.data.hero_coordinate,
+        visit: this.content.data.hero_visit,
+        scroll: this.content.data.hero_scroll,
         pictureTop: {
           src: this.content.data.hero_picture_top,
           alt: this.content.data.hero_picture_top_alt,
@@ -107,7 +113,7 @@ export default {
 <style lang="scss">
 .app-home {
   .app-footer {
-    margin-top: desktop-vw(205px);
+    margin-top: desktop-vw(25px);
 
     @include mobile {
       margin-top: mobile-vw(130px);

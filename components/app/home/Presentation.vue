@@ -107,7 +107,7 @@ export default {
   width: 100%;
   margin-top: desktop-vw(130px);
   position: relative;
-  padding-bottom: desktop-vw(750px);
+  padding-bottom: desktop-vw(725px);
 
   @include mobile {
     margin-top: mobile-vw(85px);

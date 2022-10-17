@@ -65,64 +65,64 @@ export default {
       grid-area: 2 / 5 / 3 / 6;
     }
     &-1 {
-      grid-area: 6 / 9 / 7 / 10;
-    }
-    &-2 {
-      grid-area: 5 / 8 / 6 / 9;
-    }
-    &-3 {
-      grid-area: 1 / 8 / 2 / 9;
-    }
-    &-4 {
-      grid-area: 2 / 8 / 3 / 9;
-    }
-    &-5 {
       grid-area: 2 / 9 / 3 / 10;
     }
+    &-2 {
+      grid-area: 1 / 8 / 2 / 9;
+    }
+    &-3 {
+      grid-area: 2 / 8 / 3 / 9;
+    }
+    &-4 {
+      grid-area: 5 / 8 / 6 / 9;
+    }
+    &-5 {
+      grid-area: 6 / 9 / 7 / 10;
+    }
     &-6 {
-      grid-area: 5 / 2 / 6 / 3;
+      grid-area: 4 / 5 / 5 / 6;
     }
     &-7 {
-      grid-area: 6 / 3 / 7 / 4;
+      grid-area: 5 / 5 / 6 / 6;
     }
     &-8 {
       grid-area: 6 / 4 / 7 / 5;
     }
     &-9 {
-      grid-area: 5 / 5 / 6 / 6;
+      grid-area: 6 / 3 / 7 / 4;
     }
     &-10 {
-      grid-area: 4 / 5 / 5 / 6;
+      grid-area: 5 / 2 / 6 / 3;
     }
     &-11 {
-      grid-area: 4 / 2 / 5 / 3;
+      grid-area: 5 / 3 / 6 / 4;
     }
     &-12 {
-      grid-area: 3 / 3 / 4 / 4;
+      grid-area: 5 / 4 / 6 / 5;
     }
     &-13 {
-      grid-area: 2 / 3 / 3 / 4;
+      grid-area: 4 / 4 / 5 / 5;
     }
     &-14 {
-      grid-area: 2 / 10 / 3 / 11;
+      grid-area: 5 / 9 / 6 / 10;
     }
     &-15 {
-      grid-area: 3 / 10 / 4 / 11;
-    }
-    &-16 {
       grid-area: 4 / 9 / 5 / 10;
     }
+    &-16 {
+      grid-area: 3 / 9 / 4 / 10;
+    }
     &-17 {
-      grid-area: 6 / 7 / 7 / 8;
+      grid-area: 3 / 8 / 4 / 9;
     }
     &-18 {
-      grid-area: 3 / 2 / 4 / 3;
-    }
-    &-19 {
       grid-area: 3 / 5 / 4 / 6;
     }
+    &-19 {
+      grid-area: 2 / 4 / 3 / 5;
+    }
     &-20 {
-      grid-area: 3 / 8 / 4 / 9;
+      grid-area: 6 / 6 / 7 / 7;
     }
   }
 }
