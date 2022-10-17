@@ -100,6 +100,8 @@ export default {
 
   methods: {
     initSplitText() {
+      if (!process.client) return
+
       const els = this.$el.querySelectorAll('.wysiwyg-text')
 
       els.forEach((child) => {
