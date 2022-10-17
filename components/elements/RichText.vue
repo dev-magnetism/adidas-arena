@@ -100,6 +100,7 @@ export default {
 
   methods: {
     initSplitText() {
+      console.log('first', this, this.$children[0])
       this.$children[0].$children.forEach((child) => {
         if (this.overflow) {
           this.splitting = new SplitText(child.$el, {
