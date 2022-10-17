@@ -1,5 +1,7 @@
 <template>
-  <component :is="processedHtml" ref="component"></component>
+  <client-only>
+    <component :is="processedHtml" ref="component"></component>
+  </client-only>
 </template>
 
 <script>
@@ -101,8 +103,6 @@ export default {
   methods: {
     initSplitText() {
       console.log(this, this.$el)
-
-      if (!process.client) return
 
       const els = this.$el.querySelectorAll('.wysiwyg-text')
 
