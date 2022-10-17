@@ -41,7 +41,8 @@ export default {
 
   methods: {
     initSplitText() {
-      this.$refs.component.$children.forEach((child) => {
+      console.log(this)
+      this.$children[0].$children.forEach((child) => {
         if (this.overflow) {
           this.splittingParent = this.nestedLinesSplit(child.$el, {
             type: 'lines',
