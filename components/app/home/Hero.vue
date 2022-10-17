@@ -1,7 +1,7 @@
 <template>
   <div class="app-home-hero block-inner">
     <div class="app-home-hero__inner grid">
-      <ERichText class="app-home-hero__title" :content="contents.title" />
+      <!-- <ERichText class="app-home-hero__title" :content="contents.title" /> -->
 
       <div ref="firstVisual" class="app-home-hero__first-visual">
         <nuxt-picture
@@ -221,7 +221,7 @@ export default {
       }
     }
 
-    &__coordinate,
+    &__coordinate.app-atoms-title-tag,
     &__visit {
       padding: desktop-vw(10px) desktop-vw(15px);
 
