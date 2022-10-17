@@ -77,6 +77,7 @@
 
 <script>
 import { gsap } from 'gsap'
+
 export default {
   props: {
     contents: {
@@ -90,19 +91,19 @@ export default {
     mm.add('(min-width: 800px)', () => {
       this.tl = gsap.timeline({ repeat: -1, paused: true })
 
-      console.log('testrtttt', this.$refs.union.$el, this)
+      console.log('testrtttt', this)
 
-      this.tl.to(this.$refs.union.$el, {
-        yPercent: 105,
-        duration: 0.675,
-      })
-      this.tl.set(this.$refs.union.$el, {
-        yPercent: -105,
-      })
-      this.tl.to(this.$refs.union.$el, {
-        yPercent: 0,
-        duration: 0.675,
-      })
+      // this.tl.to(this.$refs.union.$el, {
+      //   yPercent: 105,
+      //   duration: 0.675,
+      // })
+      // this.tl.set(this.$refs.union.$el, {
+      //   yPercent: -105,
+      // })
+      // this.tl.to(this.$refs.union.$el, {
+      //   yPercent: 0,
+      //   duration: 0.675,
+      // })
     })
   },
   beforeDestroy() {
