@@ -1,9 +1,3 @@
-<template>
-  <client-only>
-    <component :is="processedHtml" ref="component"></component>
-  </client-only>
-</template>
-
 <script>
 import JSSoup from 'jssoup'
 import { gsap } from 'gsap'
@@ -33,61 +27,7 @@ export default {
       require: true,
     },
   },
-  computed: {
-    processedHtml() {
-      const lotties = this.soup.findAll(undefined, 'lottie-word')
-      const texts = this.soup.findAll(undefined, 'wysiwyg-text')
-      const strokeTexts = this.soup.findAll('em')
-      const boldTexts = this.soup.findAll('strong')
-
-      texts.forEach((text) => {
-        const componentName = text.attrs.class
-          .replace('wysiwyg-text', '')
-          .replace(/ /g, '')
-
-        text.name = `T${componentName}`
-
-        // delete text.attrs.class
-        delete text.attrs.style
-      })
-
-      boldTexts.forEach((text) => {
-        const string = text.getText()
-
-        const stringDecode = decode(string)
-
-        const finalString = stringDecode.replace(/\S+/g, (a, b, c) => {
-          return `<span class="bold">` + a + '</span>'
-        })
-
-        text.replaceWith(finalString)
-
-        delete text.attrs.style
-        delete text.attrs.class
-      })
-
-      strokeTexts.forEach((text) => {
-        text.name = `AtomsTextStroke`
-
-        delete text.attrs.style
-        delete text.attrs.class
-      })
-
-      lotties.forEach((lottie) => {
-        lottie.name = 'ELottieWord'
-        lottie.attrs.class = lottie.attrs.id
-
-        delete lottie.attrs.style
-      })
-
-      return {
-        template:
-          '<div class="app-element-rich-text">' +
-          this.soup.prettify() +
-          '</div>',
-      }
-    },
-  },
+  computed: {},
 
   created() {
     this.soup = new JSSoup(this.content)
@@ -205,6 +145,57 @@ export default {
       }
       return split
     },
+  },
+  render(h) {
+    const lotties = this.soup.findAll(undefined, 'lottie-word')
+    const texts = this.soup.findAll(undefined, 'wysiwyg-text')
+    const strokeTexts = this.soup.findAll('em')
+    const boldTexts = this.soup.findAll('strong')
+
+    texts.forEach((text) => {
+      const componentName = text.attrs.class
+        .replace('wysiwyg-text', '')
+        .replace(/ /g, '')
+
+      text.name = `T${componentName}`
+
+      // delete text.attrs.class
+      delete text.attrs.style
+    })
+
+    boldTexts.forEach((text) => {
+      const string = text.getText()
+
+      const stringDecode = decode(string)
+
+      const finalString = stringDecode.replace(/\S+/g, (a, b, c) => {
+        return `<span class="bold">` + a + '</span>'
+      })
+
+      text.replaceWith(finalString)
+
+      delete text.attrs.style
+      delete text.attrs.class
+    })
+
+    strokeTexts.forEach((text) => {
+      text.name = `AtomsTextStroke`
+
+      delete text.attrs.style
+      delete text.attrs.class
+    })
+
+    lotties.forEach((lottie) => {
+      lottie.name = 'ELottieWord'
+      lottie.attrs.class = lottie.attrs.id
+
+      delete lottie.attrs.style
+    })
+
+    return h({
+      template:
+        '<div class="app-element-rich-text">' + this.soup.prettify() + '</div>',
+    })
   },
 }
 </script>

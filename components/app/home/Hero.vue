@@ -1,11 +1,8 @@
 <template>
   <div class="app-home-hero block-inner">
     <div class="app-home-hero__inner grid">
-      <!-- <ERichText class="app-home-hero__title" :content="contents.title" /> -->
-      <!-- <TH1 class="app-home-hero__title">
-        <AtomsTextStroke>BIENVENUE À </AtomsTextStroke> L'ADIDAS ARENA, ICI
-        C'EST CHEZ VOUS !
-      </TH1> -->
+      <ERichText class="app-home-hero__title" :content="contents.title" />
+
       <div ref="firstVisual" class="app-home-hero__first-visual">
         <nuxt-picture
           class="picture-absolute"
