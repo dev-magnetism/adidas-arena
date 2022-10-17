@@ -46,7 +46,6 @@ export default {
         text.name = `T${componentName}`
 
         delete text.attrs.style
-        delete text.attrs.class
       })
 
       boldTexts.forEach((text) => {
