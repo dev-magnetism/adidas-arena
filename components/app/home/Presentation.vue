@@ -101,7 +101,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .app-home-presentation {
   width: 100%;
   margin-top: desktop-vw(130px);
