@@ -1,9 +1,3 @@
-<template>
-  <client-only>
-    <component :is="processedHtml" ref="component" />
-  </client-only>
-</template>
-
 <script>
 import JSSoup from 'jssoup'
 import { gsap } from 'gsap'
@@ -35,51 +29,6 @@ export default {
   },
   computed: {
     processedHtml() {
-      const lotties = this.soup.findAll(undefined, 'lottie-word')
-      const texts = this.soup.findAll(undefined, 'wysiwyg-text')
-      const strokeTexts = this.soup.findAll('em')
-      const boldTexts = this.soup.findAll('strong')
-
-      texts.forEach((text) => {
-        const componentName = text.attrs.class
-          .replace('wysiwyg-text', '')
-          .replace(/ /g, '')
-
-        text.name = `T${componentName}`
-
-        // delete text.attrs.class
-        delete text.attrs.style
-      })
-
-      boldTexts.forEach((text) => {
-        const string = text.getText()
-
-        const stringDecode = decode(string)
-
-        const finalString = stringDecode.replace(/\S+/g, (a, b, c) => {
-          return `<span class="bold">` + a + '</span>'
-        })
-
-        text.replaceWith(finalString)
-
-        delete text.attrs.style
-        delete text.attrs.class
-      })
-
-      strokeTexts.forEach((text) => {
-        text.name = `AtomsTextStroke`
-
-        delete text.attrs.style
-        delete text.attrs.class
-      })
-
-      lotties.forEach((lottie) => {
-        lottie.name = 'ELottieWord'
-        lottie.attrs.class = lottie.attrs.id
-
-        delete lottie.attrs.style
-      })
-
       return {
         template:
           '<div class="app-element-rich-text">' +
@@ -88,21 +37,22 @@ export default {
       }
     },
   },
-  watch: {
-    $el: {
-      deep: true,
-      handler() {
-        console.log('init $el')
 
-        document.fonts.ready.then(() => {
-          if (!this.split) return
-          console.log('init split watch')
+  // watch: {
+  //   $el: {
+  //     deep: true,
+  //     handler() {
+  //       console.log('init $el')
 
-          this.initSplitText()
-        })
-      },
-    },
-  },
+  //       document.fonts.ready.then(() => {
+  //         if (!this.split) return
+  //         console.log('init split watch')
+
+  //         this.initSplitText()
+  //       })
+  //     },
+  //   },
+  // },
 
   created() {
     this.soup = new JSSoup(this.content)
@@ -125,17 +75,17 @@ export default {
       Object.values(this.$el.children).forEach((child) => {
         console.log('child foreach', child)
         if (this.overflow) {
-          this.splitting = this.nestedLinesSplit(child, {
+          this.splitting = new SplitText(child, {
             type: 'lines',
             linesClass: 'H1__child line',
           })
 
-          this.splittingParent = this.nestedLinesSplit(child, {
+          this.splittingParent = new SplitText(child, {
             type: 'lines',
             linesClass: 'H1__parent',
           })
         } else {
-          this.splitting = this.nestedLinesSplit(child, {
+          this.splitting = new SplitText(child, {
             type: 'lines',
             linesClass: 'line',
           })
@@ -175,53 +125,57 @@ export default {
         )
       })
     },
-    nestedLinesSplit(target, vars) {
-      const split = new SplitText(target, vars)
-      const words = vars.type.includes('words')
-      const chars = vars.type.includes('chars')
-      const insertAt = function (a, b, i) {
-        const l = b.length
+  },
+  render(h) {
+    const lotties = this.soup.findAll(undefined, 'lottie-word')
+    const texts = this.soup.findAll(undefined, 'wysiwyg-text')
+    const strokeTexts = this.soup.findAll('em')
+    const boldTexts = this.soup.findAll('strong')
 
-        for (let j = 0; j < l; j++) {
-          a.splice(i++, 0, b[j])
-        }
-        return l
-      }
+    texts.forEach((text) => {
+      const componentName = text.attrs.class
+        .replace('wysiwyg-text', '')
+        .replace(/ /g, '')
 
-      let children
-      let child
-      let i
+      text.name = `T${componentName}`
 
-      if (typeof target === 'string') {
-        target = document.querySelectorAll(target)
-      }
-      if (target.length > 1) {
-        for (i = 0; i < target.length; i++) {
-          split.lines = split.lines.concat(
-            this.nestedLinesSplit(target[i], vars).lines
-          )
-        }
-        return split
-      }
+      // delete text.attrs.class
+      delete text.attrs.style
+    })
 
-      children = (words ? split.words : []).concat(chars ? split.chars : [])
-      for (i = 0; i < children.length; i++) {
-        children[i]._protect = true
-      }
+    boldTexts.forEach((text) => {
+      const string = text.getText()
 
-      children = split.lines
-      for (i = 0; i < children.length; i++) {
-        child = children[i].firstChild
-        if (!child._protect && child.nodeType !== 3) {
-          children[i].parentNode.insertBefore(child, children[i])
-          children[i].parentNode.removeChild(children[i])
-          children.splice(i, 1)
-          i +=
-            insertAt(children, this.nestedLinesSplit(child, vars).lines, i) - 1
-        }
-      }
-      return split
-    },
+      const stringDecode = decode(string)
+
+      const finalString = stringDecode.replace(/\S+/g, (a, b, c) => {
+        return `<span class="bold">` + a + '</span>'
+      })
+
+      text.replaceWith(finalString)
+
+      delete text.attrs.style
+      delete text.attrs.class
+    })
+
+    strokeTexts.forEach((text) => {
+      text.name = `AtomsTextStroke`
+
+      delete text.attrs.style
+      delete text.attrs.class
+    })
+
+    lotties.forEach((lottie) => {
+      lottie.name = 'ELottieWord'
+      lottie.attrs.class = lottie.attrs.id
+
+      delete lottie.attrs.style
+    })
+
+    return h({
+      template:
+        '<div class="app-element-rich-text">' + this.soup.prettify() + '</div>',
+    })
   },
 }
 </script>
