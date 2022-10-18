@@ -28,6 +28,13 @@ export default {
     { src: '~/plugins/viewport.js', mode: 'client' },
   ],
 
+  vue: {
+    config: {
+      productionTip: true,
+      devtools: true,
+    },
+  },
+
   pageTransition: {
     name: 'page',
     mode: 'out-in', // when blank: out and in are simultaneous. default: 'out-in'
