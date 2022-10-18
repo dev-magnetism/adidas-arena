@@ -38,21 +38,21 @@ export default {
     },
   },
 
-  // watch: {
-  //   $el: {
-  //     deep: true,
-  //     handler() {
-  //       console.log('init $el')
+  watch: {
+    $el: {
+      deep: true,
+      handler() {
+        console.log('init $el')
 
-  //       document.fonts.ready.then(() => {
-  //         if (!this.split) return
-  //         console.log('init split watch')
+        // document.fonts.ready.then(() => {
+        //   if (!this.split) return
+        //   console.log('init split watch')
 
-  //         this.initSplitText()
-  //       })
-  //     },
-  //   },
-  // },
+        //   this.initSplitText()
+        // })
+      },
+    },
+  },
 
   created() {
     this.soup = new JSSoup(this.content)
