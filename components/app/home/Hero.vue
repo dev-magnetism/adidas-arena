@@ -86,39 +86,37 @@ export default {
     },
   },
   mounted() {
-    if (this.$mq !== 'sm') {
-      this.tl = gsap.timeline({ repeat: -1, paused: true })
-      this.tl.to(this.$refs.union.$el, {
-        yPercent: 105,
-        duration: 0.675,
-      })
-      this.tl.set(this.$refs.union.$el, {
-        yPercent: -105,
-      })
-      this.tl.to(this.$refs.union.$el, {
-        yPercent: 0,
-        duration: 0.675,
-      })
-    }
+    // if (this.$mq !== 'sm') {
+    //   this.tl = gsap.timeline({ repeat: -1, paused: true })
+    //   this.tl.to(this.$refs.union.$el, {
+    //     yPercent: 105,
+    //     duration: 0.675,
+    //   })
+    //   this.tl.set(this.$refs.union.$el, {
+    //     yPercent: -105,
+    //   })
+    //   this.tl.to(this.$refs.union.$el, {
+    //     yPercent: 0,
+    //     duration: 0.675,
+    //   })
+    // }
   },
   beforeDestroy() {
     this.tl?.kill()
   },
   methods: {
     onMouseEnter() {
-      if (this.$mq === 'sm') return
-
-      if (this.tl._repeat === 0) {
-        this.tl.repeat(-1)
-        this.tl.restart()
-      } else {
-        this.tl.play()
-      }
+      // if (this.$mq === 'sm') return
+      // if (this.tl._repeat === 0) {
+      //   this.tl.repeat(-1)
+      //   this.tl.restart()
+      // } else {
+      //   this.tl.play()
+      // }
     },
     onMouseLeave() {
-      if (this.$mq === 'sm') return
-
-      this.tl.repeat(0)
+      // if (this.$mq === 'sm') return
+      // this.tl.repeat(0)
     },
   },
 }
