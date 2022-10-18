@@ -64,9 +64,7 @@ export default {
 
       console.log('init split')
 
-      setTimeout(() => {
-        this.initSplitText()
-      }, 100)
+      this.initSplitText()
     })
   },
 
