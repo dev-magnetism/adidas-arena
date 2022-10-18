@@ -59,15 +59,15 @@ export default {
   },
 
   mounted() {
-    // document.fonts.ready.then(() => {
-    if (!this.split) return
+    document.fonts.ready.then(() => {
+      if (!this.split) return
 
-    console.log('init split', this.$el.children)
+      console.log('init split')
 
-    setTimeout(() => {
-      this.initSplitText()
-    }, 0)
-    // })
+      setTimeout(() => {
+        this.initSplitText()
+      }, 100)
+    })
   },
 
   methods: {
@@ -178,7 +178,10 @@ export default {
 
     return h({
       template:
-        '<div class="app-element-rich-text">' + this.soup.prettify() + '</div>',
+        '<div class="app-element-rich-text">' +
+        this.soup.prettify() +
+        '<TH2> Test </TH2>' +
+        '</div>',
     })
   },
 }
