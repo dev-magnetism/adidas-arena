@@ -182,7 +182,7 @@ export default {
       template:
         '<div class="app-element-rich-text">' +
         '<TH2> Test </TH2>' +
-        soup.prettify() +
+        this.content +
         '</div>',
     })
   },
