@@ -122,6 +122,8 @@ export default {
           })
         }
 
+        console.log(this.splitting)
+
         let scrollTrigger
 
         if (this.scrub) {
