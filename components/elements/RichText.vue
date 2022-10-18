@@ -94,10 +94,9 @@ export default {
 
         document.fonts.ready.then(() => {
           if (!this.split) return
+          console.log('init split watch')
 
           this.initSplitText()
-
-          console.log('init split')
         })
       },
     },
@@ -111,9 +110,9 @@ export default {
     document.fonts.ready.then(() => {
       if (!this.split) return
 
-      this.initSplitText()
-
       console.log('init split')
+
+      this.initSplitText()
     })
   },
 
