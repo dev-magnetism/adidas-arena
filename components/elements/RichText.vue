@@ -141,8 +141,10 @@ export default {
 
       text.name = `T${componentName}`
 
-      // delete text.attrs.class
+      delete text.attrs.class
       delete text.attrs.style
+
+      text.attrs.class = 'wysiwyg-text'
     })
 
     boldTexts.forEach((text) => {
