@@ -28,14 +28,14 @@ export default {
     },
   },
   computed: {
-    processedHtml() {
-      return {
-        template:
-          '<div class="app-element-rich-text">' +
-          this.soup.prettify() +
-          '</div>',
-      }
-    },
+    // processedHtml() {
+    //   return {
+    //     template:
+    //       '<div class="app-element-rich-text">' +
+    //       this.soup.prettify() +
+    //       '</div>',
+    //   }
+    // },
   },
 
   watch: {
@@ -55,7 +55,7 @@ export default {
   },
 
   created() {
-    this.soup = new JSSoup(this.content)
+    // this.soup = new JSSoup(this.content)
   },
 
   mounted() {
@@ -129,10 +129,12 @@ export default {
     },
   },
   render(h) {
-    const lotties = this.soup.findAll(undefined, 'lottie-word')
-    const texts = this.soup.findAll(undefined, 'wysiwyg-text')
-    const strokeTexts = this.soup.findAll('em')
-    const boldTexts = this.soup.findAll('strong')
+    const soup = new JSSoup(this.content)
+
+    const lotties = soup.findAll(undefined, 'lottie-word')
+    const texts = soup.findAll(undefined, 'wysiwyg-text')
+    const strokeTexts = soup.findAll('em')
+    const boldTexts = soup.findAll('strong')
 
     texts.forEach((text) => {
       const componentName = text.attrs.class
@@ -179,7 +181,7 @@ export default {
     return h({
       template:
         '<div class="app-element-rich-text">' +
-        this.soup.prettify() +
+        soup.prettify() +
         '<TH2> Test </TH2>' +
         '</div>',
     })
