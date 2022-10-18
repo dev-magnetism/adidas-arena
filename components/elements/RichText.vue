@@ -1,6 +1,6 @@
 <script>
 import JSSoup from 'jssoup'
-// import { gsap } from 'gsap'
+import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 import { decode } from 'html-entities'
 
@@ -27,87 +27,74 @@ export default {
       require: true,
     },
   },
-  computed: {
-    processedHtml() {
-      return {
-        template:
-          '<div class="app-element-rich-text">' +
-          this.soup.prettify() +
-          '</div>',
-      }
-    },
-  },
-
+  computed: {},
   created() {
     this.soup = new JSSoup(this.content)
   },
   mounted() {
-    this.initSplitText()
+    document.fonts.ready.then(() => {
+      if (!this.split) return
 
-    // document.fonts.ready.then(() => {
-    //   if (!this.split) return
-
-    // })
+      this.initSplitText()
+    })
   },
 
   methods: {
     initSplitText() {
       console.log(this, this.$el, this.$el.children, this.$el.children.length)
 
-      // Object.values(this.$el.children).forEach((child) => {
-      //   console.log(child, this.$el.children.length)
-      //   if (this.overflow) {
-      //     this.splitting = new SplitText(child, {
-      //       type: 'lines',
-      //       linesClass: 'H1__child line',
-      //     })
+      Object.values(this.$el.children).forEach((child) => {
+        console.log(child, this.$el.children.length)
+        if (this.overflow) {
+          this.splitting = new SplitText(child, {
+            type: 'lines',
+            linesClass: 'H1__child line',
+          })
 
-      //     this.splittingParent = new SplitText(child, {
-      //       type: 'lines',
-      //       linesClass: 'H1__parent',
-      //     })
-      //   } else {
-      //     this.splitting = new SplitText(child, {
-      //       type: 'lines',
-      //       linesClass: 'line',
-      //     })
-      //   }
+          this.splittingParent = new SplitText(child, {
+            type: 'lines',
+            linesClass: 'H1__parent',
+          })
+        } else {
+          this.splitting = new SplitText(child, {
+            type: 'lines',
+            linesClass: 'line',
+          })
+        }
 
-      //   console.log(this.splitting)
+        let scrollTrigger
 
-      //   let scrollTrigger
+        if (this.scrub) {
+          scrollTrigger = {
+            trigger: child,
+            start: 'top bottom',
+            end: 'center center',
+            scrub: 0.5,
+          }
+        } else {
+          scrollTrigger = {
+            trigger: child,
+            start: 'top bottom',
+            end: 'center center',
+            toggleActions: 'play none none none',
+          }
+        }
 
-      //   if (this.scrub) {
-      //     scrollTrigger = {
-      //       trigger: child,
-      //       start: 'top bottom',
-      //       end: 'center center',
-      //       scrub: 0.5,
-      //     }
-      //   } else {
-      //     scrollTrigger = {
-      //       trigger: child,
-      //       start: 'top bottom',
-      //       end: 'center center',
-      //       toggleActions: 'play none none none',
-      //     }
-      //   }
-
-      //   gsap.fromTo(
-      //     this.splitting.lines,
-      //     {
-      //       yPercent: this.overflow ? -100 : 100,
-      //     },
-      //     {
-      //       yPercent: 0,
-      //       stagger: 0.08,
-      //       delay: this.scrub ? 0 : 0.2,
-      //       duration: 0.85,
-      //       ease: 'expo.out',
-      //       scrollTrigger,
-      //     }
-      //   )
-      // })
+        gsap.fromTo(
+          this.splitting.lines,
+          {
+            yPercent: this.overflow ? -100 : 100,
+          },
+          {
+            yPercent: 0,
+            stagger: 0.08,
+            delay: this.scrub ? 0 : 0.2,
+            duration: 0.85,
+            ease: 'expo.out',
+            scrollTrigger,
+          }
+        )
+      })
     },
     nestedLinesSplit(target, vars) {
       const split = new SplitText(target, vars)
