@@ -21,7 +21,7 @@
       <AtomsCTA>Devenir partenaire</AtomsCTA>
     </div>
     <EGridLogos :logos="contents.list" class="app-arena-partners__grid-logos" />
-    <EPartnersTotal />
+    <EPartnersTotal :total="contents.list.length" />
   </div>
 </template>
 

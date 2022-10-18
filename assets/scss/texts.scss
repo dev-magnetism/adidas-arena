@@ -33,7 +33,7 @@
     font-weight: 500;
   }
     
-  &.bold {
+  &.bold, .bold {
     @include font-tuskerGrotesk-bold();
     font-weight: 700;
   }

@@ -2,21 +2,18 @@
   <div class="app-projet-plan">
     <div class="app-projet-plan__inner grid-inner">
       <div class="app-projet-plan__content">
-        <TH4 class="app-projet-plan__content__title"
-          >ADIDAS ARENA <br />
-          NORD EST PARISIEN <br />
-          PORTE DE LA CHAPELLE</TH4
-        >
+        <ERichText
+          class="app-projet-plan__content__title"
+          :content="contents.title"
+        />
+
         <TP1 weight="bold" class="app-projet-plan__content__subtitle"
-          >Smart, inspirante, lumineuse,
+          >{{ contents.subtitle }}
         </TP1>
-        <TP2 weight="medium" class="app-projet-plan__content__paragraph"
-          >Cette Arena nouvelle génération va transformer tout un quartier.
-          <br />
-          <br />
-          Participez au renouveau d’un territoire à travers ce nouveau lieu de
-          vie hybride qui fera émerger des talents !</TP2
-        >
+        <ERichText
+          class="app-projet-plan__content__paragraph"
+          :content="contents.paragraph"
+        />
       </div>
       <div class="app-projet-plan__visual">
         <AtomsCornerPoints :size-points="8" />
@@ -25,14 +22,14 @@
           class="app-projet-plan__visual__main-place"
           bg="blue-adidas"
           color="white"
-          >Porte de la chapelle</AtomsTitleTag
+          >{{ contents.chapelle }}</AtomsTitleTag
         >
         <AtomsTitleTag
           ref="secondPlace"
           class="app-projet-plan__visual__second-place"
           bg="blue-adidas"
           color="white"
-          >basilique du Sacré-coeur</AtomsTitleTag
+          >{{ contents.basilique }}</AtomsTitleTag
         >
         <SvgPlan ref="svg" />
         <div ref="circle" class="app-projet-plan__visual__circle-01" />
@@ -60,6 +57,13 @@ import { gsap } from 'gsap'
 import lottie from 'lottie-web'
 
 export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
+
   data() {
     return {
       playhead: {
@@ -325,9 +329,11 @@ export default {
 
     &__subtitle {
       margin-bottom: desktop-vw(25px);
+      width: 65%;
+      margin-top: desktop-vw(25px);
     }
 
-    &__paragraph.P2 {
+    &__paragraph.app-element-rich-text {
       text-transform: initial;
       width: 65%;
     }

@@ -94,18 +94,13 @@ export default {
     document.fonts.ready.then(() => {
       if (!this.split) return
 
-      setTimeout(() => {
-        this.initSplitText()
-      }, 2000)
+      this.initSplitText()
     })
   },
 
   methods: {
     initSplitText() {
-      console.log('first', this.$el.children, this.$refs)
-
       Object.values(this.$el.children).forEach((child) => {
-        console.log('first', child)
         if (this.overflow) {
           this.splitting = new SplitText(child, {
             type: 'lines',

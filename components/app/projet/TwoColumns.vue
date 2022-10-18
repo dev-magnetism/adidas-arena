@@ -31,17 +31,14 @@
         </EParallax>
       </div>
       <div class="app-projet-two-columns__f-r__content">
-        <TH2 class="app-projet-two-columns__f-r__content__title"
-          >Adidas Arena, un lieu utile & responsable</TH2
-        >
-        <TP1
-          weight="regular"
+        <ERichText
+          class="app-projet-two-columns__f-r__content__title"
+          :content="contents.firstRow.title"
+        />
+        <ERichText
           class="app-projet-two-columns__f-r__content__paragraph"
-        >
-          Une double dynamique écoresponsable -de conception et de
-          fonctionnement- pour ancrer les meilleures pratiques existantes sur
-          tout le parcours des visiteurs.
-        </TP1>
+          :content="contents.firstRow.paragraph"
+        />
       </div>
       <ELottie
         id="Petite_Fleche_02"
@@ -51,18 +48,14 @@
 
     <div class="app-projet-two-columns__s-r grid">
       <div class="app-projet-two-columns__s-r__content">
-        <TH2 class="app-projet-two-columns__s-r__content__title"
-          >un modèle d’avenir</TH2
-        >
-        <TP1
+        <ERichText
+          class="app-projet-two-columns__s-r__content__title"
+          :content="contents.secondRow.title"
+        />
+        <ERichText
           class="app-projet-two-columns__s-r__content__paragraph"
-          weight="regular"
-        >
-          Une Arena tournée vers l’innovation, l’inclusion et la transformation
-          du secteur de l’Entertainment. l'ADIDAS ARENA vise la certification
-          ISO 20121, une norme internationale pour les acteurs de l’évènementiel
-          qui souhaitent atteindre l’excellence éco-responsable.
-        </TP1>
+          :content="contents.secondRow.paragraph"
+        />
       </div>
 
       <div class="app-projet-two-columns__s-r__visuals">
@@ -101,9 +94,20 @@
   </div>
 </template>
 
+<script>
+export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
+}
+</script>
+
 <style lang="scss">
 .app-projet-two-columns {
-  padding-top: desktop-vw(180px);
+  padding-top: desktop-vw(100px);
 
   &__s-r {
     grid-row: 2;
@@ -169,14 +173,18 @@
     &__content {
       grid-column: 1 / span 4;
 
-      &__title {
+      &__title.app-element-rich-text {
         width: columns(2.5);
       }
 
-      &__paragraph {
+      &__paragraph.app-element-rich-text {
         margin-top: desktop-vw(25px);
         margin-left: auto;
         width: columns(3);
+
+        .P1.wysiwyg-text {
+          text-transform: uppercase;
+        }
       }
     }
   }
@@ -266,11 +274,15 @@
       grid-column: 8 / span 4;
       height: 100%;
 
-      &__title {
+      &__title.app-element-rich-text {
       }
 
-      &__paragraph {
+      &__paragraph.app-element-rich-text {
         margin-top: desktop-vw(25px);
+
+        .P1.wysiwyg-text {
+          text-transform: uppercase;
+        }
       }
     }
   }

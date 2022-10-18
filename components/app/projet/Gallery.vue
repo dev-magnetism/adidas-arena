@@ -2,46 +2,52 @@
   <div class="app-projet-gallery grid-inner">
     <div class="app-projet-gallery__item">
       <nuxt-picture
+        provider="directus"
         class="app-projet-gallery__item__visual"
-        src="imgs/placeholder.png"
+        :src="contents.leftPicture"
         format="webp"
-        alt="placeholder"
+        :alt="contents.leftPictureAlt"
       />
       <div class="app-projet-gallery__item__content">
         <div class="app-projet-gallery__item__infos">
-          <TH3>Les gym's</TH3>
-          <TH4 weight="medium">350 M2</TH4>
+          <TH3>{{ contents.leftTitle }}</TH3>
+          <TH4 weight="medium">{{ contents.leftSubtitle }}</TH4>
         </div>
-        <TP1 weight="regular"
-          >Ce parvis est votre point d’arrivée et de passage mais aussi un
-          espace de loisirs ! Une expérience vous permettant d’être connecté
-          avec l’actualité de l'ADIDAS ARENA : expositions, matchs sportif,
-          concerts, DJ set...
-        </TP1>
+        <TP1 weight="regular">{{ contents.leftParagraph }} </TP1>
       </div>
     </div>
     <div class="app-projet-gallery__item">
       <nuxt-picture
+        provider="directus"
         class="app-projet-gallery__item__visual"
-        src="imgs/placeholder.png"
+        :src="contents.rightPicture"
         format="webp"
-        alt="placeholder"
+        :alt="contents.rightPictureAlt"
       />
       <div class="app-projet-gallery__item__content">
         <div class="app-projet-gallery__item__infos">
-          <TH3>Les gym's</TH3>
-          <TH4 weight="medium">350 M2</TH4>
+          <TH3>{{ contents.rightTitle }}</TH3>
+          <TH4 weight="medium">{{ contents.rightSubtitle }}</TH4>
         </div>
-        <TP1 weight="regular"
-          >Ce parvis est votre point d’arrivée et de passage mais aussi un
-          espace de loisirs ! Une expérience vous permettant d’être connecté
-          avec l’actualité de l'ADIDAS ARENA : expositions, matchs sportif,
-          concerts, DJ set...
-        </TP1>
+        <TP1 weight="regular">{{ contents.rightParagraph }} </TP1>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  mounted() {
+    console.log('tfetetz', this.contents)
+  },
+}
+</script>
 
 <style lang="scss">
 .app-projet-gallery {
