@@ -161,11 +161,8 @@ export default {
       this.initTimeline()
     },
     initTimeline() {
-      const mmDesktop = gsap.matchMedia()
-      const mmMobile = gsap.matchMedia()
-
       // DESKTOP
-      mmDesktop.add('(min-width: 800px)', () => {
+      if (this.$mq !== 'sm') {
         this.tl.fromTo(
           [this.$refs.wrapper, this.$refs.fakeVisual],
           {
@@ -469,10 +466,10 @@ export default {
           },
           'charsHeader+=100%'
         )
-      })
+      }
 
       // MOBILE
-      mmMobile.add('(max-width: 800px)', () => {
+      if (this.$mq === 'sm') {
         this.tl.addLabel('lotties')
         this.tl.to(
           this.playhead,
@@ -522,7 +519,7 @@ export default {
           },
           'lotties'
         )
-      })
+      }
     },
     initLottieAnimations() {
       if (this.$mq !== 'sm') {
