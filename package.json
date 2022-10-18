@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@directus/sdk": "^10.1.4",
-    "@lihbr/utils-nuxt.smart-link": "^0.2.2",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/style-resources": "^1.2.1",
     "@studio-freight/lenis": "^0.2.9",

@@ -36,7 +36,7 @@
       class="app-element-grid-logos-bloc__overlay twin"
     />
   </div>
-  <SmartLink
+  <a
     v-else
     :href="content.logo_link"
     :blank="true"
@@ -75,7 +75,7 @@
       }"
       class="app-element-grid-logos-bloc__overlay twin"
     />
-  </SmartLink>
+  </a>
 </template>
 
 <script>

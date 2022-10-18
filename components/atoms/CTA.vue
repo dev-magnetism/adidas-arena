@@ -1,5 +1,5 @@
 <template>
-  <SmartLink
+  <a
     class="app-atoms-cta"
     :class="classes"
     :style="{
@@ -17,7 +17,7 @@
     <div v-if="arrow" class="app-atoms-cta__arrow">
       <SvgCtaUnion ref="arrow" :color="color" />
     </div>
-  </SmartLink>
+  </a>
 </template>
 
 <script>

@@ -37,9 +37,9 @@
           <label for="accept-politic">
             <TP2>
               J’accepte la
-              <SmartLink href="https://www.magnetism.fr/" :blank="true">
+              <a href="https://www.magnetism.fr/" :blank="true">
                 politique de confidentialité
-              </SmartLink>
+              </a>
             </TP2>
           </label>
           <span class="checkmark" />

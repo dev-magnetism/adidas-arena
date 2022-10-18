@@ -1,5 +1,5 @@
 <template>
-  <SmartLink
+  <a
     class="app-atoms-link-underline"
     :class="classes"
     :style="{
@@ -13,7 +13,7 @@
     <TP1 class="app-atoms-link-underline__text" weight="bold" :color="color"
       ><slot
     /></TP1>
-  </SmartLink>
+  </a>
 </template>
 
 <script>

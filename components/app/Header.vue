@@ -1,12 +1,12 @@
 <template>
   <div class="app-header">
-    <SmartLink href="/">Accueil</SmartLink>
-    <SmartLink href="/projet">Projet</SmartLink>
-    <SmartLink href="/arena">Arena</SmartLink>
-    <SmartLink href="/le-bloc">Le bloc</SmartLink>
-    <SmartLink href="/be-part-of/hospitalite">Hospitalite</SmartLink>
-    <SmartLink href="/be-part-of/configurations">Configurations</SmartLink>
-    <SmartLink href="/be-part-of/partenaire">Partenaire</SmartLink>
+    <a href="/">Accueil</a>
+    <a href="/projet">Projet</a>
+    <a href="/arena">Arena</a>
+    <a href="/le-bloc">Le bloc</a>
+    <a href="/be-part-of/hospitalite">Hospitalite</a>
+    <a href="/be-part-of/configurations">Configurations</a>
+    <a href="/be-part-of/partenaire">Partenaire</a>
   </div>
 </template>
 

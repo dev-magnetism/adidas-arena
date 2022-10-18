@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import SmartLink from '@lihbr/utils-nuxt.smart-link'
+// import Vue from 'vue'
 
 // export const isValidHttpUrl = (string) => {
 //   let url
@@ -18,5 +17,3 @@ import SmartLink from '@lihbr/utils-nuxt.smart-link'
 // }
 
 // Vue.prototype.$utils = { randomIntFromInterval }
-
-Vue.component('SmartLink', SmartLink)
