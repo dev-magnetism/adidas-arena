@@ -69,7 +69,6 @@ export default {
       start: 'top bottom-=10%',
       end: 'top center',
       scrub: 1,
-      markers: true,
     })
   },
   beforeDestroy() {

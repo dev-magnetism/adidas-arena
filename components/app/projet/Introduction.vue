@@ -5,39 +5,56 @@
       <ERichText :content="contents.subtitle" />
     </div>
 
-    <div class="app-projet-introduction__row-framed-visual">
-      <EFramedPicture color="red-adidas">
-        <nuxt-picture
-          provider="directus"
-          :src="contents.pictureFramedImage"
-          format="webp"
-          :alt="contents.pictureFramedAlt"
-        />
-      </EFramedPicture>
-    </div>
-
-    <div class="app-projet-introduction__row-second-visual-principal">
-      <TH3> {{ contents.pictureLabelText }} </TH3>
-      <nuxt-picture
-        provider="directus"
-        :src="contents.pictureLabelImage"
-        :alt="contents.pictureLabelAlt"
-        format="webp"
-      />
-    </div>
+    <EParallax
+      ref="framed"
+      :speed="0.5"
+      class="app-projet-introduction__row-framed-visual"
+    >
+      <EKinesis :speed="5">
+        <EFramedPicture color="red-adidas">
+          <EKinesis :speed="-3.5">
+            <nuxt-picture
+              provider="directus"
+              :src="contents.pictureFramedImage"
+              format="webp"
+              :alt="contents.pictureFramedAlt"
+            />
+          </EKinesis>
+        </EFramedPicture>
+      </EKinesis>
+    </EParallax>
 
     <div
-      :speed="10"
+      ref="visualBigger"
+      class="app-projet-introduction__row-second-visual-principal"
+    >
+      <EParallax :speed="0.7">
+        <EKinesis :speed="5">
+          <TH3> {{ contents.pictureLabelText }} </TH3>
+          <nuxt-picture
+            provider="directus"
+            :src="contents.pictureLabelImage"
+            :alt="contents.pictureLabelAlt"
+            format="webp"
+          />
+        </EKinesis>
+      </EParallax>
+    </div>
+
+    <EParallax
+      :speed="0.5"
       class="app-projet-introduction__row-second-visual-transparent"
     >
-      <nuxt-picture
-        :src="contents.pictureLogoImage"
-        provider="directus"
-        format="webp"
-        :alt="contents.pictureLogoAlt"
-      />
-      <AtomsCornerPoints :size-points="6" />
-    </div>
+      <EKinesis :speed="15">
+        <nuxt-picture
+          :src="contents.pictureLogoImage"
+          provider="directus"
+          format="webp"
+          :alt="contents.pictureLogoAlt"
+        />
+        <AtomsCornerPoints :size-points="6" />
+      </EKinesis>
+    </EParallax>
 
     <div class="app-projet-introduction__row-second-content">
       <TH4>{{ contents.whyTitle }}</TH4>
@@ -48,12 +65,45 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
+
 export default {
   props: {
     contents: {
       type: Object,
       default: () => {},
     },
+  },
+  mounted() {
+    gsap.fromTo(
+      this.$refs.visualBigger,
+      {
+        rotate: -6,
+      },
+      {
+        rotate: -2,
+        scrollTrigger: {
+          trigger: this.$refs.visualBigger,
+          scrub: 0.5,
+          end: 'bottom top',
+        },
+      }
+    )
+
+    gsap.fromTo(
+      this.$refs.framed.$el,
+      {
+        rotate: 8,
+      },
+      {
+        rotate: 4,
+        scrollTrigger: {
+          trigger: this.$refs.framed.$el,
+          scrub: 0.5,
+          end: 'bottom top',
+        },
+      }
+    )
   },
 }
 </script>
@@ -93,9 +143,9 @@ export default {
     width: 95%;
     margin-left: desktop-vw(50px);
     z-index: 2;
+    transform: rotate(4deg);
 
     .app-element-framed-picture {
-      transform: rotate(4deg);
       height: 100%;
     }
   }
@@ -113,8 +163,15 @@ export default {
     align-items: center;
     justify-content: center;
     height: auto;
+    transform-origin: left center;
 
-    @include fake-transparent();
+    .app-element-kinesis {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      @include fake-transparent();
+    }
 
     picture {
       display: block;
@@ -139,11 +196,15 @@ export default {
     grid-column: 2 / span 6;
     position: relative;
     transform: translateY(-30%) rotate(-1.8deg);
-    display: flex;
     width: 95%;
     margin-left: desktop-vw(25px);
     grid-row: 2;
-    margin-top: desktop-vw(25px);
+    margin-top: desktop-vw(-25px);
+    // transform-origin: right bottom;
+
+    .app-element-kinesis {
+      display: flex;
+    }
 
     .H3 {
       font-size: desktop-vw(22px);

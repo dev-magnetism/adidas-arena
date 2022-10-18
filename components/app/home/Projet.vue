@@ -1,12 +1,11 @@
 <template>
   <div class="app-home-projet grid-inner">
     <div class="app-home-projet__rotated">
-      <AtomsCornerPoints
-        :border-color="$mq !== 'sm' ? 'beige' : 'black'"
-        :points-color="$mq !== 'sm' ? 'beige' : 'black'"
-      />
-
       <div ref="wrapper" class="app-home-projet__wrapper">
+        <AtomsCornerPoints
+          :border-color="$mq !== 'sm' ? 'beige' : 'black'"
+          :points-color="$mq !== 'sm' ? 'beige' : 'black'"
+        />
         <div class="app-home-projet__inner">
           <AppHomeProjetHeader
             :content-left="contents.headerContentLeft"
