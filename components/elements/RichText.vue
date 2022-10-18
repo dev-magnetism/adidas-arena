@@ -1,5 +1,7 @@
 <template>
-  <component :is="processedHtml" ref="component" />
+  <client-only>
+    <component :is="processedHtml" ref="component" />
+  </client-only>
 </template>
 
 <script>
