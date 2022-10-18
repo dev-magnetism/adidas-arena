@@ -94,7 +94,9 @@ export default {
     document.fonts.ready.then(() => {
       if (!this.split) return
 
-      this.initSplitText()
+      this.$nextTick(() => {
+        this.initSplitText()
+      })
     })
   },
 
