@@ -124,6 +124,7 @@ export default {
       console.log('$el.children.length', this.$el.children.length)
 
       Object.values(this.$el.children).forEach((child) => {
+        console.log('child', child)
         if (this.overflow) {
           this.splitting = new SplitText(child, {
             type: 'lines',
