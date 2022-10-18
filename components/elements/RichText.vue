@@ -123,17 +123,17 @@ export default {
       Object.values(this.$el.children).forEach((child) => {
         console.log('child foreach', child)
         if (this.overflow) {
-          this.splitting = new SplitText(child, {
+          this.splitting = this.nestedLinesSplit(child, {
             type: 'lines',
             linesClass: 'H1__child line',
           })
 
-          this.splittingParent = new SplitText(child, {
+          this.splittingParent = this.nestedLinesSplit(child, {
             type: 'lines',
             linesClass: 'H1__parent',
           })
         } else {
-          this.splitting = new SplitText(child, {
+          this.splitting = this.nestedLinesSplit(child, {
             type: 'lines',
             linesClass: 'line',
           })
