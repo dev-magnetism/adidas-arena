@@ -119,6 +119,7 @@ export default {
 
   methods: {
     initSplitText() {
+      console.log(this.$el)
       Object.values(this.$el.children).forEach((child) => {
         if (this.overflow) {
           this.splitting = new SplitText(child, {
