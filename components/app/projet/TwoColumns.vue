@@ -10,22 +10,25 @@
               <TH2
                 weight="bold"
                 class="app-projet-two-columns__f-r__card__content__title"
-                >06</TH2
               >
+                {{ contents.firstRow.cardTitle }}
+              </TH2>
               <TH2
                 weight="bold"
                 class="app-projet-two-columns__f-r__card__content__subtitle"
-                >Millions</TH2
               >
+                <ELottieWord id="Cercle_3" />
+                {{ contents.firstRow.cardSubtitle }}
+              </TH2>
               <TH3
                 weight="medium"
                 class="app-projet-two-columns__f-r__card__content__paragraph"
-                >de bouchons en plastique collectés pour la construction des
-                sièges de l'Arena !</TH3
               >
+                {{ contents.firstRow.cardParagraph }}
+              </TH3>
             </div>
-            <AtomsCTA bg="blue-adidas" color="white"
-              >Les points de collecte
+            <AtomsCTA bg="blue-adidas" color="white">
+              {{ contents.firstRow.cardCtaText }}
             </AtomsCTA>
           </div>
         </EParallax>
@@ -61,9 +64,10 @@
       <div class="app-projet-two-columns__s-r__visuals">
         <nuxt-picture
           class="app-projet-two-columns__s-r__visual"
-          src="imgs/placeholder.png"
+          provider="directus"
+          :src="contents.secondRow.picture"
           format="webp"
-          alt="alt"
+          :alt="contents.secondRow.pictureAlt"
         />
         <EParallax position="top" :speed="0.5">
           <div class="app-projet-two-columns__s-r__card">
@@ -72,20 +76,22 @@
               <TH2
                 weight="bold"
                 class="app-projet-two-columns__s-r__card__content__title"
-                >06</TH2
               >
+                <ELottieWord id="Cercle_4" />
+                {{ contents.secondRow.cardTitle }}
+              </TH2>
               <TH2
                 weight="bold"
                 class="app-projet-two-columns__s-r__card__content__subtitle"
               >
-                Millions</TH2
-              >
+                {{ contents.secondRow.cardSubtitle }}
+              </TH2>
               <TH3
                 weight="medium"
                 class="app-projet-two-columns__s-r__card__content__paragraph"
-                >de bouchons en plastique collectés pour la construction des
-                sièges de l'Arena !</TH3
               >
+                {{ contents.secondRow.cardParagraph }}
+              </TH3>
             </div>
           </div>
         </EParallax>
@@ -154,6 +160,18 @@ export default {
         &__title {
           font-size: desktop-vw(160px);
           line-height: desktop-vw(160px);
+          position: relative;
+          display: inline-block;
+
+          .app-element-lottie-word {
+            position: absolute;
+            width: 150%;
+            height: auto;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            align-items: center;
+          }
         }
 
         &__subtitle {
@@ -246,6 +264,18 @@ export default {
         &__subtitle {
           font-size: desktop-vw(88px);
           line-height: desktop-vw(106px);
+          display: inline-block;
+          position: relative;
+
+          .app-element-lottie-word {
+            position: absolute;
+            width: 160%;
+            height: auto;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            align-items: center;
+          }
         }
 
         &__paragraph {

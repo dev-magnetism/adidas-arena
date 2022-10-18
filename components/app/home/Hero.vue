@@ -205,6 +205,8 @@ export default {
     &__baseline {
       display: flex;
       justify-content: space-between;
+      flex-direction: row;
+
       width: 100%;
       padding: desktop-vw(0px) desktop-vw(20px) desktop-vw(20px)
         desktop-vw(20px);
@@ -216,6 +218,7 @@ export default {
       @include mobile {
         height: 100%;
         padding: mobile-vw(18px) mobile-vw(18px) mobile-vw(18px) mobile-vw(18px);
+        flex-direction: column;
       }
     }
 

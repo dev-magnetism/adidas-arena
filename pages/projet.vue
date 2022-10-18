@@ -84,10 +84,25 @@ export default {
         firstRow: {
           title: this.content.data.projet_two_columns_first_row_title,
           paragraph: this.content.data.projet_two_columns_first_row_paragraph,
+          cardTitle: this.content.data.projet_two_columns_first_row_card_title,
+          cardSubtitle:
+            this.content.data.projet_two_columns_first_row_card_subtitle,
+          cardParagraph:
+            this.content.data.projet_two_columns_first_row_card_paragraph,
+          cardCtaText:
+            this.content.data.projet_two_columns_first_row_card_cta_text,
         },
         secondRow: {
           title: this.content.data.projet_two_columns_second_row_title,
           paragraph: this.content.data.projet_two_columns_second_row_paragraph,
+          picture: this.content.data.projet_two_columns_second_row_picture,
+          pictureAlt:
+            this.content.data.projet_two_columns_second_row_picture_alt,
+          cardTitle: this.content.data.projet_two_columns_second_row_card_title,
+          cardSubtitle:
+            this.content.data.projet_two_columns_second_row_card_subtitle,
+          cardParagraph:
+            this.content.data.projet_two_columns_second_row_card_paragraph,
         },
       }
     },

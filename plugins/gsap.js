@@ -10,10 +10,6 @@ gsap.config({
   force3D: true,
 })
 
-gsap.registerPlugin(Observer, ScrollTrigger, DrawSVGPlugin)
-
-if (process.client) {
-  gsap.registerPlugin(SplitText)
-}
+gsap.registerPlugin(Observer, ScrollTrigger, DrawSVGPlugin, SplitText)
 
 // Vue.prototype.$gsap = gsap

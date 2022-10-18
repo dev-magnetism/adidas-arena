@@ -1,12 +1,12 @@
 <template>
   <div class="app-home-projet grid-inner">
     <div class="app-home-projet__rotated">
-      <div ref="wrapper" class="app-home-projet__wrapper">
-        <AtomsCornerPoints
-          :border-color="$mq !== 'sm' ? 'beige' : 'black'"
-          :points-color="$mq !== 'sm' ? 'beige' : 'black'"
-        />
+      <AtomsCornerPoints
+        :border-color="$mq !== 'sm' ? 'beige' : 'black'"
+        :points-color="$mq !== 'sm' ? 'beige' : 'black'"
+      />
 
+      <div ref="wrapper" class="app-home-projet__wrapper">
         <div class="app-home-projet__inner">
           <AppHomeProjetHeader
             :content-left="contents.headerContentLeft"
@@ -615,6 +615,7 @@ export default {
 
     @include mobile {
       transform: scale(1);
+      overflow: hidden;
     }
 
     position: relative;
@@ -675,6 +676,7 @@ export default {
       width: mobile-vw(65px);
       left: initial;
       top: mobile-vw(110px);
+      z-index: 2;
     }
   }
   &__cross {
@@ -945,10 +947,10 @@ export default {
 
     @include mobile {
       padding: mobile-vw(10px);
-      grid-column: 1 / span 6;
       transform: rotate(1.5deg);
       top: 18%;
-      width: 110%;
+      left: mobile-vw(30px);
+      width: 100%;
     }
 
     > .P2 {

@@ -1,7 +1,7 @@
 <template>
-  <div class="app-element-rich-text">
+  <client-only>
     <component :is="processedHtml" ref="component" />
-  </div>
+  </client-only>
 </template>
 
 <script>
@@ -35,12 +35,10 @@ export default {
   },
   computed: {
     processedHtml() {
-      const soup = new JSSoup(this.content)
-
-      const lotties = soup.findAll(undefined, 'lottie-word')
-      const texts = soup.findAll(undefined, 'wysiwyg-text')
-      const strokeTexts = soup.findAll('em')
-      const boldTexts = soup.findAll('strong')
+      const lotties = this.soup.findAll(undefined, 'lottie-word')
+      const texts = this.soup.findAll(undefined, 'wysiwyg-text')
+      const strokeTexts = this.soup.findAll('em')
+      const boldTexts = this.soup.findAll('strong')
 
       texts.forEach((text) => {
         const componentName = text.attrs.class
@@ -83,12 +81,17 @@ export default {
       })
 
       return {
-        template: soup.prettify(),
+        template:
+          '<div class="app-element-rich-text">' +
+          this.soup.prettify() +
+          '</div>',
       }
     },
   },
 
-  created() {},
+  created() {
+    this.soup = new JSSoup(this.content)
+  },
   mounted() {
     document.fonts.ready.then(() => {
       if (!this.split) return

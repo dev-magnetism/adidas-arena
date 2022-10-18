@@ -112,7 +112,7 @@ export default {
   @include mobile {
     margin-top: mobile-vw(85px);
     padding-bottom: 0px;
-    margin-bottom: mobile-vw(150px);
+    margin-bottom: mobile-vw(75px);
   }
 
   &__visual-framed {
