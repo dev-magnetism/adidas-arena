@@ -1,14 +1,12 @@
 <template>
   <div class="app-home-presentation grid-inner">
-    <no-ssr>
-      <ERichText
-        class="app-home-presentation__title"
-        :content="contents.content"
-        :split="true"
-        :overflow="false"
-        :scrub="true"
-      />
-    </no-ssr>
+    <ERichText
+      class="app-home-presentation__title"
+      :content="contents.content"
+      :split="true"
+      :overflow="false"
+      :scrub="true"
+    />
 
     <EParallax
       ref="visualBigger"

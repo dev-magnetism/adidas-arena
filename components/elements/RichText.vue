@@ -1,7 +1,7 @@
 <template>
-  <no-ssr>
+  <client-only>
     <component :is="processedHtml" ref="component" />
-  </no-ssr>
+  </client-only>
 </template>
 
 <script>
