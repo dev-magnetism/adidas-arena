@@ -102,7 +102,7 @@ export default {
 
   methods: {
     initSplitText() {
-      console.log(this, this.$el, this.$el.children)
+      console.log(this, this.$el, this.$el.children, this.$el.children.length)
 
       Object.values(this.$el.children).forEach((child) => {
         console.log(child, this.$el.children.length)
