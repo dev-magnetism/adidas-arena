@@ -59,13 +59,15 @@ export default {
   },
 
   mounted() {
-    document.fonts.ready.then(() => {
-      if (!this.split) return
+    // document.fonts.ready.then(() => {
+    if (!this.split) return
 
-      console.log('init split')
+    console.log('init split')
 
+    setTimeout(() => {
       this.initSplitText()
-    })
+    }, 500)
+    // })
   },
 
   methods: {
