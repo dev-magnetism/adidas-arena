@@ -181,8 +181,8 @@ export default {
     return h({
       template:
         '<div class="app-element-rich-text">' +
-        soup.prettify() +
         '<TH2> Test </TH2>' +
+        soup.prettify() +
         '</div>',
     })
   },
