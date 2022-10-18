@@ -1,7 +1,7 @@
 <template>
-  <client-only>
+  <no-ssr>
     <component :is="processedHtml" ref="component" />
-  </client-only>
+  </no-ssr>
 </template>
 
 <script>
@@ -96,9 +96,7 @@ export default {
     document.fonts.ready.then(() => {
       if (!this.split) return
 
-      this.$nextTick(() => {
-        this.initSplitText()
-      })
+      this.initSplitText()
     })
   },
 
@@ -107,6 +105,7 @@ export default {
       console.log(this, this.$el, this.$el.children)
 
       Object.values(this.$el.children).forEach((child) => {
+        console.log(child, this.$el.children.length)
         if (this.overflow) {
           this.splitting = new SplitText(child, {
             type: 'lines',
