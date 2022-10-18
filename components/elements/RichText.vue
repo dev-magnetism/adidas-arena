@@ -1,7 +1,5 @@
 <template>
-  <client-only>
-    <component :is="processedHtml" ref="component" />
-  </client-only>
+  <component :is="processedHtml" ref="component" />
 </template>
 
 <script>
@@ -88,24 +86,40 @@ export default {
       }
     },
   },
+  watch: {
+    $el: {
+      deep: true,
+      handler() {
+        console.log('init $el')
+
+        document.fonts.ready.then(() => {
+          if (!this.split) return
+
+          this.initSplitText()
+
+          console.log('init split')
+        })
+      },
+    },
+  },
 
   created() {
     this.soup = new JSSoup(this.content)
   },
+
   mounted() {
     document.fonts.ready.then(() => {
       if (!this.split) return
 
       this.initSplitText()
+
+      console.log('init split')
     })
   },
 
   methods: {
     initSplitText() {
-      console.log(this, this.$el, this.$el.children, this.$el.children.length)
-
       Object.values(this.$el.children).forEach((child) => {
-        console.log(child, this.$el.children.length)
         if (this.overflow) {
           this.splitting = new SplitText(child, {
             type: 'lines',
@@ -122,8 +136,6 @@ export default {
             linesClass: 'line',
           })
         }
-
-        console.log(this.splitting)
 
         let scrollTrigger
 
