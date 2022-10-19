@@ -14,7 +14,7 @@
     </EMarqueeScroll>
     <AppHomeProjet :contents="contentProjet" />
     <AppHomePartners :contents="contentPartners" />
-    <AppFooter />
+    <AppFooter :contents="app" />
   </main>
 </template>
 
@@ -32,9 +32,14 @@ export default {
       limit: -1,
     })
 
+    const app = await $directus.items('App').readByQuery({
+      limit: -1,
+    })
+
     return {
       content,
       partners,
+      app,
     }
   },
   computed: {

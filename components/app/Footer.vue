@@ -2,13 +2,13 @@
   <div class="app-footer grid-inner">
     <div class="app-footer__principal">
       <TH2 class="app-footer__newsletter-title">
-        Restez au courant, inscrivez-vous à notre newsletter
+        {{ contents.data.footer_title }}
       </TH2>
       <form id="form1" action="#" class="app-footer__newsletter">
         <input
           v-model="email"
           class="app-footer__newsletter__field-mail"
-          placeholder="email@email.com"
+          :placeholder="contents.data.footer_input_placeholder"
           type="email"
           name="name"
           required
@@ -60,10 +60,38 @@
         </ul>
       </div>
       <div class="app-footer__social-networks">
-        <div class="app-footer__social-network"><SvgFooterFacebook /></div>
-        <div class="app-footer__social-network"><SvgFooterLinkedin /></div>
-        <div class="app-footer__social-network"><SvgFooterInstagram /></div>
-        <div class="app-footer__social-network"><SvgFooterTwitter /></div>
+        <a
+          v-if="contents.data.social_networks_facebook_link"
+          :href="contents.data.social_networks_facebook_link"
+          target="_blank"
+          class="app-footer__social-network"
+        >
+          <SvgFooterFacebook />
+        </a>
+        <a
+          v-if="contents.data.social_networks_linkedin_link"
+          :href="contents.data.social_networks_linkedin_link"
+          target="_blank"
+          class="app-footer__social-network"
+        >
+          <SvgFooterLinkedin />
+        </a>
+        <a
+          v-if="contents.data.social_networks_instagram_link"
+          :href="contents.data.social_networks_instagram_link"
+          target="_blank"
+          class="app-footer__social-network"
+        >
+          <SvgFooterInstagram />
+        </a>
+        <a
+          v-if="contents.data.social_networks_twitter_link"
+          :href="contents.data.social_networks_twitter_link"
+          target="_blank"
+          class="app-footer__social-network"
+        >
+          <SvgFooterTwitter />
+        </a>
       </div>
     </div>
     <div class="app-footer__partners">
@@ -82,6 +110,12 @@
 import { gsap } from 'gsap'
 
 export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
       email: '',
@@ -97,6 +131,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.contents)
     this.tl = gsap.timeline({
       paused: true,
     })
@@ -452,6 +487,7 @@ export default {
     border-top: 1px solid var(--c-black);
     border-left: 1px solid var(--c-black);
     border-bottom: 1px solid var(--c-black);
+    cursor: pointer;
 
     &:last-child {
       border-left: 1px solid var(--c-black);

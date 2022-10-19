@@ -1,12 +1,12 @@
 <template>
   <div class="app-header">
-    <a href="/">Accueil</a>
-    <a href="/projet">Projet</a>
-    <a href="/arena">Arena</a>
-    <a href="/le-bloc">Le bloc</a>
-    <a href="/be-part-of/hospitalite">Hospitalite</a>
-    <a href="/be-part-of/configurations">Configurations</a>
-    <a href="/be-part-of/partenaire">Partenaire</a>
+    <nuxt-link to="/">Accueil</nuxt-link>
+    <nuxt-link to="/projet">Projet</nuxt-link>
+    <nuxt-link to="/arena">Arena</nuxt-link>
+    <nuxt-link to="/le-bloc">Le bloc</nuxt-link>
+    <nuxt-link to="/be-part-of/hospitalite">Hospitalite</nuxt-link>
+    <nuxt-link to="/be-part-of/configurations">Configurations</nuxt-link>
+    <nuxt-link to="/be-part-of/partenaire">Partenaire</nuxt-link>
   </div>
 </template>
 

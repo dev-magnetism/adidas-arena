@@ -36,9 +36,11 @@ export default {
     document.fonts.ready.then(() => {
       if (!this.split) return
 
-      setTimeout(() => {
-        this.initSplitText()
-      }, 500)
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.initSplitText()
+        }, 500)
+      })
     })
   },
 
