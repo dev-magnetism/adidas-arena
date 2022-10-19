@@ -145,8 +145,6 @@ export default {
   render(h) {
     const soup = new JSSoup(this.content)
 
-    console.log(this.content)
-
     const lotties = soup.findAll(undefined, 'lottie-word')
     const texts = soup.findAll(undefined, 'wysiwyg-text')
     const strokeTexts = soup.findAll('em')
@@ -157,11 +155,12 @@ export default {
         .replace('wysiwyg-text', '')
         .replace(/ /g, '')
 
-      console.log(componentName)
       text.name = `T${componentName}`
+
       // delete text.attrs.class
       delete text.attrs.style
     })
+
     boldTexts.forEach((text) => {
       const string = text.getText()
       const stringDecode = decode(string)
@@ -172,11 +171,13 @@ export default {
       delete text.attrs.style
       delete text.attrs.class
     })
+
     strokeTexts.forEach((text) => {
       text.name = `AtomsTextStroke`
       delete text.attrs.style
       delete text.attrs.class
     })
+
     lotties.forEach((lottie) => {
       lottie.name = 'ELottieWord'
       lottie.attrs.class = lottie.attrs.id

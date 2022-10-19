@@ -6,7 +6,7 @@
     <AppProjetWorkProgress />
     <AppProjetPlan :contents="contentPlan" />
     <AppProjetTwoColumns :contents="contentTwoColumns" />
-    <AppFooter />
+    <AppFooter :contents="app" />
   </main>
 </template>
 
@@ -24,9 +24,14 @@ export default {
       limit: -1,
     })
 
+    const app = await $directus.items('App').readByQuery({
+      limit: -1,
+    })
+
     return {
       content,
       partners,
+      app,
     }
   },
   computed: {

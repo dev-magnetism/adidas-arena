@@ -3,7 +3,7 @@
     <AppBepartofConfigurationsIntroduction />
     <AppBepartofConfigurationsArena />
     <AppContactQuestion />
-    <AppFooter />
+    <AppFooter :contents="app" />
   </main>
 </template>
 
@@ -12,7 +12,15 @@ import scroll from '@/mixins/scroll'
 
 export default {
   mixins: [scroll],
+  async asyncData({ $directus }) {
+    const app = await $directus.items('App').readByQuery({
+      limit: -1,
+    })
 
+    return {
+      app,
+    }
+  },
   data() {
     return {}
   },

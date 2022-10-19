@@ -4,7 +4,7 @@
     <EFullwidth />
     <AppArenaPartners :contents="contentPartners" />
     <AppArenaGallery />
-    <AppFooter />
+    <AppFooter :contents="app" />
   </main>
 </template>
 
@@ -18,8 +18,13 @@ export default {
       limit: -1,
     })
 
+    const app = await $directus.items('App').readByQuery({
+      limit: -1,
+    })
+
     return {
       partners,
+      app,
     }
   },
   computed: {

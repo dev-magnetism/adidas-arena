@@ -8,7 +8,7 @@
     <ESlider />
     <AppContactQuestion />
     <AppContactNewsletter />
-    <AppFooter />
+    <AppFooter :contents="app" />
   </main>
 </template>
 
@@ -17,15 +17,15 @@ import scroll from '@/mixins/scroll'
 
 export default {
   mixins: [scroll],
-  // async asyncData({ $directus }) {
-  //   const partners = await $directus.items('le_bloc_page').readByQuery({
-  //     limit: -1,
-  //   })
+  async asyncData({ $directus }) {
+    const app = await $directus.items('App').readByQuery({
+      limit: -1,
+    })
 
-  //   return {
-  //     partners,
-  //   }
-  // },
+    return {
+      app,
+    }
+  },
   data() {
     return {}
   },
