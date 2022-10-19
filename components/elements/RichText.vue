@@ -1,8 +1,8 @@
 <script>
-import JSSoup from 'jssoup'
+// import JSSoup from 'jssoup'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
-import { decode } from 'html-entities'
+// import { decode } from 'html-entities'
 import { parse } from 'node-html-parser'
 
 export default {
@@ -44,11 +44,11 @@ export default {
   },
 
   mounted() {
-    console.log(this.content)
+    // console.log(this.content)
     document.fonts.ready.then(() => {
       if (!this.split) return
 
-      console.log('init split')
+      // console.log('init split')
 
       this.initSplitText()
     })
@@ -56,10 +56,10 @@ export default {
 
   methods: {
     initSplitText() {
-      console.log('$el', this)
+      // console.log('$el', this)
 
       Object.values(this.$el.children).forEach((child) => {
-        console.log('child foreach', child)
+        // console.log('child foreach', child)
         if (this.overflow) {
           this.splitting = new SplitText(child, {
             type: 'lines',
@@ -77,7 +77,7 @@ export default {
           })
         }
 
-        console.log('splitting', this.splitting)
+        // console.log('splitting', this.splitting)
 
         let scrollTrigger
 
@@ -115,61 +115,91 @@ export default {
     },
   },
   render(h) {
-    const soup = new JSSoup(this.content)
+    const root = parse(this.content)
 
-    const lotties = soup.findAll(undefined, 'lottie-word')
-    const texts = soup.findAll(undefined, 'wysiwyg-text')
-    const strokeTexts = soup.findAll('em')
-    const boldTexts = soup.findAll('strong')
+    const lotties = root.querySelectorAll('.lottie-word')
+
+    lotties.forEach((lottie) => {
+      lottie.tagName = 'component'
+      lottie.setAttribute('is', 'ELottieWord')
+      lottie.classList.add(lottie.getAttribute('id'))
+      lottie.setAttribute('style', '')
+    })
+
+    const texts = root.querySelectorAll('.wysiwyg-text')
 
     texts.forEach((text) => {
-      const componentName = text.attrs.class
+      const componentName = text.classList
+        .toString()
         .replace('wysiwyg-text', '')
         .replace(/ /g, '')
 
-      text.name = `T${componentName}`
+      text.tagName = 'component'
+      text.setAttribute('is', `T${componentName}`)
 
-      delete text.attrs.class
-      delete text.attrs.style
+      text.setAttribute('style', '')
+      text.classList.toggle(componentName)
 
-      text.attrs.class = 'wysiwyg-text'
+      //   const componentName = text.attrs.class
+      //     .replace('wysiwyg-text', '')
+      //     .replace(/ /g, '')
+
+      //   text.name = `T${componentName}`
+
+      //   delete text.attrs.class
+      //   delete text.attrs.style
+
+      //   text.attrs.class = 'wysiwyg-text'
     })
 
-    boldTexts.forEach((text) => {
-      const string = text.getText()
+    // const soup = new JSSoup(this.content)
 
-      const stringDecode = decode(string)
+    // const lotties = soup.findAll(undefined, 'lottie-word')
+    // const texts = soup.findAll(undefined, 'wysiwyg-text')
+    // const strokeTexts = soup.findAll('em')
+    // const boldTexts = soup.findAll('strong')
 
-      const finalString = stringDecode.replace(/\S+/g, (a, b, c) => {
-        return `<span class="bold">` + a + '</span>'
-      })
+    // texts.forEach((text) => {
+    //   const componentName = text.attrs.class
+    //     .replace('wysiwyg-text', '')
+    //     .replace(/ /g, '')
 
-      text.replaceWith(finalString)
+    //   text.name = `T${componentName}`
 
-      delete text.attrs.style
-      delete text.attrs.class
-    })
+    //   delete text.attrs.class
+    //   delete text.attrs.style
 
-    strokeTexts.forEach((text) => {
-      text.name = `AtomsTextStroke`
+    //   text.attrs.class = 'wysiwyg-text'
+    // })
 
-      delete text.attrs.style
-      delete text.attrs.class
-    })
+    // boldTexts.forEach((text) => {
+    //   const string = text.getText()
 
-    lotties.forEach((lottie) => {
-      lottie.name = 'ELottieWord'
-      lottie.attrs.class = lottie.attrs.id
+    //   const stringDecode = decode(string)
 
-      delete lottie.attrs.style
-    })
+    //   const finalString = stringDecode.replace(/\S+/g, (a, b, c) => {
+    //     return `<span class="bold">` + a + '</span>'
+    //   })
 
-    console.log('test test')
+    //   text.replaceWith(finalString)
 
-    const root = parse(this.content)
+    //   delete text.attrs.style
+    //   delete text.attrs.class
+    // })
 
-    console.log('doc', root)
-    console.log('doc')
+    // strokeTexts.forEach((text) => {
+    //   text.name = `AtomsTextStroke`
+
+    //   delete text.attrs.style
+    //   delete text.attrs.class
+    // })
+
+    // lotties.forEach((lottie) => {
+    //   lottie.name = 'ELottieWord'
+    //   lottie.attrs.class = lottie.attrs.id
+
+    //   delete lottie.attrs.style
+    // })
 
     return h({
       template:
