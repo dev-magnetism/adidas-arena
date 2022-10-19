@@ -44,17 +44,17 @@ export default {
     initSplitText() {
       Object.values(this.$el.children).forEach((child) => {
         if (this.overflow) {
-          this.splitting = new SplitText(child, {
+          this.splitting = this.nestedLinesSplit(child, {
             type: 'lines',
             linesClass: 'H1__child line',
           })
 
-          this.splittingParent = new SplitText(child, {
+          this.splittingParent = this.nestedLinesSplit(child, {
             type: 'lines',
             linesClass: 'H1__parent',
           })
         } else {
-          this.splitting = new SplitText(child, {
+          this.splitting = this.nestedLinesSplit(child, {
             type: 'lines',
             linesClass: 'line',
           })
@@ -94,6 +94,47 @@ export default {
         )
       })
     },
+  },
+  nestedLinesSplit(target, vars) {
+    const split = new SplitText(target, vars)
+    const words = vars.type.includes('words')
+    const chars = vars.type.includes('chars')
+    const insertAt = function (a, b, i) {
+      const l = b.length
+      for (let j = 0; j < l; j++) {
+        a.splice(i++, 0, b[j])
+      }
+      return l
+    }
+    let children
+    let child
+    let i
+    if (typeof target === 'string') {
+      target = document.querySelectorAll(target)
+    }
+    if (target.length > 1) {
+      for (i = 0; i < target.length; i++) {
+        split.lines = split.lines.concat(
+          this.nestedLinesSplit(target[i], vars).lines
+        )
+      }
+      return split
+    }
+    children = (words ? split.words : []).concat(chars ? split.chars : [])
+    for (i = 0; i < children.length; i++) {
+      children[i]._protect = true
+    }
+    children = split.lines
+    for (i = 0; i < children.length; i++) {
+      child = children[i].firstChild
+      if (!child._protect && child.nodeType !== 3) {
+        children[i].parentNode.insertBefore(child, children[i])
+        children[i].parentNode.removeChild(children[i])
+        children.splice(i, 1)
+        i += insertAt(children, this.nestedLinesSplit(child, vars).lines, i) - 1
+      }
+    }
+    return split
   },
   render(h) {
     const contentJson = html2json(this.content)
