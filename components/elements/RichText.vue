@@ -1,10 +1,10 @@
 <script>
-// import JSSoup from 'jssoup'
+import JSSoup from 'jssoup'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
-// import { decode } from 'html-entities'
+import { decode } from 'html-entities'
 // import { parse } from 'node-html-parser'
-import { html2json, json2html } from 'html2json'
+// import { html2json, json2html } from 'html2json'
 export default {
   props: {
     content: {
@@ -36,7 +36,9 @@ export default {
     document.fonts.ready.then(() => {
       if (!this.split) return
 
-      this.initSplitText()
+      setTimeout(() => {
+        this.initSplitText()
+      }, 100)
     })
   },
 
@@ -44,17 +46,17 @@ export default {
     initSplitText() {
       Object.values(this.$el.children).forEach((child) => {
         if (this.overflow) {
-          this.splitting = this.nestedLinesSplit(child, {
+          this.splitting = new SplitText(child, {
             type: 'lines',
             linesClass: 'H1__child line',
           })
 
-          this.splittingParent = this.nestedLinesSplit(child, {
+          this.splittingParent = new SplitText(child, {
             type: 'lines',
             linesClass: 'H1__parent',
           })
         } else {
-          this.splitting = this.nestedLinesSplit(child, {
+          this.splitting = new SplitText(child, {
             type: 'lines',
             linesClass: 'line',
           })
@@ -139,39 +141,49 @@ export default {
     },
   },
   render(h) {
-    const contentJson = html2json(this.content)
+    const soup = new JSSoup(this.content)
 
-    contentJson.child.forEach((json) => {
-      const componentName = json.attr.class[0]
+    console.log(this.content)
 
-      delete json.attr.class[0]
+    const lotties = soup.findAll(undefined, 'lottie-word')
+    const texts = soup.findAll(undefined, 'wysiwyg-text')
+    const strokeTexts = soup.findAll('em')
+    const boldTexts = soup.findAll('strong')
 
-      json.tag = `T${componentName}`
-      delete json.attr.style
+    texts.forEach((text) => {
+      const componentName = text.attrs.class
+        .replace('wysiwyg-text', '')
+        .replace(/ /g, '')
 
-      json.child.forEach((child) => {
-        if (child.tag === 'em') {
-          child.tag = `AtomsTextStroke`
-
-          delete child.attr?.style
-          delete child.attr?.class
-        } else if (child.tag === 'strong') {
-          child.tag = `span`
-          child.attr = { class: ['bold'] }
-        } else if (child.tag === 'span' && child.attr.id) {
-          child.tag = 'ELottieWord'
-          child.attr.class = ['lottie-word', child.attr.id]
-
-          delete child.attr?.style
-        }
+      console.log(componentName)
+      text.name = `T${componentName}`
+      // delete text.attrs.class
+      delete text.attrs.style
+    })
+    boldTexts.forEach((text) => {
+      const string = text.getText()
+      const stringDecode = decode(string)
+      const finalString = stringDecode.replace(/\S+/g, (a, b, c) => {
+        return `<span class="bold">` + a + '</span>'
       })
+      text.replaceWith(finalString)
+      delete text.attrs.style
+      delete text.attrs.class
+    })
+    strokeTexts.forEach((text) => {
+      text.name = `AtomsTextStroke`
+      delete text.attrs.style
+      delete text.attrs.class
+    })
+    lotties.forEach((lottie) => {
+      lottie.name = 'ELottieWord'
+      lottie.attrs.class = lottie.attrs.id
+      delete lottie.attrs.style
     })
 
     return h({
       template:
-        '<div class="app-element-rich-text">' +
-        json2html(contentJson) +
-        '</div>',
+        '<div class="app-element-rich-text">' + soup.prettify() + '</div>',
     })
   },
 }
