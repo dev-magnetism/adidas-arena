@@ -38,7 +38,7 @@ export default {
 
       setTimeout(() => {
         this.initSplitText()
-      }, 100)
+      }, 500)
     })
   },
 
