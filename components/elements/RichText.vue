@@ -3,6 +3,7 @@ import JSSoup from 'jssoup'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 import { decode } from 'html-entities'
+import { parse } from 'node-html-parser'
 
 export default {
   props: {
@@ -38,27 +39,12 @@ export default {
     // },
   },
 
-  watch: {
-    $el: {
-      deep: true,
-      handler() {
-        console.log('init $el')
-
-        // document.fonts.ready.then(() => {
-        //   if (!this.split) return
-        //   console.log('init split watch')
-
-        //   this.initSplitText()
-        // })
-      },
-    },
-  },
-
   created() {
     // this.soup = new JSSoup(this.content)
   },
 
   mounted() {
+    console.log(this.content)
     document.fonts.ready.then(() => {
       if (!this.split) return
 
@@ -178,12 +164,16 @@ export default {
       delete lottie.attrs.style
     })
 
+    console.log('test test')
+
+    const root = parse(this.content)
+
+    console.log('doc', root)
+    console.log('doc')
+
     return h({
       template:
-        '<div class="app-element-rich-text">' +
-        '<TH2> Test </TH2>' +
-        this.content +
-        '</div>',
+        '<div class="app-element-rich-text">' + root.toString() + '</div>',
     })
   },
 }

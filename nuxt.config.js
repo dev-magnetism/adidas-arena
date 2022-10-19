@@ -200,7 +200,6 @@ export default {
     transpile: ['three', 'gsap'],
     extend(config, ctx) {
       config.resolve.alias.vue = 'vue/dist/vue.common'
-      config.resolve.alias.vue$ = 'vue/dist/vue.esm.js'
       config.plugins.push(new webpack.ProvidePlugin({ THREE: 'three' }))
       config.module.rules.push({
         test: /\.(glsl|vs|fs)$/,
