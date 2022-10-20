@@ -188,7 +188,7 @@ export default {
         )
 
         this.tl.addLabel('projet-2-3', '<25%')
-        this.tl.addLabel('lotties', 'projet-2-3+=.25')
+        this.tl.addLabel('lotties', 'projet-2-3+=.5')
         this.tl.fromTo(
           this.$refs.plan.$el,
           {
@@ -217,7 +217,7 @@ export default {
           this.playhead,
           {
             circle: this.animationCircle.totalFrames - 1,
-            duration: 0.85,
+            duration: 2,
             onUpdate: () =>
               this.animationCircle.goToAndStop(this.playhead.circle, true),
           },
@@ -227,7 +227,7 @@ export default {
           this.playhead,
           {
             validCircle: this.animationValidCircle.totalFrames - 1,
-            duration: 0.85,
+            duration: 2,
             delay: 0.15,
             onUpdate: () =>
               this.animationValidCircle.goToAndStop(
@@ -241,7 +241,7 @@ export default {
           this.playhead,
           {
             littleArrow: this.animationLittleArrow.totalFrames - 1,
-            duration: 0.85,
+            duration: 2,
             delay: 0.3,
             onUpdate: () =>
               this.animationLittleArrow.goToAndStop(
@@ -254,7 +254,7 @@ export default {
         this.tl.to(
           this.playhead,
           {
-            duration: 0.85,
+            duration: 2,
             delay: 0.45,
             cross: this.animationCross.totalFrames - 1,
             onUpdate: () =>
@@ -265,7 +265,7 @@ export default {
         this.tl.to(
           this.playhead,
           {
-            duration: 0.85,
+            duration: 2,
             delay: 0.6,
             crossCircle: this.animationCrossCircle.totalFrames - 1,
             onUpdate: () =>
@@ -279,7 +279,7 @@ export default {
         this.tl.to(
           this.playhead,
           {
-            duration: 0.85,
+            duration: 2,
             delay: 0.75,
             arrowBlue: this.animationArrowBlue.totalFrames - 1,
             onUpdate: () =>
@@ -293,7 +293,7 @@ export default {
         this.tl.to(
           this.playhead,
           {
-            duration: 0.85,
+            duration: 2,
             delay: 1,
             arrow: this.animationArrow.totalFrames - 1,
             onUpdate: () =>

@@ -125,8 +125,8 @@ export default {
     left: 0;
     top: 0;
     transform: scaleY(0);
-    transform-origin: center bottom;
-    transition: transform 0.65s var(--ease-out-expo);
+    transform-origin: center top;
+    transition: transform 0.7s var(--ease-out-expo);
     will-change: transform;
   }
 
@@ -136,11 +136,6 @@ export default {
     &:hover {
       &::after {
         transform: scaleY(1);
-      }
-      .app-atoms-cta__text {
-        &::after {
-          // transform: scaleX(1) !important;
-        }
       }
     }
   }

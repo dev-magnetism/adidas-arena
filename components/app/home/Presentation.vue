@@ -10,7 +10,7 @@
 
     <EParallax
       ref="visualBigger"
-      :speed="1.35"
+      :speed="$device.isMobile ? 0 : 1.35"
       class="app-home-presentation__visual-bigger"
     >
       <EKinesis :speed="5">
@@ -25,7 +25,7 @@
 
     <EParallax
       ref="framed"
-      :speed="0.7"
+      :speed="$device.isMobile ? 0 : 0.7"
       class="app-home-presentation__visual-framed"
     >
       <EKinesis :speed="5">
@@ -42,7 +42,11 @@
       </EKinesis>
     </EParallax>
 
-    <EParallax :speed="1" class="app-home-presentation__picture-corner-points">
+    <EParallax
+      ref="pictureCorner"
+      :speed="$device.isMobile ? 0 : 1"
+      class="app-home-presentation__picture-corner-points"
+    >
       <EKinesis :speed="15">
         <ECornerPointsPicture :size-points="6">
           <nuxt-picture
@@ -69,6 +73,21 @@ export default {
     },
   },
   mounted() {
+    gsap.fromTo(
+      this.$refs.pictureCorner.$el,
+      {
+        rotate: 5,
+      },
+      {
+        rotate: -2,
+        scrollTrigger: {
+          trigger: this.$refs.pictureCorner.$el,
+          scrub: 0.5,
+          end: 'bottom top',
+        },
+      }
+    )
+
     gsap.fromTo(
       this.$refs.visualBigger.$el,
       {
@@ -105,14 +124,15 @@ export default {
 <style lang="scss">
 .app-home-presentation {
   width: 100%;
-  margin-top: desktop-vw(130px);
+  padding-top: desktop-vw(130px);
   position: relative;
   padding-bottom: desktop-vw(600px);
 
   @include mobile {
     margin-top: mobile-vw(85px);
     padding-bottom: 0px;
-    margin-bottom: mobile-vw(75px);
+    padding-top: 0px;
+    margin-bottom: mobile-vw(120px);
   }
 
   &__visual-framed {
@@ -124,6 +144,7 @@ export default {
     width: 100%;
     transform: translateY(-50%) rotate(2deg);
     z-index: 1;
+    margin-top: desktop-vw(130px);
 
     @include mobile {
       position: relative;
@@ -135,6 +156,7 @@ export default {
       transform: rotate(2deg);
       z-index: 1;
       grid-row: 2;
+      margin-top: mobile-vw(0px);
     }
 
     .app-element-framed-picture {
@@ -155,18 +177,20 @@ export default {
     width: 100%;
     transform: rotate(-2deg);
     z-index: 0;
-
-    picture {
-      @include noise();
-    }
+    margin-top: desktop-vw(130px);
 
     @include mobile {
       position: relative;
       aspect-ratio: 210/265;
-      top: mobile-vw(-30px);
+      top: mobile-vw(0px);
       grid-column: 1 / span 4;
       width: 100%;
       grid-row: 3;
+      margin-top: mobile-vw(0px);
+    }
+
+    picture {
+      @include noise();
     }
   }
 
@@ -179,16 +203,19 @@ export default {
     width: 100%;
     transform: rotate(5deg);
     z-index: 2;
+    margin-top: desktop-vw(130px);
 
     @include mobile {
-      position: relative;
+      position: absolute;
       aspect-ratio: 155/100;
       grid-column: 4 / span 3;
       width: 100%;
       z-index: 2;
       left: 0;
-      top: 0px;
-      margin-top: mobile-vw(-85px);
+      bottom: 0;
+      grid-row: 3;
+      margin-top: 0;
+      transform: translateY(75%) rotate(5deg);
     }
 
     .app-element-corner-points-picture {
@@ -201,7 +228,6 @@ export default {
       position: absolute;
       width: 100%;
       height: 100%;
-      @include noise();
     }
   }
 

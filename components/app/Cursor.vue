@@ -9,10 +9,10 @@ import { gsap } from 'gsap'
 
 export default {
   mounted() {
-    this.xTo = gsap.quickTo(this.$refs.cursorInitial.$el, 'x', {
+    this.xTo = gsap.quickTo(this.$el, 'x', {
       duration: 0.1,
     })
-    this.yTo = gsap.quickTo(this.$refs.cursorInitial.$el, 'y', {
+    this.yTo = gsap.quickTo(this.$el, 'y', {
       duration: 0.1,
     })
 

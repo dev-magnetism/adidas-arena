@@ -131,7 +131,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.contents)
     this.tl = gsap.timeline({
       paused: true,
     })
@@ -488,6 +487,39 @@ export default {
     border-left: 1px solid var(--c-black);
     border-bottom: 1px solid var(--c-black);
     cursor: pointer;
+    position: relative;
+
+    svg {
+      z-index: 1;
+
+      path {
+        // transition: fill 0.5s 0.05s var(--ease-out-expo);
+      }
+    }
+
+    &:hover {
+      &::after {
+        transform: scaleY(1);
+      }
+      svg {
+        path {
+          // fill: var(--c-white);
+        }
+      }
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--c-blue-adidas);
+      transform-origin: top center;
+      transform: scaleY(0);
+      transition: transform 0.85s var(--ease-out-expo);
+    }
 
     &:last-child {
       border-left: 1px solid var(--c-black);

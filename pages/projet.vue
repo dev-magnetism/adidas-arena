@@ -1,12 +1,14 @@
 <template>
-  <main class="app-projet">
-    <AppProjetIntroduction :contents="contentIntroduction" />
-    <AppProjetCatchPhrase :contents="contentCatchphrase" />
-    <AppProjetGallery :contents="contentGallery" />
-    <AppProjetWorkProgress />
-    <AppProjetPlan :contents="contentPlan" />
-    <AppProjetTwoColumns :contents="contentTwoColumns" />
-    <AppFooter :contents="app" />
+  <main ref="main" class="app-projet">
+    <div ref="mainWrapper" class="app-projet__wrapper">
+      <AppProjetIntroduction :contents="contentIntroduction" />
+      <AppProjetCatchPhrase :contents="contentCatchphrase" />
+      <AppProjetGallery :contents="contentGallery" />
+      <AppProjetWorkProgress />
+      <AppProjetPlan :contents="contentPlan" />
+      <AppProjetTwoColumns :contents="contentTwoColumns" />
+      <AppFooter :contents="app" />
+    </div>
   </main>
 </template>
 

@@ -58,6 +58,9 @@ export default {
     &__visual {
       display: block;
       aspect-ratio: 670 / 680;
+      position: relative;
+
+      @include noise();
     }
 
     &__content {

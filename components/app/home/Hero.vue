@@ -22,10 +22,11 @@
         />
       </div>
       <div
-        v-if="$mq !== 'sm'"
+        v-if="!$device.isMobile"
         class="app-home-hero__scroll-indicator"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
+        @click="onClickScrollIndicator"
       >
         <TP1>{{ contents.scroll }}</TP1>
         <div class="app-home-hero__scroll-indicator__icon">
@@ -46,7 +47,8 @@
             class="app-home-hero__map__coordinate"
             bg="beige"
             color="black"
-            >{{ contents.coordinate }}
+          >
+            {{ contents.coordinate }}
           </AtomsTitleTag>
           <AtomsCTA
             class="app-home-hero__map__visit"
@@ -55,7 +57,8 @@
             :external="true"
             color="black"
             link="https://translate.google.fr/"
-            >{{ contents.visit }}
+          >
+            {{ contents.visit }}
           </AtomsCTA>
         </div>
         <AtomsCornerPoints />
@@ -66,17 +69,20 @@
           alt="placeholder"
         />
         <SvgHomeHeroSticker
-          v-if="$mq !== 'sm'"
+          v-if="!$device.isMobile"
           class="app-home-hero__sticker"
         />
-        <SvgHomeHeroStars v-if="$mq !== 'sm'" class="app-home-hero__stars" />
+        <SvgHomeHeroStars
+          v-if="!$device.isMobile"
+          class="app-home-hero__stars"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import { gsap } from 'gsap'
+import { gsap } from 'gsap'
 
 export default {
   props: {
@@ -86,37 +92,64 @@ export default {
     },
   },
   mounted() {
-    // if (this.$mq !== 'sm') {
-    //   this.tl = gsap.timeline({ repeat: -1, paused: true })
-    //   this.tl.to(this.$refs.union.$el, {
-    //     yPercent: 105,
-    //     duration: 0.675,
-    //   })
-    //   this.tl.set(this.$refs.union.$el, {
-    //     yPercent: -105,
-    //   })
-    //   this.tl.to(this.$refs.union.$el, {
-    //     yPercent: 0,
-    //     duration: 0.675,
-    //   })
-    // }
+    gsap.to(this.$refs.firstVisual, {
+      yPercent: -50,
+      rotate: -6,
+      scrollTrigger: {
+        trigger: this.$el,
+        scrub: 0.5,
+        start: 'top top',
+      },
+    })
+
+    gsap.to(this.$refs.secondVisual, {
+      yPercent: -50,
+      rotate: 6,
+      scrollTrigger: {
+        trigger: this.$el,
+        scrub: 0.5,
+        start: 'top top',
+      },
+    })
+
+    if (!this.$device.isMobile) {
+      this.tl = gsap.timeline({ repeat: -1, paused: true })
+
+      this.tl.to(this.$refs.union.$el, {
+        yPercent: 105,
+        duration: 0.675,
+      })
+
+      this.tl.set(this.$refs.union.$el, {
+        yPercent: -105,
+      })
+
+      this.tl.to(this.$refs.union.$el, {
+        yPercent: 0,
+        duration: 0.675,
+      })
+    }
   },
   beforeDestroy() {
     this.tl?.kill()
   },
   methods: {
     onMouseEnter() {
-      // if (this.$mq === 'sm') return
-      // if (this.tl._repeat === 0) {
-      //   this.tl.repeat(-1)
-      //   this.tl.restart()
-      // } else {
-      //   this.tl.play()
-      // }
+      if (this.tl._repeat === 0) {
+        this.tl.repeat(-1)
+        this.tl.restart()
+      } else {
+        this.tl.play()
+      }
     },
     onMouseLeave() {
-      // if (this.$mq === 'sm') return
-      // this.tl.repeat(0)
+      this.tl.repeat(0)
+    },
+    onClickScrollIndicator() {
+      console.log(window)
+      window.lenis.scrollTo('.app-home-presentation', {
+        duration: 1.2,
+      })
     },
   },
 }

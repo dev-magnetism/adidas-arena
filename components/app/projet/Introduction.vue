@@ -42,6 +42,7 @@
     </div>
 
     <EParallax
+      ref="visualTransparent"
       :speed="0.5"
       class="app-projet-introduction__row-second-visual-transparent"
     >
@@ -57,9 +58,11 @@
     </EParallax>
 
     <div class="app-projet-introduction__row-second-content">
-      <TH4>{{ contents.whyTitle }}</TH4>
+      <EParallax :speed="0.5">
+        <TH4>{{ contents.whyTitle }}</TH4>
 
-      <ERichText :content="contents.whyParagraph" />
+        <ERichText :content="contents.whyParagraph" />
+      </EParallax>
     </div>
   </div>
 </template>
@@ -99,6 +102,20 @@ export default {
         rotate: 4,
         scrollTrigger: {
           trigger: this.$refs.framed.$el,
+          scrub: 0.5,
+          end: 'bottom top',
+        },
+      }
+    )
+    gsap.fromTo(
+      this.$refs.visualTransparent.$el,
+      {
+        rotate: -9,
+      },
+      {
+        rotate: -4,
+        scrollTrigger: {
+          trigger: this.$refs.visualTransparent.$el,
           scrub: 0.5,
           end: 'bottom top',
         },
@@ -163,7 +180,7 @@ export default {
     align-items: center;
     justify-content: center;
     height: auto;
-    transform-origin: left center;
+    transform-origin: center center;
 
     .app-element-kinesis {
       display: flex;

@@ -3,35 +3,33 @@
     <div class="app-projet-two-columns__f-r grid">
       <div class="app-projet-two-columns__f-r__visuals">
         <div class="app-projet-two-columns__f-r__fake-transparent" />
-        <EParallax :speed="0.5">
-          <div class="app-projet-two-columns__f-r__card">
-            <AtomsCornerPoints :size-points="8" />
-            <div class="app-projet-two-columns__f-r__card__content">
-              <TH2
-                weight="bold"
-                class="app-projet-two-columns__f-r__card__content__title"
-              >
-                {{ contents.firstRow.cardTitle }}
-              </TH2>
-              <TH2
-                weight="bold"
-                class="app-projet-two-columns__f-r__card__content__subtitle"
-              >
-                <ELottieWord id="Cercle_3" />
-                {{ contents.firstRow.cardSubtitle }}
-              </TH2>
-              <TH3
-                weight="medium"
-                class="app-projet-two-columns__f-r__card__content__paragraph"
-              >
-                {{ contents.firstRow.cardParagraph }}
-              </TH3>
-            </div>
-            <AtomsCTA bg="blue-adidas" color="white">
-              {{ contents.firstRow.cardCtaText }}
-            </AtomsCTA>
+        <div class="app-projet-two-columns__f-r__card">
+          <AtomsCornerPoints :size-points="8" />
+          <div class="app-projet-two-columns__f-r__card__content">
+            <TH2
+              weight="bold"
+              class="app-projet-two-columns__f-r__card__content__title"
+            >
+              {{ contents.firstRow.cardTitle }}
+            </TH2>
+            <TH2
+              weight="bold"
+              class="app-projet-two-columns__f-r__card__content__subtitle"
+            >
+              <ELottieWord id="Cercle_3" />
+              {{ contents.firstRow.cardSubtitle }}
+            </TH2>
+            <TH3
+              weight="medium"
+              class="app-projet-two-columns__f-r__card__content__paragraph"
+            >
+              {{ contents.firstRow.cardParagraph }}
+            </TH3>
           </div>
-        </EParallax>
+          <AtomsCTA bg="blue-adidas" color="white">
+            {{ contents.firstRow.cardCtaText }}
+          </AtomsCTA>
+        </div>
       </div>
       <div class="app-projet-two-columns__f-r__content">
         <ERichText
@@ -69,32 +67,30 @@
           format="webp"
           :alt="contents.secondRow.pictureAlt"
         />
-        <EParallax position="top" :speed="0.5">
-          <div class="app-projet-two-columns__s-r__card">
-            <AtomsCornerPoints :size-points="8" />
-            <div class="app-projet-two-columns__s-r__card__content">
-              <TH2
-                weight="bold"
-                class="app-projet-two-columns__s-r__card__content__title"
-              >
-                <ELottieWord id="Cercle_4" />
-                {{ contents.secondRow.cardTitle }}
-              </TH2>
-              <TH2
-                weight="bold"
-                class="app-projet-two-columns__s-r__card__content__subtitle"
-              >
-                {{ contents.secondRow.cardSubtitle }}
-              </TH2>
-              <TH3
-                weight="medium"
-                class="app-projet-two-columns__s-r__card__content__paragraph"
-              >
-                {{ contents.secondRow.cardParagraph }}
-              </TH3>
-            </div>
+        <div class="app-projet-two-columns__s-r__card">
+          <AtomsCornerPoints :size-points="8" />
+          <div class="app-projet-two-columns__s-r__card__content">
+            <TH2
+              weight="bold"
+              class="app-projet-two-columns__s-r__card__content__title"
+            >
+              <ELottieWord id="Cercle_4" />
+              {{ contents.secondRow.cardTitle }}
+            </TH2>
+            <TH2
+              weight="bold"
+              class="app-projet-two-columns__s-r__card__content__subtitle"
+            >
+              {{ contents.secondRow.cardSubtitle }}
+            </TH2>
+            <TH3
+              weight="medium"
+              class="app-projet-two-columns__s-r__card__content__paragraph"
+            >
+              {{ contents.secondRow.cardParagraph }}
+            </TH3>
           </div>
-        </EParallax>
+        </div>
       </div>
     </div>
   </div>
@@ -213,7 +209,7 @@ export default {
     margin-bottom: desktop-vw(200px);
     position: relative;
 
-    &__lottie-arrow {
+    &__lottie-arrow.app-element-lottie {
       position: absolute;
       grid-column: 6 / span 1;
       width: 135%;
