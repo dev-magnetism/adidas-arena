@@ -863,7 +863,7 @@ export default {
       display: none;
     }
 
-    > .P2 {
+    & > .P2 {
       text-transform: uppercase;
       font-size: desktop-vw(18px);
       line-height: desktop-vw(20px);

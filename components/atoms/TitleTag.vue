@@ -51,7 +51,7 @@ export default {
     padding: mobile-vw(10px) mobile-vw(12px);
   }
 
-  .P2 {
+  & > .P2.bold {
     @include font-adihausDIN-cn-bold();
   }
 }
