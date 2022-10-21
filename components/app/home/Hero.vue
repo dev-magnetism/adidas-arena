@@ -261,7 +261,7 @@ export default {
         padding: mobile-vw(10px) mobile-vw(15px);
       }
 
-      > :first-child {
+      .P2.bold {
         @include font-adihausDIN-medium();
         font-size: desktop-vw(16px);
         line-height: desktop-vw(21px);

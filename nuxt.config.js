@@ -28,12 +28,12 @@ export default {
     { src: '~/plugins/viewport.js', mode: 'client' },
   ],
 
-  vue: {
-    config: {
-      productionTip: true,
-      devtools: true,
-    },
-  },
+  // vue: {
+  //   config: {
+  //     productionTip: true,
+  //     devtools: true,
+  //   },
+  // },
 
   pageTransition: {
     name: 'page',

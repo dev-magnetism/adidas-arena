@@ -2,34 +2,41 @@
   <div class="app-projet-two-columns grid-inner">
     <div class="app-projet-two-columns__f-r grid">
       <div class="app-projet-two-columns__f-r__visuals">
-        <div class="app-projet-two-columns__f-r__fake-transparent" />
-        <div class="app-projet-two-columns__f-r__card">
-          <AtomsCornerPoints :size-points="8" />
-          <div class="app-projet-two-columns__f-r__card__content">
-            <TH2
-              weight="bold"
-              class="app-projet-two-columns__f-r__card__content__title"
-            >
-              {{ contents.firstRow.cardTitle }}
-            </TH2>
-            <TH2
-              weight="bold"
-              class="app-projet-two-columns__f-r__card__content__subtitle"
-            >
-              <ELottieWord id="Cercle_3" />
-              {{ contents.firstRow.cardSubtitle }}
-            </TH2>
-            <TH3
-              weight="medium"
-              class="app-projet-two-columns__f-r__card__content__paragraph"
-            >
-              {{ contents.firstRow.cardParagraph }}
-            </TH3>
-          </div>
-          <AtomsCTA bg="blue-adidas" color="white">
-            {{ contents.firstRow.cardCtaText }}
-          </AtomsCTA>
+        <div class="app-projet-two-columns__f-r__fake-transparent">
+          <EKinesis :speed="15">
+            <EParallax :speed="0.85" />
+          </EKinesis>
         </div>
+
+        <EParallax :speed="0.5" class="app-projet-two-columns__f-r__card">
+          <EKinesis :speed="7.5">
+            <AtomsCornerPoints :size-points="8" />
+            <div class="app-projet-two-columns__f-r__card__content">
+              <TH2
+                weight="bold"
+                class="app-projet-two-columns__f-r__card__content__title"
+              >
+                {{ contents.firstRow.cardTitle }}
+              </TH2>
+              <TH2
+                weight="bold"
+                class="app-projet-two-columns__f-r__card__content__subtitle"
+              >
+                <ELottieWord id="Cercle_3" />
+                {{ contents.firstRow.cardSubtitle }}
+              </TH2>
+              <TH3
+                weight="medium"
+                class="app-projet-two-columns__f-r__card__content__paragraph"
+              >
+                {{ contents.firstRow.cardParagraph }}
+              </TH3>
+            </div>
+            <AtomsCTA bg="blue-adidas" color="white">
+              {{ contents.firstRow.cardCtaText }}
+            </AtomsCTA>
+          </EKinesis>
+        </EParallax>
       </div>
       <div class="app-projet-two-columns__f-r__content">
         <ERichText
@@ -60,37 +67,43 @@
       </div>
 
       <div class="app-projet-two-columns__s-r__visuals">
-        <nuxt-picture
-          class="app-projet-two-columns__s-r__visual"
-          provider="directus"
-          :src="contents.secondRow.picture"
-          format="webp"
-          :alt="contents.secondRow.pictureAlt"
-        />
-        <div class="app-projet-two-columns__s-r__card">
-          <AtomsCornerPoints :size-points="8" />
-          <div class="app-projet-two-columns__s-r__card__content">
-            <TH2
-              weight="bold"
-              class="app-projet-two-columns__s-r__card__content__title"
-            >
-              <ELottieWord id="Cercle_4" />
-              {{ contents.secondRow.cardTitle }}
-            </TH2>
-            <TH2
-              weight="bold"
-              class="app-projet-two-columns__s-r__card__content__subtitle"
-            >
-              {{ contents.secondRow.cardSubtitle }}
-            </TH2>
-            <TH3
-              weight="medium"
-              class="app-projet-two-columns__s-r__card__content__paragraph"
-            >
-              {{ contents.secondRow.cardParagraph }}
-            </TH3>
-          </div>
-        </div>
+        <EParallax :speed="0.5" class="app-projet-two-columns__s-r__visual">
+          <EKinesis :speed="15">
+            <nuxt-picture
+              provider="directus"
+              :src="contents.secondRow.picture"
+              format="webp"
+              :alt="contents.secondRow.pictureAlt"
+            />
+          </EKinesis>
+        </EParallax>
+
+        <EParallax :speed="1" class="app-projet-two-columns__s-r__card">
+          <EKinesis :speed="7.5">
+            <AtomsCornerPoints :size-points="8" />
+            <div class="app-projet-two-columns__s-r__card__content">
+              <TH2
+                weight="bold"
+                class="app-projet-two-columns__s-r__card__content__title"
+              >
+                <ELottieWord id="Cercle_4" />
+                {{ contents.secondRow.cardTitle }}
+              </TH2>
+              <TH2
+                weight="bold"
+                class="app-projet-two-columns__s-r__card__content__subtitle"
+              >
+                {{ contents.secondRow.cardSubtitle }}
+              </TH2>
+              <TH3
+                weight="medium"
+                class="app-projet-two-columns__s-r__card__content__paragraph"
+              >
+                {{ contents.secondRow.cardParagraph }}
+              </TH3>
+            </div>
+          </EKinesis>
+        </EParallax>
       </div>
     </div>
   </div>
@@ -232,7 +245,6 @@ export default {
       z-index: 1;
       position: relative;
       width: 85%;
-      background: white;
       margin-left: auto;
       transform: rotate(-2.85deg);
       top: desktop-vw(50px);
@@ -289,12 +301,18 @@ export default {
     &__fake-transparent {
       aspect-ratio: 250 / 315;
       width: 60%;
-      transform: rotate(1.5deg);
+      transform: translateY(-30%) rotate(1.5deg);
       position: absolute;
       top: 0;
       left: 0;
 
-      @include fake-transparent();
+      .app-parallax {
+        height: 100%;
+        display: block;
+        &__inner {
+          @include fake-transparent();
+        }
+      }
     }
     &__content {
       grid-column: 8 / span 4;
