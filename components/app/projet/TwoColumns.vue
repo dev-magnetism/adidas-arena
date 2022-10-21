@@ -134,7 +134,7 @@ export default {
       position: relative;
     }
 
-    &__visual {
+    &__visual.app-parallax {
       aspect-ratio: 345 / 430;
       display: block;
       width: columns(3.25);
@@ -144,14 +144,14 @@ export default {
       left: 0;
     }
 
-    &__card {
+    &__card.app-parallax {
       width: columns(3.95);
       margin-left: auto;
       transform: rotate(5deg);
       position: relative;
       top: desktop-vw(-300px);
 
-      &__content {
+      .app-projet-two-columns__s-r__card__content {
         padding: desktop-vw(45px) desktop-vw(40px) desktop-vw(45px)
           desktop-vw(40px);
         background: linear-gradient(
@@ -166,7 +166,7 @@ export default {
           white;
         background-size: 1.3em 1.3em;
 
-        &__title {
+        .app-projet-two-columns__s-r__card__content__title {
           font-size: desktop-vw(160px);
           line-height: desktop-vw(160px);
           position: relative;
@@ -183,12 +183,12 @@ export default {
           }
         }
 
-        &__subtitle {
+        .app-projet-two-columns__s-r__card__content__subtitle {
           font-size: desktop-vw(88px);
           line-height: desktop-vw(106px);
         }
 
-        &__paragraph {
+        .app-projet-two-columns__s-r__card__content__paragraph {
           font-size: desktop-vw(32px);
           line-height: desktop-vw(32px);
           opacity: 0.4;
@@ -241,7 +241,7 @@ export default {
       margin-top: desktop-vw(120px);
     }
 
-    &__card {
+    &__card.app-parallax {
       z-index: 1;
       position: relative;
       width: 85%;
@@ -249,7 +249,7 @@ export default {
       transform: rotate(-2.85deg);
       top: desktop-vw(50px);
 
-      &__content {
+      .app-projet-two-columns__f-r__card__content {
         padding: desktop-vw(25px) desktop-vw(40px) desktop-vw(15px)
           desktop-vw(40px);
         background: linear-gradient(
@@ -264,12 +264,12 @@ export default {
           white;
         background-size: 1.3em 1.3em;
 
-        &__title {
+        .app-projet-two-columns__f-r__card__content__title {
           font-size: desktop-vw(160px);
           line-height: desktop-vw(160px);
         }
 
-        &__subtitle {
+        .app-projet-two-columns__f-r__card__content__subtitle {
           font-size: desktop-vw(88px);
           line-height: desktop-vw(106px);
           display: inline-block;
@@ -286,7 +286,7 @@ export default {
           }
         }
 
-        &__paragraph {
+        .app-projet-two-columns__f-r__card__content__paragraph {
           font-size: desktop-vw(32px);
           line-height: desktop-vw(32px);
           opacity: 0.4;
