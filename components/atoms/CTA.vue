@@ -164,7 +164,10 @@ export default {
     }
   }
 
-  .P2 {
+  .P2,
+  .P2.bold,
+  .P2.medium,
+  .P2.regular {
     font-size: desktop-vw(24px);
     line-height: desktop-vw(32px);
     text-transform: uppercase;
