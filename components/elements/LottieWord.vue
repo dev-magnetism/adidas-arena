@@ -72,7 +72,6 @@ export default {
     })
   },
   beforeDestroy() {
-    this.animation.destroy()
     this.tween?.kill()
     this.animation?.destroy()
   },

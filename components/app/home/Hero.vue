@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="app-home-hero__localisation">
-        <TP1 class="app-home-hero__localisation__city">
+        <TP1 weight="bold" class="app-home-hero__localisation__city">
           {{ contents.city }}
         </TP1>
         <TP1 class="app-home-hero__localisation__place">

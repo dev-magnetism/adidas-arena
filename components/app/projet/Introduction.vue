@@ -202,9 +202,13 @@ export default {
     margin-top: desktop-vw(100px);
     grid-row: 2;
 
-    .P2 {
-      &:first-child {
-        margin-top: desktop-vw(30px);
+    .app-element-rich-text {
+      .P2.wysiwyg-text {
+        @include font-adihausDIN-medium();
+
+        &:first-child {
+          margin-top: desktop-vw(30px);
+        }
       }
     }
   }

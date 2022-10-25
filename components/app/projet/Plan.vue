@@ -336,6 +336,10 @@ export default {
     &__paragraph.app-element-rich-text {
       text-transform: initial;
       width: 65%;
+
+      .P2.wysiwyg-text {
+        @include font-adihausDIN-medium();
+      }
     }
   }
 

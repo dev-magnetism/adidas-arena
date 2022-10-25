@@ -131,6 +131,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.contents)
     this.tl = gsap.timeline({
       paused: true,
     })
@@ -335,7 +336,7 @@ export default {
     }
 
     &__field-mail {
-      @include font-adihausDIN-cn-bold();
+      @include font-adihausDIN-cn-medium();
       text-transform: uppercase;
       font-size: desktop-vw(82px);
       line-height: desktop-vw(106px);
