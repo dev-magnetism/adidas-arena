@@ -7,9 +7,11 @@
         format="webp"
         src="/imgs/configuration.png"
       ></nuxt-picture>
-      <TH1 class="app-be-part-of-configurations-arena__title" color="beige"
-        >configurations de l’arena</TH1
-      >
+      <ERichText
+        class="app-be-part-of-configurations-arena__title"
+        :content="contents.title"
+      />
+
       <div class="app-be-part-of-configurations-arena__controller">
         <div class="app-be-part-of-configurations-arena__controller__f-r">
           <TP1
@@ -25,12 +27,12 @@
             :duration="1000"
           >
             <TH4
-              v-for="(item, index) in array"
-              v-show="currentIndex === index + 1"
+              v-for="(item, index) in contents.items"
+              v-show="currentIndex === index"
               :key="index"
               class="app-be-part-of-configurations-arena__controller__f-r__text"
               color="beige"
-              >{{ item.firstRow.text }}</TH4
+              >{{ item.configuration }}</TH4
             >
           </transition-group>
         </div>
@@ -52,12 +54,12 @@
               :duration="1000"
             >
               <TH4
-                v-for="(item, index) in array"
-                v-show="currentIndex === index + 1"
+                v-for="(item, index) in contents.items"
+                v-show="currentIndex === index"
                 :key="index"
                 class="app-be-part-of-configurations-arena__controller__s-r__text"
                 color="beige"
-                >{{ item.secondRow[0].text }}</TH4
+                >{{ item.capacite }}</TH4
               >
             </transition-group>
           </div>
@@ -77,12 +79,12 @@
               :duration="1000"
             >
               <TH4
-                v-for="(item, index) in array"
-                v-show="currentIndex === index + 1"
+                v-for="(item, index) in contents.items"
+                v-show="currentIndex === index"
                 :key="index"
                 class="app-be-part-of-configurations-arena__controller__s-r__text"
                 color="beige"
-                >{{ item.secondRow[1].text }}</TH4
+                >{{ item.jauge }}</TH4
               >
             </transition-group>
           </div>
@@ -97,7 +99,7 @@
           <TP1
             class="app-be-part-of-configurations-arena__controller__t-r__text"
             color="beige"
-            >{{ currentIndex }} - {{ array.length }}</TP1
+            >{{ currentIndex + 1 }} - {{ array.length }}</TP1
           >
           <div
             class="app-be-part-of-configurations-arena__controller__navigation right"
@@ -109,13 +111,11 @@
       </div>
 
       <div class="app-be-part-of-configurations-arena__paragraphs">
-        <TP1 color="beige"
-          >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-          vehicula luctus risus, ut placerat metus ultrices eu.
+        <TP1 color="beige">
+          {{ contents.columnLeft }}
         </TP1>
-        <TP1 color="beige"
-          >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-          vehicul.
+        <TP1 color="beige">
+          {{ contents.columnRight }}
         </TP1>
       </div>
     </div>
@@ -124,9 +124,15 @@
 
 <script>
 export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
-      currentIndex: 1,
+      currentIndex: 0,
       direction: 'next',
       array: [
         {
@@ -180,18 +186,16 @@ export default {
       ],
     }
   },
-  mounted() {
-    console.log(this.array)
-  },
+  mounted() {},
   methods: {
     onLeftClick() {
       this.direction = 'previous'
-      if (this.currentIndex - 1 === 0) this.currentIndex = this.array.length
+      if (this.currentIndex === 0) this.currentIndex = this.array.length - 1
       else this.currentIndex--
     },
     onRightClick() {
       this.direction = 'next'
-      if (this.currentIndex === this.array.length) this.currentIndex = 1
+      if (this.currentIndex === this.array.length - 1) this.currentIndex = 0
       else this.currentIndex++
     },
   },
@@ -303,8 +307,16 @@ export default {
     }
   }
 
-  &__title.H1 {
+  &__title.app-element-rich-text {
     grid-column: 1 / span 6;
+
+    .H1 {
+      color: var(--c-beige) !important;
+
+      .app-atoms-stroke-text {
+        -webkit-text-stroke: 1px var(--c-beige) !important;
+      }
+    }
   }
 
   &__controller {

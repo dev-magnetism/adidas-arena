@@ -1,8 +1,10 @@
 <template>
   <div class="app-be-part-of-partenaire-partenaires block-inner">
-    <TH1 class="app-be-part-of-partenaire-partenaires__title"
-      >Déjà 12 partenaires</TH1
-    >
+    <ERichText
+      class="app-be-part-of-partenaire-partenaires__title"
+      :content="contents.title"
+    />
+
     <AppBepartofPartenairePartenairesLogos
       :logos="contents.list"
       :rows="6"

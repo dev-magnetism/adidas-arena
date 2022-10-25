@@ -43,9 +43,7 @@ export default {
       default: () => {},
     },
   },
-  mounted() {
-    console.log('tfetetz', this.contents)
-  },
+  mounted() {},
 }
 </script>
 

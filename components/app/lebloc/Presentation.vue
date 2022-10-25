@@ -43,9 +43,7 @@ export default {
       default: () => {},
     },
   },
-  mounted() {
-    console.log('teetete', this.contents)
-  },
+  mounted() {},
 }
 </script>
 

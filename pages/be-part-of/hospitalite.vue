@@ -81,9 +81,7 @@ export default {
     },
   },
 
-  mounted() {
-    console.log('test slider', this.slider)
-  },
+  mounted() {},
 }
 </script>
 

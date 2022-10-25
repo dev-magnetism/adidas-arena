@@ -1,24 +1,26 @@
 <template>
   <div class="app-be-part-of-configurations-introduction grid-inner">
     <div class="app-be-part-of-configurations-introduction__f-row__content">
-      <TH2
+      <ERichText
         class="app-be-part-of-configurations-introduction__f-row__content__title"
-        >L’Adidas Arena, lorem ipsum dolor sit amet dolor sit</TH2
-      >
+        :content="contents.title"
+      />
+
       <TP2
         weight="bold"
         class="app-be-part-of-configurations-introduction__f-row__content__text"
-        >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut purus
-        non nisi faucibus ultrices et id dui. Vestibulum pellentesque.</TP2
       >
+        {{ contents.subtitle }}
+      </TP2>
     </div>
 
     <div class="app-be-part-of-configurations-introduction__f-row__visual">
       <nuxt-picture
         ref="picture"
-        src="imgs/placeholder.png"
+        provider="directus"
+        :src="contents.pictureFramed.src"
         format="webp"
-        alt="placeholder"
+        :alt="contents.pictureFramed.alt"
         class="picture-absolute"
       />
       <ELottie id="Cadre_02" />
@@ -28,9 +30,10 @@
       <AtomsCornerPoints :size-points="8" />
       <nuxt-picture
         ref="picture"
-        src="imgs/placeholder.png"
+        provider="directus"
+        :src="contents.picture.src"
         format="webp"
-        alt="placeholder"
+        :alt="contents.picture.alt"
         class="picture-absolute"
       />
     </div>
@@ -38,19 +41,29 @@
     <div class="app-be-part-of-configurations-introduction__s-row__content">
       <TH4
         class="app-be-part-of-configurations-introduction__s-row__content__title"
-        >un lieux aux milles facettes</TH4
       >
+        {{ contents.secondTitle }}
+      </TH4>
       <TP2
         weight="medium"
         class="app-be-part-of-configurations-introduction__s-row__content__text"
-        >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut purus
-        non nisi faucibus ultrices et id dui. Vestibulum pellentesque, lorem eu
-        tempor rutrum, ante libero dignissim neque, non iaculis nibh leo
-        pulvinar ipsum.
+      >
+        {{ contents.paragraph }}
       </TP2>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
+}
+</script>
 
 <style lang="scss">
 .app-be-part-of-configurations-introduction {

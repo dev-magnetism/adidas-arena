@@ -221,7 +221,8 @@ export default {
         line-height: desktop-vw(62px);
       }
       &__text.P2 {
-        flex: 4;
+        flex: 3;
+        margin-right: desktop-vw(60px);
       }
     }
 

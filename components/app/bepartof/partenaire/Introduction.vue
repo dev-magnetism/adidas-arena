@@ -1,27 +1,24 @@
 <template>
   <div class="app-be-part-of-partenaire-introduction grid-inner">
     <div class="app-be-part-of-partenaire-introduction__f-row__content">
-      <TH2 class="app-be-part-of-partenaire-introduction__f-row__content__title"
-        >être partenaire de l’adidas arena
-      </TH2>
+      <ERichText
+        class="app-be-part-of-partenaire-introduction__f-row__content__title"
+        :content="contents.title"
+      />
       <TP2
         class="app-be-part-of-partenaire-introduction__f-row__content__text"
         weight="bold"
       >
-        Avec plus de 105 séances par an, notre écosystème de partenaires
-        profitera de l’exposition d’une programmation riche. Ensemble, nous
-        allons écrire une nouvelle page d’un territoire. Et Paris 2024 sera une
-        formidable caisse de résonnance pour toutes les activités & parties
-        prenantes de l’Accor Arena.
+        {{ contents.subtitle }}
       </TP2>
     </div>
-    <!-- <EFramedPicture color="red-adidas"> </EFramedPicture> -->
 
     <nuxt-picture
       class="app-be-part-of-partenaire-introduction__f-row__visual"
-      src="imgs/placeholder.png"
+      provider="directus"
+      :src="contents.picture.src"
       format="webp"
-      alt="alt"
+      :alt="contents.picture.alt"
     />
 
     <EFramedPicture
@@ -29,26 +26,38 @@
       color="red-adidas"
     >
       <nuxt-picture
-        src="imgs/placeholder.png"
+        provider="directus"
+        :src="contents.pictureFramed.src"
         format="webp"
-        alt="placeholder"
+        :alt="contents.pictureFramed.alt"
       />
     </EFramedPicture>
 
     <div class="app-be-part-of-partenaire-introduction__s-row__content">
-      <TH4 class="app-be-part-of-partenaire-introduction__s-row__content__title"
-        >un partenariat aux bénéfices uniques</TH4
+      <TH4
+        class="app-be-part-of-partenaire-introduction__s-row__content__title"
       >
-      <TP2 class="app-be-part-of-partenaire-introduction__s-row__content__text">
-        Les partenaires fondateurs, sponsors officiels et fournisseurs officiels
-        de l’adidas profiteront de nombreux bénéfices à travers : une
-        dénomination, une association de marque et communication, une
-        exclusivité, de la visibilité média, du contenu commun, des activations
-        & des services Hospitalités... Rejoignez-nous !
-      </TP2>
+        {{ contents.secondTitle }}
+      </TH4>
+
+      <ERichText
+        class="app-be-part-of-partenaire-introduction__s-row__content__text"
+        :content="contents.secondSubtitle"
+      />
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
+}
+</script>
 
 <style lang="scss">
 .app-be-part-of-partenaire-introduction {
@@ -98,6 +107,10 @@
       }
       &__text {
         width: 80%;
+
+        .P2.wysiwyg-text {
+          @include font-adihausDIN-medium();
+        }
       }
     }
 
