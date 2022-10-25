@@ -3,8 +3,7 @@ import JSSoup from 'jssoup'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 import { decode } from 'html-entities'
-// import { parse } from 'node-html-parser'
-// import { html2json, json2html } from 'html2json'
+
 export default {
   props: {
     content: {
@@ -36,11 +35,9 @@ export default {
     document.fonts.ready.then(() => {
       if (!this.split) return
 
-      this.$nextTick(() => {
-        setTimeout(() => {
-          this.initSplitText()
-        }, 500)
-      })
+      setTimeout(() => {
+        this.initSplitText()
+      }, 500)
     })
   },
 
@@ -162,14 +159,21 @@ export default {
     })
 
     boldTexts.forEach((text) => {
-      const string = text.getText()
-      const stringDecode = decode(string)
-      const finalString = stringDecode.replace(/\S+/g, (a, b, c) => {
-        return `<span class="bold">` + a + '</span>'
-      })
-      text.replaceWith(finalString)
+      if (this.split) {
+        const string = text.getText()
+        const stringDecode = decode(string)
+        const finalString = stringDecode.replace(/\S+/g, (a, b, c) => {
+          return `<span class="bold">` + a + '</span>'
+        })
+
+        text.replaceWith(finalString)
+      }
+
+      text.name = 'span'
       delete text.attrs.style
       delete text.attrs.class
+
+      text.attrs.class = 'bold'
     })
 
     strokeTexts.forEach((text) => {

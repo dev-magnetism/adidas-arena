@@ -2,14 +2,14 @@
   <div class="app-contact-newsletter grid-inner">
     <div class="app-contact-newsletter__newsletter">
       <AtomsCornerPoints :size-points="8" />
-      <TH4>Trop tôt pour vous engager ? </TH4>
-      <TH4> découvrez les actus de L’ADIDAS ARENA</TH4>
+
+      <ERichText :content="contents.title" />
 
       <form action="#" class="app-contact-newsletter__newsletter__form">
         <input
           v-model="email"
           class="app-contact-newsletter__newsletter__form__field-mail"
-          placeholder="email@email.com"
+          :placeholder="contents.placeholder"
           type="email"
           name="name"
           required
@@ -35,6 +35,12 @@
 import { gsap } from 'gsap'
 
 export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
       email: '',
@@ -120,6 +126,21 @@ export default {
       white;
     background-size: 1.3em 1.3em;
     z-index: 1;
+
+    .app-element-rich-text {
+      .H4.wysiwyg-text {
+        text-align: center;
+
+        .app-element-lottie-word.Trait_1 {
+          svg {
+            width: 110% !important;
+            left: 55%;
+            top: 50%;
+            transform: translate(-50%, -50%) !important;
+          }
+        }
+      }
+    }
 
     &__form {
       display: flex;

@@ -1,12 +1,21 @@
 <template>
   <div class="app-element-slider">
     <div class="app-element-slider__heading grid-inner">
-      <TH1 class="app-element-slider__heading__title"
-        >Lorem IPSUM DOLOR SIT AMET</TH1
-      >
-
+      <ERichText
+        class="app-element-slider__heading__title"
+        :content="contents.title"
+      />
       <div class="app-element-slider__heading__spaces">
-        <TH1 class="app-element-slider__heading__spaces__total">XX</TH1>
+        <div class="app-element-slider__heading__spaces__total">
+          <TH1
+            v-for="(char, index) in totalFinal"
+            :key="index"
+            ref="numbers"
+            weight="bold"
+            >{{ char }}</TH1
+          >
+        </div>
+
         <TH4 class="app-element-slider__heading__spaces__text" weight="medium"
           >Espaces</TH4
         >
@@ -16,27 +25,28 @@
     <div ref="inner" :class="{ hold }" class="app-element-slider__wrapper">
       <div class="app-element-slider__inner">
         <div
-          v-for="i in 5"
-          :key="i"
+          v-for="(item, index) in contents.items"
+          :key="index"
           ref="items"
           class="app-element-slider__item"
         >
           <div class="app-element-slider__item__wrapper-visual">
             <nuxt-picture
+              provider="directus"
               class="app-element-slider__item__visual"
-              src="imgs/placeholder.png"
+              :src="item.hospitalite_slider_picture"
               format="webp"
-              alt="placeholder"
+              :alt="`slider-visual-${index}`"
             />
           </div>
 
           <div class="app-element-slider__item__content">
-            <TH4 class="app-element-slider__item__content__title">SKYBAR</TH4>
-            <TP2 class="app-element-slider__item__content__text"
-              >Situé en face de la scène – ou dans la longueur du terrain en
-              configuration basket – le SkyBar est un grand espace de 150
-              m2.</TP2
-            >
+            <TH4 class="app-element-slider__item__content__title">{{
+              item.hospitalite_slider_title
+            }}</TH4>
+            <TP2 class="app-element-slider__item__content__text">
+              {{ item.hospitalite_slider_paragraph }}
+            </TP2>
           </div>
         </div>
       </div>
@@ -47,21 +57,31 @@
 <script>
 import EmblaCarousel from 'embla-carousel'
 
-import useGUI from '~/hooks/gui'
-
 export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
-      parallaxFactor: 1.25,
+      parallaxFactor: 2.25,
       hold: false,
     }
+  },
+  computed: {
+    totalFinal() {
+      const value = ('0' + this.contents.items.length).slice(-2)
+      return value.split('')
+    },
   },
   mounted() {
     this.embla = EmblaCarousel(this.$refs.inner, {
       skipSnaps: true,
       align: 'start',
       slidesToScroll: 1,
-      speed: 12,
+      speed: 10,
       inViewThreshold: 1,
       loop: true,
     })
@@ -71,8 +91,6 @@ export default {
     this.embla.on('resize', this.setParallax)
     this.embla.on('pointerUp', this.onPointerUp)
     this.embla.on('pointerDown', this.onPointerDown)
-
-    // this.initGUI()
   },
   beforeDestroy() {
     this.embla.off('init', this.setParallax)
@@ -82,8 +100,6 @@ export default {
     this.embla.off('pointerDown', this.onPointerDown)
 
     this.embla?.destroy()
-
-    this.gui?.dispose()
   },
   methods: {
     onPointerUp() {
@@ -113,23 +129,7 @@ export default {
         return diffToTarget * (-1 / this.parallaxFactor) * 100
       })
     },
-    initGUI() {
-      const gui = useGUI()
 
-      this.gui = gui.addFolder({ title: `Slider` })
-
-      this.gui
-        .addInput(this, 'parallaxFactor', {
-          min: 1,
-          max: 5,
-          step: 0.1,
-          label: 'Parallax factor',
-        })
-        .on('change', (e) => {
-          this.parallaxFactor = e.value
-          this.setParallax()
-        })
-    },
     setParallax() {
       const slides = this.embla.slideNodes()
       const layers = slides.map((s) =>
@@ -154,7 +154,7 @@ export default {
     &.hold {
       .app-element-slider__item__visual {
         img {
-          transform: scale(1.2);
+          transform: scale(1.35);
         }
       }
     }
@@ -162,13 +162,30 @@ export default {
 
   &__heading {
     margin-bottom: desktop-vw(70px);
+    position: relative;
 
-    &__title.H1 {
+    &__title {
       grid-column: 1 / span 6;
     }
     &__spaces {
       grid-column: 11 / span 1;
       align-self: center;
+      position: absolute;
+
+      &__total {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+
+        .H1 {
+          display: inline-block;
+
+          &:first-child {
+            -webkit-text-stroke: 1.5px var(--c-black);
+            -webkit-text-fill-color: transparent;
+          }
+        }
+      }
 
       &__text.H4 {
         font-size: desktop-vw(24px);
@@ -198,12 +215,13 @@ export default {
       align-items: center;
 
       &__title.H4 {
-        margin-right: desktop-vw(100px);
+        flex: 2;
+        margin-right: desktop-vw(40px);
         font-size: desktop-vw(48px);
         line-height: desktop-vw(62px);
       }
       &__text.P2 {
-        width: 60%;
+        flex: 4;
       }
     }
 
@@ -228,8 +246,7 @@ export default {
       img {
         transition: transform 0.95s var(--ease-out-quart);
 
-        transform: scale(1.3);
-        @include noise();
+        transform: scale(1.45);
       }
     }
   }

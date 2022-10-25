@@ -4,10 +4,10 @@
       :left-content="contentTwoColumns.left"
       :right-content="contentTwoColumns.right"
     />
-    <AppBepartofHospitalitePresentation />
-    <ESlider />
-    <AppContactQuestion />
-    <AppContactNewsletter />
+    <AppBepartofHospitalitePresentation :contents="contentPresentation" />
+    <ESlider :contents="contentSlider" />
+    <AppContactQuestion :contents="contentContactQuestion" />
+    <AppContactNewsletter :contents="contentContactNewsletter" />
     <AppFooter :contents="app" />
   </main>
 </template>
@@ -26,9 +26,14 @@ export default {
       limit: -1,
     })
 
+    const slider = await $directus.items('Hospitalite_slider').readByQuery({
+      limit: -1,
+    })
+
     return {
       app,
       content,
+      slider,
     }
   },
   data() {
@@ -42,9 +47,43 @@ export default {
         right: this.content.data.two_columns_right,
       }
     },
+    contentPresentation() {
+      return {
+        title: this.content.data.presentation_title,
+        picture: {
+          src: this.content.data.presentation_picture,
+          alt: this.content.data.presentation_picture_alt,
+        },
+        pictureFramed: {
+          src: this.content.data.presentation_picture_framed,
+          alt: this.content.data.presentation_picture_framed_alt,
+        },
+        paragraphTitle: this.content.data.presentation_paragraph_title,
+        paragraph: this.content.data.presentation_paragraph,
+      }
+    },
+    contentSlider() {
+      return {
+        title: this.content.data.slider_title,
+        items: this.slider.data,
+      }
+    },
+    contentContactQuestion() {
+      return {
+        title: this.content.data.contact_question,
+      }
+    },
+    contentContactNewsletter() {
+      return {
+        title: this.content.data.contact_newsletter,
+        placeholder: this.app.data.footer_input_placeholder,
+      }
+    },
   },
 
-  mounted() {},
+  mounted() {
+    console.log('test slider', this.slider)
+  },
 }
 </script>
 
@@ -71,7 +110,7 @@ export default {
     }
   }
   .app-contact-question {
-    margin-top: desktop-vw(280px);
+    margin-top: desktop-vw(150px);
   }
   .app-contact-newsletter {
     margin-bottom: desktop-vw(180px);

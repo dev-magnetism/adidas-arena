@@ -2,7 +2,7 @@
   <main class="page-be-part-of-configurations">
     <AppBepartofConfigurationsIntroduction />
     <AppBepartofConfigurationsArena />
-    <AppContactQuestion />
+    <AppContactQuestion :contents="contentContactQuestion" />
     <AppFooter :contents="app" />
   </main>
 </template>
@@ -17,12 +17,25 @@ export default {
       limit: -1,
     })
 
+    const content = await $directus.items('Configurations_page').readByQuery({
+      limit: -1,
+    })
+
     return {
       app,
+      content,
     }
   },
   data() {
     return {}
+  },
+
+  computed: {
+    contentContactQuestion() {
+      return {
+        title: this.content.data.contact_question,
+      }
+    },
   },
 
   mounted() {},
