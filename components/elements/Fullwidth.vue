@@ -2,10 +2,11 @@
   <div class="app-element-fullwidth">
     <nuxt-picture
       ref="picture"
+      provider="directus"
       class="picture-absolute"
-      src="imgs/fullwidth.webp"
+      :src="contents.src"
       format="webp"
-      alt="placeholder"
+      :alt="contents.alt"
     />
   </div>
 </template>
@@ -14,9 +15,15 @@
 import { gsap } from 'gsap'
 
 export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
   mounted() {
     gsap.to(this.$refs.picture.$el, {
-      yPercent: -10,
+      yPercent: -7.5,
       ease: 'none',
       scrollTrigger: {
         trigger: this.$el,

@@ -214,7 +214,6 @@ export default {
       height: auto;
       position: relative;
       overflow: hidden;
-      @include noise();
     }
 
     &__visual {
@@ -230,6 +229,7 @@ export default {
         transition: transform 0.95s var(--ease-out-quart);
 
         transform: scale(1.3);
+        @include noise();
       }
     }
   }

@@ -132,8 +132,6 @@ export default {
   mounted() {
     document.fonts.ready.then(() => {
       this.initSplitText()
-
-      console.log(this.contents)
     })
   },
   beforeDestroy() {

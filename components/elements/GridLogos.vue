@@ -44,9 +44,7 @@ export default {
       return this.logos.find((logo) => logo.big)
     },
   },
-  mounted() {
-    console.log(this.logos)
-  },
+  mounted() {},
   methods: {},
 }
 </script>

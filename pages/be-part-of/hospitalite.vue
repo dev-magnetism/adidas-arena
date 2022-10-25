@@ -1,9 +1,9 @@
 <template>
   <main class="page-be-part-of-hospitalite">
-    <!-- <ETwoColumnsStick
-      :left-content="partners.data.Key_words_left"
-      :right-content="partners.data.Key_words_right"
-    /> -->
+    <ETwoColumnsStick
+      :left-content="contentTwoColumns.left"
+      :right-content="contentTwoColumns.right"
+    />
     <AppBepartofHospitalitePresentation />
     <ESlider />
     <AppContactQuestion />
@@ -22,12 +22,26 @@ export default {
       limit: -1,
     })
 
+    const content = await $directus.items('Hospitalite_page').readByQuery({
+      limit: -1,
+    })
+
     return {
       app,
+      content,
     }
   },
   data() {
     return {}
+  },
+
+  computed: {
+    contentTwoColumns() {
+      return {
+        left: this.content.data.two_columns_left,
+        right: this.content.data.two_columns_right,
+      }
+    },
   },
 
   mounted() {},
@@ -36,6 +50,26 @@ export default {
 
 <style lang="scss">
 .page-be-part-of-hospitalite {
+  .app-two-columns-stick {
+    .app-element-lottie-word {
+      &.Trait_2 svg {
+        position: absolute;
+        left: 50%;
+        width: 100%;
+        height: auto !important;
+        bottom: -35px;
+        transform: translateX(-50%) !important;
+      }
+      &.Cercle_1 svg {
+        position: absolute;
+        width: 135% !important;
+        height: auto !important;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(5deg) !important;
+      }
+    }
+  }
   .app-contact-question {
     margin-top: desktop-vw(280px);
   }

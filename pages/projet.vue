@@ -114,9 +114,7 @@ export default {
       }
     },
   },
-  mounted() {
-    console.log(this.content)
-  },
+  mounted() {},
 }
 </script>
 

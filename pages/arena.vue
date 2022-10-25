@@ -1,7 +1,7 @@
 <template>
   <main class="app-arena">
-    <AppArenaParisBasketClub />
-    <EFullwidth />
+    <AppArenaParisBasketClub :contents="contentParisBasketClub" />
+    <EFullwidth :contents="contentFullwidth" />
     <AppArenaPartners :contents="contentPartners" />
     <AppArenaGallery />
     <AppFooter :contents="app" />
@@ -22,15 +22,49 @@ export default {
       limit: -1,
     })
 
+    const content = await $directus.items('Arena_page').readByQuery({
+      limit: -1,
+    })
+
     return {
       partners,
       app,
+      content,
     }
   },
+
   computed: {
     contentPartners() {
       return {
         list: this.partners.data,
+        title: this.content.data.partners_title,
+        subtitle: this.content.data.partners_subtitle,
+        paragraph: this.content.data.partners_paragraph,
+      }
+    },
+    contentParisBasketClub() {
+      return {
+        title: this.content.data.paris_basket_club_title,
+        subtitle: this.content.data.paris_basket_club_subtitle,
+        paragraph: this.content.data.paris_basket_club_paragraph,
+        pictureFramed: {
+          src: this.content.data.paris_basket_club_picture_framed,
+          alt: this.content.data.paris_basket_club_picture_framed_alt,
+        },
+        picture: {
+          src: this.content.data.paris_basket_club_picture,
+          alt: this.content.data.paris_basket_club_picture_alt,
+        },
+        pictureLogo: {
+          src: this.content.data.paris_basket_club_picture_logo,
+          alt: this.content.data.paris_basket_club_picture_logo_alt,
+        },
+      }
+    },
+    contentFullwidth() {
+      return {
+        src: this.content.data.fullwidth_picture,
+        alt: this.content.data.fullwidth_picture_alt,
       }
     },
   },

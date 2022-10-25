@@ -1,24 +1,26 @@
 <template>
   <div class="app-arena-partners grid">
     <div class="app-arena-partners__content">
-      <TH1 :split="true" class="app-arena-partners__title">
-        Un écosystème complémentaire de partenaires
-      </TH1>
-      <TP2 class="app-arena-partners__principal-paragraph" weight="bold">
-        Aujourd’hui près de 20 marques leaders sur leur marché font confiance à
-        l’Accor Arena et à ses équipes. Ces marques ont investi pour profiter de
-        l’exposition d’une programmation riche et diversifiée de plus de 135
-        séances par an.
+      <ERichText
+        :split="true"
+        :scrub="false"
+        :overflow="true"
+        class="app-arena-partners__title"
+        :content="contents.title"
+      />
+      <TP2
+        class="app-arena-partners__principal-paragraph partners-apparition"
+        weight="bold"
+      >
+        {{ contents.subtitle }}
       </TP2>
-      <TP2 class="app-arena-partners__secondary-paragraph">
-        Après les travaux de rénovation, l’Accor Arena est devenu l’un des
-        terrains d’animation et d’engagement favori des marques aux côtés de
-        Roland-Garros ou du PSG. Les équipes de l’Arena ont le privilège et
-        l’exigence d’accompagner AccorHotels, DHL, American Express, Heineken,
-        Coca Cola, Pierre Hermé, Moet Hennessy, Samsung, et bien d’autres encore
-        dans le déploiement de leur politique partenariale.
+      <TP2
+        weight="medium"
+        class="app-arena-partners__secondary-paragraph partners-apparition"
+      >
+        {{ contents.paragraph }}
       </TP2>
-      <AtomsCTA>Devenir partenaire</AtomsCTA>
+      <AtomsCTA class="partners-apparition">Devenir partenaire</AtomsCTA>
     </div>
     <EGridLogos :logos="contents.list" class="app-arena-partners__grid-logos" />
     <EPartnersTotal :total="contents.list.length" />
@@ -26,12 +28,53 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
+
 export default {
   props: {
     contents: {
       type: Object,
       default: () => {},
     },
+  },
+  mounted() {
+    const els = this.$el.querySelectorAll('.partners-apparition')
+
+    els.forEach((el, index) => {
+      const scrollTrigger = {
+        trigger: el,
+        start: 'top+=75px bottom',
+        end: 'top+=75px center',
+        toggleActions: 'play none none none',
+      }
+
+      gsap.fromTo(
+        el,
+        {
+          y: -75,
+        },
+        {
+          y: 0,
+          duration: 1.25,
+          ease: 'expo.out',
+          delay: 0.3,
+          scrollTrigger,
+        }
+      )
+      gsap.fromTo(
+        el,
+        {
+          opacity: 0,
+        },
+        {
+          opacity: index === els.length - 1 ? 1 : 0.8,
+          duration: 1.45,
+          ease: 'expo.out',
+          delay: 0.3,
+          scrollTrigger,
+        }
+      )
+    })
   },
 }
 </script>
@@ -58,13 +101,16 @@ export default {
   &__title {
     margin-bottom: desktop-vw(25px);
   }
-  &__principal-paragraph {
+  &__principal-paragraph.P2 {
     margin-bottom: desktop-vw(25px);
     width: 50%;
+    text-transform: uppercase;
+    opacity: 0.8;
   }
-  &__secondary-paragraph {
+  &__secondary-paragraph.P2 {
     margin-bottom: desktop-vw(50px);
     width: 52.5%;
+    opacity: 0.8;
   }
   .app-atoms-cta {
     width: 52.5%;

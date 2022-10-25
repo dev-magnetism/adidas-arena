@@ -1,16 +1,15 @@
 <template>
   <div class="app-le-bloc-presentation grid-inner">
-    <TH2 class="app-le-bloc-presentation__title">
-      Au cœur du lieu de vie : <br />
-      le Bloc !
-    </TH2>
+    <ERichText
+      class="app-le-bloc-presentation__title"
+      :content="contents.title"
+    />
     <EKinesis class="app-le-bloc-presentation__visual" :speed="5">
       <nuxt-picture
-        src="imgs/placeholder.png"
+        provider="directus"
+        :src="contents.picture.src"
         format="webp"
-        alt="placeholder"
-        loading="lazy"
-        preload
+        :alt="contents.picture.alt"
         class="picture-absolute"
       />
     </EKinesis>
@@ -20,25 +19,35 @@
         <EKinesis :speed="-10">
           <nuxt-picture
             class="picture-absolute"
-            src="imgs/placeholder.png"
+            provider="directus"
+            :src="contents.pictureFramed.src"
+            :alt="contents.pictureFramed.alt"
             format="webp"
-            alt="alt"
           />
         </EKinesis>
       </EFramedPicture>
     </EKinesis>
     <EKinesis :speed="5" class="app-le-bloc-presentation__text">
-      <TH4>Le visiteur du bloc</TH4>
-      <TP2 weight="medium"
-        >C’est le lieu de vie et d’expériences pour tous : spectateurs et
-        visiteurs s’y rencontrent. <br /><br />
-        Un espace expérientiel pour s’élever au sens propre et figuré.<br /><br />
-        Des activités & services viennent animer ce lieu à différents moments de
-        la journée.</TP2
-      >
+      <TH4>{{ contents.paragraphTitle }}</TH4>
+
+      <ERichText :content="contents.paragraph" />
     </EKinesis>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  mounted() {
+    console.log('teetete', this.contents)
+  },
+}
+</script>
 
 <style lang="scss">
 .app-le-bloc-presentation {
@@ -49,7 +58,7 @@
     grid-column: 1 / span 4;
   }
 
-  &__visual {
+  &__visual.app-element-kinesis {
     position: absolute;
     grid-column: 4 / span 4;
     width: 100%;
@@ -59,7 +68,7 @@
     height: auto;
   }
 
-  &__framed-visual {
+  &__framed-visual.app-element-kinesis {
     position: absolute;
     grid-column: 7 / span 4;
     width: 100%;
@@ -69,6 +78,7 @@
 
     .app-element-framed-picture {
       transform: rotate(4deg);
+      height: 100%;
     }
   }
 
@@ -82,6 +92,7 @@
 
     .P2 {
       text-transform: initial;
+      @include font-adihausDIN-medium();
     }
   }
 }

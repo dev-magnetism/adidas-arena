@@ -38,18 +38,26 @@ export default {
     flex: 1;
 
     .app-element-rich-text {
-      > .H2 {
+      .wysiwyg-text.H2 {
         font-size: desktop-vw(110px);
         line-height: desktop-vw(120px);
+        @include font-tuskerGrotesk-bold();
+
+        sup {
+          font-size: desktop-vw(70px);
+          line-height: desktop-vw(60px);
+        }
       }
     }
 
     &.left {
       text-align: right;
+      margin-right: desktop-vw(10px);
     }
 
     &.right {
       text-align: left;
+      margin-left: desktop-vw(10px);
 
       > :first-child {
         margin-top: desktop-vw(120px);

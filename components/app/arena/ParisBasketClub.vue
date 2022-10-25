@@ -7,18 +7,20 @@
     >
       <nuxt-picture
         ref="picture"
-        src="imgs/placeholder.png"
+        provider="directus"
+        :src="contents.pictureFramed.src"
         format="webp"
-        alt="placeholder"
+        :alt="contents.pictureFramed.alt"
         class="picture-absolute"
       />
       <ELottie id="Cadre_01" start="top bottom-=15%" />
     </EParallax>
     <div class="app-arena-paris-basket-club__visual-transparent">
       <nuxt-picture
-        src="imgs/placeholder-logo-home.png"
+        provider="directus"
+        :src="contents.pictureLogo.src"
         format="webp"
-        alt="placeholder"
+        :alt="contents.pictureLogo.alt"
       />
       <AtomsCornerPoints :size-points="8" />
     </div>
@@ -28,9 +30,10 @@
     >
       <nuxt-picture
         ref="picture"
-        src="imgs/placeholder.png"
+        provider="directus"
+        :src="contents.picture.src"
         format="webp"
-        alt="placeholder"
+        :alt="contents.picture.alt"
       />
     </EParallax>
     <ELottie
@@ -39,20 +42,20 @@
       class="app-arena-paris-basket-club__lottie-arrow"
     />
     <div class="app-arena-paris-basket-club__content">
-      <TH2>PARIS BASKETBALL CLUB</TH2>
-      <TP1 weight="bold"
-        >L'ADIDAS ARENA disposera de son club de basketball résident à l’année :
-        le Paris Basketball. Un effectif jeune, au jeu spectaculaire et
-        offensif</TP1
-      >
-      <TP2 weight="medium"
-        >Ce club, créé en 2018 incarne une des facettes phares du lifestyle
-        urbain parisien : pour preuve, le grand Paris compte le plus grand
-        nombre de licenciés en France ! <br /><br />
-        Avec 35 rencontres annuelles, les matchs du Paris Basketball vous
-        permettront de vibrer autour d’un sport fort en show, exploits
-        techniques et émotions !
-      </TP2>
+      <ERichText
+        class="app-arena-paris-basket-club__content__title"
+        :content="contents.title"
+      />
+
+      <TP1 class="app-arena-paris-basket-club__content__subtitle" weight="bold">
+        {{ contents.subtitle }}
+      </TP1>
+
+      <ERichText
+        class="app-arena-paris-basket-club__content__paragraph"
+        :content="contents.paragraph"
+      />
+
       <AtomsLinkUnderline>EN SAVOIR PLUS SUR LE CLUB</AtomsLinkUnderline>
     </div>
   </div>
@@ -60,7 +63,15 @@
 
 <script>
 export default {
-  mounted() {},
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  mounted() {
+    console.log(this.contents)
+  },
 }
 </script>
 
@@ -70,7 +81,7 @@ export default {
   margin-top: 100vh;
   //   margin-top: desktop-vw(1080px);
 
-  &__lottie-arrow {
+  &__lottie-arrow.app-element-lottie {
     position: absolute;
     grid-column: 6 / span 1;
     width: 40%;
@@ -112,6 +123,10 @@ export default {
     transform: rotate(-6deg);
     margin-bottom: desktop-vw(300px);
 
+    picture {
+      @include noise();
+    }
+
     .app-element-lottie {
       width: 110%;
       top: 50%;
@@ -130,17 +145,28 @@ export default {
     top: desktop-vw(300px);
     left: 0;
     transform: rotate(2deg);
+
+    picture {
+      @include noise();
+    }
   }
 
   &__content {
     grid-column: 9 / span 4;
 
-    :not(.H2) {
+    &__subtitle,
+    &__paragraph.app-element-rich-text {
       opacity: 0.8;
     }
 
-    :nth-child(2) {
+    &__subtitle {
       margin-bottom: desktop-vw(15px);
+    }
+
+    &__paragraph.app-element-rich-text {
+      .P2 {
+        @include font-adihausDIN-medium();
+      }
     }
 
     .app-atoms-link-underline {

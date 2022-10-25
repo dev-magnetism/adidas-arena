@@ -1,7 +1,7 @@
 <template>
   <div class="app-arena-gallery">
     <div class="app-arena-gallery__inner">
-      <TH1 weight="bold" class="app-arena-gallery__title">Gallerie</TH1>
+      <TH2 weight="bold" class="app-arena-gallery__title">Gallerie</TH2>
     </div>
     <div class="app-arena-gallery__pictures">
       <AppArenaGalleryPicture
@@ -232,7 +232,7 @@ export default {
     pointer-events: none;
   }
 
-  &__title {
+  &__title.H2 {
     font-size: desktop-vw(290px);
     line-height: desktop-vw(400px);
     pointer-events: none;
