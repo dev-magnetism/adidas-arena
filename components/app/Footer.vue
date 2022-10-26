@@ -196,7 +196,7 @@ export default {
   padding-top: desktop-vw(95px);
   padding-bottom: desktop-vw(40px);
   background: var(--c-red-adidas);
-  background-image: url('/imgs/footer/background.png');
+  background-image: url('/imgs/footer/background.webp');
   background-repeat: no-repeat;
   background-size: 85% auto;
   background-position: right bottom;

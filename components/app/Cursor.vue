@@ -1,6 +1,7 @@
 <template>
   <div class="app-cursor">
-    <svgCursorInitial ref="cursorInitial" />
+    <svgCursorInitial v-if="!mouseDown" />
+    <svgCursorDown v-if="mouseDown" />
   </div>
 </template>
 
@@ -8,6 +9,11 @@
 import { gsap } from 'gsap'
 
 export default {
+  data() {
+    return {
+      mouseDown: false,
+    }
+  },
   mounted() {
     this.xTo = gsap.quickTo(this.$el, 'x', {
       duration: 0.1,
@@ -17,15 +23,24 @@ export default {
     })
 
     document.addEventListener('mousemove', this.onMouseMove)
+    document.addEventListener('mousedown', this.onMouseDown)
+    document.addEventListener('mouseup', this.onMouseUp)
   },
   beforeDestroy() {
     document.removeEventListener('mousemove', this.onMouseMove)
+    document.removeEventListener('mousedown', this.onMouseDown)
+    document.removeEventListener('mouseup', this.onMouseUp)
   },
   methods: {
+    onMouseDown() {
+      this.mouseDown = true
+    },
+    onMouseUp() {
+      this.mouseDown = false
+    },
     onMouseMove(e) {
       this.xTo(e.clientX)
       this.yTo(e.clientY)
-      //   console.log('here', e)
     },
   },
 }

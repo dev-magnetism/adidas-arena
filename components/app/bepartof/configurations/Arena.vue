@@ -1,12 +1,86 @@
 <template>
   <div class="app-be-part-of-configurations-arena">
     <div class="app-be-part-of-configurations-arena__inner grid-inner">
-      <nuxt-picture
-        alt="test"
-        class="arena"
-        format="webp"
-        src="/imgs/configuration.png"
-      ></nuxt-picture>
+      <div class="app-be-part-of-configurations-arena__visuals">
+        <nuxt-img
+          class="app-be-part-of-configurations-arena__visual"
+          alt="arena-base"
+          format="webp"
+          src="/imgs/configurations/base.webp"
+        />
+
+        <transition-group
+          name="transition-arena"
+          tag="div"
+          mode="out-in"
+          :duration="1000"
+        >
+          <nuxt-img
+            v-if="arenaDisposition === 'sport'"
+            key="sport"
+            class="app-be-part-of-configurations-arena__visual"
+            alt="arena-sport"
+            format="webp"
+            src="/imgs/configurations/sport.webp"
+          />
+          <nuxt-img
+            v-if="arenaDisposition === 'scene_fond_gradin'"
+            key="scene_fond_siege"
+            class="app-be-part-of-configurations-arena__visual"
+            alt="arena-scene_fond_siege"
+            format="webp"
+            src="/imgs/configurations/scene_fond_siege.webp"
+          />
+          <nuxt-img
+            v-if="arenaDisposition === 'scene_fond_fosse'"
+            key="scene_fond_fosse"
+            class="app-be-part-of-configurations-arena__visual"
+            alt="arena-scene_fond_fosse"
+            format="webp"
+            src="/imgs/configurations/scene_fond_fosse.webp"
+          />
+          <nuxt-img
+            v-if="arenaDisposition === 'scene_centrale_gradin'"
+            key="scene_central_siege"
+            class="app-be-part-of-configurations-arena__visual"
+            alt="arena-scene_central_siege"
+            format="webp"
+            src="/imgs/configurations/scene_central_siege.webp"
+          />
+          <nuxt-img
+            v-if="arenaDisposition === 'scene_centrale_fosse'"
+            key="scene_central_fosse"
+            class="app-be-part-of-configurations-arena__visual"
+            alt="arena-scene_central_fosse"
+            format="webp"
+            src="/imgs/configurations/scene_central_fosse.webp"
+          />
+          <nuxt-img
+            v-if="
+              arenaDisposition === 'sport' ||
+              arenaDisposition === 'scene_centrale_fosse' ||
+              arenaDisposition === 'scene_centrale_gradin'
+            "
+            key="gradin_top"
+            class="app-be-part-of-configurations-arena__visual"
+            alt="arena-gradin_top"
+            format="webp"
+            src="/imgs/configurations/gradin_top.webp"
+          />
+          <nuxt-img
+            v-if="
+              arenaDisposition === 'scene_fond_fosse' ||
+              arenaDisposition === 'scene_fond_gradin'
+            "
+            key="gradin_top_opacity"
+            class="app-be-part-of-configurations-arena__visual"
+            alt="arena-gradin_top_opacity"
+            format="webp"
+            src="/imgs/configurations/gradin_top_opacity.webp"
+          />
+        </transition-group>
+      </div>
+
       <ERichText
         class="app-be-part-of-configurations-arena__title"
         :content="contents.title"
@@ -140,21 +214,34 @@ export default {
     return {
       currentIndex: 0,
       direction: 'next',
+      arenaDisposition: 'sport',
+      // sport
+      // scene_centrale_fosse
+      // scene_fond_fosse
+      // scene_centrale_gradin
+      // scene_fond_gradin
     }
   },
   mounted() {},
   methods: {
     onLeftClick() {
       this.direction = 'previous'
+      console.log(this.contents)
       if (this.currentIndex === 0)
         this.currentIndex = this.contents.items.length - 1
       else this.currentIndex--
+
+      this.arenaDisposition =
+        this.contents.items[this.currentIndex].arena_disposition
     },
     onRightClick() {
       this.direction = 'next'
       if (this.currentIndex === this.contents.items.length - 1)
         this.currentIndex = 0
       else this.currentIndex++
+
+      this.arenaDisposition =
+        this.contents.items[this.currentIndex].arena_disposition
     },
   },
 }
@@ -173,27 +260,47 @@ export default {
     padding-bottom: mobile-vw(185px);
   }
 
-  .arena {
+  &__visuals {
     grid-column: 7 / span 6;
     position: absolute;
-    align-self: center;
-    transform: rotate(15deg);
-    width: 95%;
-    aspect-ratio: 600 / 765;
+    top: 50%;
+    width: 80%;
+    display: block;
+    aspect-ratio: 580 / 785;
+    transform: translate(0%, -50%) rotate(15deg);
+  }
 
-    @include mobile {
-      grid-row: 3;
-      position: relative;
-      grid-column: 1 / span 6;
-      aspect-ratio: 285 / 380;
-      width: 85%;
-      justify-self: center;
-      margin-bottom: mobile-vw(50px);
+  &__visual {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+
+    &.transition-arena-enter-active,
+    &.transition-arena-leave-active {
+      transition: opacity 0.55s var(--ease-out-cubic);
     }
 
-    img {
-      height: 100%;
-      width: auto;
+    &.transition-arena-enter-active {
+      transition-delay: 0.45s;
+    }
+
+    &.transition-arena-enter {
+      opacity: 0;
+    }
+
+    &.transition-arena-enter-to {
+      opacity: 1;
+    }
+
+    &.transition-arena-leave {
+      opacity: 1;
+    }
+
+    &.transition-arena-leave-to {
+      opacity: 0;
     }
   }
 
@@ -280,8 +387,8 @@ export default {
   &__controller {
     grid-column: 2 / span 3;
     border: 1px solid var(--c-white);
-    margin-top: desktop-vw(130px);
-    margin-bottom: desktop-vw(300px);
+    margin-top: desktop-vw(80px);
+    margin-bottom: desktop-vw(135px);
 
     @include mobile {
       grid-column: 1 / span 6;
@@ -295,6 +402,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+      cursor: pointer;
 
       @include mobile {
         width: mobile-vw(42px);
