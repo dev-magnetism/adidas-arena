@@ -64,6 +64,10 @@ export default {
   position: relative;
   margin-bottom: desktop-vw(-120px);
 
+  @include mobile {
+    margin-bottom: mobile-vw(100px);
+  }
+
   &__f-row {
     &__content {
       grid-column: 2 / span 5;
@@ -72,9 +76,19 @@ export default {
       flex-direction: column;
       width: 95%;
 
+      @include mobile {
+        grid-row: 1;
+        grid-column: 1 / span 6;
+        width: 100%;
+      }
+
       &__title {
         text-transform: uppercase;
         margin-bottom: desktop-vw(20px);
+
+        @include mobile {
+          margin-bottom: mobile-vw(25px);
+        }
       }
       &__text {
         text-transform: uppercase;
@@ -90,6 +104,17 @@ export default {
       left: columns(0);
       position: relative;
       margin-top: desktop-vw(80px);
+
+      @include mobile {
+        position: absolute;
+        grid-column: 1 / span 4;
+        top: mobile-vw(260px);
+        grid-row: 2;
+        aspect-ratio: 195/235;
+        transform: rotate(-4deg);
+        left: 0;
+        margin-top: 0px;
+      }
     }
   }
 
@@ -102,11 +127,24 @@ export default {
       width: 100%;
       margin-top: desktop-vw(80px);
 
-      &__title {
-        margin-bottom: desktop-vw(30px);
+      @include mobile {
+        grid-row: 3;
+        grid-column: 1 / span 6;
       }
-      &__text {
+
+      &__title.H4 {
+        margin-bottom: desktop-vw(30px);
+
+        @include mobile {
+          margin-bottom: mobile-vw(30px);
+          width: 80%;
+          margin-left: auto;
+          text-align: right;
+        }
+      }
+      &__text.app-element-rich-text {
         width: 80%;
+        margin-left: auto;
 
         .P2.wysiwyg-text {
           @include font-adihausDIN-medium();
@@ -117,13 +155,23 @@ export default {
     &__visual {
       grid-column: 2 / span 5;
       grid-row: 2;
-      //   transform: rotate(3deg);
       aspect-ratio: 545/670;
       width: 100%;
       position: relative;
       top: -60%;
       transform: rotate(-4deg);
       width: 105%;
+
+      @include mobile {
+        top: 0;
+        grid-column: 3 / span 4;
+        transform: rotate(6deg);
+        width: 100%;
+        right: var(--layout-margin);
+        aspect-ratio: 230/280;
+        margin-top: mobile-vw(80px);
+        margin-bottom: mobile-vw(185px);
+      }
     }
   }
 }

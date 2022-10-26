@@ -2,7 +2,7 @@
   <main class="page-be-part-of-configurations">
     <AppBepartofConfigurationsIntroduction :contents="contentIntroduction" />
     <AppBepartofConfigurationsArena :contents="contentArena" />
-    <!-- <AppContactQuestion :contents="contentContactQuestion" /> -->
+    <AppContactQuestion :contents="contentContactQuestion" />
     <AppFooter :contents="app" :logos="partners.data" />
   </main>
 </template>

@@ -25,13 +25,26 @@ export default {
   position: relative;
   row-gap: 0;
 
+  @include mobile {
+    margin-bottom: mobile-vw(130px);
+  }
+
   &__title {
     grid-column: 4 / span 6;
     text-align: center;
 
+    @include mobile {
+      grid-column: 1 / span 6;
+    }
+
     .H2.wysiwyg-text {
       font-size: desktop-vw(100px);
       line-height: desktop-vw(120px);
+
+      @include mobile {
+        font-size: mobile-vw(72px);
+        line-height: mobile-vw(88px);
+      }
 
       .app-element-lottie-word.Cercle_3 {
         svg {
@@ -56,8 +69,16 @@ export default {
     justify-content: center;
     margin-top: desktop-vw(90px);
 
+    @include mobile {
+      grid-column: 1 / span 6;
+    }
+
     .app-atoms-cta {
       width: 75%;
+
+      @include mobile {
+        width: 100%;
+      }
     }
   }
 }
