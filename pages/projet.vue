@@ -4,9 +4,9 @@
       <AppProjetIntroduction :contents="contentIntroduction" />
       <AppProjetCatchPhrase :contents="contentCatchphrase" />
       <AppProjetGallery :contents="contentGallery" />
-      <AppProjetWorkProgress />
+      <!-- <AppProjetWorkProgress /> -->
       <AppProjetPlan :contents="contentPlan" />
-      <AppProjetTwoColumns :contents="contentTwoColumns" />
+      <!-- <AppProjetTwoColumns :contents="contentTwoColumns" /> -->
       <AppFooter :contents="app" :logos="partners.data" />
     </div>
   </main>
@@ -123,8 +123,16 @@ export default {
   // background: black;
   padding-top: desktop-vw(200px);
 
+  @include mobile {
+    padding-top: mobile-vw(80px);
+  }
+
   .app-footer {
     margin-top: desktop-vw(80px);
+
+    @include mobile {
+      margin-top: mobile-vw(130px);
+    }
   }
 }
 </style>

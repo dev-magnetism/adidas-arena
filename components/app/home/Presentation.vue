@@ -73,6 +73,8 @@ export default {
     },
   },
   mounted() {
+    if (this.$device.isMobile) return
+
     gsap.fromTo(
       this.$refs.pictureCorner.$el,
       {

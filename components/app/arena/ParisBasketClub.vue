@@ -37,6 +37,7 @@
       />
     </EParallax>
     <ELottie
+      v-if="!$device.isMobile"
       id="Fleche_2"
       start="top bottom-=15%"
       class="app-arena-paris-basket-club__lottie-arrow"
@@ -110,6 +111,13 @@ export default {
     align-items: center;
     justify-content: center;
 
+    @include mobile {
+      aspect-ratio: 64/64;
+      width: 70%;
+      grid-column: 5 / span 2;
+      top: mobile-vw(25px);
+    }
+
     @include fake-transparent();
 
     picture {
@@ -129,6 +137,12 @@ export default {
     transform: rotate(-6deg);
     margin-bottom: desktop-vw(300px);
 
+    @include mobile {
+      grid-column: 1 / span 4;
+      aspect-ratio: 210 / 260;
+      margin-bottom: mobile-vw(140px);
+    }
+
     picture {
       @include noise();
     }
@@ -143,7 +157,6 @@ export default {
   }
   &__visual-without-frame {
     position: absolute;
-    top: 0;
     left: 0;
     grid-column: 5 / span 3;
     aspect-ratio: 280 / 380;
@@ -152,6 +165,12 @@ export default {
     left: 0;
     transform: rotate(2deg);
 
+    @include mobile {
+      grid-column: 4 / span 3;
+      top: mobile-vw(180px);
+      aspect-ratio: 150 / 205;
+    }
+
     picture {
       @include noise();
     }
@@ -159,6 +178,11 @@ export default {
 
   &__content {
     grid-column: 9 / span 4;
+
+    @include mobile {
+      grid-row: 2;
+      grid-column: 1 / span 6;
+    }
 
     &__subtitle,
     &__paragraph.app-element-rich-text {
@@ -177,6 +201,10 @@ export default {
 
     .app-atoms-link {
       margin-top: desktop-vw(50px);
+
+      @include mobile {
+        margin-top: mobile-vw(25px);
+      }
     }
 
     .P2 {

@@ -22,7 +22,12 @@
       </TP2>
       <AtomsCTA class="partners-apparition">Devenir partenaire</AtomsCTA>
     </div>
-    <EGridLogos :logos="contents.list" class="app-arena-partners__grid-logos" />
+    <EGridLogos
+      :cols="!$device.isMobile ? 6 : 4"
+      :rows="!$device.isMobile ? 7 : 8"
+      :logos="contents.list"
+      class="app-arena-partners__grid-logos"
+    />
     <EPartnersTotal :total="contents.list.length" />
   </div>
 </template>
@@ -38,6 +43,8 @@ export default {
     },
   },
   mounted() {
+    if (this.$device.isMobile) return
+
     const els = this.$el.querySelectorAll('.partners-apparition')
 
     els.forEach((el, index) => {
@@ -85,8 +92,17 @@ export default {
   margin-bottom: desktop-vw(140px);
   margin-top: desktop-vw(130px);
 
+  @include mobile {
+    margin-top: mobile-vw(70px);
+  }
+
   &__content {
     grid-column: 2 / span 6;
+
+    @include mobile {
+      grid-row: 1;
+      grid-column: 1 / span 6;
+    }
 
     .app-atoms-cta {
       .P2 {
@@ -94,6 +110,11 @@ export default {
         font-size: desktop-vw(24px);
         line-height: desktop-vw(32px);
         letter-spacing: 0.04em;
+
+        @include mobile {
+          font-size: mobile-vw(24px);
+          line-height: mobile-vw(32px);
+        }
       }
     }
   }
@@ -101,19 +122,36 @@ export default {
   &__title {
     margin-bottom: desktop-vw(25px);
   }
+
   &__principal-paragraph.P2 {
     margin-bottom: desktop-vw(25px);
     width: 50%;
     text-transform: uppercase;
     opacity: 0.8;
+
+    @include mobile {
+      width: 100%;
+      margin-bottom: mobile-vw(25px);
+    }
   }
+
   &__secondary-paragraph.P2 {
     margin-bottom: desktop-vw(50px);
     width: 52.5%;
     opacity: 0.8;
+
+    @include mobile {
+      width: 100%;
+      margin-bottom: mobile-vw(30px);
+    }
   }
+
   .app-atoms-cta {
     width: 52.5%;
+
+    @include mobile {
+      width: 100%;
+    }
 
     &__text.P2 {
       @include font-adihausDIN-cn-bold();
@@ -126,6 +164,16 @@ export default {
     top: desktop-vw(260px);
     left: 5%;
     width: 95%;
+
+    @include mobile {
+      grid-row: 2;
+      grid-column: 1 / span 6;
+      left: 0;
+      position: relative;
+      top: 0px;
+      width: 100%;
+      margin-top: mobile-vw(80px);
+    }
   }
 }
 </style>

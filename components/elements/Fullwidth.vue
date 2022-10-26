@@ -22,12 +22,14 @@ export default {
     },
   },
   mounted() {
+    if (this.$device.isMobile) return
+
     gsap.to(this.$refs.picture.$el, {
       yPercent: -8.5,
       ease: 'none',
       scrollTrigger: {
         trigger: this.$el,
-        scrub: true,
+        scrub: 0.25,
       },
     })
   },
@@ -42,13 +44,22 @@ export default {
   overflow: hidden;
   @include noise();
 
+  @include mobile {
+    aspect-ratio: 375 / 300;
+    margin-top: mobile-vw(95px);
+  }
+
   &::before {
     content: '';
     opacity: 0.1;
   }
 
   picture {
-    transform: translateY(10%) scale(1.2);
+    transform: scale(1.2);
+
+    @include mobile {
+      transform: none;
+    }
   }
 }
 </style>

@@ -56,5 +56,9 @@ export default {
   z-index: 10000;
   pointer-events: none;
   overflow: hidden;
+
+  @include mobile {
+    display: none;
+  }
 }
 </style>

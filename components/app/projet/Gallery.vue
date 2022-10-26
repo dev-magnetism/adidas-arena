@@ -50,6 +50,7 @@ export default {
 <style lang="scss">
 .app-projet-gallery {
   margin-top: desktop-vw(230px);
+
   &__item {
     grid-column: span 6;
 
@@ -57,6 +58,10 @@ export default {
       display: block;
       aspect-ratio: 670 / 680;
       position: relative;
+
+      @include mobile {
+        aspect-ratio: 345 / 350;
+      }
 
       @include noise();
     }
@@ -66,8 +71,19 @@ export default {
       justify-content: space-between;
       margin-top: desktop-vw(35px);
 
+      @include mobile {
+        margin-top: mobile-vw(25px);
+        flex-direction: column;
+      }
+
       .P1 {
         width: 65%;
+
+        @include mobile {
+          width: 70%;
+          margin-left: auto;
+          margin-top: mobile-vw(20px);
+        }
       }
     }
 
@@ -76,12 +92,23 @@ export default {
         font-size: desktop-vw(48px);
         line-height: desktop-vw(42px);
         letter-spacing: -0.04em;
+
+        @include mobile {
+          font-size: mobile-vw(40px);
+          line-height: mobile-vw(40px);
+        }
       }
       .H4 {
         font-size: desktop-vw(28px);
         line-height: desktop-vw(36px);
         letter-spacing: -0.04em;
         margin-top: desktop-vw(10px);
+
+        @include mobile {
+          font-size: mobile-vw(28px);
+          line-height: mobile-vw(28px);
+          margin-top: mobile-vw(10px);
+        }
       }
     }
   }

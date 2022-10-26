@@ -27,8 +27,8 @@
     </div>
     <EGridLogos
       :logos="contents.list"
-      :cols="$mq !== 'sm' ? 6 : 4"
-      :rows="$mq !== 'sm' ? 7 : 8"
+      :cols="!$device.isMobile ? 6 : 4"
+      :rows="!$device.isMobile ? 7 : 8"
       class="app-home-partners__grid-logos"
     />
     <EPartnersTotal :total="contents.list.length" />
@@ -46,6 +46,8 @@ export default {
     },
   },
   mounted() {
+    if (this.$device.isMobile) return
+
     const els = this.$el.querySelectorAll('.partners-apparition')
 
     els.forEach((el) => {
@@ -114,6 +116,11 @@ export default {
 
     @include mobile {
       margin-bottom: mobile-vw(30px);
+
+      .H1.wysiwyg-text {
+        font-size: mobile-vw(72px);
+        line-height: mobile-vw(78px);
+      }
     }
   }
 

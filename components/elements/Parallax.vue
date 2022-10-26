@@ -33,6 +33,8 @@ export default {
     },
   },
   mounted() {
+    if (this.$device.isMobile) return
+
     const y = this.$viewport.width * this.speed * 0.1
 
     this.setY = gsap.quickSetter(this.$refs.trigger, 'y', 'px')

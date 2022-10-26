@@ -78,6 +78,8 @@ export default {
     },
   },
   mounted() {
+    if (this.$device.isMobile) return
+
     gsap.fromTo(
       this.$refs.visualBigger,
       {
@@ -136,8 +138,17 @@ export default {
     flex-direction: column;
     width: 90%;
 
+    @include mobile {
+      grid-column: 1 / span 6;
+      width: 100%;
+    }
+
     .H2 {
       line-height: desktop-vw(110px);
+
+      @include mobile {
+        line-height: mobile-vw(78px);
+      }
     }
 
     .P2.wysiwyg-text {
@@ -146,8 +157,16 @@ export default {
       @include font-adihausDIN-bold();
       font-weight: 700;
 
+      @include mobile {
+        width: 65%;
+      }
+
       &:first-child {
         margin-top: desktop-vw(15px);
+
+        @include mobile {
+          margin-top: mobile-vw(20px);
+        }
       }
     }
   }
@@ -161,6 +180,14 @@ export default {
     margin-left: desktop-vw(50px);
     z-index: 2;
     transform: rotate(4deg);
+
+    @include mobile {
+      grid-row: 2;
+      grid-column: 2 / span 5;
+      margin-left: 0px;
+      margin-top: mobile-vw(65px);
+      aspect-ratio: 260 / 315;
+    }
 
     .app-element-framed-picture {
       height: 100%;
@@ -182,6 +209,13 @@ export default {
     height: auto;
     transform-origin: center center;
 
+    @include mobile {
+      grid-row: 3;
+      grid-column: 4 / span 2;
+      left: 0%;
+      aspect-ratio: 200/130;
+    }
+
     .app-element-kinesis {
       display: flex;
       justify-content: center;
@@ -201,6 +235,12 @@ export default {
     grid-column: 9 / span 3;
     margin-top: desktop-vw(100px);
     grid-row: 2;
+
+    @include mobile {
+      grid-column: 2 / span 5;
+      margin-top: mobile-vw(-25px);
+      grid-row: 4;
+    }
 
     .app-element-rich-text {
       .P2.wysiwyg-text {
@@ -223,6 +263,15 @@ export default {
     margin-top: desktop-vw(-25px);
     // transform-origin: right bottom;
 
+    @include mobile {
+      grid-row: 3;
+      width: 100%;
+      grid-column: 1 / span 4;
+      transform: translateY(-20%) rotate(-1.8deg);
+      margin-top: mobile-vw(0px);
+      margin-left: mobile-vw(0px);
+    }
+
     .app-element-kinesis {
       display: flex;
     }
@@ -236,12 +285,20 @@ export default {
       transform: scale(-1);
 
       margin-right: desktop-vw(20px);
+
+      @include mobile {
+        display: none;
+      }
     }
 
     picture {
       aspect-ratio: 595 / 740;
       width: 100%;
       display: block;
+
+      @include mobile {
+        aspect-ratio: 220 / 275;
+      }
     }
   }
 }

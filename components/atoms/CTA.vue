@@ -143,25 +143,6 @@ export default {
   &__text {
     position: relative;
     z-index: 1;
-
-    &::after {
-      content: '';
-      display: block;
-      width: 100%;
-      height: 2px;
-      position: absolute;
-      background: var(--color-underline);
-      bottom: -3px;
-      left: 0;
-      transform: scaleX(0);
-      transform-origin: left center;
-      transition: transform 0.4s var(--ease-out-cubic);
-      will-change: transform;
-
-      @include mobile {
-        transform: scaleX(1);
-      }
-    }
   }
 
   .P2,

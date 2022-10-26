@@ -311,6 +311,10 @@ export default {
   width: 100%;
   margin-top: desktop-vw(80px);
 
+  @include mobile {
+    margin-top: mobile-vw(80px);
+  }
+
   &__inner {
     position: sticky;
     top: 0;
@@ -322,9 +326,19 @@ export default {
     grid-column: 1 / span 4;
     margin-top: desktop-vw(50px);
 
+    @include mobile {
+      grid-row: 2;
+      grid-column: 1 / span 6;
+      margin-top: mobile-vw(0px);
+    }
+
     &__title {
       .H4 {
         line-height: desktop-vw(32px);
+
+        @include mobile {
+          line-height: mobile-vw(42px);
+        }
       }
     }
 
@@ -332,6 +346,11 @@ export default {
       margin-bottom: desktop-vw(25px);
       width: 65%;
       margin-top: desktop-vw(25px);
+
+      @include mobile {
+        margin-top: mobile-vw(25px);
+        margin-bottom: mobile-vw(25px);
+      }
     }
 
     &__paragraph.app-element-rich-text {
@@ -350,6 +369,14 @@ export default {
     transform: rotate(4deg);
     width: 107.5%;
     position: relative;
+
+    @include mobile {
+      grid-row: 1;
+      grid-column: 1 / span 6;
+      width: 90%;
+      aspect-ratio: 315/400;
+      left: 5%;
+    }
 
     &::after {
       content: '';

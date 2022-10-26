@@ -23,12 +23,24 @@ export default {
   position: relative;
   margin-top: desktop-vw(30px);
 
+  @include mobile {
+    margin-top: mobile-vw(120px);
+  }
+
   .app-element-rich-text {
     grid-column: 3 / span 8;
     text-align: center;
 
+    @include mobile {
+      grid-column: 1 / span 6;
+    }
+
     .H2.wysiwyg-text {
       line-height: desktop-vw(110px);
+
+      @include mobile {
+        line-height: mobile-vw(78px);
+      }
     }
 
     .app-element-lottie-word {
@@ -50,6 +62,13 @@ export default {
     width: 100%;
     aspect-ratio: 190 / 300;
     transform: translateY(-50%);
+
+    @include mobile {
+      grid-column: 5 / span 2;
+      left: 20%;
+      aspect-ratio: 80 / 175;
+      transform: translateY(-50%) rotate(-15deg);
+    }
   }
 }
 </style>
