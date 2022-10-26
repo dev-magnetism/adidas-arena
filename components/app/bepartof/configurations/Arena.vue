@@ -11,14 +11,14 @@
         class="app-be-part-of-configurations-arena__title"
         :content="contents.title"
       />
-
       <div class="app-be-part-of-configurations-arena__controller">
         <div class="app-be-part-of-configurations-arena__controller__f-r">
           <TP1
             class="app-be-part-of-configurations-arena__controller__f-r__title"
             color="beige"
-            >Configuration</TP1
           >
+            Configuration
+          </TP1>
           <transition-group
             tag="div"
             mode="out-in"
@@ -32,8 +32,9 @@
               :key="index"
               class="app-be-part-of-configurations-arena__controller__f-r__text"
               color="beige"
-              >{{ item.configuration }}</TH4
             >
+              {{ item.configuration }}
+            </TH4>
           </transition-group>
         </div>
         <div class="app-be-part-of-configurations-arena__controller__s-r">
@@ -43,8 +44,9 @@
             <TP1
               class="app-be-part-of-configurations-arena__controller__s-r__title"
               color="beige"
-              >CAPACITE TOTALE</TP1
             >
+              CAPACITE TOTALE
+            </TP1>
 
             <transition-group
               tag="div"
@@ -59,8 +61,9 @@
                 :key="index"
                 class="app-be-part-of-configurations-arena__controller__s-r__text"
                 color="beige"
-                >{{ item.capacite }}</TH4
               >
+                {{ item.capacite }}
+              </TH4>
             </transition-group>
           </div>
           <div
@@ -69,8 +72,9 @@
             <TP1
               class="app-be-part-of-configurations-arena__controller__s-r__title"
               color="beige"
-              >TYPE DE JAUGE</TP1
             >
+              TYPE DE JAUGE
+            </TP1>
             <transition-group
               tag="div"
               mode="out-in"
@@ -84,8 +88,9 @@
                 :key="index"
                 class="app-be-part-of-configurations-arena__controller__s-r__text"
                 color="beige"
-                >{{ item.jauge }}</TH4
               >
+                {{ item.jauge }}
+              </TH4>
             </transition-group>
           </div>
         </div>
@@ -99,8 +104,9 @@
           <TP1
             class="app-be-part-of-configurations-arena__controller__t-r__text"
             color="beige"
-            >{{ currentIndex + 1 }} - {{ array.length }}</TP1
           >
+            {{ currentIndex + 1 }} - {{ contents.items.length }}
+          </TP1>
           <div
             class="app-be-part-of-configurations-arena__controller__navigation right"
             @click="onRightClick()"
@@ -134,68 +140,20 @@ export default {
     return {
       currentIndex: 0,
       direction: 'next',
-      array: [
-        {
-          firstRow: {
-            title: 'Configuration 0',
-            text: 'Sport / bowl 360 0',
-          },
-          secondRow: [
-            {
-              title: 'CAPACITE TOTALE 0',
-              text: '8 500 0',
-            },
-            {
-              title: 'TYPE DE JAUGE 0',
-              text: 'LOREM IPSUM 0',
-            },
-          ],
-        },
-        {
-          firstRow: {
-            title: 'Configuration 1',
-            text: 'Sport / bowl 360 1',
-          },
-          secondRow: [
-            {
-              title: 'CAPACITE TOTALE 1',
-              text: '8 500 1',
-            },
-            {
-              title: 'TYPE DE JAUGE 1',
-              text: 'LOREM IPSUM 1',
-            },
-          ],
-        },
-        {
-          firstRow: {
-            title: 'Configuration 2',
-            text: 'Sport / bowl 360 2',
-          },
-          secondRow: [
-            {
-              title: 'CAPACITE TOTALE 2',
-              text: '8 500 2',
-            },
-            {
-              title: 'TYPE DE JAUGE 2',
-              text: 'LOREM IPSUM 2',
-            },
-          ],
-        },
-      ],
     }
   },
   mounted() {},
   methods: {
     onLeftClick() {
       this.direction = 'previous'
-      if (this.currentIndex === 0) this.currentIndex = this.array.length - 1
+      if (this.currentIndex === 0)
+        this.currentIndex = this.contents.items.length - 1
       else this.currentIndex--
     },
     onRightClick() {
       this.direction = 'next'
-      if (this.currentIndex === this.array.length - 1) this.currentIndex = 0
+      if (this.currentIndex === this.contents.items.length - 1)
+        this.currentIndex = 0
       else this.currentIndex++
     },
   },
