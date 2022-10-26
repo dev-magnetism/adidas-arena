@@ -322,9 +322,10 @@ export default {
     grid-column: 1 / span 4;
     margin-top: desktop-vw(50px);
 
-    &__title.H4 {
-      margin-bottom: desktop-vw(25px);
-      @include font-adihausDIN-cn-bold();
+    &__title {
+      .H4 {
+        line-height: desktop-vw(32px);
+      }
     }
 
     &__subtitle {

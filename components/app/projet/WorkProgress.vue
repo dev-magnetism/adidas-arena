@@ -315,6 +315,7 @@ export default {
         font-size: desktop-vw(18px);
         line-height: desktop-vw(18px);
         max-width: desktop-vw(150px);
+        text-transform: uppercase;
         @include font-adihausDIN-cn();
       }
     }
@@ -331,6 +332,10 @@ export default {
   &__bottom-description {
     grid-row: 3;
     grid-column: 10 / span 3;
+
+    .P2 {
+      text-transform: uppercase;
+    }
   }
 
   &__title {

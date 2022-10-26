@@ -126,7 +126,7 @@ export default {
   width: 100%;
   padding-top: desktop-vw(130px);
   position: relative;
-  padding-bottom: desktop-vw(600px);
+  padding-bottom: desktop-vw(675px);
 
   @include mobile {
     margin-top: mobile-vw(85px);
@@ -144,7 +144,7 @@ export default {
     width: 100%;
     transform: translateY(-50%) rotate(2deg);
     z-index: 1;
-    margin-top: desktop-vw(130px);
+    margin-top: desktop-vw(225px);
 
     @include mobile {
       position: relative;
@@ -177,7 +177,7 @@ export default {
     width: 100%;
     transform: rotate(-2deg);
     z-index: 0;
-    margin-top: desktop-vw(130px);
+    margin-top: desktop-vw(225px);
 
     @include mobile {
       position: relative;
@@ -203,7 +203,7 @@ export default {
     width: 100%;
     transform: rotate(5deg);
     z-index: 2;
-    margin-top: desktop-vw(130px);
+    margin-top: desktop-vw(225px);
 
     @include mobile {
       position: absolute;

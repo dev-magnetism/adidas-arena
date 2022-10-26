@@ -1,7 +1,7 @@
 <template>
   <div class="app-arena-gallery">
     <div class="app-arena-gallery__inner">
-      <TH2 weight="bold" class="app-arena-gallery__title">Gallerie</TH2>
+      <TH2 weight="bold" class="app-arena-gallery__title">Galerie</TH2>
     </div>
     <div class="app-arena-gallery__pictures">
       <AppArenaGalleryPicture
@@ -36,12 +36,12 @@ export default {
   data() {
     return {
       scroll: {
-        ease: 0.065,
+        ease: 0.04,
         current: 0,
         target: 0,
         last: 0,
-        speed: 2,
-        wheelSpeed: 3,
+        speed: 0.8,
+        wheelSpeed: 4,
       },
       pictureIsSelected: false,
       pictureSelected: null,

@@ -75,7 +75,7 @@ export default {
     position: absolute;
     left: 0;
     right: 0;
-    top: calc(100% + 2px);
+    top: calc(100%);
     height: 1px;
     background: var(--c-black);
     transform: scaleX(var(--scale));

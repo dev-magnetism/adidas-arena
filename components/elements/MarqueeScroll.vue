@@ -74,7 +74,7 @@ export default {
           x: this.inverted ? -this.$viewport.width : this.$viewport.width,
         },
         {
-          duration: 2,
+          duration: 4,
           x: 0,
           ease: 'expo.out',
           scrollTrigger: {

@@ -59,7 +59,7 @@ export default {
       gsap.fromTo(
         el,
         {
-          y: -75,
+          y: -40,
         },
         {
           y: 0,

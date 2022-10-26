@@ -51,7 +51,7 @@ export default {
       gsap.fromTo(
         el,
         {
-          y: -75,
+          y: -40,
         },
         {
           y: 0,
@@ -120,7 +120,7 @@ export default {
     }
   }
 
-  &__grid-logos {
+  &__grid-logos.app-element-grid-logos {
     grid-column: 7 / span 6;
     position: absolute;
     top: desktop-vw(260px);

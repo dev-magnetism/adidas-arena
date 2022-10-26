@@ -92,7 +92,7 @@ export default {
 
 <style lang="scss">
 .page-be-part-of-hospitalite {
-  margin-top: desktop-vw(475px);
+  margin-top: desktop-vw(620px);
 
   .app-two-columns-stick {
     .app-element-lottie-word {

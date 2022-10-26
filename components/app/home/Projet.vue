@@ -385,7 +385,7 @@ export default {
           },
           '>-75%'
         )
-        this.tl.addLabel('charsHeader', '<20%')
+        this.tl.addLabel('charsHeader', '<10%')
 
         this.tl.fromTo(
           this.split.chars,
@@ -449,7 +449,7 @@ export default {
             yPercent: 0,
             rotate: 0,
           },
-          '<+=100%'
+          '<+=0%'
         )
         this.tl.fromTo(
           '.app-home-projet__cta',
