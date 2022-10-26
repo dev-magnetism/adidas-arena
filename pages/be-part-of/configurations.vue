@@ -21,9 +21,14 @@ export default {
       limit: -1,
     })
 
+    const partners = await $directus.items('Partners').readByQuery({
+      limit: -1,
+    })
+
     return {
       app,
       content,
+      partners,
     }
   },
   data() {
