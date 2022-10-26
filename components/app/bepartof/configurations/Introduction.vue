@@ -77,6 +77,10 @@ export default {
       grid-row: 1;
       z-index: 1;
 
+      @include mobile {
+        grid-column: 1 / span 6;
+      }
+
       &__title {
       }
 
@@ -84,6 +88,10 @@ export default {
         text-transform: uppercase;
         margin-top: desktop-vw(15px);
         width: 65%;
+
+        @include mobile {
+          margin-top: mobile-vw(20px);
+        }
       }
     }
     &__visual {
@@ -94,6 +102,16 @@ export default {
       margin-top: desktop-vw(125px);
       transform: rotate(-4.8deg);
       grid-row: 1;
+
+      @include mobile {
+        grid-column: 2 / span 5;
+        left: 0;
+        top: 0;
+        grid-row: 2;
+        margin-top: mobile-vw(20px);
+        aspect-ratio: 270/320;
+        margin-bottom: mobile-vw(185px);
+      }
 
       picture {
         z-index: 0;
@@ -117,13 +135,27 @@ export default {
       grid-column: 9 / span 4;
       grid-row: 2;
 
+      @include mobile {
+        grid-column: 1 / span 6;
+        grid-row: 3;
+      }
+
       &__title {
+        @include mobile {
+          text-align: right;
+        }
       }
 
       &__text {
         margin-left: columns(1.35);
         margin-top: desktop-vw(30px);
         width: 65%;
+
+        @include mobile {
+          margin-top: mobile-vw(30px);
+          margin-left: auto;
+          width: 75%;
+        }
       }
     }
     &__visual {
@@ -135,6 +167,13 @@ export default {
       top: desktop-vw(-400px);
       grid-row: 2;
       width: 100%;
+
+      @include mobile {
+        grid-column: 1 / span 4;
+        top: 0;
+        aspect-ratio: 230/290;
+        top: mobile-vw(230px);
+      }
 
       picture {
         z-index: 0;

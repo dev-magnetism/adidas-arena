@@ -256,7 +256,8 @@ export default {
   overflow-x: hidden;
 
   @include mobile {
-    padding-top: mobile-vw(65px);
+    margin-bottom: mobile-vw(150px);
+    padding-top: mobile-vw(60px);
     padding-bottom: mobile-vw(185px);
   }
 
@@ -268,6 +269,14 @@ export default {
     display: block;
     aspect-ratio: 580 / 785;
     transform: translate(0%, -50%) rotate(15deg);
+
+    @include mobile {
+      grid-column: 1 / span 6;
+      grid-row: 3;
+      position: relative;
+      transform: translate(-50%, -50%) rotate(15deg);
+      left: 50%;
+    }
   }
 
   &__visual {
@@ -349,6 +358,7 @@ export default {
     @include mobile {
       grid-column: 1 / span 6;
       flex-direction: column;
+      margin-top: mobile-vw(75px);
     }
 
     .P1 {
@@ -375,6 +385,10 @@ export default {
   &__title.app-element-rich-text {
     grid-column: 1 / span 6;
 
+    @include mobile {
+      grid-row: 1;
+    }
+
     .H1 {
       color: var(--c-beige) !important;
 
@@ -392,6 +406,9 @@ export default {
 
     @include mobile {
       grid-column: 1 / span 6;
+      margin-top: mobile-vw(20px);
+      margin-bottom: mobile-vw(60px);
+      grid-row: 2;
     }
 
     &__navigation {

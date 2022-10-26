@@ -65,7 +65,7 @@ export default {
 
       @include mobile {
         grid-column: 4 / span 3;
-        margin-right: mobile-vw(0px);
+        margin-left: mobile-vw(0px);
       }
 
       > :first-child {

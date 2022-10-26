@@ -47,8 +47,17 @@ export default {
   position: relative;
   padding-bottom: desktop-vw(950px);
 
+  @include mobile {
+    padding-bottom: mobile-vw(80px);
+  }
+
   &__title {
     grid-column: 1 / span 5;
+
+    @include mobile {
+      grid-column: 1 / span 6;
+      grid-row: 1;
+    }
   }
 
   &__visual {
@@ -59,6 +68,14 @@ export default {
     top: desktop-vw(250px);
     transform: rotate(-2deg);
     @include noise();
+
+    @include mobile {
+      grid-column: 1 / span 4;
+      grid-row: 2;
+      position: relative;
+      top: 0;
+      margin-bottom: mobile-vw(150px);
+    }
   }
 
   &__framed-visual.app-element-framed-picture {
@@ -69,14 +86,33 @@ export default {
     transform: rotate(4deg);
     top: desktop-vw(550px);
     @include noise();
+
+    @include mobile {
+      grid-column: 4 / span 3;
+      grid-row: 2;
+      position: relative;
+      top: mobile-vw(180px);
+      padding: mobile-vw(8px);
+    }
   }
 
   &__text {
     margin-top: desktop-vw(150px);
     grid-column: 8 / span 4;
 
+    @include mobile {
+      grid-column: 1 / span 6;
+      grid-row: 3;
+      margin-top: mobile-vw(0px);
+    }
+
     .H4 {
       margin-bottom: desktop-vw(30px);
+
+      @include mobile {
+        margin-bottom: mobile-vw(40px);
+        text-align: right;
+      }
     }
 
     .P2 {
