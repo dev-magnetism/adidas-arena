@@ -115,6 +115,10 @@ export default {
 
   &__marquees {
     margin-bottom: desktop-vw(200px);
+
+    @include mobile {
+      margin-bottom: mobile-vw(100px);
+    }
   }
 }
 </style>
