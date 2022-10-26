@@ -18,9 +18,9 @@
       <nuxt-picture
         class="picture-absolute"
         provider="directus"
-        :src="contents.picture.src"
+        :src="contents.pictureFramed.src"
         format="webp"
-        :alt="contents.picture.alt"
+        :alt="contents.pictureFramed.alt"
       />
     </EFramedPicture>
     <div class="app-be-part-of-hospitalite-presentation__text">

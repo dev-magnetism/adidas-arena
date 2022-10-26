@@ -23,7 +23,7 @@ export default {
   },
   mounted() {
     gsap.to(this.$refs.picture.$el, {
-      yPercent: -6.5,
+      yPercent: -7.5,
       ease: 'none',
       scrollTrigger: {
         trigger: this.$el,
@@ -43,7 +43,7 @@ export default {
   @include noise();
 
   picture {
-    transform: translateY(10%) scale(1.35);
+    transform: translateY(10%) scale(1.2);
   }
 }
 </style>

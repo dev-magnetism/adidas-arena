@@ -377,7 +377,7 @@ export default {
     }
 
     &__submit {
-      border: 1px solid rgb(24 24 24 / 25%);
+      outline: 1px solid rgb(24 24 24 / 25%);
       width: desktop-vw(56px);
       height: desktop-vw(56px);
       display: flex;
