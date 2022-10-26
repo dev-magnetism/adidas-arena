@@ -8,7 +8,7 @@
     <ESlider :contents="contentSlider" />
     <AppContactQuestion :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
-    <AppFooter :contents="app" />
+    <AppFooter :contents="app" :logos="partners.data" />
   </main>
 </template>
 

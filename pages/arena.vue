@@ -4,7 +4,7 @@
     <EFullwidth :contents="contentFullwidth" />
     <AppArenaPartners :contents="contentPartners" />
     <AppArenaGallery :contents="contentGallerie" />
-    <AppFooter :contents="app" />
+    <AppFooter :contents="app" :logos="partners.data" />
   </main>
 </template>
 
@@ -36,10 +36,6 @@ export default {
       content,
       gallerie,
     }
-  },
-
-  mounted() {
-    console.log('fdfdsfs', this.gallerie)
   },
 
   computed: {

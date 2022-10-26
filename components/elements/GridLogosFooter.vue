@@ -1,17 +1,18 @@
 <template>
   <div class="app-element-grid-logos-footer">
     <div
-      v-for="(logo, index) in logos"
+      v-for="(logo, index) in contents"
       :key="index"
       :class="{
         big: logo.big,
       }"
       class="bloc"
     >
-      <img
-        v-if="index <= logos.length - 1"
-        :src="logos[index].src"
-        alt="test"
+      <nuxt-img
+        provider="directus"
+        :src="logo.logo_black_white"
+        :alt="logo.logo_alt"
+        format="webp"
       />
     </div>
   </div>
@@ -19,63 +20,14 @@
 
 <script>
 export default {
+  props: {
+    contents: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
-    return {
-      logos: [
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: true,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-        {
-          src: '/imgs/placeholder-logo-home.png',
-          big: false,
-        },
-      ],
-    }
+    return {}
   },
 }
 </script>

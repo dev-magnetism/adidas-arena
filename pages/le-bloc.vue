@@ -18,7 +18,7 @@
       </EMarqueeScroll>
     </div>
     <EFullwidth :contents="contentFullwidth" />
-    <AppFooter :contents="app" />
+    <AppFooter :contents="app" :logos="partners.data" />
   </main>
 </template>
 

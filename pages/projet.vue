@@ -7,7 +7,7 @@
       <AppProjetWorkProgress />
       <AppProjetPlan :contents="contentPlan" />
       <AppProjetTwoColumns :contents="contentTwoColumns" />
-      <AppFooter :contents="app" />
+      <AppFooter :contents="app" :logos="partners.data" />
     </div>
   </main>
 </template>

@@ -3,7 +3,7 @@
     <AppBepartofConfigurationsIntroduction :contents="contentIntroduction" />
     <AppBepartofConfigurationsArena :contents="contentArena" />
     <AppContactQuestion :contents="contentContactQuestion" />
-    <AppFooter :contents="app" />
+    <AppFooter :contents="app" :logos="partners.data" />
   </main>
 </template>
 

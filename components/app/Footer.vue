@@ -47,16 +47,29 @@
       </form>
       <div class="app-footer__links">
         <TP2 weight="bold" class="app-footer__links-title"> ADIDAS ARENA </TP2>
-        <ul class="app-footer__links__ul first-column">
-          <li><TP2 weight="bold">Accueil</TP2></li>
-          <li><TP2 weight="bold">Accueil</TP2></li>
-          <li><TP2 weight="bold">Accueil</TP2></li>
-          <li><TP2 weight="bold">Accueil</TP2></li>
-          <li><TP2 weight="bold">Accueil</TP2></li>
-        </ul>
+        <div class="app-footer__links__ul first-column">
+          <AtomsLink
+            v-for="(item, index) in contents.data.app_footer_links_left"
+            :key="index"
+            :href="item.app_footer_links_left_link"
+            :external="false"
+          >
+            <TP2 weight="bold">
+              {{ item.app_footer_links_left_text }}
+            </TP2>
+          </AtomsLink>
+        </div>
         <ul class="app-footer__links__ul second-column">
-          <li><TP2 weight="bold">Accueil</TP2></li>
-          <li><TP2 weight="bold">Accueil</TP2></li>
+          <AtomsLink
+            v-for="(item, index) in contents.data.app_footer_links_right"
+            :key="index"
+            :href="item.app_footer_links_right_link"
+            :external="false"
+          >
+            <TP2 weight="bold">
+              {{ item.app_footer_links_right_text }}
+            </TP2>
+          </AtomsLink>
         </ul>
       </div>
       <div class="app-footer__social-networks">
@@ -96,12 +109,16 @@
     </div>
     <div class="app-footer__partners">
       <TH2 class="app-footer__partners-title"> NOS PARTENAIREs </TH2>
-      <EGridLogosFooter />
+      <EGridLogosFooter :contents="logos" />
     </div>
     <div class="app-footer__bottom">
       <TP2> ©2022 - Tous droits réservés</TP2>
-      <TP2> Cookies</TP2>
-      <TP2> Mentions légales</TP2>
+      <AtomsLink href="#" :external="false">
+        <TP2> Cookies</TP2>
+      </AtomsLink>
+      <AtomsLink href="#" :external="false">
+        <TP2> Mentions légales</TP2>
+      </AtomsLink>
     </div>
   </div>
 </template>
@@ -114,6 +131,10 @@ export default {
     contents: {
       type: Object,
       default: () => {},
+    },
+    logos: {
+      type: Array,
+      default: () => [],
     },
   },
   data() {
@@ -131,7 +152,7 @@ export default {
     },
   },
   mounted() {
-    console.log(this.contents)
+    console.log('logos', this.logos)
     this.tl = gsap.timeline({
       paused: true,
     })
@@ -197,14 +218,14 @@ export default {
       margin-left: initial;
     }
 
+    a {
+      margin-left: desktop-vw(50px);
+    }
+
     .P2 {
       @include font-adihausDIN-cn();
       letter-spacing: -0.04em;
       text-transform: uppercase;
-
-      &:not(:first-child) {
-        margin-left: desktop-vw(50px);
-      }
 
       @include mobile {
         &:nth-child(1),
@@ -438,7 +459,8 @@ export default {
     }
 
     &__ul {
-      list-style: none;
+      display: flex;
+      flex-direction: column;
 
       &:not(:last-child) {
         @include mobile {
@@ -453,6 +475,7 @@ export default {
       .P2 {
         @include font-adihausDIN-cn-bold();
         text-transform: uppercase;
+        display: inline-block;
       }
 
       &:first-of-type {
@@ -463,7 +486,7 @@ export default {
         }
       }
 
-      li:not(:first-child) {
+      a:not(:first-child) {
         margin-top: desktop-vw(6px);
       }
     }

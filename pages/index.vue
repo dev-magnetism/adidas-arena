@@ -14,7 +14,7 @@
     </EMarqueeScroll>
     <AppHomeProjet :contents="contentProjet" />
     <AppHomePartners :contents="contentPartners" />
-    <AppFooter :contents="app" />
+    <AppFooter :contents="app" :logos="partners.data" />
   </main>
 </template>
 
