@@ -4,7 +4,7 @@
     <nuxt />
     <AppScene />
     <AppPreloadLayer />
-    <!-- <AppCursor /> -->
+    <AppCursor />
   </div>
 </template>
 
