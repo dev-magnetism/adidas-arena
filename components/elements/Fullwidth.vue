@@ -23,11 +23,11 @@ export default {
   },
   mounted() {
     gsap.to(this.$refs.picture.$el, {
-      yPercent: -7.5,
+      yPercent: -6.5,
       ease: 'none',
       scrollTrigger: {
         trigger: this.$el,
-        scrub: 0.5,
+        scrub: true,
       },
     })
   },
