@@ -64,6 +64,8 @@ export default {
           src: this.content.data.paris_basket_club_picture_logo,
           alt: this.content.data.paris_basket_club_picture_logo_alt,
         },
+        linkText: this.content.data.paris_basket_club_link_text,
+        linkHref: this.content.data.paris_basket_club_link,
       }
     },
     contentFullwidth() {

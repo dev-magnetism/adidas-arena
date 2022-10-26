@@ -56,7 +56,15 @@
         :content="contents.paragraph"
       />
 
-      <AtomsLinkUnderline>EN SAVOIR PLUS SUR LE CLUB</AtomsLinkUnderline>
+      <AtomsLink :external="true" :blank="true" :href="contents.linkHref">
+        <TP1
+          class="app-atoms-link-underline__text"
+          weight="bold"
+          :color="color"
+        >
+          {{ contents.linkText }}
+        </TP1>
+      </AtomsLink>
     </div>
   </div>
 </template>
@@ -167,7 +175,7 @@ export default {
       }
     }
 
-    .app-atoms-link-underline {
+    .app-atoms-link {
       margin-top: desktop-vw(50px);
     }
 
