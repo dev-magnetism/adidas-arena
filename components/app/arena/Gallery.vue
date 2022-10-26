@@ -5,13 +5,13 @@
     </div>
     <div class="app-arena-gallery__pictures">
       <AppArenaGalleryPicture
-        v-for="i in 25"
-        :key="i"
+        v-for="(item, index) in contents.items"
+        :key="index"
         ref="pictures"
-        :index="i - 1"
-        src="imgs/placeholder.png"
+        :index="index"
+        :src="item.picture"
         format="webp"
-        :alt="`placeholder-${i}`"
+        :alt="item.picture_alt"
       />
     </div>
     <span ref="target" class="app-arena-gallery__target" />
@@ -27,6 +27,12 @@ import useWebGL from '~/hooks/webgl'
 import useGUI from '~/hooks/gui'
 
 export default {
+  props: {
+    contents: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
       scroll: {

@@ -2,12 +2,11 @@
   <div class="app-arena-gallery-picture">
     <nuxt-picture
       ref="picture"
+      provider="directus"
       class="picture-absolute"
-      src="imgs/placeholder.png"
+      :src="src"
       format="webp"
-      alt="placeholder"
-      loading="lazy"
-      preload
+      :alt="alt"
     />
   </div>
 </template>
@@ -28,6 +27,14 @@ export default {
       type: Number,
       require: true,
       default: 0,
+    },
+    src: {
+      type: String,
+      default: 'null',
+    },
+    alt: {
+      type: String,
+      default: 'alt',
     },
   },
   data() {
@@ -174,9 +181,15 @@ export default {
       this.$parent.indexPictureSelected = null
     },
     async initTexture() {
-      this.currentSrc = this.$img(this.$refs.picture.src, {
-        format: 'webp',
-      })
+      this.currentSrc = this.$img(
+        this.$refs.picture.src,
+        {
+          format: 'webp',
+        },
+        {
+          provider: 'directus',
+        }
+      )
 
       this.texture = await this.loadTexture(this.currentSrc)
 
