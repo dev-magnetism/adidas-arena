@@ -151,7 +151,7 @@ export default {
       this.gui = gui.addFolder({ title: `Gallery` })
 
       this.gui.addInput(this.scroll, 'speed', {
-        min: 1,
+        min: 0.1,
         max: 20,
         step: 0.1,
         label: 'Auto-scroll speed',

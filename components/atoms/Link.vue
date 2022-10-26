@@ -34,25 +34,21 @@ export default {
     },
   },
   mounted() {
-    this.initHoverAnimation()
+    // this.initHoverAnimation()
   },
   methods: {
-    initHoverAnimation() {
-      this.$el.onmouseenter = this.$el.onmouseleave = (e) => {
-        console.log('here')
-        const tolerance = 10
-
-        const left = 0
-        const right = this.$el.clientWidth
-
-        let x = e.pageX - this.$el.offsetLeft
-
-        if (x - tolerance < left) x = left
-        if (x + tolerance > right) x = right
-
-        this.$el.style.setProperty('--x', `${x}px`)
-      }
-    },
+    // initHoverAnimation() {
+    //   this.$el.onmouseenter = this.$el.onmouseleave = (e) => {
+    //     console.log('here')
+    //     const tolerance = 10
+    //     const left = 0
+    //     const right = this.$el.clientWidth
+    //     let x = e.pageX - this.$el.offsetLeft
+    //     if (x - tolerance < left) x = left
+    //     if (x + tolerance > right) x = right
+    //     this.$el.style.setProperty('--x', `${x}px`)
+    //   }
+    // },
   },
 }
 </script>
@@ -83,7 +79,7 @@ export default {
     height: 1px;
     background: var(--c-black);
     transform: scaleX(var(--scale));
-    transform-origin: var(--x) 50%;
+    transform-origin: left center;
     transition: transform 0.3s cubic-bezier(0.51, 0.92, 0.24, 1);
     width: 100%;
   }

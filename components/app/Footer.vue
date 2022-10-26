@@ -517,7 +517,7 @@ export default {
       z-index: 1;
 
       path {
-        // transition: fill 0.5s 0.05s var(--ease-out-expo);
+        // transition: fill 0.25s 0.1s var(--ease-out-expo);
       }
     }
 
@@ -527,7 +527,7 @@ export default {
       }
       svg {
         path {
-          // fill: var(--c-white);
+          fill: var(--c-red-adidas);
         }
       }
     }
@@ -539,10 +539,10 @@ export default {
       left: 0;
       width: 100%;
       height: 100%;
-      background: var(--c-blue-adidas);
+      background: var(--c-black);
       transform-origin: top center;
       transform: scaleY(0);
-      transition: transform 0.85s var(--ease-out-expo);
+      transition: transform 0.65s var(--ease-out-expo);
     }
 
     &:last-child {

@@ -26,7 +26,7 @@ export default {
     },
     duration: {
       type: Number,
-      default: 20,
+      default: 40,
     },
     offset: {
       type: Number,
