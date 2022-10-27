@@ -4,7 +4,7 @@
     <nuxt />
     <AppScene />
     <AppPreloadLayer />
-    <AppCursor v-if="$device.isMobile" />
+    <AppCursor v-if="!$device.isMobile" />
   </div>
 </template>
 
