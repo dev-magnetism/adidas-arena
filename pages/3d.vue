@@ -28,6 +28,9 @@ export default {
       rotation: [0, 0, 0],
       polar: [0, Math.PI / 2],
       azimuth: { min: -Math.PI / 1.4, max: Math.PI * 1 },
+      directionalLightCastShadow: true,
+      modelCastShadow: true,
+      modelReceiveShadow: true,
       drag: {
         ease: 0.065,
         current: 0,
@@ -428,17 +431,17 @@ export default {
       const mesh = new THREE.Mesh(mergedGeometry)
       mesh.name = 'model'
 
-      mesh.castShadow = true
-      mesh.receiveShadow = true
+      mesh.castShadow = this.modelCastShadow
+      mesh.receiveShadow = this.modelReceiveShadow
 
       if (isShadow) {
         mesh.material = this.shadowMaterial.clone()
-        mesh.receiveShadow = true
         mesh.isShadow = true
       } else {
         mesh.material = this.modelMaterial.clone()
         mesh.isShadow = false
       }
+
       // mesh.material.side = THREE.DoubleSide
       mesh.material.polygonOffset = true
       mesh.material.polygonOffsetFactor = 1
@@ -468,6 +471,10 @@ export default {
       })
 
       this.guiDirectionalLight = gui.addFolder({ title: `Directional Light` })
+
+      this.guiDirectionalLight.addInput(this.directionalLight, 'castShadow', {
+        label: 'Cast shadow',
+      })
 
       this.guiDirectionalLight.addInput(this.directionalLight, 'position', {
         x: { step: 1, max: 1000, min: -1000 },
@@ -514,16 +521,6 @@ export default {
           this.directionalLight.shadow.camera.updateProjectionMatrix()
         })
 
-      // this.guiDirectionalLight.addInput(
-      //   this.directionalLight.shadow,
-      //   'radius',
-      //   {
-      //     min: 0,
-      //     max: 10,
-      //     step: 0.01,
-      //   }
-      // )
-
       this.guiDrag = gui.addFolder({ title: `Drag` })
 
       this.guiDrag.addInput(this, 'azimuth', {
@@ -550,9 +547,34 @@ export default {
       this.guiModel = gui.addFolder({ title: `Model` })
 
       this.guiModel
+        .addInput(this, 'modelCastShadow', {
+          label: 'Cast shadow',
+        })
+        .on('change', (e) => {
+          map.traverse((child) => {
+            if (child.isMesh && !child.isShadow) {
+              child.castShadow = e.value
+            }
+          })
+        })
+      this.guiModel
+        .addInput(this, 'modelReceiveShadow', {
+          label: 'Receive shadow',
+        })
+        .on('change', (e) => {
+          map.traverse((child) => {
+            if (child.isMesh && !child.isShadow) {
+              child.receiveShadow = e.value
+            }
+          })
+        })
+
+      this.guiModel.addSeparator()
+
+      this.guiModel
         .addInput(this.modelMaterial, 'color', {
           color: { type: 'float' },
-          label: 'Model color',
+          label: 'Color',
         })
         .on('change', (e) => {
           map.traverse((child) => {
@@ -567,7 +589,7 @@ export default {
           min: 0,
           max: 1,
           step: 0.01,
-          label: 'Model color intensity',
+          label: 'Color intensity',
         })
         .on('change', (e) => {
           map.traverse((child) => {
