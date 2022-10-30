@@ -20,7 +20,6 @@ import useGUI from '~/hooks/gui'
 
 import { ConditionalEdgesGeometry } from '~/assets/js/webgl/ConditionalEdgesGeometry'
 import { ConditionalEdgesShader } from '~/assets/js/webgl/ConditionalEdgesShader'
-import { ColoredShadowMaterial } from '~/assets/js/webgl/ColoredShadowMaterial'
 
 export default {
   data() {
@@ -48,7 +47,7 @@ export default {
     this.gltfLoader.setDRACOLoader(this.dracoLoader)
 
     this.gltfLoader.load(
-      '/models/map-4.gltf',
+      '/models/map.gltf',
       (gltf) => {
         this.initModel(gltf)
       },
@@ -74,12 +73,12 @@ export default {
     this.$raf.add(`3d`, this.onFrame)
   },
   beforeDestroy() {
-    const { map } = useWebGL()
+    const { map, scene } = useWebGL()
 
     map.traverse((item) => {
       if (item instanceof THREE.Mesh) {
-        // item.material.dispose()
-        // item.geometry.dispose()
+        item.material.dispose()
+        item.geometry.dispose()
 
         map.remove(item)
       }
@@ -91,10 +90,26 @@ export default {
     map.remove(this.basket)
     map.remove(this.road)
     map.remove(this.lamps)
+    map.remove(this.adidasArena)
+    map.remove(this.trees)
+    map.remove(this.tram)
 
     this.$raf.remove(`3d`, this.onFrame)
 
-    this.gui?.dispose()
+    this.directionalLight.dispose()
+    this.directionalLightHelper.dispose()
+    this.ambientLight.dispose()
+    this.directionalLightCameraHelper.dispose()
+
+    scene.remove(this.directionalLight)
+    scene.remove(this.directionalLightHelper)
+    scene.remove(this.ambientLight)
+    scene.remove(this.directionalLightCameraHelper)
+
+    this.guiAmbientLight?.dispose()
+    this.guiDirectionalLight?.dispose()
+    this.guiDrag?.dispose()
+    this.guiModel?.dispose()
   },
   methods: {
     onWheel(e) {
@@ -132,36 +147,64 @@ export default {
 
       console.log('initial model', this.model)
 
+      this.modelMaterial = new THREE.MeshLambertMaterial({
+        color: new THREE.Color(0xffffff),
+        emissive: new THREE.Color(0xffffff),
+        emissiveIntensity: 0.85,
+      })
+
+      this.shadowMaterial = new THREE.ShadowMaterial({ color: 0xff00e6 })
+
       this.initFloor()
       this.initBuildings()
-      // this.initRoad()
+      this.initAdidasArena()
+      this.initRoad()
       this.initCars()
-      // this.initBasket()
-      // this.initLamps()
+      this.initTram()
+      this.initTrees()
+      this.initBasket()
+      this.initLamps()
 
-      // this.directionalLight = new THREE.DirectionalLight(0xffffff, 50)
-      // this.directionalLight.castShadow = true
-      // this.directionalLight.position.set(-100.502, 20.13, 300.036)
-      // const helper = new THREE.DirectionalLightHelper(
-      //   this.directionalLight,
-      //   15,
-      //   new THREE.Color('#FF0000')
-      // )
-      // scene.add(helper)
-      // scene.add(this.directionalLight)
+      this.directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+      this.directionalLight.castShadow = true
+      this.directionalLight.position.set(-100, 150, 300)
 
-      const light = new THREE.PointLight(0xff0000, 1, 10)
-      light.position.set(50, 30, 50)
-      scene.add(light)
-      light.castShadow = true
+      this.directionalLightCameraHelper = new THREE.CameraHelper(
+        this.directionalLight.shadow.camera
+      )
+
+      this.directionalLightHelper = new THREE.DirectionalLightHelper(
+        this.directionalLight,
+        15,
+        new THREE.Color('#FF0000')
+      )
+
+      this.directionalLight.shadow.mapSize.width = 4096 // default
+      this.directionalLight.shadow.mapSize.height = 4096 // default
+      this.directionalLight.shadow.radius = 2
+
+      this.directionalLight.shadow.camera.near = 1
+      this.directionalLight.shadow.camera.far = 1000
+
+      this.directionalLight.shadow.camera.left = -65
+      this.directionalLight.shadow.camera.right = 65
+      this.directionalLight.shadow.camera.top = 65
+      this.directionalLight.shadow.camera.bottom = -65
+
+      console.log(this.directionalLight)
+
+      scene.add(this.directionalLightCameraHelper)
+      scene.add(this.directionalLightHelper)
+      scene.add(this.directionalLight)
+
+      this.ambientLight = new THREE.AmbientLight(0xff00e6)
+      scene.add(this.ambientLight)
 
       const cameraModel = gltf.cameras[0]
 
       camera.position.copy(cameraModel.position)
       camera.rotation.copy(cameraModel.rotation)
       camera.zoom = 15
-
-      console.log(camera)
 
       camera.updateProjectionMatrix()
 
@@ -175,17 +218,15 @@ export default {
       map.add(this.basket)
 
       const basket = this.mergeObject(this.model.getObjectByName('Basket'))
+      const basketShadow = this.mergeObject(basket, true)
 
       const edgeBasket = this.edgeObject(basket)
       const conditionalBasket = this.conditionnalObject(basket)
-      const shadowBasket = this.shadowObject(basket)
 
       this.basket.add(basket)
+      this.basket.add(basketShadow)
       this.basket.add(edgeBasket)
       this.basket.add(conditionalBasket)
-      this.basket.add(shadowBasket)
-
-      console.log(this.basket)
     },
 
     initCars() {
@@ -197,12 +238,10 @@ export default {
       const cars = this.mergeObject(this.model.getObjectByName('Cars'))
       const edgeCars = this.edgeObject(cars)
       const conditionalCars = this.conditionnalObject(cars)
-      // const shadowCars = this.shadowObject(cars)
 
       this.cars.add(cars)
       this.cars.add(edgeCars)
       this.cars.add(conditionalCars)
-      // this.cars.add(shadowCars)
     },
 
     initRoad() {
@@ -211,15 +250,15 @@ export default {
       this.road = new THREE.Group()
       map.add(this.road)
 
-      const road = this.mergeObject(this.model.getObjectByName('Road'))
+      const road = this.mergeObject(this.model.getObjectByName('Road'), true)
+      // const roadShadow = this.mergeObject(road, true)
       const edgeRoad = this.edgeObject(road)
       const conditionalRoad = this.conditionnalObject(road)
-      const shadowRoad = this.shadowObject(road)
 
       this.road.add(road)
+      // this.road.add(roadShadow)
       this.road.add(edgeRoad)
       this.road.add(conditionalRoad)
-      this.road.add(shadowRoad)
     },
 
     initLamps() {
@@ -231,12 +270,42 @@ export default {
       const lamps = this.mergeObject(this.model.getObjectByName('Lamps'))
       const edgeLamps = this.edgeObject(lamps)
       const conditionalLamps = this.conditionnalObject(lamps)
-      const shadowLamps = this.shadowObject(lamps)
 
       this.lamps.add(lamps)
       this.lamps.add(edgeLamps)
       this.lamps.add(conditionalLamps)
-      this.lamps.add(shadowLamps)
+    },
+
+    initTram() {
+      const { map } = useWebGL()
+
+      this.tram = new THREE.Group()
+      map.add(this.tram)
+
+      const tram = this.mergeObject(this.model.getObjectByName('Tram'))
+      // const tramShadow = this.mergeObject(tram, true)
+      const edgeTram = this.edgeObject(tram)
+      const conditionalTram = this.conditionnalObject(tram)
+
+      this.tram.add(tram)
+      // this.tram.add(tramShadow)
+      this.tram.add(edgeTram)
+      this.tram.add(conditionalTram)
+    },
+
+    initTrees() {
+      const { map } = useWebGL()
+
+      this.trees = new THREE.Group()
+      map.add(this.trees)
+
+      const trees = this.mergeObject(this.model.getObjectByName('Trees'))
+      const edgeTrees = this.edgeObject(trees)
+      const conditionalTrees = this.conditionnalObject(trees)
+
+      this.trees.add(trees)
+      this.trees.add(edgeTrees)
+      this.trees.add(conditionalTrees)
     },
 
     initFloor() {
@@ -246,14 +315,14 @@ export default {
       map.add(this.floor)
 
       const floor = this.mergeObject(this.model.getObjectByName('Floor'))
+      const shadowFloor = this.mergeObject(floor, true)
       const edgeFloor = this.edgeObject(floor)
-      // const conditionalFloor = this.conditionnalObject(floor)
-      // const shadowFloor = this.shadowObject(floor)
+      const conditionalFloor = this.conditionnalObject(floor)
 
       this.floor.add(floor)
+      this.floor.add(shadowFloor)
       this.floor.add(edgeFloor)
-      // this.floor.add(conditionalFloor)
-      // this.floor.add(shadowFloor)
+      this.floor.add(conditionalFloor)
     },
 
     initBuildings() {
@@ -266,36 +335,30 @@ export default {
         this.model.getObjectByName('Buildings')
       )
 
-      buildings.geometry.computeBoundingBox()
       const edgeBuildings = this.edgeObject(buildings)
-      // const conditionalBuildings = this.conditionnalObject(buildings)
-      // const shadowBuildings = this.shadowObject(buildings)
+      const conditionalBuildings = this.conditionnalObject(buildings)
 
       this.buildings.add(buildings)
       this.buildings.add(edgeBuildings)
-      // this.buildings.add(conditionalBuildings)
-      // this.buildings.add(shadowBuildings)
+      this.buildings.add(conditionalBuildings)
     },
 
-    shadowObject(object) {
-      const mesh = object.clone()
+    initAdidasArena() {
+      const { map } = useWebGL()
 
-      console.log(mesh)
+      this.adidasArena = new THREE.Group()
+      map.add(this.adidasArena)
 
-      mesh.material = new ColoredShadowMaterial({
-        color: new THREE.Color('#ff0000'),
-        shininess: 1.0,
-      })
+      const adidasArena = this.mergeObject(
+        this.model.getObjectByName('AdidasArena')
+      )
 
-      mesh.material.polygonOffset = true
-      mesh.material.polygonOffsetFactor = 1
-      mesh.material.polygonOffsetUnits = 1
-      mesh.receiveShadow = true
-      mesh.renderOrder = 2
+      const edgeAdidasArena = this.edgeObject(adidasArena)
+      const conditionalAdidasArena = this.conditionnalObject(adidasArena)
 
-      mesh.name = 'shadow'
-
-      return mesh
+      this.adidasArena.add(adidasArena)
+      this.adidasArena.add(edgeAdidasArena)
+      this.adidasArena.add(conditionalAdidasArena)
     },
 
     edgeObject(object) {
@@ -339,7 +402,7 @@ export default {
       return mesh
     },
 
-    mergeObject(object) {
+    mergeObject(object, isShadow) {
       object.updateMatrixWorld(true)
 
       const geometry = []
@@ -364,16 +427,23 @@ export default {
 
       const mesh = new THREE.Mesh(mergedGeometry)
       mesh.name = 'model'
+
       mesh.castShadow = true
       mesh.receiveShadow = true
-      mesh.material = new THREE.MeshBasicMaterial({
-        color: new THREE.Color('#ffffff'),
-      })
-      mesh.material.side = THREE.DoubleSide
+
+      if (isShadow) {
+        mesh.material = this.shadowMaterial.clone()
+        mesh.receiveShadow = true
+        mesh.isShadow = true
+      } else {
+        mesh.material = this.modelMaterial.clone()
+        mesh.isShadow = false
+      }
+      // mesh.material.side = THREE.DoubleSide
       mesh.material.polygonOffset = true
       mesh.material.polygonOffsetFactor = 1
       mesh.material.polygonOffsetUnits = 1
-      mesh.renderOrder = 2
+      mesh.renderOrder = 3
       mesh.material.needsUpdate = true
 
       return mesh
@@ -381,28 +451,161 @@ export default {
     initGUI() {
       const gui = useGUI()
 
-      this.gui = gui.addFolder({ title: `Model` })
+      const { map } = useWebGL()
 
-      this.gui.addInput(this, 'azimuth', {
+      this.guiAmbientLight = gui.addFolder({ title: `Ambient Light` })
+
+      this.guiAmbientLight.addInput(this.ambientLight, 'color', {
+        color: { type: 'float' },
+        label: 'Color',
+      })
+
+      this.guiAmbientLight.addInput(this.ambientLight, 'intensity', {
+        min: 0,
+        max: 1,
+        step: 0.01,
+        label: 'Intensity',
+      })
+
+      this.guiDirectionalLight = gui.addFolder({ title: `Directional Light` })
+
+      this.guiDirectionalLight.addInput(this.directionalLight, 'position', {
+        x: { step: 1, max: 1000, min: -1000 },
+        y: { step: 1, max: 1000, min: -1000 },
+        z: { step: 1, max: 1000, min: -1000 },
+        label: 'Position',
+      })
+
+      this.guiDirectionalLight.addInput(this.directionalLight, 'color', {
+        color: { type: 'float' },
+        label: 'Color',
+      })
+
+      this.guiDirectionalLight.addInput(this.directionalLight, 'intensity', {
+        min: 0,
+        max: 1,
+        step: 0.01,
+        label: 'Intensity',
+      })
+
+      this.guiDirectionalLight
+        .addInput(this.directionalLight.shadow.camera, 'near', {
+          min: 0,
+          max: 1,
+          step: 0.01,
+          label: 'Near',
+        })
+        .on('change', (e) => {
+          this.directionalLight.shadow.camera.near = e.value
+
+          this.directionalLight.shadow.camera.updateProjectionMatrix()
+        })
+
+      this.guiDirectionalLight
+        .addInput(this.directionalLight.shadow.camera, 'far', {
+          min: 0,
+          max: 1000,
+          step: 0.01,
+          label: 'Far',
+        })
+        .on('change', (e) => {
+          this.directionalLight.shadow.camera.far = e.value
+
+          this.directionalLight.shadow.camera.updateProjectionMatrix()
+        })
+
+      // this.guiDirectionalLight.addInput(
+      //   this.directionalLight.shadow,
+      //   'radius',
+      //   {
+      //     min: 0,
+      //     max: 10,
+      //     step: 0.01,
+      //   }
+      // )
+
+      this.guiDrag = gui.addFolder({ title: `Drag` })
+
+      this.guiDrag.addInput(this, 'azimuth', {
         min: Math.PI * -2,
         max: Math.PI * 2,
         label: 'Clamp rotation',
         step: 0.001,
       })
 
-      this.gui.addInput(this.drag, 'ease', {
+      this.guiDrag.addInput(this.drag, 'ease', {
         min: 0,
         max: 0.1,
         label: 'Drag ease',
         step: 0.0001,
       })
 
-      this.gui.addInput(this.drag, 'dragSpeed', {
+      this.guiDrag.addInput(this.drag, 'dragSpeed', {
         min: 0,
         max: 0.03,
         label: 'Drag speed',
         step: 0.0001,
       })
+
+      this.guiModel = gui.addFolder({ title: `Model` })
+
+      this.guiModel
+        .addInput(this.modelMaterial, 'color', {
+          color: { type: 'float' },
+          label: 'Model color',
+        })
+        .on('change', (e) => {
+          map.traverse((child) => {
+            if (child.isMesh && !child.isShadow) {
+              child.material.emissive = e.value
+            }
+          })
+        })
+
+      this.guiModel
+        .addInput(this.modelMaterial, 'emissiveIntensity', {
+          min: 0,
+          max: 1,
+          step: 0.01,
+          label: 'Model color intensity',
+        })
+        .on('change', (e) => {
+          map.traverse((child) => {
+            if (child.isMesh && !child.isShadow) {
+              child.material.emissiveIntensity = e.value
+            }
+          })
+        })
+
+      this.guiModel.addSeparator()
+
+      this.guiModel
+        .addInput(this.shadowMaterial, 'color', {
+          color: { type: 'float' },
+          label: 'Shadow color',
+        })
+        .on('change', (e) => {
+          map.traverse((child) => {
+            if (child.isMesh && child.isShadow) {
+              child.material.color = e.value
+            }
+          })
+        })
+
+      this.guiModel
+        .addInput(this.shadowMaterial, 'opacity', {
+          min: 0,
+          max: 1,
+          step: 0.01,
+          label: 'Shadow color opacity',
+        })
+        .on('change', (e) => {
+          map.traverse((child) => {
+            if (child.isMesh && child.isShadow) {
+              child.material.opacity = e.value
+            }
+          })
+        })
     },
     lerp(p1, p2, t) {
       return p1 + (p2 - p1) * t

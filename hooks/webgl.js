@@ -8,6 +8,10 @@ import useGUI from '~/hooks/gui'
 
 let gl
 
+// const guiObject = {
+//   shadowMapType: 0,
+// }
+
 class GL {
   constructor() {
     this.scene = new THREE.Scene()
@@ -29,6 +33,13 @@ class GL {
     })
 
     this.renderer.shadowMap.enabled = true
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    this.renderer.physicallyCorrectLights = true
+
+    //  basic: THREE.BasicShadowMap,
+    //  default: THREE.PCFShadowMap,
+    //  PCFSoft: THREE.PCFSoftShadowMap
+
     // this.renderer.outputEncoding = THREE.sRGBEncoding
     // this.renderer.toneMapping = THREE.LinearToneMapping
 
@@ -54,9 +65,6 @@ class GL {
 
     this.camera.position.z = 500
 
-    // this.axesHelper = new THREE.AxesHelper(35)
-    // this.scene.add(this.axesHelper)
-
     this.stats = new Stats()
 
     document.body.appendChild(this.stats.dom)
@@ -71,7 +79,7 @@ class GL {
 
     Viewport.events.on('resize', this.onWindowResize.bind(this))
 
-    // this.initGUI()
+    this.initGUI()
 
     Raf.add('webgl', this.update.bind(this), 1)
   }
@@ -81,52 +89,11 @@ class GL {
 
     this.gui = gui.addFolder({ title: `Global` })
 
-    this.guiCamera = this.gui.addFolder({ title: `Camera` })
-
-    this.guiCamera
-      .addInput(this.camera, 'position', {
-        x: { step: 1 },
-        y: { step: 1 },
-        z: { step: 1 },
-      })
-      .on('change', (e) => {
-        this.camera.position.set(e.value.x, e.value.y, e.value.z)
-
-        this.camera.updateProjectionMatrix()
-      })
-
-    this.guiCamera
-      .addInput(this.camera, 'rotation', {
-        x: { step: 0.01, min: -Math.PI * 2, max: Math.PI * 2 },
-        y: { step: 0.01, min: -Math.PI * 2, max: Math.PI * 2 },
-        z: { step: 0.01, min: -Math.PI * 2, max: Math.PI * 2 },
-      })
-      .on('change', (e) => {
-        this.camera.rotation.x = e.value.x
-        this.camera.rotation.y = e.value.y
-        this.camera.rotation.z = e.value.z
-
-        this.camera.updateProjectionMatrix()
-
-        console.log(this.camera)
-      })
-
-    this.guiCamera
-      .addInput(this.camera, 'zoom', {
-        min: 0,
-        max: 30,
-        step: 0.01,
-      })
-      .on('change', (e) => {
-        this.camera.zoom = e.value
-
-        this.camera.updateProjectionMatrix()
-      })
-
-    this.guiCamera
+    this.gui
       .addInput(this.camera, 'near', {
         min: -100,
         max: 100,
+        label: 'Camera near',
       })
       .on('change', (e) => {
         this.camera.near = e.value
@@ -134,10 +101,11 @@ class GL {
         this.camera.updateProjectionMatrix()
       })
 
-    this.guiCamera
+    this.gui
       .addInput(this.camera, 'far', {
         min: 100,
         max: 10000,
+        label: 'Camera far',
       })
       .on('change', (e) => {
         this.camera.far = e.value
@@ -145,19 +113,31 @@ class GL {
         this.camera.updateProjectionMatrix()
       })
 
-    // this.btnExportPosition = this.guiCamera
-    //   .addButton({
-    //     title: 'Export',
-    //     label: 'Position',
-    //   })
-    //   .on('click', () => {
-    //     console.log(camera)
-    //   })
+    this.gui.addSeparator()
 
-    // this.btnExportRotation = this.gui.addButton({
-    //   title: 'Export',
-    //   label: 'Rotation',
-    // })
+    this.gui.addInput(this.renderer, 'physicallyCorrectLights')
+
+    // this.gui
+    //   .addInput(guiObject, 'shadowMapType', {
+    //     options: {
+    //       default: 0,
+    //       basic: 1,
+    //       PCFSoft: 2,
+    //       VSMS: 3,
+    //     },
+    //   })
+    //   .on('change', (e) => {
+    //     console.log(e.value)
+    //     if (e.value === 0) {
+    //       this.renderer.shadowMap.type = THREE.PCFShadowMap
+    //     } else if (e.value === 1) {
+    //       this.renderer.shadowMap.type = THREE.BasicShadowMap
+    //     } else if (e.value === 2) {
+    //       this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    //     } else if (e.value === 3) {
+    //       this.renderer.shadowMap.type = THREE.VSMShadowMap
+    //     }
+    //   })
   }
 
   onWindowResize() {
@@ -187,7 +167,6 @@ class GL {
   }
 
   destroy() {
-    this.guiCamera?.dispose()
     this.gui?.dispose()
 
     Viewport.events.off('resize', this.onWindowResize.bind(this))
