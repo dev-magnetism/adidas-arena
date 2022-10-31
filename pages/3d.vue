@@ -31,6 +31,7 @@ export default {
       directionalLightCastShadow: true,
       modelCastShadow: true,
       modelReceiveShadow: true,
+      directionalLightIsStatic: false,
       drag: {
         ease: 0.065,
         current: 0,
@@ -102,12 +103,16 @@ export default {
     this.directionalLight.dispose()
     this.directionalLightHelper.dispose()
     this.ambientLight.dispose()
-    this.directionalLightCameraHelper.dispose()
 
-    scene.remove(this.directionalLight)
-    scene.remove(this.directionalLightHelper)
     scene.remove(this.ambientLight)
-    scene.remove(this.directionalLightCameraHelper)
+
+    if (this.directionalLightIsStatic) {
+      map.remove(this.directionalLight)
+      map.remove(this.directionalLightHelper)
+    } else {
+      scene.remove(this.directionalLight)
+      scene.remove(this.directionalLightHelper)
+    }
 
     this.guiAmbientLight?.dispose()
     this.guiDirectionalLight?.dispose()
@@ -144,7 +149,7 @@ export default {
     },
 
     initModel(gltf) {
-      const { camera, scene } = useWebGL()
+      const { camera } = useWebGL()
 
       this.model = gltf.scene
 
@@ -158,6 +163,7 @@ export default {
 
       this.shadowMaterial = new THREE.ShadowMaterial({ color: 0xff00e6 })
 
+      this.initLights()
       this.initFloor()
       this.initBuildings()
       this.initAdidasArena()
@@ -168,13 +174,26 @@ export default {
       this.initBasket()
       this.initLamps()
 
+      const cameraModel = gltf.cameras[0]
+
+      camera.position.copy(cameraModel.position)
+      camera.rotation.copy(cameraModel.rotation)
+      camera.zoom = 15
+
+      camera.updateProjectionMatrix()
+
+      this.initGUI()
+    },
+
+    initLights() {
+      const { scene, map } = useWebGL()
+
+      this.ambientLight = new THREE.AmbientLight(0xff00e6)
+      scene.add(this.ambientLight)
+
       this.directionalLight = new THREE.DirectionalLight(0xffffff, 1)
       this.directionalLight.castShadow = true
       this.directionalLight.position.set(-100, 150, 300)
-
-      this.directionalLightCameraHelper = new THREE.CameraHelper(
-        this.directionalLight.shadow.camera
-      )
 
       this.directionalLightHelper = new THREE.DirectionalLightHelper(
         this.directionalLight,
@@ -189,29 +208,18 @@ export default {
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
 
-      this.directionalLight.shadow.camera.left = -75
-      this.directionalLight.shadow.camera.right = 75
-      this.directionalLight.shadow.camera.top = 75
-      this.directionalLight.shadow.camera.bottom = -75
+      this.directionalLight.shadow.camera.left = -80
+      this.directionalLight.shadow.camera.right = 80
+      this.directionalLight.shadow.camera.top = 80
+      this.directionalLight.shadow.camera.bottom = -80
 
-      console.log(this.directionalLight)
-
-      scene.add(this.directionalLightCameraHelper)
-      scene.add(this.directionalLightHelper)
-      scene.add(this.directionalLight)
-
-      this.ambientLight = new THREE.AmbientLight(0xff00e6)
-      scene.add(this.ambientLight)
-
-      const cameraModel = gltf.cameras[0]
-
-      camera.position.copy(cameraModel.position)
-      camera.rotation.copy(cameraModel.rotation)
-      camera.zoom = 15
-
-      camera.updateProjectionMatrix()
-
-      this.initGUI()
+      if (this.directionalLightIsStatic) {
+        map.add(this.directionalLightHelper)
+        map.add(this.directionalLight)
+      } else {
+        scene.add(this.directionalLightHelper)
+        scene.add(this.directionalLight)
+      }
     },
 
     initBasket() {
@@ -454,7 +462,7 @@ export default {
     initGUI() {
       const gui = useGUI()
 
-      const { map } = useWebGL()
+      const { map, scene } = useWebGL()
 
       this.guiAmbientLight = gui.addFolder({ title: `Ambient Light` })
 
@@ -471,6 +479,26 @@ export default {
       })
 
       this.guiDirectionalLight = gui.addFolder({ title: `Directional Light` })
+
+      this.guiDirectionalLight
+        .addInput(this, 'directionalLightIsStatic', {
+          label: 'Directional Light Static',
+        })
+        .on('change', (e) => {
+          if (e.value) {
+            scene.remove(this.directionalLight)
+            scene.remove(this.directionalLightHelper)
+
+            map.add(this.directionalLight)
+            map.add(this.directionalLightHelper)
+          } else {
+            map.remove(this.directionalLight)
+            map.remove(this.directionalLightHelper)
+
+            scene.add(this.directionalLight)
+            scene.add(this.directionalLightHelper)
+          }
+        })
 
       this.guiDirectionalLight.addInput(this.directionalLight, 'castShadow', {
         label: 'Cast shadow',
