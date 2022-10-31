@@ -482,7 +482,7 @@ export default {
 
       this.guiDirectionalLight
         .addInput(this, 'directionalLightIsStatic', {
-          label: 'Fix',
+          label: 'Static',
         })
         .on('change', (e) => {
           if (e.value) {
