@@ -189,10 +189,10 @@ export default {
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
 
-      this.directionalLight.shadow.camera.left = -65
-      this.directionalLight.shadow.camera.right = 65
-      this.directionalLight.shadow.camera.top = 65
-      this.directionalLight.shadow.camera.bottom = -65
+      this.directionalLight.shadow.camera.left = -75
+      this.directionalLight.shadow.camera.right = 75
+      this.directionalLight.shadow.camera.top = 75
+      this.directionalLight.shadow.camera.bottom = -75
 
       console.log(this.directionalLight)
 
