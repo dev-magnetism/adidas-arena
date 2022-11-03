@@ -8,20 +8,18 @@
     <ESlider :contents="contentSlider" />
     <AppContactQuestion :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
-    <AppFooter :contents="app" :logos="partners.data" />
+    <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import scroll from '@/mixins/scroll'
 
 export default {
   mixins: [scroll],
   async asyncData({ $directus }) {
-    const app = await $directus.items('App').readByQuery({
-      limit: -1,
-    })
-
     const content = await $directus.items('Hospitalite_page').readByQuery({
       limit: -1,
     })
@@ -30,15 +28,9 @@ export default {
       limit: -1,
     })
 
-    const partners = await $directus.items('Partners').readByQuery({
-      limit: -1,
-    })
-
     return {
-      app,
       content,
       slider,
-      partners,
     }
   },
   data() {
@@ -46,6 +38,10 @@ export default {
   },
 
   computed: {
+    ...mapState({
+      partnersContent: (state) => state.partnersContent,
+      appContent: (state) => state.appContent,
+    }),
     contentTwoColumns() {
       return {
         left: this.content.data.two_columns_left,
@@ -81,7 +77,7 @@ export default {
     contentContactNewsletter() {
       return {
         title: this.content.data.contact_newsletter,
-        placeholder: this.app.data.footer_input_placeholder,
+        placeholder: this.appContent.data.footer_input_placeholder,
       }
     },
   },

@@ -152,8 +152,6 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
     'nuxt-mq',
     // 'nuxt-runtime-compiler',
     [
@@ -180,9 +178,6 @@ export default {
   //     // token: process.env.DIRECTUS_STATIC_TOKEN,
   //   },
   // },
-
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
 
   render: {
     bundleRenderer: {

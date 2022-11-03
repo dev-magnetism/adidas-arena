@@ -58,11 +58,7 @@
       />
 
       <AtomsLink :external="true" :blank="true" :href="contents.linkHref">
-        <TP1
-          class="app-atoms-link-underline__text"
-          weight="bold"
-          :color="color"
-        >
+        <TP1 class="app-atoms-link-underline__text" weight="bold">
           {{ contents.linkText }}
         </TP1>
       </AtomsLink>

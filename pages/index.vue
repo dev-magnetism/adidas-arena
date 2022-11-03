@@ -14,11 +14,13 @@
     </EMarqueeScroll>
     <AppHomeProjet :contents="contentProjet" />
     <AppHomePartners :contents="contentPartners" />
-    <AppFooter :contents="app" :logos="partners.data" />
+    <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import scroll from '@/mixins/scroll'
 
 export default {
@@ -28,21 +30,15 @@ export default {
       limit: -1,
     })
 
-    const partners = await $directus.items('Partners').readByQuery({
-      limit: -1,
-    })
-
-    const app = await $directus.items('App').readByQuery({
-      limit: -1,
-    })
-
     return {
       content,
-      partners,
-      app,
     }
   },
   computed: {
+    ...mapState({
+      partnersContent: (state) => state.partnersContent,
+      appContent: (state) => state.appContent,
+    }),
     contentPresentation() {
       return {
         content: this.content.data.content,
@@ -59,7 +55,7 @@ export default {
         title: this.content.data.partners_title,
         subtitle: this.content.data.partners_subtitle,
         paragraph: this.content.data.partners_paragraph,
-        list: this.partners.data,
+        list: this.partnersContent.data,
       }
     },
     contentProjet() {

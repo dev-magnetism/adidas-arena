@@ -5,24 +5,17 @@
     <AppArenaGallery :contents="contentGallerie" />
     <AppContactQuestion :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
-    <AppFooter :contents="app" :logos="partners.data" />
+    <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import scroll from '@/mixins/scroll'
 
 export default {
   mixins: [scroll],
   async asyncData({ $directus }) {
-    const partners = await $directus.items('Partners').readByQuery({
-      limit: -1,
-    })
-
-    const app = await $directus.items('App').readByQuery({
-      limit: -1,
-    })
-
     const content = await $directus.items('Partenaire_page').readByQuery({
       limit: -1,
     })
@@ -32,14 +25,16 @@ export default {
     })
 
     return {
-      partners,
-      app,
       content,
       gallerie,
     }
   },
 
   computed: {
+    ...mapState({
+      partnersContent: (state) => state.partnersContent,
+      appContent: (state) => state.appContent,
+    }),
     contentGallerie() {
       return {
         items: this.gallerie.data,
@@ -48,7 +43,7 @@ export default {
     contentPartners() {
       return {
         title: this.content.data.partenaires_title,
-        list: this.partners.data,
+        list: this.partnersContent.data,
       }
     },
     contentContactQuestion() {
@@ -59,7 +54,7 @@ export default {
     contentContactNewsletter() {
       return {
         title: this.content.data.contact_newsletter,
-        placeholder: this.app.data.footer_input_placeholder,
+        placeholder: this.appContent.data.footer_input_placeholder,
       }
     },
     contentIntroduction() {

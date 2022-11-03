@@ -18,32 +18,24 @@
       </EMarqueeScroll>
     </div>
     <EFullwidth :contents="contentFullwidth" />
-    <AppFooter :contents="app" :logos="partners.data" />
+    <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import scroll from '@/mixins/scroll'
 
 export default {
   mixins: [scroll],
   async asyncData({ $directus }) {
-    const app = await $directus.items('App').readByQuery({
-      limit: -1,
-    })
-
     const content = await $directus.items('Le_Bloc_page').readByQuery({
       limit: -1,
     })
 
-    const partners = await $directus.items('Partners').readByQuery({
-      limit: -1,
-    })
-
     return {
-      app,
       content,
-      partners,
     }
   },
   data() {
@@ -51,6 +43,10 @@ export default {
   },
 
   computed: {
+    ...mapState({
+      partnersContent: (state) => state.partnersContent,
+      appContent: (state) => state.appContent,
+    }),
     contentFullwidth() {
       return {
         src: this.content.data.fullwidth_picture,

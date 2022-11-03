@@ -4,24 +4,18 @@
     <EFullwidth :contents="contentFullwidth" />
     <AppArenaPartners :contents="contentPartners" />
     <AppArenaGallery :contents="contentGallerie" />
-    <AppFooter :contents="app" :logos="partners.data" />
+    <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import scroll from '@/mixins/scroll'
 
 export default {
   mixins: [scroll],
   async asyncData({ $directus }) {
-    const partners = await $directus.items('Partners').readByQuery({
-      limit: -1,
-    })
-
-    const app = await $directus.items('App').readByQuery({
-      limit: -1,
-    })
-
     const content = await $directus.items('Arena_page').readByQuery({
       limit: -1,
     })
@@ -31,17 +25,19 @@ export default {
     })
 
     return {
-      partners,
-      app,
       content,
       gallerie,
     }
   },
 
   computed: {
+    ...mapState({
+      partnersContent: (state) => state.partnersContent,
+      appContent: (state) => state.appContent,
+    }),
     contentPartners() {
       return {
-        list: this.partners.data,
+        list: this.partnersContent.data,
         title: this.content.data.partners_title,
         subtitle: this.content.data.partners_subtitle,
         paragraph: this.content.data.partners_paragraph,
