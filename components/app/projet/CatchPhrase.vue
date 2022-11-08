@@ -1,9 +1,9 @@
 <template>
   <div class="app-projet__catch-phrase grid-inner">
     <ERichText :content="contents.catchphrase" :split="true" :scrub="true" />
-    <EParallax :speed="0" class="app-projet__catch-phrase__lottie">
+    <div class="app-projet__catch-phrase__lottie">
       <ELottie id="Fleche_Match" start="center bottom" end="bottom center" />
-    </EParallax>
+    </div>
   </div>
 </template>
 

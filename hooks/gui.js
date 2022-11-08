@@ -1,5 +1,6 @@
 import { Pane } from 'tweakpane'
 import * as EssentialsPlugin from '@tweakpane/plugin-essentials'
+import Viewport from '~/plugins/viewport'
 
 let gui
 
@@ -8,7 +9,11 @@ const useGUI = () => {
     gui = new Pane({ title: 'GUI', container: document.body })
     gui.registerPlugin(EssentialsPlugin)
 
-    // gui.hidden = true
+    if (Viewport.isMobile) {
+      gui.hidden = true
+    } else {
+      // gui.hidden = true
+    }
   }
 
   return gui

@@ -428,6 +428,7 @@ export default {
       width: 90%;
       aspect-ratio: 315/400;
       left: 5%;
+      margin-bottom: mobile-vw(30px);
     }
 
     &::after {

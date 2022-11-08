@@ -6,7 +6,7 @@
       <AppProjetGallery :contents="contentGallery" />
       <AppProjetWorkProgress :contents="contentWorkProgress" />
       <AppProjetPlan :contents="contentPlan" />
-      <!-- <AppProjetTwoColumns :contents="contentTwoColumns" /> -->
+      <AppProjetTwoColumns :contents="contentTwoColumns" />
       <AppFooter :contents="appContent" :logos="partnersContent.data" />
     </div>
   </main>
