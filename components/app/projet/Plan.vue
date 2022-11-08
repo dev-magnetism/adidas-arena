@@ -78,17 +78,18 @@ export default {
     }
   },
   mounted() {
-    this.initLottieAnimationsDesktop()
-
-    this.initTimelineDesktop()
+    if (this.$viewport.isMobile) {
+      this.initLottieAnimationsMobile()
+    } else {
+      this.initLottieAnimationsDesktop()
+      this.initTimelineDesktop()
+    }
   },
   beforeDestroy() {
     this.tl?.kill()
   },
   methods: {
     initTimelineDesktop() {
-      if (!this.$viewport.isMobile) return
-
       const outside = this.$refs.svg.$el.getElementById('outside').children
         .length
         ? this.$refs.svg.$el
@@ -264,8 +265,6 @@ export default {
       )
     },
     initLottieAnimationsDesktop() {
-      if (this.$viewport.isMobile) return
-
       this.animationCircle = lottie.loadAnimation({
         container: this.$refs.circle,
         renderer: 'svg',
@@ -306,6 +305,44 @@ export default {
         renderer: 'svg',
         loop: false,
         autoplay: false,
+        animationData: require(`@/assets/lotties/Petite_Fleche_03.json`),
+      })
+    },
+    initLottieAnimationsMobile() {
+      this.animationCircle = lottie.loadAnimation({
+        container: this.$refs.circle,
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        animationData: require(`@/assets/lotties/Cercle_5.json`),
+      })
+      this.animationCross = lottie.loadAnimation({
+        container: this.$refs.cross,
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        animationData: require(`@/assets/lotties/Croix_01.json`),
+      })
+
+      this.animationLittleArrow1 = lottie.loadAnimation({
+        container: this.$refs.littleArrow1,
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        animationData: require(`@/assets/lotties/Petite_Fleche_01.json`),
+      })
+      this.animationLittleArrow2 = lottie.loadAnimation({
+        container: this.$refs.littleArrow2,
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        animationData: require(`@/assets/lotties/Petite_Fleche_02.json`),
+      })
+      this.animationLittleArrow3 = lottie.loadAnimation({
+        container: this.$refs.littleArrow3,
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
         animationData: require(`@/assets/lotties/Petite_Fleche_03.json`),
       })
     },
@@ -417,6 +454,12 @@ export default {
       top: desktop-vw(140px);
       right: desktop-vw(225px);
 
+      @include mobile {
+        width: mobile-vw(200px);
+        top: mobile-vw(85px);
+        right: mobile-vw(80px);
+      }
+
       svg {
       }
     }
@@ -427,6 +470,12 @@ export default {
       position: absolute;
       top: desktop-vw(160px);
       right: desktop-vw(400px);
+
+      @include mobile {
+        width: mobile-vw(65px);
+        top: mobile-vw(100px);
+        right: mobile-vw(235px);
+      }
 
       svg {
         width: auto !important;
@@ -442,6 +491,12 @@ export default {
       top: desktop-vw(130px);
       right: desktop-vw(180px);
 
+      @include mobile {
+        width: mobile-vw(75px);
+        top: mobile-vw(65px);
+        right: mobile-vw(50px);
+      }
+
       svg {
         width: auto !important;
         height: auto !important;
@@ -454,6 +509,12 @@ export default {
       position: absolute;
       top: desktop-vw(235px);
       right: desktop-vw(235px);
+
+      @include mobile {
+        width: mobile-vw(35px);
+        top: mobile-vw(185px);
+        right: mobile-vw(115px);
+      }
 
       svg {
         width: auto !important;
@@ -468,6 +529,12 @@ export default {
       position: absolute;
       top: desktop-vw(165px);
       right: desktop-vw(275px);
+
+      @include mobile {
+        width: mobile-vw(40px);
+        top: mobile-vw(110px);
+        right: mobile-vw(140px);
+      }
 
       svg {
       }
@@ -495,8 +562,20 @@ export default {
       padding: desktop-vw(8px) desktop-vw(15px);
       will-change: transform;
 
+      @include mobile {
+        padding: mobile-vw(8px) mobile-vw(15px);
+        left: 50%;
+        transform: rotate(-4deg) translateX(-50%);
+        width: 65%;
+      }
+
       & > .P2 {
         @include h4();
+
+        @include mobile {
+          font-size: mobile-vw(24px);
+          line-height: mobile-vw(24px);
+        }
       }
     }
 

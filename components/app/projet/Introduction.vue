@@ -7,7 +7,7 @@
 
     <EParallax
       ref="framed"
-      :speed="0.65"
+      :speed="0.5"
       class="app-projet-introduction__row-framed-visual"
     >
       <EKinesis :speed="5">
@@ -28,7 +28,7 @@
       ref="visualBigger"
       class="app-projet-introduction__row-second-visual-principal"
     >
-      <EParallax :speed="1">
+      <EParallax :speed="0.65">
         <EKinesis :speed="5">
           <TH3> {{ contents.pictureLabelText }} </TH3>
           <nuxt-picture
@@ -46,7 +46,7 @@
       :speed="0.35"
       class="app-projet-introduction__row-second-visual-transparent"
     >
-      <EKinesis :speed="15">
+      <EKinesis :speed="10">
         <nuxt-picture
           :src="contents.pictureLogoImage"
           provider="directus"
@@ -58,11 +58,9 @@
     </EParallax>
 
     <div class="app-projet-introduction__row-second-content">
-      <EParallax :speed="0.35">
-        <TH4>{{ contents.whyTitle }}</TH4>
+      <TH4>{{ contents.whyTitle }}</TH4>
 
-        <ERichText :content="contents.whyParagraph" />
-      </EParallax>
+      <ERichText :content="contents.whyParagraph" />
     </div>
   </div>
 </template>
