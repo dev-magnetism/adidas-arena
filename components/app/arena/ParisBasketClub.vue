@@ -5,17 +5,22 @@
       class="app-arena-paris-basket-club__visual-with-frame"
       :speed="0.25"
     >
-      <nuxt-picture
-        ref="picture"
-        provider="directus"
-        :src="contents.pictureFramed.src"
-        format="webp"
-        :alt="contents.pictureFramed.alt"
-        class="picture-absolute"
-      />
-      <ELottie id="Cadre_01" start="top bottom-=15%" />
+      <EKinesis :speed="5">
+        <nuxt-picture
+          ref="picture"
+          provider="directus"
+          :src="contents.pictureFramed.src"
+          format="webp"
+          :alt="contents.pictureFramed.alt"
+          class="picture-absolute"
+        />
+        <ELottie id="Cadre_01" start="top bottom-=15%" />
+      </EKinesis>
     </EParallax>
-    <div class="app-arena-paris-basket-club__visual-transparent">
+    <EKinesis
+      :speed="7.5"
+      class="app-arena-paris-basket-club__visual-transparent"
+    >
       <nuxt-picture
         provider="directus"
         :src="contents.pictureLogo.src"
@@ -23,21 +28,24 @@
         :alt="contents.pictureLogo.alt"
       />
       <AtomsCornerPoints :size-points="8" />
-    </div>
+    </EKinesis>
     <EParallax
+      ref="withoutFrame"
       class="app-arena-paris-basket-club__visual-without-frame"
       :speed="0.5"
     >
-      <nuxt-picture
-        ref="picture"
-        provider="directus"
-        :src="contents.picture.src"
-        format="webp"
-        :alt="contents.picture.alt"
-      />
+      <EKinesis :speed="5">
+        <nuxt-picture
+          ref="picture"
+          provider="directus"
+          :src="contents.picture.src"
+          format="webp"
+          :alt="contents.picture.alt"
+        />
+      </EKinesis>
     </EParallax>
     <ELottie
-      v-if="!$device.isMobile"
+      v-if="!$viewport.isMobile"
       id="Fleche_2"
       start="top bottom-=15%"
       class="app-arena-paris-basket-club__lottie-arrow"
@@ -67,6 +75,8 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
+
 export default {
   props: {
     contents: {
@@ -74,7 +84,38 @@ export default {
       default: () => {},
     },
   },
-  mounted() {},
+  mounted() {
+    if (this.$viewport.isMobile) return
+
+    gsap.fromTo(
+      this.$refs.frameWrapper.$el,
+      {
+        rotate: -10,
+      },
+      {
+        rotate: -6,
+        scrollTrigger: {
+          trigger: this.$refs.frameWrapper.$el,
+          scrub: 0.5,
+          end: 'bottom top',
+        },
+      }
+    )
+    gsap.fromTo(
+      this.$refs.withoutFrame.$el,
+      {
+        rotate: 6,
+      },
+      {
+        rotate: 2,
+        scrollTrigger: {
+          trigger: this.$refs.withoutFrame.$el,
+          scrub: 0.5,
+          end: 'bottom top',
+        },
+      }
+    )
+  },
 }
 </script>
 
@@ -95,7 +136,7 @@ export default {
     height: auto !important;
   }
 
-  &__visual-transparent {
+  &__visual-transparent.app-element-kinesis {
     position: absolute;
     width: columns(1.5);
     grid-column: 6 / span 2;
@@ -106,6 +147,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    height: auto;
 
     @include mobile {
       aspect-ratio: 64/64;

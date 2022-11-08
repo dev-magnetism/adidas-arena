@@ -9,6 +9,7 @@ export default {
         xThree: null,
         yThree: null,
       },
+      meshReady: false,
     }
   },
   mounted() {
@@ -88,6 +89,9 @@ export default {
       )
 
       this.mesh.initialPosition = this.mesh.position.clone()
+
+      if (this.index === this.$parent.contents.items.length - 1)
+        this.$emit('test', this.index)
     },
   },
 }

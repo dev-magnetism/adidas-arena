@@ -116,13 +116,8 @@ export default {
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
     '@nuxt/image',
-    '@nuxtjs/device',
     // 'nuxt-font-loader',
   ],
-
-  device: {
-    refreshOnResize: true,
-  },
 
   // fontLoader: {
   //   url: 'fonts/fonts.css',
@@ -170,15 +165,6 @@ export default {
     },
   },
 
-  // directus: {
-  //   url: 'https://adidasarena.directus.app/',
-  //   auth: {
-  //      email: 'email',
-  //      password: 'mot de passe',
-  //     // token: process.env.DIRECTUS_STATIC_TOKEN,
-  //   },
-  // },
-
   render: {
     bundleRenderer: {
       shouldPreload: (file, type) => {
@@ -186,6 +172,8 @@ export default {
       },
     },
   },
+
+  loading: false,
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

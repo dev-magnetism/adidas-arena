@@ -2,7 +2,7 @@
   <main class="page-be-part-of-partenaire">
     <AppBepartofPartenaireIntroduction :contents="contentIntroduction" />
     <AppBepartofPartenairePartenaires :contents="contentPartners" />
-    <AppArenaGallery :contents="contentGallerie" />
+    <AppGallery :contents="contentGallerie" />
     <AppContactQuestion :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
@@ -24,9 +24,16 @@ export default {
       limit: -1,
     })
 
+    const galerieTest = await $directus
+      .items('Galerie_partenaire')
+      .readByQuery({
+        limit: -1,
+      })
+
     return {
       content,
       gallerie,
+      galerieTest,
     }
   },
 
@@ -75,7 +82,9 @@ export default {
     },
   },
 
-  mounted() {},
+  mounted() {
+    // console.log(this.galerieTest)
+  },
 }
 </script>
 

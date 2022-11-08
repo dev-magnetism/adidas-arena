@@ -78,7 +78,7 @@ export default {
     },
   },
   mounted() {
-    if (this.$device.isMobile) return
+    if (!this.$viewport.isMobile) return
 
     gsap.fromTo(
       this.$refs.visualBigger,

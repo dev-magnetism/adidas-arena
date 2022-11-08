@@ -1,7 +1,7 @@
 <template>
   <div class="app-home-projet__big-visual">
     <nuxt-picture
-      v-if="$mq !== 'sm'"
+      v-if="!$viewport.isMobile"
       class="app-home-projet__big-visual__left-top projet-visual"
       :src="$parent.contents.projetPicture4"
       provider="directus"
@@ -9,7 +9,7 @@
       alt="placeholder"
     />
     <nuxt-picture
-      v-if="$mq !== 'sm'"
+      v-if="!$viewport.isMobile"
       class="app-home-projet__big-visual__left-top-upper projet-visual"
       :src="$parent.contents.projetPicture3"
       provider="directus"

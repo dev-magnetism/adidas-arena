@@ -267,6 +267,7 @@ export default {
       const conditionalRoad = this.conditionnalObject(road)
 
       this.road.add(road)
+
       // this.road.add(roadShadow)
       this.road.add(edgeRoad)
       this.road.add(conditionalRoad)

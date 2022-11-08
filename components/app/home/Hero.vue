@@ -22,7 +22,7 @@
         />
       </div>
       <div
-        v-if="!$device.isMobile"
+        v-if="!$viewport.isMobile"
         class="app-home-hero__scroll-indicator"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
@@ -69,11 +69,11 @@
           alt="placeholder"
         />
         <SvgHomeHeroSticker
-          v-if="!$device.isMobile"
+          v-if="!$viewport.isMobile"
           class="app-home-hero__sticker"
         />
         <SvgHomeHeroStars
-          v-if="!$device.isMobile"
+          v-if="!$viewport.isMobile"
           class="app-home-hero__stars"
         />
       </div>
@@ -112,7 +112,7 @@ export default {
       },
     })
 
-    if (!this.$device.isMobile) {
+    if (!this.$viewport.isMobile) {
       this.tl = gsap.timeline({ repeat: -1, paused: true })
 
       this.tl.to(this.$refs.union.$el, {

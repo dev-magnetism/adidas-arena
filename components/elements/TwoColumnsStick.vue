@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="{ 'grid-inner': $device.isMobile }"
+    :class="{ 'grid-inner': $viewport.isMobile }"
     class="app-two-columns-stick"
   >
     <div class="app-two-columns-stick__column left">
@@ -39,7 +39,7 @@ export default {
 
   @include mobile {
     display: grid;
-    grid-gap: mobile-vw(10px);
+    grid-gap: 0;
   }
 
   &__column {
@@ -54,7 +54,8 @@ export default {
       margin-right: desktop-vw(10px);
 
       @include mobile {
-        grid-column: 1 / span 3;
+        grid-column: 1 / span 6;
+        text-align: center;
         margin-right: mobile-vw(0px);
       }
     }
@@ -64,12 +65,17 @@ export default {
       margin-left: desktop-vw(10px);
 
       @include mobile {
-        grid-column: 4 / span 3;
+        grid-column: 1 / span 6;
+        text-align: center;
         margin-left: mobile-vw(0px);
       }
 
       > :first-child {
         margin-top: desktop-vw(120px);
+
+        @include mobile {
+          margin-top: mobile-vw(0px);
+        }
       }
     }
 

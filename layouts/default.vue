@@ -5,7 +5,7 @@
     <AppScene />
     <AppPreloadLayer />
     <!-- <AppTransition /> -->
-    <AppCursor v-if="!$device.isMobile" />
+    <AppCursor v-if="!$viewport.isMobile" />
   </div>
 </template>
 

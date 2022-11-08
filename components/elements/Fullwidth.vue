@@ -22,7 +22,7 @@ export default {
     },
   },
   mounted() {
-    if (this.$device.isMobile) return
+    if (this.$viewport.isMobile) return
 
     gsap.to(this.$refs.picture.$el, {
       yPercent: -8.5,

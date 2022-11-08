@@ -10,7 +10,7 @@
 
     <EParallax
       ref="visualBigger"
-      :speed="$device.isMobile ? 0 : 1.35"
+      :speed="1.35"
       class="app-home-presentation__visual-bigger"
     >
       <EKinesis :speed="5">
@@ -25,7 +25,7 @@
 
     <EParallax
       ref="framed"
-      :speed="$device.isMobile ? 0 : 0.7"
+      :speed="0.7"
       class="app-home-presentation__visual-framed"
     >
       <EKinesis :speed="5">
@@ -44,7 +44,7 @@
 
     <EParallax
       ref="pictureCorner"
-      :speed="$device.isMobile ? 0 : 1"
+      :speed="1"
       class="app-home-presentation__picture-corner-points"
     >
       <EKinesis :speed="15">
@@ -54,7 +54,7 @@
             provider="directus"
             :src="contents.pictureBorder"
             :alt="contents.pictureBorderAlt"
-            format="webp"
+            format="gif"
           />
         </ECornerPointsPicture>
       </EKinesis>
@@ -73,7 +73,7 @@ export default {
     },
   },
   mounted() {
-    if (this.$device.isMobile) return
+    if (this.$viewport.isMobile) return
 
     gsap.fromTo(
       this.$refs.pictureCorner.$el,

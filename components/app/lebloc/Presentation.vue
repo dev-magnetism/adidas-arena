@@ -4,30 +4,38 @@
       class="app-le-bloc-presentation__title"
       :content="contents.title"
     />
-    <EKinesis class="app-le-bloc-presentation__visual" :speed="5">
-      <nuxt-picture
-        provider="directus"
-        :src="contents.picture.src"
-        format="webp"
-        :alt="contents.picture.alt"
-        class="picture-absolute"
-      />
-    </EKinesis>
+    <EParallax
+      ref="bigVisual"
+      :speed="0.75"
+      class="app-le-bloc-presentation__visual"
+    >
+      <EKinesis :speed="5">
+        <nuxt-picture
+          provider="directus"
+          :src="contents.picture.src"
+          format="webp"
+          :alt="contents.picture.alt"
+          class="picture-absolute"
+        />
+      </EKinesis>
+    </EParallax>
 
-    <EKinesis class="app-le-bloc-presentation__framed-visual" :speed="20">
-      <EFramedPicture color="blue-adidas">
-        <EKinesis :speed="-10">
-          <nuxt-picture
-            class="picture-absolute"
-            provider="directus"
-            :src="contents.pictureFramed.src"
-            :alt="contents.pictureFramed.alt"
-            format="webp"
-          />
-        </EKinesis>
-      </EFramedPicture>
-    </EKinesis>
-    <EKinesis :speed="5" class="app-le-bloc-presentation__text">
+    <EParallax :speed="0.5" class="app-le-bloc-presentation__framed-visual">
+      <EKinesis :speed="5">
+        <EFramedPicture ref="framedVisual" color="blue-adidas">
+          <EKinesis :speed="-3.5">
+            <nuxt-picture
+              class="picture-absolute"
+              provider="directus"
+              :src="contents.pictureFramed.src"
+              :alt="contents.pictureFramed.alt"
+              format="webp"
+            />
+          </EKinesis>
+        </EFramedPicture>
+      </EKinesis>
+    </EParallax>
+    <EKinesis :speed="2.5" class="app-le-bloc-presentation__text">
       <TH4>{{ contents.paragraphTitle }}</TH4>
 
       <ERichText :content="contents.paragraph" />
@@ -36,6 +44,8 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
+
 export default {
   props: {
     contents: {
@@ -43,7 +53,39 @@ export default {
       default: () => {},
     },
   },
-  mounted() {},
+  mounted() {
+    if (this.$viewport.isMobile) return
+
+    gsap.fromTo(
+      this.$refs.bigVisual.$el,
+      {
+        rotate: -6,
+      },
+      {
+        rotate: -2,
+        scrollTrigger: {
+          trigger: this.$refs.bigVisual.$el,
+          scrub: 0.5,
+          end: 'bottom top',
+        },
+      }
+    )
+
+    gsap.fromTo(
+      this.$refs.framedVisual.$el,
+      {
+        rotate: 8,
+      },
+      {
+        rotate: 4,
+        scrollTrigger: {
+          trigger: this.$refs.framedVisual.$el,
+          scrub: 0.5,
+          end: 'bottom top',
+        },
+      }
+    )
+  },
 }
 </script>
 
@@ -65,7 +107,7 @@ export default {
     }
   }
 
-  &__visual.app-element-kinesis {
+  &__visual.app-parallax {
     position: absolute;
     grid-column: 4 / span 4;
     width: 100%;
@@ -84,7 +126,7 @@ export default {
     }
   }
 
-  &__framed-visual.app-element-kinesis {
+  &__framed-visual.app-parallax {
     position: absolute;
     grid-column: 7 / span 4;
     width: 100%;
@@ -101,7 +143,11 @@ export default {
     .app-element-framed-picture {
       transform: rotate(4deg);
       height: 100%;
-      padding: mobile-vw(8px);
+      padding: desktop-vw(20px);
+
+      @include mobile {
+        padding: mobile-vw(8px);
+      }
     }
   }
 

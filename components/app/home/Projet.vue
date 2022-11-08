@@ -3,8 +3,8 @@
     <div class="app-home-projet__rotated">
       <div ref="wrapper" class="app-home-projet__wrapper">
         <AtomsCornerPoints
-          :border-color="$mq !== 'sm' ? 'beige' : 'black'"
-          :points-color="$mq !== 'sm' ? 'beige' : 'black'"
+          :border-color="!$viewport.isMobile ? 'beige' : 'black'"
+          :points-color="!$viewport.isMobile ? 'beige' : 'black'"
         />
         <div class="app-home-projet__inner">
           <AppHomeProjetHeader
@@ -15,7 +15,7 @@
           <AppHomeProjetPlan ref="plan" />
 
           <EFramedPicture
-            v-if="$mq !== 'sm'"
+            v-if="!$viewport.isMobile"
             :fake-transparent="true"
             color="white"
             class="app-home-projet__framed-picture projet-visual"
@@ -30,7 +30,7 @@
           </EFramedPicture>
 
           <nuxt-picture
-            v-if="$mq !== 'sm'"
+            v-if="!$viewport.isMobile"
             class="app-home-projet__visual__top-upper projet-visual"
             :src="contents.projetPicture1"
             provider="directus"
@@ -43,7 +43,7 @@
           }}</TH2>
         </div>
         <div
-          v-if="$mq !== 'sm'"
+          v-if="!$viewport.isMobile"
           ref="fakeVisual"
           class="app-home-projet__fake-visual"
         ></div>
@@ -68,7 +68,7 @@
         </AtomsTitleTag>
 
         <AtomsTitleTag
-          v-if="$mq !== 'sm'"
+          v-if="!$viewport.isMobile"
           class="app-home-projet__tag-top-upper app-projet-tag-4"
           bg="white"
           color="black"
@@ -90,7 +90,7 @@
           {{ contents.projetTag4 }}
         </AtomsTitleTag>
         <AtomsTitleTag
-          v-if="$mq !== 'sm'"
+          v-if="!$viewport.isMobile"
           bg="white"
           color="black"
           class="app-home-projet__tag-bottom app-projet-tag-1"
@@ -159,7 +159,7 @@ export default {
     },
     initTimeline() {
       // DESKTOP
-      if (this.$mq !== 'sm') {
+      if (!this.$viewport.isMobile) {
         this.tl.fromTo(
           [this.$refs.wrapper, this.$refs.fakeVisual],
           {
@@ -466,7 +466,7 @@ export default {
       }
 
       // MOBILE
-      if (this.$mq === 'sm') {
+      if (this.$viewport.isMobile) {
         this.tl.addLabel('lotties')
         this.tl.to(
           this.playhead,
@@ -519,7 +519,7 @@ export default {
       }
     },
     initLottieAnimations() {
-      if (this.$mq !== 'sm') {
+      if (!this.$viewport.isMobile) {
         this.animationCrossCircle = lottie.loadAnimation({
           container: this.$refs.lottieCrossCircle,
           renderer: 'svg',

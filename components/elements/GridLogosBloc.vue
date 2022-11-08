@@ -39,8 +39,7 @@
   <a
     v-else
     :href="content.logo_link"
-    :blank="true"
-    external
+    target="_blank"
     :class="{ big, transparent }"
     class="app-element-grid-logos-bloc"
   >

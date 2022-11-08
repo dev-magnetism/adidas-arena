@@ -4,7 +4,7 @@
       <AppProjetIntroduction :contents="contentIntroduction" />
       <AppProjetCatchPhrase :contents="contentCatchphrase" />
       <AppProjetGallery :contents="contentGallery" />
-      <!-- <AppProjetWorkProgress /> -->
+      <AppProjetWorkProgress :contents="contentWorkProgress" />
       <AppProjetPlan :contents="contentPlan" />
       <!-- <AppProjetTwoColumns :contents="contentTwoColumns" /> -->
       <AppFooter :contents="appContent" :logos="partnersContent.data" />
@@ -71,6 +71,25 @@ export default {
         rightTitle: this.content.data.projet_gallery_right_title,
         rightSubtitle: this.content.data.projet_gallery_right_subtitle,
         rightParagraph: this.content.data.projet_gallery_right_paragraph,
+      }
+    },
+    contentWorkProgress() {
+      return {
+        title: this.content.data.work_progress_title,
+        description: this.content.data.work_progress_description,
+        items: this.content.data.work_progress_items,
+        firstRow: {
+          surtitle: this.content.data.work_progress_first_row_surtitle,
+          title: this.content.data.work_progress_first_row_title,
+        },
+        secondRow: {
+          surtitle: this.content.data.work_progress_second_row_surtitle,
+          title: this.content.data.work_progress_second_row_title,
+        },
+        column: {
+          surtitle: this.content.data.work_progress_column_surtitle,
+          description: this.content.data.work_progress_column_description,
+        },
       }
     },
     contentPlan() {

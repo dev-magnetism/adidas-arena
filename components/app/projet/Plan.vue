@@ -31,7 +31,8 @@
           color="white"
           >{{ contents.basilique }}</AtomsTitleTag
         >
-        <SvgPlan ref="svg" />
+        <SvgPlan v-if="!$viewport.isMobile" ref="svg" />
+        <SvgPlanMobile v-if="$viewport.isMobile" ref="svgMobile" />
         <div ref="circle" class="app-projet-plan__visual__circle-01" />
         <div
           ref="littleArrow2"
@@ -77,186 +78,194 @@ export default {
     }
   },
   mounted() {
-    this.initLottieAnimations()
+    this.initLottieAnimationsDesktop()
 
-    const outside = this.$refs.svg.$el.getElementById('outside').children.length
-      ? this.$refs.svg.$el
-          .getElementById('outside')
-          .querySelectorAll('path, rect, circle, ellipse, polyline')
-      : this.$refs.svg.$el.getElementById('outside')
-
-    const border = this.$refs.svg.$el.getElementById('border').children.length
-      ? this.$refs.svg.$el
-          .getElementById('border')
-          .querySelectorAll('path, rect, circle, ellipse, polyline')
-      : this.$refs.svg.$el.getElementById('border')
-
-    const inside = this.$refs.svg.$el.getElementById('inside').children.length
-      ? this.$refs.svg.$el
-          .getElementById('inside')
-          .querySelectorAll('path, rect, circle, ellipse, polyline')
-      : this.$refs.svg.$el.getElementById('inside')
-
-    const arena = this.$refs.svg.$el.getElementById('arena').children.length
-      ? this.$refs.svg.$el
-          .getElementById('arena')
-          .querySelectorAll('path, rect, circle, ellipse, polyline')
-      : this.$refs.svg.$el.getElementById('arena')
-
-    this.tl = gsap.timeline({
-      defaults: { ease: 'none' },
-      scrollTrigger: {
-        trigger: this.$el,
-        start: 'top+=15% bottom',
-        end: 'bottom-=10% bottom',
-        scrub: 1,
-      },
-    })
-
-    this.tl.fromTo(
-      outside,
-      { opacity: 0 },
-      {
-        opacity: 1,
-      }
-    )
-
-    this.tl.fromTo(
-      border,
-      { drawSVG: false },
-      {
-        drawSVG: true,
-      },
-      '>-100%'
-    )
-    this.tl.fromTo(
-      inside,
-      { drawSVG: false },
-      {
-        drawSVG: true,
-        stagger: 0.025,
-      },
-      '<60%'
-    )
-
-    this.tl.addLabel('arena-circle', '<45%')
-    this.tl.fromTo(
-      arena,
-      { opacity: 0 },
-      {
-        opacity: 1,
-      },
-      'arena-circle'
-    )
-    this.tl.to(
-      this.playhead,
-      {
-        circle: this.animationCircle.totalFrames - 1,
-        onUpdate: () =>
-          this.animationCircle.goToAndStop(this.playhead.circle, true),
-      },
-      'arena-circle+=45%'
-    )
-    this.tl.addLabel('lotties')
-
-    this.tl.to(
-      this.playhead,
-      {
-        cross: this.animationCross.totalFrames - 1,
-        onUpdate: () =>
-          this.animationCross.goToAndStop(this.playhead.cross, true),
-      },
-      'lotties'
-    )
-
-    this.tl.to(
-      this.playhead,
-      {
-        crossCircle: this.animationCrossCircle.totalFrames - 1,
-        onUpdate: () =>
-          this.animationCrossCircle.goToAndStop(
-            this.playhead.crossCircle,
-            true
-          ),
-      },
-      'lotties+=25%'
-    )
-
-    this.tl.to(
-      this.playhead,
-      {
-        littleArrow1: this.animationLittleArrow1.totalFrames - 1,
-        onUpdate: () =>
-          this.animationLittleArrow1.goToAndStop(
-            this.playhead.littleArrow1,
-            true
-          ),
-      },
-      'lotties+=50%'
-    )
-
-    this.tl.to(
-      this.playhead,
-      {
-        littleArrow2: this.animationLittleArrow2.totalFrames - 1,
-        onUpdate: () =>
-          this.animationLittleArrow2.goToAndStop(
-            this.playhead.littleArrow2,
-            true
-          ),
-      },
-      'lotties+=75%'
-    )
-
-    this.tl.to(
-      this.playhead,
-      {
-        littleArrow3: this.animationLittleArrow3.totalFrames - 1,
-        onUpdate: () =>
-          this.animationLittleArrow3.goToAndStop(
-            this.playhead.littleArrow3,
-            true
-          ),
-      },
-      'lotties+=100%'
-    )
-
-    this.tl.fromTo(
-      this.$refs.mainPlace.$el,
-      {
-        opacity: 0,
-        yPercent: 50,
-        rotate: -8,
-      },
-      {
-        opacity: 1,
-        yPercent: 0,
-        rotate: -4,
-        transformOrigin: 'left center',
-      },
-      'lotties'
-    )
-    this.tl.fromTo(
-      this.$refs.secondPlace.$el,
-      {
-        opacity: 0,
-        yPercent: 35,
-        rotate: 0,
-      },
-      {
-        opacity: 1,
-        yPercent: 0,
-        rotate: -4,
-        transformOrigin: 'left center',
-      },
-      'lotties+=30%'
-    )
+    this.initTimelineDesktop()
   },
   beforeDestroy() {
     this.tl?.kill()
   },
   methods: {
-    initLottieAnimations() {
+    initTimelineDesktop() {
+      if (!this.$viewport.isMobile) return
+
+      const outside = this.$refs.svg.$el.getElementById('outside').children
+        .length
+        ? this.$refs.svg.$el
+            .getElementById('outside')
+            .querySelectorAll('path, rect, circle, ellipse, polyline')
+        : this.$refs.svg.$el.getElementById('outside')
+
+      const border = this.$refs.svg.$el.getElementById('border').children.length
+        ? this.$refs.svg.$el
+            .getElementById('border')
+            .querySelectorAll('path, rect, circle, ellipse, polyline')
+        : this.$refs.svg.$el.getElementById('border')
+
+      const inside = this.$refs.svg.$el.getElementById('inside').children.length
+        ? this.$refs.svg.$el
+            .getElementById('inside')
+            .querySelectorAll('path, rect, circle, ellipse, polyline')
+        : this.$refs.svg.$el.getElementById('inside')
+
+      const arena = this.$refs.svg.$el.getElementById('arena').children.length
+        ? this.$refs.svg.$el
+            .getElementById('arena')
+            .querySelectorAll('path, rect, circle, ellipse, polyline')
+        : this.$refs.svg.$el.getElementById('arena')
+
+      this.tl = gsap.timeline({
+        defaults: { ease: 'none' },
+        scrollTrigger: {
+          trigger: this.$el,
+          start: 'top+=15% bottom',
+          end: 'bottom-=10% bottom',
+          scrub: 1,
+        },
+      })
+
+      this.tl.fromTo(
+        outside,
+        { opacity: 0 },
+        {
+          opacity: 1,
+        }
+      )
+
+      this.tl.fromTo(
+        border,
+        { drawSVG: false },
+        {
+          drawSVG: true,
+        },
+        '>-100%'
+      )
+      this.tl.fromTo(
+        inside,
+        { drawSVG: false },
+        {
+          drawSVG: true,
+          stagger: 0.025,
+        },
+        '<60%'
+      )
+
+      this.tl.addLabel('arena-circle', '<45%')
+      this.tl.fromTo(
+        arena,
+        { opacity: 0 },
+        {
+          opacity: 1,
+        },
+        'arena-circle'
+      )
+      this.tl.to(
+        this.playhead,
+        {
+          circle: this.animationCircle.totalFrames - 1,
+          onUpdate: () =>
+            this.animationCircle.goToAndStop(this.playhead.circle, true),
+        },
+        'arena-circle+=45%'
+      )
+      this.tl.addLabel('lotties')
+
+      this.tl.to(
+        this.playhead,
+        {
+          cross: this.animationCross.totalFrames - 1,
+          onUpdate: () =>
+            this.animationCross.goToAndStop(this.playhead.cross, true),
+        },
+        'lotties'
+      )
+
+      this.tl.to(
+        this.playhead,
+        {
+          crossCircle: this.animationCrossCircle.totalFrames - 1,
+          onUpdate: () =>
+            this.animationCrossCircle.goToAndStop(
+              this.playhead.crossCircle,
+              true
+            ),
+        },
+        'lotties+=25%'
+      )
+
+      this.tl.to(
+        this.playhead,
+        {
+          littleArrow1: this.animationLittleArrow1.totalFrames - 1,
+          onUpdate: () =>
+            this.animationLittleArrow1.goToAndStop(
+              this.playhead.littleArrow1,
+              true
+            ),
+        },
+        'lotties+=50%'
+      )
+
+      this.tl.to(
+        this.playhead,
+        {
+          littleArrow2: this.animationLittleArrow2.totalFrames - 1,
+          onUpdate: () =>
+            this.animationLittleArrow2.goToAndStop(
+              this.playhead.littleArrow2,
+              true
+            ),
+        },
+        'lotties+=75%'
+      )
+
+      this.tl.to(
+        this.playhead,
+        {
+          littleArrow3: this.animationLittleArrow3.totalFrames - 1,
+          onUpdate: () =>
+            this.animationLittleArrow3.goToAndStop(
+              this.playhead.littleArrow3,
+              true
+            ),
+        },
+        'lotties+=100%'
+      )
+
+      this.tl.fromTo(
+        this.$refs.mainPlace.$el,
+        {
+          opacity: 0,
+          yPercent: 50,
+          rotate: -8,
+        },
+        {
+          opacity: 1,
+          yPercent: 0,
+          rotate: -4,
+          transformOrigin: 'left center',
+        },
+        'lotties'
+      )
+      this.tl.fromTo(
+        this.$refs.secondPlace.$el,
+        {
+          opacity: 0,
+          yPercent: 35,
+          rotate: 0,
+        },
+        {
+          opacity: 1,
+          yPercent: 0,
+          rotate: -4,
+          transformOrigin: 'left center',
+        },
+        'lotties+=30%'
+      )
+    },
+    initLottieAnimationsDesktop() {
+      if (this.$viewport.isMobile) return
+
       this.animationCircle = lottie.loadAnimation({
         container: this.$refs.circle,
         renderer: 'svg',
@@ -313,6 +322,7 @@ export default {
 
   @include mobile {
     margin-top: mobile-vw(80px);
+    height: 100%;
   }
 
   &__inner {
@@ -320,6 +330,11 @@ export default {
     top: 0;
     align-items: center;
     height: 100vh;
+
+    @include mobile {
+      height: 100%;
+      position: relative;
+    }
   }
 
   &__content {
@@ -495,6 +510,10 @@ export default {
       left: desktop-vw(255px);
       padding: desktop-vw(5px) desktop-vw(10px);
       will-change: transform;
+
+      @include mobile {
+        display: none;
+      }
 
       & > .P2 {
         text-transform: uppercase;

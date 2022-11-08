@@ -33,7 +33,7 @@ export default {
     },
   },
   mounted() {
-    if (this.$device.isMobile) return
+    if (this.$viewport.isMobile) return
 
     const y = this.$viewport.width * this.speed * 0.1
 

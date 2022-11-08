@@ -27,8 +27,8 @@
     </div>
     <EGridLogos
       :logos="contents.list"
-      :cols="!$device.isMobile ? 6 : 4"
-      :rows="!$device.isMobile ? 7 : 8"
+      :cols="!$viewport.isMobile ? 6 : 4"
+      :rows="!$viewport.isMobile ? 7 : 8"
       class="app-home-partners__grid-logos"
     />
     <EPartnersTotal :total="contents.list.length" />
@@ -46,7 +46,7 @@ export default {
     },
   },
   mounted() {
-    if (this.$device.isMobile) return
+    if (this.$viewport.isMobile) return
 
     const els = this.$el.querySelectorAll('.partners-apparition')
 

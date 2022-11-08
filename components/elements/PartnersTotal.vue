@@ -31,7 +31,7 @@ export default {
     },
   },
   mounted() {
-    if (this.$mq === 'sm') return
+    if (this.$viewport.isMobile) return
 
     this.tl = gsap.timeline({
       scrollTrigger: {

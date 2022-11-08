@@ -23,8 +23,8 @@
       <AtomsCTA class="partners-apparition">Devenir partenaire</AtomsCTA>
     </div>
     <EGridLogos
-      :cols="!$device.isMobile ? 6 : 4"
-      :rows="!$device.isMobile ? 7 : 8"
+      :cols="!$viewport.isMobile ? 6 : 4"
+      :rows="!$viewport.isMobile ? 7 : 8"
       :logos="contents.list"
       class="app-arena-partners__grid-logos"
     />
@@ -43,7 +43,7 @@ export default {
     },
   },
   mounted() {
-    if (this.$device.isMobile) return
+    if (this.$viewport.isMobile) return
 
     const els = this.$el.querySelectorAll('.partners-apparition')
 

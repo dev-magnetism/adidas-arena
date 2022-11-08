@@ -33,7 +33,7 @@ export default {
 
   mounted() {
     document.fonts.ready.then(() => {
-      if (!this.split || this.$device.isMobile) return
+      if (!this.split || this.$viewport.isMobile) return
 
       setTimeout(() => {
         this.initSplitText()

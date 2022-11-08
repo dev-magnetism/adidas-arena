@@ -37,7 +37,7 @@
     </div>
     <span class="line-header-border-bottom header-line header-line-2" />
     <span
-      v-if="$mq !== 'sm'"
+      v-if="!$viewport.isMobile"
       class="line-header-border-right header-line header-line-4"
     />
   </div>

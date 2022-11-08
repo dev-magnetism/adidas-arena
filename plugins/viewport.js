@@ -8,6 +8,7 @@ const viewport = new Vue({
     if (!process.client) return {} // for nuxt.js
 
     return {
+      isMobile: window.innerWidth < 800,
       width: window.innerWidth,
       height: window.innerHeight,
       ratio: window.innerWidth / window.innerHeight,
@@ -26,8 +27,8 @@ const viewport = new Vue({
     onWindowResize() {
       this.width = window.innerWidth
       this.height = window.innerHeight
-
       this.ratio = this.width / this.height
+      this.isMobile = window.innerWidth < 800
 
       this.events.emit('resize', this.$data)
     },

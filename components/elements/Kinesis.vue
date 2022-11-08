@@ -15,18 +15,18 @@ export default {
     },
   },
   mounted() {
-    if (this.$mq === 'sm') return
+    if (this.$viewport.isMobile) return
 
     window.addEventListener('mousemove', this.onMouseMove)
   },
   beforeDestroy() {
-    if (this.$mq === 'sm') return
+    if (this.$viewport.isMobile) return
 
     window.removeEventListener('mousemove', this.onMouseMove)
   },
   methods: {
     onMouseMove(e) {
-      // if (isTouchDevice) return
+      if (this.$viewport.isMobile) return
 
       const x = (e.clientX / this.$viewport.width - 0.5) * 2 * this.speed
       const y = (e.clientY / this.$viewport.height - 0.5) * 2 * this.speed
