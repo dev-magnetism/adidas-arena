@@ -1,6 +1,7 @@
 import Stats from 'stats.js'
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-
+// import { InteractionManager } from 'three.interactive'
+// import { InteractionManager } from '~/assets/js/webgl/InteractiveMouse'
 import Raf from '~/plugins/raf'
 import Viewport from '~/plugins/viewport'
 // import Composer from '~/assets/webgl/composer-three'
@@ -16,9 +17,9 @@ class GL {
   constructor() {
     this.scene = new THREE.Scene()
 
-    this.map = new THREE.Group()
-    this.map.name = 'map'
-    this.scene.add(this.map)
+    this.exterior = new THREE.Group()
+    this.exterior.name = 'exterior'
+    this.scene.add(this.exterior)
 
     this.gallery = new THREE.Group()
     this.gallery.name = 'gallery'

@@ -148,7 +148,6 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     'nuxt-mq',
-    // 'nuxt-runtime-compiler',
     [
       '~/modules/directus',
       {

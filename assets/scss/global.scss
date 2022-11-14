@@ -62,26 +62,26 @@ body,
   // display: none;
 }
 
-.page-enter-active,
-.page-leave-active {
-  transition: transform .25s var(--ease-in-out-cubic);
-}
+// .page-enter-active,
+// .page-leave-active {
+//   transition: transform .25s var(--ease-in-out-cubic);
+// }
 
-.page-enter {
-  transform: translateX(100%);
-}
+// .page-enter {
+//   transform: translateX(100%);
+// }
 
-.page-enter-to {
-  transform: translateX(0%);}
+// .page-enter-to {
+//   transform: translateX(0%);}
 
-.page-leave {
-  opacity: 1;
-    transform: translateX(0%);
-}
+// .page-leave {
+//   opacity: 1;
+//     transform: translateX(0%);
+// }
 
-.page-leave-to {
-  transform: translateX(-100%);
-}
+// .page-leave-to {
+//   transform: translateX(-100%);
+// }
 
 a,
 button,
@@ -123,4 +123,13 @@ picture {
   top: 0;
   min-width: 225px;
   overflow-x: hidden;
+}
+
+.webgl-component {
+  display: none;
+  position: absolute;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  user-select: none;
 }
