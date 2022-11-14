@@ -9,10 +9,6 @@ import useGUI from '~/hooks/gui'
 
 let gl
 
-// const guiObject = {
-//   shadowMapType: 0,
-// }
-
 class GL {
   constructor() {
     this.scene = new THREE.Scene()
@@ -28,18 +24,21 @@ class GL {
     this.renderer = new THREE.WebGLRenderer({
       powerPreference: 'high-performance',
       antialias: true,
-      stencil: false,
+      stencil: true,
       precision: 'highp',
       alpha: true,
     })
 
-    this.renderer.shadowMap.enabled = true
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
     this.renderer.physicallyCorrectLights = true
 
-    //  basic: THREE.BasicShadowMap,
-    //  default: THREE.PCFShadowMap,
-    //  PCFSoft: THREE.PCFSoftShadowMap
+    this.renderer.shadowMap.enabled = true
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    // THREE.BasicShadowMap
+    // THREE.PCFShadowMap (default)
+    // THREE.PCFSoftShadowMap
+    // THREE.VSMShadowMap
 
     // this.renderer.outputEncoding = THREE.sRGBEncoding
     // this.renderer.toneMapping = THREE.LinearToneMapping
@@ -154,7 +153,6 @@ class GL {
     this.camera.updateProjectionMatrix()
 
     this.renderer.setSize(Viewport.width, Viewport.height)
-    // this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   }
 
   update({ deltaTime }) {

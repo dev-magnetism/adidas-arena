@@ -29,7 +29,6 @@ export default {
   data() {
     return {
       modelLoaded: false,
-      speed: 1,
       rotation: [0, 0, 0],
       polar: [0, Math.PI / 2],
       azimuth: { min: -Math.PI / 1.4, max: Math.PI * 1 },
@@ -46,6 +45,9 @@ export default {
         dragSpeed: 0.005,
       },
       indexArrowPosition: 0,
+      thresholdAngle: 40,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
     }
   },
   computed: {},
@@ -118,6 +120,7 @@ export default {
     this.shadowMaterial?.dispose()
     this.modelMaterial?.dispose()
     this.conditionalMaterial?.dispose()
+    this.lineMaterial?.dispose()
 
     // GLOBAL
     this.observer?.kill()
@@ -231,14 +234,18 @@ export default {
         emissiveIntensity: 0.85,
       })
 
-      this.shadowMaterial = new THREE.ShadowMaterial({ color: 0xff00e6 })
+      this.shadowMaterial = new THREE.ShadowMaterial({
+        color: 0xff00e6,
+      })
 
       this.conditionalMaterial = new THREE.ShaderMaterial(
         ConditionalEdgesShader
       )
       this.conditionalMaterial.uniforms.diffuse.value.set(
-        new THREE.Color('#000000')
+        new THREE.Color(0x000000)
       )
+
+      this.lineMaterial = new THREE.LineBasicMaterial({ color: 0x000000 })
     },
 
     loadCloudModel() {
@@ -308,7 +315,7 @@ export default {
 
       this.directionalLight.shadow.mapSize.width = 4096 // default
       this.directionalLight.shadow.mapSize.height = 4096 // default
-      // this.directionalLight.shadow.radius = 2
+      // this.directionalLight.shadow.radius = 1
 
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
@@ -496,11 +503,11 @@ export default {
 
       this.floor = new THREE.Group()
       exterior.add(this.floor)
+      // this.floor.position.y = -0.0001
 
       const floorGroup = this.modelExterior.getObjectByName('Floor')
 
       const floor = this.mergeObject(floorGroup)
-      floor.position.y = -0.001
 
       const shadowFloor = floor.clone()
       shadowFloor.name = 'shadowModel'
@@ -622,12 +629,9 @@ export default {
     edgeObject(object) {
       const mergedGeom = object.geometry.clone()
 
-      const lineGeom = new THREE.EdgesGeometry(mergedGeom, 40)
+      const lineGeom = new THREE.EdgesGeometry(mergedGeom, this.thresholdAngle)
 
-      const line = new THREE.LineSegments(
-        lineGeom,
-        new THREE.LineBasicMaterial({ color: '#000000' })
-      )
+      const line = new THREE.LineSegments(lineGeom, this.lineMaterial.clone())
       line.position.copy(object.position)
       line.scale.copy(object.scale)
       line.rotation.copy(object.rotation)
@@ -646,9 +650,11 @@ export default {
       }
 
       const lineGeom = new ConditionalEdgesGeometry(mergeVertices(mergedGeom))
-      const material = this.conditionalMaterial.clone()
 
-      const mesh = new THREE.LineSegments(lineGeom, material)
+      const mesh = new THREE.LineSegments(
+        lineGeom,
+        this.conditionalMaterial.clone()
+      )
       mesh.position.copy(object.position)
       mesh.scale.copy(object.scale)
       mesh.rotation.copy(object.rotation)
@@ -692,9 +698,8 @@ export default {
       mesh.isShadow = false
 
       mesh.material.polygonOffset = true
-      mesh.material.polygonOffsetFactor = 1
-      mesh.material.polygonOffsetUnits = 1
-      mesh.renderOrder = 3
+      mesh.material.polygonOffsetFactor = this.polygonOffsetFactor
+      mesh.material.polygonOffsetUnits = this.polygonOffsetUnits
       mesh.material.needsUpdate = true
 
       return mesh
@@ -704,7 +709,10 @@ export default {
 
       const { exterior, scene } = useWebGL()
 
-      this.guiAmbientLight = gui.addFolder({ title: `Ambient Light` })
+      this.guiAmbientLight = gui.addFolder({
+        title: `Ambient Light`,
+        expanded: false,
+      })
 
       this.guiAmbientLight.addInput(this.ambientLight, 'color', {
         color: { type: 'float' },
@@ -789,7 +797,7 @@ export default {
           this.directionalLight.shadow.camera.updateProjectionMatrix()
         })
 
-      this.guiDrag = gui.addFolder({ title: `Drag` })
+      this.guiDrag = gui.addFolder({ title: `Drag`, expanded: false })
 
       this.guiDrag.addInput(this, 'azimuth', {
         min: Math.PI * -2,
@@ -825,6 +833,7 @@ export default {
             }
           })
         })
+
       this.guiModel
         .addInput(this, 'modelReceiveShadow', {
           label: 'Receive shadow',
@@ -833,6 +842,20 @@ export default {
           exterior.traverse((child) => {
             if (child.isMesh && !child.isShadow) {
               child.receiveShadow = e.value
+            }
+          })
+        })
+
+      this.guiModel.addSeparator()
+      this.guiModel
+        .addInput(this.lineMaterial, 'color', {
+          color: { type: 'float' },
+          label: 'Outline color',
+        })
+        .on('change', (e) => {
+          exterior.traverse((child) => {
+            if (child.isLine || child.isLineSegments) {
+              child.material.color = e.value
             }
           })
         })
@@ -929,13 +952,13 @@ export default {
       cursor: pointer;
 
       &:nth-child(1) {
-        background: red;
+        background: var(--c-red-adidas);
       }
       &:nth-child(2) {
-        background: blue;
+        background: var(--c-blue-adidas);
       }
       &:nth-child(3) {
-        background: green;
+        background: var(--c-red-adidas);
       }
     }
   }
