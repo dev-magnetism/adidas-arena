@@ -1,9 +1,21 @@
 <template>
   <div class="app-3d">
     <div class="arrow-debug">
-      <span @click="onFocusPartAdidasArena(0)">0</span>
-      <span @click="onFocusPartAdidasArena(1)">1</span>
-      <span @click="onFocusPartAdidasArena(2)">2</span>
+      <span
+        :class="{ 'is-active': indexArrowPosition === 0 }"
+        @click="onFocusPartAdidasArena(0)"
+        >0</span
+      >
+      <span
+        :class="{ 'is-active': indexArrowPosition === 1 }"
+        @click="onFocusPartAdidasArena(1)"
+        >1</span
+      >
+      <span
+        :class="{ 'is-active': indexArrowPosition === 2 }"
+        @click="onFocusPartAdidasArena(2)"
+        >2</span
+      >
     </div>
   </div>
 </template>
@@ -29,6 +41,10 @@ export default {
   data() {
     return {
       modelLoaded: false,
+      modelColorSelected: new THREE.Color(0xff0000),
+      modelShadowColorSelected: new THREE.Color(0xfff000),
+      modelShadowColor: new THREE.Color(0xff00e6),
+      modelLineColor: new THREE.Color(0x000000),
       rotation: [0, 0, 0],
       polar: [0, Math.PI / 2],
       azimuth: { min: -Math.PI / 1.4, max: Math.PI * 1 },
@@ -36,6 +52,9 @@ export default {
       modelCastShadow: true,
       modelReceiveShadow: true,
       directionalLightIsStatic: false,
+      cloudsParams: {
+        speed: 0.0075,
+      },
       drag: {
         ease: 0.065,
         current: 0,
@@ -44,7 +63,18 @@ export default {
         speed: 2,
         dragSpeed: 0.005,
       },
-      indexArrowPosition: 0,
+      zoom: {
+        ease: 0.065,
+        current: 15,
+        target: 15,
+        last: 15,
+        wheelSpeed: 0.015,
+        range: {
+          min: 10,
+          max: 35,
+        },
+      },
+      indexArrowPosition: null,
       thresholdAngle: 40,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
@@ -127,50 +157,37 @@ export default {
     this.$raf.remove(`3d`, this.onFrame)
 
     // LIGHTS
-    this.directionalLight.dispose()
-    this.directionalLightHelper.dispose()
     this.ambientLight.dispose()
-
     scene.remove(this.ambientLight)
 
+    this.directionalLight.dispose()
+    this.directionalLightHelper.dispose()
     if (!this.directionalLightIsStatic) {
       scene.remove(this.directionalLight)
       scene.remove(this.directionalLightHelper)
     }
 
+    // GUI
     this.guiAmbientLight?.dispose()
     this.guiDirectionalLight?.dispose()
     this.guiDrag?.dispose()
     this.guiModel?.dispose()
+    this.guiZoom?.dispose()
+    this.guiClouds?.dispose()
 
+    // TWEEN
     this.tweenArrowTranslate?.kill()
+    this.tweenZoom?.kill()
   },
   methods: {
     onWheel(e) {
-      const { camera } = useWebGL()
+      const delta = e.deltaY * this.zoom.wheelSpeed
 
-      camera.zoom -= e.deltaY * 0.01
-      camera.updateProjectionMatrix()
-    },
-    onFrame() {
-      if (!this.modelExterior && !this.modelCloud) return
-
-      const { exterior } = useWebGL()
-
-      this.clouds?.children?.forEach((cloud) => {
-        const z = cloud.position.z + cloud.coefParallax
-        cloud.position.z = gsap.utils.wrap(100, -100, z)
-      })
-
-      this.drag.current = this.lerp(
-        this.drag.current,
-        this.drag.target,
-        this.drag.ease
+      this.zoom.target = gsap.utils.clamp(
+        this.zoom.range.min,
+        this.zoom.range.max,
+        this.zoom.target + delta
       )
-
-      const clamp = this.drag.current
-      exterior.rotation.y = clamp
-      this.drag.last = this.drag.current
     },
     onDrag(e) {
       const delta = e.deltaX * this.drag.dragSpeed
@@ -180,6 +197,43 @@ export default {
         this.azimuth.max,
         this.drag.target + delta
       )
+    },
+    onFrame() {
+      if (!this.modelExterior && !this.modelCloud) return
+
+      const { exterior, camera } = useWebGL()
+
+      this.clouds?.children?.forEach((cloud) => {
+        const z = cloud.direction
+          ? cloud.position.z - cloud.coefParallax * this.cloudsParams.speed
+          : cloud.position.z + cloud.coefParallax * this.cloudsParams.speed
+        cloud.position.z = gsap.utils.wrap(100, -100, z)
+      })
+
+      this.drag.current = this.lerp(
+        this.drag.current,
+        this.drag.target,
+        this.drag.ease
+      )
+
+      exterior.rotation.y = this.drag.current
+
+      this.zoom.current = this.lerp(
+        this.zoom.current,
+        this.zoom.target,
+        this.zoom.ease
+      )
+
+      camera.zoom = gsap.utils.clamp(
+        this.zoom.range.min,
+        this.zoom.range.max,
+        this.zoom.current
+      )
+
+      camera.updateProjectionMatrix()
+
+      this.drag.last = this.drag.current
+      this.zoom.last = this.zoom.current
     },
 
     initModel(gltf) {
@@ -196,7 +250,7 @@ export default {
       console.log('initial model', this.modelExterior)
 
       this.initCamera()
-      this.initMaterial()
+      this.initMaterials()
       this.initLights()
 
       this.initFloor()
@@ -223,11 +277,12 @@ export default {
 
       camera.position.copy(this.camera.position)
       camera.rotation.copy(this.camera.rotation)
-      camera.zoom = 15
+      camera.zoom = this.zoom.current
+
       camera.updateProjectionMatrix()
     },
 
-    initMaterial() {
+    initMaterials() {
       this.modelMaterial = new THREE.MeshLambertMaterial({
         color: new THREE.Color(0xffffff),
         emissive: new THREE.Color(0xffffff),
@@ -235,7 +290,7 @@ export default {
       })
 
       this.shadowMaterial = new THREE.ShadowMaterial({
-        color: 0xff00e6,
+        color: this.modelShadowColor,
       })
 
       this.conditionalMaterial = new THREE.ShaderMaterial(
@@ -245,7 +300,9 @@ export default {
         new THREE.Color(0x000000)
       )
 
-      this.lineMaterial = new THREE.LineBasicMaterial({ color: 0x000000 })
+      this.lineMaterial = new THREE.LineBasicMaterial({
+        color: this.modelLineColor,
+      })
     },
 
     loadCloudModel() {
@@ -289,7 +346,8 @@ export default {
 
       planesGroup.traverse((plane) => {
         const object = this.cloud.clone()
-        object.coefParallax = this.genRand(0.025, 0.065, 3)
+        object.coefParallax = this.genRand(0.25, 10, 2)
+        object.direction = Math.random() < 0.5
         object.position.copy(plane.position)
         object.initialPosition = object.position
 
@@ -352,8 +410,8 @@ export default {
       this.arrow.add(edgeArrow)
       this.arrow.add(conditionalArrow)
 
-      this.arrow.position.x = this.arrowPositions[this.indexArrowPosition].x
-      this.arrow.position.z = this.arrowPositions[this.indexArrowPosition].z
+      this.arrow.position.x = this.arrowPositions[0].x
+      this.arrow.position.z = this.arrowPositions[0].z
 
       this.tweenArrowTranslate = gsap.to(this.arrow.position, {
         y: 2,
@@ -441,7 +499,7 @@ export default {
       const edgeRoad = this.edgeObject(road)
       const conditionalRoad = this.conditionalObject(road)
 
-      this.road.add(road)
+      // this.road.add(road)
       this.road.add(shadowRoad)
       this.road.add(edgeRoad)
       this.road.add(conditionalRoad)
@@ -612,6 +670,7 @@ export default {
       const adidasArenaRoof = this.mergeObject(adidasArenaRoofGroup)
       adidasArenaRoof.name = 'shadowModel'
       adidasArenaRoof.material = this.shadowMaterial.clone()
+      adidasArenaRoof.material.color = this.modelShadowColor
       adidasArenaRoof.isShadow = true
 
       this.adidasArenaRoof.add(adidasArenaRoof)
@@ -619,6 +678,39 @@ export default {
 
     onFocusPartAdidasArena(index) {
       this.indexArrowPosition = index
+
+      const notSelectedPartAdidasArena = [
+        this.adidasArenaSecondFloor,
+        this.adidasArenaFirstFloor,
+        this.adidasArenaGroundFloor,
+      ].filter((el, index) => index !== this.indexArrowPosition)
+
+      const selectedPartAdidasArena = [
+        this.adidasArenaSecondFloor,
+        this.adidasArenaFirstFloor,
+        this.adidasArenaGroundFloor,
+      ].find((el, index) => index === this.indexArrowPosition)
+
+      notSelectedPartAdidasArena.forEach((group) => {
+        group.traverse((child) => {
+          if (child.isMesh) {
+            child.material.emissive = new THREE.Color(0xffffff)
+          }
+        })
+      })
+
+      selectedPartAdidasArena.traverse((child) => {
+        if (child.isMesh) {
+          child.material.emissive = this.modelColorSelected
+        }
+      })
+
+      if (this.indexArrowPosition === 0) {
+        this.adidasArenaRoof.children[0].material.color =
+          this.modelShadowColorSelected
+      } else {
+        this.adidasArenaRoof.children[0].material.color = this.modelShadowColor
+      }
 
       gsap.to(this.arrow.position, {
         x: this.arrowPositions[this.indexArrowPosition].x,
@@ -726,7 +818,10 @@ export default {
         label: 'Intensity',
       })
 
-      this.guiDirectionalLight = gui.addFolder({ title: `Directional Light` })
+      this.guiDirectionalLight = gui.addFolder({
+        title: `Directional Light`,
+        expanded: false,
+      })
 
       this.guiDirectionalLight
         .addInput(this, 'directionalLightIsStatic', {
@@ -800,8 +895,8 @@ export default {
       this.guiDrag = gui.addFolder({ title: `Drag`, expanded: false })
 
       this.guiDrag.addInput(this, 'azimuth', {
-        min: Math.PI * -2,
-        max: Math.PI * 2,
+        min: Math.PI * -1,
+        max: Math.PI * 1,
         label: 'Clamp rotation',
         step: 0.001,
       })
@@ -820,7 +915,39 @@ export default {
         step: 0.0001,
       })
 
-      this.guiModel = gui.addFolder({ title: `Model` })
+      this.guiZoom = gui.addFolder({ title: `Zoom`, expanded: false })
+
+      this.guiZoom.addInput(this.zoom, 'range', {
+        min: 5,
+        max: 50,
+        label: 'Range (min/max)',
+        step: 0.1,
+      })
+
+      this.guiZoom.addInput(this.zoom, 'ease', {
+        min: 0,
+        max: 0.25,
+        label: 'Zoom ease',
+        step: 0.0001,
+      })
+
+      this.guiZoom.addInput(this.zoom, 'wheelSpeed', {
+        min: 0,
+        max: 0.065,
+        label: 'Wheel speed',
+        step: 0.0001,
+      })
+
+      this.guiClouds = gui.addFolder({ title: `Clouds`, expanded: false })
+
+      this.guiClouds.addInput(this.cloudsParams, 'speed', {
+        min: 0.0025,
+        max: 0.25,
+        label: 'Speed ',
+        step: 0.001,
+      })
+
+      this.guiModel = gui.addFolder({ title: `Model`, expanded: false })
 
       this.guiModel
         .addInput(this, 'modelCastShadow', {
@@ -847,8 +974,20 @@ export default {
         })
 
       this.guiModel.addSeparator()
+
+      this.guiModel.addInput(this, 'modelColorSelected', {
+        color: { type: 'float' },
+        label: 'Color selected',
+      })
+
+      this.guiModel.addInput(this, 'modelShadowColorSelected', {
+        color: { type: 'float' },
+        label: 'Shadow color selected',
+      })
+
+      this.guiModel.addSeparator()
       this.guiModel
-        .addInput(this.lineMaterial, 'color', {
+        .addInput(this, 'modelLineColor', {
           color: { type: 'float' },
           label: 'Outline color',
         })
@@ -950,15 +1089,10 @@ export default {
       padding: 10px 20px;
       margin: 0 5px;
       cursor: pointer;
+      background: var(--c-red-adidas);
 
-      &:nth-child(1) {
-        background: var(--c-red-adidas);
-      }
-      &:nth-child(2) {
+      &.is-active {
         background: var(--c-blue-adidas);
-      }
-      &:nth-child(3) {
-        background: var(--c-red-adidas);
       }
     }
   }
