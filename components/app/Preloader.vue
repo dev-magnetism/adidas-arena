@@ -1,16 +1,23 @@
 <template>
-  <div :class="{ visible: !allLoadedTimeline }" class="app-preloader-layer">
-    <!-- <div :class="{ visible: !allLoaded }" class="app-preloader-layer"> -->
-    <div class="app-preloader-layer__informations">
-      <p class="app-preloader-layer__informations__number left">
+  <div
+    :class="{ invisible: !fontsLoaded, visible: !allLoadedTimeline }"
+    class="app-preloader"
+  >
+    <!-- <div class="app-preloader__informations">
+      <p class="app-preloader__informations__number left">
         {{ progressUIFormated }}
       </p>
-      <div class="app-preloader-layer__bar">
-        <div ref="barFront" class="app-preloader-layer__bar-front" />
+      <div class="app-preloader__bar">
+        <div ref="barFront" class="app-preloader__bar-front" />
       </div>
-      <p class="app-preloader-layer__informations__number right">100</p>
+      <p class="app-preloader__informations__number right">100</p>
     </div>
-    <TH1 weight="bold" class="app-preloader-layer__title">Chargement</TH1>
+    <TH1 weight="bold" class="app-preloader__title">Chargements</TH1> -->
+    <TH1 class="app-preloader__progress" weight="bold">
+      {{ progressUIFormated }}
+    </TH1>
+    <div class="app-preloader__layer blue" />
+    <div class="app-preloader__layer red" />
   </div>
 </template>
 
@@ -24,6 +31,7 @@ export default {
   data() {
     return {
       progressUI: 0,
+      tweenValue: 0,
     }
   },
   computed: {
@@ -37,11 +45,15 @@ export default {
       allLoaded: (state) => state.allLoaded,
     }),
   },
-  watch: {},
+  watch: {
+    fontsLoaded(payload) {
+      if (payload) this.loadModels()
+    },
+  },
   created() {},
   mounted() {
     this.tl = gsap.timeline({
-      delay: 2,
+      delay: 1,
       onUpdate: () => {
         this.progressUI = Math.round(this.tl.progress() * 100)
       },
@@ -49,26 +61,28 @@ export default {
         this.setAllLoadedTimeline(true)
       },
     })
-
-    loaderManager.load(
-      [
-        { id: 'exterior', path: '/models/exterior.gltf' },
-        { id: 'cloud', path: '/models/cloud.gltf' },
-      ],
-      this.onProgress,
-      this.onComplete
-    )
   },
 
   beforeDestroy() {
-    this.tl?.clear()
+    this.tl?.kill()
   },
 
   methods: {
+    loadModels() {
+      loaderManager.load(
+        [
+          { id: 'exterior', path: '/models/exterior.gltf' },
+          { id: 'cloud', path: '/models/cloud.gltf' },
+        ],
+        this.onProgress,
+        this.onComplete
+      )
+    },
     onProgress({ normalized }, id) {
-      this.tl.to(this.$refs.barFront, {
-        scaleX: normalized,
-        duration: 0.5,
+      this.tl.to(this, {
+        tweenValue: normalized,
+        duration: this.randomIntFromInterval(2, 4),
+        ease: 'power3.inOut',
       })
 
       if (id === 'exterior') {
@@ -90,6 +104,9 @@ export default {
       this.setModelCloudLoaded(true)
       this.setAllLoaded(true)
     },
+    randomIntFromInterval(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min)
+    },
     ...mapMutations({
       setAllLoadedTimeline: 'setAllLoadedTimeline',
       setAllLoaded: 'setAllLoaded',
@@ -101,7 +118,7 @@ export default {
 </script>
 
 <style lang="scss">
-.app-preloader-layer {
+.app-preloader {
   position: fixed;
   width: 100%;
   height: 100vh;
@@ -111,9 +128,47 @@ export default {
   transform: translate3d(0, -100%, 0);
   transition: transform 2.5s var(--ease-out-expo);
   transition-delay: 0.5s;
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: end;
+
+  &.invisible {
+    .app-preloader__informations,
+    .app-preloader__title,
+    .app-preloader__progress.H1 {
+      opacity: 0;
+    }
+  }
+
+  &__layer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    transform: scaleY(0);
+    transform-origin: center bottom;
+
+    &.red {
+      background: var(--c-red-adidas);
+    }
+    &.blue {
+      background: var(--c-blue-adidas);
+    }
+  }
+
+  &__progress.H1 {
+    position: absolute;
+    bottom: desktop-vw(30px);
+    right: desktop-vw(40px);
+  }
+
+  &__informations,
+  &__title,
+  &__progress.H1 {
+    opacity: 1;
+    transition: opacity 0.85s 0.65s var(--ease-out-expo);
+  }
 
   &__informations {
     display: flex;
