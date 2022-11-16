@@ -24,8 +24,8 @@
 import { gsap } from 'gsap'
 import { Observer } from 'gsap/Observer'
 
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import { mapState, mapMutations } from 'vuex'
+
 import {
   mergeBufferGeometries,
   mergeVertices,
@@ -34,13 +34,14 @@ import {
 import useWebGL from '~/hooks/webgl'
 import useGUI from '~/hooks/gui'
 
+import loaderManager from '~/assets/js/loaderManager'
+
 import { ConditionalEdgesGeometry } from '~/assets/js/webgl/ConditionalEdgesGeometry'
 import { ConditionalEdgesShader } from '~/assets/js/webgl/ConditionalEdgesShader'
 
 export default {
   data() {
     return {
-      modelLoaded: false,
       modelColorSelected: new THREE.Color(0xff0000),
       modelShadowColorSelected: new THREE.Color(0xfff000),
       modelShadowColor: new THREE.Color(0xff00e6),
@@ -80,28 +81,25 @@ export default {
       polygonOffsetUnits: 1,
     }
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      modelExteriorLoaded: (state) => state.modelExteriorLoaded,
+      modelCloudLoaded: (state) => state.modelCloudLoaded,
+    }),
+  },
+  watch: {
+    modelExteriorLoaded() {
+      this.initExterior()
+    },
+    modelCloudLoaded() {
+      this.initClouds()
+    },
+  },
   mounted() {
-    this.dracoLoader = new DRACOLoader()
-    this.dracoLoader.setDecoderPath('three/examples/js/libs/draco/')
-
-    this.gltfLoader = new GLTFLoader()
-    this.gltfLoader.setDRACOLoader(this.dracoLoader)
-
-    this.gltfLoader.load(
-      '/models/map.gltf',
-      (gltf) => {
-        this.initModel(gltf)
-        this.loadCloudModel()
-      },
-      (progress) => {
-        // console.log('progress model load')
-        // console.log(progress)
-      },
-      (error) => {
-        console.log('error model load', error)
-      }
-    )
+    if (loaderManager.modelsLoaded) {
+      this.initExterior()
+      this.initClouds()
+    }
 
     this.observer = Observer.create({
       target: this.$el,
@@ -115,20 +113,19 @@ export default {
     this.$raf.add(`3d`, this.onFrame)
   },
   beforeDestroy() {
+    console.log('destrfdfddoyfdfdyydsdsdsyy')
     const { exterior, scene } = useWebGL()
 
-    console.log('destroy')
+    this.cloud?.material?.dispose()
+    this.cloud?.geometry?.dispose()
 
     exterior.traverse((item) => {
       if (item instanceof THREE.Mesh || item instanceof THREE.Line) {
-        item.material.dispose()
-        item.geometry.dispose()
+        item.geometry?.dispose()
 
         exterior.remove(item)
       }
     })
-
-    this.clouds.remove(this.cloud)
 
     exterior.remove(this.floor)
     exterior.remove(this.buildings)
@@ -161,10 +158,10 @@ export default {
     scene.remove(this.ambientLight)
 
     this.directionalLight.dispose()
-    this.directionalLightHelper.dispose()
+    // this.directionalLightHelper.dispose()
     if (!this.directionalLightIsStatic) {
       scene.remove(this.directionalLight)
-      scene.remove(this.directionalLightHelper)
+      // scene.remove(this.directionalLightHelper)
     }
 
     // GUI
@@ -199,9 +196,10 @@ export default {
       )
     },
     onFrame() {
-      if (!this.modelExterior && !this.modelCloud) return
+      // if (this.modelExterior === undefined && this.modelCloud === undefined)
+      //   return
 
-      const { exterior, camera } = useWebGL()
+      const { camera, exterior } = useWebGL()
 
       this.clouds?.children?.forEach((cloud) => {
         const z = cloud.direction
@@ -236,18 +234,17 @@ export default {
       this.zoom.last = this.zoom.current
     },
 
-    initModel(gltf) {
-      this.modelExterior = gltf.scene
+    initExterior() {
+      this.gltfExterior = loaderManager.getModel('exterior').scene
 
-      this.modelLoaded = true
+      console.log('gltfExterior', this.gltfExterior)
 
       const arrowsPositionGroup =
-        this.modelExterior.getObjectByName('ArrowsPosition')
+        this.gltfExterior.getObjectByName('ArrowsPosition')
+
       this.arrowPositions = arrowsPositionGroup.children.map(
         (child) => child.position
       )
-
-      console.log('initial model', this.modelExterior)
 
       this.initCamera()
       this.initMaterials()
@@ -273,7 +270,10 @@ export default {
 
     initCamera() {
       const { camera } = useWebGL()
-      this.camera = this.modelExterior.getObjectByName('Camera_Zoom')
+
+      this.camera = loaderManager
+        .getModel('exterior')
+        .scene.getObjectByName('Camera_Zoom')
 
       camera.position.copy(this.camera.position)
       camera.rotation.copy(this.camera.rotation)
@@ -305,33 +305,18 @@ export default {
       })
     },
 
-    loadCloudModel() {
-      this.gltfLoader.load(
-        '/models/cloud.gltf',
-        (gltf) => {
-          this.initClouds(gltf)
-        },
-        (progress) => {
-          // console.log('progress model load')
-          // console.log(progress)
-        },
-        (error) => {
-          console.log('error model load clouds', error)
-        }
-      )
-    },
-
-    initClouds(gltf) {
+    initClouds() {
       const { exterior } = useWebGL()
 
       this.clouds = new THREE.Group()
       this.clouds.name = 'clouds'
-
       exterior.add(this.clouds)
 
-      this.modelCloud = gltf.scenes[0].children[0]
+      this.gltfCloud = loaderManager.getModel('cloud').scene
 
-      const cloud = this.mergeObject(this.modelCloud)
+      console.log('gltfCloud', this.gltfCloud)
+
+      const cloud = this.mergeObject(this.gltfCloud)
       const edgeCloud = this.edgeObject(cloud)
       const conditionalCloud = this.conditionalObject(cloud)
 
@@ -342,7 +327,7 @@ export default {
       this.cloud.add(edgeCloud)
       this.cloud.add(conditionalCloud)
 
-      const planesGroup = this.modelExterior.getObjectByName('Plane')
+      const planesGroup = this.gltfExterior.getObjectByName('Plane')
 
       planesGroup.traverse((plane) => {
         const object = this.cloud.clone()
@@ -353,10 +338,12 @@ export default {
 
         this.clouds.add(object)
       })
+
+      this.initGUI()
     },
 
     initLights() {
-      const { scene, exterior } = useWebGL()
+      const { exterior, scene } = useWebGL()
 
       this.ambientLight = new THREE.AmbientLight(0xff00e6)
       scene.add(this.ambientLight)
@@ -365,11 +352,11 @@ export default {
       this.directionalLight.castShadow = true
       this.directionalLight.position.set(-100, 150, 300)
 
-      this.directionalLightHelper = new THREE.DirectionalLightHelper(
-        this.directionalLight,
-        15,
-        new THREE.Color('#FF0000')
-      )
+      // this.directionalLightHelper = new THREE.DirectionalLightHelper(
+      //   this.directionalLight,
+      //   15,
+      //   new THREE.Color('#FF0000')
+      // )
 
       this.directionalLight.shadow.mapSize.width = 4096 // default
       this.directionalLight.shadow.mapSize.height = 4096 // default
@@ -384,10 +371,10 @@ export default {
       this.directionalLight.shadow.camera.bottom = -80
 
       if (this.directionalLightIsStatic) {
-        exterior.add(this.directionalLightHelper)
+        // exterior.add(this.directionalLightHelper)
         exterior.add(this.directionalLight)
       } else {
-        scene.add(this.directionalLightHelper)
+        // scene.add(this.directionalLightHelper)
         scene.add(this.directionalLight)
       }
     },
@@ -400,7 +387,7 @@ export default {
       this.arrow.receiveShadow = true
       exterior.add(this.arrow)
 
-      const arrowGroup = this.modelExterior.getObjectByName('Arrow_001')
+      const arrowGroup = this.gltfExterior.getObjectByName('Arrow_001')
 
       const arrow = this.mergeObject(arrowGroup)
       const edgeArrow = this.edgeObject(arrow)
@@ -429,7 +416,7 @@ export default {
       this.basket = new THREE.Group()
       exterior.add(this.basket)
 
-      const basketGroup = this.modelExterior.getObjectByName('Basket')
+      const basketGroup = this.gltfExterior.getObjectByName('Basket')
 
       const basket = this.mergeObject(basketGroup)
 
@@ -453,7 +440,7 @@ export default {
       this.cars = new THREE.Group()
       exterior.add(this.cars)
 
-      const carsGroup = this.modelExterior.getObjectByName('Cars')
+      const carsGroup = this.gltfExterior.getObjectByName('Cars')
 
       const cars = this.mergeObject(carsGroup)
       const edgeCars = this.edgeObject(cars)
@@ -470,7 +457,7 @@ export default {
       this.paniers = new THREE.Group()
       exterior.add(this.paniers)
 
-      const paniersGroup = this.modelExterior.getObjectByName('Paniers')
+      const paniersGroup = this.gltfExterior.getObjectByName('Paniers')
 
       const paniers = this.mergeObject(paniersGroup)
       const edgePaniers = this.edgeObject(paniers)
@@ -487,7 +474,7 @@ export default {
       this.road = new THREE.Group()
       exterior.add(this.road)
 
-      const roadGroup = this.modelExterior.getObjectByName('Road')
+      const roadGroup = this.gltfExterior.getObjectByName('Road')
 
       const road = this.mergeObject(roadGroup)
 
@@ -511,7 +498,7 @@ export default {
       this.lamps = new THREE.Group()
       exterior.add(this.lamps)
 
-      const lampsGroup = this.modelExterior.getObjectByName('Lamps')
+      const lampsGroup = this.gltfExterior.getObjectByName('Lamps')
 
       const lamps = this.mergeObject(lampsGroup)
       const edgeLamps = this.edgeObject(lamps)
@@ -528,7 +515,7 @@ export default {
       this.tram = new THREE.Group()
       exterior.add(this.tram)
 
-      const tramGroup = this.modelExterior.getObjectByName('Tram')
+      const tramGroup = this.gltfExterior.getObjectByName('Tram')
 
       const tram = this.mergeObject(tramGroup)
       const edgeTram = this.edgeObject(tram)
@@ -543,9 +530,10 @@ export default {
       const { exterior } = useWebGL()
 
       this.trees = new THREE.Group()
+      this.trees.name = 'trees'
       exterior.add(this.trees)
 
-      const treesGroup = this.modelExterior.getObjectByName('Trees')
+      const treesGroup = this.gltfExterior.getObjectByName('Trees')
 
       const trees = this.mergeObject(treesGroup)
       const edgeTrees = this.edgeObject(trees)
@@ -560,10 +548,10 @@ export default {
       const { exterior } = useWebGL()
 
       this.floor = new THREE.Group()
+      this.floor.name = 'floor'
       exterior.add(this.floor)
-      // this.floor.position.y = -0.0001
 
-      const floorGroup = this.modelExterior.getObjectByName('Floor')
+      const floorGroup = this.gltfExterior.getObjectByName('Floor')
 
       const floor = this.mergeObject(floorGroup)
 
@@ -587,7 +575,7 @@ export default {
       this.buildings = new THREE.Group()
       exterior.add(this.buildings)
 
-      const buildingsGroup = this.modelExterior.getObjectByName('Buildings')
+      const buildingsGroup = this.gltfExterior.getObjectByName('Buildings')
 
       const buildings = this.mergeObject(buildingsGroup)
 
@@ -606,10 +594,9 @@ export default {
       this.adidasArenaGroundFloor.idBlock = 2
       exterior.add(this.adidasArenaGroundFloor)
 
-      const adidasArenaGroup = this.modelExterior.getObjectByName('Arena_02')
+      const adidasArenaGroup = this.gltfExterior.getObjectByName('Arena_02')
 
       const adidasArena = this.mergeObject(adidasArenaGroup)
-
       const edgeAdidasArena = this.edgeObject(adidasArena)
       const conditionalAdidasArena = this.conditionalObject(adidasArena)
 
@@ -626,10 +613,9 @@ export default {
 
       exterior.add(this.adidasArenaFirstFloor)
 
-      const adidasArenaGroup = this.modelExterior.getObjectByName('Arena_01')
+      const adidasArenaGroup = this.gltfExterior.getObjectByName('Arena_01')
 
       const adidasArena = this.mergeObject(adidasArenaGroup)
-
       const edgeAdidasArena = this.edgeObject(adidasArena)
       const conditionalAdidasArena = this.conditionalObject(adidasArena)
 
@@ -646,10 +632,8 @@ export default {
 
       exterior.add(this.adidasArenaSecondFloor)
 
-      const adidasArenaGroup = this.modelExterior.getObjectByName('Arena_00')
-
+      const adidasArenaGroup = this.gltfExterior.getObjectByName('Arena_00')
       const adidasArena = this.mergeObject(adidasArenaGroup)
-
       const edgeAdidasArena = this.edgeObject(adidasArena)
       const conditionalAdidasArena = this.conditionalObject(adidasArena)
 
@@ -665,7 +649,7 @@ export default {
       exterior.add(this.adidasArenaRoof)
 
       const adidasArenaRoofGroup =
-        this.modelExterior.getObjectByName('PlaneArena')
+        this.gltfExterior.getObjectByName('PlaneArena')
 
       const adidasArenaRoof = this.mergeObject(adidasArenaRoofGroup)
       adidasArenaRoof.name = 'shadowModel'
@@ -677,6 +661,8 @@ export default {
     },
 
     onFocusPartAdidasArena(index) {
+      // const { camera } = useWebGL()
+
       this.indexArrowPosition = index
 
       const notSelectedPartAdidasArena = [
@@ -715,15 +701,24 @@ export default {
       gsap.to(this.arrow.position, {
         x: this.arrowPositions[this.indexArrowPosition].x,
         z: this.arrowPositions[this.indexArrowPosition].z,
+        // onUpdate: () => {
+        //   camera.lookAt(
+        //     this.arrow.position.x,
+        //     this.arrow.position.y,
+        //     this.arrow.position.z
+        //   )
+
+        //   camera.updateProjectionMatrix()
+        // },
       })
     },
 
     edgeObject(object) {
-      const mergedGeom = object.geometry.clone()
+      const mergedGeom = object.geometry
 
       const lineGeom = new THREE.EdgesGeometry(mergedGeom, this.thresholdAngle)
 
-      const line = new THREE.LineSegments(lineGeom, this.lineMaterial.clone())
+      const line = new THREE.LineSegments(lineGeom, this.lineMaterial)
       line.position.copy(object.position)
       line.scale.copy(object.scale)
       line.rotation.copy(object.rotation)
@@ -743,10 +738,7 @@ export default {
 
       const lineGeom = new ConditionalEdgesGeometry(mergeVertices(mergedGeom))
 
-      const mesh = new THREE.LineSegments(
-        lineGeom,
-        this.conditionalMaterial.clone()
-      )
+      const mesh = new THREE.LineSegments(lineGeom, this.conditionalMaterial)
       mesh.position.copy(object.position)
       mesh.scale.copy(object.scale)
       mesh.rotation.copy(object.rotation)
@@ -756,7 +748,7 @@ export default {
     },
 
     mergeObject(object) {
-      const obj = object.clone()
+      const obj = object
 
       obj.updateMatrixWorld(true)
 
@@ -764,7 +756,8 @@ export default {
 
       obj.traverse((child) => {
         if (child.isMesh) {
-          const g = child.geometry
+          const g = child.geometry.clone()
+
           g.applyMatrix4(child.matrixWorld)
 
           for (const key in g.attributes) {
@@ -830,16 +823,16 @@ export default {
         .on('change', (e) => {
           if (e.value) {
             scene.remove(this.directionalLight)
-            scene.remove(this.directionalLightHelper)
+            // scene.remove(this.directionalLightHelper)
 
             exterior.add(this.directionalLight)
-            exterior.add(this.directionalLightHelper)
+            // exterior.add(this.directionalLightHelper)
           } else {
             exterior.remove(this.directionalLight)
-            exterior.remove(this.directionalLightHelper)
+            // exterior.remove(this.directionalLightHelper)
 
             scene.add(this.directionalLight)
-            scene.add(this.directionalLightHelper)
+            // scene.add(this.directionalLightHelper)
           }
         })
 
@@ -1060,6 +1053,8 @@ export default {
         })
     },
 
+    ...mapMutations({}),
+
     lerp(p1, p2, t) {
       return p1 + (p2 - p1) * t
     },
@@ -1083,7 +1078,7 @@ export default {
     bottom: 10px;
     right: 10px;
     display: flex;
-    z-index: 999;
+    z-index: 2;
 
     span {
       padding: 10px 20px;

@@ -1,11 +1,10 @@
 <template>
   <div class="app">
+    <AppCursor v-if="!$viewport.isMobile" />
+    <AppPreloader />
     <AppHeader />
     <nuxt />
     <AppScene />
-    <AppPreloadLayer />
-    <!-- <AppTransition /> -->
-    <AppCursor v-if="!$viewport.isMobile" />
   </div>
 </template>
 
@@ -15,7 +14,7 @@ import { mapState, mapMutations } from 'vuex'
 
 export default {
   layout: 'DefaultLayout',
-  // scrollToTop: true,
+
   data() {
     return {}
   },
@@ -26,6 +25,7 @@ export default {
   watch: {},
 
   mounted() {
+    console.log('heredddr')
     this.preloadFonts()
 
     this.$nuxt.$on('app:beforeEnter', this.onBeforeEnter)
@@ -81,6 +81,5 @@ export default {
   display: flex;
   flex: 1;
   flex-direction: column;
-  background-color: var(--c-beige);
 }
 </style>

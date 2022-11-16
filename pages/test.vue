@@ -1,9 +1,3 @@
 <template>
-  <div>
-    <nuxt-picture
-      provider="directus"
-      src="5c826197-b302-429a-9ab5-a3dbf6862b72"
-      format="webp"
-    />
-  </div>
+  <WebglExterior />
 </template>

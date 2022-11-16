@@ -1,20 +1,36 @@
-export const strict = false
+// export const strict = false
 
 export const state = () => ({
   fontsLoaded: false,
   partnersContent: null,
   appContent: null,
+  allLoaded: false,
+  allLoadedTimeline: false,
+  modelExteriorLoaded: false,
+  modelCloudLoaded: false,
 })
 
 export const getters = {
-  //   allLoaded: (state) => {
-  //     return state.coverVideoLoaded && state.interactiveSliderLoaded
-  //   },
+  // allLoaded: (state) => {
+  //   return state.coverVideoLoaded && state.interactiveSliderLoaded
+  // },
 }
 
 export const mutations = {
   setFontsLoaded: (state, value) => {
     state.fontsLoaded = value
+  },
+  setModelExteriorLoaded: (state, value) => {
+    state.modelExteriorLoaded = value
+  },
+  setModelCloudLoaded: (state, value) => {
+    state.modelCloudLoaded = value
+  },
+  setAllLoaded: (state, value) => {
+    state.allLoaded = value
+  },
+  setAllLoadedTimeline: (state, value) => {
+    state.allLoadedTimeline = value
   },
   setPartnersContent: (state, value) => {
     state.partnersContent = value

@@ -5,7 +5,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
+
 import useWebGL from '~/hooks/webgl'
 
 export default {
@@ -14,7 +15,7 @@ export default {
       webglInFront: (state) => state.webglInFront,
     }),
   },
-  watch: {},
+  created() {},
   mounted() {
     const { renderer } = useWebGL()
 
@@ -23,6 +24,9 @@ export default {
   beforeDestroy() {
     const webgl = useWebGL()
     webgl.destroy()
+  },
+  methods: {
+    ...mapMutations({}),
   },
 }
 </script>
