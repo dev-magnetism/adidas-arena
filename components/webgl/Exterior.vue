@@ -85,6 +85,7 @@ export default {
     ...mapState({
       modelExteriorLoaded: (state) => state.modelExteriorLoaded,
       modelCloudLoaded: (state) => state.modelCloudLoaded,
+      allLoaded: (state) => state.allLoaded,
     }),
   },
   watch: {
@@ -94,11 +95,15 @@ export default {
     modelCloudLoaded() {
       this.initClouds()
     },
+    allLoaded(payload) {
+      if (payload) this.initGUI()
+    },
   },
   mounted() {
     if (loaderManager.modelsLoaded) {
       this.initExterior()
       this.initClouds()
+      this.initGUI()
     }
 
     this.observer = Observer.create({
@@ -261,8 +266,6 @@ export default {
       this.initBasket()
       this.initLamps()
       this.initArrow()
-
-      this.initGUI()
     },
 
     initCamera() {
@@ -333,8 +336,6 @@ export default {
 
         this.clouds.add(object)
       })
-
-      this.initGUI()
     },
 
     initLights() {

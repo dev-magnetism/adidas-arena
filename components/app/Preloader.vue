@@ -94,16 +94,7 @@ export default {
     onComplete() {
       this.setAllLoaded(true)
     },
-    loadingComplete() {
-      this.tl.to(this.$refs.barFront, {
-        scaleX: 1,
-        duration: 3,
-      })
 
-      this.setModelExteriorLoaded(true)
-      this.setModelCloudLoaded(true)
-      this.setAllLoaded(true)
-    },
     randomIntFromInterval(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min)
     },
