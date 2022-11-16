@@ -113,7 +113,6 @@ export default {
     this.$raf.add(`3d`, this.onFrame)
   },
   beforeDestroy() {
-    console.log('destrfdfddoyfdfdyydsdsdsyy')
     const { exterior, scene } = useWebGL()
 
     this.cloud?.material?.dispose()
@@ -237,8 +236,6 @@ export default {
     initExterior() {
       this.gltfExterior = loaderManager.getModel('exterior').scene
 
-      console.log('gltfExterior', this.gltfExterior)
-
       const arrowsPositionGroup =
         this.gltfExterior.getObjectByName('ArrowsPosition')
 
@@ -313,8 +310,6 @@ export default {
       exterior.add(this.clouds)
 
       this.gltfCloud = loaderManager.getModel('cloud').scene
-
-      console.log('gltfCloud', this.gltfCloud)
 
       const cloud = this.mergeObject(this.gltfCloud)
       const edgeCloud = this.edgeObject(cloud)

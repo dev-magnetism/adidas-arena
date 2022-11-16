@@ -32,7 +32,6 @@ class GL {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
     this.renderer.physicallyCorrectLights = true
-
     this.renderer.shadowMap.enabled = true
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
     // THREE.BasicShadowMap
