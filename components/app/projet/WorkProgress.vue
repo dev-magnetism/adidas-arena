@@ -136,7 +136,7 @@ export default {
     ScrollTrigger.create({
       trigger: this.$refs.sketch,
       start: 'top+=25% center',
-      markers: true,
+      // markers: true,
       onEnter: () => {
         this.sketchVisible = true
       },
@@ -216,7 +216,11 @@ export default {
       grid-column: 1 / span 6;
       margin-top: desktop-vw(0px);
       aspect-ratio: 345 / 145;
-      transform: scale(1.3);
+      overflow: hidden;
+    }
+
+    svg {
+      transform: scale(1.3) !important;
     }
 
     &.is-visible {
