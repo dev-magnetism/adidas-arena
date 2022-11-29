@@ -13,8 +13,13 @@ class GL {
   constructor() {
     this.scene = new THREE.Scene()
 
+    this.preloader = new THREE.Group()
+    this.preloader.name = 'preloader'
+    this.scene.add(this.preloader)
+
     this.exterior = new THREE.Group()
     this.exterior.name = 'exterior'
+
     this.scene.add(this.exterior)
 
     this.gallery = new THREE.Group()

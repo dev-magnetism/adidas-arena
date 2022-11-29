@@ -26,10 +26,10 @@ export default {
   row-gap: 0;
 
   @include mobile {
-    margin-bottom: mobile-vw(130px);
+    margin-bottom: mobile-vw(100px);
   }
 
-  &__title {
+  &__title.app-element-rich-text {
     grid-column: 4 / span 6;
     text-align: center;
 
@@ -71,6 +71,7 @@ export default {
 
     @include mobile {
       grid-column: 1 / span 6;
+      margin-top: mobile-vw(80px);
     }
 
     .app-atoms-cta {

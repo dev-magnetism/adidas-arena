@@ -117,7 +117,7 @@ export default {
     margin-top: desktop-vw(25px);
 
     @include mobile {
-      margin-top: mobile-vw(130px);
+      margin-top: mobile-vw(80px);
     }
   }
   @include mobile {

@@ -612,7 +612,6 @@ export default {
 
     @include mobile {
       transform: scale(1);
-      overflow: hidden;
     }
 
     position: relative;

@@ -116,12 +116,7 @@ export default {
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
     '@nuxt/image',
-    // 'nuxt-font-loader',
   ],
-
-  // fontLoader: {
-  //   url: 'fonts/fonts.css',
-  // },
 
   image: {
     screens: {
@@ -147,7 +142,6 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    'nuxt-mq',
     [
       '~/modules/directus',
       {
@@ -155,14 +149,6 @@ export default {
       },
     ],
   ],
-
-  mq: {
-    defaultBreakpoint: 'sm',
-    breakpoints: {
-      sm: 800,
-      lg: Infinity,
-    },
-  },
 
   render: {
     bundleRenderer: {
@@ -186,6 +172,11 @@ export default {
       config.module.rules.push({
         test: /\.(glsl|vs|fs)$/,
         use: [{ loader: 'raw-loader' }, { loader: 'glslify-loader' }],
+      })
+      config.module.rules.push({
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: 'javascript/auto',
       })
     },
   },

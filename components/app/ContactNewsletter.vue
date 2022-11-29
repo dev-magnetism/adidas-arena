@@ -107,6 +107,14 @@ export default {
     aspect-ratio: 185 / 230;
     bottom: desktop-vw(80px);
     transform: rotate(5.6deg);
+
+    @include mobile {
+      grid-column: 1 / span 3;
+      top: 0;
+      aspect-ratio: 135/170;
+      width: 75%;
+      top: mobile-vw(-30px);
+    }
   }
 
   &__newsletter {
@@ -127,9 +135,24 @@ export default {
     background-size: 1.3em 1.3em;
     z-index: 1;
 
+    @include mobile {
+      grid-column: 1 / span 6;
+      padding: mobile-vw(30px) mobile-vw(0px) mobile-vw(25px) mobile-vw(0px);
+      aspect-ratio: 340 / 280;
+      width: 95%;
+      left: 2.5%;
+      background-size: 1em 1em;
+    }
+
     .app-element-rich-text {
       .H4.wysiwyg-text {
         text-align: center;
+
+        @include mobile {
+          font-size: mobile-vw(14px);
+          line-height: mobile-vw(20px);
+          @include font-adihausDIN-bold();
+        }
 
         .app-element-lottie-word.Trait_1 {
           svg {
@@ -150,6 +173,13 @@ export default {
       justify-content: center;
       width: 85%;
 
+      @include mobile {
+        margin-top: mobile-vw(20px);
+        display: flex;
+        flex-flow: column wrap;
+        width: 100%;
+      }
+
       &__field-mail {
         @include font-adihausDIN-cn-medium();
         text-transform: uppercase;
@@ -158,6 +188,12 @@ export default {
         letter-spacing: -0.04em;
         width: 75%;
 
+        @include mobile {
+          font-size: mobile-vw(40px);
+          line-height: mobile-vw(40px);
+          text-align: center;
+        }
+
         &::placeholder {
           color: rgba(24, 24, 24, 0.25);
         }
@@ -165,8 +201,8 @@ export default {
 
       &__submit {
         border: 1px solid rgb(24 24 24 / 25%);
-        width: desktop-vw(55px);
-        height: desktop-vw(55px);
+        width: desktop-vw(56px);
+        height: desktop-vw(56px);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -175,6 +211,13 @@ export default {
         overflow: hidden;
         align-self: center;
         position: relative;
+
+        @include mobile {
+          width: mobile-vw(56px);
+          height: mobile-vw(56px);
+          margin-left: 0px;
+          margin-top: mobile-vw(20px);
+        }
 
         &.valid {
           cursor: pointer;
@@ -212,6 +255,10 @@ export default {
           opacity: 0.25;
           z-index: 1;
           transition: opacity 0.2s var(--ease-out-cubic);
+
+          @include mobile {
+            padding: mobile-vw(15px);
+          }
         }
       }
     }

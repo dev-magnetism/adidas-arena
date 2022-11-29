@@ -7,8 +7,8 @@
 
     <AppBepartofPartenairePartenairesLogos
       :logos="contents.list"
-      :rows="6"
-      :cols="10"
+      :cols="!$viewport.isMobile ? 10 : 4"
+      :rows="!$viewport.isMobile ? 6 : 8"
     />
   </div>
 </template>
@@ -29,8 +29,18 @@ export default {
   position: relative;
   margin-bottom: desktop-vw(120px);
 
-  &__title.H1 {
+  &__title.app-element-rich-text {
     margin-bottom: desktop-vw(20px);
+    width: 65%;
+
+    @include mobile {
+      margin-bottom: mobile-vw(40px);
+      width: 100%;
+    }
+
+    .bold {
+      display: inline-block;
+    }
   }
 }
 </style>

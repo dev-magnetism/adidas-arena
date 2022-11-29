@@ -70,6 +70,13 @@ export default {
         margin-left: mobile-vw(0px);
       }
 
+      .app-element-rich-text {
+        @include mobile {
+          display: flex;
+          flex-direction: column-reverse;
+        }
+      }
+
       > :first-child {
         margin-top: desktop-vw(120px);
 

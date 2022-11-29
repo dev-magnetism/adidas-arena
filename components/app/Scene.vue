@@ -1,7 +1,5 @@
 <template>
-  <div :class="{ 'app-webgl--front': webglInFront }" class="app-webgl">
-    <WebglInfo v-if="!$viewport.isMobile" />
-  </div>
+  <div :class="{ 'app-webgl--front': webglInFront }" class="app-webgl"></div>
 </template>
 
 <script>
@@ -42,6 +40,7 @@ export default {
   pointer-events: none;
   touch-action: none;
   user-select: none;
+  // z-index: 99999999;
 
   &--front {
     z-index: 9;

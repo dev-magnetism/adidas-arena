@@ -48,28 +48,20 @@
           'lights-visible': lightsVisible,
         }"
         class="app-projet-work-progress__sketch"
-      ></div>
+      />
 
-      <div class="app-projet-work-progress__timeline">
-        <span />
-        <div class="app-projet-work-progress__timeline__items">
-          <div
-            v-for="(item, index) in contents.items"
-            :key="index"
-            :class="{ active: index === indexSketch }"
-            class="app-projet-work-progress__timeline__item"
-            @click="onChangeIndex(index)"
-          >
-            <TP1 color="beige">
-              <div ref="cross" class="app-projet-work-progress__cross" />
-              {{ item.work_progress_items_title }}
-            </TP1>
-            <TP2 weight="bold" color="beige">
-              {{ item.work_progress_items_subtitle }}
-            </TP2>
-          </div>
-        </div>
-      </div>
+      <AppProjetWorkProgressTimeline
+        v-if="!$viewport.isMobile"
+        ref="timeline"
+        :content="timelineContent"
+        @indexChanged="onIndexChanged"
+      />
+      <AppProjetWorkProgressTimelineMobile
+        v-else
+        :content="timelineContent"
+        @indexChanged="onIndexChanged"
+      />
+
       <div class="app-projet-work-progress__bottom-description">
         <ERichText :split="false" :content="contents.description" />
       </div>
@@ -89,28 +81,36 @@ export default {
       default: () => {},
     },
   },
+
   data() {
     return {
       indexSketch: 0,
-      lottiesAnimation: [],
       frameArena: 0,
       frameLights: 0,
       sketchVisible: false,
       lightsVisible: false,
     }
   },
+  computed: {
+    timelineContent() {
+      return {
+        items: this.contents.items,
+      }
+    },
+  },
   watch: {
     sketchVisible(newVal) {
-      if (!newVal) return
-
-      setTimeout(() => {
-        this.lottiesAnimation[0].setSpeed(1)
-        this.lottiesAnimation[0].setDirection(1)
-        this.lottiesAnimation[0].play()
-      }, 500)
+      // if (!newVal) return
+      // setTimeout(() => {
+      // this.$refs.timeline.lottiesCross[0].setSpeed(1)
+      // this.$refs.timeline.lottiesCross[0].setDirection(1)
+      // this.$refs.timeline.lottiesCross[0].play()
+      // }, 500)
     },
+
     indexSketch(newVal, oldVal) {
-      const target = this.contents.items[newVal].work_progress_items_frame_start
+      const target =
+        this.timelineContent.items[newVal].work_progress_items_frame_start
 
       this.tweenArena?.kill()
 
@@ -130,45 +130,21 @@ export default {
         this.lightsVisible = false
         this.tweenLights.pause()
       }
-
-      this.lottiesAnimation[oldVal].setSpeed(3.5)
-      this.lottiesAnimation[oldVal].setDirection(-1)
-      this.lottiesAnimation[oldVal].play()
-
-      this.lottiesAnimation[newVal].setSpeed(1)
-      this.lottiesAnimation[newVal].setDirection(1)
-      this.lottiesAnimation[newVal].play()
     },
   },
   mounted() {
     ScrollTrigger.create({
       trigger: this.$refs.sketch,
-      start: 'top center',
+      start: 'top+=25% center',
+      markers: true,
       onEnter: () => {
         this.sketchVisible = true
       },
       toggleActions: 'play none none none',
     })
 
-    const lottieAnimation = require(`@/assets/lotties/Croix_01.json`)
     const lottieArena = require(`@/assets/lotties/Arena_Construct.json`)
     const lottieLights = require(`@/assets/lotties/Lights.json`)
-
-    const crossEls = this.$el.querySelectorAll(
-      '.app-projet-work-progress__cross'
-    )
-
-    crossEls.forEach((cross, index) => {
-      const animation = lottie.loadAnimation({
-        container: cross,
-        renderer: 'svg',
-        animationData: lottieAnimation,
-        autoplay: false,
-        loop: false,
-      })
-
-      this.lottiesAnimation.push(animation)
-    })
 
     this.animationArena = lottie.loadAnimation({
       container: this.$refs.sketch,
@@ -205,9 +181,7 @@ export default {
     this.tweenArena?.kill()
   },
   methods: {
-    onChangeIndex(index) {
-      if (this.indexSketch === index) return
-
+    onIndexChanged(index) {
       this.indexSketch = index
     },
   },
@@ -217,20 +191,33 @@ export default {
 <style lang="scss">
 .app-projet-work-progress {
   margin-top: desktop-vw(195px);
-  padding-top: desktop-vw(80px);
-  padding-bottom: desktop-vw(80px);
+  padding-top: desktop-vw(60px);
+  padding-bottom: desktop-vw(60px);
   z-index: 1;
   position: relative;
+
+  @include mobile {
+    margin-top: mobile-vw(100px);
+    padding-top: mobile-vw(60px);
+    padding-bottom: mobile-vw(60px);
+  }
 
   &__sketch {
     grid-row: 2;
     justify-self: center;
     width: 100%;
-    grid-column: 2 / span 10;
-    margin-top: desktop-vw(70px);
-    margin-bottom: desktop-vw(20px);
+    grid-column: 1 / span 12;
+    margin-top: desktop-vw(40px);
     aspect-ratio: 1200 / 515;
     position: relative;
+
+    @include mobile {
+      grid-row: 3;
+      grid-column: 1 / span 6;
+      margin-top: desktop-vw(0px);
+      aspect-ratio: 345 / 145;
+      transform: scale(1.3);
+    }
 
     &.is-visible {
       svg {
@@ -254,21 +241,6 @@ export default {
     }
   }
 
-  &__cross {
-    position: absolute;
-    bottom: calc(100% + 1.2vw);
-    left: 50%;
-    transform: translate(-50%, 50%);
-    width: desktop-vw(25px);
-    height: auto;
-
-    svg {
-      path {
-        stroke: var(--c-white);
-      }
-    }
-  }
-
   &::before {
     content: '';
     display: block;
@@ -284,6 +256,10 @@ export default {
     width: 100%;
     height: 100%;
     z-index: -1;
+
+    @include mobile {
+      background-size: 1em 1em;
+    }
   }
   &::after {
     content: '';
@@ -303,63 +279,18 @@ export default {
 
   &__inner {
     position: relative;
-  }
-
-  &__timeline {
-    grid-row: 3;
-    grid-column: 1 / span 8;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-
-    &__items {
-      display: flex;
-    }
-
-    &__item {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      cursor: pointer;
-
-      &:not(:last-child) {
-        margin-right: desktop-vw(25px);
-      }
-
-      &:not(.active) {
-        opacity: 0.5;
-      }
-
-      .P1 {
-        align-self: flex-start;
-        position: relative;
-        font-size: desktop-vw(16px);
-        line-height: desktop-vw(21px);
-        @include font-adihausDIN-cn-bold();
-      }
-
-      .P2 {
-        margin-top: desktop-vw(5px);
-        font-size: desktop-vw(18px);
-        line-height: desktop-vw(18px);
-        max-width: desktop-vw(150px);
-        text-transform: uppercase;
-        @include font-adihausDIN-cn();
-      }
-    }
-
-    span {
-      width: 100%;
-      height: 1px;
-      background: var(--c-beige);
-      display: block;
-      margin-bottom: desktop-vw(20px);
-    }
+    row-gap: 0;
   }
 
   &__bottom-description {
     grid-row: 3;
     grid-column: 10 / span 3;
+
+    @include mobile {
+      grid-row: 5;
+      grid-column: 1 / span 6;
+      margin-top: mobile-vw(65px);
+    }
 
     .app-element-rich-text {
       .P2.wysiwyg-text {
@@ -374,8 +305,15 @@ export default {
     grid-column: 1 / span 5;
     width: 90%;
 
+    @include mobile {
+      grid-column: 1 / span 6;
+      width: 80%;
+      grid-row: 1;
+    }
+
     .H1.wysiwyg-text {
       color: var(--c-beige) !important;
+      @include font-tuskerGrotesk-bold();
 
       .app-atoms-stroke-text {
         -webkit-text-stroke: 1px var(--c-beige) !important;
@@ -388,6 +326,13 @@ export default {
     display: flex;
     align-self: center;
     border: 1px solid var(--c-beige);
+
+    @include mobile {
+      grid-row: 2;
+      grid-column: 1 / span 6;
+      margin-top: mobile-vw(15px);
+      margin-bottom: mobile-vw(50px);
+    }
 
     &__items {
       flex: 2;
@@ -403,6 +348,10 @@ export default {
       justify-content: center;
       border-right: 1px solid var(--c-beige);
 
+      @include mobile {
+        padding: mobile-vw(10px) mobile-vw(12px);
+      }
+
       &:not(:last-child) {
         border-bottom: 1px solid var(--c-beige);
       }
@@ -411,7 +360,13 @@ export default {
         font-size: desktop-vw(12px);
         line-height: desktop-vw(16px);
         letter-spacing: -0.04em;
+        text-transform: uppercase;
         @include font-adihausDIN-cn-bold();
+
+        @include mobile {
+          font-size: mobile-vw(12px);
+          line-height: mobile-vw(16px);
+        }
       }
 
       .H4 {
@@ -420,6 +375,12 @@ export default {
         letter-spacing: -0.04em;
         margin-top: desktop-vw(5px);
         @include font-adihausDIN-cn-bold();
+
+        @include mobile {
+          font-size: mobile-vw(24px);
+          line-height: mobile-vw(20px);
+          margin-top: 0px;
+        }
       }
     }
 
@@ -428,17 +389,32 @@ export default {
       padding: desktop-vw(10px) desktop-vw(12px) desktop-vw(15px)
         desktop-vw(12px);
 
+      @include mobile {
+        padding: mobile-vw(10px) mobile-vw(12px);
+      }
+
       &__title.P2 {
         margin-bottom: desktop-vw(5px);
         font-size: desktop-vw(12px);
         line-height: desktop-vw(16px);
         letter-spacing: -0.04em;
         @include font-adihausDIN-cn-bold();
+        text-transform: uppercase;
+
+        @include mobile {
+          font-size: mobile-vw(12px);
+          line-height: mobile-vw(16px);
+        }
       }
 
       &__text {
         font-size: desktop-vw(12px);
         line-height: desktop-vw(16px);
+
+        @include mobile {
+          font-size: mobile-vw(12px);
+          line-height: mobile-vw(16px);
+        }
       }
     }
   }

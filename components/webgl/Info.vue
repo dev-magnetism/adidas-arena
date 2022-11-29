@@ -1,5 +1,5 @@
 <template>
-  <div v-if="rendererInfo" class="rendererInfo">
+  <div v-if="rendererInfo" class="app-renderer-info">
     <div>calls: {{ rendererInfo.render.calls }}</div>
     <div>triangles: {{ rendererInfo.render.triangles }}</div>
     <div>geometries: {{ rendererInfo.memory.geometries }}</div>
@@ -25,7 +25,7 @@ export default {
 </script>
 
 <style lang="scss">
-.rendererInfo {
+.app-renderer-info {
   background: #000;
   bottom: 0;
   color: #fff;

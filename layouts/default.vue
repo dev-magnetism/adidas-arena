@@ -1,10 +1,11 @@
 <template>
   <div class="app">
     <AppCursor v-if="!$viewport.isMobile" />
-    <AppPreloader />
+    <!-- <AppPreloader /> -->
     <AppHeader />
-    <nuxt />
+    <nuxt class="app-main" />
     <AppScene />
+    <WebglInfo v-if="!$viewport.isMobile" />
   </div>
 </template>
 
@@ -25,50 +26,17 @@ export default {
   watch: {},
 
   mounted() {
-    console.log('heredddr')
-    this.preloadFonts()
-
     this.$nuxt.$on('app:beforeEnter', this.onBeforeEnter)
   },
 
   beforeDestroy() {},
   methods: {
-    preloadFonts() {
-      const FontFaceObserver = require('fontfaceobserver')
-
-      const fontData = {
-        'TuskerGrotesk-Bold': { weight: 400 },
-        'TuskerGrotesk-Medium': { weight: 400 },
-        'AdihausDIN Cn Bold': { weight: 400 },
-        'AdihausDIN Bold': { weight: 400 },
-        'AdihausDIN Medium': { weight: 400 },
-        AdihausDIN: { weight: 400 },
-      }
-
-      const observers = []
-
-      Object.keys(fontData).forEach((family) => {
-        const data = fontData[family]
-        const obs = new FontFaceObserver(family, data)
-        observers.push(obs.load())
-      })
-
-      Promise.all(observers)
-        .then((fonts) => {
-          this.setFontsLoaded(true)
-          ScrollTrigger.refresh()
-        })
-        .catch((err) => {
-          console.warn('Some critical font are not available:', err)
-        })
-    },
-
     onBeforeEnter() {
       ScrollTrigger.refresh()
     },
 
     ...mapMutations({
-      setFontsLoaded: 'setFontsLoaded',
+      // setFontsLoaded: 'setFontsLoaded',
     }),
   },
 }
@@ -81,5 +49,9 @@ export default {
   display: flex;
   flex: 1;
   flex-direction: column;
+
+  &-main {
+    z-index: 0;
+  }
 }
 </style>

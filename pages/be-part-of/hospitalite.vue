@@ -91,6 +91,9 @@ export default {
   margin-top: desktop-vw(620px);
 
   .app-two-columns-stick {
+    @include mobile {
+      row-gap: 20px;
+    }
     .app-element-lottie-word {
       &.Trait_2 svg {
         position: absolute;
@@ -99,6 +102,10 @@ export default {
         height: auto !important;
         bottom: -35px;
         transform: translateX(-50%) !important;
+
+        @include mobile {
+          bottom: -20px;
+        }
       }
       &.Cercle_1 svg {
         position: absolute;
@@ -112,9 +119,17 @@ export default {
   }
   .app-contact-question {
     margin-top: desktop-vw(150px);
+
+    @include mobile {
+      margin-bottom: mobile-vw(120px);
+    }
   }
   .app-contact-newsletter {
     margin-bottom: desktop-vw(180px);
+
+    @include mobile {
+      margin-bottom: mobile-vw(120px);
+    }
   }
 }
 </style>

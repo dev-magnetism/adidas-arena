@@ -98,6 +98,10 @@ export default {
     &__title.app-element-rich-text {
       grid-column: 2 / span 10;
 
+      @include mobile {
+        grid-column: 1 / span 6;
+      }
+
       .app-element-lottie-word.Cercle_3 svg {
         position: absolute;
         width: 135% !important;
@@ -124,6 +128,10 @@ export default {
   }
   .app-contact-newsletter {
     margin-bottom: desktop-vw(180px);
+
+    @include mobile {
+      margin-bottom: mobile-vw(100px);
+    }
   }
 }
 </style>

@@ -28,9 +28,9 @@
       <span class="line-infos-border-right header-line header-line-3" />
     </div>
     <div class="app-home-projet__header__description">
-      <TP1 class="app-home-projet__header__description__title info-text-5">{{
-        contentRight.surtitle
-      }}</TP1>
+      <TP1 class="app-home-projet__header__description__title info-text-5">
+        {{ contentRight.surtitle }}
+      </TP1>
       <TH3 class="app-home-projet__header__description__content info-text-6">
         {{ contentRight.title }}
       </TH3>
@@ -204,7 +204,7 @@ export default {
       }
     }
 
-    &__content.H3 {
+    &__content.H3.info-text-6 {
       font-size: desktop-vw(12px);
       line-height: desktop-vw(20px);
       @include font-adihausDIN-regular();

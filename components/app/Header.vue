@@ -16,7 +16,7 @@
   top: 60px;
   left: 50%;
   transform: translate(-50%, 0);
-  z-index: 999;
+  z-index: 2;
 
   a {
     @include p1();

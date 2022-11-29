@@ -92,7 +92,7 @@ export default {
 <style lang="scss">
 .app-le-bloc-presentation {
   position: relative;
-  padding-bottom: desktop-vw(950px);
+  padding-bottom: desktop-vw(825px);
 
   @include mobile {
     padding-bottom: mobile-vw(100px);

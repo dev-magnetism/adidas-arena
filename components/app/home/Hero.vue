@@ -24,8 +24,6 @@
       <div
         v-if="!$viewport.isMobile"
         class="app-home-hero__scroll-indicator"
-        @mouseenter="onMouseEnter"
-        @mouseleave="onMouseLeave"
         @click="onClickScrollIndicator"
       >
         <TP1>{{ contents.scroll }}</TP1>
@@ -113,7 +111,7 @@ export default {
     })
 
     if (!this.$viewport.isMobile) {
-      this.tl = gsap.timeline({ repeat: -1, paused: true })
+      this.tl = gsap.timeline({ repeat: -1, repeatDelay: 5 })
 
       this.tl.to(this.$refs.union.$el, {
         yPercent: 105,
@@ -127,6 +125,7 @@ export default {
       this.tl.to(this.$refs.union.$el, {
         yPercent: 0,
         duration: 0.675,
+        delay: 0.15,
       })
     }
   },
@@ -134,17 +133,6 @@ export default {
     this.tl?.kill()
   },
   methods: {
-    onMouseEnter() {
-      if (this.tl._repeat === 0) {
-        this.tl.repeat(-1)
-        this.tl.restart()
-      } else {
-        this.tl.play()
-      }
-    },
-    onMouseLeave() {
-      this.tl.repeat(0)
-    },
     onClickScrollIndicator() {
       console.log(window)
       window.lenis.scrollTo('.app-home-presentation', {

@@ -137,61 +137,61 @@ export default {
         grid-area: 1 / 4 / 2 / 5;
       }
       &-2 {
-        grid-area: 1 / 2 / 2 / 3;
-      }
-      &-3 {
-        grid-area: 2 / 3 / 3 / 4;
-      }
-      &-4 {
         grid-area: 2 / 4 / 3 / 5;
       }
-      &-5 {
+      &-3 {
         grid-area: 3 / 4 / 4 / 5;
       }
-      &-6 {
-        grid-area: 3 / 2 / 4 / 3;
-      }
-      &-7 {
-        grid-area: 6 / 1 / 7 / 2;
-      }
-      &-8 {
+      &-4 {
         grid-area: 6 / 4 / 7 / 5;
       }
-      &-9 {
-        grid-area: 7 / 2 / 8 / 3;
-      }
-      &-10 {
+      &-5 {
         grid-area: 7 / 3 / 8 / 4;
       }
-      &-11 {
+      &-6 {
         grid-area: 8 / 3 / 9 / 4;
       }
+      &-7 {
+        grid-area: 7 / 2 / 8 / 3;
+      }
+      &-8 {
+        grid-area: 6 / 1 / 7 / 2;
+      }
+      &-9 {
+        grid-area: 2 / 3 / 3 / 4;
+      }
+      &-10 {
+        grid-area: 1 / 2 / 2 / 3;
+      }
+      &-11 {
+        grid-area: 3 / 2 / 4 / 3;
+      }
       &-12 {
-        grid-area: 5 / 1 / 6 / 2;
-      }
-      &-13 {
-        grid-area: 8 / 4 / 9 / 5;
-      }
-      &-14 {
-        grid-area: 8 / 1 / 9 / 2;
-      }
-      &-15 {
-        grid-area: 2 / 2 / 3 / 3;
-      }
-      &-16 {
-        grid-area: 1 / 1 / 2 / 2;
-      }
-      &-17 {
-        grid-area: 2 / 1 / 3 / 2;
-      }
-      &-18 {
         grid-area: 4 / 4 / 5 / 5;
       }
-      &-19 {
+      &-13 {
+        grid-area: 7 / 4 / 8 / 5;
+      }
+      &-14 {
+        grid-area: 7 / 1 / 8 / 2;
+      }
+      &-15 {
+        grid-area: 5 / 1 / 6 / 2;
+      }
+      &-16 {
+        grid-area: 6 / 2 / 7 / 3;
+      }
+      &-17 {
+        grid-area: 4 / 1 / 5 / 2;
+      }
+      &-18 {
         grid-area: 3 / 3 / 4 / 4;
       }
+      &-19 {
+        grid-area: 8 / 2 / 9 / 3;
+      }
       &-20 {
-        grid-area: 4 / 1 / 5 / 2;
+        grid-area: 8 / 4 / 9 / 5;
       }
     }
   }
