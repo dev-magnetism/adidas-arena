@@ -2,7 +2,7 @@
   <main ref="main" class="app-projet">
     <div ref="mainWrapper" class="app-projet__wrapper">
       <AppProjetIntroduction :contents="contentIntroduction" />
-      <AppProjetCatchPhrase :contents="contentCatchphrase" />
+      <!-- <AppProjetCatchPhrase :contents="contentCatchphrase" /> -->
       <AppProjetGallery :contents="contentGallery" />
       <AppProjetWorkProgress :contents="contentWorkProgress" />
       <AppProjetPlan :contents="contentPlan" />

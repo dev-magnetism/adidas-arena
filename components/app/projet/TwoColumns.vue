@@ -1,7 +1,10 @@
 <template>
   <div class="app-projet-two-columns grid-inner">
     <div class="app-projet-two-columns__f-r grid">
-      <div class="app-projet-two-columns__f-r__visuals">
+      <div
+        v-if="!$viewport.isMobile"
+        class="app-projet-two-columns__f-r__visuals"
+      >
         <div class="app-projet-two-columns__f-r__fake-transparent">
           <EKinesis :speed="15">
             <EParallax :speed="0.85" />
@@ -49,10 +52,13 @@
         />
       </div>
       <ELottie
+        v-if="!$viewport.isMobile"
         id="Petite_Fleche_02"
         class="app-projet-two-columns__f-r__lottie-arrow"
       />
     </div>
+
+    <AppProjetTwoColumnsSlider v-if="$viewport.isMobile" :content="contents" />
 
     <div class="app-projet-two-columns__s-r grid">
       <div class="app-projet-two-columns__s-r__content">
@@ -66,7 +72,10 @@
         />
       </div>
 
-      <div class="app-projet-two-columns__s-r__visuals">
+      <div
+        v-if="!$viewport.isMobile"
+        class="app-projet-two-columns__s-r__visuals"
+      >
         <EParallax :speed="0.5" class="app-projet-two-columns__s-r__visual">
           <EKinesis :speed="15">
             <nuxt-picture
@@ -117,21 +126,37 @@ export default {
       default: () => {},
     },
   },
+  mounted() {
+    console.log(this.contents)
+  },
 }
 </script>
 
 <style lang="scss">
 .app-projet-two-columns {
-  padding-top: desktop-vw(100px);
+  margin-top: desktop-vw(100px);
+
+  @include mobile {
+    margin-top: mobile-vw(100px);
+  }
 
   &__s-r {
     grid-row: 2;
     grid-column: 1 / span 12;
     width: 100%;
 
+    @include mobile {
+      grid-column: 1 / span 6;
+      grid-row: 3;
+    }
+
     &__visuals {
       grid-column: 6 / span 6;
       position: relative;
+
+      @include mobile {
+        display: none;
+      }
     }
 
     &__visual.app-parallax {
@@ -200,14 +225,28 @@ export default {
     &__content {
       grid-column: 1 / span 4;
 
+      @include mobile {
+        grid-column: 1 / span 6;
+      }
+
       &__title.app-element-rich-text {
         width: columns(2.5);
+
+        @include mobile {
+          width: 75%;
+        }
       }
 
       &__paragraph.app-element-rich-text {
         margin-top: desktop-vw(25px);
         margin-left: auto;
         width: columns(3);
+
+        @include mobile {
+          width: 95%;
+          margin-left: initial;
+          margin-top: mobile-vw(20px);
+        }
 
         .P1.wysiwyg-text {
           text-transform: uppercase;
@@ -222,11 +261,20 @@ export default {
     margin-bottom: desktop-vw(200px);
     position: relative;
 
+    @include mobile {
+      grid-column: 1 / span 6;
+      margin-bottom: mobile-vw(0px);
+    }
+
     &__lottie-arrow.app-element-lottie {
       position: absolute;
       grid-column: 6 / span 1;
       width: 135%;
       aspect-ratio: 85 / 35;
+
+      @include mobile {
+        display: none;
+      }
 
       svg {
         path {
@@ -239,6 +287,10 @@ export default {
       grid-column: 2 / span 4;
       position: relative;
       margin-top: desktop-vw(120px);
+
+      @include mobile {
+        display: none;
+      }
     }
 
     &__card.app-parallax {
@@ -318,11 +370,20 @@ export default {
       grid-column: 8 / span 4;
       height: 100%;
 
+      @include mobile {
+        grid-column: 1 / span 6;
+      }
+
       &__title.app-element-rich-text {
       }
 
       &__paragraph.app-element-rich-text {
         margin-top: desktop-vw(25px);
+
+        @include mobile {
+          width: 70%;
+          margin-top: mobile-vw(20px);
+        }
 
         .P1.wysiwyg-text {
           text-transform: uppercase;

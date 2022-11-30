@@ -73,6 +73,8 @@ export default {
     })
   },
   beforeDestroy() {
+    this.embla.off('select', this.onScrollSnap)
+
     this.lottiesCross.forEach((lottie) => {
       lottie.destroy()
     })

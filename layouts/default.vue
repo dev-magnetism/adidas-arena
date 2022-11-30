@@ -13,6 +13,8 @@
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { mapState, mapMutations } from 'vuex'
 
+import useGUI from '~/hooks/gui'
+
 export default {
   layout: 'DefaultLayout',
 
@@ -26,6 +28,12 @@ export default {
   watch: {},
 
   mounted() {
+    const gui = useGUI()
+
+    if (this.$viewport.isMobile) {
+      gui.hidden = true
+    }
+
     this.$nuxt.$on('app:beforeEnter', this.onBeforeEnter)
   },
 

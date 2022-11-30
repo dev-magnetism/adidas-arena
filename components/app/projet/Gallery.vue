@@ -51,6 +51,10 @@ export default {
 .app-projet-gallery {
   margin-top: desktop-vw(230px);
 
+  @include mobile {
+    row-gap: mobile-vw(60px);
+  }
+
   &__item {
     grid-column: span 6;
 

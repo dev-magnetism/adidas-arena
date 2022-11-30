@@ -100,12 +100,13 @@ export default {
   },
   watch: {
     sketchVisible(newVal) {
-      // if (!newVal) return
-      // setTimeout(() => {
-      // this.$refs.timeline.lottiesCross[0].setSpeed(1)
-      // this.$refs.timeline.lottiesCross[0].setDirection(1)
-      // this.$refs.timeline.lottiesCross[0].play()
-      // }, 500)
+      if (!newVal || this.$viewport.isMobile) return
+
+      setTimeout(() => {
+        this.$refs.timeline.lottiesCross[0].setSpeed(1)
+        this.$refs.timeline.lottiesCross[0].setDirection(1)
+        this.$refs.timeline.lottiesCross[0].play()
+      }, 500)
     },
 
     indexSketch(newVal, oldVal) {
@@ -114,10 +115,13 @@ export default {
 
       this.tweenArena?.kill()
 
+      const multiplicator = this.$viewport.isMobile ? 1.5 : 2
+      const ease = this.$viewport.isMobile ? 'power2.out' : 'power1.out'
+
       this.tweenArena = gsap.to(this, {
         frameArena: target,
-        duration: Math.abs(oldVal - newVal) * 2,
-        ease: 'power1.out',
+        duration: Math.abs(oldVal - newVal) * multiplicator,
+        ease,
         onUpdate: () => {
           this.animationArena.goToAndStop(this.frameArena, true)
         },
@@ -135,8 +139,7 @@ export default {
   mounted() {
     ScrollTrigger.create({
       trigger: this.$refs.sketch,
-      start: 'top+=25% center',
-      // markers: true,
+      start: this.$viewport.isMobile ? 'top center' : 'top+=25% center',
       onEnter: () => {
         this.sketchVisible = true
       },
@@ -220,7 +223,9 @@ export default {
     }
 
     svg {
-      transform: scale(1.3) !important;
+      @include mobile {
+        transform: scale(1.3) !important;
+      }
     }
 
     &.is-visible {
