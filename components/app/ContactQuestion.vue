@@ -55,6 +55,10 @@ export default {
           left: 50%;
           transform: translate(-50%, -50%) rotate(5deg) !important;
 
+          @include mobile {
+            width: 100% !important;
+          }
+
           path {
             stroke: var(--c-blue-adidas);
           }

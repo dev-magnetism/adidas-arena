@@ -71,6 +71,10 @@ export default {
   margin-bottom: desktop-vw(130px);
   row-gap: desktop-vw(125px);
 
+  @include mobile {
+    overflow-x: hidden;
+  }
+
   &__f-row {
     &__content {
       grid-column: 2 / span 6;
