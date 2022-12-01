@@ -78,10 +78,13 @@ export default {
   },
   mounted() {
     this.embla = EmblaCarousel(this.$refs.wrapper, {
-      // skipSnaps: true,
+      // skipSnaps: false
       dragFree: true,
       containScroll: 'keepSnaps',
       speed: 5,
+      breakpoints: {
+        '(max-width: 800px)': { dragFree: false, skipSnaps: false, speed: 10 },
+      },
     })
 
     this.embla.on('init', this.setParallax)
@@ -145,6 +148,13 @@ export default {
 
 <style lang="scss">
 .app-element-slider {
+  width: 100%;
+  position: relative;
+
+  @include mobile {
+    margin-bottom: mobile-vw(120px);
+  }
+
   &__wrapper {
     overflow: hidden;
     // padding-left: desktop-vw(40px);
@@ -163,13 +173,29 @@ export default {
     margin-bottom: desktop-vw(70px);
     position: relative;
 
+    @include mobile {
+      row-gap: 0px;
+    }
+
     &__title {
       grid-column: 1 / span 6;
+
+      @include mobile {
+        grid-row: 1;
+        width: 85%;
+      }
     }
+
     &__spaces {
       grid-column: 11 / span 1;
       align-self: center;
       position: absolute;
+
+      @include mobile {
+        grid-column: 1 / span 6;
+        position: relative;
+        grid-row: 2;
+      }
 
       &__total {
         display: flex;
@@ -189,8 +215,13 @@ export default {
       &__text.H4 {
         font-size: desktop-vw(24px);
         line-height: desktop-vw(24px);
-
         opacity: 0.25;
+
+        @include mobile {
+          font-size: mobile-vw(16px);
+          line-height: mobile-vw(24px);
+          text-align: right;
+        }
       }
     }
   }
@@ -200,6 +231,10 @@ export default {
     column-gap: desktop-vw(25px);
     flex-direction: row;
     will-change: transform;
+
+    @include mobile {
+      column-gap: mobile-vw(25px);
+    }
   }
 
   &__item {
@@ -207,11 +242,15 @@ export default {
     display: flex;
     flex-direction: column;
 
+    @include mobile {
+      flex: 0 0 77.5%;
+    }
+
     &:first-child {
-      margin-left: desktop-vw(40px);
+      margin-left: var(--layout-margin);
     }
     &:last-child {
-      margin-right: desktop-vw(40px);
+      margin-right: var(--layout-margin);
     }
 
     &__content {
@@ -220,15 +259,34 @@ export default {
       flex-direction: row;
       align-items: center;
 
+      @include mobile {
+        margin-top: mobile-vw(25px);
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
       &__title.H4 {
         flex: 2;
         margin-right: desktop-vw(40px);
         font-size: desktop-vw(48px);
         line-height: desktop-vw(62px);
+
+        @include mobile {
+          font-size: mobile-vw(40px);
+          line-height: mobile-vw(40px);
+          margin-right: 0px;
+          margin-bottom: mobile-vw(15px);
+        }
       }
       &__text.P2 {
         flex: 3;
         margin-right: desktop-vw(60px);
+
+        @include mobile {
+          text-transform: uppercase;
+          margin-right: mobile-vw(0px);
+          margin-left: mobile-vw(40px);
+        }
       }
     }
 
