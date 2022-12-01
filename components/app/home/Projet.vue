@@ -2,6 +2,7 @@
   <div class="app-home-projet grid-inner">
     <div class="app-home-projet__rotated">
       <div class="app-home-projet__wrapper">
+        {{ $viewport.isMobile }}
         <AtomsCornerPoints
           ref="points"
           :border-color="!$viewport.isMobile ? 'beige' : 'black'"
@@ -871,7 +872,7 @@ export default {
     }
   }
 
-  &__tag-top-upper {
+  &__tag-top-upper.app-atoms-title-tag {
     left: columns(2.15);
     top: 28%;
     transform: rotate(6deg);
