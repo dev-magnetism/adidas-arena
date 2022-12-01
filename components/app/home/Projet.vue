@@ -854,7 +854,7 @@ export default {
     }
   }
 
-  &__tag-bottom {
+  &__tag-bottom.app-atoms-title-tag {
     left: columns(2.35);
     bottom: 10%;
     transform: rotate(-6deg);

@@ -184,7 +184,7 @@
         padding: 0px;
       }
 
-      &.P2 {
+      &.P2.regular {
         text-transform: uppercase;
         font-size: desktop-vw(24px);
         line-height: desktop-vw(20px);
@@ -218,7 +218,7 @@
         padding: 0px;
       }
 
-      .P2 {
+      .P2.regular {
         font-size: desktop-vw(18px);
         line-height: desktop-vw(20px);
         text-transform: uppercase;

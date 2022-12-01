@@ -19,11 +19,11 @@
   left: 0%;
   z-index: 2;
   width: 100%;
-  padding-left: var(--layout-margin);
-  padding-right: var(--layout-margin);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  // padding-left: var(--layout-margin);
+  // padding-right: var(--layout-margin);
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
 
   &__logo {
     margin-left: auto;
