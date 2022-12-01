@@ -35,6 +35,11 @@ export default {
   //   },
   // },
 
+  server: {
+    host: '0.0.0.0',
+    port: 3000,
+  },
+
   pageTransition: {
     name: 'page',
     mode: 'out-in', // when blank: out and in are simultaneous. default: 'out-in'

@@ -7,11 +7,11 @@
       >
         <div class="app-projet-two-columns__f-r__fake-transparent">
           <EKinesis :speed="15">
-            <EParallax :speed="0.85" />
+            <EParallax :speed="0.5" />
           </EKinesis>
         </div>
 
-        <EParallax :speed="0.5" class="app-projet-two-columns__f-r__card">
+        <EParallax :speed="0.75" class="app-projet-two-columns__f-r__card">
           <EKinesis :speed="7.5">
             <AtomsCornerPoints :size-points="8" />
             <div class="app-projet-two-columns__f-r__card__content">
@@ -76,7 +76,7 @@
         v-if="!$viewport.isMobile"
         class="app-projet-two-columns__s-r__visuals"
       >
-        <EParallax :speed="0.5" class="app-projet-two-columns__s-r__visual">
+        <EParallax :speed="0.75" class="app-projet-two-columns__s-r__visual">
           <EKinesis :speed="15">
             <nuxt-picture
               provider="directus"
@@ -87,7 +87,7 @@
           </EKinesis>
         </EParallax>
 
-        <EParallax :speed="1" class="app-projet-two-columns__s-r__card">
+        <EParallax :speed="0.5" class="app-projet-two-columns__s-r__card">
           <EKinesis :speed="7.5">
             <AtomsCornerPoints :size-points="8" />
             <div class="app-projet-two-columns__s-r__card__content">

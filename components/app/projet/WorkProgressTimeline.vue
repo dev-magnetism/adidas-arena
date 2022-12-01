@@ -9,7 +9,7 @@
         class="app-projet-work-progress-timeline__item"
         @click="onChangeIndex(index)"
       >
-        <TP1 color="beige">
+        <TP1 weight="bold" color="beige">
           <div ref="cross" class="app-projet-work-progress-timeline__cross" />
           {{ item.work_progress_items_title }}
         </TP1>
@@ -113,7 +113,7 @@ export default {
       }
     }
 
-    .P1 {
+    .P1.bold {
       align-self: flex-start;
       position: relative;
       font-size: 16px;
@@ -121,7 +121,7 @@ export default {
       @include font-adihausDIN-cn-bold();
     }
 
-    .P2 {
+    .P2.regular {
       margin-top: desktop-vw(5px);
       font-size: desktop-vw(18px);
       line-height: desktop-vw(18px);

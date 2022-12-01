@@ -580,7 +580,7 @@ export default {
       }
     }
 
-    &__second-place {
+    &__second-place.app-atoms-title-tag {
       z-index: 1;
       position: relative;
       border: 2px solid var(--c-black);

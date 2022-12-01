@@ -14,7 +14,7 @@
           class="app-projet-work-progress-timeline-mobile__item"
           @click="onChangeIndex(index)"
         >
-          <TP1 color="beige">
+          <TP1 weight="bold" color="beige">
             <div
               ref="cross"
               class="app-projet-work-progress-timeline-mobile__cross"
@@ -157,14 +157,14 @@ export default {
       opacity: 0.5;
     }
 
-    .P1 {
+    .P1.bold {
       position: relative;
       font-size: 16px;
       line-height: 21px;
       @include font-adihausDIN-cn-bold();
     }
 
-    .P2 {
+    .P2.regular {
       margin-top: desktop-vw(5px);
       font-size: mobile-vw(18px);
       line-height: mobile-vw(18px);
