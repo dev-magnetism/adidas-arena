@@ -1,6 +1,6 @@
 <template>
   <div class="app-projet-work-progress-timeline">
-    <SvgWorkProgressLine class="app-projet-work-progress-timeline__line" />
+    <div class="app-projet-work-progress-timeline__line" />
     <div class="app-projet-work-progress-timeline__items">
       <div
         v-for="(item, index) in content.items"
@@ -136,6 +136,7 @@ export default {
     height: 1px;
     display: block;
     margin-bottom: desktop-vw(20px);
+    background: white;
   }
 
   &__cross {

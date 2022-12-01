@@ -68,6 +68,10 @@ export default {
       }
 
       @include noise();
+
+      img {
+        display: block;
+      }
     }
 
     &__content {

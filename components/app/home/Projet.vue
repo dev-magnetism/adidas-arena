@@ -1,102 +1,105 @@
 <template>
   <div class="app-home-projet grid-inner">
     <div class="app-home-projet__rotated">
-      <div ref="wrapper" class="app-home-projet__wrapper">
+      <div class="app-home-projet__wrapper">
         <AtomsCornerPoints
+          ref="points"
           :border-color="!$viewport.isMobile ? 'beige' : 'black'"
           :points-color="!$viewport.isMobile ? 'beige' : 'black'"
         />
-        <div class="app-home-projet__inner">
-          <AppHomeProjetHeader
-            :content-left="contents.headerContentLeft"
-            :content-right="contents.headerContentRight"
-          />
-          <AppHomeProjetBigVisual />
-          <AppHomeProjetPlan ref="plan" />
+        <div ref="inner" class="app-home-projet__inner">
+          <div class="app-home-projet__main">
+            <AppHomeProjetHeader
+              :content-left="contents.headerContentLeft"
+              :content-right="contents.headerContentRight"
+            />
+            <AppHomeProjetBigVisual />
+            <AppHomeProjetPlan ref="plan" />
 
-          <EFramedPicture
-            v-if="!$viewport.isMobile"
-            :fake-transparent="true"
-            color="white"
-            class="app-home-projet__framed-picture projet-visual"
-          >
+            <EFramedPicture
+              v-if="!$viewport.isMobile"
+              :fake-transparent="true"
+              color="white"
+              class="app-home-projet__framed-picture projet-visual"
+            >
+              <nuxt-picture
+                class="projet-visual"
+                format="webp"
+                alt="alt"
+                :src="contents.projetPicture2"
+                provider="directus"
+              />
+            </EFramedPicture>
+
             <nuxt-picture
-              class="projet-visual"
+              v-if="!$viewport.isMobile"
+              class="app-home-projet__visual__top-upper projet-visual"
+              :src="contents.projetPicture1"
+              provider="directus"
               format="webp"
               alt="alt"
-              :src="contents.projetPicture2"
-              provider="directus"
             />
-          </EFramedPicture>
 
-          <nuxt-picture
+            <TH2 ref="title" weight="bold" class="app-home-projet__title">{{
+              contents.bigTitle
+            }}</TH2>
+          </div>
+          <div
             v-if="!$viewport.isMobile"
-            class="app-home-projet__visual__top-upper projet-visual"
-            :src="contents.projetPicture1"
-            provider="directus"
-            format="webp"
-            alt="alt"
-          />
+            ref="fakeVisual"
+            class="app-home-projet__fake-visual"
+          ></div>
+          <div ref="lottieCircle" class="app-home-projet__circle" />
+          <div ref="lottieCrossCircle" class="app-home-projet__cross-circle" />
+          <div ref="lottieValidCircle" class="app-home-projet__valid-circle" />
+          <div ref="lottieCross" class="app-home-projet__cross" />
+          <div ref="lottieArrowBlue" class="app-home-projet__arrow-blue" />
+          <div ref="lottieArrow" class="app-home-projet__arrow" />
+          <div ref="lottieLittleArrow" class="app-home-projet__little-arrow" />
 
-          <TH2 ref="title" weight="bold" class="app-home-projet__title">{{
-            contents.bigTitle
-          }}</TH2>
+          <AtomsCTA class="app-home-projet__cta" color="beige" bg="blue-adidas">
+            {{ contents.projetCtaTitle }}
+          </AtomsCTA>
+
+          <AtomsTitleTag
+            class="app-home-projet__tag-top app-projet-tag-5"
+            bg="white"
+            color="black"
+          >
+            {{ contents.projetTag1 }}
+          </AtomsTitleTag>
+
+          <AtomsTitleTag
+            v-if="!$viewport.isMobile"
+            class="app-home-projet__tag-top-upper app-projet-tag-4"
+            bg="white"
+            color="black"
+          >
+            {{ contents.projetTag2 }}
+          </AtomsTitleTag>
+          <AtomsTitleTag
+            class="app-home-projet__tag-top-left app-projet-tag-3"
+            bg="white"
+            color="black"
+          >
+            {{ contents.projetTag3 }}
+          </AtomsTitleTag>
+          <AtomsTitleTag
+            class="app-home-projet__tag-middle app-projet-tag-2"
+            bg="white"
+            color="black"
+          >
+            {{ contents.projetTag4 }}
+          </AtomsTitleTag>
+          <AtomsTitleTag
+            v-if="!$viewport.isMobile"
+            bg="white"
+            color="black"
+            class="app-home-projet__tag-bottom app-projet-tag-1"
+          >
+            {{ contents.projetTag5 }}
+          </AtomsTitleTag>
         </div>
-        <div
-          v-if="!$viewport.isMobile"
-          ref="fakeVisual"
-          class="app-home-projet__fake-visual"
-        ></div>
-        <div ref="lottieCircle" class="app-home-projet__circle" />
-        <div ref="lottieCrossCircle" class="app-home-projet__cross-circle" />
-        <div ref="lottieValidCircle" class="app-home-projet__valid-circle" />
-        <div ref="lottieCross" class="app-home-projet__cross" />
-        <div ref="lottieArrowBlue" class="app-home-projet__arrow-blue" />
-        <div ref="lottieArrow" class="app-home-projet__arrow" />
-        <div ref="lottieLittleArrow" class="app-home-projet__little-arrow" />
-
-        <AtomsCTA class="app-home-projet__cta" color="beige" bg="blue-adidas">
-          {{ contents.projetCtaTitle }}
-        </AtomsCTA>
-
-        <AtomsTitleTag
-          class="app-home-projet__tag-top app-projet-tag-5"
-          bg="white"
-          color="black"
-        >
-          {{ contents.projetTag1 }}
-        </AtomsTitleTag>
-
-        <AtomsTitleTag
-          v-if="!$viewport.isMobile"
-          class="app-home-projet__tag-top-upper app-projet-tag-4"
-          bg="white"
-          color="black"
-        >
-          {{ contents.projetTag2 }}
-        </AtomsTitleTag>
-        <AtomsTitleTag
-          class="app-home-projet__tag-top-left app-projet-tag-3"
-          bg="white"
-          color="black"
-        >
-          {{ contents.projetTag3 }}
-        </AtomsTitleTag>
-        <AtomsTitleTag
-          class="app-home-projet__tag-middle app-projet-tag-2"
-          bg="white"
-          color="black"
-        >
-          {{ contents.projetTag4 }}
-        </AtomsTitleTag>
-        <AtomsTitleTag
-          v-if="!$viewport.isMobile"
-          bg="white"
-          color="black"
-          class="app-home-projet__tag-bottom app-projet-tag-1"
-        >
-          {{ contents.projetTag5 }}
-        </AtomsTitleTag>
       </div>
     </div>
   </div>
@@ -161,7 +164,7 @@ export default {
       // DESKTOP
       if (!this.$viewport.isMobile) {
         this.tl.fromTo(
-          [this.$refs.wrapper, this.$refs.fakeVisual],
+          [this.$refs.inner, this.$refs.fakeVisual],
           {
             scale: 0,
           },
@@ -170,6 +173,17 @@ export default {
             scale: 1,
             stagger: 0.05,
           }
+        )
+        this.tl.fromTo(
+          this.$refs.points.$el,
+          {
+            scale: 0,
+          },
+          {
+            transformOrigin: 'left bottom',
+            scale: 1,
+          },
+          '<0%'
         )
 
         this.tl.fromTo(
@@ -604,11 +618,18 @@ export default {
   }
 
   &__wrapper {
+    height: 100%;
+    width: 100%;
+    position: relative;
+  }
+
+  &__inner {
     width: 100%;
     height: 100%;
     display: block;
     transform: scale(0);
     transform-origin: left bottom;
+    overflow: hidden;
 
     @include mobile {
       transform: scale(1);
@@ -778,7 +799,7 @@ export default {
     }
   }
 
-  &__inner {
+  &__main {
     position: relative;
     width: 100%;
     height: 100%;

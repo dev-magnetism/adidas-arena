@@ -6,7 +6,7 @@
     />
     <EParallax
       ref="bigVisual"
-      :speed="1"
+      :speed="0.85"
       class="app-be-part-of-hospitalite-presentation__visual"
     >
       <nuxt-picture
@@ -19,7 +19,7 @@
     <EParallax
       ref="framedVisual"
       class="app-be-part-of-hospitalite-presentation__framed-visual"
-      :speed="0.85"
+      :speed="1"
     >
       <EKinesis :speed="5">
         <EFramedPicture color="blue-adidas">
@@ -141,7 +141,12 @@ export default {
       grid-row: 2;
       position: relative;
       top: mobile-vw(180px);
-      padding: mobile-vw(8px);
+    }
+
+    .app-element-framed-picture {
+      @include mobile {
+        padding: mobile-vw(8px);
+      }
     }
 
     picture {

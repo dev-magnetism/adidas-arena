@@ -7,16 +7,31 @@
     <nuxt-link to="/be-part-of/hospitalite">Hospitalite</nuxt-link>
     <nuxt-link to="/be-part-of/configurations">Configurations</nuxt-link>
     <nuxt-link to="/be-part-of/partenaire">Partenaire</nuxt-link>
+    <!-- <SvgArenaLogo class="app-header__logo" />
+    <div class="app-header__burger"><p>Menu</p></div> -->
   </div>
 </template>
 
 <style lang="scss">
 .app-header {
   position: fixed;
-  top: 60px;
-  left: 50%;
-  transform: translate(-50%, 0);
+  top: desktop-vw(60px);
+  left: 0%;
   z-index: 2;
+  width: 100%;
+  padding-left: var(--layout-margin);
+  padding-right: var(--layout-margin);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__logo {
+    margin-left: auto;
+  }
+
+  &__burger {
+    margin-left: auto;
+  }
 
   a {
     @include p1();

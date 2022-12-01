@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <div ref="inner" :class="{ hold }" class="app-element-slider__wrapper">
+    <div ref="wrapper" :class="{ hold }" class="app-element-slider__wrapper">
       <div class="app-element-slider__inner">
         <div
           v-for="(item, index) in contents.items"
@@ -66,7 +66,7 @@ export default {
   },
   data() {
     return {
-      parallaxFactor: 2.25,
+      parallaxFactor: 2.5,
       hold: false,
     }
   },
@@ -77,13 +77,11 @@ export default {
     },
   },
   mounted() {
-    this.embla = EmblaCarousel(this.$refs.inner, {
-      skipSnaps: true,
-      align: 'start',
-      slidesToScroll: 1,
-      speed: 10,
-      inViewThreshold: 1,
-      loop: true,
+    this.embla = EmblaCarousel(this.$refs.wrapper, {
+      // skipSnaps: true,
+      dragFree: true,
+      containScroll: 'keepSnaps',
+      speed: 5,
     })
 
     this.embla.on('init', this.setParallax)
@@ -149,7 +147,8 @@ export default {
 .app-element-slider {
   &__wrapper {
     overflow: hidden;
-    padding-left: desktop-vw(40px);
+    // padding-left: desktop-vw(40px);
+    // padding-right: desktop-vw(40px);
 
     &.hold {
       .app-element-slider__item__visual {
@@ -197,16 +196,23 @@ export default {
   }
 
   &__inner {
-    display: inline-flex;
-    column-gap: var(--layout-columns-gap);
+    display: flex;
+    column-gap: desktop-vw(25px);
     flex-direction: row;
     will-change: transform;
   }
 
   &__item {
-    width: desktop-vw(640px);
+    flex: 0 0 45%;
     display: flex;
     flex-direction: column;
+
+    &:first-child {
+      margin-left: desktop-vw(40px);
+    }
+    &:last-child {
+      margin-right: desktop-vw(40px);
+    }
 
     &__content {
       margin-top: desktop-vw(40px);
@@ -233,6 +239,7 @@ export default {
       height: auto;
       position: relative;
       overflow: hidden;
+      max-height: 85vh;
     }
 
     &__visual {
