@@ -13,25 +13,40 @@
       </TP2>
     </div>
 
-    <nuxt-picture
+    <EParallax
+      ref="bigVisual"
+      :speed="0.45"
       class="app-be-part-of-partenaire-introduction__f-row__visual"
-      provider="directus"
-      :src="contents.picture.src"
-      format="webp"
-      :alt="contents.picture.alt"
-    />
-
-    <EFramedPicture
-      class="app-be-part-of-partenaire-introduction__s-row__visual"
-      color="red-adidas"
     >
-      <nuxt-picture
-        provider="directus"
-        :src="contents.pictureFramed.src"
-        format="webp"
-        :alt="contents.pictureFramed.alt"
-      />
-    </EFramedPicture>
+      <EKinesis :speed="5">
+        <nuxt-picture
+          class=""
+          provider="directus"
+          :src="contents.picture.src"
+          format="webp"
+          :alt="contents.picture.alt"
+        />
+      </EKinesis>
+    </EParallax>
+
+    <EParallax
+      ref="framedVisual"
+      class="app-be-part-of-partenaire-introduction__s-row__visual"
+      :speed="0.55"
+    >
+      <EKinesis :speed="7.5">
+        <EFramedPicture class="" color="red-adidas">
+          <EKinesis :speed="-3.5">
+            <nuxt-picture
+              provider="directus"
+              :src="contents.pictureFramed.src"
+              format="webp"
+              :alt="contents.pictureFramed.alt"
+            />
+          </EKinesis>
+        </EFramedPicture>
+      </EKinesis>
+    </EParallax>
 
     <div class="app-be-part-of-partenaire-introduction__s-row__content">
       <TH4
@@ -49,12 +64,47 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
+
 export default {
   props: {
     contents: {
       type: Object,
       default: () => {},
     },
+  },
+  mounted() {
+    if (this.$viewport.isMobile) return
+
+    gsap.fromTo(
+      this.$refs.bigVisual.$el,
+      {
+        rotate: 6,
+      },
+      {
+        rotate: 2,
+        scrollTrigger: {
+          trigger: this.$refs.bigVisual.$el,
+          scrub: 0.5,
+          end: 'bottom top',
+        },
+      }
+    )
+
+    gsap.fromTo(
+      this.$refs.framedVisual.$el,
+      {
+        rotate: -6,
+      },
+      {
+        rotate: -2,
+        scrollTrigger: {
+          trigger: this.$refs.framedVisual.$el,
+          scrub: 0.5,
+          end: 'bottom top',
+        },
+      }
+    )
   },
 }
 </script>
@@ -95,7 +145,7 @@ export default {
         width: 80%;
       }
     }
-    &__visual {
+    &__visual.app-parallax {
       grid-column: 7 / span 6;
       grid-row: 1;
       transform: rotate(3deg);
@@ -152,7 +202,7 @@ export default {
       }
     }
 
-    &__visual {
+    &__visual.app-parallax {
       grid-column: 2 / span 5;
       grid-row: 2;
       aspect-ratio: 545/670;

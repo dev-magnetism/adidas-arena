@@ -14,29 +14,41 @@
       </TP2>
     </div>
 
-    <div class="app-be-part-of-configurations-introduction__f-row__visual">
-      <nuxt-picture
-        ref="picture"
-        provider="directus"
-        :src="contents.pictureFramed.src"
-        format="webp"
-        :alt="contents.pictureFramed.alt"
-        class="picture-absolute"
-      />
-      <ELottie id="Cadre_02" />
-    </div>
+    <EParallax
+      ref="bigVisual"
+      :speed="0.65"
+      class="app-be-part-of-configurations-introduction__f-row__visual"
+    >
+      <EKinesis :speed="5">
+        <nuxt-picture
+          ref="picture"
+          provider="directus"
+          :src="contents.pictureFramed.src"
+          format="webp"
+          :alt="contents.pictureFramed.alt"
+          class="picture-absolute"
+        />
+        <ELottie id="Cadre_02" />
+      </EKinesis>
+    </EParallax>
 
-    <div class="app-be-part-of-configurations-introduction__s-row__visual">
-      <AtomsCornerPoints :size-points="8" />
-      <nuxt-picture
-        ref="picture"
-        provider="directus"
-        :src="contents.picture.src"
-        format="webp"
-        :alt="contents.picture.alt"
-        class="picture-absolute"
-      />
-    </div>
+    <EParallax
+      ref="pointsVisual"
+      :speed="1"
+      class="app-be-part-of-configurations-introduction__s-row__visual"
+    >
+      <EKinesis :speed="6.5">
+        <AtomsCornerPoints :size-points="8" />
+        <nuxt-picture
+          ref="picture"
+          provider="directus"
+          :src="contents.picture.src"
+          format="webp"
+          :alt="contents.picture.alt"
+          class="picture-absolute"
+        />
+      </EKinesis>
+    </EParallax>
 
     <div class="app-be-part-of-configurations-introduction__s-row__content">
       <TH4
@@ -55,12 +67,47 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
+
 export default {
   props: {
     contents: {
       type: Object,
       default: () => {},
     },
+  },
+  mounted() {
+    if (this.$viewport.isMobile) return
+
+    gsap.fromTo(
+      this.$refs.bigVisual.$el,
+      {
+        rotate: -8,
+      },
+      {
+        rotate: -5,
+        scrollTrigger: {
+          trigger: this.$refs.bigVisual.$el,
+          scrub: 0.5,
+          end: 'bottom top',
+        },
+      }
+    )
+
+    gsap.fromTo(
+      this.$refs.pointsVisual.$el,
+      {
+        rotate: 8,
+      },
+      {
+        rotate: 5.5,
+        scrollTrigger: {
+          trigger: this.$refs.pointsVisual.$el,
+          scrub: 0.5,
+          end: 'bottom top',
+        },
+      }
+    )
   },
 }
 </script>
@@ -69,7 +116,7 @@ export default {
 .app-be-part-of-configurations-introduction {
   position: relative;
   margin-bottom: desktop-vw(130px);
-  row-gap: desktop-vw(125px);
+  row-gap: desktop-vw(85px);
 
   @include mobile {
     overflow-x: hidden;
@@ -98,7 +145,7 @@ export default {
         }
       }
     }
-    &__visual {
+    &__visual.app-parallax {
       position: relative;
       grid-column: 8 / span 5;
       aspect-ratio: 650 / 785;
@@ -162,7 +209,7 @@ export default {
         }
       }
     }
-    &__visual {
+    &__visual.app-parallax {
       grid-column: 4 / span 4;
       aspect-ratio: 460/550;
       transform: rotate(5.5deg);

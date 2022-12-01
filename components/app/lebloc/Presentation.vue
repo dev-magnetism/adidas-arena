@@ -20,10 +20,10 @@
       </EKinesis>
     </EParallax>
 
-    <EParallax :speed="0.5" class="app-le-bloc-presentation__framed-visual">
-      <EKinesis :speed="5">
+    <EParallax :speed="1" class="app-le-bloc-presentation__framed-visual">
+      <EKinesis :speed="6.5">
         <EFramedPicture ref="framedVisual" color="blue-adidas">
-          <EKinesis :speed="-3.5">
+          <EKinesis :speed="-2.5">
             <nuxt-picture
               class="picture-absolute"
               provider="directus"

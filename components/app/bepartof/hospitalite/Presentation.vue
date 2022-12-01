@@ -9,12 +9,14 @@
       :speed="0.85"
       class="app-be-part-of-hospitalite-presentation__visual"
     >
-      <nuxt-picture
-        provider="directus"
-        :src="contents.picture.src"
-        format="webp"
-        :alt="contents.picture.alt"
-      />
+      <EKinesis :speed="5">
+        <nuxt-picture
+          provider="directus"
+          :src="contents.picture.src"
+          format="webp"
+          :alt="contents.picture.alt"
+        />
+      </EKinesis>
     </EParallax>
     <EParallax
       ref="framedVisual"
