@@ -10,17 +10,19 @@
 
   &.medium {
     @include font-tuskerGrotesk-medium();
-    font-weight: 500;
+    // font-weight: 500;
   }
-  &.bold, .bold, strong {
+  &.bold,
+  .bold,
+  strong {
     @include font-tuskerGrotesk-bold();
-    font-weight: 700;
+    // font-weight: 500;
   }
 }
 
 @mixin h2() {
   font-size: desktop-vw(100px);
-  line-height: desktop-vw(100px);  
+  line-height: desktop-vw(100px);
   text-transform: uppercase;
 
   @include mobile {
@@ -30,12 +32,13 @@
 
   &.medium {
     @include font-tuskerGrotesk-medium();
-    font-weight: 500;
+    // font-weight: 500;
   }
-    
-  &.bold, .bold {
+
+  &.bold,
+  .bold {
     @include font-tuskerGrotesk-bold();
-    font-weight: 700;
+    // font-weight: 700;
   }
 }
 
@@ -55,7 +58,7 @@
     font-size: mobile-vw(40px);
     line-height: mobile-vw(40px);
   }
-    
+
   &.bold {
     @include font-adihausDIN-cn-bold();
   }
@@ -66,7 +69,7 @@
 }
 
 @mixin h4() {
-  font-size:desktop-vw(32px);
+  font-size: desktop-vw(32px);
   line-height: desktop-vw(41px);
   letter-spacing: -0.04em;
   text-transform: uppercase;
@@ -78,17 +81,17 @@
 
   &.regular {
     @include font-adihausDIN-cn();
-    font-weight: 500;
+    // font-weight: 500;
   }
-    
+
   &.bold {
     @include font-adihausDIN-cn-bold();
-    font-weight: 700;
+    // font-weight: 700;
   }
-    
+
   &.medium {
     @include font-adihausDIN-cn-medium();
-    font-weight: 500;
+    // font-weight: 500;
   }
 }
 
@@ -105,17 +108,17 @@
 
   &.regular {
     @include font-adihausDIN-regular();
-    font-weight: 500;
+    // font-weight: 500;
   }
-  
+
   &.bold {
     @include font-adihausDIN-bold();
-    font-weight: 700;
+    // font-weight: 700;
   }
-  
+
   &.medium {
     @include font-adihausDIN-medium();
-    font-weight: 500;
+    // font-weight: 500;
   }
 }
 
@@ -130,48 +133,48 @@
 
   &.regular {
     @include font-adihausDIN-regular();
-    font-weight: 500;
+    // font-weight: 500;
   }
-  
+
   &.bold {
     @include font-adihausDIN-bold();
-    font-weight: 700;
+    // font-weight: 700;
   }
 
   &.medium {
     @include font-adihausDIN-medium();
-    font-weight: 500;
+    // font-weight: 500;
   }
 }
 
 @mixin font-tuskerGrotesk-bold() {
-  font-family: "TuskerGrotesk-Bold";
+  font-family: 'TuskerGrotesk-Bold';
 }
 
 @mixin font-tuskerGrotesk-medium() {
-  font-family: "TuskerGrotesk-Medium";
+  font-family: 'TuskerGrotesk-Medium';
 }
 
 @mixin font-adihausDIN-cn-bold() {
-  font-family: "AdihausDIN Cn Bold";
+  font-family: 'AdihausDIN Cn Bold';
 }
 
 @mixin font-adihausDIN-cn-medium() {
-  font-family: "AdihausDIN Cn Medium";
+  font-family: 'AdihausDIN Cn Medium';
 }
 
 @mixin font-adihausDIN-cn() {
-  font-family: "AdihausDIN Cn";
+  font-family: 'AdihausDIN Cn';
 }
 
 @mixin font-adihausDIN-bold() {
-  font-family: "AdihausDIN Bold";
+  font-family: 'AdihausDIN Bold';
 }
 
 @mixin font-adihausDIN-medium() {
-  font-family: "AdihausDIN Medium";
+  font-family: 'AdihausDIN Medium';
 }
 
 @mixin font-adihausDIN-regular() {
-  font-family: "AdihausDIN";
+  font-family: 'AdihausDIN';
 }

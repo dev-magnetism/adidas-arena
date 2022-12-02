@@ -121,6 +121,10 @@ export default {
 
   &__title {
     margin-bottom: desktop-vw(25px);
+
+    @include mobile {
+      margin-bottom: mobile-vw(25px);
+    }
   }
 
   &__principal-paragraph.P2 {

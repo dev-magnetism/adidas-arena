@@ -222,6 +222,14 @@ export default {
       grid-column: 1 / span 6;
     }
 
+    &__title {
+      margin-bottom: desktop-vw(25px);
+
+      @include mobile {
+        margin-bottom: mobile-vw(25px);
+      }
+    }
+
     &__subtitle,
     &__paragraph.app-element-rich-text {
       opacity: 0.8;
@@ -229,6 +237,10 @@ export default {
 
     &__subtitle {
       margin-bottom: desktop-vw(15px);
+
+      @include mobile {
+        margin-bottom: mobile-vw(25px);
+      }
     }
 
     &__paragraph.app-element-rich-text {
@@ -247,10 +259,6 @@ export default {
 
     .P2 {
       text-transform: initial;
-    }
-
-    .H2 {
-      margin-bottom: desktop-vw(25px);
     }
   }
 }

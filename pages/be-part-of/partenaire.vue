@@ -2,7 +2,7 @@
   <main class="page-be-part-of-partenaire">
     <AppBepartofPartenaireIntroduction :contents="contentIntroduction" />
     <AppBepartofPartenairePartenaires :contents="contentPartners" />
-    <AppGallery :contents="contentGallerie" />
+    <!-- <AppGallery :contents="contentGallerie" /> -->
     <AppContactQuestion :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />

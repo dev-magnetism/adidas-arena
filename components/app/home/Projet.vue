@@ -2,7 +2,6 @@
   <div class="app-home-projet grid-inner">
     <div class="app-home-projet__rotated">
       <div class="app-home-projet__wrapper">
-        {{ $viewport.isMobile }}
         <AtomsCornerPoints
           ref="points"
           :border-color="!$viewport.isMobile ? 'beige' : 'black'"
@@ -670,9 +669,9 @@ export default {
     aspect-ratio: 195 / 125;
 
     @include mobile {
-      width: mobile-vw(220px);
-      left: mobile-vw(60px);
-      top: mobile-vw(400px);
+      width: 60%;
+      left: 13%;
+      top: 52.5%;
       z-index: 2;
     }
 
@@ -690,10 +689,10 @@ export default {
     aspect-ratio: 55 / 45;
 
     @include mobile {
-      right: columns(1);
-      width: mobile-vw(65px);
+      right: 12%;
+      width: 17.5%;
       left: initial;
-      top: mobile-vw(110px);
+      top: 15%;
       z-index: 2;
     }
   }
@@ -706,11 +705,11 @@ export default {
     transform: scaleY(-1);
 
     @include mobile {
-      top: mobile-vw(280px);
-      width: mobile-vw(65px);
+      top: 37%;
+      width: 18%;
+      left: auto;
       left: initial;
-      right: mobile-vw(65px);
-
+      right: 15%;
       z-index: 1;
     }
   }
@@ -766,11 +765,11 @@ export default {
     transform: scaleY(-1) rotate(130deg);
 
     @include mobile {
-      width: mobile-vw(25px);
+      width: 6.5%;
+      top: 38.5%;
+      left: 12%;
       transform: scaleY(-1) rotate(235deg);
-      left: columns(1);
       bottom: initial;
-      top: mobile-vw(285px);
       z-index: 2;
     }
 
@@ -796,7 +795,6 @@ export default {
       aspect-ratio: 345/760;
       position: relative;
       transform: none;
-      height: 100vh;
     }
   }
 
@@ -813,6 +811,7 @@ export default {
     @include mobile {
       grid-template-columns: repeat(6, minmax(0, 1fr));
       padding: mobile-vw(25px) mobile-vw(20px);
+      grid-gap: 0px;
     }
   }
 
@@ -832,7 +831,7 @@ export default {
     }
   }
 
-  &__tag-top-left {
+  &__tag-top-left.app-atoms-title-tag {
     left: columns(0.5);
     bottom: 25%;
     transform: rotate(-6deg);
@@ -888,7 +887,8 @@ export default {
       line-height: desktop-vw(20px);
     }
   }
-  &__tag-middle {
+
+  &__tag-middle.app-atoms-title-tag {
     bottom: 18%;
     left: columns(0.75);
     transform: rotate(-3.45deg);
@@ -924,8 +924,8 @@ export default {
 
     @include mobile {
       padding: mobile-vw(15px) mobile-vw(0px) mobile-vw(15px) mobile-vw(20px);
-      left: columns(1);
-      width: columns(3.75);
+      left: 10%;
+      width: 60%;
       bottom: 2.5%;
       z-index: 4;
     }
@@ -957,7 +957,7 @@ export default {
     }
   }
 
-  &__tag-top {
+  &__tag-top.app-atoms-title-tag {
     position: absolute;
     left: columns(5.5);
     top: 13%;
@@ -966,8 +966,8 @@ export default {
     @include mobile {
       padding: mobile-vw(10px);
       transform: rotate(1.5deg);
-      top: 18%;
-      left: mobile-vw(30px);
+      top: 20%;
+      left: 10%;
       width: 100%;
     }
 

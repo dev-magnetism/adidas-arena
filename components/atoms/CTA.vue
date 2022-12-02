@@ -143,6 +143,7 @@ export default {
   &__text {
     position: relative;
     z-index: 1;
+    flex: 0 0 80%;
   }
 
   .P2,
@@ -163,6 +164,7 @@ export default {
   &__arrow {
     overflow: hidden;
     z-index: 1;
+    flex: 0 0 20%;
 
     svg {
       padding: 0px desktop-vw(15px);

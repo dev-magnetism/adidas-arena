@@ -47,8 +47,8 @@
     grid-column: 1 / span 6;
     width: 100%;
     aspect-ratio: 335/320;
-    bottom: 23%;
-    left: columns(0.7);
+    bottom: 18.5%;
+    left: 0%;
     transform: translateY(0%) rotate(6deg);
     z-index: 1;
     transform-origin: left bottom;

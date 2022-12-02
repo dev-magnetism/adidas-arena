@@ -227,6 +227,8 @@ export default {
       text-transform: uppercase;
 
       @include mobile {
+        font-size: 14px;
+
         &:nth-child(1),
         &:nth-child(3) {
           flex: 2;

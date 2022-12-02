@@ -153,7 +153,7 @@ export default {
       width: 80%;
       text-transform: uppercase;
       @include font-adihausDIN-bold();
-      font-weight: 700;
+      // font-weight: 700;
 
       @include mobile {
         width: 65%;

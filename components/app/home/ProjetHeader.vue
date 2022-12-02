@@ -71,7 +71,7 @@ export default {
   @include mobile {
     grid-column: 1 / span 6;
     width: 100%;
-    top: mobile-vw(25px);
+    top: 2.5%;
   }
 
   span.line-header-border-bottom {

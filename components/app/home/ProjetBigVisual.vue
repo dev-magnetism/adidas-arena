@@ -41,8 +41,8 @@
     aspect-ratio: 260/155;
     grid-column: 1 / span 5;
     width: 100%;
-    left: columns(-0.25);
-    top: mobile-vw(175px);
+    left: -8.5%;
+    top: 24%;
     transform: rotate(-4deg);
   }
 
