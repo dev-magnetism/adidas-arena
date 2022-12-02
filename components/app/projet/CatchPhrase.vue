@@ -21,10 +21,11 @@ export default {
 <style lang="scss">
 .app-projet__catch-phrase {
   position: relative;
-  margin-top: desktop-vw(30px);
+  padding-top: desktop-vw(30px);
+  overflow: hidden;
 
   @include mobile {
-    margin-top: mobile-vw(120px);
+    padding-top: mobile-vw(120px);
   }
 
   .app-element-rich-text {
@@ -67,7 +68,7 @@ export default {
       grid-column: 5 / span 2;
       left: 20%;
       aspect-ratio: 80 / 175;
-      transform: translateY(-50%) rotate(-15deg);
+      transform: translateY(0%) rotate(-15deg);
     }
   }
 }

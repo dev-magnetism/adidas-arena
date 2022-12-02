@@ -124,6 +124,7 @@ export default {
         ),
         white;
       background-size: 1.3em 1.3em;
+      height: 100%;
 
       &__title {
         font-size: mobile-vw(112px);

@@ -137,14 +137,18 @@ export default {
     },
   },
   mounted() {
-    ScrollTrigger.create({
-      trigger: this.$refs.sketch,
-      start: this.$viewport.isMobile ? 'top center' : 'top+=25% center',
-      onEnter: () => {
-        this.sketchVisible = true
-      },
-      toggleActions: 'play none none none',
-    })
+    if (!this.$viewport.isMobile) {
+      ScrollTrigger.create({
+        trigger: this.$refs.sketch,
+        start: this.$viewport.isMobile ? 'top center' : 'top+=25% center',
+        onEnter: () => {
+          this.sketchVisible = true
+        },
+        toggleActions: 'play none none none',
+      })
+    } else {
+      this.sketchVisible = true
+    }
 
     const lottieArena = require(`@/assets/lotties/Arena_Construct.json`)
     const lottieLights = require(`@/assets/lotties/Lights.json`)
@@ -170,7 +174,7 @@ export default {
       repeat: -1,
       yoyo: true,
       duration: 1.5,
-      autoplay: false,
+      paused: true,
       ease: 'power1.out',
       onUpdate: () => {
         this.animationLight.goToAndStop(this.frameLights, true)
@@ -222,12 +226,6 @@ export default {
       overflow: hidden;
     }
 
-    svg {
-      @include mobile {
-        transform: scale(1.3) !important;
-      }
-    }
-
     &.is-visible {
       svg {
         &:nth-child(1) {
@@ -247,6 +245,10 @@ export default {
       position: absolute;
       opacity: 0;
       transition: opacity 0.7s var(--ease-out-cubic);
+
+      @include mobile {
+        transform: scale(1.3) !important;
+      }
     }
   }
 
