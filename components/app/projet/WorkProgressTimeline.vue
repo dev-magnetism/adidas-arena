@@ -10,7 +10,7 @@
         @click="onChangeIndex(index)"
       >
         <TP1 weight="bold" color="beige">
-          <div ref="cross" class="app-projet-work-progress-timeline__cross" />
+          <span ref="cross" class="app-projet-work-progress-timeline__cross" />
           {{ item.work_progress_items_title }}
         </TP1>
         <TP2 color="beige">
@@ -146,6 +146,7 @@ export default {
     transform: translate(-50%, 50%);
     width: desktop-vw(25px);
     height: auto;
+    display: block;
 
     svg {
       path {

@@ -84,7 +84,7 @@ export default {
     },
   },
   mounted() {
-    console.log(this.galerieTest)
+    // console.log(this.galerieTest)
   },
 }
 </script>

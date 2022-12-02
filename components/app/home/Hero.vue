@@ -134,7 +134,8 @@ export default {
   },
   methods: {
     onClickScrollIndicator() {
-      console.log(window)
+      if (!window.lenis) return
+
       window.lenis.scrollTo('.app-home-presentation', {
         duration: 1.2,
       })

@@ -103,7 +103,7 @@
             <TH4
               v-for="(item, index) in contents.items"
               v-show="currentIndex === index"
-              :key="index"
+              :key="`configuration-${index}`"
               class="app-be-part-of-configurations-arena__controller__f-r__text"
               color="beige"
             >
@@ -132,7 +132,7 @@
               <TH4
                 v-for="(item, index) in contents.items"
                 v-show="currentIndex === index"
-                :key="index"
+                :key="`capacite-${index}`"
                 class="app-be-part-of-configurations-arena__controller__s-r__text"
                 color="beige"
               >
@@ -159,7 +159,7 @@
               <TH4
                 v-for="(item, index) in contents.items"
                 v-show="currentIndex === index"
-                :key="index"
+                :key="`jauge-${index}`"
                 class="app-be-part-of-configurations-arena__controller__s-r__text"
                 color="beige"
               >
@@ -226,10 +226,11 @@ export default {
   methods: {
     onLeftClick() {
       this.direction = 'previous'
-      console.log(this.contents)
-      if (this.currentIndex === 0)
+      if (this.currentIndex === 0) {
         this.currentIndex = this.contents.items.length - 1
-      else this.currentIndex--
+      } else {
+        this.currentIndex--
+      }
 
       this.arenaDisposition =
         this.contents.items[this.currentIndex].arena_disposition

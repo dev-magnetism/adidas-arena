@@ -136,7 +136,7 @@ export default {
         contentRect.height
       )
 
-      console.log('resize', contentRect)
+      // console.log('resize', contentRect)
     },
     async initPreloaderVideo() {
       const { preloader } = useWebGL()

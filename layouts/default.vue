@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <AppCursor v-if="!$viewport.isMobile" />
+    <!-- <AppCursor v-if="!$viewport.isMobile" /> -->
     <!-- <AppPreloader /> -->
     <AppHeader />
     <nuxt class="app-main" />
