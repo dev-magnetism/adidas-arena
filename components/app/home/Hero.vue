@@ -270,6 +270,7 @@ export default {
     &__visit {
       @include mobile {
         align-self: flex-end;
+        display: block;
       }
       > :first-child {
         @include font-adihausDIN-cn-medium();

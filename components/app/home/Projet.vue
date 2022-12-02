@@ -480,55 +480,22 @@ export default {
       }
 
       // MOBILE
-      if (this.$viewport.isMobile) {
-        this.tl.addLabel('lotties')
-        this.tl.to(
-          this.playhead,
-          {
-            circle: this.animationCircle.totalFrames - 1,
-            duration: 0.85,
-            onUpdate: () =>
-              this.animationCircle.goToAndStop(this.playhead.circle, true),
-          },
-          'lotties'
+      else if (this.$viewport.isMobile) {
+        this.animationCircle.goToAndStop(
+          this.animationCircle.totalFrames - 1,
+          true
         )
-        this.tl.to(
-          this.playhead,
-          {
-            validCircle: this.animationValidCircle.totalFrames - 1,
-            duration: 0.85,
-            delay: 0.15,
-            onUpdate: () =>
-              this.animationValidCircle.goToAndStop(
-                this.playhead.validCircle,
-                true
-              ),
-          },
-          'lotties'
+        this.animationValidCircle.goToAndStop(
+          this.animationValidCircle.totalFrames - 1,
+          true
         )
-
-        this.tl.to(
-          this.playhead,
-          {
-            duration: 0.85,
-            delay: 0.45,
-            cross: this.animationCross.totalFrames - 1,
-            onUpdate: () =>
-              this.animationCross.goToAndStop(this.playhead.cross, true),
-          },
-          'lotties'
+        this.animationCross.goToAndStop(
+          this.animationCross.totalFrames - 1,
+          true
         )
-
-        this.tl.to(
-          this.playhead,
-          {
-            duration: 0.85,
-            delay: 0.5,
-            arrow: this.animationArrow.totalFrames - 1,
-            onUpdate: () =>
-              this.animationArrow.goToAndStop(this.playhead.arrow, true),
-          },
-          'lotties'
+        this.animationArrow.goToAndStop(
+          this.animationArrow.totalFrames - 1,
+          true
         )
       }
     },
