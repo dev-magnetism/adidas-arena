@@ -774,7 +774,7 @@ export default {
 
   &__link {
     position: relative;
-    margin: desktop-vh(25px) 0px desktop-vh(30px) 0px;
+    margin: desktop-vh(25px) 0px desktop-vh(20px) 0px;
     display: flex;
     flex-wrap: wrap;
 
@@ -867,6 +867,7 @@ export default {
       height: desktop-vw(40px);
       padding: desktop-vw(10px);
       transform: translateY(150%);
+      margin-right: 1px;
 
       @include mobile {
         width: mobile-vw(40px);
