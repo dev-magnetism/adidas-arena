@@ -884,13 +884,13 @@ export default {
     // width: desktop-vw(195px);
     bottom: 6.5%;
     left: columns(4);
-    padding: desktop-vw(20px) desktop-vw(0px) desktop-vw(20px) desktop-vw(20px);
+    padding: desktop-vw(20px) desktop-vw(5px) desktop-vw(20px) desktop-vw(20px);
     position: absolute;
     transform: rotate(-4deg);
     z-index: 1;
 
     @include mobile {
-      padding: mobile-vw(15px) mobile-vw(0px) mobile-vw(15px) mobile-vw(20px);
+      padding: mobile-vw(15px) mobile-vw(5px) mobile-vw(15px) mobile-vw(20px);
       left: 10%;
       width: 60%;
       bottom: 2.5%;

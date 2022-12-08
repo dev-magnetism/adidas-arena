@@ -1,16 +1,48 @@
 <template>
   <div class="app-header">
-    <nuxt-link to="/">Accueil</nuxt-link>
-    <nuxt-link to="/projet">Projet</nuxt-link>
-    <nuxt-link to="/arena">Arena</nuxt-link>
-    <nuxt-link to="/le-bloc">Le bloc</nuxt-link>
-    <nuxt-link to="/be-part-of/hospitalite">Hospitalite</nuxt-link>
-    <nuxt-link to="/be-part-of/configurations">Configurations</nuxt-link>
-    <nuxt-link to="/be-part-of/partenaire">Partenaire</nuxt-link>
-    <!-- <SvgArenaLogo class="app-header__logo" />
-    <div class="app-header__burger"><p>Menu</p></div> -->
+    <SvgArenaLogo v-if="!$viewport.isMobile" class="app-header__logo" />
+    <TH3 v-else class="app-header__mobile-logo"> ADIDAS ARENA </TH3>
+    <div class="app-header__cta">
+      <p v-if="!$viewport.isMobile" class="app-header__menu">Menu</p>
+      <div class="app-header__burger" @click="onClickBurger">
+        <span class="app-header__burger__line top" />
+        <span class="app-header__burger__line bottom" />
+      </div>
+    </div>
   </div>
 </template>
+
+<script>
+import { mapMutations, mapState } from 'vuex'
+
+export default {
+  computed: {
+    ...mapState({
+      menuOpen: (state) => state.menuOpen,
+      menuActive: (state) => state.menuActive,
+    }),
+  },
+  methods: {
+    onClickBurger() {
+      // if (this.menuActive) return
+
+      this.setMenuActive(!this.menuActive)
+
+      // if (window.lenis) {
+      //   if (this.menuActive) {
+      //     window.lenis.stop()
+      //   } else {
+      //     window.lenis.start()
+      //   }
+      // }
+    },
+    ...mapMutations({
+      setMenuOpen: 'setMenuOpen',
+      setMenuActive: 'setMenuActive',
+    }),
+  },
+}
+</script>
 
 <style lang="scss">
 .app-header {
@@ -18,19 +50,65 @@
   top: desktop-vw(60px);
   left: 0%;
   z-index: 2;
-  width: 100%;
-  // padding-left: var(--layout-margin);
-  // padding-right: var(--layout-margin);
-  // display: flex;
-  // align-items: center;
-  // justify-content: center;
+  width: 100vw;
+  padding-left: calc(var(--layout-margin) + 25px);
+  padding-right: calc(var(--layout-margin) + 25px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 35px;
+
+  @include mobile {
+    padding-left: var(--layout-margin);
+    padding-right: var(--layout-margin);
+    top: mobile-vw(25px);
+  }
+
+  &__mobile-logo {
+    font-size: mobile-vw(26px);
+    line-height: mobile-vw(26px);
+  }
 
   &__logo {
+    // margin-left: auto;
+  }
+
+  &__cta {
     margin-left: auto;
+    display: flex;
+    position: absolute;
+    right: calc(var(--layout-margin) + 25px);
+
+    @include mobile {
+      position: absolute;
+      right: var(--layout-margin);
+    }
+  }
+
+  &__menu {
+    font-size: 16px;
+    line-height: 16px;
+    @include font-tuskerGrotesk-medium();
+    text-transform: uppercase;
+    margin-right: 20px;
   }
 
   &__burger {
-    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    cursor: pointer;
+
+    @include mobile {
+      min-height: 15px;
+    }
+
+    &__line {
+      display: block;
+      width: 30px;
+      height: 2px;
+      background: black;
+    }
   }
 
   a {

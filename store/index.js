@@ -1,13 +1,20 @@
 // export const strict = false
 
 export const state = () => ({
+  // Loader
   fontsLoaded: false,
-  partnersContent: null,
-  appContent: null,
   allLoaded: false,
   allLoadedTimeline: false,
   modelExteriorLoaded: false,
   modelCloudLoaded: false,
+
+  // Content
+  partnersContent: null,
+  appContent: null,
+
+  // UI
+  menuOpen: false,
+  menuActive: false,
 })
 
 export const getters = {
@@ -37,6 +44,12 @@ export const mutations = {
   },
   setAppContent: (state, value) => {
     state.appContent = value
+  },
+  setMenuOpen: (state, value) => {
+    state.menuOpen = value
+  },
+  setMenuActive: (state, value) => {
+    state.menuActive = value
   },
 }
 

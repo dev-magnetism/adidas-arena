@@ -40,30 +40,6 @@ export default {
     port: 3000,
   },
 
-  pageTransition: {
-    name: 'page',
-    mode: 'out-in', // when blank: out and in are simultaneous. default: 'out-in'
-    // not that when using 'out-in', the outro can be finished before the data has been loaded
-    // meaning an empty page will be shown
-    duration: 250,
-    beforeEnter(el) {
-      this.$nuxt.$emit('app:beforeEnter')
-      // console.log("beforeEnter");
-    },
-    afterEnter(el) {
-      // this.$nuxt.$emit('scroll:refresh')
-    },
-    beforeLeave(el) {
-      // scroll:kill basically here
-    },
-    afterLeave(el) {
-      // // scroll:reset basically here
-      // // this.$nuxt.$emit('scroll:kill')
-      // this.$nuxt.$emit('cart:close')
-      // this.$nuxt.$emit('scroll:reset')
-    },
-  },
-
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: [
     {

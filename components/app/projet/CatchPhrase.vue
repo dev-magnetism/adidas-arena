@@ -22,10 +22,10 @@ export default {
 .app-projet__catch-phrase {
   position: relative;
   padding-top: desktop-vw(30px);
-  overflow: hidden;
 
   @include mobile {
     padding-top: mobile-vw(120px);
+    overflow: hidden;
   }
 
   .app-element-rich-text {

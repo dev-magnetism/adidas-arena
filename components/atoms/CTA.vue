@@ -71,12 +71,12 @@ export default {
     this.tl = gsap.timeline({ paused: true })
 
     this.tl.to(this.$refs.arrow.$el, {
-      xPercent: 75,
+      xPercent: 100,
       duration: 0.5,
       ease: 'power3.inOut',
     })
     this.tl.set(this.$refs.arrow.$el, {
-      xPercent: -75,
+      xPercent: -100,
     })
     this.tl.to(this.$refs.arrow.$el, {
       xPercent: 0,
@@ -109,11 +109,19 @@ export default {
   overflow: hidden;
 
   &.arrow {
-    padding: desktop-vw(15px) desktop-vw(0px) desktop-vw(15px) desktop-vw(25px);
+    padding: desktop-vw(15px) desktop-vw(5px) desktop-vw(15px) desktop-vw(25px);
 
     @include mobile {
-      padding: mobile-vw(18px) mobile-vw(0px) mobile-vw(18px) mobile-vw(25px);
+      padding: mobile-vw(18px) mobile-vw(5px) mobile-vw(18px) mobile-vw(25px);
     }
+
+    // .app-atoms-cta__text {
+    //   margin-right: desktop-vw(10px);
+
+    //   @include mobile {
+    //     margin-right: desktop-vw(5px);
+    //   }
+    // }
   }
 
   &::after {
@@ -167,7 +175,6 @@ export default {
     flex: 0 0 20%;
 
     svg {
-      padding: 0px desktop-vw(15px);
       width: 100%;
       vertical-align: middle;
       will-change: transform;

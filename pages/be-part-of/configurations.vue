@@ -9,10 +9,17 @@
 
 <script>
 import { mapState } from 'vuex'
+
 import scroll from '@/mixins/scroll'
+import pageTransition from '@/mixins/page-transition'
 
 export default {
   mixins: [scroll],
+  transition(to, from) {
+    if (!to || !from) return
+
+    return pageTransition.basic
+  },
   async asyncData({ $directus }) {
     const content = await $directus.items('Configurations_page').readByQuery({
       limit: -1,

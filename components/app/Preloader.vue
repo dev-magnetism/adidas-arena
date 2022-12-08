@@ -218,6 +218,7 @@ export default {
       setModelCloudLoaded: 'setModelCloudLoaded',
       setFontsLoaded: 'setFontsLoaded',
     }),
+
     loadVideo(src) {
       return new Promise((resolve) => {
         const video = document.createElement('video')

@@ -245,6 +245,7 @@ export default {
     &__coordinate.app-atoms-title-tag,
     &__visit.app-atoms-cta {
       padding: desktop-vw(10px) desktop-vw(15px);
+      display: block;
 
       @include mobile {
         padding: mobile-vw(10px) mobile-vw(15px);

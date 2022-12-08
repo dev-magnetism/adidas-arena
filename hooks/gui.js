@@ -10,7 +10,7 @@ const useGUI = () => {
     gui.registerPlugin(EssentialsPlugin)
 
     // if (Viewport.isMobile) {
-    //   gui.hidden = true
+    gui.hidden = true
     // } else {
     //   // gui.hidden = true
     // }

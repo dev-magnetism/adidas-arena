@@ -5,11 +5,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
 import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin'
 import { Observer } from 'gsap/Observer'
+import { Flip } from 'gsap/Flip'
 
 gsap.config({
   force3D: true,
 })
 
-gsap.registerPlugin(Observer, ScrollTrigger, DrawSVGPlugin, SplitText)
+gsap.registerPlugin(Observer, ScrollTrigger, DrawSVGPlugin, SplitText, Flip)
 
 // Vue.prototype.$gsap = gsap

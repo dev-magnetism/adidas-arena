@@ -9,12 +9,12 @@
 :root {
   --c-white: #ffffff;
   --c-black: #181818;
-  --c-blue-adidas: #0000FF;
-  --c-light-blue: #0000FF;
-  --c-red-adidas: #FF4A48;
-  --c-light-red: #ED5C5A;
-  --c-beige: #FBF5EE;
-  --c-transparent: rgba(0,0,0,0);
+  --c-blue-adidas: #0000ff;
+  --c-light-blue: #0000ff;
+  --c-red-adidas: #ff4a48;
+  --c-light-red: #ed5c5a;
+  --c-beige: #fbf5ee;
+  --c-transparent: rgba(0, 0, 0, 0);
 }
 
 html {
@@ -62,27 +62,6 @@ body,
   // display: none;
 }
 
-// .page-enter-active,
-// .page-leave-active {
-//   transition: transform .25s var(--ease-in-out-cubic);
-// }
-
-// .page-enter {
-//   transform: translateX(100%);
-// }
-
-// .page-enter-to {
-//   transform: translateX(0%);}
-
-// .page-leave {
-//   opacity: 1;
-//     transform: translateX(0%);
-// }
-
-// .page-leave-to {
-//   transform: translateX(-100%);
-// }
-
 a,
 button,
 input,
@@ -104,7 +83,8 @@ select {
   transform: translateZ(0);
 }
 
-video, img {
+video,
+img {
   height: 100%;
   width: 100%;
   object-fit: cover;
