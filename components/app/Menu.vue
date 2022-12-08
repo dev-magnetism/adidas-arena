@@ -451,7 +451,7 @@ export default {
         {
           y: 0,
           stagger: 0.1,
-          duration: 0.85,
+          duration: 0.9,
           ease: 'power3.inOut',
         },
         '<70%'
