@@ -15,6 +15,7 @@ export const state = () => ({
   // UI
   menuOpen: false,
   menuActive: false,
+  cursoState: 'default',
 })
 
 export const getters = {
@@ -50,6 +51,9 @@ export const mutations = {
   },
   setMenuActive: (state, value) => {
     state.menuActive = value
+  },
+  setCursoState: (state, value) => {
+    state.cursoState = value
   },
 }
 

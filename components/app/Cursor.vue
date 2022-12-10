@@ -1,24 +1,41 @@
 <template>
-  <div class="app-cursor">
-    <svgCursorInitial v-if="!mouseDown" />
-    <svgCursorDown v-if="mouseDown" />
+  <div :class="{ slider: slider }" class="app-cursor">
+    <div ref="wrapper" class="app-cursor__wrapper">
+      <div class="app-cursor__inner">
+        <div class="app-cursor__left">
+          <svgCursorDefault v-if="!mouseDown" />
+          <svgCursorDown v-if="mouseDown" />
+        </div>
+        <div class="app-cursor__right">
+          <svgCursorDefault v-if="!mouseDown" />
+          <svgCursorDown v-if="mouseDown" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { gsap } from 'gsap'
+import { mapState } from 'vuex'
 
 export default {
   data() {
     return {
       mouseDown: false,
+      slider: false,
     }
   },
+  computed: {
+    ...mapState({
+      cursoState: (state) => state.cursoState,
+    }),
+  },
   mounted() {
-    this.xTo = gsap.quickTo(this.$el, 'x', {
+    this.xTo = gsap.quickTo(this.$refs.wrapper, 'x', {
       duration: 0.1,
     })
-    this.yTo = gsap.quickTo(this.$el, 'y', {
+    this.yTo = gsap.quickTo(this.$refs.wrapper, 'y', {
       duration: 0.1,
     })
 
@@ -32,15 +49,21 @@ export default {
     document.removeEventListener('mouseup', this.onMouseUp)
   },
   methods: {
-    onMouseDown() {
+    onMouseDown(e) {
       this.mouseDown = true
     },
-    onMouseUp() {
+    onMouseUp(e) {
       this.mouseDown = false
     },
     onMouseMove(e) {
       this.xTo(e.clientX)
       this.yTo(e.clientY)
+
+      if (e.clientX > this.$viewport.width / 2) {
+        this.slider = true
+      } else {
+        this.slider = false
+      }
     },
   },
 }
@@ -52,13 +75,46 @@ export default {
   top: 0;
   left: 0;
   height: 100vh;
-  width: 100%;
-  z-index: 10;
+  width: 100vw;
+  z-index: 11;
   pointer-events: none;
   overflow: hidden;
 
   @include mobile {
     display: none;
+  }
+
+  &.slider {
+    .app-cursor__left {
+      transform: rotate(0deg);
+    }
+    .app-cursor__right {
+      transform: translateX(0%) scale(-1, 1);
+    }
+    .app-cursor__inner {
+      // transform: translateX(-50%);
+    }
+  }
+
+  &__wrapper {
+  }
+
+  &__inner {
+    display: inline-flex;
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+
+  &__left {
+    width: 60px;
+    transform: rotate(35deg);
+    transition: transform 0.35s var(--ease-out-cubic);
+    margin-right: 10px;
+  }
+  &__right {
+    width: 60px;
+    margin-left: 10px;
+    transform: translateX(-50%) scale(0, 0);
+    transition: transform 0.35s var(--ease-out-cubic);
   }
 }
 </style>

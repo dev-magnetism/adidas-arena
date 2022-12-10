@@ -8,13 +8,9 @@
     <div ref="layerRed" class="app-menu__layer red" />
     <div ref="layerBlue" class="app-menu__layer blue" />
 
-    <div ref="cta" class="app-menu__cta">
+    <div ref="cta" class="app-menu__cta" @click="onCloseBurger">
       <p v-if="!$viewport.isMobile" class="app-menu__cta__menu">Close</p>
-      <div
-        class="app-menu__cta__burger"
-        :class="{ active: activeBurgerClose }"
-        @click="onCloseBurger"
-      >
+      <div class="app-menu__cta__burger" :class="{ active: activeBurgerClose }">
         <span class="app-menu__cta__burger__line top" />
         <span class="app-menu__cta__burger__line bottom" />
       </div>
@@ -48,6 +44,12 @@
             v-for="(item, index) in menu"
             :key="index"
             ref="link"
+            :class="{
+              'submenu-open': submenuOpen,
+              'submenu-active': submenuActive,
+              'submenu-long-title':
+                index !== 0 && submenu[index - 1].name.length > 12,
+            }"
             class="app-menu__link"
           >
             <span class="app-menu__link__border menu-border-top" />
@@ -56,6 +58,7 @@
                 v-if="!item.submenu"
                 class="menu-link-title"
                 @mouseenter.native="onTitleSelected(index)"
+                @mouseleave.native="onTitleUnselected(index)"
               >
                 <nuxt-link :to="item.url">{{ item.name }}</nuxt-link>
               </TH2>
@@ -64,6 +67,7 @@
                 class="menu-link-title"
                 @click.native="onClickSubmenu"
                 @mouseenter.native="onTitleSelected(index)"
+                @mouseleave.native="onTitleUnselected(index)"
               >
                 {{ item.name }}
               </TH2>
@@ -73,6 +77,7 @@
                 class="app-menu__link__button-submenu"
                 @click="onClickSubmenu"
                 @mouseenter="onTitleSelected(index)"
+                @mouseleave="onTitleUnselected(index)"
               >
                 <div
                   ref="submenuCross"
@@ -89,10 +94,14 @@
             </div>
             <div
               v-if="index !== 0"
-              :class="{ active: submenuOpen }"
+              :class="{ active: submenuActive }"
               class="app-menu__link-submenu__title"
             >
-              <TH2 class="menu-link-submenu-title">
+              <TH2
+                class="menu-link-submenu-title"
+                @mouseenter.native="playLottie(index)"
+                @mouseleave.native="onTitleUnselected(index)"
+              >
                 <nuxt-link :to="submenu[index - 1].url">
                   {{ submenu[index - 1].name }}
                 </nuxt-link>
@@ -109,14 +118,17 @@
 import { gsap } from 'gsap'
 import { Flip } from 'gsap/Flip'
 import { mapState, mapMutations } from 'vuex'
+import lottie from 'lottie-web'
 
 export default {
   data() {
     return {
+      submenuActive: false,
       submenuOpen: false,
       activePointerEvents: false,
       activeBurgerClose: false,
       titleSelected: 0,
+      lotties: [],
       menu: [
         {
           name: 'Projet',
@@ -157,6 +169,11 @@ export default {
     }
   },
   computed: {
+    linksMerged() {
+      // console.log('here here', this.menu)
+
+      return this.menu.concat(this.submenu).filter((item) => item.url)
+    },
     ...mapState({
       menuOpen: (state) => state.menuOpen,
       menuActive: (state) => state.menuActive,
@@ -168,16 +185,63 @@ export default {
         this.activePointerEvents = true
         this.activeBurgerClose = true
 
-        this.tlLayout.play()
+        switch (this.$route.fullPath) {
+          case '/projet':
+            this.linkActiveInsideSubmenu = false
+            this.linkActiveLottie = this.lotties[0]
+            this.linkActiveIndex = 0
+            this.titleSelected = 0
+            break
 
+          case '/arena':
+            this.linkActiveInsideSubmenu = false
+            this.linkActiveLottie = this.lotties[1]
+            this.linkActiveIndex = 1
+            this.titleSelected = 1
+
+            break
+          case '/le-bloc':
+            this.linkActiveInsideSubmenu = false
+            this.linkActiveLottie = this.lotties[2]
+            this.linkActiveIndex = 2
+            this.titleSelected = 2
+
+            break
+          case '/be-part-of/hospitalie':
+            this.linkActiveInsideSubmenu = true
+            this.linkActiveLottie = this.lotties[1]
+            this.linkActiveIndex = 1
+            this.titleSelected = 1
+
+            break
+          case '/be-part-of/configurations':
+            this.linkActiveInsideSubmenu = true
+            this.linkActiveLottie = this.lotties[2]
+            this.linkActiveIndex = 2
+            this.titleSelected = 2
+
+            break
+          case '/be-part-of/partenaire':
+            this.linkActiveInsideSubmenu = true
+            this.linkActiveLottie = this.lotties[3]
+            this.linkActiveIndex = 3
+            this.titleSelected = 3
+
+            break
+
+          default:
+            break
+        }
+        this.initTimelineLayout()
         this.initTimelineSubmenu()
       } else {
         this.activeBurgerClose = false
+        this.submenuOpen = false
 
-        if (this.submenuOpen) {
+        if (this.submenuActive) {
           this.initTimeClose()
         } else {
-          this.tlLayout.reverse()
+          this.tlLayout?.reverse()
         }
       }
     },
@@ -191,8 +255,7 @@ export default {
       '.menu-link-submenu-title'
     )
 
-    this.initTimelineLayout()
-    this.initTimelineSubmenu()
+    this.initLotties()
 
     this.$nuxt.$on('menu:reset', this.onMenuReset)
   },
@@ -202,12 +265,31 @@ export default {
   },
 
   methods: {
+    initLotties() {
+      const lottieCircle = require(`@/assets/lotties/Cercle_1.json`)
+
+      this.$refs.link.forEach((el, index) => {
+        const animation = lottie.loadAnimation({
+          container: el,
+          loop: true,
+          autoplay: false,
+          animationData: lottieCircle,
+        })
+
+        this.lotties.push({
+          tweenEnter: null,
+          tweenLeave: null,
+          animation,
+        })
+      })
+    },
     onMenuReset() {
       this.setMenuActive(false)
       this.setMenuOpen(false)
 
       this.activePointerEvents = false
       this.activeBurgerClose = false
+      this.submenuActive = false
       this.submenuOpen = false
 
       this.tlLayout.pause(0)
@@ -240,25 +322,75 @@ export default {
       this.setMenuActive(false)
     },
     onTitleSelected(index) {
-      if (this.titleSelected === index) return
+      this.titleSelected =
+        this.titleSelected !== index ? index : this.titleSelected
 
-      this.titleSelected = index
+      if (this.titleSelected !== this.$refs.link.length - 1) {
+        this.playLottie(index)
+      }
+    },
+    playLottie(index = this.titleSelected) {
+      const lottieSelected = this.lotties[index]
+
+      if (!lottieSelected) return
+
+      const playhead = { frame: 0 }
+
+      lottieSelected.tweenLeave?.kill()
+
+      const tween = gsap.to(playhead, {
+        duration: 1,
+        frame: lottieSelected.animation.totalFrames - 1,
+        ease: 'power2.inOut',
+        onUpdate: () =>
+          lottieSelected.animation.goToAndStop(playhead.frame, true),
+      })
+
+      this.lotties[index].tweenEnter = tween
+    },
+    onTitleUnselected(index) {
+      if (!this.lotties[index]) return
+
+      const lottieSelected = this.lotties[index]
+
+      const playhead = { frame: lottieSelected.animation.currentFrame }
+
+      const duration = gsap.utils.mapRange(
+        0,
+        lottieSelected.animation.totalFrames - 1,
+        0,
+        0.8,
+        playhead.frame
+      )
+
+      lottieSelected.tweenEnter?.kill()
+
+      const tween = gsap.to(playhead, {
+        duration,
+        frame: 0,
+        ease: 'power1.inOut',
+        onUpdate: () =>
+          lottieSelected.animation.goToAndStop(playhead.frame, true),
+      })
+
+      this.lotties[index].tweenLeave = tween
     },
 
     onClickSubmenu() {
-      this.submenuOpen = !this.submenuOpen
+      this.submenuActive = !this.submenuActive
 
       const titleSubmenu =
         this.linksTitleParent[this.linksTitleParent.length - 1]
       const titleSubmenuTarget = this.linksTitleParent[0]
       const titleSubmenuSave = this.$refs.link[this.$refs.link.length - 1]
 
-      if (this.submenuOpen) {
+      if (this.submenuActive) {
         Flip.fit(titleSubmenu, titleSubmenuTarget, {
           duration: 0.95,
           delay: 0.4,
           ease: 'expo.inOut',
         })
+
         gsap.to(this.$refs.submenuCross, {
           rotation: 405,
           duration: 0.95,
@@ -291,7 +423,7 @@ export default {
       this.tlCloseLayoutFromSubmenu = gsap
         .timeline({
           onComplete: () => {
-            this.submenuOpen = false
+            this.submenuActive = false
 
             this.tlCloseLayoutFromSubmenu?.clear()
             this.tlCloseLayoutFromSubmenu?.kill()
@@ -372,7 +504,7 @@ export default {
           },
           'title+=75%'
         )
-        .addLabel('visual', '<40%')
+        .addLabel('visual', '<0%')
         .to(
           this.$refs.visual,
           {
@@ -384,7 +516,6 @@ export default {
         )
         .to(
           this.$refs.visual,
-
           {
             y: '20%',
             duration: 0.7,
@@ -411,6 +542,7 @@ export default {
         .set(this.$refs.cta, {
           opacity: 0,
         })
+
         .to(this.$refs.layerRed, {
           scaleY: 0,
           duration: 0.85,
@@ -452,6 +584,12 @@ export default {
           y: 0,
           stagger: 0.1,
           duration: 0.9,
+          onStart: () => {
+            this.submenuOpen = true
+          },
+          onReverseComplete: () => {
+            this.submenuOpen = false
+          },
           ease: 'power3.inOut',
         },
         '<70%'
@@ -459,7 +597,7 @@ export default {
     },
     initTimelineLayout() {
       this.tlLayout = gsap
-        .timeline({ paused: true })
+        .timeline()
         .fromTo(
           this.$refs.layerBlue,
           { scaleY: 0 },
@@ -491,6 +629,7 @@ export default {
         .set(this.$refs.cta, {
           opacity: 1,
         })
+
         .to([this.$refs.layerRed, this.$refs.layerBlue], {
           scaleY: 0,
           duration: 0.6,
@@ -501,8 +640,7 @@ export default {
           },
         })
 
-        .addLabel('visual', '<45%')
-
+        .addLabel('title', '<65%')
         .fromTo(
           this.$refs.visual,
           {
@@ -514,7 +652,7 @@ export default {
             duration: 0.7,
             ease: 'expo.out',
           },
-          'visual'
+          'title'
         )
         .fromTo(
           this.$refs.visual,
@@ -526,10 +664,8 @@ export default {
             duration: 0.7,
             ease: 'expo.out',
           },
-          'visual'
+          'title'
         )
-
-        .addLabel('title', '<20%')
 
         .fromTo(
           this.$refs.menuTitle.$el,
@@ -579,8 +715,9 @@ export default {
             duration: 0.75,
             ease: 'expo.out',
           },
-          'title+=5%'
+          'title+=8.5%'
         )
+
         .fromTo(
           this.$refs.buttonSubmenu,
           {
@@ -593,6 +730,24 @@ export default {
           },
           '<40%'
         )
+
+      // if (!this.linkActiveInsideSubmenu) {
+      //   const playhead = { frame: 0 }
+
+      //   this.tlLayout.fromTo(
+      //     playhead,
+      //     { frame: 0 },
+      //     {
+      //       frame: this.linkActiveLottie.animation.totalFrames - 1,
+      //       duration: 1,
+      //       ease: 'power2.inOut',
+      //       onUpdate: () => {
+      //         this.linkActiveLottie.animation.goToAndStop(playhead.frame, true)
+      //       },
+      //     },
+      //     '<-30%'
+      //   )
+      // }
     },
     ...mapMutations({
       setMenuOpen: 'setMenuOpen',
@@ -670,6 +825,7 @@ export default {
     top: desktop-vw(70.5px);
     z-index: 1;
     opacity: 0;
+    cursor: pointer;
 
     @include mobile {
       top: mobile-vw(35px);
@@ -693,7 +849,6 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: space-evenly;
-      cursor: pointer;
 
       &.active {
         .app-menu__cta__burger__line.top {
@@ -778,8 +933,37 @@ export default {
     display: flex;
     flex-wrap: wrap;
 
+    &.submenu-open {
+      &.submenu-long-title {
+        svg {
+          height: 200% !important;
+          transform: translate(-5%, -55%) !important;
+        }
+      }
+
+      svg {
+        left: desktop-vw(50px);
+        transform: translate(-10%, -55%) !important;
+
+        @include mobile {
+          left: mobile-vw(25px);
+        }
+      }
+    }
+
     @include mobile {
       margin: mobile-vh(25px) 0px mobile-vh(25px) 0px;
+    }
+
+    svg {
+      position: absolute;
+      left: 0%;
+      width: auto !important;
+      height: 165% !important;
+      transform: translate(-25%, -55%) !important;
+      top: 50%;
+      left: 0;
+      pointer-events: none;
     }
 
     &__title {

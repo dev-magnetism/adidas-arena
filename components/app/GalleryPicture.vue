@@ -66,7 +66,7 @@ export default {
   },
   mounted() {
     this.offsetX = this.$viewport.width * 1.5 // 300vw en CSS
-    this.initTexture()
+    // this.initTexture()
     document.addEventListener('click', this.onClickDocument)
   },
 

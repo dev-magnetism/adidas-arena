@@ -1,8 +1,8 @@
 <template>
   <main class="page-be-part-of-partenaire">
+    <AppGallery :contents="contentGallerie" />
     <AppBepartofPartenaireIntroduction :contents="contentIntroduction" />
     <AppBepartofPartenairePartenaires :contents="contentPartners" />
-    <!-- <AppGallery :contents="contentGallerie" /> -->
     <AppContactQuestion :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />

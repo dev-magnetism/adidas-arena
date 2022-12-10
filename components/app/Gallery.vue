@@ -217,24 +217,12 @@ export default {
     width: 300vw;
     position: absolute;
     top: 0;
-    left: 0;
-    // background: blue;
+    left: 50%;
     height: 100%;
-    transform: translateX(-100vw);
+    transform: translate(-50%, 0px);
     grid-template-columns: repeat(36, minmax(0, 1fr));
     grid-gap: var(--layout-columns-gap);
     display: grid;
-
-    // &::after {
-    //   content: '';
-    //   width: 100%;
-    //   position: absolute;
-    //   top: 0;
-    //   left: 0;
-    //   background: blue;
-    //   height: 100%;
-    //   display: block;
-    // }
   }
 
   &__title.H2 {

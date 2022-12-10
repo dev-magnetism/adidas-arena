@@ -46,7 +46,10 @@
         </div>
       </form>
       <div class="app-footer__links">
-        <TP2 weight="bold" class="app-footer__links-title"> ADIDAS ARENA </TP2>
+        <SvgArenaLogo v-if="!$viewport.isMobile" class="app-footer__logo" />
+        <TP2 v-else weight="bold" class="app-footer__links-title">
+          ADIDAS ARENA
+        </TP2>
         <div class="app-footer__links__ul first-column">
           <AtomsLink
             v-for="(item, index) in contents.data.app_footer_links_left"
@@ -571,11 +574,23 @@ export default {
       margin-bottom: mobile-vw(40px);
     }
   }
+  &__logo {
+    margin-right: desktop-vw(100px);
+
+    @include mobile {
+      display: none;
+    }
+  }
   &__links-title.P2 {
     font-size: desktop-vw(26px);
     line-height: desktop-vw(33px);
     margin-right: desktop-vw(100px);
     @include font-adihausDIN-cn-bold();
+    display: none;
+
+    @include mobile {
+      display: block;
+    }
 
     @include mobile {
       margin-right: 0px;

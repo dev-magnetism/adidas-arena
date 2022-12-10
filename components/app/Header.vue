@@ -1,10 +1,15 @@
 <template>
   <div class="app-header">
-    <SvgArenaLogo v-if="!$viewport.isMobile" class="app-header__logo" />
-    <TH3 v-else class="app-header__mobile-logo"> ADIDAS ARENA </TH3>
-    <div class="app-header__cta">
+    <nuxt-link v-if="!$viewport.isMobile" to="/">
+      <SvgArenaLogo class="app-header__logo" />
+    </nuxt-link>
+
+    <TH3 v-else class="app-header__mobile-logo">
+      <nuxt-link to="/">ADIDAS ARENA</nuxt-link>
+    </TH3>
+    <div class="app-header__cta" @click="onClickBurger">
       <p v-if="!$viewport.isMobile" class="app-header__menu">Menu</p>
-      <div class="app-header__burger" @click="onClickBurger">
+      <div class="app-header__burger">
         <span class="app-header__burger__line top" />
         <span class="app-header__burger__line bottom" />
       </div>
@@ -71,6 +76,7 @@ export default {
 
   &__logo {
     // margin-left: auto;
+    cursor: pointer;
   }
 
   &__cta {
@@ -78,6 +84,7 @@ export default {
     display: flex;
     position: absolute;
     right: calc(var(--layout-margin) + 25px);
+    cursor: pointer;
 
     @include mobile {
       position: absolute;
@@ -97,7 +104,6 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    cursor: pointer;
 
     @include mobile {
       min-height: 15px;
