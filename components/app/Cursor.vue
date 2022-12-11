@@ -59,11 +59,11 @@ export default {
       this.xTo(e.clientX)
       this.yTo(e.clientY)
 
-      if (e.clientX > this.$viewport.width / 2) {
-        this.slider = true
-      } else {
-        this.slider = false
-      }
+      // if (e.clientX > this.$viewport.width / 2) {
+      //   this.slider = true
+      // } else {
+      //   this.slider = false
+      // }
     },
   },
 }
@@ -106,7 +106,7 @@ export default {
 
   &__left {
     width: 60px;
-    transform: rotate(35deg);
+    transform: rotate(30deg) scale(1, -1);
     transition: transform 0.35s var(--ease-out-cubic);
     margin-right: 10px;
   }

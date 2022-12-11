@@ -3,7 +3,7 @@
     <div ref="layerBlue" class="app-transition-layer blue" />
     <div ref="layerRed" class="app-transition-layer red" />
 
-    <!-- <AppCursor v-if="!$viewport.isMobile" /> -->
+    <AppCursor v-if="!$viewport.isMobile" />
     <!-- <AppPreloader /> -->
     <AppMenu />
     <AppHeader />
@@ -15,7 +15,7 @@
 
 <script>
 import { gsap } from 'gsap'
-// import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { mapState, mapMutations } from 'vuex'
 
 import useGUI from '~/hooks/gui'
@@ -75,6 +75,8 @@ export default {
           duration: 1,
           ease: 'power3.out',
           onComplete: () => {
+            ScrollTrigger.getAll().forEach((t) => t.kill())
+
             done()
           },
         })

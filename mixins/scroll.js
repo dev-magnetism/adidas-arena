@@ -1,9 +1,27 @@
+import { mapState } from 'vuex'
+
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from '@studio-freight/lenis'
 
 export default {
   data() {
     return {}
+  },
+  computed: {
+    ...mapState({
+      menuActive: (state) => state.menuActive,
+    }),
+  },
+  watch: {
+    menuActive(payload) {
+      if (!this.lenis) return
+
+      if (payload) {
+        this.lenis.stop()
+      } else {
+        this.lenis.start()
+      }
+    },
   },
   mounted() {
     window.scrollTo(0, 0)
@@ -30,8 +48,6 @@ export default {
     this.lenis.destroy()
 
     // window.lenis = null
-
-    ScrollTrigger.getAll().forEach((t) => t.kill())
   },
   methods: {
     onScrollLenis(args) {

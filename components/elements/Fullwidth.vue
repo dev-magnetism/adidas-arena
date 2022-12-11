@@ -24,14 +24,40 @@ export default {
   mounted() {
     if (this.$viewport.isMobile) return
 
-    gsap.to(this.$refs.picture.$el, {
-      yPercent: -8.5,
-      ease: 'none',
+    const speed = 0.35
+
+    const y = this.$viewport.width * speed * 0.1
+
+    this.setY = gsap.quickSetter(this.$refs.picture.$el, 'y', 'px')
+
+    this.tl = gsap.timeline({
       scrollTrigger: {
-        trigger: this.$el,
-        scrub: 0.25,
+        id: this.id,
+        trigger: this.$refs.picture.$el,
+        scrub: true,
+        start: 'top bottom',
+        end: 'bottom top',
+        onUpdate: (e) => {
+          if (this.position === 'top') {
+            this.setY(e.progress * y)
+          } else {
+            this.setY(-gsap.utils.mapRange(0, 1, -y, y, e.progress))
+          }
+        },
       },
     })
+
+    // gsap.to(this.$refs.picture.$el, {
+    //   yPercent: -8.5,
+    //   ease: 'none',
+    //   scrollTrigger: {
+    //     trigger: this.$el,
+    //     scrub: 0.25,
+    //   },
+    // })
+  },
+  beforeDestroy() {
+    this.tl?.kill()
   },
 }
 </script>
