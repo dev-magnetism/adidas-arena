@@ -102,6 +102,7 @@ export default {
   &__inner {
     display: inline-flex;
     transition: transform 0.4s var(--ease-out-expo);
+    will-change: transform;
   }
 
   &__left {

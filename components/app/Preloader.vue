@@ -1,24 +1,17 @@
 <template>
   <div
-    :class="{ invisible: !fontsLoaded, visible: !allLoadedTimeline }"
+    :class="{
+      invisible: !fontsLoaded && !videoLoaded,
+      'hide-inner': hideInner,
+      hide: allLoadedTimeline,
+    }"
     class="app-preloader"
   >
-    <div ref="video" class="app-preloader__video" />
+    <video ref="video" class="app-preloader__video" loop muted>
+      <source src="/videos/preloader.mp4" type="video/mp4" />
+    </video>
 
-    <video src="/videos/preloader.mp4"></video>
-
-    <!-- <div class="app-preloader__informations">
-      <p class="app-preloader__informations__number left">
-        {{ progressUIFormated }}
-      </p>
-      <div class="app-preloader__bar">
-        <div ref="barFront" class="app-preloader__bar-front" />
-      </div>
-      <p class="app-preloader__informations__number right">100</p>
-    </div>
-    <TH1 weight="bold" class="app-preloader__title">Chargements</TH1> -->
-
-    <TH1 class="app-preloader__progress" weight="bold">
+    <TH1 ref="progress" class="app-preloader__progress" weight="bold">
       {{ progressUIFormated }}
     </TH1>
     <div ref="layerBlue" class="app-preloader__layer blue" />
@@ -33,21 +26,17 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 import loaderManager from '~/assets/js/loaderManager'
 
-import useWebGL from '~/hooks/webgl'
-
-import vertexShader from '~/assets/webgl/preloader/vertex.glsl'
-import fragmentShader from '~/assets/webgl/preloader/fragment.glsl'
-
 export default {
   data() {
     return {
       progressUI: 0,
       tweenValue: 0,
+      hideInner: false,
+      videoLoaded: false,
     }
   },
   computed: {
     progressUIFormated() {
-      // return ('0' + this.progressUI).slice(-2) // 00
       return ('00' + this.progressUI).slice(-3)
     },
     ...mapState({
@@ -60,38 +49,70 @@ export default {
     fontsLoaded(payload) {
       if (!payload) return
 
-      // this.initPreloaderVideo()
       this.loadModels()
     },
   },
-  created() {},
   mounted() {
-    this.tl = gsap.timeline({
-      delay: 1,
-      onUpdate: () => {
-        this.progressUI = Math.round(this.tl.progress() * 100)
-      },
-      onComplete: () => {
-        this.setAllLoadedTimeline(true)
-      },
-    })
-
     if (!this.fontsLoaded) {
-      this.loadFonts()
+      this.initTimeline()
+
+      this.$refs.video.addEventListener('canplaythrough', this.onVideoLoaded)
     }
   },
 
-  beforeDestroy() {
-    // const { preloader } = useWebGL()
-
-    // preloader.remove(this.meshVideo)
-
-    this.resizeObserver.unobserve(this.$refs.video)
-
-    this.tl?.kill()
-  },
-
   methods: {
+    hidePreloader() {
+      this.tlHidePreloader = gsap
+        .timeline({
+          delay: 1,
+          onComplete: () => {
+            this.setAllLoadedTimeline(true)
+
+            this.$refs.video.removeEventListener(
+              'canplaythrough',
+              this.onVideoLoaded
+            )
+
+            this.tlLoading?.clear()
+            this.tlLoading?.kill()
+
+            this.tlHidePreloader?.clear()
+            this.tlHidePreloader?.kill()
+          },
+        })
+        .to(this.$refs.layerBlue, {
+          scaleY: 1,
+          duration: 1,
+          ease: 'power3.out',
+        })
+        .to(
+          this.$refs.layerRed,
+          {
+            scaleY: 1,
+            duration: 1,
+            ease: 'power3.out',
+          },
+          '<10%'
+        )
+        .to([this.$refs.layerRed, this.$refs.layerBlue], {
+          scaleY: 0,
+          transformOrigin: 'center bottom',
+          duration: 1.2,
+          onStart: () => {
+            this.$refs.video.pause()
+            this.$refs.video.currentTime = 0
+
+            this.hideInner = true
+          },
+          ease: 'power3.out',
+        })
+    },
+    onVideoLoaded() {
+      this.videoLoaded = true
+      this.$refs.video.play()
+
+      this.loadFonts()
+    },
     loadFonts() {
       const FontFaceObserver = require('fontfaceobserver')
 
@@ -121,61 +142,21 @@ export default {
           console.warn('Some critical font are not available:', err)
         })
     },
-    onResizeVideo(entries) {
-      const contentRect = entries[0].contentRect
 
-      this.meshVideo.scale.set(contentRect.width, contentRect.height, 1)
-
-      this.meshVideo.material.uniforms.uRatio.value = new THREE.Vector2(
-        this.textureVideo.image.videoWidth,
-        this.textureVideo.image.videoHeight
-      )
-
-      this.meshVideo.material.uniforms.uResolutionEl.value = new THREE.Vector2(
-        contentRect.width,
-        contentRect.height
-      )
-
-      // console.log('resize', contentRect)
-    },
-    async initPreloaderVideo() {
-      const { preloader } = useWebGL()
-      const geometry = new THREE.PlaneGeometry(1, 1, 1)
-
-      this.textureVideo = await this.loadVideo('/videos/preloader.mp4')
-
-      const materialVideo = new THREE.ShaderMaterial({
-        uniforms: {
-          uOpacity: {
-            value: 0,
-          },
-          uMap: {
-            value: this.textureVideo,
-          },
-          uRatio: {
-            value: new THREE.Vector2(0, 0),
-          },
-          uResolutionEl: {
-            value: new THREE.Vector2(0, 0),
-          },
+    initTimeline() {
+      this.tlLoading = gsap.timeline({
+        delay: 1,
+        onUpdate: () => {
+          this.progressUI = Math.round(this.tlLoading.progress() * 100)
         },
-        vertexShader,
-        fragmentShader,
+        onComplete: () => {
+          if (!this.allLoaded) return
+
+          this.hidePreloader()
+        },
       })
-
-      this.meshVideo = new THREE.Mesh(geometry, materialVideo)
-
-      preloader.add(this.meshVideo)
-
-      gsap.to(this.meshVideo.material.uniforms.uOpacity, {
-        value: 1,
-        duration: 5,
-      })
-
-      this.resizeObserver = new ResizeObserver(this.onResizeVideo)
-
-      this.resizeObserver.observe(this.$refs.video)
     },
+
     loadModels() {
       loaderManager.load(
         [
@@ -188,7 +169,7 @@ export default {
     },
 
     onProgressLoader({ normalized }, id) {
-      this.tl.to(this, {
+      this.tlLoading.to(this, {
         tweenValue: normalized,
         duration: this.randomIntFromInterval(2, 4),
         ease: 'power3.inOut',
@@ -202,12 +183,6 @@ export default {
     },
 
     onCompleteLoader() {
-      this.tl.to(this.$refs.layerBlue, {
-        scaleY: 1,
-      })
-      this.tl.to(this.$refs.layerRed, {
-        scaleY: 1,
-      })
       this.setAllLoaded(true)
     },
 
@@ -219,30 +194,6 @@ export default {
       setFontsLoaded: 'setFontsLoaded',
     }),
 
-    loadVideo(src) {
-      return new Promise((resolve) => {
-        const video = document.createElement('video')
-
-        video.src = src
-        video.crossOrigin = 'anonymous'
-        video.muted = true
-        video.playsInline = true
-        video.loop = true
-        video.autoplay = false
-
-        video.onloadeddata = () => {
-          const texture = new THREE.VideoTexture(video)
-          texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-          texture.needsUpdate = true
-          texture.image.play()
-
-          // this.texture.image.pause()
-          // this.texture.image.currentTime = 0
-
-          resolve(texture)
-        }
-      })
-    },
     randomIntFromInterval(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min)
     },
@@ -255,32 +206,45 @@ export default {
   position: fixed;
   width: 100%;
   height: 100vh;
-  background: var(--c-beige);
+  background-color: var(--c-beige);
   z-index: 999;
   overflow: hidden;
-  // transform: translate3d(0, -100%, 0);
-  transition: transform 2.5s var(--ease-out-expo);
-  transition-delay: 0.5s;
-  z-index: 9999;
+  z-index: 10;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &.invisible {
+    .app-preloader__progress.H1,
+    .app-preloader__video {
+      opacity: 0;
+    }
+  }
+
+  &.hide {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  &.hide-inner {
+    background-color: transparent;
+    .app-preloader__progress.H1,
+    .app-preloader__video {
+      opacity: 0;
+      transition: none;
+    }
+  }
 
   &__video {
     height: auto;
     max-height: 75%;
     width: 25%;
     aspect-ratio: 350 / 620;
-    opacity: 0;
+    opacity: 1;
     pointer-events: none;
-  }
-
-  &.invisible {
-    .app-preloader__informations,
-    .app-preloader__title,
-    .app-preloader__progress.H1 {
-      opacity: 0;
-    }
+    mix-blend-mode: darken;
+    transition: opacity 0.85s 0.65s var(--ease-out-expo);
   }
 
   &__layer {
@@ -304,62 +268,8 @@ export default {
     position: absolute;
     bottom: desktop-vw(30px);
     right: desktop-vw(40px);
-  }
-
-  &__informations,
-  &__title,
-  &__progress.H1 {
     opacity: 1;
     transition: opacity 0.85s 0.65s var(--ease-out-expo);
-  }
-
-  &__informations {
-    display: flex;
-    justify-content: center;
-    margin-bottom: desktop-vw(50px);
-    align-items: center;
-
-    &__number {
-      width: desktop-vw(52px);
-      @include font-tuskerGrotesk-medium();
-      font-size: desktop-vw(42px);
-      line-height: desktop-vw(42px);
-
-      &.left {
-        text-align: right;
-      }
-      &.right {
-        text-align: left;
-      }
-    }
-  }
-
-  &__bar {
-    width: desktop-vw(250px);
-    height: 2px;
-    background: var(--c-black);
-    margin: 0px desktop-vw(30px);
-    position: relative;
-  }
-
-  &__bar-front {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    margin: 0;
-    background: var(--c-red-adidas);
-    top: 0;
-    height: 100%;
-    transform: scaleX(0);
-    transform-origin: left center;
-  }
-
-  &__title.H1 {
-    text-align: center;
-  }
-
-  &.visible {
-    transform: translate3d(0, 0%, 0);
   }
 }
 </style>

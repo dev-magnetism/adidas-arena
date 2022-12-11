@@ -24,7 +24,7 @@ export default {
   mounted() {
     if (this.$viewport.isMobile) return
 
-    const speed = 0.35
+    const speed = 0.25
 
     const y = this.$viewport.width * speed * 0.1
 

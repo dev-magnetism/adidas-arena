@@ -10,6 +10,7 @@ export default {
   computed: {
     ...mapState({
       menuActive: (state) => state.menuActive,
+      allLoadedTimeline: (state) => state.allLoadedTimeline,
     }),
   },
   watch: {
@@ -19,6 +20,13 @@ export default {
       if (payload) {
         this.lenis.stop()
       } else {
+        this.lenis.start()
+      }
+    },
+    allLoadedTimeline(payload) {
+      if (!this.lenis) return
+
+      if (payload) {
         this.lenis.start()
       }
     },
@@ -33,6 +41,8 @@ export default {
       gestureDirection: 'vertical',
       smooth: true,
     })
+
+    if (!this.allLoadedTimeline) this.lenis.stop()
 
     this.lenis.on('scroll', this.onScrollLenis)
 

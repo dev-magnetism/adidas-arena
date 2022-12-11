@@ -2,9 +2,8 @@
   <div class="app">
     <div ref="layerBlue" class="app-transition-layer blue" />
     <div ref="layerRed" class="app-transition-layer red" />
-
     <AppCursor v-if="!$viewport.isMobile" />
-    <!-- <AppPreloader /> -->
+    <AppPreloader />
     <AppMenu />
     <AppHeader />
     <nuxt class="app-main" />
@@ -16,7 +15,6 @@
 <script>
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { mapState, mapMutations } from 'vuex'
 
 import useGUI from '~/hooks/gui'
 
@@ -25,9 +23,6 @@ export default {
 
   data() {
     return {}
-  },
-  computed: {
-    ...mapState({}),
   },
 
   watch: {},
@@ -47,6 +42,8 @@ export default {
   },
   methods: {
     onTransitionRun(done) {
+      this.tl?.kill()
+
       this.tl = gsap
         .timeline({})
         .fromTo(
@@ -68,7 +65,6 @@ export default {
           },
           '<10%'
         )
-
         .to([this.$refs.layerRed, this.$refs.layerBlue], {
           scaleY: 0,
           transformOrigin: 'center bottom',
@@ -81,9 +77,6 @@ export default {
           },
         })
     },
-    ...mapMutations({
-      // setFontsLoaded: 'setFontsLoaded',
-    }),
   },
 }
 </script>
