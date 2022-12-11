@@ -227,121 +227,7 @@ export default {
   created() {},
 
   methods: {
-    getActiveLottie() {
-      const indexMenu = this.menu
-        .filter((item) => !item.submenu || item.url)
-        .findIndex((item) => item.url === this.$route.path)
-
-      const indexSubmenu = this.submenu
-        .filter((item) => !item.submenu || item.url)
-        .findIndex((item) => item.url === this.$route.path)
-
-      if (indexMenu !== -1) {
-        this.activeLinkLocation = 'principal'
-        this.activeLinkIndex = indexMenu
-        this.activeLinkLottie =
-          this.lottiesMenuPrincipal[indexMenu].animation.active
-        this.indexLinkHovered = this.activeLinkIndex
-      } else {
-        this.activeLinkLocation = 'submenu'
-        this.activeLinkIndex = indexSubmenu
-        this.activeLinkLottie =
-          this.lottiesMenuSubmenu[indexSubmenu].animation.active
-        this.indexLinkHovered = this.menu.length - 1
-      }
-    },
-    onLinkSelected(target, index) {
-      if (target === 'principal') {
-        this.indexLinkHovered =
-          this.indexLinkHovered !== index ? index : this.indexLinkHovered
-
-        if (this.indexLinkHovered !== this.menu.length - 1) {
-          this.appearLottie(target, index)
-        }
-      } else {
-        this.appearLottie(target, index)
-      }
-    },
-    onLinkUnselected(target, index) {
-      if (target === 'principal') {
-        this.indexLinkHovered = index
-
-        if (this.indexLinkHovered !== this.menu.length - 1) {
-          this.disappearLottie(target, index)
-        }
-      } else {
-        this.disappearLottie(target, index)
-      }
-    },
-    appearLottie(target, index) {
-      if (this.activeLinkIndex === index && target === this.activeLinkLocation)
-        return
-
-      console.log(this.activeLinkIndex, index, this.activeLinkLocation)
-      const playhead = { frame: 0 }
-
-      let lottie
-
-      if (target === 'principal') {
-        this.lottiesMenuPrincipal[index].tweenLeave?.kill()
-        lottie = this.lottiesMenuPrincipal[index].animation.hover
-      } else {
-        this.lottiesMenuSubmenu[index].tweenLeave?.kill()
-        lottie = this.lottiesMenuSubmenu[index].animation.hover
-      }
-
-      const tween = gsap.to(playhead, {
-        duration: 1,
-        frame: lottie.totalFrames - 1,
-        ease: 'power2.inOut',
-        onUpdate: () => lottie.goToAndStop(playhead.frame, true),
-      })
-
-      if (target === 'principal') {
-        this.lottiesMenuPrincipal[index].tweenEnter = tween
-      } else {
-        this.lottiesMenuSubmenu[index].tweenEnter = tween
-      }
-    },
-    disappearLottie(target, index) {
-      if (this.activeLinkIndex === index && target === this.activeLinkLocation)
-        return
-
-      let lottie
-
-      if (target === 'principal') {
-        this.lottiesMenuPrincipal[index].tweenEnter?.kill()
-        lottie = this.lottiesMenuPrincipal[index].animation.hover
-      } else {
-        this.lottiesMenuSubmenu[index].tweenEnter?.kill()
-        lottie = this.lottiesMenuSubmenu[index].animation.hover
-      }
-
-      const playhead = { frame: lottie.currentFrame }
-
-      const duration = gsap.utils.mapRange(
-        0,
-        lottie.totalFrames - 1,
-        0,
-        0.8,
-        playhead.frame
-      )
-
-      const tween = gsap.to(playhead, {
-        duration,
-        frame: 0,
-        ease: 'power1.inOut',
-        onUpdate: () => lottie.goToAndStop(playhead.frame, true),
-      })
-
-      if (target === 'principal') {
-        this.lottiesMenuPrincipal[index].tweenLeave = tween
-      } else {
-        this.lottiesMenuSubmenu[index].tweenLeave = tween
-      }
-    },
     initLotties() {
-      console.log(this.$route.path)
       const lottieCircle1 = require(`@/assets/lotties/Cercle_1.json`)
       const lottieCircle3 = require(`@/assets/lotties/Cercle_3.json`)
 
@@ -393,46 +279,219 @@ export default {
         })
       })
     },
-    onResetMenu() {
-      this.setMenuActive(false)
+    onLinkSelected(target, index) {
+      if (target === 'principal') {
+        this.indexLinkHovered =
+          this.indexLinkHovered !== index ? index : this.indexLinkHovered
 
-      this.pointerEventsActivated = false
-      this.burgerCloseActivated = false
-      this.submenuActive = false
+        if (this.indexLinkHovered !== this.menu.length - 1) {
+          this.appearLottieHovered(target, index)
+        }
+      } else {
+        this.appearLottieHovered(target, index)
+      }
+    },
+    onLinkUnselected(target, index) {
+      if (target === 'principal') {
+        this.indexLinkHovered = index
 
-      this.tlMain?.pause(0)
+        if (this.indexLinkHovered !== this.menu.length - 1) {
+          this.disappearLottieHovered(target, index)
+        }
+      } else {
+        this.disappearLottieHovered(target, index)
+      }
+    },
+    appearLottieHovered(target, index) {
+      if (
+        (this.activeLinkIndex === index &&
+          target === this.activeLinkLocation) ||
+        this.$viewport.isMobile
+      )
+        return
+
+      const playhead = { frame: 0 }
+
+      let lottie
+
+      if (target === 'principal') {
+        this.lottiesMenuPrincipal[index].tweenLeave?.kill()
+        lottie = this.lottiesMenuPrincipal[index].animation.hover
+      } else {
+        this.lottiesMenuSubmenu[index].tweenLeave?.kill()
+        lottie = this.lottiesMenuSubmenu[index].animation.hover
+      }
+
+      const tween = gsap.to(playhead, {
+        duration: 1,
+        frame: lottie.totalFrames - 1,
+        ease: 'power2.inOut',
+        onUpdate: () => lottie.goToAndStop(playhead.frame, true),
+      })
+
+      if (target === 'principal') {
+        this.lottiesMenuPrincipal[index].tweenEnter = tween
+      } else {
+        this.lottiesMenuSubmenu[index].tweenEnter = tween
+      }
+    },
+    disappearLottieHovered(target, index) {
+      if (
+        (this.activeLinkIndex === index &&
+          target === this.activeLinkLocation) ||
+        this.$viewport.isMobile
+      )
+        return
+
+      let lottie
+
+      if (target === 'principal') {
+        this.lottiesMenuPrincipal[index].tweenEnter?.kill()
+        lottie = this.lottiesMenuPrincipal[index].animation.hover
+      } else {
+        this.lottiesMenuSubmenu[index].tweenEnter?.kill()
+        lottie = this.lottiesMenuSubmenu[index].animation.hover
+      }
+
+      const playhead = { frame: lottie.currentFrame }
+
+      const duration = gsap.utils.mapRange(
+        0,
+        lottie.totalFrames - 1,
+        0,
+        0.8,
+        playhead.frame
+      )
+
+      const tween = gsap.to(playhead, {
+        duration,
+        frame: 0,
+        ease: 'power1.inOut',
+        onUpdate: () => lottie.goToAndStop(playhead.frame, true),
+      })
+
+      if (target === 'principal') {
+        this.lottiesMenuPrincipal[index].tweenLeave = tween
+      } else {
+        this.lottiesMenuSubmenu[index].tweenLeave = tween
+      }
+    },
+    initMainTimeline() {
+      this.tlMain?.kill()
       this.tlMain?.clear()
 
-      this.tlMainClose?.pause(0)
-      this.tlMainClose?.clear()
+      this.burgerCloseActivated = true
+      this.pointerEventsActivated = true
 
-      this.tlSubmenu?.pause(0)
-      this.tlSubmenu?.clear()
+      this.tlMain = gsap
+        .timeline()
+        .set(this.$el, {
+          opacity: 1,
+        })
+        .to(this.$refs.layerBlue, {
+          scaleY: 1,
+          duration: 0.85,
+          ease: 'power3.inOut',
+        })
+        .to(
+          this.$refs.layerRed,
+          {
+            scaleY: 1,
+            duration: 0.85,
+            ease: 'power3.inOut',
 
-      this.activeLinkLottieTween?.kill()
-      this.activeLinkLottie.goToAndStop(0, true)
-      this.getActiveLottie()
+            onReverseComplete: () => {
+              this.pointerEventsActivated = false
+            },
+          },
+          '<10%'
+        )
+        .set(this.$el, {
+          backgroundColor: '#FBF5EE',
+          opacity: 1,
+        })
+        .set(this.$refs.cta, {
+          opacity: 1,
+        })
+        .to([this.$refs.layerRed, this.$refs.layerBlue], {
+          scaleY: 0,
+          duration: 0.6,
 
-      const elTitleSubmenuSave =
-        this.$refs.linkPrincipal[this.$refs.linkPrincipal.length - 1]
+          transformOrigin: 'center bottom',
+          ease: 'power3.inOut',
+        })
+        .addLabel('title', '<65%')
+        .to(
+          this.$refs.visual,
+          {
+            opacity: 1,
+            delay: 0.035,
+            duration: 0.7,
+            ease: 'expo.out',
+          },
+          'title'
+        )
+        .to(
+          this.$refs.visual,
+          {
+            y: 0,
+            duration: 0.7,
+            ease: 'expo.out',
+          },
+          'title'
+        )
+        .to(
+          this.$refs.menuTitle.$el,
+          {
+            y: 0,
+            duration: 0.65,
+            ease: 'expo.out',
+          },
+          'title'
+        )
+        .to(
+          this.$refs.contentBorderLeft,
+          {
+            scaleY: 1,
+            duration: 1.5,
+            ease: 'expo.out',
+          },
+          'title+=5%'
+        )
+        .to(
+          this.elsTopBorder,
+          {
+            scaleX: 1,
+            stagger: 0.15,
+            duration: 1,
+            ease: 'expo.out',
+          },
+          'title+=5%'
+        )
+        .to(
+          this.elsMenuPrincipalTitle,
+          {
+            y: 0,
+            stagger: 0.15,
+            duration: 0.75,
+            ease: 'expo.out',
+          },
+          'title+=8.5%'
+        )
+        .to(
+          this.$refs.buttonSubmenu,
+          {
+            y: 0,
+            duration: 0.75,
+            ease: 'expo.out',
+            onStart: () => {
+              if (this.activeLinkLocation !== 'principal') return
 
-      Flip.fit(this.elTitleSubmenuWrapper, elTitleSubmenuSave)
-
-      gsap.set(this.$refs.submenuCross, {
-        rotation: 0,
-      })
-
-      gsap.set(this.elsMenuPrincipalTitle, {
-        y: '110%',
-      })
-
-      gsap.set(this.elsMenuSubmenuTitle, {
-        y: '110%',
-      })
-
-      gsap.set(this.$el, {
-        opacity: 0,
-      })
+              this.handleActiveLinkLottie('appear')
+            },
+          },
+          '<40%'
+        )
     },
     initMainTimelineClosing() {
       this.tlMainClose?.kill()
@@ -580,155 +639,6 @@ export default {
           opacity: 0,
         })
     },
-    initMainTimeline() {
-      this.tlMain?.kill()
-      this.tlMain?.clear()
-
-      this.burgerCloseActivated = true
-      this.pointerEventsActivated = true
-
-      this.tlMain = gsap
-        .timeline()
-        .set(this.$el, {
-          opacity: 1,
-        })
-        .to(this.$refs.layerBlue, {
-          scaleY: 1,
-          duration: 0.85,
-          ease: 'power3.inOut',
-        })
-        .to(
-          this.$refs.layerRed,
-          {
-            scaleY: 1,
-            duration: 0.85,
-            ease: 'power3.inOut',
-
-            onReverseComplete: () => {
-              this.pointerEventsActivated = false
-            },
-          },
-          '<10%'
-        )
-        .set(this.$el, {
-          backgroundColor: '#FBF5EE',
-          opacity: 1,
-        })
-        .set(this.$refs.cta, {
-          opacity: 1,
-        })
-        .to([this.$refs.layerRed, this.$refs.layerBlue], {
-          scaleY: 0,
-          duration: 0.6,
-
-          transformOrigin: 'center bottom',
-          ease: 'power3.inOut',
-        })
-        .addLabel('title', '<65%')
-        .to(
-          this.$refs.visual,
-          {
-            opacity: 1,
-            delay: 0.035,
-            duration: 0.7,
-            ease: 'expo.out',
-          },
-          'title'
-        )
-        .to(
-          this.$refs.visual,
-          {
-            y: 0,
-            duration: 0.7,
-            ease: 'expo.out',
-          },
-          'title'
-        )
-        .to(
-          this.$refs.menuTitle.$el,
-          {
-            y: 0,
-            duration: 0.65,
-            ease: 'expo.out',
-          },
-          'title'
-        )
-        .to(
-          this.$refs.contentBorderLeft,
-          {
-            scaleY: 1,
-            duration: 1.5,
-            ease: 'expo.out',
-          },
-          'title+=5%'
-        )
-        .to(
-          this.elsTopBorder,
-          {
-            scaleX: 1,
-            stagger: 0.15,
-            duration: 1,
-            ease: 'expo.out',
-          },
-          'title+=5%'
-        )
-        .to(
-          this.elsMenuPrincipalTitle,
-          {
-            y: 0,
-            stagger: 0.15,
-            duration: 0.75,
-            ease: 'expo.out',
-          },
-          'title+=8.5%'
-        )
-        .to(
-          this.$refs.buttonSubmenu,
-          {
-            y: 0,
-            duration: 0.75,
-            ease: 'expo.out',
-            onStart: () => {
-              if (this.activeLinkLocation !== 'principal') return
-
-              this.handleActiveLinkLottie('appear')
-            },
-          },
-          '<40%'
-        )
-    },
-    handleActiveLinkLottie(state) {
-      const playhead = { frame: 0, targetFrame: 0 }
-      let duration
-
-      if (state === 'appear') {
-        playhead.frame = 0
-        playhead.targetFrame = this.activeLinkLottie.totalFrames - 1
-        duration = 1
-      } else {
-        playhead.frame = this.activeLinkLottie.currentFrame
-        playhead.targetFrame = 0
-
-        duration = gsap.utils.mapRange(
-          0,
-          this.activeLinkLottie.totalFrames - 1,
-          0,
-          0.8,
-          playhead.frame
-        )
-      }
-
-      this.activeLinkLottieTween?.kill()
-
-      const tween = gsap.to(playhead, {
-        duration,
-        frame: playhead.targetFrame,
-        ease: 'power2.inOut',
-        onUpdate: () => this.activeLinkLottie.goToAndStop(playhead.frame, true),
-      })
-
-      this.activeLinkLottieTween = tween
-    },
     initSubmenuTimeline() {
       this.tlSubmenu?.kill()
       this.tlSubmenu?.clear()
@@ -765,6 +675,38 @@ export default {
           },
           '<70%'
         )
+    },
+    handleActiveLinkLottie(state) {
+      const playhead = { frame: 0, targetFrame: 0 }
+      let duration
+
+      if (state === 'appear') {
+        playhead.frame = 0
+        playhead.targetFrame = this.activeLinkLottie.totalFrames - 1
+        duration = 1
+      } else {
+        playhead.frame = this.activeLinkLottie.currentFrame
+        playhead.targetFrame = 0
+
+        duration = gsap.utils.mapRange(
+          0,
+          this.activeLinkLottie.totalFrames - 1,
+          0,
+          0.8,
+          playhead.frame
+        )
+      }
+
+      this.activeLinkLottieTween?.kill()
+
+      const tween = gsap.to(playhead, {
+        duration,
+        frame: playhead.targetFrame,
+        ease: 'power2.inOut',
+        onUpdate: () => this.activeLinkLottie.goToAndStop(playhead.frame, true),
+      })
+
+      this.activeLinkLottieTween = tween
     },
     onToggleSubmenu() {
       this.submenuActive = !this.submenuActive
@@ -817,7 +759,76 @@ export default {
 
       this.setMenuActive(false)
     },
+    onResetMenu() {
+      this.setMenuActive(false)
 
+      this.pointerEventsActivated = false
+      this.burgerCloseActivated = false
+      this.submenuActive = false
+
+      this.tlMain?.pause(0)
+      this.tlMain?.clear()
+
+      this.tlMainClose?.pause(0)
+      this.tlMainClose?.clear()
+
+      this.tlSubmenu?.pause(0)
+      this.tlSubmenu?.clear()
+
+      this.activeLinkLottieTween?.kill()
+      this.activeLinkLottie?.goToAndStop(0, true)
+      this.getActiveLottie()
+
+      const elTitleSubmenuSave =
+        this.$refs.linkPrincipal[this.$refs.linkPrincipal.length - 1]
+
+      Flip.fit(this.elTitleSubmenuWrapper, elTitleSubmenuSave)
+
+      gsap.set(this.$refs.submenuCross, {
+        rotation: 0,
+      })
+
+      gsap.set(this.elsMenuPrincipalTitle, {
+        y: '110%',
+      })
+
+      gsap.set(this.elsMenuSubmenuTitle, {
+        y: '110%',
+      })
+
+      gsap.set(this.$el, {
+        opacity: 0,
+      })
+    },
+    getActiveLottie() {
+      if (this.$route.path === '/' || this.$route.fullPath === '/') {
+        this.activeLinkIsIndex = true
+      } else {
+        this.activeLinkIsIndex = false
+
+        const indexMenu = this.menu
+          .filter((item) => !item.submenu || item.url)
+          .findIndex((item) => item.url === this.$route.path)
+
+        const indexSubmenu = this.submenu
+          .filter((item) => !item.submenu || item.url)
+          .findIndex((item) => item.url === this.$route.path)
+
+        if (indexMenu !== -1) {
+          this.activeLinkLocation = 'principal'
+          this.activeLinkIndex = indexMenu
+          this.activeLinkLottie =
+            this.lottiesMenuPrincipal[indexMenu].animation.active
+          this.indexLinkHovered = this.activeLinkIndex
+        } else {
+          this.activeLinkLocation = 'submenu'
+          this.activeLinkIndex = indexSubmenu
+          this.activeLinkLottie =
+            this.lottiesMenuSubmenu[indexSubmenu].animation.active
+          this.indexLinkHovered = this.menu.length - 1
+        }
+      }
+    },
     ...mapMutations({
       setMenuActive: 'setMenuActive',
     }),
