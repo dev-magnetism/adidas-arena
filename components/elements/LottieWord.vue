@@ -71,9 +71,9 @@ export default {
       scrub: 1,
     })
   },
-  beforeDestroy() {
+  destroyed() {
     this.tween?.kill()
-    this.animation?.destroy()
+    // this.animation?.destroy()
   },
   methods: {
     LottieScrollTrigger(vars) {
@@ -84,7 +84,6 @@ export default {
         trigger: target,
         start: vars.start || 'top center',
         end: vars.end || 'bottom center',
-        // markers: true,
         scrub: vars.scrub,
       }
 

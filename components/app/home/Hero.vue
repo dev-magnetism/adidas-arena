@@ -39,17 +39,17 @@
           {{ contents.localisation }}
         </TP1>
       </div>
-      <div class="app-home-hero__map">
-        <div class="app-home-hero__map__baseline">
+      <div ref="view" class="app-home-hero__view-exterior">
+        <div class="app-home-hero__view-exterior__baseline">
           <AtomsTitleTag
-            class="app-home-hero__map__coordinate"
+            class="app-home-hero__view-exterior__coordinate"
             bg="beige"
             color="black"
           >
             {{ contents.coordinate }}
           </AtomsTitleTag>
           <AtomsCTA
-            class="app-home-hero__map__visit"
+            class="app-home-hero__view-exterior__visit"
             :arrow="false"
             bg="red-adidas"
             :external="true"
@@ -60,12 +60,7 @@
           </AtomsCTA>
         </div>
         <AtomsCornerPoints />
-        <nuxt-picture
-          class="picture-absolute"
-          src="imgs/map.png"
-          format="webp"
-          alt="placeholder"
-        />
+
         <SvgHomeHeroSticker
           v-if="!$viewport.isMobile"
           class="app-home-hero__sticker"
@@ -81,6 +76,10 @@
 
 <script>
 import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { mapState, mapMutations } from 'vuex'
+
+import useWebGL from '~/hooks/webgl'
 
 export default {
   props: {
@@ -89,50 +88,116 @@ export default {
       default: () => {},
     },
   },
+  computed: {
+    ...mapState({
+      exteriorVisible: (state) => state.exteriorVisible,
+      allLoadedFake: (state) => state.allLoadedFake,
+    }),
+  },
   mounted() {
-    gsap.to(this.$refs.firstVisual, {
-      yPercent: -50,
-      rotate: -6,
-      scrollTrigger: {
-        trigger: this.$el,
-        scrub: 0.5,
-        start: 'top top',
-      },
-    })
+    this.initScrollTrigger()
 
-    gsap.to(this.$refs.secondVisual, {
-      yPercent: -50,
-      rotate: 6,
-      scrollTrigger: {
-        trigger: this.$el,
-        scrub: 0.5,
-        start: 'top top',
-      },
-    })
+    this.resizeObserver = new ResizeObserver(this.onResize)
+    this.resizeObserver.observe(this.$refs.view)
 
-    if (!this.$viewport.isMobile) {
-      this.tl = gsap.timeline({ repeat: -1, repeatDelay: 5 })
-
-      this.tl.to(this.$refs.union.$el, {
-        yPercent: 105,
-        duration: 0.675,
-      })
-
-      this.tl.set(this.$refs.union.$el, {
-        yPercent: -105,
-      })
-
-      this.tl.to(this.$refs.union.$el, {
-        yPercent: 0,
-        duration: 0.675,
-        delay: 0.15,
-      })
-    }
+    this.$raf.add(`home-hero`, this.onFrame)
   },
   beforeDestroy() {
+    this.resizeObserver.unobserve(this.$refs.view)
+
     this.tl?.kill()
+
+    this.$raf.remove(`home-hero`, this.onFrame)
   },
   methods: {
+    onFrame() {
+      const { scissors } = useWebGL()
+
+      if (!window.lenis && !this.exteriorVisible) return
+
+      const { exterior, camera, renderer } = useWebGL()
+
+      exterior.position.y =
+        window.lenis.scroll / (camera.zoom - camera.zoom * 0.125)
+
+      scissors.current.y = window.lenis.scroll + scissors.mask?.y
+
+      renderer.setScissor(
+        scissors.current.x,
+        scissors.current.y,
+        scissors.current.width,
+        scissors.current.height
+      )
+    },
+    onResize() {
+      const { left, top, height, width } =
+        this.$refs.view.getBoundingClientRect()
+
+      const { scissors, renderer } = useWebGL()
+
+      scissors.mask = {
+        x: left,
+        y: this.$viewport.height - top - height,
+        width,
+        height,
+      }
+
+      scissors.current = { ...scissors.mask }
+
+      renderer.setScissor(
+        scissors.current.x,
+        scissors.current.y,
+        scissors.current.width,
+        scissors.current.height
+      )
+    },
+    initScrollTrigger() {
+      ScrollTrigger.create({
+        trigger: this.$el,
+        start: 'top bottom',
+        end: 'bottom+=15% top',
+        onToggle: (self) => this.setExteriorVisible(self.isActive),
+      })
+
+      gsap.to(this.$refs.firstVisual, {
+        yPercent: -50,
+        rotate: -6,
+        scrollTrigger: {
+          trigger: this.$el,
+          scrub: 0.5,
+          start: 'top top',
+        },
+      })
+
+      gsap.to(this.$refs.secondVisual, {
+        yPercent: -50,
+        rotate: 6,
+        scrollTrigger: {
+          trigger: this.$el,
+          scrub: 0.5,
+          start: 'top top',
+        },
+      })
+
+      if (!this.$viewport.isMobile) {
+        this.tl = gsap.timeline({ repeat: -1, repeatDelay: 5 })
+
+        this.tl.to(this.$refs.union.$el, {
+          yPercent: 105,
+          duration: 0.675,
+        })
+
+        this.tl.set(this.$refs.union.$el, {
+          yPercent: -105,
+        })
+
+        this.tl.to(this.$refs.union.$el, {
+          yPercent: 0,
+          duration: 0.675,
+          delay: 0.15,
+        })
+      }
+    },
     onClickScrollIndicator() {
       if (!window.lenis) return
 
@@ -140,6 +205,9 @@ export default {
         duration: 1.2,
       })
     },
+    ...mapMutations({
+      setExteriorVisible: 'setExteriorVisible',
+    }),
   },
 }
 </script>
@@ -194,14 +262,14 @@ export default {
     }
   }
 
-  &__map {
+  &__view-exterior {
     grid-column: 8 / span 5;
     align-self: flex-end;
     display: flex;
     justify-content: space-between;
     aspect-ratio: 575/725;
     height: auto;
-    position: relative;
+    position: absolute;
     right: 0;
     bottom: 0;
     width: 100%;

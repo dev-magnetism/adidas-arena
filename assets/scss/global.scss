@@ -26,7 +26,10 @@ html {
   scroll-behavior: initial;
 }
 
-* {
+// * {
+//   cursor: none !important;
+// }
+.app * {
   cursor: none !important;
 }
 
@@ -103,6 +106,7 @@ picture {
   top: 0;
   min-width: 225px;
   overflow-x: hidden;
+  cursor: initial;
 }
 
 .webgl-component {

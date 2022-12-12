@@ -1,16 +1,21 @@
 // export const strict = false
 
 export const state = () => ({
-  // Loader
+  // Preloader
   fontsLoaded: false,
-  allLoaded: false,
-  allLoadedTimeline: false,
+  allLoadedActual: false,
+  allLoadedFake: false,
+  preloaderHidden: false,
+  preloaderLeaving: false,
   modelExteriorLoaded: false,
   modelCloudLoaded: false,
 
   // Content
   partnersContent: null,
   appContent: null,
+
+  // Exterior scene
+  exteriorVisible: true,
 
   // UI
   menuOpen: false,
@@ -19,7 +24,7 @@ export const state = () => ({
 })
 
 export const getters = {
-  // allLoaded: (state) => {
+  // allLoadedActual: (state) => {
   //   return state.coverVideoLoaded && state.interactiveSliderLoaded
   // },
 }
@@ -34,11 +39,14 @@ export const mutations = {
   setModelCloudLoaded: (state, value) => {
     state.modelCloudLoaded = value
   },
-  setAllLoaded: (state, value) => {
-    state.allLoaded = value
+  setAllLoadedActual: (state, value) => {
+    state.allLoadedActual = value
   },
-  setAllLoadedTimeline: (state, value) => {
-    state.allLoadedTimeline = value
+  setAllLoadedFake: (state, value) => {
+    state.allLoadedFake = value
+  },
+  setPreloaderHidden: (state, value) => {
+    state.preloaderHidden = value
   },
   setPartnersContent: (state, value) => {
     state.partnersContent = value
@@ -54,6 +62,9 @@ export const mutations = {
   },
   setCursoState: (state, value) => {
     state.cursoState = value
+  },
+  setExteriorVisible: (state, value) => {
+    state.exteriorVisible = value
   },
 }
 

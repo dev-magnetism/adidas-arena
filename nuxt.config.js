@@ -81,6 +81,8 @@ export default {
     prefix: false,
   },
 
+  pageTransition: false,
+
   // router: {
   //   scrollBehavior: (to, from, savedPosition) => {
   //     return { x: 0, y: 0 }

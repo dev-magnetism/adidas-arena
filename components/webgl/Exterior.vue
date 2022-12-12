@@ -1,5 +1,5 @@
 <template>
-  <div class="app-3d">
+  <div class="app-webgl-exterior">
     <div class="arrow-debug">
       <span
         :class="{ 'is-active': indexArrowPosition === 0 }"
@@ -85,7 +85,8 @@ export default {
     ...mapState({
       modelExteriorLoaded: (state) => state.modelExteriorLoaded,
       modelCloudLoaded: (state) => state.modelCloudLoaded,
-      allLoaded: (state) => state.allLoaded,
+      allLoadedActual: (state) => state.allLoadedActual,
+      exteriorVisible: (state) => state.exteriorVisible,
     }),
   },
   watch: {
@@ -95,12 +96,17 @@ export default {
     modelCloudLoaded() {
       this.initClouds()
     },
-    allLoaded(payload) {
+    allLoadedActual(payload) {
       if (payload) this.initGUI()
+    },
+    exteriorVisible(payload) {
+      const { exterior } = useWebGL()
+
+      exterior.visible = payload
     },
   },
   mounted() {
-    if (loaderManager.modelsLoaded) {
+    if (this.allLoadedActual) {
       this.initExterior()
       this.initClouds()
       this.initGUI()
@@ -153,10 +159,6 @@ export default {
     this.conditionalMaterial?.dispose()
     this.lineMaterial?.dispose()
 
-    // GLOBAL
-    this.observer?.kill()
-    this.$raf.remove(`3d`, this.onFrame)
-
     // LIGHTS
     this.ambientLight.dispose()
     scene.remove(this.ambientLight)
@@ -179,30 +181,31 @@ export default {
     // TWEEN
     this.tweenArrowTranslate?.kill()
     this.tweenZoom?.kill()
+
+    // GLOBAL
+    this.observer?.kill()
+    this.$raf.remove(`3d`, this.onFrame)
   },
   methods: {
     onWheel(e) {
-      const delta = e.deltaY * this.zoom.wheelSpeed
-
-      this.zoom.target = gsap.utils.clamp(
-        this.zoom.range.min,
-        this.zoom.range.max,
-        this.zoom.target + delta
-      )
+      // const delta = e.deltaY * this.zoom.wheelSpeed
+      // this.zoom.target = gsap.utils.clamp(
+      //   this.zoom.range.min,
+      //   this.zoom.range.max,
+      //   this.zoom.target + delta
+      // )
     },
     onDrag(e) {
-      const delta = e.deltaX * this.drag.dragSpeed
-
-      this.drag.target = gsap.utils.clamp(
-        this.azimuth.min,
-        this.azimuth.max,
-        this.drag.target + delta
-      )
+      // const delta = e.deltaX * this.drag.dragSpeed
+      // this.drag.target = gsap.utils.clamp(
+      //   this.azimuth.min,
+      //   this.azimuth.max,
+      //   this.drag.target + delta
+      // )
     },
     onFrame() {
-      // if (this.modelExterior === undefined && this.modelCloud === undefined)
-      //   return
-
+      if (this.modelExterior === undefined && this.modelCloud === undefined)
+        return
       const { camera, exterior } = useWebGL()
 
       this.clouds?.children?.forEach((cloud) => {
@@ -217,7 +220,6 @@ export default {
         this.drag.target,
         this.drag.ease
       )
-
       exterior.rotation.y = this.drag.current
 
       this.zoom.current = this.lerp(
@@ -225,13 +227,11 @@ export default {
         this.zoom.target,
         this.zoom.ease
       )
-
       camera.zoom = gsap.utils.clamp(
         this.zoom.range.min,
         this.zoom.range.max,
         this.zoom.current
       )
-
       camera.updateProjectionMatrix()
 
       this.drag.last = this.drag.current
@@ -697,15 +697,6 @@ export default {
       gsap.to(this.arrow.position, {
         x: this.arrowPositions[this.indexArrowPosition].x,
         z: this.arrowPositions[this.indexArrowPosition].z,
-        // onUpdate: () => {
-        //   camera.lookAt(
-        //     this.arrow.position.x,
-        //     this.arrow.position.y,
-        //     this.arrow.position.z
-        //   )
-
-        //   camera.updateProjectionMatrix()
-        // },
       })
     },
 
@@ -1065,10 +1056,10 @@ export default {
 </script>
 
 <style lang="scss">
-.app-3d {
+.app-webgl-exterior {
   height: 100vh;
   width: 100%;
-  position: relative;
+  position: fixed;
   .arrow-debug {
     position: absolute;
     bottom: 10px;

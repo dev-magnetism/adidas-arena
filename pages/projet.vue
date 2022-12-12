@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 import scroll from '@/mixins/scroll'
 import pageTransition from '@/mixins/page-transition'
@@ -135,7 +135,14 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() {
+    this.setExteriorVisible(false)
+  },
+  methods: {
+    ...mapMutations({
+      setExteriorVisible: 'setExteriorVisible',
+    }),
+  },
 }
 </script>
 

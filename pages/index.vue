@@ -19,13 +19,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 import scroll from '@/mixins/scroll'
 import pageTransition from '@/mixins/page-transition'
 
 export default {
   mixins: [scroll],
+
   transition(to, from) {
     if (!to || !from) return
 
@@ -44,6 +45,8 @@ export default {
     ...mapState({
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
+      allLoadedFake: (state) => state.allLoadedFake,
+      exteriorVisible: (state) => state.exteriorVisible,
     }),
     contentPresentation() {
       return {
@@ -113,7 +116,19 @@ export default {
       }
     },
   },
-  mounted() {},
+  watch: {
+    allLoadedFake() {
+      this.setExteriorVisible(true)
+    },
+  },
+  mounted() {
+    if (!this.exteriorVisible) this.setExteriorVisible(true)
+  },
+  methods: {
+    ...mapMutations({
+      setExteriorVisible: 'setExteriorVisible',
+    }),
+  },
 }
 </script>
 

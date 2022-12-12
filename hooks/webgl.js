@@ -23,6 +23,7 @@ class GL {
 
     this.renderer = new THREE.WebGLRenderer({
       powerPreference: 'high-performance',
+      // antialias: false,
       antialias: window.devicePixelRatio !== 2,
       stencil: true,
       precision: 'highp',
@@ -30,6 +31,21 @@ class GL {
     })
 
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+    this.scissors = {
+      current: {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+      },
+      fullscreen: null,
+      hero: null,
+    }
+
+    this.calculateScissors()
+
+    this.renderer.setScissorTest(true)
 
     this.renderer.physicallyCorrectLights = true
     this.renderer.shadowMap.enabled = true
@@ -42,13 +58,6 @@ class GL {
     // this.renderer.outputEncoding = THREE.sRGBEncoding
     // this.renderer.toneMapping = THREE.LinearToneMapping
 
-    // this.camera = new THREE.PerspectiveCamera(
-    //   45,
-    //   Viewport.width / Viewport.height,
-    //   0.1,
-    //   1000
-    // )
-
     this.camera = new THREE.OrthographicCamera(
       Viewport.width / -2,
       Viewport.width / 2,
@@ -56,6 +65,8 @@ class GL {
       Viewport.height / -2,
       1,
       1000
+      // -100000,
+      // 100000
     )
 
     this.camera.lookAt(0, 0, 0)
@@ -81,6 +92,24 @@ class GL {
     this.initGUI()
 
     Raf.add('webgl', this.update.bind(this), 1)
+  }
+
+  calculateScissors() {
+    this.layoutMargin = 0.027 // 0.027 = css global variable --layout-margin * 0.01
+
+    this.scissors.fullscreen = {
+      x: 0,
+      y: 0,
+      width: Viewport.width,
+      height: Viewport.height,
+    }
+
+    this.scissors.hero = {
+      x: Viewport.width * this.layoutMargin,
+      y: Viewport.width * this.layoutMargin,
+      width: Viewport.width - Viewport.width * this.layoutMargin * 2,
+      height: Viewport.height - Viewport.width * this.layoutMargin * 2,
+    }
   }
 
   initGUI() {
@@ -149,9 +178,10 @@ class GL {
       this.camera.aspect = Viewport.width / Viewport.height
     }
 
-    this.camera.updateProjectionMatrix()
+    this.calculateScissors()
 
     this.renderer.setSize(Viewport.width, Viewport.height)
+    this.camera.updateProjectionMatrix()
   }
 
   update({ deltaTime }) {

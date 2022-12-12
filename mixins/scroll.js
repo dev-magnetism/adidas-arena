@@ -10,7 +10,7 @@ export default {
   computed: {
     ...mapState({
       menuActive: (state) => state.menuActive,
-      allLoadedTimeline: (state) => state.allLoadedTimeline,
+      allLoadedFake: (state) => state.allLoadedFake,
     }),
   },
   watch: {
@@ -23,7 +23,7 @@ export default {
         this.lenis.start()
       }
     },
-    allLoadedTimeline(payload) {
+    allLoadedFake(payload) {
       if (!this.lenis) return
 
       if (payload) {
@@ -42,7 +42,7 @@ export default {
       smooth: true,
     })
 
-    if (!this.allLoadedTimeline) this.lenis.stop()
+    if (!this.allLoadedFake) this.lenis.stop()
 
     this.lenis.on('scroll', this.onScrollLenis)
 
@@ -50,7 +50,7 @@ export default {
 
     ScrollTrigger.refresh()
 
-    this.$raf.add(`scroller-${this._uid}`, this.onFrame, 0)
+    this.$raf.add(`scroller-${this._uid}`, this.onFrame, -1)
   },
   beforeDestroy() {
     this.$raf.remove(`scroller-${this._uid}`, this.onFrame)

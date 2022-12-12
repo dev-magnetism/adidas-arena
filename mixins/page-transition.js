@@ -1,6 +1,6 @@
 import { gsap } from 'gsap'
-// import useWebGL from '~/hooks/webgl'
-// import Raf from '~/plugins/raf'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
 
 export default {
   basic: {
@@ -10,8 +10,6 @@ export default {
       done()
     },
     leave(el, done) {
-      //   const { renderer, scissors, mint } = useWebGL()
-
       const layerBlue = document.querySelector('.app-transition-layer.blue')
       const layerRed = document.querySelector('.app-transition-layer.red')
 
@@ -36,7 +34,11 @@ export default {
             duration: 1,
             ease: 'power3.inOut',
             onComplete: () => {
+
+
               this.$nuxt.$emit('menu:reset')
+
+              ScrollTrigger.getAll().forEach((t) => t.kill())
 
               done()
             },

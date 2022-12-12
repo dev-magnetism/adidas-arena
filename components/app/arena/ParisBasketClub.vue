@@ -3,7 +3,7 @@
     <EParallax
       ref="frameWrapper"
       class="app-arena-paris-basket-club__visual-with-frame"
-      :speed="0.25"
+      :speed="0.75"
     >
       <EKinesis :speed="5">
         <nuxt-picture
@@ -32,7 +32,7 @@
     <EParallax
       ref="withoutFrame"
       class="app-arena-paris-basket-club__visual-without-frame"
-      :speed="0.5"
+      :speed="0.85"
     >
       <EKinesis :speed="5">
         <nuxt-picture
@@ -122,8 +122,7 @@ export default {
 <style lang="scss">
 .app-arena-paris-basket-club {
   position: relative;
-  margin-top: 100vh;
-  //   margin-top: desktop-vw(1080px);
+  margin-top: desktop-vw(100px);
 
   &__lottie-arrow.app-element-lottie {
     position: absolute;

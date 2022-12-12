@@ -217,16 +217,24 @@ export default {
     this.initLotties()
     this.getActiveLottie()
 
+    this.$viewport.events.on('resize', this.onResize)
+
     this.$nuxt.$on('menu:reset', this.onResetMenu)
   },
 
   beforeDestroy() {
+    this.$viewport.events.off('resize', this.onResize)
+
     this.$nuxt.$off('menu:reset', this.onResetMenu)
   },
 
   created() {},
 
   methods: {
+    onResize() {
+      if (this.submenuActive)
+        Flip.fit(this.elTitleSubmenuWrapper, this.elTitleTargetFlip)
+    },
     initLotties() {
       const lottieCircle1 = require(`@/assets/lotties/Cercle_1.json`)
       const lottieCircle3 = require(`@/assets/lotties/Cercle_3.json`)
@@ -1073,7 +1081,7 @@ export default {
       display: block;
       overflow: hidden;
       display: flex;
-      width: 100%;
+      width: 100% !important;
 
       .H2.medium {
         transform: translateY(110%);

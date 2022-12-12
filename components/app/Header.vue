@@ -25,6 +25,10 @@ export default {
     ...mapState({
       menuOpen: (state) => state.menuOpen,
       menuActive: (state) => state.menuActive,
+      exteriorVisible: (state) => state.exteriorVisible,
+      allLoadedFake: (state) => state.allLoadedFake,
+      allLoadedActual: (state) => state.allLoadedActual,
+      preloaderHidden: (state) => state.preloaderHidden,
     }),
   },
   methods: {

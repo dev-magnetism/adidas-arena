@@ -86,6 +86,12 @@ export default {
       }
     )
   },
+  beforeDestroy() {
+    console.log('beforeDestroy presentation')
+  },
+  destroyed() {
+    console.log('destroyed presentation')
+  },
 }
 </script>
 

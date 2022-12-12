@@ -3,7 +3,7 @@
     :class="{
       invisible: !fontsLoaded && !videoLoaded,
       'hide-inner': hideInner,
-      hide: allLoadedTimeline,
+      hide: preloaderHidden,
     }"
     class="app-preloader"
   >
@@ -41,8 +41,9 @@ export default {
     },
     ...mapState({
       fontsLoaded: (state) => state.fontsLoaded,
-      allLoadedTimeline: (state) => state.allLoadedTimeline,
-      allLoaded: (state) => state.allLoaded,
+      allLoadedFake: (state) => state.allLoadedFake,
+      allLoadedActual: (state) => state.allLoadedActual,
+      preloaderHidden: (state) => state.preloaderHidden,
     }),
   },
   watch: {
@@ -66,13 +67,7 @@ export default {
         .timeline({
           delay: 1,
           onComplete: () => {
-            this.setAllLoadedTimeline(true)
-
-            this.$refs.video.removeEventListener(
-              'canplaythrough',
-              this.onVideoLoaded
-            )
-
+            this.setPreloaderHidden(true)
             this.tlLoading?.clear()
             this.tlLoading?.kill()
 
@@ -101,6 +96,11 @@ export default {
           onStart: () => {
             this.$refs.video.pause()
             this.$refs.video.currentTime = 0
+
+            this.$refs.video.removeEventListener(
+              'canplaythrough',
+              this.onVideoLoaded
+            )
 
             this.hideInner = true
           },
@@ -150,8 +150,10 @@ export default {
           this.progressUI = Math.round(this.tlLoading.progress() * 100)
         },
         onComplete: () => {
-          if (!this.allLoaded) return
+          if (!this.allLoadedActual) return
 
+          this.setExteriorVisible(false)
+          this.setAllLoadedFake(true)
           this.hidePreloader()
         },
       })
@@ -171,7 +173,7 @@ export default {
     onProgressLoader({ normalized }, id) {
       this.tlLoading.to(this, {
         tweenValue: normalized,
-        duration: this.randomIntFromInterval(2, 4),
+        duration: this.genRand(0.35, 0.65, 2),
         ease: 'power3.inOut',
       })
 
@@ -183,19 +185,23 @@ export default {
     },
 
     onCompleteLoader() {
-      this.setAllLoaded(true)
+      this.setAllLoadedActual(true)
     },
 
     ...mapMutations({
-      setAllLoadedTimeline: 'setAllLoadedTimeline',
-      setAllLoaded: 'setAllLoaded',
+      setAllLoadedFake: 'setAllLoadedFake',
+      setAllLoadedActual: 'setAllLoadedActual',
       setModelExteriorLoaded: 'setModelExteriorLoaded',
       setModelCloudLoaded: 'setModelCloudLoaded',
       setFontsLoaded: 'setFontsLoaded',
+      setExteriorVisible: 'setExteriorVisible',
+      setPreloaderHidden: 'setPreloaderHidden',
     }),
 
-    randomIntFromInterval(min, max) {
-      return Math.floor(Math.random() * (max - min + 1) + min)
+    genRand(min, max, decimalPlaces) {
+      const rand = Math.random() * (max - min) + min
+      const power = Math.pow(10, decimalPlaces)
+      return Math.floor(rand * power) / power
     },
   },
 }
@@ -213,6 +219,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  // opacity: 0.5;
 
   &.invisible {
     .app-preloader__progress.H1,

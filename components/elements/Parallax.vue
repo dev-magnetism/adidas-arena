@@ -44,7 +44,6 @@ export default {
         id: this.id,
         trigger: this.$refs.trigger,
         scrub: this.scrub,
-        // markers: true,
         start: 'top bottom',
         end: 'bottom top',
         onUpdate: (e) => {

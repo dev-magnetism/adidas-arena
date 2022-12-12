@@ -95,7 +95,6 @@ export default {
           trigger: this.$refs.marquee,
           start: 'top-=100% bottom',
           end: 'bottom top',
-          // markers: true,
           toggleActions: 'play pause resume pause',
         },
       })

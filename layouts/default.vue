@@ -9,12 +9,13 @@
     <nuxt class="app-main" />
     <AppScene />
     <WebglInfo v-if="!$viewport.isMobile" />
+    <WebglExterior />
   </div>
 </template>
 
 <script>
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+// import { gsap } from 'gsap'
+// import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 import useGUI from '~/hooks/gui'
 
@@ -34,49 +35,48 @@ export default {
       gui.hidden = true
     }
 
-    this.$nuxt.$on('transition:run', this.onTransitionRun)
+    // this.$nuxt.$on('transition:run', this.onTransitionRun)
   },
 
   beforeDestroy() {
-    this.$nuxt.$off('transition:run', this.onTransitionRun)
+    // this.$nuxt.$off('transition:run', this.onTransitionRun)
   },
   methods: {
-    onTransitionRun(done) {
-      this.tl?.kill()
-
-      this.tl = gsap
-        .timeline({})
-        .fromTo(
-          this.$refs.layerBlue,
-          { scaleY: 0 },
-          {
-            scaleY: 1,
-            duration: 0.85,
-            ease: 'power3.out',
-          }
-        )
-        .fromTo(
-          this.$refs.layerRed,
-          { scaleY: 0 },
-          {
-            scaleY: 1,
-            duration: 0.85,
-            ease: 'power3.out',
-          },
-          '<10%'
-        )
-        .to([this.$refs.layerRed, this.$refs.layerBlue], {
-          scaleY: 0,
-          transformOrigin: 'center bottom',
-          duration: 1,
-          ease: 'power3.out',
-          onComplete: () => {
-            ScrollTrigger.getAll().forEach((t) => t.kill())
-
-            done()
-          },
-        })
-    },
+    // onTransitionRun(done) {
+    //   this.tl?.kill()
+    //   this.tl = gsap
+    //     .timeline({})
+    //     .fromTo(
+    //       this.$refs.layerBlue,
+    //       { scaleY: 0 },
+    //       {
+    //         scaleY: 1,
+    //         duration: 0.85,
+    //         ease: 'power3.out',
+    //       }
+    //     )
+    //     .fromTo(
+    //       this.$refs.layerRed,
+    //       { scaleY: 0 },
+    //       {
+    //         scaleY: 1,
+    //         duration: 0.85,
+    //         ease: 'power3.out',
+    //       },
+    //       '<10%'
+    //     )
+    //     .to([this.$refs.layerRed, this.$refs.layerBlue], {
+    //       scaleY: 0,
+    //       transformOrigin: 'center bottom',
+    //       duration: 1,
+    //       ease: 'power3.out',
+    //       onComplete: () => {
+    //         console.log('here')
+    //         ScrollTrigger.getAll().forEach((t) => t.kill())
+    //         done()
+    //       },
+    //     })
+    // },
   },
 }
 </script>
@@ -90,7 +90,7 @@ export default {
   flex-direction: column;
 
   &-main {
-    z-index: 0;
+    z-index: 1;
   }
 
   &-transition-layer {
