@@ -38,7 +38,6 @@
   aspect-ratio: 495/435;
   bottom: 40%;
   left: columns(0.5);
-  transform: rotate(-6deg);
   transform: translateY(50%) rotate(4deg);
   z-index: -1;
   transform-origin: left bottom;

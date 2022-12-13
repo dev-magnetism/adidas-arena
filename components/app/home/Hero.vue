@@ -111,11 +111,9 @@ export default {
   },
   methods: {
     onFrame() {
-      const { scissors } = useWebGL()
-
       if (!window.lenis && !this.exteriorVisible) return
 
-      const { exterior, camera, renderer } = useWebGL()
+      const { exterior, camera, renderer, scissors } = useWebGL()
 
       exterior.position.y =
         window.lenis.scroll / (camera.zoom - camera.zoom * 0.125)

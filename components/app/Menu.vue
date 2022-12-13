@@ -809,6 +809,7 @@ export default {
       })
     },
     getActiveLottie() {
+      console.log(this)
       if (this.$route.path === '/' || this.$route.fullPath === '/') {
         this.activeLinkIsIndex = true
       } else {

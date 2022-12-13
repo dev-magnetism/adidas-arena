@@ -570,6 +570,10 @@ export default {
   padding-top: desktop-vw(135px);
   padding-bottom: desktop-vw(135px);
 
+  .projet-visual {
+    transform: scale(0);
+  }
+
   picture {
     img {
       display: block;
@@ -969,7 +973,7 @@ export default {
     }
 
     > :first-child {
-      transform: rotate(-2deg);
+      transform: scale(0) rotate(-2deg);
     }
   }
 

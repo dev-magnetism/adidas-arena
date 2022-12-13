@@ -52,7 +52,7 @@ export default {
       directionalLightCastShadow: true,
       modelCastShadow: true,
       modelReceiveShadow: true,
-      directionalLightIsStatic: false,
+      directionalLightIsStatic: true,
       cloudsParams: {
         speed: 0.0075,
       },
@@ -113,7 +113,7 @@ export default {
     }
 
     this.observer = Observer.create({
-      target: this.$el,
+      target: document,
       type: 'touch,pointer,wheel',
       onWheel: this.onWheel,
       onDrag: this.onDrag,
@@ -196,16 +196,21 @@ export default {
       // )
     },
     onDrag(e) {
-      // const delta = e.deltaX * this.drag.dragSpeed
-      // this.drag.target = gsap.utils.clamp(
-      //   this.azimuth.min,
-      //   this.azimuth.max,
-      //   this.drag.target + delta
-      // )
+      const delta = e.deltaX * this.drag.dragSpeed
+
+      this.drag.target = gsap.utils.clamp(
+        this.azimuth.min,
+        this.azimuth.max,
+        this.drag.target + delta
+      )
     },
     onFrame() {
-      if (this.modelExterior === undefined && this.modelCloud === undefined)
+      if (
+        this.modelExteriorLoaded === undefined &&
+        this.modelCloudLoaded === undefined
+      )
         return
+
       const { camera, exterior } = useWebGL()
 
       this.clouds?.children?.forEach((cloud) => {
@@ -354,12 +359,12 @@ export default {
       //   new THREE.Color('#FF0000')
       // )
 
-      this.directionalLight.shadow.mapSize.width = 4096 // default
-      this.directionalLight.shadow.mapSize.height = 4096 // default
+      this.directionalLight.shadow.mapSize.width = 2048
+      this.directionalLight.shadow.mapSize.height = 2048
       // this.directionalLight.shadow.radius = 1
 
       this.directionalLight.shadow.camera.near = 1
-      this.directionalLight.shadow.camera.far = 1000
+      this.directionalLight.shadow.camera.far = 5000
 
       this.directionalLight.shadow.camera.left = -80
       this.directionalLight.shadow.camera.right = 80
