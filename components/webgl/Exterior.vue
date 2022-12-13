@@ -360,17 +360,17 @@ export default {
       //   new THREE.Color('#FF0000')
       // )
 
-      this.directionalLight.shadow.mapSize.width = 2048
-      this.directionalLight.shadow.mapSize.height = 2048
+      this.directionalLight.shadow.mapSize.width = 4096 // 2048
+      this.directionalLight.shadow.mapSize.height = 4096 // 2048
       // this.directionalLight.shadow.radius = 1
 
       this.directionalLight.shadow.camera.near = 1
-      this.directionalLight.shadow.camera.far = 5000
+      this.directionalLight.shadow.camera.far = 1000
 
-      this.directionalLight.shadow.camera.left = -80
-      this.directionalLight.shadow.camera.right = 80
-      this.directionalLight.shadow.camera.top = 80
-      this.directionalLight.shadow.camera.bottom = -80
+      this.directionalLight.shadow.camera.left = -65
+      this.directionalLight.shadow.camera.right = 65
+      this.directionalLight.shadow.camera.top = 65
+      this.directionalLight.shadow.camera.bottom = -65
 
       if (this.directionalLightIsStatic) {
         // exterior.add(this.directionalLightHelper)

@@ -94,7 +94,7 @@ export default {
 <style lang="scss">
 .app-be-part-of-hospitalite-presentation {
   position: relative;
-  padding-bottom: desktop-vw(950px);
+  padding-bottom: desktop-vw(800px);
 
   @include mobile {
     padding-bottom: mobile-vw(80px);
