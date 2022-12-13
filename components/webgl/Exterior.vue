@@ -207,7 +207,8 @@ export default {
     onFrame() {
       if (
         this.modelExteriorLoaded === undefined &&
-        this.modelCloudLoaded === undefined
+        this.modelCloudLoaded === undefined &&
+        !this.exteriorVisible
       )
         return
 
