@@ -29,7 +29,7 @@ export default {
         ambientLightColor: new THREE.Color(0xf1e7d9),
         directionalLightColor: new THREE.Color(0xffffff),
         lambertMaterialColor: new THREE.Color(0xf1e7d9),
-        lambertMaterialEmissive: new THREE.Color(0xf1e7d9),
+        lambertMaterialEmissive: new THREE.Color(0xffffff),
         outlineColor: new THREE.Color(0x000000),
         shadowColor: new THREE.Color(0xf1e7d9),
         lambertMaterialColorSelected: new THREE.Color(0x39000c),
@@ -488,7 +488,7 @@ export default {
       const { exterior } = useWebGL()
 
       this.footField = new THREE.Group()
-      // this.footField.position.y = 0.01
+      this.footField.position.y = 0.01
 
       exterior.add(this.footField)
 
@@ -531,7 +531,7 @@ export default {
       const { exterior } = useWebGL()
 
       this.road = new THREE.Group()
-      // this.road.position.y = 0.01
+      this.road.position.y = 0.01
       exterior.add(this.road)
 
       const roadGroup = this.gltfExterior.getObjectByName('Road')
