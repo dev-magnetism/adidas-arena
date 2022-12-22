@@ -1,5 +1,6 @@
 <template>
   <a
+    v-if="external"
     class="app-atoms-cta"
     :class="classes"
     :style="{
@@ -7,8 +8,6 @@
       '--color-underline': `var(--c-${color})`,
     }"
     :href="link"
-    :internal="!external"
-    :external="external"
     :blank="target"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
@@ -18,6 +17,24 @@
       <SvgCtaUnion ref="arrow" :color="color" />
     </div>
   </a>
+  <nuxt-link
+    v-else
+    class="app-atoms-cta"
+    :class="classes"
+    :style="{
+      'background-color': `var(--c-${bg})`,
+      '--color-underline': `var(--c-${color})`,
+    }"
+    :to="link"
+    :blank="target"
+    @mouseenter="onMouseEnter"
+    @mouseleave="onMouseLeave"
+  >
+    <TP2 class="app-atoms-cta__text" weight="bold" :color="color"><slot /></TP2>
+    <div v-if="arrow" class="app-atoms-cta__arrow">
+      <SvgCtaUnion ref="arrow" :color="color" />
+    </div>
+  </nuxt-link>
 </template>
 
 <script>
@@ -42,7 +59,7 @@ export default {
     link: {
       type: String,
       required: false,
-      default: undefined,
+      default: '/',
     },
     color: {
       type: String,

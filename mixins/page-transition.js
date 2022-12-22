@@ -1,7 +1,6 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-
 export default {
   basic: {
     css: false,
@@ -34,8 +33,6 @@ export default {
             duration: 1,
             ease: 'power3.inOut',
             onComplete: () => {
-
-
               this.$nuxt.$emit('menu:reset')
 
               ScrollTrigger.getAll().forEach((t) => t.kill())

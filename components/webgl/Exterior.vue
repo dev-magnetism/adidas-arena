@@ -31,11 +31,12 @@ export default {
         lambertMaterialColor: new THREE.Color(0xf1e7d9),
         lambertMaterialEmissive: new THREE.Color(0xffffff),
         outlineColor: new THREE.Color(0x000000),
-        shadowColor: new THREE.Color(0xf1e7d9),
+        shadowColor: new THREE.Color(0xfbe7c9),
         lambertMaterialColorSelected: new THREE.Color(0x39000c),
         lambertMaterialEmissiveSelected: new THREE.Color(0x00df03),
         shadowColorSelected: new THREE.Color(0xf52ce3),
         arrowColor: new THREE.Color(0xff4a48),
+        logoColor: new THREE.Color(0x000000),
       },
       rotation: [0, 0, 0],
       polar: [0, Math.PI / 2],
@@ -153,6 +154,7 @@ export default {
     exterior.remove(this.footField)
     exterior.remove(this.tram)
     exterior.remove(this.arrow)
+    exterior.remove(this.logoArena)
 
     // MATERIAL
     this.shadowMaterial?.dispose()
@@ -167,9 +169,9 @@ export default {
     this.directionalLight.dispose()
 
     if (this.directionalLightIsStatic) {
-      scene.remove(this.directionalLight)
-    } else {
       exterior.remove(this.directionalLight)
+    } else {
+      scene.remove(this.directionalLight)
     }
 
     // GUI
@@ -286,6 +288,7 @@ export default {
       this.initFloor()
       this.initRoad()
       this.initBuildings()
+      this.initLogoArena()
       this.initAdidasArenaGroundFloor()
       this.initAdidasArenaFirstFloor()
       this.initAdidasArenaSecondFloor()
@@ -454,12 +457,26 @@ export default {
       }
     },
 
+    initLogoArena() {
+      const { exterior } = useWebGL()
+
+      this.logoArena = new THREE.Group()
+
+      exterior.add(this.logoArena)
+
+      const logoArenaGroup = this.gltfExterior.getObjectByName('Logo_Arena')
+
+      const logoArena = this.mergeObject(logoArenaGroup)
+      logoArena.material.color = this.colors.logoColor
+      logoArena.material.emissive = this.colors.logoColor
+      this.logoArena.add(logoArena)
+    },
+
     initArrow() {
       const { exterior } = useWebGL()
 
       this.arrow = new THREE.Group()
-      this.arrow.castShadow = true
-      this.arrow.receiveShadow = true
+
       exterior.add(this.arrow)
 
       const arrowGroup = this.gltfExterior.getObjectByName('Arrow_001')
@@ -467,6 +484,9 @@ export default {
       const arrow = this.mergeObject(arrowGroup)
       arrow.material.color = this.colors.arrowColor
       arrow.material.emissive = this.colors.arrowColor
+      arrow.castShadow = true
+      arrow.receiveShadow = true
+
       const edgeArrow = this.edgeObject(arrow)
       const conditionalArrow = this.conditionalObject(arrow)
 
@@ -488,7 +508,7 @@ export default {
       const { exterior } = useWebGL()
 
       this.footField = new THREE.Group()
-      this.footField.position.y = 0.01
+      this.footField.position.y = 0.015
 
       exterior.add(this.footField)
 
@@ -531,7 +551,7 @@ export default {
       const { exterior } = useWebGL()
 
       this.road = new THREE.Group()
-      this.road.position.y = 0.01
+      this.road.position.y = 0.015
       exterior.add(this.road)
 
       const roadGroup = this.gltfExterior.getObjectByName('Road')
@@ -644,7 +664,7 @@ export default {
       const { exterior } = useWebGL()
 
       this.adidasArenaGroundFloor = new THREE.Group()
-      this.adidasArenaGroundFloor.idBlock = 2
+      this.adidasArenaGroundFloor.position.y = 0.02
       exterior.add(this.adidasArenaGroundFloor)
 
       const adidasArenaGroup = this.gltfExterior.getObjectByName('Arena_02')
@@ -661,7 +681,6 @@ export default {
       const { exterior } = useWebGL()
 
       this.adidasArenaFirstFloor = new THREE.Group()
-      this.adidasArenaFirstFloor.idBlock = 1
 
       exterior.add(this.adidasArenaFirstFloor)
 
@@ -679,7 +698,6 @@ export default {
       const { exterior } = useWebGL()
 
       this.adidasArenaSecondFloor = new THREE.Group()
-      this.adidasArenaFirstFloor.idBlock = 0
 
       exterior.add(this.adidasArenaSecondFloor)
 

@@ -130,6 +130,7 @@ export default {
       indexLinkHovered: 0,
       lottiesMenuPrincipal: [],
       lottiesMenuSubmenu: [],
+      keyDown: false,
     }
   },
   computed: {
@@ -199,17 +200,35 @@ export default {
     this.$viewport.events.on('resize', this.onResize)
 
     this.$nuxt.$on('menu:reset', this.onResetMenu)
+
+    window.addEventListener('keydown', this.onKeyDown)
+    window.addEventListener('keyup', this.onKeyUp)
   },
 
   beforeDestroy() {
     this.$viewport.events.off('resize', this.onResize)
 
     this.$nuxt.$off('menu:reset', this.onResetMenu)
+
+    window.removeEventListener('keydown', this.onKeyDown)
+    window.removeEventListener('keyup', this.onKeyUp)
   },
 
-  created() {},
-
   methods: {
+    onKeyDown(e) {
+      if (this.keyDown) return
+
+      this.keyDown = true
+    },
+    onKeyUp(e) {
+      if (!this.keyDown) return
+
+      this.keyDown = false
+
+      if (e.key === 'Escape') {
+        this.onCloseBurger()
+      }
+    },
     onResize() {
       if (this.submenuActive)
         Flip.fit(this.elTitleSubmenuWrapper, this.elTitleTargetFlip)
@@ -788,9 +807,12 @@ export default {
       })
     },
     getActiveLottie() {
-      console.log(this)
       if (this.$route.path === '/' || this.$route.fullPath === '/') {
         this.activeLinkIsIndex = true
+        this.activeLinkLocation = null
+        this.activeLinkIndex = null
+        this.activeLinkLottie = null
+        this.indexLinkHovered = 0
       } else {
         this.activeLinkIsIndex = false
 
@@ -808,7 +830,7 @@ export default {
           this.activeLinkLottie =
             this.lottiesMenuPrincipal[indexMenu].animation.active
           this.indexLinkHovered = this.activeLinkIndex
-        } else {
+        } else if (indexSubmenu !== -1) {
           this.activeLinkLocation = 'submenu'
           this.activeLinkIndex = indexSubmenu
           this.activeLinkLottie =
