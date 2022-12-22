@@ -13,6 +13,7 @@
       class="app-atoms-corner-points__item app-atoms-corner-points__item--top-left"
     />
     <span
+      v-if="linesPosition.includes('line-1')"
       class="app-atoms-corner-points__line app-atoms-corner-points__line--top"
     />
     <span
@@ -20,6 +21,7 @@
       class="app-atoms-corner-points__item app-atoms-corner-points__item--top-right"
     />
     <span
+      v-if="linesPosition.includes('line-2')"
       class="app-atoms-corner-points__line app-atoms-corner-points__line--right"
     />
     <span
@@ -27,6 +29,7 @@
       class="app-atoms-corner-points__item app-atoms-corner-points__item--bottom-left"
     />
     <span
+      v-if="linesPosition.includes('line-3')"
       class="app-atoms-corner-points__line app-atoms-corner-points__line--bottom"
     />
     <span
@@ -34,6 +37,7 @@
       class="app-atoms-corner-points__item app-atoms-corner-points__item--bottom-right"
     />
     <span
+      v-if="linesPosition.includes('line-4')"
       class="app-atoms-corner-points__line app-atoms-corner-points__line--left"
     />
   </div>
@@ -46,6 +50,11 @@ export default {
       type: String,
       require: false,
       default: '1, 2, 3, 4',
+    },
+    linesPosition: {
+      type: String,
+      require: false,
+      default: 'line-1, line-2, line-3, line-4',
     },
     sizePoints: {
       type: Number,

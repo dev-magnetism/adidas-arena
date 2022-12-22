@@ -107,7 +107,7 @@ export default {
 
   &__left {
     width: 60px;
-    transform: rotate(30deg) scale(1, -1);
+    transform: rotate(40deg) scale(1, -1);
     transition: transform 0.35s var(--ease-out-cubic);
     margin-right: 10px;
   }

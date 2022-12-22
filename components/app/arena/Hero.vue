@@ -1,5 +1,5 @@
 <template>
-  <div class="app-arena-hero">
+  <div class="app-arena-hero" @click="onTest">
     <div class="app-arena-hero__wrapper">
       <AtomsCornerPoints :size-points="8" />
     </div>
@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { mapState, mapMutations } from 'vuex'
 
@@ -21,6 +22,11 @@ export default {
   },
   watch: {
     allLoadedFake() {
+      const { exterior } = useWebGL()
+
+      exterior.drag.enabled = true
+      exterior.zoom.enabled = false
+
       this.setExteriorVisible(true)
     },
   },
@@ -28,6 +34,7 @@ export default {
     if (!this.exteriorVisible) this.setExteriorVisible(true)
 
     const { scissors, renderer } = useWebGL()
+
     scissors.current = { ...scissors.hero }
 
     renderer.setScissor(
@@ -54,6 +61,18 @@ export default {
     this.$raf.remove(`arena-hero`, this.onFrame)
   },
   methods: {
+    onTest() {
+      const { exterior } = useWebGL()
+
+      gsap.to(exterior.scale, {
+        // x: 0,
+        // y: 0,
+        // z: 0,
+        duration: 1,
+        yoyo: true,
+        repeat: -1,
+      })
+    },
     onResize() {
       const { scissors } = useWebGL()
 

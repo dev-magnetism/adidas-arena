@@ -1,9 +1,17 @@
 <template>
   <div class="app-home-hero block-inner">
     <div class="app-home-hero__inner grid">
-      <ERichText class="app-home-hero__title" :content="contents.title" />
+      <ERichText
+        v-if="!viewExteriorOpen"
+        class="app-home-hero__title"
+        :content="contents.title"
+      />
 
-      <div ref="firstVisual" class="app-home-hero__first-visual">
+      <div
+        v-if="!viewExteriorOpen"
+        ref="firstVisual"
+        class="app-home-hero__first-visual"
+      >
         <nuxt-picture
           class="picture-absolute"
           provider="directus"
@@ -12,7 +20,11 @@
           format="webp"
         />
       </div>
-      <div ref="secondVisual" class="app-home-hero__second-visual">
+      <div
+        v-if="!viewExteriorOpen"
+        ref="secondVisual"
+        class="app-home-hero__second-visual"
+      >
         <nuxt-picture
           class="picture-absolute"
           provider="directus"
@@ -23,6 +35,7 @@
       </div>
       <div
         v-if="!$viewport.isMobile"
+        :class="{ hide: viewExteriorOpen }"
         class="app-home-hero__scroll-indicator"
         @click="onClickScrollIndicator"
       >
@@ -31,11 +44,14 @@
           <SvgHomeHeroUnion ref="union" />
         </div>
       </div>
-      <div class="app-home-hero__localisation">
+      <div v-if="!viewExteriorOpen" class="app-home-hero__localisation">
         <TP1 weight="bold" class="app-home-hero__localisation__city">
           {{ contents.city }}
         </TP1>
-        <TP1 class="app-home-hero__localisation__place">
+        <TP1
+          v-if="!viewExteriorOpen"
+          class="app-home-hero__localisation__place"
+        >
           {{ contents.localisation }}
         </TP1>
       </div>
@@ -48,34 +64,36 @@
           >
             {{ contents.coordinate }}
           </AtomsTitleTag>
-          <AtomsCTA
-            class="app-home-hero__view-exterior__visit"
-            :arrow="false"
-            bg="red-adidas"
-            :external="true"
-            color="black"
-            link="https://translate.google.fr/"
-          >
-            {{ contents.visit }}
-          </AtomsCTA>
         </div>
-        <AtomsCornerPoints />
+        <AtomsCornerPoints lines-position="line-1, line-4" />
 
         <SvgHomeHeroSticker
           v-if="!$viewport.isMobile"
+          :class="{ hide: viewExteriorOpen }"
           class="app-home-hero__sticker"
         />
         <SvgHomeHeroStars
           v-if="!$viewport.isMobile"
+          :class="{ hide: viewExteriorOpen }"
           class="app-home-hero__stars"
         />
       </div>
+      <AtomsTitleTag
+        class="app-home-hero__visit"
+        :arrow="false"
+        bg="red-adidas"
+        color="black"
+        @click.native="onVisit"
+      >
+        {{ contents.visit }}
+      </AtomsTitleTag>
     </div>
   </div>
 </template>
 
 <script>
 import { gsap } from 'gsap'
+import { Flip } from 'gsap/Flip'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { mapState, mapMutations } from 'vuex'
 
@@ -88,13 +106,72 @@ export default {
       default: () => {},
     },
   },
+  data() {
+    return {
+      viewExteriorOpen: false,
+    }
+  },
   computed: {
     ...mapState({
       exteriorVisible: (state) => state.exteriorVisible,
       allLoadedFake: (state) => state.allLoadedFake,
+      allLoadedActual: (state) => state.allLoadedActual,
     }),
   },
+  watch: {
+    allLoadedActual(payload) {
+      if (!payload) return
+
+      const { exterior } = useWebGL()
+
+      exterior.drag.enabled = false
+      exterior.zoom.enabled = false
+    },
+    viewExteriorOpen(payload) {
+      const { exterior } = useWebGL()
+
+      if (payload) {
+        // window.lenis.scrollTo('.app-home-hero', {
+        //   duration: 1.2,
+        // })
+
+        window.lenis.stop()
+
+        gsap.to(exterior.position, {
+          x: 0,
+          z: 0,
+          duration: 0.85,
+          ease: 'power2.inOut',
+        })
+      } else {
+        window.lenis.start()
+
+        gsap.to(exterior.position, {
+          x: exterior.heroPosition.x,
+          z: exterior.heroPosition.z,
+          duration: 0.85,
+          ease: 'power2.inOut',
+        })
+
+        gsap.to(exterior.drag, {
+          target: 0,
+          duration: 0.85,
+          ease: 'power2.inOut',
+        })
+
+        gsap.to(exterior.zoom, {
+          target: exterior.zoom.initial,
+          duration: 0.85,
+          ease: 'power2.inOut',
+        })
+      }
+    },
+  },
   mounted() {
+    const { exterior } = useWebGL()
+
+    exterior.position.copy(exterior.heroPosition)
+
     this.initScrollTrigger()
 
     this.resizeObserver = new ResizeObserver(this.onResize)
@@ -110,6 +187,24 @@ export default {
     this.$raf.remove(`home-hero`, this.onFrame)
   },
   methods: {
+    onVisit() {
+      const { exterior } = useWebGL()
+
+      this.viewExteriorOpen = !this.viewExteriorOpen
+
+      exterior.drag.enabled = this.viewExteriorOpen
+      exterior.zoom.enabled = this.viewExteriorOpen
+
+      const state = Flip.getState(this.$refs.view)
+
+      this.$refs.view.classList.toggle('fullwidth')
+
+      Flip.from(state, {
+        absolute: true,
+        duration: 0.75,
+        ease: 'power1.inOut',
+      })
+    },
     onFrame() {
       if (!window.lenis && !this.exteriorVisible) return
 
@@ -135,7 +230,7 @@ export default {
 
       scissors.mask = {
         x: left,
-        y: this.$viewport.height - top - height,
+        y: this.$viewport.height - top - height - window.lenis.scroll,
         width,
         height,
       }
@@ -234,10 +329,21 @@ export default {
     }
   }
 
+  &__sticker,
+  &__stars {
+    transition: transform 0.35s var(--ease-in-out-cubic);
+    transition-delay: 0.65s;
+
+    &.hide {
+      transform: translate(-50%, -50%) scale(0) rotate(45deg);
+      transition-delay: 0s;
+    }
+  }
+
   &__sticker {
     position: absolute;
     grid-column: 8 / span 5;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
     top: 30%;
     left: 0;
     z-index: 9;
@@ -250,7 +356,7 @@ export default {
   &__stars {
     position: absolute;
     grid-column: 7 / span 2;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
     left: -12%;
     top: 17%;
     z-index: 9;
@@ -272,6 +378,14 @@ export default {
     bottom: 0;
     width: 100%;
     max-height: calc(85vh - desktop-vw(80px));
+    transform-origin: right bottom;
+    will-change: transform, width, height;
+
+    &.fullwidth {
+      grid-column: 1 / span 12;
+      max-height: 100%;
+      height: 100%;
+    }
 
     @include mobile {
       grid-column: 1 / span 6;
@@ -308,8 +422,7 @@ export default {
       }
     }
 
-    &__coordinate.app-atoms-title-tag,
-    &__visit.app-atoms-cta {
+    &__coordinate.app-atoms-title-tag {
       padding: desktop-vw(10px) desktop-vw(15px);
       display: block;
 
@@ -334,14 +447,32 @@ export default {
         align-self: flex-start;
       }
     }
+  }
 
-    &__visit {
+  &__visit.app-atoms-title-tag {
+    padding: desktop-vw(10px) desktop-vw(15px);
+    display: block;
+    position: absolute;
+    right: desktop-vw(20px);
+    bottom: desktop-vw(20px);
+
+    @include mobile {
+      right: mobile-vw(18px);
+      bottom: mobile-vw(18px);
+      padding: mobile-vw(10px) mobile-vw(15px);
+      align-self: flex-end;
+      display: block;
+    }
+
+    .P2.bold {
+      text-transform: uppercase;
+      @include font-adihausDIN-cn-medium();
+      font-size: desktop-vw(16px);
+      line-height: desktop-vw(21px);
+
       @include mobile {
-        align-self: flex-end;
-        display: block;
-      }
-      > :first-child {
-        @include font-adihausDIN-cn-medium();
+        font-size: mobile-vw(16px);
+        line-height: mobile-vw(16px);
       }
     }
   }
@@ -439,6 +570,12 @@ export default {
     justify-content: center;
     border-top: 1px solid #181818;
     border-right: 1px solid #181818;
+    transition: opacity 0.45s var(--ease-out-cubic);
+    opacity: 1;
+
+    &.hide {
+      opacity: 0;
+    }
 
     @include mobile {
       display: none;
@@ -452,10 +589,6 @@ export default {
     &__icon {
       margin-top: desktop-vw(25px);
       overflow: hidden;
-    }
-
-    svg {
-      // margin-top: desktop-vw(25px);
     }
   }
 }

@@ -13,6 +13,7 @@ export const state = () => ({
   // Content
   partnersContent: null,
   appContent: null,
+  menuContent: null,
 
   // Exterior scene
   exteriorVisible: true,
@@ -54,6 +55,9 @@ export const mutations = {
   setAppContent: (state, value) => {
     state.appContent = value
   },
+  setMenuContent: (state, value) => {
+    state.menuContent = value
+  },
   setMenuOpen: (state, value) => {
     state.menuOpen = value
   },
@@ -84,5 +88,11 @@ export const actions = {
     })
 
     commit('setAppContent', app)
+
+    const menu = await $directus.items('Menu').readByQuery({
+      limit: -1,
+    })
+
+    commit('setMenuContent', menu)
   },
 }

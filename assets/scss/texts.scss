@@ -10,13 +10,11 @@
 
   &.medium {
     @include font-tuskerGrotesk-medium();
-    // font-weight: 500;
   }
   &.bold,
   .bold,
   strong {
     @include font-tuskerGrotesk-bold();
-    // font-weight: 500;
   }
 }
 
@@ -32,13 +30,11 @@
 
   &.medium {
     @include font-tuskerGrotesk-medium();
-    // font-weight: 500;
   }
 
   &.bold,
   .bold {
     @include font-tuskerGrotesk-bold();
-    // font-weight: 700;
   }
 }
 
@@ -81,17 +77,14 @@
 
   &.regular {
     @include font-adihausDIN-cn();
-    // font-weight: 500;
   }
 
   &.bold {
     @include font-adihausDIN-cn-bold();
-    // font-weight: 700;
   }
 
   &.medium {
     @include font-adihausDIN-cn-medium();
-    // font-weight: 500;
   }
 }
 
@@ -108,17 +101,14 @@
 
   &.regular {
     @include font-adihausDIN-regular();
-    // font-weight: 500;
   }
 
   &.bold {
     @include font-adihausDIN-bold();
-    // font-weight: 700;
   }
 
   &.medium {
     @include font-adihausDIN-medium();
-    // font-weight: 500;
   }
 }
 
@@ -133,17 +123,14 @@
 
   &.regular {
     @include font-adihausDIN-regular();
-    // font-weight: 500;
   }
 
   &.bold {
     @include font-adihausDIN-bold();
-    // font-weight: 700;
   }
 
   &.medium {
     @include font-adihausDIN-medium();
-    // font-weight: 500;
   }
 }
 

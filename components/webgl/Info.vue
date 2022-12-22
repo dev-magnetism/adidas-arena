@@ -27,7 +27,7 @@ export default {
 <style lang="scss">
 .app-renderer-info {
   background: #000;
-  bottom: 0;
+  top: 50px;
   color: #fff;
   left: 0;
   opacity: 0.9;

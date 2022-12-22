@@ -5,10 +5,10 @@
     </nuxt-link>
 
     <TH3 v-else class="app-header__mobile-logo">
-      <nuxt-link to="/">ADIDAS ARENA</nuxt-link>
+      <nuxt-link to="/">{{ headerNameMobile }}</nuxt-link>
     </TH3>
     <div class="app-header__cta" @click="onClickBurger">
-      <p v-if="!$viewport.isMobile" class="app-header__menu">Menu</p>
+      <p v-if="!$viewport.isMobile" class="app-header__menu">{{ menuName }}</p>
       <div class="app-header__burger">
         <span class="app-header__burger__line top" />
         <span class="app-header__burger__line bottom" />
@@ -29,7 +29,14 @@ export default {
       allLoadedFake: (state) => state.allLoadedFake,
       allLoadedActual: (state) => state.allLoadedActual,
       preloaderHidden: (state) => state.preloaderHidden,
+      appContent: (state) => state.appContent,
     }),
+    menuName() {
+      return this.appContent.data.menu_name
+    },
+    headerNameMobile() {
+      return this.appContent.data.header_name_mobile
+    },
   },
   methods: {
     onClickBurger() {

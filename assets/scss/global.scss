@@ -105,8 +105,8 @@ picture {
   right: 0;
   top: 0;
   min-width: 225px;
-  overflow-x: hidden;
   cursor: initial;
+  overflow: visible;
 }
 
 .webgl-component {

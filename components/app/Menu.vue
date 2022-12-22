@@ -9,7 +9,9 @@
     <div ref="layerBlue" class="app-menu__layer blue" />
 
     <div ref="cta" class="app-menu__cta" @click="onCloseBurger">
-      <p v-if="!$viewport.isMobile" class="app-menu__cta__menu">Close</p>
+      <p v-if="!$viewport.isMobile" class="app-menu__cta__menu">
+        {{ menuCloseName }}
+      </p>
       <div
         class="app-menu__cta__burger"
         :class="{ active: burgerCloseActivated }"
@@ -22,12 +24,13 @@
     <div class="app-menu__inner">
       <div ref="visual" class="app-menu__visual">
         <transition-group name="menu-visual">
-          <img
+          <nuxt-img
             v-for="(item, index) in menu"
             v-show="indexLinkHovered === index"
             :key="index"
             alt="red"
             :src="item.image"
+            provider="directus"
           />
         </transition-group>
       </div>
@@ -37,7 +40,7 @@
           class="app-menu__border-left menu-border-left"
         />
         <div class="app-menu__title">
-          <TH1 ref="menuTitle">Menu </TH1>
+          <TH1 ref="menuTitle">{{ menuName }} </TH1>
         </div>
         <div class="app-menu__principal">
           <div
@@ -49,7 +52,7 @@
             <span class="app-menu__link__border-top" />
             <div class="app-menu__link__title principal">
               <TH2
-                v-if="!item.submenu"
+                v-if="!item.submenu_title"
                 class="menu-principal-title"
                 @mouseenter.native="onLinkSelected('principal', index)"
                 @mouseleave.native="onLinkUnselected('principal', index)"
@@ -57,7 +60,7 @@
                 <nuxt-link :to="item.url">{{ item.name }}</nuxt-link>
               </TH2>
               <TH2
-                v-if="item.submenu"
+                v-if="item.submenu_title"
                 class="menu-principal-title"
                 @click.native="onToggleSubmenu"
                 @mouseenter.native="onLinkSelected('principal', index)"
@@ -66,7 +69,7 @@
                 {{ item.name }}
               </TH2>
               <div
-                v-if="item.submenu"
+                v-if="item.submenu_title"
                 ref="buttonSubmenu"
                 class="app-menu__link__button-submenu"
                 @click="onToggleSubmenu"
@@ -98,7 +101,6 @@
           >
             <div class="app-menu__link__title">
               <TH2
-                v-if="!item.submenu"
                 class="menu-submenu-title"
                 @mouseenter.native="onLinkSelected('submenu', index)"
                 @mouseleave.native="onLinkUnselected('submenu', index)"
@@ -128,49 +130,26 @@ export default {
       indexLinkHovered: 0,
       lottiesMenuPrincipal: [],
       lottiesMenuSubmenu: [],
-      menu: [
-        {
-          name: 'Projet',
-          url: '/projet',
-          image: 'https://picsum.photos/500',
-        },
-        {
-          name: `L'arena`,
-          url: '/arena',
-          image: 'https://picsum.photos/400',
-        },
-        {
-          name: 'Le bloc',
-          url: '/le-bloc',
-          image: 'https://picsum.photos/450',
-        },
-        {
-          name: 'Be part of',
-          url: null,
-          submenu: true,
-          image: 'https://picsum.photos/200',
-        },
-      ],
-      submenu: [
-        {
-          name: 'Hospitalite',
-          url: '/be-part-of/hospitalite',
-        },
-        {
-          name: `Configurations`,
-          url: '/be-part-of/configurations',
-        },
-        {
-          name: 'Partenaire',
-          url: '/be-part-of/partenaire',
-        },
-      ],
     }
   },
   computed: {
     ...mapState({
       menuActive: (state) => state.menuActive,
+      menuContent: (state) => state.menuContent,
+      appContent: (state) => state.appContent,
     }),
+    menu() {
+      return this.menuContent.data.filter((el) => !el.submenu_element)
+    },
+    submenu() {
+      return this.menuContent.data.filter((el) => el.submenu_element)
+    },
+    menuName() {
+      return this.appContent.data.menu_name
+    },
+    menuCloseName() {
+      return this.appContent.data.menu_close_name
+    },
   },
   watch: {
     menuActive(payload) {

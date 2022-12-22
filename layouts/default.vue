@@ -4,6 +4,7 @@
     <div ref="layerRed" class="app-transition-layer red" />
     <AppCursor v-if="!$viewport.isMobile" />
     <AppPreloader />
+    <!-- <AppCookie /> -->
     <AppMenu />
     <AppHeader />
     <nuxt class="app-main" />

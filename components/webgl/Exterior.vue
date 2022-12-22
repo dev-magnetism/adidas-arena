@@ -1,23 +1,5 @@
 <template>
-  <div class="app-webgl-exterior">
-    <div class="arrow-debug">
-      <span
-        :class="{ 'is-active': indexArrowPosition === 0 }"
-        @click="onFocusPartAdidasArena(0)"
-        >0</span
-      >
-      <span
-        :class="{ 'is-active': indexArrowPosition === 1 }"
-        @click="onFocusPartAdidasArena(1)"
-        >1</span
-      >
-      <span
-        :class="{ 'is-active': indexArrowPosition === 2 }"
-        @click="onFocusPartAdidasArena(2)"
-        >2</span
-      >
-    </div>
-  </div>
+  <div class="app-webgl-exterior" />
 </template>
 
 <script>
@@ -30,6 +12,7 @@ import {
   mergeBufferGeometries,
   mergeVertices,
 } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
+import { MeshLineMaterial } from 'meshline'
 
 import useWebGL from '~/hooks/webgl'
 import useGUI from '~/hooks/gui'
@@ -42,10 +25,18 @@ import { ConditionalEdgesShader } from '~/assets/js/webgl/ConditionalEdgesShader
 export default {
   data() {
     return {
-      modelColorSelected: new THREE.Color(0xff0000),
-      modelShadowColorSelected: new THREE.Color(0xfff000),
-      modelShadowColor: new THREE.Color(0xff00e6),
-      modelLineColor: new THREE.Color(0x000000),
+      colors: {
+        ambientLightColor: new THREE.Color(0xf1e7d9),
+        directionalLightColor: new THREE.Color(0xffffff),
+        lambertMaterialColor: new THREE.Color(0xf1e7d9),
+        lambertMaterialEmissive: new THREE.Color(0xf1e7d9),
+        outlineColor: new THREE.Color(0x000000),
+        shadowColor: new THREE.Color(0xf1e7d9),
+        lambertMaterialColorSelected: new THREE.Color(0x39000c),
+        lambertMaterialEmissiveSelected: new THREE.Color(0x00df03),
+        shadowColorSelected: new THREE.Color(0xf52ce3),
+        arrowColor: new THREE.Color(0xff4a48),
+      },
       rotation: [0, 0, 0],
       polar: [0, Math.PI / 2],
       azimuth: { min: -Math.PI / 1.4, max: Math.PI * 1 },
@@ -63,9 +54,11 @@ export default {
         last: 0,
         speed: 2,
         dragSpeed: 0.005,
+        enabled: true,
       },
       zoom: {
         ease: 0.065,
+        initial: 15,
         current: 15,
         target: 15,
         last: 15,
@@ -74,6 +67,7 @@ export default {
           min: 10,
           max: 35,
         },
+        enabled: false,
       },
       indexArrowPosition: null,
       thresholdAngle: 40,
@@ -106,6 +100,13 @@ export default {
     },
   },
   mounted() {
+    this.clock = new THREE.Clock() // only used for animations
+
+    const { exterior } = useWebGL()
+
+    exterior.zoom = this.zoom
+    exterior.drag = this.drag
+
     if (this.allLoadedActual) {
       this.initExterior()
       this.initClouds()
@@ -113,7 +114,7 @@ export default {
     }
 
     this.observer = Observer.create({
-      target: document,
+      target: this.$nuxt.$el,
       type: 'touch,pointer,wheel',
       onWheel: this.onWheel,
       onDrag: this.onDrag,
@@ -124,7 +125,7 @@ export default {
     this.$raf.add(`3d`, this.onFrame)
   },
   beforeDestroy() {
-    const { exterior, scene } = useWebGL()
+    const { exterior, scene, interactionManager } = useWebGL()
 
     this.cloud?.material?.dispose()
     this.cloud?.geometry?.dispose()
@@ -149,7 +150,7 @@ export default {
     exterior.remove(this.adidasArenaSecondFloor)
     exterior.remove(this.adidasArenaRoof)
     exterior.remove(this.paniers)
-    exterior.remove(this.basket)
+    exterior.remove(this.footField)
     exterior.remove(this.tram)
     exterior.remove(this.arrow)
 
@@ -164,10 +165,11 @@ export default {
     scene.remove(this.ambientLight)
 
     this.directionalLight.dispose()
-    // this.directionalLightHelper.dispose()
-    if (!this.directionalLightIsStatic) {
+
+    if (this.directionalLightIsStatic) {
       scene.remove(this.directionalLight)
-      // scene.remove(this.directionalLightHelper)
+    } else {
+      exterior.remove(this.directionalLight)
     }
 
     // GUI
@@ -183,19 +185,35 @@ export default {
     this.tweenZoom?.kill()
 
     // GLOBAL
+    interactionManager.remove(this.adidasArenaSecondFloor)
+
+    this.adidasArenaSecondFloor.removeEventListener(
+      'mouseenter',
+      this.onMouseEnterArena
+    )
+
+    this.adidasArenaSecondFloor.removeEventListener(
+      'mouseleave',
+      this.onMouseLeaveArena
+    )
     this.observer?.kill()
     this.$raf.remove(`3d`, this.onFrame)
   },
   methods: {
     onWheel(e) {
-      // const delta = e.deltaY * this.zoom.wheelSpeed
-      // this.zoom.target = gsap.utils.clamp(
-      //   this.zoom.range.min,
-      //   this.zoom.range.max,
-      //   this.zoom.target + delta
-      // )
+      if (!this.zoom.enabled) return
+
+      const delta = e.deltaY * this.zoom.wheelSpeed
+
+      this.zoom.target = gsap.utils.clamp(
+        this.zoom.range.min,
+        this.zoom.range.max,
+        this.zoom.target + delta
+      )
     },
     onDrag(e) {
+      if (!this.drag.enabled) return
+
       const delta = e.deltaX * this.drag.dragSpeed
 
       this.drag.target = gsap.utils.clamp(
@@ -204,7 +222,7 @@ export default {
         this.drag.target + delta
       )
     },
-    onFrame() {
+    onFrame({ time, deltaTime, frame, deltaRatio }) {
       if (
         this.modelExteriorLoaded === undefined &&
         this.modelCloudLoaded === undefined &&
@@ -213,6 +231,10 @@ export default {
         return
 
       const { camera, exterior } = useWebGL()
+
+      // const delta = this.clock.getDelta()
+
+      // this.mixer?.update(delta)
 
       this.clouds?.children?.forEach((cloud) => {
         const z = cloud.direction
@@ -226,6 +248,7 @@ export default {
         this.drag.target,
         this.drag.ease
       )
+
       exterior.rotation.y = this.drag.current
 
       this.zoom.current = this.lerp(
@@ -233,11 +256,13 @@ export default {
         this.zoom.target,
         this.zoom.ease
       )
+
       camera.zoom = gsap.utils.clamp(
         this.zoom.range.min,
         this.zoom.range.max,
         this.zoom.current
       )
+
       camera.updateProjectionMatrix()
 
       this.drag.last = this.drag.current
@@ -245,14 +270,14 @@ export default {
     },
 
     initExterior() {
-      this.gltfExterior = loaderManager.getModel('exterior').scene
+      this.clock = new THREE.Clock()
+      this.previousTime = 0
 
-      const arrowsPositionGroup =
-        this.gltfExterior.getObjectByName('ArrowsPosition')
-
-      this.arrowPositions = arrowsPositionGroup.children.map(
-        (child) => child.position
-      )
+      this.model = loaderManager.getModel('exterior')
+      this.gltfExterior = this.model.scene
+      this.mixer = new THREE.AnimationMixer(this.gltfExterior)
+      this.action = this.mixer.clipAction(this.model.animations[0])
+      this.action.play()
 
       this.initCamera()
       this.initMaterials()
@@ -266,12 +291,59 @@ export default {
       this.initAdidasArenaSecondFloor()
       this.initAdidasArenaRoof()
       this.initCars()
-      this.initPaniers()
       this.initTram()
       this.initTrees()
-      this.initBasket()
+      this.initFootField()
       this.initLamps()
       this.initArrow()
+
+      this.initEvents()
+    },
+
+    initEvents() {
+      const { interactionManager } = useWebGL()
+
+      interactionManager.add(this.adidasArenaSecondFloor)
+
+      this.adidasArenaSecondFloor.addEventListener(
+        'mouseenter',
+        this.onMouseEnterArena
+      )
+
+      this.adidasArenaSecondFloor.addEventListener(
+        'mouseleave',
+        this.onMouseLeaveArena
+      )
+    },
+
+    onMouseEnterArena() {
+      this.adidasArenaSecondFloor.traverse((child) => {
+        if (child.isMesh) {
+          child.material.color = this.colors.lambertMaterialColorSelected
+          child.material.emissive = this.colors.lambertMaterialEmissiveSelected
+        }
+      })
+
+      this.adidasArenaRoof.traverse((child) => {
+        if (child.isMesh) {
+          child.material.color = this.colors.shadowColorSelected
+        }
+      })
+    },
+
+    onMouseLeaveArena() {
+      this.adidasArenaSecondFloor.traverse((child) => {
+        if (child.isMesh) {
+          child.material.color = this.colors.lambertMaterialColor
+          child.material.emissive = this.colors.lambertMaterialEmissive
+        }
+      })
+
+      this.adidasArenaRoof.traverse((child) => {
+        if (child.isMesh) {
+          child.material.color = this.colors.shadowColor
+        }
+      })
     },
 
     initCamera() {
@@ -290,24 +362,31 @@ export default {
 
     initMaterials() {
       this.modelMaterial = new THREE.MeshLambertMaterial({
-        color: new THREE.Color(0xffffff),
-        emissive: new THREE.Color(0xffffff),
-        emissiveIntensity: 0.85,
+        color: this.colors.lambertMaterialColor,
+        emissive: this.colors.lambertMaterialEmissive,
+        emissiveIntensity: 0.7,
       })
 
       this.shadowMaterial = new THREE.ShadowMaterial({
-        color: this.modelShadowColor,
+        color: this.colors.shadowColor,
+        transparent: true,
       })
 
       this.conditionalMaterial = new THREE.ShaderMaterial(
         ConditionalEdgesShader
       )
       this.conditionalMaterial.uniforms.diffuse.value.set(
-        new THREE.Color(0x000000)
+        this.colors.outlineColor
       )
 
-      this.lineMaterial = new THREE.LineBasicMaterial({
-        color: this.modelLineColor,
+      this.lineMaterial = new MeshLineMaterial({
+        color: this.colors.outlineColor,
+        sizeAttenuation: 0.5,
+        transparent: true,
+        resolution: new THREE.Vector2(
+          this.$viewport.width,
+          this.$viewport.height
+        ),
       })
     },
 
@@ -335,7 +414,7 @@ export default {
 
       planesGroup.traverse((plane) => {
         const object = this.cloud.clone()
-        object.coefParallax = this.genRand(0.25, 10, 2)
+        object.coefParallax = this.genRand(1, 10, 2)
         object.direction = Math.random() < 0.5
         object.position.copy(plane.position)
         object.initialPosition = object.position
@@ -347,22 +426,18 @@ export default {
     initLights() {
       const { exterior, scene } = useWebGL()
 
-      this.ambientLight = new THREE.AmbientLight(0xff00e6)
+      this.ambientLight = new THREE.AmbientLight(this.colors.ambientLightColor)
       scene.add(this.ambientLight)
 
-      this.directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+      this.directionalLight = new THREE.DirectionalLight(
+        this.colors.directionalLightColor,
+        1
+      )
       this.directionalLight.castShadow = true
       this.directionalLight.position.set(-100, 150, 300)
 
-      // this.directionalLightHelper = new THREE.DirectionalLightHelper(
-      //   this.directionalLight,
-      //   15,
-      //   new THREE.Color('#FF0000')
-      // )
-
       this.directionalLight.shadow.mapSize.width = 4096 // 2048
       this.directionalLight.shadow.mapSize.height = 4096 // 2048
-      // this.directionalLight.shadow.radius = 1
 
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
@@ -373,10 +448,8 @@ export default {
       this.directionalLight.shadow.camera.bottom = -65
 
       if (this.directionalLightIsStatic) {
-        // exterior.add(this.directionalLightHelper)
         exterior.add(this.directionalLight)
       } else {
-        // scene.add(this.directionalLightHelper)
         scene.add(this.directionalLight)
       }
     },
@@ -392,15 +465,14 @@ export default {
       const arrowGroup = this.gltfExterior.getObjectByName('Arrow_001')
 
       const arrow = this.mergeObject(arrowGroup)
+      arrow.material.color = this.colors.arrowColor
+      arrow.material.emissive = this.colors.arrowColor
       const edgeArrow = this.edgeObject(arrow)
       const conditionalArrow = this.conditionalObject(arrow)
 
       this.arrow.add(arrow)
       this.arrow.add(edgeArrow)
       this.arrow.add(conditionalArrow)
-
-      this.arrow.position.x = this.arrowPositions[0].x
-      this.arrow.position.z = this.arrowPositions[0].z
 
       this.tweenArrowTranslate = gsap.to(this.arrow.position, {
         y: 2,
@@ -412,28 +484,30 @@ export default {
       arrow.material.flatShading = true
     },
 
-    initBasket() {
+    initFootField() {
       const { exterior } = useWebGL()
 
-      this.basket = new THREE.Group()
-      exterior.add(this.basket)
+      this.footField = new THREE.Group()
+      // this.footField.position.y = 0.01
 
-      const basketGroup = this.gltfExterior.getObjectByName('Basket')
+      exterior.add(this.footField)
 
-      const basket = this.mergeObject(basketGroup)
+      const footFieldGroup = this.gltfExterior.getObjectByName('FootField')
 
-      // const shadowBasket = basket.clone()
-      // shadowBasket.name = 'shadowModel'
-      // shadowBasket.material = this.shadowMaterial.clone()
-      // shadowBasket.isShadow = true
+      const footField = this.mergeObject(footFieldGroup)
 
-      const edgeBasket = this.edgeObject(basket)
-      const conditionalBasket = this.conditionalObject(basket)
+      const shadowFootField = footField.clone()
+      shadowFootField.name = 'shadowModel'
+      shadowFootField.material = this.shadowMaterial.clone()
+      shadowFootField.isShadow = true
 
-      this.basket.add(basket)
-      // this.basket.add(shadowBasket)
-      this.basket.add(edgeBasket)
-      this.basket.add(conditionalBasket)
+      const edgeFootField = this.edgeObject(footField)
+      const conditionalFootField = this.conditionalObject(footField)
+
+      this.footField.add(footField)
+      this.footField.add(shadowFootField)
+      this.footField.add(edgeFootField)
+      this.footField.add(conditionalFootField)
     },
 
     initCars() {
@@ -453,27 +527,11 @@ export default {
       this.cars.add(conditionalCars)
     },
 
-    initPaniers() {
-      const { exterior } = useWebGL()
-
-      this.paniers = new THREE.Group()
-      exterior.add(this.paniers)
-
-      const paniersGroup = this.gltfExterior.getObjectByName('Paniers')
-
-      const paniers = this.mergeObject(paniersGroup)
-      const edgePaniers = this.edgeObject(paniers)
-      const conditionalPaniers = this.conditionalObject(paniers)
-
-      this.paniers.add(paniers)
-      this.paniers.add(edgePaniers)
-      this.paniers.add(conditionalPaniers)
-    },
-
     initRoad() {
       const { exterior } = useWebGL()
 
       this.road = new THREE.Group()
+      // this.road.position.y = 0.01
       exterior.add(this.road)
 
       const roadGroup = this.gltfExterior.getObjectByName('Road')
@@ -488,7 +546,7 @@ export default {
       const edgeRoad = this.edgeObject(road)
       const conditionalRoad = this.conditionalObject(road)
 
-      // this.road.add(road)
+      this.road.add(road)
       this.road.add(shadowRoad)
       this.road.add(edgeRoad)
       this.road.add(conditionalRoad)
@@ -510,7 +568,6 @@ export default {
       this.lamps.add(edgeLamps)
       this.lamps.add(conditionalLamps)
     },
-
     initTram() {
       const { exterior } = useWebGL()
 
@@ -527,7 +584,6 @@ export default {
       this.tram.add(edgeTram)
       this.tram.add(conditionalTram)
     },
-
     initTrees() {
       const { exterior } = useWebGL()
 
@@ -545,7 +601,6 @@ export default {
       this.trees.add(edgeTrees)
       this.trees.add(conditionalTrees)
     },
-
     initFloor() {
       const { exterior } = useWebGL()
 
@@ -562,15 +617,12 @@ export default {
       shadowFloor.material = this.shadowMaterial.clone()
       shadowFloor.isShadow = true
 
-      const edgeFloor = this.edgeObject(floor)
       const conditionalFloor = this.conditionalObject(floor)
 
       this.floor.add(floor)
       this.floor.add(shadowFloor)
-      this.floor.add(edgeFloor)
       this.floor.add(conditionalFloor)
     },
-
     initBuildings() {
       const { exterior } = useWebGL()
 
@@ -588,7 +640,6 @@ export default {
       this.buildings.add(edgeBuildings)
       this.buildings.add(conditionalBuildings)
     },
-
     initAdidasArenaGroundFloor() {
       const { exterior } = useWebGL()
 
@@ -606,7 +657,6 @@ export default {
       this.adidasArenaGroundFloor.add(edgeAdidasArena)
       this.adidasArenaGroundFloor.add(conditionalAdidasArena)
     },
-
     initAdidasArenaFirstFloor() {
       const { exterior } = useWebGL()
 
@@ -625,7 +675,6 @@ export default {
       this.adidasArenaFirstFloor.add(edgeAdidasArena)
       this.adidasArenaFirstFloor.add(conditionalAdidasArena)
     },
-
     initAdidasArenaSecondFloor() {
       const { exterior } = useWebGL()
 
@@ -643,7 +692,6 @@ export default {
       this.adidasArenaSecondFloor.add(edgeAdidasArena)
       this.adidasArenaSecondFloor.add(conditionalAdidasArena)
     },
-
     initAdidasArenaRoof() {
       const { exterior } = useWebGL()
 
@@ -656,56 +704,10 @@ export default {
       const adidasArenaRoof = this.mergeObject(adidasArenaRoofGroup)
       adidasArenaRoof.name = 'shadowModel'
       adidasArenaRoof.material = this.shadowMaterial.clone()
-      adidasArenaRoof.material.color = this.modelShadowColor
       adidasArenaRoof.isShadow = true
 
       this.adidasArenaRoof.add(adidasArenaRoof)
     },
-
-    onFocusPartAdidasArena(index) {
-      // const { camera } = useWebGL()
-
-      this.indexArrowPosition = index
-
-      const notSelectedPartAdidasArena = [
-        this.adidasArenaSecondFloor,
-        this.adidasArenaFirstFloor,
-        this.adidasArenaGroundFloor,
-      ].filter((el, index) => index !== this.indexArrowPosition)
-
-      const selectedPartAdidasArena = [
-        this.adidasArenaSecondFloor,
-        this.adidasArenaFirstFloor,
-        this.adidasArenaGroundFloor,
-      ].find((el, index) => index === this.indexArrowPosition)
-
-      notSelectedPartAdidasArena.forEach((group) => {
-        group.traverse((child) => {
-          if (child.isMesh) {
-            child.material.emissive = new THREE.Color(0xffffff)
-          }
-        })
-      })
-
-      selectedPartAdidasArena.traverse((child) => {
-        if (child.isMesh) {
-          child.material.emissive = this.modelColorSelected
-        }
-      })
-
-      if (this.indexArrowPosition === 0) {
-        this.adidasArenaRoof.children[0].material.color =
-          this.modelShadowColorSelected
-      } else {
-        this.adidasArenaRoof.children[0].material.color = this.modelShadowColor
-      }
-
-      gsap.to(this.arrow.position, {
-        x: this.arrowPositions[this.indexArrowPosition].x,
-        z: this.arrowPositions[this.indexArrowPosition].z,
-      })
-    },
-
     edgeObject(object) {
       const mergedGeom = object.geometry
 
@@ -719,7 +721,6 @@ export default {
 
       return line
     },
-
     conditionalObject(object) {
       const mergedGeom = object.geometry.clone()
 
@@ -739,7 +740,6 @@ export default {
 
       return mesh
     },
-
     mergeObject(object) {
       const obj = object
 
@@ -799,7 +799,7 @@ export default {
 
       this.guiAmbientLight.addInput(this.ambientLight, 'intensity', {
         min: 0,
-        max: 1,
+        max: 2,
         step: 0.01,
         label: 'Intensity',
       })
@@ -816,16 +816,12 @@ export default {
         .on('change', (e) => {
           if (e.value) {
             scene.remove(this.directionalLight)
-            // scene.remove(this.directionalLightHelper)
 
             exterior.add(this.directionalLight)
-            // exterior.add(this.directionalLightHelper)
           } else {
             exterior.remove(this.directionalLight)
-            // exterior.remove(this.directionalLightHelper)
 
             scene.add(this.directionalLight)
-            // scene.add(this.directionalLightHelper)
           }
         })
 
@@ -847,7 +843,7 @@ export default {
 
       this.guiDirectionalLight.addInput(this.directionalLight, 'intensity', {
         min: 0,
-        max: 1,
+        max: 2,
         step: 0.01,
         label: 'Intensity',
       })
@@ -879,6 +875,8 @@ export default {
         })
 
       this.guiDrag = gui.addFolder({ title: `Drag`, expanded: false })
+
+      this.guiDrag.addInput(this.drag, 'enabled')
 
       this.guiDrag.addInput(this, 'azimuth', {
         min: Math.PI * -1,
@@ -935,6 +933,13 @@ export default {
 
       this.guiModel = gui.addFolder({ title: `Model`, expanded: false })
 
+      this.guiModel.addInput(exterior, 'position', {
+        x: { step: 1, max: 1000, min: -1000 },
+        y: { step: 1, max: 1000, min: -1000 },
+        z: { step: 1, max: 1000, min: -1000 },
+        label: 'Position',
+      })
+
       this.guiModel
         .addInput(this, 'modelCastShadow', {
           label: 'Cast shadow',
@@ -961,28 +966,29 @@ export default {
 
       this.guiModel.addSeparator()
 
-      this.guiModel.addInput(this, 'modelColorSelected', {
+      this.guiModel.addInput(this.colors, 'lambertMaterialColorSelected', {
         color: { type: 'float' },
         label: 'Color selected',
       })
-
-      this.guiModel.addInput(this, 'modelShadowColorSelected', {
+      this.guiModel.addInput(this.colors, 'lambertMaterialEmissiveSelected', {
+        color: { type: 'float' },
+        label: 'Emissive selected',
+      })
+      this.guiModel.addInput(this.colors, 'shadowColorSelected', {
         color: { type: 'float' },
         label: 'Shadow color selected',
       })
 
       this.guiModel.addSeparator()
       this.guiModel
-        .addInput(this, 'modelLineColor', {
+        .addInput(this.colors, 'outlineColor', {
           color: { type: 'float' },
           label: 'Outline color',
         })
         .on('change', (e) => {
-          exterior.traverse((child) => {
-            if (child.isLine || child.isLineSegments) {
-              child.material.color = e.value
-            }
-          })
+          this.lineMaterial.color = e.value
+
+          this.conditionalMaterial.uniforms.diffuse.value.set(e.value)
         })
 
       this.guiModel.addSeparator()
@@ -991,6 +997,19 @@ export default {
         .addInput(this.modelMaterial, 'color', {
           color: { type: 'float' },
           label: 'Color',
+        })
+        .on('change', (e) => {
+          exterior.traverse((child) => {
+            if (child.isMesh && !child.isShadow) {
+              child.material.color = e.value
+            }
+          })
+        })
+
+      this.guiModel
+        .addInput(this.modelMaterial, 'emissive', {
+          color: { type: 'float' },
+          label: 'Emissive',
         })
         .on('change', (e) => {
           exterior.traverse((child) => {
@@ -1045,13 +1064,10 @@ export default {
           })
         })
     },
-
     ...mapMutations({}),
-
     lerp(p1, p2, t) {
       return p1 + (p2 - p1) * t
     },
-
     genRand(min, max, decimalPlaces) {
       const rand = Math.random() * (max - min) + min
       const power = Math.pow(10, decimalPlaces)

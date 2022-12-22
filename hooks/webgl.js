@@ -1,6 +1,6 @@
 import Stats from 'stats.js'
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-// import { InteractionManager } from 'three.interactive'
+import { InteractionManager } from 'three.interactive'
 // import { InteractionManager } from '~/assets/js/webgl/InteractiveMouse'
 import Raf from '~/plugins/raf'
 import Viewport from '~/plugins/viewport'
@@ -15,6 +15,11 @@ class GL {
 
     this.exterior = new THREE.Group()
     this.exterior.name = 'exterior'
+    this.exterior.heroPosition = new THREE.Vector3(
+      -Viewport.width * 0.0125,
+      0,
+      -Viewport.width * 0.0125
+    )
     this.scene.add(this.exterior)
 
     this.gallery = new THREE.Group()
@@ -84,6 +89,12 @@ class GL {
     //   document.getElementById('__nuxt')
     // )
     // this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+
+    this.interactionManager = new InteractionManager(
+      this.renderer,
+      this.camera,
+      this.renderer.domElement
+    )
 
     this.onWindowResize()
 
@@ -188,6 +199,8 @@ class GL {
     this.stats?.begin()
 
     // this.controls.update()
+
+    this.interactionManager.update()
 
     this.renderer.render(this.scene, this.camera)
 
