@@ -74,6 +74,9 @@ export default {
         third: true,
         fourth: true,
       },
+      thresholdAngle: 40,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
     }
   },
   computed: {
@@ -429,10 +432,12 @@ export default {
       shadowFootField.material = this.shadowMaterial.clone()
       shadowFootField.isShadow = true
 
+      const edgeFootField = this.edgeObject(footField)
       const conditionalFootFied = this.conditionalObject(footField)
 
       this.footField.add(footField)
       this.footField.add(shadowFootField)
+      this.footField.add(edgeFootField)
       this.footField.add(conditionalFootFied)
     },
     initFloor() {
