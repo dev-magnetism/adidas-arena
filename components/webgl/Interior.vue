@@ -67,6 +67,13 @@ export default {
         },
         enabled: true,
       },
+      modelsVisible: {
+        rdc: true,
+        first: true,
+        second: true,
+        third: true,
+        fourth: true,
+      },
     }
   },
   computed: {
@@ -279,6 +286,36 @@ export default {
           console.log(camera)
 
           camera.updateProjectionMatrix()
+        })
+
+      this.gui
+        .addInput(this.modelsVisible, 'rdc', { label: 'RDC' })
+        .on('change', (payload) => {
+          this.groundFloor.visible = payload.value
+        })
+
+      this.gui
+        .addInput(this.modelsVisible, 'first', { label: 'First Floor' })
+        .on('change', (payload) => {
+          this.levelOne.visible = payload.value
+        })
+
+      this.gui
+        .addInput(this.modelsVisible, 'second', { label: 'Second Floor' })
+        .on('change', (payload) => {
+          this.levelTwo.visible = payload.value
+        })
+
+      this.gui
+        .addInput(this.modelsVisible, 'third', { label: 'Third Floor' })
+        .on('change', (payload) => {
+          this.levelThree.visible = payload.value
+        })
+
+      this.gui
+        .addInput(this.modelsVisible, 'fourth', { label: 'Fourth Floor' })
+        .on('change', (payload) => {
+          this.levelFour.visible = payload.value
         })
 
       this.guiDrag = this.gui.addFolder({ title: `Drag`, expanded: false })

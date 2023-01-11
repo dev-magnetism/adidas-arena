@@ -480,11 +480,10 @@ export default {
   }
 
   &__title.app-element-rich-text {
-    grid-column: 2 / span 7;
+    grid-column: 2 / span 6;
     align-self: center;
     z-index: 1;
     max-width: min(720px, desktop-vw(720px));
-    left: -5%;
     position: relative;
 
     .H1,

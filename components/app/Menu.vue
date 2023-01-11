@@ -1023,7 +1023,7 @@ export default {
       position: absolute;
       width: auto !important;
       height: 165% !important;
-      transform: translate(-25%, -55%) !important;
+      transform: translate(-25%, -50%) !important;
       top: 50%;
       left: 0;
       pointer-events: none;
@@ -1048,7 +1048,7 @@ export default {
       position: absolute;
       width: auto !important;
       height: 185% !important;
-      transform: translate(-15%, -55%) !important;
+      transform: translate(-12.5%, -50%) !important;
       top: 50%;
       left: 0;
       pointer-events: none;

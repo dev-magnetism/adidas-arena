@@ -49,13 +49,18 @@
     >
       <EKinesis :speed="15">
         <ECornerPointsPicture :size-points="6">
-          <nuxt-picture
+          <video
+            ref="video"
             class="app-home-presentation__visual-smaller picture-absolute"
-            provider="directus"
-            :src="contents.pictureBorder"
-            :alt="contents.pictureBorderAlt"
-            format="gif"
-          />
+            loop
+            muted
+            autoplay
+          >
+            <source
+              :src="`${$img.options.providers.directus.defaults.baseURL}assets/${contents.pictureBorder}`"
+              type="video/mp4"
+            />
+          </video>
         </ECornerPointsPicture>
       </EKinesis>
     </EParallax>
@@ -74,6 +79,8 @@ export default {
   },
   mounted() {
     if (this.$viewport.isMobile) return
+
+    console.log(this)
 
     gsap.fromTo(
       this.$refs.pictureCorner.$el,
