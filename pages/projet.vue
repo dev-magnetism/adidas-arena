@@ -135,9 +135,7 @@ export default {
       }
     },
   },
-  mounted() {
-    this.setExteriorVisible(false)
-  },
+  mounted() {},
   methods: {
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',

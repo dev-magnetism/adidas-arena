@@ -104,7 +104,7 @@ export default {
 
     .app-atoms-cta {
       .P2 {
-        @include font-tuskerGrotesk-medium();
+        @include font-adihausDIN-cn-medium();
 
         letter-spacing: 0.04em;
       }

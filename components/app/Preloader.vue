@@ -117,12 +117,12 @@ export default {
       const FontFaceObserver = require('fontfaceobserver')
 
       const fontData = {
-        'TuskerGrotesk-Bold': { weight: 400 },
-        'TuskerGrotesk-Medium': { weight: 400 },
+        'AdihausDIN Cn': { weight: 400 },
+        'AdihausDIN Cn Medium': { weight: 400 },
         'AdihausDIN Cn Bold': { weight: 400 },
-        'AdihausDIN Bold': { weight: 400 },
-        'AdihausDIN Medium': { weight: 400 },
         AdihausDIN: { weight: 400 },
+        'AdihausDIN Medium': { weight: 400 },
+        'AdihausDIN Bold': { weight: 400 },
       }
 
       const observers = []
@@ -147,12 +147,14 @@ export default {
       this.tlLoading = gsap.timeline({
         delay: 1,
         onUpdate: () => {
-          this.progressUI = Math.round(this.tlLoading.progress() * 100)
+          const progress = this.tlLoading.progress()
+          if (progress >= 0.9) this.setModelsPreviewed(true)
+
+          this.progressUI = Math.round(progress * 100)
         },
         onComplete: () => {
           if (!this.allLoadedActual) return
 
-          this.setExteriorVisible(false)
           this.setAllLoadedFake(true)
           this.hidePreloader()
         },
@@ -164,6 +166,7 @@ export default {
         [
           { id: 'exterior', path: '/models/exterior.gltf' },
           { id: 'cloud', path: '/models/cloud.gltf' },
+          { id: 'interior', path: '/models/interior.gltf' },
         ],
         this.onProgressLoader,
         this.onCompleteLoader
@@ -181,6 +184,8 @@ export default {
         this.setModelExteriorLoaded(true)
       } else if (id === 'cloud') {
         this.setModelCloudLoaded(true)
+      } else if (id === 'interior') {
+        this.setModelInteriorLoaded(true)
       }
     },
 
@@ -192,10 +197,11 @@ export default {
       setAllLoadedFake: 'setAllLoadedFake',
       setAllLoadedActual: 'setAllLoadedActual',
       setModelExteriorLoaded: 'setModelExteriorLoaded',
+      setModelInteriorLoaded: 'setModelInteriorLoaded',
       setModelCloudLoaded: 'setModelCloudLoaded',
       setFontsLoaded: 'setFontsLoaded',
-      setExteriorVisible: 'setExteriorVisible',
       setPreloaderHidden: 'setPreloaderHidden',
+      setModelsPreviewed: 'setModelsPreviewed',
     }),
 
     genRand(min, max, decimalPlaces) {

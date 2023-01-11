@@ -5,10 +5,12 @@ export const state = () => ({
   fontsLoaded: false,
   allLoadedActual: false,
   allLoadedFake: false,
+  modelExteriorLoaded: false,
+  modelInteriorLoaded: false,
+  modelCloudLoaded: false,
+  modelsPreviewed: false,
   preloaderHidden: false,
   preloaderLeaving: false,
-  modelExteriorLoaded: false,
-  modelCloudLoaded: false,
 
   // Content
   partnersContent: null,
@@ -17,6 +19,9 @@ export const state = () => ({
 
   // Exterior scene
   exteriorVisible: true,
+
+  // Exterior scene
+  interiorVisible: true,
 
   // UI
   menuOpen: false,
@@ -34,8 +39,14 @@ export const mutations = {
   setFontsLoaded: (state, value) => {
     state.fontsLoaded = value
   },
+  setModelsPreviewed: (state, value) => {
+    state.modelsPreviewed = value
+  },
   setModelExteriorLoaded: (state, value) => {
     state.modelExteriorLoaded = value
+  },
+  setModelInteriorLoaded: (state, value) => {
+    state.modelInteriorLoaded = value
   },
   setModelCloudLoaded: (state, value) => {
     state.modelCloudLoaded = value
@@ -69,6 +80,9 @@ export const mutations = {
   },
   setExteriorVisible: (state, value) => {
     state.exteriorVisible = value
+  },
+  setInteriorVisible: (state, value) => {
+    state.interiorVisible = value
   },
 }
 

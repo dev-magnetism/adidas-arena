@@ -124,6 +124,7 @@ export default {
   justify-content: space-between;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 
   &.arrow {
     padding: desktop-vw(15px) desktop-vw(5px) desktop-vw(15px) desktop-vw(25px);

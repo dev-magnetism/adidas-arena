@@ -7,6 +7,8 @@ const useGUI = () => {
   if (!gui) {
     gui = new Pane({ title: 'GUI', container: document.body })
     gui.registerPlugin(EssentialsPlugin)
+
+    // gui.hidden = true
   }
 
   return gui

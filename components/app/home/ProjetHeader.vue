@@ -207,7 +207,7 @@ export default {
     &__content.H3.info-text-6 {
       font-size: desktop-vw(12px);
       line-height: desktop-vw(20px);
-      @include font-adihausDIN-regular();
+      @include font-adihausDIN();
       margin-top: desktop-vw(10px);
 
       @include mobile {

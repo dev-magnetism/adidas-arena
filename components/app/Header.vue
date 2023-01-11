@@ -26,6 +26,7 @@ export default {
       menuOpen: (state) => state.menuOpen,
       menuActive: (state) => state.menuActive,
       exteriorVisible: (state) => state.exteriorVisible,
+      interiorVisible: (state) => state.interiorVisible,
       allLoadedFake: (state) => state.allLoadedFake,
       allLoadedActual: (state) => state.allLoadedActual,
       preloaderHidden: (state) => state.preloaderHidden,
@@ -106,7 +107,7 @@ export default {
   &__menu {
     font-size: 16px;
     line-height: 16px;
-    @include font-tuskerGrotesk-medium();
+    @include font-adihausDIN-cn-medium();
     text-transform: uppercase;
     margin-right: 20px;
   }

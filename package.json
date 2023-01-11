@@ -11,7 +11,7 @@
     "lint": "npm run lint:js"
   },
   "dependencies": {
-    "@directus/sdk": "^10.1.4",
+    "@directus/sdk": "^10.3.1",
     "@nuxtjs/style-resources": "^1.2.1",
     "@studio-freight/lenis": "^0.2.28",
     "@tweakpane/plugin-essentials": "^0.1.5",
@@ -19,7 +19,7 @@
     "embla-carousel": "^7.0.5",
     "fontfaceobserver": "^2.3.0",
     "glslify-loader": "^2.0.0",
-    "gsap": "npm:@gsap/shockingly@^3.11.3",
+    "gsap": "npm:@gsap/shockingly@^3.11.4",
     "html-entities": "^2.3.3",
     "include-media": "^1.4.10",
     "jssoup": "^0.0.15",
@@ -28,7 +28,7 @@
     "nuxt": "^2.15.7",
     "raw-loader": "^4.0.2",
     "stats.js": "^0.17.0",
-    "three": "^0.146.0",
+    "three": "^0.148.0",
     "three.interactive": "^1.5.0",
     "tweakpane": "^3.1.1"
   },

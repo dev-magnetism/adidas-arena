@@ -324,7 +324,7 @@ export default {
 
     .H1.wysiwyg-text {
       color: var(--c-beige) !important;
-      @include font-tuskerGrotesk-bold();
+      @include font-adihausDIN-cn-bold();
 
       .app-atoms-stroke-text {
         -webkit-text-stroke: 1px var(--c-beige) !important;

@@ -83,7 +83,7 @@
         :arrow="false"
         bg="red-adidas"
         color="black"
-        @click.native="onVisit"
+        @click.native="onVisit()"
       >
         {{ contents.visit }}
       </AtomsTitleTag>
@@ -188,6 +188,7 @@ export default {
   },
   methods: {
     onVisit() {
+      console.log('test')
       const { exterior } = useWebGL()
 
       this.viewExteriorOpen = !this.viewExteriorOpen
@@ -371,7 +372,7 @@ export default {
     align-self: flex-end;
     display: flex;
     justify-content: space-between;
-    aspect-ratio: 575/725;
+    aspect-ratio: 575/885;
     height: auto;
     position: absolute;
     right: 0;
@@ -455,6 +456,7 @@ export default {
     position: absolute;
     right: desktop-vw(20px);
     bottom: desktop-vw(20px);
+    cursor: pointer;
 
     @include mobile {
       right: mobile-vw(18px);
@@ -478,15 +480,17 @@ export default {
   }
 
   &__title.app-element-rich-text {
-    grid-column: 2 / span 6;
+    grid-column: 2 / span 7;
     align-self: center;
     z-index: 1;
-    max-width: min(565px, desktop-vw(565px));
+    max-width: min(720px, desktop-vw(720px));
+    left: -5%;
+    position: relative;
 
     .H1,
     h1 {
       font-size: min(130px, desktop-vw(130px)) !important;
-      line-height: min(140px, desktop-vw(140px)) !important;
+      line-height: min(110px, desktop-vw(110px)) !important;
 
       @include mobile {
         font-size: min(80px, mobile-vw(80px)) !important;

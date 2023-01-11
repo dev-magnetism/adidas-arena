@@ -22,6 +22,10 @@ class GL {
     )
     this.scene.add(this.exterior)
 
+    this.interior = new THREE.Group()
+    this.interior.name = 'interior'
+    this.scene.add(this.interior)
+
     this.gallery = new THREE.Group()
     this.gallery.name = 'gallery'
     this.scene.add(this.gallery)
@@ -29,7 +33,8 @@ class GL {
     this.renderer = new THREE.WebGLRenderer({
       powerPreference: 'high-performance',
       // antialias: false,
-      antialias: window.devicePixelRatio !== 2,
+      antialias: true,
+      // antialias: window.devicePixelRatio !== 2,
       stencil: true,
       precision: 'highp',
       alpha: true,

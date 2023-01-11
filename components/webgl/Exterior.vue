@@ -101,8 +101,6 @@ export default {
     },
   },
   mounted() {
-    this.clock = new THREE.Clock() // only used for animations
-
     const { exterior } = useWebGL()
 
     exterior.zoom = this.zoom
@@ -123,7 +121,7 @@ export default {
       tolerance: 5,
     })
 
-    this.$raf.add(`3d`, this.onFrame)
+    this.$raf.add(`webgl-exterior`, this.onFrame)
   },
   beforeDestroy() {
     const { exterior, scene, interactionManager } = useWebGL()
@@ -175,6 +173,7 @@ export default {
     }
 
     // GUI
+    this.gui?.dispose()
     this.guiAmbientLight?.dispose()
     this.guiDirectionalLight?.dispose()
     this.guiDrag?.dispose()
@@ -199,7 +198,7 @@ export default {
       this.onMouseLeaveArena
     )
     this.observer?.kill()
-    this.$raf.remove(`3d`, this.onFrame)
+    this.$raf.remove(`webgl-exterior`, this.onFrame)
   },
   methods: {
     onWheel(e) {
@@ -225,18 +224,9 @@ export default {
       )
     },
     onFrame({ time, deltaTime, frame, deltaRatio }) {
-      if (
-        this.modelExteriorLoaded === undefined &&
-        this.modelCloudLoaded === undefined &&
-        !this.exteriorVisible
-      )
-        return
+      if (!this.exteriorVisible) return
 
       const { camera, exterior } = useWebGL()
-
-      // const delta = this.clock.getDelta()
-
-      // this.mixer?.update(delta)
 
       this.clouds?.children?.forEach((cloud) => {
         const z = cloud.direction
@@ -272,14 +262,8 @@ export default {
     },
 
     initExterior() {
-      this.clock = new THREE.Clock()
-      this.previousTime = 0
-
       this.model = loaderManager.getModel('exterior')
       this.gltfExterior = this.model.scene
-      this.mixer = new THREE.AnimationMixer(this.gltfExterior)
-      this.action = this.mixer.clipAction(this.model.animations[0])
-      this.action.play()
 
       this.initCamera()
       this.initMaterials()
@@ -522,12 +506,12 @@ export default {
       shadowFootField.isShadow = true
 
       const edgeFootField = this.edgeObject(footField)
-      const conditionalFootField = this.conditionalObject(footField)
+      // const conditionalFootField = this.conditionalObject(footField)
 
       this.footField.add(footField)
       this.footField.add(shadowFootField)
       this.footField.add(edgeFootField)
-      this.footField.add(conditionalFootField)
+      // this.footField.add(conditionalFootField)
     },
 
     initCars() {
@@ -564,12 +548,12 @@ export default {
       shadowRoad.isShadow = true
 
       const edgeRoad = this.edgeObject(road)
-      const conditionalRoad = this.conditionalObject(road)
+      // const conditionalRoad = this.conditionalObject(road)
 
       this.road.add(road)
       this.road.add(shadowRoad)
       this.road.add(edgeRoad)
-      this.road.add(conditionalRoad)
+      // this.road.add(conditionalRoad)
     },
 
     initLamps() {
@@ -637,11 +621,11 @@ export default {
       shadowFloor.material = this.shadowMaterial.clone()
       shadowFloor.isShadow = true
 
-      const conditionalFloor = this.conditionalObject(floor)
+      // const conditionalFloor = this.conditionalObject(floor)
 
       this.floor.add(floor)
       this.floor.add(shadowFloor)
-      this.floor.add(conditionalFloor)
+      // this.floor.add(conditionalFloor)
     },
     initBuildings() {
       const { exterior } = useWebGL()
@@ -654,11 +638,11 @@ export default {
       const buildings = this.mergeObject(buildingsGroup)
 
       const edgeBuildings = this.edgeObject(buildings)
-      const conditionalBuildings = this.conditionalObject(buildings)
+      // const conditionalBuildings = this.conditionalObject(buildings)
 
       this.buildings.add(buildings)
       this.buildings.add(edgeBuildings)
-      this.buildings.add(conditionalBuildings)
+      // this.buildings.add(conditionalBuildings)
     },
     initAdidasArenaGroundFloor() {
       const { exterior } = useWebGL()
@@ -805,7 +789,12 @@ export default {
 
       const { exterior, scene } = useWebGL()
 
-      this.guiAmbientLight = gui.addFolder({
+      this.gui = gui.addFolder({
+        title: `Exterior`,
+        expanded: false,
+      })
+
+      this.guiAmbientLight = this.gui.addFolder({
         title: `Ambient Light`,
         expanded: false,
       })
@@ -822,7 +811,7 @@ export default {
         label: 'Intensity',
       })
 
-      this.guiDirectionalLight = gui.addFolder({
+      this.guiDirectionalLight = this.gui.addFolder({
         title: `Directional Light`,
         expanded: false,
       })
@@ -892,7 +881,7 @@ export default {
           this.directionalLight.shadow.camera.updateProjectionMatrix()
         })
 
-      this.guiDrag = gui.addFolder({ title: `Drag`, expanded: false })
+      this.guiDrag = this.gui.addFolder({ title: `Drag`, expanded: false })
 
       this.guiDrag.addInput(this.drag, 'enabled')
 
@@ -917,7 +906,7 @@ export default {
         step: 0.0001,
       })
 
-      this.guiZoom = gui.addFolder({ title: `Zoom`, expanded: false })
+      this.guiZoom = this.gui.addFolder({ title: `Zoom`, expanded: false })
 
       this.guiZoom.addInput(this.zoom, 'range', {
         min: 5,
@@ -940,7 +929,7 @@ export default {
         step: 0.0001,
       })
 
-      this.guiClouds = gui.addFolder({ title: `Clouds`, expanded: false })
+      this.guiClouds = this.gui.addFolder({ title: `Clouds`, expanded: false })
 
       this.guiClouds.addInput(this.cloudsParams, 'speed', {
         min: 0.0025,
@@ -949,7 +938,7 @@ export default {
         step: 0.001,
       })
 
-      this.guiModel = gui.addFolder({ title: `Model`, expanded: false })
+      this.guiModel = this.gui.addFolder({ title: `Model`, expanded: false })
 
       this.guiModel.addInput(exterior, 'position', {
         x: { step: 1, max: 1000, min: -1000 },

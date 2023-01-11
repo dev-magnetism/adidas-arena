@@ -1,6 +1,6 @@
 @mixin h1() {
   font-size: desktop-vw(130px);
-  line-height: desktop-vw(140px);
+  line-height: desktop-vw(120px);
   text-transform: uppercase;
 
   @include mobile {
@@ -9,18 +9,18 @@
   }
 
   &.medium {
-    @include font-tuskerGrotesk-medium();
+    @include font-adihausDIN-cn-medium();
   }
   &.bold,
   .bold,
   strong {
-    @include font-tuskerGrotesk-bold();
+    @include font-adihausDIN-cn-bold();
   }
 }
 
 @mixin h2() {
   font-size: desktop-vw(100px);
-  line-height: desktop-vw(100px);
+  line-height: desktop-vw(90px);
   text-transform: uppercase;
 
   @include mobile {
@@ -29,18 +29,18 @@
   }
 
   &.medium {
-    @include font-tuskerGrotesk-medium();
+    @include font-adihausDIN-cn-medium();
   }
 
   &.bold,
   .bold {
-    @include font-tuskerGrotesk-bold();
+    @include font-adihausDIN-cn-bold();
   }
 }
 
 @mixin h3() {
   font-size: desktop-vw(72px);
-  line-height: desktop-vw(72px);
+  line-height: desktop-vw(65px);
   letter-spacing: -0.02em;
   text-transform: uppercase;
   @include font-adihausDIN-cn-bold();
@@ -100,7 +100,7 @@
   }
 
   &.regular {
-    @include font-adihausDIN-regular();
+    @include font-adihausDIN();
   }
 
   &.bold {
@@ -122,7 +122,7 @@
   }
 
   &.regular {
-    @include font-adihausDIN-regular();
+    @include font-adihausDIN();
   }
 
   &.bold {
@@ -132,14 +132,6 @@
   &.medium {
     @include font-adihausDIN-medium();
   }
-}
-
-@mixin font-tuskerGrotesk-bold() {
-  font-family: 'TuskerGrotesk-Bold';
-}
-
-@mixin font-tuskerGrotesk-medium() {
-  font-family: 'TuskerGrotesk-Medium';
 }
 
 @mixin font-adihausDIN-cn-bold() {
@@ -162,6 +154,6 @@
   font-family: 'AdihausDIN Medium';
 }
 
-@mixin font-adihausDIN-regular() {
+@mixin font-adihausDIN() {
   font-family: 'AdihausDIN';
 }

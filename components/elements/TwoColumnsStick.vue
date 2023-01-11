@@ -90,7 +90,7 @@ export default {
       .wysiwyg-text.H2 {
         font-size: desktop-vw(110px);
         line-height: desktop-vw(120px);
-        @include font-tuskerGrotesk-bold();
+        @include font-adihausDIN-cn-bold();
 
         @include mobile {
           font-size: mobile-vw(70px);

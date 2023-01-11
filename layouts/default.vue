@@ -2,15 +2,14 @@
   <div class="app">
     <div ref="layerBlue" class="app-transition-layer blue" />
     <div ref="layerRed" class="app-transition-layer red" />
-    <AppCursor v-if="!$viewport.isMobile" />
+    <!-- <AppCursor v-if="!$viewport.isMobile" /> -->
     <AppPreloader />
     <!-- <AppCookie /> -->
     <AppMenu />
     <AppHeader />
     <nuxt class="app-main" />
     <AppScene />
-    <WebglInfo v-if="!$viewport.isMobile" />
-    <WebglExterior />
+    <WebglScene />
   </div>
 </template>
 

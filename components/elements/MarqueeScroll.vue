@@ -47,7 +47,7 @@ export default {
             ? '#181818'
             : Math.random() < 0.5
             ? '#0000FF'
-            : '#FF4A48'
+            : '#E3530F'
 
         return color
       })
