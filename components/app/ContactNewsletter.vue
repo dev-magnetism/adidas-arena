@@ -195,7 +195,7 @@ export default {
         }
 
         &::placeholder {
-          color: rgba(24, 24, 24, 0.25);
+          color: rgba(245, 245, 243, 0.25);
         }
       }
 

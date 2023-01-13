@@ -10,7 +10,7 @@
     >
       <nuxt-img
         provider="directus"
-        :src="logo.logo_black_white"
+        :src="logo.logo"
         :alt="logo.logo_alt"
         format="webp"
       />
@@ -55,7 +55,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    outline: 1px solid var(--c-black);
+    outline: 1px solid var(--c-grey);
 
     img {
       width: 50%;

@@ -13,7 +13,7 @@
   --c-light-blue: #0000ff;
   --c-red-adidas: #e3530f;
   --c-light-red: #ed5c5a;
-  --c-beige: #fbf5ee;
+  --c-grey: #f5f5f3;
   --c-transparent: rgba(0, 0, 0, 0);
 }
 
@@ -45,7 +45,7 @@ body {
 }
 
 body {
-  background-color: var(--c-beige) !important;
+  background-color: var(--c-grey) !important;
 }
 
 *::selection {

@@ -1,10 +1,10 @@
 <template>
   <div class="app-error">
-    <!-- {{ error }} -->
     <div class="app-error__content">
-      <TH1 class="app-error__content__title-stroke">Désolé !</TH1>
+      <TH1 weight="bold" class="app-error__content__title-stroke">Désolé !</TH1>
       <TH2 weight="bold" class="app-error__content__subtitle"
-        >la page que vous recherchez</TH2
+        >la page que <br />
+        vous recherchez</TH2
       >
       <TH1 class="app-error__content__title"> n’existe pas.</TH1>
     </div>
@@ -27,7 +27,7 @@ export default {
 <style lang="scss">
 .app-error {
   height: 100vh;
-  background: var(--c-beige);
+  background: var(--c-grey);
   z-index: 3 !important;
   position: fixed;
   width: 100%;

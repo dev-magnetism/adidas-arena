@@ -413,7 +413,7 @@ export default {
           '<10%'
         )
         .set(this.$el, {
-          backgroundColor: '#FBF5EE',
+          backgroundColor: '#F5F5F3',
           opacity: 1,
         })
         .set(this.$refs.cta, {

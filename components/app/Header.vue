@@ -8,7 +8,9 @@
       <nuxt-link to="/">{{ headerNameMobile }}</nuxt-link>
     </TH3>
     <div class="app-header__cta" @click="onClickBurger">
-      <p v-if="!$viewport.isMobile" class="app-header__menu">{{ menuName }}</p>
+      <TP1 v-if="!$viewport.isMobile" weight="bold" class="app-header__menu">
+        {{ menuName }}
+      </TP1>
       <div class="app-header__burger">
         <span class="app-header__burger__line top" />
         <span class="app-header__burger__line bottom" />

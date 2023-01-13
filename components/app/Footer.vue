@@ -1,7 +1,7 @@
 <template>
   <div class="app-footer grid-inner">
     <div class="app-footer__principal">
-      <TH2 class="app-footer__newsletter-title">
+      <TH2 color="grey" class="app-footer__newsletter-title">
         {{ contents.data.footer_title }}
       </TH2>
       <form id="form1" action="#" class="app-footer__newsletter">
@@ -35,7 +35,7 @@
             required
           />
           <label for="accept-politic">
-            <TP2>
+            <TP2 color="grey">
               J’accepte la
               <a href="https://www.magnetism.fr/" :blank="true">
                 politique de confidentialité
@@ -46,8 +46,11 @@
         </div>
       </form>
       <div class="app-footer__links">
-        <SvgArenaLogo v-if="!$viewport.isMobile" class="app-footer__logo" />
-        <TP2 v-else weight="bold" class="app-footer__links-title">
+        <SvgArenaLogoFooter
+          v-if="!$viewport.isMobile"
+          class="app-footer__logo"
+        />
+        <TP2 v-else color="grey" weight="bold" class="app-footer__links-title">
           ADIDAS ARENA
         </TP2>
         <div class="app-footer__links__ul first-column">
@@ -57,7 +60,7 @@
             :href="item.app_footer_links_left_link"
             :external="false"
           >
-            <TP2 weight="bold">
+            <TP2 color="grey" weight="bold">
               {{ item.app_footer_links_left_text }}
             </TP2>
           </AtomsLink>
@@ -69,7 +72,7 @@
             :href="item.app_footer_links_right_link"
             :external="false"
           >
-            <TP2 weight="bold">
+            <TP2 color="grey" weight="bold">
               {{ item.app_footer_links_right_text }}
             </TP2>
           </AtomsLink>
@@ -111,18 +114,21 @@
       </div>
     </div>
     <div class="app-footer__partners">
-      <TH2 class="app-footer__partners-title"> NOS PARTENAIREs </TH2>
+      <TH2 color="grey" class="app-footer__partners-title">
+        NOS PARTENAIREs
+      </TH2>
       <EGridLogosFooter :contents="logos" />
     </div>
     <div class="app-footer__bottom">
-      <TP2> ©2022 - Tous droits réservés</TP2>
+      <TP2 color="grey"> ©2022 - Tous droits réservés</TP2>
       <AtomsLink href="#" :external="false">
-        <TP2> Cookies</TP2>
+        <TP2 color="grey"> Cookies</TP2>
       </AtomsLink>
       <AtomsLink href="#" :external="false">
-        <TP2> Mentions légales</TP2>
+        <TP2 color="grey"> Mentions légales</TP2>
       </AtomsLink>
     </div>
+    <SvgFooterBrush class="app-footer__brush" />
   </div>
 </template>
 
@@ -197,11 +203,8 @@ export default {
 .app-footer {
   padding-top: desktop-vw(95px);
   padding-bottom: desktop-vw(40px);
-  background: var(--c-red-adidas);
-  background-image: url('/imgs/footer/background.webp');
-  background-repeat: no-repeat;
-  background-size: 85% auto;
-  background-position: right bottom;
+  background: var(--c-black);
+  position: relative;
 
   @include mobile {
     padding-top: mobile-vw(60px);
@@ -291,14 +294,14 @@ export default {
 
       &.valid {
         .P2 {
-          color: rgba(24, 24, 24, 1) !important;
+          color: rgba(245, 245, 243, 1) !important;
         }
       }
 
       .P2 {
         font-size: desktop-vw(16px);
         line-height: desktop-vw(21px);
-        color: rgba(24, 24, 24, 0.25) !important;
+        color: var(--c-grey);
         cursor: pointer;
         transition: color 0.4s var(--ease-out-cubic);
 
@@ -310,7 +313,6 @@ export default {
 
       a {
         text-decoration: underline;
-        color: rgba(24, 24, 24, 1);
         @include font-adihausDIN-medium();
         position: relative;
       }
@@ -340,7 +342,7 @@ export default {
         height: 12px;
         width: 12px;
         background-color: transparent;
-        border: 1px solid var(--c-black);
+        border: 1px solid var(--c-grey);
         pointer-events: none;
         cursor: pointer;
 
@@ -348,7 +350,7 @@ export default {
           content: '';
           width: 75%;
           height: 75%;
-          background: var(--c-black);
+          background: var(--c-grey);
           position: absolute;
           top: 50%;
           left: 50%;
@@ -367,6 +369,7 @@ export default {
       line-height: desktop-vw(106px);
       letter-spacing: -0.04em;
       width: calc(100% - (desktop-vw(90px) + 60px));
+      color: var(--c-grey);
 
       @include mobile {
         width: calc(80% - (mobile-vw(20px)));
@@ -376,12 +379,12 @@ export default {
       }
 
       &::placeholder {
-        color: rgba(24, 24, 24, 0.25);
+        color: rgba(245, 245, 243, 0.25);
       }
     }
 
     &__submit {
-      outline: 1px solid rgb(24 24 24 / 25%);
+      outline: 1px solid rgba(245, 245, 243, 0.25);
       width: desktop-vw(56px);
       height: desktop-vw(56px);
       display: flex;
@@ -411,7 +414,7 @@ export default {
           opacity: 1;
 
           path {
-            fill: var(--c-red-adidas);
+            fill: var(--c-black);
           }
         }
       }
@@ -422,7 +425,7 @@ export default {
         left: 0;
         width: 100%;
         height: 100%;
-        background: var(--c-black);
+        background: var(--c-grey);
         z-index: 0;
         transform: scaleY(0);
         transform-origin: top center;
@@ -480,6 +483,7 @@ export default {
         @include font-adihausDIN-cn-bold();
         text-transform: uppercase;
         display: inline-block;
+        letter-spacing: 0.04em;
       }
 
       &:first-of-type {
@@ -511,9 +515,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-top: 1px solid var(--c-black);
-    border-left: 1px solid var(--c-black);
-    border-bottom: 1px solid var(--c-black);
+    border-top: 1px solid var(--c-grey);
+    border-left: 1px solid var(--c-grey);
+    border-bottom: 1px solid var(--c-grey);
     cursor: pointer;
     position: relative;
 
@@ -531,7 +535,7 @@ export default {
       }
       svg {
         path {
-          fill: var(--c-red-adidas);
+          fill: var(--c-black);
         }
       }
     }
@@ -543,15 +547,15 @@ export default {
       left: 0;
       width: 100%;
       height: 100%;
-      background: var(--c-black);
+      background: var(--c-grey);
       transform-origin: top center;
       transform: scaleY(0);
       transition: transform 0.65s var(--ease-out-expo);
     }
 
     &:last-child {
-      border-left: 1px solid var(--c-black);
-      border-right: 1px solid var(--c-black);
+      border-left: 1px solid var(--c-grey);
+      border-right: 1px solid var(--c-grey);
     }
   }
 
@@ -609,6 +613,16 @@ export default {
       font-size: mobile-vw(32px);
       line-height: mobile-vw(40px);
     }
+  }
+
+  &__brush {
+    position: absolute;
+    bottom: 0;
+    left: -2.5%;
+    z-index: 0;
+    width: 70%;
+    height: auto;
+    pointer-events: none;
   }
 }
 </style>

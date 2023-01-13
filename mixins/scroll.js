@@ -61,6 +61,8 @@ export default {
   },
   methods: {
     onScrollLenis(args) {
+      ScrollTrigger.update()
+
       this.$nuxt.$emit('app:scroll', { ...args })
     },
     onFrame({ time, deltaTime }) {

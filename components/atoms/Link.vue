@@ -77,7 +77,7 @@ export default {
     right: 0;
     top: calc(100%);
     height: 1px;
-    background: var(--c-black);
+    background: var(--c-grey);
     transform: scaleX(var(--scale));
     transform-origin: left center;
     transition: transform 0.3s cubic-bezier(0.51, 0.92, 0.24, 1);

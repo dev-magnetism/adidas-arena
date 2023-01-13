@@ -218,7 +218,7 @@ export default {
   position: fixed;
   width: 100%;
   height: 100vh;
-  background-color: var(--c-beige);
+  background-color: var(--c-grey);
   z-index: 999;
   overflow: hidden;
   z-index: 10;

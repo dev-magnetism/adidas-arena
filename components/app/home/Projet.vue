@@ -4,8 +4,8 @@
       <div class="app-home-projet__wrapper">
         <AtomsCornerPoints
           ref="points"
-          :border-color="!$viewport.isMobile ? 'beige' : 'black'"
-          :points-color="!$viewport.isMobile ? 'beige' : 'black'"
+          :border-color="!$viewport.isMobile ? 'grey' : 'black'"
+          :points-color="!$viewport.isMobile ? 'grey' : 'black'"
         />
         <div ref="inner" class="app-home-projet__inner">
           <div class="app-home-projet__main">
@@ -57,7 +57,7 @@
           <div ref="lottieArrow" class="app-home-projet__arrow" />
           <div ref="lottieLittleArrow" class="app-home-projet__little-arrow" />
 
-          <AtomsCTA class="app-home-projet__cta" color="beige" bg="blue-adidas">
+          <AtomsCTA class="app-home-projet__cta" color="grey" bg="blue-adidas">
             {{ contents.projetCtaTitle }}
           </AtomsCTA>
 

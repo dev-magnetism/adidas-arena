@@ -41,6 +41,7 @@ export default {
           bold: this.weight === 'bold',
           medium: this.weight === 'medium',
           regular: this.weight === 'regular',
+          'bold-normal': this.weight === 'bold-normal',
         },
       ]
     },

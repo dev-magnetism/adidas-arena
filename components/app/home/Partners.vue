@@ -92,7 +92,7 @@ export default {
 <style lang="scss">
 .app-home-partners {
   position: relative;
-  padding-bottom: desktop-vw(275px);
+  padding-bottom: desktop-vw(400px);
 
   @include mobile {
     row-gap: 0px;

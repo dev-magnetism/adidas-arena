@@ -39,7 +39,6 @@ export default {
         logoColor: new THREE.Color(0x000000),
       },
       rotation: [0, 0, 0],
-      polar: [0, Math.PI / 2],
       azimuth: { min: -Math.PI / 1.4, max: Math.PI * 1 },
       directionalLightCastShadow: true,
       modelCastShadow: true,
@@ -175,7 +174,7 @@ export default {
       this.initGroundFloor()
       this.initLevelOne()
       this.initLevelTwo()
-      // this.initLevelThree()
+      this.initLevelThree()
       this.initLevelFour()
       this.initFootField()
 
@@ -407,7 +406,8 @@ export default {
 
       this.lineMaterial = new MeshLineMaterial({
         color: this.colors.outlineColor,
-        sizeAttenuation: 0.5,
+        sizeAttenuation: 1,
+        // lineWidth: 0.05,
         transparent: true,
         resolution: new THREE.Vector2(
           this.$viewport.width,
@@ -456,10 +456,12 @@ export default {
       shadowFloor.material = this.shadowMaterial.clone()
       shadowFloor.isShadow = true
 
+      const edgeFloor = this.edgeObject(floor)
       const conditionalFloor = this.conditionalObject(floor)
 
       this.floor.add(floor)
       this.floor.add(shadowFloor)
+      this.floor.add(edgeFloor)
       this.floor.add(conditionalFloor)
     },
     initGroundFloor() {
@@ -497,7 +499,7 @@ export default {
 
       const levelOneGroup = this.model
         .getObjectByName('Arene')
-        .getObjectByName('NIveau_1')
+        .getObjectByName('Niveau_1')
 
       const levelOne = this.mergeObject(levelOneGroup)
 
@@ -560,13 +562,13 @@ export default {
       // shadowGroundFloor.material = this.shadowMaterial.clone()
       // shadowGroundFloor.isShadow = true
 
-      const edgeGroundFloor = this.edgeObject(levelThree)
-      const conditionalFloor = this.conditionalObject(levelThree)
+      const edgeLevelThree = this.edgeObject(levelThree)
+      const conditionalLevelThree = this.conditionalObject(levelThree)
 
       this.levelThree.add(levelThree)
       // this.levelThree.add(shadowGroundFloor)
-      this.levelThree.add(edgeGroundFloor)
-      this.levelThree.add(conditionalFloor)
+      this.levelThree.add(edgeLevelThree)
+      this.levelThree.add(conditionalLevelThree)
     },
 
     initLevelFour() {

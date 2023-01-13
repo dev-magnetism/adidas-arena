@@ -8,18 +8,18 @@
       <div class="app-projet-work-progress__infos">
         <div class="app-projet-work-progress__infos__items">
           <div class="app-projet-work-progress__infos__item">
-            <TP2 color="beige" weight="bold">
+            <TP2 color="grey" weight="bold">
               {{ contents.firstRow.surtitle }}
             </TP2>
-            <TH4 color="beige" weight="bold">
+            <TH4 color="grey" weight="bold">
               {{ contents.firstRow.title }}
             </TH4>
           </div>
           <div class="app-projet-work-progress__infos__item">
-            <TP2 color="beige" weight="bold">
+            <TP2 color="grey" weight="bold">
               {{ contents.secondRow.surtitle }}
             </TP2>
-            <TH4 color="beige" weight="bold">
+            <TH4 color="grey" weight="bold">
               {{ contents.secondRow.title }}
             </TH4>
           </div>
@@ -27,14 +27,14 @@
         <div class="app-projet-work-progress__infos__description">
           <TP2
             class="app-projet-work-progress__infos__description__title"
-            color="beige"
+            color="grey"
             weight="bold"
           >
             {{ contents.column.surtitle }}
           </TP2>
           <TP2
             class="app-projet-work-progress__infos__description__text"
-            color="beige"
+            color="grey"
           >
             {{ contents.column.description }}
           </TP2>
@@ -307,7 +307,7 @@ export default {
       .P2.wysiwyg-text {
         text-transform: uppercase;
         @include font-adihausDIN-medium();
-        color: var(--c-beige) !important;
+        color: var(--c-grey) !important;
       }
     }
   }
@@ -323,11 +323,11 @@ export default {
     }
 
     .H1.wysiwyg-text {
-      color: var(--c-beige) !important;
+      color: var(--c-grey) !important;
       @include font-adihausDIN-cn-bold();
 
       .app-atoms-stroke-text {
-        -webkit-text-stroke: 1px var(--c-beige) !important;
+        -webkit-text-stroke: 1px var(--c-grey) !important;
       }
     }
   }
@@ -336,7 +336,7 @@ export default {
     grid-column: 9 / span 4;
     display: flex;
     align-self: center;
-    border: 1px solid var(--c-beige);
+    border: 1px solid var(--c-grey);
 
     @include mobile {
       grid-row: 2;
@@ -357,14 +357,14 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      border-right: 1px solid var(--c-beige);
+      border-right: 1px solid var(--c-grey);
 
       @include mobile {
         padding: mobile-vw(10px) mobile-vw(12px);
       }
 
       &:not(:last-child) {
-        border-bottom: 1px solid var(--c-beige);
+        border-bottom: 1px solid var(--c-grey);
       }
 
       .P2 {

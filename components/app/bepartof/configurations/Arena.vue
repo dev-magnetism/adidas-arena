@@ -89,7 +89,7 @@
         <div class="app-be-part-of-configurations-arena__controller__f-r">
           <TP1
             class="app-be-part-of-configurations-arena__controller__f-r__title"
-            color="beige"
+            color="grey"
           >
             Configuration
           </TP1>
@@ -105,7 +105,7 @@
               v-show="currentIndex === index"
               :key="`configuration-${index}`"
               class="app-be-part-of-configurations-arena__controller__f-r__text"
-              color="beige"
+              color="grey"
             >
               {{ item.configuration }}
             </TH4>
@@ -117,7 +117,7 @@
           >
             <TP1
               class="app-be-part-of-configurations-arena__controller__s-r__title"
-              color="beige"
+              color="grey"
             >
               CAPACITE TOTALE
             </TP1>
@@ -134,7 +134,7 @@
                 v-show="currentIndex === index"
                 :key="`capacite-${index}`"
                 class="app-be-part-of-configurations-arena__controller__s-r__text"
-                color="beige"
+                color="grey"
               >
                 {{ item.capacite }}
               </TH4>
@@ -145,7 +145,7 @@
           >
             <TP1
               class="app-be-part-of-configurations-arena__controller__s-r__title"
-              color="beige"
+              color="grey"
             >
               TYPE DE JAUGE
             </TP1>
@@ -161,7 +161,7 @@
                 v-show="currentIndex === index"
                 :key="`jauge-${index}`"
                 class="app-be-part-of-configurations-arena__controller__s-r__text"
-                color="beige"
+                color="grey"
               >
                 {{ item.jauge }}
               </TH4>
@@ -177,7 +177,7 @@
           </div>
           <TP1
             class="app-be-part-of-configurations-arena__controller__t-r__text"
-            color="beige"
+            color="grey"
           >
             {{ currentIndex + 1 }} - {{ contents.items.length }}
           </TP1>
@@ -191,10 +191,10 @@
       </div>
 
       <div class="app-be-part-of-configurations-arena__paragraphs">
-        <TP1 color="beige">
+        <TP1 color="grey">
           {{ contents.columnLeft }}
         </TP1>
-        <TP1 color="beige">
+        <TP1 color="grey">
           {{ contents.columnRight }}
         </TP1>
       </div>
@@ -391,10 +391,10 @@ export default {
     }
 
     .H1 {
-      color: var(--c-beige) !important;
+      color: var(--c-grey) !important;
 
       .app-atoms-stroke-text {
-        -webkit-text-stroke: 1px var(--c-beige) !important;
+        -webkit-text-stroke: 1px var(--c-grey) !important;
       }
     }
   }
@@ -415,7 +415,7 @@ export default {
     &__navigation {
       width: desktop-vw(24px);
       height: desktop-vw(24px);
-      background: var(--c-beige);
+      background: var(--c-grey);
       border-radius: 50%;
       display: flex;
       justify-content: center;

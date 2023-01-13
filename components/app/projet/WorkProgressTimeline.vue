@@ -9,11 +9,11 @@
         class="app-projet-work-progress-timeline__item"
         @click="onChangeIndex(index)"
       >
-        <TP1 weight="bold" color="beige">
+        <TP1 weight="bold" color="grey">
           <span ref="cross" class="app-projet-work-progress-timeline__cross" />
           {{ item.work_progress_items_title }}
         </TP1>
-        <TP2 color="beige">
+        <TP2 color="grey">
           {{ item.work_progress_items_subtitle }}
         </TP2>
       </div>

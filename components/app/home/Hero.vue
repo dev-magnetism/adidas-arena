@@ -59,7 +59,7 @@
         <div class="app-home-hero__view-exterior__baseline">
           <AtomsTitleTag
             class="app-home-hero__view-exterior__coordinate"
-            bg="beige"
+            bg="grey"
             color="black"
           >
             {{ contents.coordinate }}
@@ -348,6 +348,8 @@ export default {
     top: 30%;
     left: 0;
     z-index: 9;
+    width: desktop-vw(110px);
+    height: desktop-vw(110px);
 
     @include mobile {
       display: none;

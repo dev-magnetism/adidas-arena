@@ -14,14 +14,14 @@
           class="app-projet-work-progress-timeline-mobile__item"
           @click="onChangeIndex(index)"
         >
-          <TP1 weight="bold" color="beige">
+          <TP1 weight="bold" color="grey">
             <div
               ref="cross"
               class="app-projet-work-progress-timeline-mobile__cross"
             />
             {{ item.work_progress_items_title }}
           </TP1>
-          <TP2 color="beige">
+          <TP2 color="grey">
             {{ item.work_progress_items_subtitle }}
           </TP2>
         </div>
@@ -136,7 +136,7 @@ export default {
     left: 0;
     width: 100%;
     height: 1px;
-    background: var(--c-beige);
+    background: var(--c-grey);
   }
 
   &__items {
