@@ -572,6 +572,10 @@ export default {
 
   .projet-visual {
     transform: scale(0);
+
+    @include mobile {
+      transform: scale(1);
+    }
   }
 
   picture {

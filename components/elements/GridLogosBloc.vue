@@ -201,8 +201,8 @@ export default {
   background-color: var(--c-white);
   cursor: pointer;
 
-  @include hover {
-    &.transparent {
+  &.transparent {
+    @include hover {
       &:hover {
         .app-element-grid-logos-bloc__you {
           transform: scale(1);

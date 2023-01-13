@@ -9,9 +9,9 @@
     <div ref="layerBlue" class="app-menu__layer blue" />
 
     <div ref="cta" class="app-menu__cta" @click="onCloseBurger">
-      <p v-if="!$viewport.isMobile" class="app-menu__cta__menu">
+      <TP1 v-if="!$viewport.isMobile" weight="bold" class="app-menu__cta__menu">
         {{ menuCloseName }}
-      </p>
+      </TP1>
       <div
         class="app-menu__cta__burger"
         :class="{ active: burgerCloseActivated }"
@@ -928,9 +928,6 @@ export default {
     }
 
     &__menu {
-      font-size: 16px;
-      line-height: 16px;
-      @include font-adihausDIN-cn-medium();
       text-transform: uppercase;
       margin-right: 20px;
     }

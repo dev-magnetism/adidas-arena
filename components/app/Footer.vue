@@ -1,7 +1,7 @@
 <template>
   <div class="app-footer grid-inner">
     <div class="app-footer__principal">
-      <TH2 color="grey" class="app-footer__newsletter-title">
+      <TH2 weight="bold" color="grey" class="app-footer__newsletter-title">
         {{ contents.data.footer_title }}
       </TH2>
       <form id="form1" action="#" class="app-footer__newsletter">
@@ -46,13 +46,7 @@
         </div>
       </form>
       <div class="app-footer__links">
-        <SvgArenaLogoFooter
-          v-if="!$viewport.isMobile"
-          class="app-footer__logo"
-        />
-        <TP2 v-else color="grey" weight="bold" class="app-footer__links-title">
-          ADIDAS ARENA
-        </TP2>
+        <SvgArenaLogoFooter class="app-footer__logo" />
         <div class="app-footer__links__ul first-column">
           <AtomsLink
             v-for="(item, index) in contents.data.app_footer_links_left"
@@ -114,8 +108,8 @@
       </div>
     </div>
     <div class="app-footer__partners">
-      <TH2 color="grey" class="app-footer__partners-title">
-        NOS PARTENAIREs
+      <TH2 weight="bold" color="grey" class="app-footer__partners-title">
+        NOS PARTENAIRES
       </TH2>
       <EGridLogosFooter :contents="logos" />
     </div>
@@ -128,7 +122,8 @@
         <TP2 color="grey"> Mentions légales</TP2>
       </AtomsLink>
     </div>
-    <SvgFooterBrush class="app-footer__brush" />
+    <SvgFooterBrush v-if="!$viewport.isMobile" class="app-footer__brush" />
+    <SvgFooterBrushMobile v-else class="app-footer__brush-mobile" />
   </div>
 </template>
 
@@ -205,6 +200,8 @@ export default {
   padding-bottom: desktop-vw(40px);
   background: var(--c-black);
   position: relative;
+  width: 100vw;
+  overflow: hidden;
 
   @include mobile {
     padding-top: mobile-vw(60px);
@@ -216,6 +213,7 @@ export default {
     grid-column: 1 / span 12;
     margin-left: auto;
     margin-top: desktop-vw(100px);
+    z-index: 1;
 
     @include mobile {
       grid-column: 1 / span 6;
@@ -449,6 +447,7 @@ export default {
 
   &__principal {
     grid-column: 1 / span 6;
+    z-index: 1;
 
     @include mobile {
       grid-column: 1 / span 6;
@@ -461,7 +460,7 @@ export default {
     margin-top: desktop-vw(95px);
 
     @include mobile {
-      margin-top: mobile-vw(60px);
+      margin-top: mobile-vw(50px);
       flex-flow: row wrap;
     }
 
@@ -529,13 +528,15 @@ export default {
       }
     }
 
-    &:hover {
-      &::after {
-        transform: scaleY(1);
-      }
-      svg {
-        path {
-          fill: var(--c-black);
+    @include hover {
+      &:hover {
+        &::after {
+          transform: scaleY(1);
+        }
+        svg {
+          path {
+            fill: var(--c-black);
+          }
         }
       }
     }
@@ -561,6 +562,7 @@ export default {
 
   &__partners {
     grid-column: 8 / span 5;
+    z-index: 1;
 
     @include mobile {
       grid-column: 1 / span 6;
@@ -582,7 +584,7 @@ export default {
     margin-right: desktop-vw(100px);
 
     @include mobile {
-      display: none;
+      margin-bottom: mobile-vw(30px);
     }
   }
   &__links-title.P2 {
@@ -623,6 +625,23 @@ export default {
     width: 70%;
     height: auto;
     pointer-events: none;
+
+    @include mobile {
+      display: none;
+    }
+  }
+  &__brush-mobile {
+    position: absolute;
+    bottom: -17.5%;
+    left: 0;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+    display: none;
+
+    @include mobile {
+      display: block;
+    }
   }
 }
 </style>

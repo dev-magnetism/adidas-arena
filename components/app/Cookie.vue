@@ -6,7 +6,7 @@
     </TP1>
 
     <div class="app-cookie__bottom">
-      <AtomsCTAButton>Test</AtomsCTAButton>
+      <AtomsCTA>Test</AtomsCTA>
 
       <AtomsLink :href="'google.fr'" :external="true">
         <TP2 weight="bold"> test </TP2>
