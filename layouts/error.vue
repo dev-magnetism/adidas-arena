@@ -51,7 +51,7 @@
 <script>
 import { mapState } from 'vuex'
 
-import lottie from 'lottie-web'
+// import lottie from 'lottie-web'
 
 import pageTransition from '@/mixins/page-transition'
 
@@ -85,78 +85,71 @@ export default {
 
   methods: {
     runLotties() {
-      this.lottieCircleBlue.play()
-      this.lottieGribouillisBlue.play()
-      this.lottieFlecheRed1.play()
-      this.lottieFlecheRed2.play()
-      this.lottieFlecheRed3.play()
-      this.lottieFlecheRed4.play()
-      this.lottieFlecheBlue.play()
+      // this.lottieCircleBlue.play()
+      // this.lottieGribouillisBlue.play()
+      // this.lottieFlecheRed1.play()
+      // this.lottieFlecheRed2.play()
+      // this.lottieFlecheRed3.play()
+      // this.lottieFlecheRed4.play()
+      // this.lottieFlecheBlue.play()
     },
     initLotties() {
-      const lottieCircleBlueJson = require(`@/assets/lotties/404/Cercle_bleu.json`)
-      this.lottieCircleBlue = lottie.loadAnimation({
-        container: this.$refs.lottieCircleBlue,
-        loop: false,
-        autoplay: false,
-        animationData: lottieCircleBlueJson,
-      })
-
-      const lottieGribouillisBlueJson = require(`@/assets/lotties/404/Gribouillis_bleu.json`)
-      this.lottieGribouillisBlue = lottie.loadAnimation({
-        container: this.$refs.lottieGribouillisBlue,
-        loop: false,
-        autoplay: false,
-        animationData: lottieGribouillisBlueJson,
-      })
-
-      const lottieGribouillisRedJson = require(`@/assets/lotties/404/Gribouillis_rouge.json`)
-      this.lottieGribouillisRed = lottie.loadAnimation({
-        container: this.$refs.lottieGribouillisRed,
-        loop: false,
-        autoplay: false,
-        animationData: lottieGribouillisRedJson,
-      })
-
-      const lottieFlecheRed1 = require(`@/assets/lotties/404/Fleche_rouge_1.json`)
-      this.lottieFlecheRed1 = lottie.loadAnimation({
-        container: this.$refs.lottieFlecheRed1,
-        loop: false,
-        autoplay: false,
-        animationData: lottieFlecheRed1,
-      })
-
-      const lottieFlecheRed2 = require(`@/assets/lotties/404/Fleche_rouge_2.json`)
-      this.lottieFlecheRed2 = lottie.loadAnimation({
-        container: this.$refs.lottieFlecheRed2,
-        loop: false,
-        autoplay: false,
-        animationData: lottieFlecheRed2,
-      })
-
-      const lottieFlecheRed3 = require(`@/assets/lotties/404/Fleche_rouge_3.json`)
-      this.lottieFlecheRed3 = lottie.loadAnimation({
-        container: this.$refs.lottieFlecheRed3,
-        loop: false,
-        autoplay: false,
-        animationData: lottieFlecheRed3,
-      })
-
-      const lottieFlecheRed4 = require(`@/assets/lotties/404/Fleche_rouge_4.json`)
-      this.lottieFlecheRed4 = lottie.loadAnimation({
-        container: this.$refs.lottieFlecheRed4,
-        loop: false,
-        autoplay: false,
-        animationData: lottieFlecheRed4,
-      })
-
-      const lottieFlecheBlue = require(`@/assets/lotties/404/Fleche_bleu.json`)
-      this.lottieFlecheBlue = lottie.loadAnimation({
-        container: this.$refs.lottieFlecheBlue,
-        loop: false,
-        autoplay: false,
-        animationData: lottieFlecheBlue,
-      })
+      // const lottieCircleBlueJson = require(`@/assets/lotties/404/Cercle_bleu.json`)
+      // this.lottieCircleBlue = lottie.loadAnimation({
+      //   container: this.$refs.lottieCircleBlue,
+      //   loop: false,
+      //   autoplay: false,
+      //   animationData: lottieCircleBlueJson,
+      // })
+      // const lottieGribouillisBlueJson = require(`@/assets/lotties/404/Gribouillis_bleu.json`)
+      // this.lottieGribouillisBlue = lottie.loadAnimation({
+      //   container: this.$refs.lottieGribouillisBlue,
+      //   loop: false,
+      //   autoplay: false,
+      //   animationData: lottieGribouillisBlueJson,
+      // })
+      // const lottieGribouillisRedJson = require(`@/assets/lotties/404/Gribouillis_rouge.json`)
+      // this.lottieGribouillisRed = lottie.loadAnimation({
+      //   container: this.$refs.lottieGribouillisRed,
+      //   loop: false,
+      //   autoplay: false,
+      //   animationData: lottieGribouillisRedJson,
+      // })
+      // const lottieFlecheRed1 = require(`@/assets/lotties/404/Fleche_rouge_1.json`)
+      // this.lottieFlecheRed1 = lottie.loadAnimation({
+      //   container: this.$refs.lottieFlecheRed1,
+      //   loop: false,
+      //   autoplay: false,
+      //   animationData: lottieFlecheRed1,
+      // })
+      // const lottieFlecheRed2 = require(`@/assets/lotties/404/Fleche_rouge_2.json`)
+      // this.lottieFlecheRed2 = lottie.loadAnimation({
+      //   container: this.$refs.lottieFlecheRed2,
+      //   loop: false,
+      //   autoplay: false,
+      //   animationData: lottieFlecheRed2,
+      // })
+      // const lottieFlecheRed3 = require(`@/assets/lotties/404/Fleche_rouge_3.json`)
+      // this.lottieFlecheRed3 = lottie.loadAnimation({
+      //   container: this.$refs.lottieFlecheRed3,
+      //   loop: false,
+      //   autoplay: false,
+      //   animationData: lottieFlecheRed3,
+      // })
+      // const lottieFlecheRed4 = require(`@/assets/lotties/404/Fleche_rouge_4.json`)
+      // this.lottieFlecheRed4 = lottie.loadAnimation({
+      //   container: this.$refs.lottieFlecheRed4,
+      //   loop: false,
+      //   autoplay: false,
+      //   animationData: lottieFlecheRed4,
+      // })
+      // const lottieFlecheBlue = require(`@/assets/lotties/404/Fleche_bleu.json`)
+      // this.lottieFlecheBlue = lottie.loadAnimation({
+      //   container: this.$refs.lottieFlecheBlue,
+      //   loop: false,
+      //   autoplay: false,
+      //   animationData: lottieFlecheBlue,
+      // })
     },
   },
 }
