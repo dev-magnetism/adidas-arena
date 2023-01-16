@@ -52,7 +52,6 @@
             v-for="(item, index) in contents.data.app_footer_links_left"
             :key="index"
             :href="item.app_footer_links_left_link"
-            :external="false"
           >
             <TP2 color="grey" weight="bold">
               {{ item.app_footer_links_left_text }}
@@ -64,7 +63,6 @@
             v-for="(item, index) in contents.data.app_footer_links_right"
             :key="index"
             :href="item.app_footer_links_right_link"
-            :external="false"
           >
             <TP2 color="grey" weight="bold">
               {{ item.app_footer_links_right_text }}
@@ -115,10 +113,10 @@
     </div>
     <div class="app-footer__bottom">
       <TP2 color="grey"> ©2022 - Tous droits réservés</TP2>
-      <AtomsLink href="#" :external="false">
+      <AtomsLink href="#">
         <TP2 color="grey"> Cookies</TP2>
       </AtomsLink>
-      <AtomsLink href="#" :external="false">
+      <AtomsLink href="#">
         <TP2 color="grey"> Mentions légales</TP2>
       </AtomsLink>
     </div>

@@ -1,12 +1,9 @@
 <template>
   <div class="app-header">
-    <nuxt-link v-if="!$viewport.isMobile" to="/">
+    <nuxt-link class="app-header__home" to="/">
       <SvgArenaLogo class="app-header__logo" />
     </nuxt-link>
 
-    <TH3 v-else class="app-header__mobile-logo">
-      <nuxt-link to="/">{{ headerNameMobile }}</nuxt-link>
-    </TH3>
     <div class="app-header__cta" @click="onClickBurger">
       <TP1 v-if="!$viewport.isMobile" weight="bold" class="app-header__menu">
         {{ menuName }}
@@ -83,14 +80,20 @@ export default {
     top: mobile-vw(25px);
   }
 
-  &__mobile-logo {
-    font-size: mobile-vw(26px);
-    line-height: mobile-vw(26px);
+  &__logo {
+    cursor: pointer;
+
+    @include mobile {
+      width: 80%;
+    }
   }
 
-  &__logo {
-    // margin-left: auto;
-    cursor: pointer;
+  &__home {
+    @include mobile {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   &__cta {
@@ -128,18 +131,6 @@ export default {
       width: 30px;
       height: 2px;
       background: black;
-    }
-  }
-
-  a {
-    @include p1();
-    text-transform: uppercase;
-    @include font-adihausDIN-bold();
-
-    margin-right: desktop-vw(10px);
-
-    &:last-child {
-      margin-right: 0px;
     }
   }
 }

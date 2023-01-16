@@ -25,9 +25,9 @@
       <div ref="visual" class="app-menu__visual">
         <transition-group name="menu-visual">
           <nuxt-img
-            v-for="(item, index) in menu"
-            v-show="indexLinkHovered === index"
-            :key="index"
+            v-for="(item, index) in menuVisuals"
+            v-show="indexImageVisible === index"
+            :key="`menu-visual-${index}`"
             alt="red"
             :src="item.image"
             provider="directus"
@@ -128,6 +128,7 @@ export default {
       pointerEventsActivated: false,
       burgerCloseActivated: false,
       indexLinkHovered: 0,
+      indexImageVisible: 0,
       lottiesMenuPrincipal: [],
       lottiesMenuSubmenu: [],
       keyDown: false,
@@ -140,6 +141,11 @@ export default {
       appContent: (state) => state.appContent,
     }),
     menu() {
+      return this.menuContent.data.filter(
+        (el) => !el.submenu_element && !el.homepage
+      )
+    },
+    menuVisuals() {
       return this.menuContent.data.filter((el) => !el.submenu_element)
     },
     submenu() {
@@ -290,6 +296,8 @@ export default {
         this.indexLinkHovered =
           this.indexLinkHovered !== index ? index : this.indexLinkHovered
 
+        this.indexImageVisible = this.indexLinkHovered + 1
+
         if (this.indexLinkHovered !== this.menu.length - 1) {
           this.appearLottieHovered(target, index)
         }
@@ -300,6 +308,8 @@ export default {
     onLinkUnselected(target, index) {
       if (target === 'principal') {
         this.indexLinkHovered = index
+
+        this.indexImageVisible = this.indexLinkHovered + 1
 
         if (this.indexLinkHovered !== this.menu.length - 1) {
           this.disappearLottieHovered(target, index)
@@ -813,6 +823,7 @@ export default {
         this.activeLinkIndex = null
         this.activeLinkLottie = null
         this.indexLinkHovered = 0
+        this.indexImageVisible = 0
       } else {
         this.activeLinkIsIndex = false
 
@@ -830,12 +841,14 @@ export default {
           this.activeLinkLottie =
             this.lottiesMenuPrincipal[indexMenu].animation.active
           this.indexLinkHovered = this.activeLinkIndex
+          this.indexImageVisible = this.activeLinkIndex + 1
         } else if (indexSubmenu !== -1) {
           this.activeLinkLocation = 'submenu'
           this.activeLinkIndex = indexSubmenu
           this.activeLinkLottie =
             this.lottiesMenuSubmenu[indexSubmenu].animation.active
           this.indexLinkHovered = this.menu.length - 1
+          this.indexImageVisible = this.menu.length - 1 + 1
         }
       }
     },

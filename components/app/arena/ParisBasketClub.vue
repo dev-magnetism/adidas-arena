@@ -65,7 +65,7 @@
         :content="contents.paragraph"
       />
 
-      <AtomsLink :external="true" :blank="true" :href="contents.linkHref">
+      <AtomsLink :href="contents.linkHref">
         <TP1 class="app-atoms-link-underline__text" weight="bold">
           {{ contents.linkText }}
         </TP1>

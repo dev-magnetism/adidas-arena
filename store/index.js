@@ -10,7 +10,6 @@ export const state = () => ({
   modelCloudLoaded: false,
   modelsPreviewed: false,
   preloaderHidden: false,
-  preloaderLeaving: false,
 
   // Content
   partnersContent: null,

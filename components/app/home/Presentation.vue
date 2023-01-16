@@ -80,8 +80,6 @@ export default {
   mounted() {
     if (this.$viewport.isMobile) return
 
-    console.log(this)
-
     gsap.fromTo(
       this.$refs.pictureCorner.$el,
       {

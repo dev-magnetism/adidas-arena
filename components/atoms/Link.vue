@@ -1,9 +1,9 @@
 <template>
   <a
-    v-if="external"
+    v-if="external || automaticHref"
     class="app-atoms-link"
     :href="href"
-    :target="blank ? '_blank' : false"
+    :target="external || automaticHref || blank ? '_blank' : false"
   >
     <slot />
   </a>
@@ -18,6 +18,8 @@
 </template>
 
 <script>
+const validUrl = require('valid-url')
+
 export default {
   props: {
     external: {
@@ -26,11 +28,24 @@ export default {
     },
     href: {
       type: String,
-      default: '#link',
+      default: '#error-link',
     },
     blank: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    automaticHref() {
+      let bool
+
+      if (validUrl.isUri(this.href)) {
+        bool = true
+      } else {
+        bool = false
+      }
+
+      return bool
     },
   },
   mounted() {

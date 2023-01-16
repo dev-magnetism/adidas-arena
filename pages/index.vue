@@ -26,7 +26,6 @@ import pageTransition from '@/mixins/page-transition'
 
 export default {
   mixins: [scroll],
-
   transition(to, from) {
     if (!to || !from) return
 
@@ -122,6 +121,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.content)
     if (!this.exteriorVisible) this.setExteriorVisible(true)
   },
   methods: {
