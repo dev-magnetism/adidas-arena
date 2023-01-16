@@ -74,14 +74,13 @@ export default {
   },
   watch: {
     preloaderHidden(payload) {
-      if (!payload) return
-
-      this.runLotties()
+      // if (!payload) return
+      // this.runLotties()
     },
   },
 
   mounted() {
-    this.initLotties()
+    // this.initLotties()
   },
 
   methods: {
