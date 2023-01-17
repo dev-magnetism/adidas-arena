@@ -146,6 +146,7 @@ export default {
     initTimeline() {
       this.tlLoading = gsap.timeline({
         delay: 1,
+        paused: true,
         onUpdate: () => {
           const progress = this.tlLoading.progress()
           if (progress >= 0.9) this.setModelsPreviewed(true)
@@ -156,7 +157,7 @@ export default {
           if (!this.allLoadedActual) return
 
           this.setAllLoadedFake(true)
-          this.hidePreloader()
+          // this.hidePreloader()
         },
       })
     },
@@ -191,6 +192,7 @@ export default {
 
     onCompleteLoader() {
       this.setAllLoadedActual(true)
+      this.tlLoading.play()
     },
 
     ...mapMutations({
@@ -258,6 +260,10 @@ export default {
     pointer-events: none;
     mix-blend-mode: darken;
     transition: opacity 0.85s 0.65s var(--ease-out-expo);
+
+    @include mobile {
+      width: 85%;
+    }
   }
 
   &__layer {

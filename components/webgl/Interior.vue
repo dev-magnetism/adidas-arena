@@ -55,13 +55,13 @@ export default {
       },
       zoom: {
         ease: 0.065,
-        initial: 10,
-        current: 10,
-        target: 10,
-        last: 10,
+        initial: 15,
+        current: 15,
+        target: 15,
+        last: 15,
         wheelSpeed: 0.015,
         range: {
-          min: 5,
+          min: 10,
           max: 30,
         },
         enabled: true,

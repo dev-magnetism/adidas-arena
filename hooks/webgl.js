@@ -32,9 +32,7 @@ class GL {
 
     this.renderer = new THREE.WebGLRenderer({
       powerPreference: 'high-performance',
-      // antialias: false,
-      antialias: true,
-      // antialias: window.devicePixelRatio !== 2,
+      antialias: window.devicePixelRatio !== 2,
       stencil: true,
       precision: 'highp',
       alpha: true,
