@@ -68,7 +68,7 @@ export default {
   position: fixed;
   top: desktop-vw(60px);
   left: 0%;
-  z-index: 2;
+  z-index: 99999999999;
   width: 100vw;
   padding-left: calc(var(--layout-margin) + 25px);
   padding-right: calc(var(--layout-margin) + 25px);
