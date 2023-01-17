@@ -7,14 +7,7 @@
     }"
     class="app-preloader"
   >
-    <video
-      ref="video"
-      class="app-preloader__video"
-      preload="none"
-      autoplay
-      loop
-      muted
-    >
+    <video ref="video" class="app-preloader__video" autoplay loop muted>
       <source src="/videos/preloader.mp4" type="video/mp4" />
     </video>
 
