@@ -54,8 +54,6 @@ export default {
     },
   },
   mounted() {
-    this.loadFonts()
-
     this.initTimeline()
 
     this.$refs.video.addEventListener('canplaythrough', this.onVideoLoaded)
@@ -109,7 +107,8 @@ export default {
     },
     onVideoLoaded() {
       this.videoLoaded = true
-      this.$refs.video.play()
+
+      this.loadFonts()
     },
     loadFonts() {
       const FontFaceObserver = require('fontfaceobserver')

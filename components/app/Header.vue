@@ -4,8 +4,6 @@
       <SvgArenaLogo class="app-header__logo" />
     </nuxt-link>
 
-    <p>{{ fontsLoaded }}</p>
-
     <div class="app-header__cta" @click="onClickBurger">
       <TP1 v-if="!$viewport.isMobile" weight="bold" class="app-header__menu">
         {{ menuName }}
