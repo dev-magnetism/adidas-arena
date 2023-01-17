@@ -58,7 +58,7 @@ export default {
 
     this.initTimeline()
 
-    this.$refs.video.addEventListener('play', this.onVideoLoaded)
+    this.$refs.video.addEventListener('canplaythrough', this.onVideoLoaded)
   },
 
   methods: {
@@ -97,7 +97,10 @@ export default {
             this.$refs.video.pause()
             this.$refs.video.currentTime = 0
 
-            this.$refs.video.removeEventListener('play', this.onVideoLoaded)
+            this.$refs.video.removeEventListener(
+              'canplaythrough',
+              this.onVideoLoaded
+            )
 
             this.hideInner = true
           },
@@ -106,7 +109,7 @@ export default {
     },
     onVideoLoaded() {
       this.videoLoaded = true
-      // this.$refs.video.play()
+      this.$refs.video.play()
     },
     loadFonts() {
       const FontFaceObserver = require('fontfaceobserver')
