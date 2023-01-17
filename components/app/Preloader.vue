@@ -7,7 +7,14 @@
     }"
     class="app-preloader"
   >
-    <video ref="video" class="app-preloader__video" loop muted>
+    <video
+      ref="video"
+      class="app-preloader__video"
+      preload="none"
+      autoplay
+      loop
+      muted
+    >
       <source src="/videos/preloader.mp4" type="video/mp4" />
     </video>
 
@@ -54,11 +61,11 @@ export default {
     },
   },
   mounted() {
-    if (!this.fontsLoaded) {
-      this.initTimeline()
+    this.loadFonts()
 
-      this.$refs.video.addEventListener('canplaythrough', this.onVideoLoaded)
-    }
+    this.initTimeline()
+
+    this.$refs.video.addEventListener('play', this.onVideoLoaded)
   },
 
   methods: {
@@ -97,10 +104,7 @@ export default {
             this.$refs.video.pause()
             this.$refs.video.currentTime = 0
 
-            this.$refs.video.removeEventListener(
-              'canplaythrough',
-              this.onVideoLoaded
-            )
+            this.$refs.video.removeEventListener('play', this.onVideoLoaded)
 
             this.hideInner = true
           },
@@ -109,9 +113,7 @@ export default {
     },
     onVideoLoaded() {
       this.videoLoaded = true
-      this.$refs.video.play()
-
-      this.loadFonts()
+      // this.$refs.video.play()
     },
     loadFonts() {
       const FontFaceObserver = require('fontfaceobserver')
@@ -157,7 +159,7 @@ export default {
           if (!this.allLoadedActual) return
 
           this.setAllLoadedFake(true)
-          // this.hidePreloader()
+          this.hidePreloader()
         },
       })
     },
