@@ -32,9 +32,7 @@ export default {
         lambertMaterialEmissive: new THREE.Color(0xffffff),
         outlineColor: new THREE.Color(0x000000),
         shadowColor: new THREE.Color(0xfbe7c9),
-        lambertMaterialColorSelected: new THREE.Color(0x39000c),
-        lambertMaterialEmissiveSelected: new THREE.Color(0x00df03),
-        shadowColorSelected: new THREE.Color(0xf52ce3),
+
         arrowColor: new THREE.Color(0xff4a48),
         logoColor: new THREE.Color(0x000000),
       },
@@ -58,15 +56,11 @@ export default {
         enabled: true,
       },
       zoom: {
-        ease: 0.065,
         initial: 15,
         current: 15,
-        target: 15,
-        last: 15,
-        wheelSpeed: 0.015,
         range: {
-          min: 10,
-          max: 35,
+          min: 8,
+          max: 30,
         },
         enabled: false,
       },
@@ -115,7 +109,6 @@ export default {
     this.observer = Observer.create({
       target: this.$nuxt.$el,
       type: 'touch,pointer,wheel',
-      onWheel: this.onWheel,
       onDrag: this.onDrag,
       dragMinimum: 5,
       tolerance: 5,
@@ -201,17 +194,6 @@ export default {
     this.$raf.remove(`webgl-exterior`, this.onFrame)
   },
   methods: {
-    onWheel(e) {
-      if (!this.zoom.enabled) return
-
-      const delta = e.deltaY * this.zoom.wheelSpeed
-
-      this.zoom.target = gsap.utils.clamp(
-        this.zoom.range.min,
-        this.zoom.range.max,
-        this.zoom.target + delta
-      )
-    },
     onDrag(e) {
       if (!this.drag.enabled) return
 
@@ -226,7 +208,7 @@ export default {
     onFrame({ time, deltaTime, frame, deltaRatio }) {
       if (!this.exteriorVisible) return
 
-      const { camera, exterior } = useWebGL()
+      const { exterior } = useWebGL()
 
       this.clouds?.children?.forEach((cloud) => {
         const z = cloud.direction
@@ -243,22 +225,7 @@ export default {
 
       exterior.rotation.y = this.drag.current
 
-      this.zoom.current = this.lerp(
-        this.zoom.current,
-        this.zoom.target,
-        this.zoom.ease
-      )
-
-      camera.zoom = gsap.utils.clamp(
-        this.zoom.range.min,
-        this.zoom.range.max,
-        this.zoom.current
-      )
-
-      camera.updateProjectionMatrix()
-
       this.drag.last = this.drag.current
-      this.zoom.last = this.zoom.current
     },
 
     initExterior() {
@@ -304,33 +271,11 @@ export default {
     },
 
     onMouseEnterArena() {
-      this.adidasArenaSecondFloor.traverse((child) => {
-        if (child.isMesh) {
-          child.material.color = this.colors.lambertMaterialColorSelected
-          child.material.emissive = this.colors.lambertMaterialEmissiveSelected
-        }
-      })
-
-      this.adidasArenaRoof.traverse((child) => {
-        if (child.isMesh) {
-          child.material.color = this.colors.shadowColorSelected
-        }
-      })
+      console.log('arena hover')
     },
 
     onMouseLeaveArena() {
-      this.adidasArenaSecondFloor.traverse((child) => {
-        if (child.isMesh) {
-          child.material.color = this.colors.lambertMaterialColor
-          child.material.emissive = this.colors.lambertMaterialEmissive
-        }
-      })
-
-      this.adidasArenaRoof.traverse((child) => {
-        if (child.isMesh) {
-          child.material.color = this.colors.shadowColor
-        }
-      })
+      console.log('arena unhover')
     },
 
     initCamera() {
@@ -908,26 +853,23 @@ export default {
 
       this.guiZoom = this.gui.addFolder({ title: `Zoom`, expanded: false })
 
-      this.guiZoom.addInput(this.zoom, 'range', {
-        min: 5,
-        max: 50,
-        label: 'Range (min/max)',
-        step: 0.1,
-      })
+      this.guiZoom
+        .addInput(this.zoom, 'current', {
+          min: this.zoom.range.min,
+          max: this.zoom.range.max,
+          label: 'Zoom value',
+          step: 1,
+        })
+        .on('change', (payload) => {
+          const { camera } = useWebGL()
 
-      this.guiZoom.addInput(this.zoom, 'ease', {
-        min: 0,
-        max: 0.25,
-        label: 'Zoom ease',
-        step: 0.0001,
-      })
+          this.zoom.current = payload.value
+          this.zoom.initial = payload.value
 
-      this.guiZoom.addInput(this.zoom, 'wheelSpeed', {
-        min: 0,
-        max: 0.065,
-        label: 'Wheel speed',
-        step: 0.0001,
-      })
+          camera.zoom = this.zoom.current
+
+          camera.updateProjectionMatrix()
+        })
 
       this.guiClouds = this.gui.addFolder({ title: `Clouds`, expanded: false })
 
@@ -973,20 +915,6 @@ export default {
 
       this.guiModel.addSeparator()
 
-      this.guiModel.addInput(this.colors, 'lambertMaterialColorSelected', {
-        color: { type: 'float' },
-        label: 'Color selected',
-      })
-      this.guiModel.addInput(this.colors, 'lambertMaterialEmissiveSelected', {
-        color: { type: 'float' },
-        label: 'Emissive selected',
-      })
-      this.guiModel.addInput(this.colors, 'shadowColorSelected', {
-        color: { type: 'float' },
-        label: 'Shadow color selected',
-      })
-
-      this.guiModel.addSeparator()
       this.guiModel
         .addInput(this.colors, 'outlineColor', {
           color: { type: 'float' },

@@ -131,12 +131,6 @@ export default {
       const { exterior } = useWebGL()
 
       if (payload) {
-        // window.lenis.scrollTo('.app-home-hero', {
-        //   duration: 1.2,
-        // })
-
-        window.lenis.stop()
-
         gsap.to(exterior.position, {
           x: 0,
           z: 0,
@@ -144,8 +138,6 @@ export default {
           ease: 'power2.inOut',
         })
       } else {
-        window.lenis.start()
-
         gsap.to(exterior.position, {
           x: exterior.heroPosition.x,
           z: exterior.heroPosition.z,
@@ -188,7 +180,6 @@ export default {
   },
   methods: {
     onVisit() {
-      console.log('test')
       const { exterior } = useWebGL()
 
       this.viewExteriorOpen = !this.viewExteriorOpen

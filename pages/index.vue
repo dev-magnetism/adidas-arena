@@ -121,7 +121,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.content)
     if (!this.exteriorVisible) this.setExteriorVisible(true)
   },
   methods: {

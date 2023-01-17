@@ -31,7 +31,10 @@
 }
 
 @function columns($columns) {
-  @return calc((#{$columns} * var(--layout-column-width)) + ((#{$columns} - 1) * var(--layout-columns-gap)));
+  @return calc(
+    (#{$columns} * var(--layout-column-width)) +
+      ((#{$columns} - 1) * var(--layout-columns-gap))
+  );
 }
 
 @mixin hover {
@@ -44,7 +47,7 @@
   @return 100% / $total * $column;
 }
 
-@mixin noise(){
+@mixin noise() {
   &::before {
     content: '';
     position: absolute;
@@ -54,65 +57,21 @@
     height: 100%;
     background-image: url('/imgs/noise.webp');
     background-size: 35%;
-    animation: 500ms infinite noise;
     pointer-events: none;
     z-index: 999;
-    opacity: .25;
+    opacity: 0.35;
     mix-blend-mode: hard-light;
   }
+}
 
-  @keyframes noise {
-        0%,
-        100% {
-          background-position: 0 0;
-        }
-  
-        10% {
-          background-position: -5% -10%;
-        }
-  
-        20% {
-          background-position: -15% 5%;
-        }
-  
-        30% {
-          background-position: 7% -25%;
-        }
-  
-        40% {
-          background-position: 20% 25%;
-        }
-  
-        50% {
-          background-position: -25% 10%;
-        }
-  
-        60% {
-          background-position: 15% 5%;
-        }
-  
-        70% {
-          background-position: 0 15%;
-        }
-  
-        80% {
-          background-position: 25% 35%;
-        }
-  
-        90% {
-          background-position: -10% 10%;
-        }
-      }
-  }
-
-@mixin fake-transparent(){
+@mixin fake-transparent() {
   background-color: var(--c-white);
   background-image: linear-gradient(45deg, #b0b0b0 25%, transparent 25%),
-      linear-gradient(-45deg, #b0b0b0 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, #b0b0b0 75%),
-      linear-gradient(-45deg, transparent 75%, #b0b0b0 75%) !important;
-    background-size: 12px 12px;
-    background-position: 0 0, 0 6px, 6px -6px, -6px 0px;
+    linear-gradient(-45deg, #b0b0b0 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #b0b0b0 75%),
+    linear-gradient(-45deg, transparent 75%, #b0b0b0 75%) !important;
+  background-size: 12px 12px;
+  background-position: 0 0, 0 6px, 6px -6px, -6px 0px;
 }
 
 @mixin aspect-ratio($width, $height) {

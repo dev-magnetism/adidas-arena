@@ -49,107 +49,125 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import lottie from 'lottie-web'
 
-// import lottie from 'lottie-web'
-
-import pageTransition from '@/mixins/page-transition'
+const lottieCircleBlueJson = require(`@/assets/lotties/404/Cercle_bleu.json`)
+const lottieGribouillisBlueJson = require(`@/assets/lotties/404/Gribouillis_bleu.json`)
+const lottieGribouillisRedJson = require(`@/assets/lotties/404/Gribouillis_rouge.json`)
+const lottieFlecheRed1 = require(`@/assets/lotties/404/Fleche_rouge_1.json`)
+const lottieFlecheRed2 = require(`@/assets/lotties/404/Fleche_rouge_2.json`)
+const lottieFlecheRed3 = require(`@/assets/lotties/404/Fleche_rouge_3.json`)
+const lottieFlecheRed4 = require(`@/assets/lotties/404/Fleche_rouge_4.json`)
+const lottieFlecheBlue = require(`@/assets/lotties/404/Fleche_bleu.json`)
 
 export default {
-  layout: 'error',
-  transition(to, from) {
-    return pageTransition.basic
-  },
+  layout: 'error-layout',
+
   props: {
     error: {
       type: Object,
       default: () => {},
     },
   },
-  computed: {
-    ...mapState({
-      allLoadedFake: (state) => state.allLoadedFake,
-      preloaderHidden: (state) => state.preloaderHidden,
-    }),
+  data() {
+    return {
+      speedLotties: 0.5,
+    }
   },
-  watch: {
-    preloaderHidden(payload) {
-      // if (!payload) return
-      // this.runLotties()
-    },
-  },
-
   mounted() {
-    // this.initLotties()
-  },
+    if (this.$viewport.isMobile) return
 
+    this.initLotties()
+  },
+  destroyed() {
+    if (this.$viewport.isMobile) return
+
+    this.lottieCircleBlue.destroy()
+    this.lottieGribouillisBlue.destroy()
+    this.lottieFlecheRed1.destroy()
+    this.lottieFlecheRed2.destroy()
+    this.lottieFlecheRed3.destroy()
+    this.lottieFlecheRed4.destroy()
+    this.lottieFlecheBlue.destroy()
+  },
   methods: {
     runLotties() {
-      // this.lottieCircleBlue.play()
-      // this.lottieGribouillisBlue.play()
-      // this.lottieFlecheRed1.play()
-      // this.lottieFlecheRed2.play()
-      // this.lottieFlecheRed3.play()
-      // this.lottieFlecheRed4.play()
-      // this.lottieFlecheBlue.play()
+      this.lottieCircleBlue.play()
+      this.lottieGribouillisBlue.play()
+      this.lottieFlecheRed1.play()
+      this.lottieFlecheRed2.play()
+      this.lottieFlecheRed3.play()
+      this.lottieFlecheRed4.play()
+      this.lottieFlecheBlue.play()
     },
     initLotties() {
-      // const lottieCircleBlueJson = require(`@/assets/lotties/404/Cercle_bleu.json`)
-      // this.lottieCircleBlue = lottie.loadAnimation({
-      //   container: this.$refs.lottieCircleBlue,
-      //   loop: false,
-      //   autoplay: false,
-      //   animationData: lottieCircleBlueJson,
-      // })
-      // const lottieGribouillisBlueJson = require(`@/assets/lotties/404/Gribouillis_bleu.json`)
-      // this.lottieGribouillisBlue = lottie.loadAnimation({
-      //   container: this.$refs.lottieGribouillisBlue,
-      //   loop: false,
-      //   autoplay: false,
-      //   animationData: lottieGribouillisBlueJson,
-      // })
-      // const lottieGribouillisRedJson = require(`@/assets/lotties/404/Gribouillis_rouge.json`)
-      // this.lottieGribouillisRed = lottie.loadAnimation({
-      //   container: this.$refs.lottieGribouillisRed,
-      //   loop: false,
-      //   autoplay: false,
-      //   animationData: lottieGribouillisRedJson,
-      // })
-      // const lottieFlecheRed1 = require(`@/assets/lotties/404/Fleche_rouge_1.json`)
-      // this.lottieFlecheRed1 = lottie.loadAnimation({
-      //   container: this.$refs.lottieFlecheRed1,
-      //   loop: false,
-      //   autoplay: false,
-      //   animationData: lottieFlecheRed1,
-      // })
-      // const lottieFlecheRed2 = require(`@/assets/lotties/404/Fleche_rouge_2.json`)
-      // this.lottieFlecheRed2 = lottie.loadAnimation({
-      //   container: this.$refs.lottieFlecheRed2,
-      //   loop: false,
-      //   autoplay: false,
-      //   animationData: lottieFlecheRed2,
-      // })
-      // const lottieFlecheRed3 = require(`@/assets/lotties/404/Fleche_rouge_3.json`)
-      // this.lottieFlecheRed3 = lottie.loadAnimation({
-      //   container: this.$refs.lottieFlecheRed3,
-      //   loop: false,
-      //   autoplay: false,
-      //   animationData: lottieFlecheRed3,
-      // })
-      // const lottieFlecheRed4 = require(`@/assets/lotties/404/Fleche_rouge_4.json`)
-      // this.lottieFlecheRed4 = lottie.loadAnimation({
-      //   container: this.$refs.lottieFlecheRed4,
-      //   loop: false,
-      //   autoplay: false,
-      //   animationData: lottieFlecheRed4,
-      // })
-      // const lottieFlecheBlue = require(`@/assets/lotties/404/Fleche_bleu.json`)
-      // this.lottieFlecheBlue = lottie.loadAnimation({
-      //   container: this.$refs.lottieFlecheBlue,
-      //   loop: false,
-      //   autoplay: false,
-      //   animationData: lottieFlecheBlue,
-      // })
+      this.lottieCircleBlue = lottie.loadAnimation({
+        container: this.$refs.lottieCircleBlue,
+        loop: false,
+        autoplay: false,
+        animationData: lottieCircleBlueJson,
+      })
+      this.lottieCircleBlue.setSpeed(this.speedLotties)
+
+      this.lottieGribouillisBlue = lottie.loadAnimation({
+        container: this.$refs.lottieGribouillisBlue,
+        loop: false,
+        autoplay: false,
+        animationData: lottieGribouillisBlueJson,
+      })
+      this.lottieGribouillisBlue.setSpeed(this.speedLotties)
+
+      this.lottieGribouillisRed = lottie.loadAnimation({
+        container: this.$refs.lottieGribouillisRed,
+        loop: false,
+        autoplay: false,
+        animationData: lottieGribouillisRedJson,
+      })
+      this.lottieGribouillisRed.setSpeed(this.speedLotties)
+
+      this.lottieFlecheRed1 = lottie.loadAnimation({
+        container: this.$refs.lottieFlecheRed1,
+        loop: false,
+        autoplay: false,
+        animationData: lottieFlecheRed1,
+      })
+      this.lottieFlecheRed1.setSpeed(this.speedLotties)
+
+      this.lottieFlecheRed2 = lottie.loadAnimation({
+        container: this.$refs.lottieFlecheRed2,
+        loop: false,
+        autoplay: false,
+        animationData: lottieFlecheRed2,
+      })
+      this.lottieFlecheRed2.setSpeed(this.speedLotties)
+
+      this.lottieFlecheRed3 = lottie.loadAnimation({
+        container: this.$refs.lottieFlecheRed3,
+        loop: false,
+        autoplay: false,
+        animationData: lottieFlecheRed3,
+      })
+      this.lottieFlecheRed3.setSpeed(this.speedLotties)
+
+      this.lottieFlecheRed4 = lottie.loadAnimation({
+        container: this.$refs.lottieFlecheRed4,
+        loop: false,
+        autoplay: false,
+        animationData: lottieFlecheRed4,
+      })
+      this.lottieFlecheRed4.setSpeed(this.speedLotties)
+
+      this.lottieFlecheBlue = lottie.loadAnimation({
+        container: this.$refs.lottieFlecheBlue,
+        loop: false,
+        autoplay: false,
+        animationData: lottieFlecheBlue,
+      })
+      this.lottieFlecheBlue.setSpeed(this.speedLotties)
+
+      setTimeout(() => {
+        this.runLotties()
+      }, 1000)
     },
   },
 }
@@ -170,12 +188,17 @@ export default {
   &__lottie {
     position: absolute;
 
+    @include mobile {
+      display: none;
+    }
+
     &-cercle-blue {
       top: 50%;
       left: 50%;
       width: 100%;
       transform: translate(-50%, -50%);
     }
+
     &-gribouillis-red {
       left: 50%;
       top: 40%;
@@ -188,26 +211,31 @@ export default {
       width: 100%;
       transform: translate(-50%, -50%);
     }
+
     &-fleche-blue {
       right: 0;
       top: 50%;
       transform: translate(90%, 0%);
     }
+
     &-fleche-red-1 {
       left: 0;
       bottom: 0;
       transform: translate(-100%, 0%);
     }
+
     &-fleche-red-2 {
       left: 0;
       top: 35%;
       transform: translate(-65%, -50%);
     }
+
     &-fleche-red-3 {
       right: 0;
       top: 30%;
       transform: translate(50%, -50%);
     }
+
     &-fleche-red-4 {
       right: 0;
       bottom: 0;
@@ -221,14 +249,20 @@ export default {
     text-align: center;
     position: relative;
 
+    @include mobile {
+      width: 100%;
+    }
+
     &__title-stroke.H1 {
       -webkit-text-stroke: 1px var(--c-black);
       -webkit-text-fill-color: transparent;
       position: relative;
     }
+
     &__subtitle.H2 {
       position: relative;
     }
+
     &__title.H1 {
       position: relative;
     }
@@ -236,6 +270,10 @@ export default {
 
   &__cta.app-atoms-cta {
     width: 25%;
+
+    @include mobile {
+      width: 75%;
+    }
   }
 }
 </style>

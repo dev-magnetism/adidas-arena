@@ -187,6 +187,11 @@ export default {
       aspect-ratio: 260 / 315;
     }
 
+    picture {
+      position: relative;
+      @include noise();
+    }
+
     .app-element-framed-picture {
       height: 100%;
     }
@@ -293,6 +298,8 @@ export default {
       aspect-ratio: 595 / 740;
       width: 100%;
       display: block;
+      position: relative;
+      @include noise();
 
       @include mobile {
         aspect-ratio: 220 / 275;

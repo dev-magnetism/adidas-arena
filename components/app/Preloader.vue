@@ -1,7 +1,7 @@
 <template>
   <div
     :class="{
-      invisible: !fontsLoaded && !videoLoaded,
+      invisible: !fontsLoaded,
       'hide-inner': hideInner,
       hide: preloaderHidden,
     }"
@@ -47,7 +47,7 @@ export default {
     }),
   },
   watch: {
-    fontsLoaded(payload) {
+    videoLoaded(payload) {
       if (!payload) return
 
       this.loadModels()
@@ -55,8 +55,7 @@ export default {
   },
   mounted() {
     this.initTimeline()
-
-    this.$refs.video.addEventListener('canplaythrough', this.onVideoLoaded)
+    this.loadFonts()
   },
 
   methods: {
@@ -107,8 +106,6 @@ export default {
     },
     onVideoLoaded() {
       this.videoLoaded = true
-
-      this.loadFonts()
     },
     loadFonts() {
       const FontFaceObserver = require('fontfaceobserver')
@@ -132,6 +129,10 @@ export default {
 
       Promise.all(observers)
         .then((fonts) => {
+          this.$refs.video.addEventListener(
+            'canplaythrough',
+            this.onVideoLoaded
+          )
           this.setFontsLoaded(true)
           ScrollTrigger.refresh()
         })
@@ -174,8 +175,8 @@ export default {
     onProgressLoader({ normalized }, id) {
       this.tlLoading.to(this, {
         tweenValue: normalized,
-        duration: this.genRand(0.65, 3, 2),
-        ease: 'power3.inOut',
+        duration: this.genRand(0.35, 2, 2),
+        ease: 'power3.out',
       })
 
       if (id === 'exterior') {
