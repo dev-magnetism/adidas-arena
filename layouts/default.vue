@@ -5,8 +5,9 @@
     <!-- <AppCursor v-if="!$viewport.isMobile" /> -->
     <AppPreloader />
     <!-- <AppCookie /> -->
-    <AppMenu />
+    <AppLogo />
     <AppHeader />
+    <AppMenu />
     <nuxt class="app-main" />
     <AppScene />
     <WebglScene />

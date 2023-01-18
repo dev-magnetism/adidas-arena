@@ -1,7 +1,7 @@
 <template>
   <div>
     <WebglExterior />
-    <WebglInfo v-if="!$viewport.isMobile" />
+    <!-- <WebglInfo v-if="!$viewport.isMobile" /> -->
   </div>
 </template>
 

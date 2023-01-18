@@ -271,11 +271,11 @@ export default {
     },
 
     onMouseEnterArena() {
-      console.log('arena hover')
+      this.setExteriorArenaHovered(true)
     },
 
     onMouseLeaveArena() {
-      console.log('arena unhover')
+      this.setExteriorArenaHovered(false)
     },
 
     initCamera() {
@@ -999,7 +999,9 @@ export default {
           })
         })
     },
-    ...mapMutations({}),
+    ...mapMutations({
+      setExteriorArenaHovered: 'setExteriorArenaHovered',
+    }),
     lerp(p1, p2, t) {
       return p1 + (p2 - p1) * t
     },

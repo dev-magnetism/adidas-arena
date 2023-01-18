@@ -28,7 +28,7 @@ export default {
     },
     href: {
       type: String,
-      default: '#error-link',
+      default: '#',
     },
     blank: {
       type: Boolean,

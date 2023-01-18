@@ -143,11 +143,10 @@ export default {
 
     initTimeline() {
       this.tlLoading = gsap.timeline({
-        delay: 1,
         paused: true,
         onUpdate: () => {
           const progress = this.tlLoading.progress()
-          if (progress >= 0.9) this.setModelsPreviewed(true)
+          if (progress >= 0.925) this.setModelsPreviewed(true)
 
           this.progressUI = Math.round(progress * 100)
         },
@@ -175,7 +174,7 @@ export default {
     onProgressLoader({ normalized }, id) {
       this.tlLoading.to(this, {
         tweenValue: normalized,
-        duration: this.genRand(0.35, 2, 2),
+        duration: this.genRand(0.35, 1.5, 2),
         ease: 'power3.out',
       })
 

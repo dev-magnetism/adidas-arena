@@ -1,14 +1,14 @@
 <template>
   <a
-    v-if="external"
+    v-if="external || automaticHref"
     class="app-atoms-cta"
     :class="classes"
     :style="{
       'background-color': `var(--c-${bg})`,
       '--color-underline': `var(--c-${color})`,
     }"
-    :href="link"
-    :blank="target"
+    :href="href"
+    :target="external || automaticHref || blank ? '_blank' : false"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
   >
@@ -18,15 +18,15 @@
     </div>
   </a>
   <nuxt-link
-    v-else
+    v-else-if="!button && (!external || !automaticHref)"
     class="app-atoms-cta"
     :class="classes"
     :style="{
       'background-color': `var(--c-${bg})`,
       '--color-underline': `var(--c-${color})`,
     }"
-    :to="link"
-    :blank="target"
+    :to="href"
+    :target="blank ? '_blank' : false"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
   >
@@ -35,10 +35,29 @@
       <SvgCtaUnion ref="arrow" :color="color" />
     </div>
   </nuxt-link>
+  <button
+    v-else-if="button"
+    class="app-atoms-cta"
+    :class="classes"
+    :style="{
+      'background-color': `var(--c-${bg})`,
+      '--color-underline': `var(--c-${color})`,
+    }"
+    @mouseenter="onMouseEnter"
+    @mouseleave="onMouseLeave"
+  >
+    <TP2 class="app-atoms-cta__text" weight="bold" :color="color"><slot /></TP2>
+    <div v-if="arrow" class="app-atoms-cta__arrow">
+      <SvgCtaUnion ref="arrow" :color="color" />
+    </div>
+  </button>
 </template>
 
 <script>
 import { gsap } from 'gsap'
+
+const validUrl = require('valid-url')
+
 export default {
   props: {
     arrow: {
@@ -56,28 +75,43 @@ export default {
       required: false,
       default: false,
     },
-    link: {
+    button: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    href: {
       type: String,
       required: false,
-      default: '/',
+      default: '#',
     },
     color: {
       type: String,
       required: false,
       default: 'grey',
     },
-    target: {
+    blank: {
       type: Boolean,
       required: false,
       default: false,
     },
   },
   computed: {
+    automaticHref() {
+      let bool
+
+      if (validUrl.isUri(this.href)) {
+        bool = true
+      } else {
+        bool = false
+      }
+
+      return bool
+    },
     classes() {
       return [
         {
           arrow: this.arrow,
-          // medium: this.weight === 'medium',
         },
       ]
     },

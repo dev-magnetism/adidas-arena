@@ -18,6 +18,7 @@ export const state = () => ({
 
   // Exterior scene
   exteriorVisible: true,
+  exteriorArenaHovered: false,
 
   // Exterior scene
   interiorVisible: true,
@@ -49,6 +50,9 @@ export const mutations = {
   },
   setModelCloudLoaded: (state, value) => {
     state.modelCloudLoaded = value
+  },
+  setExteriorArenaHovered: (state, value) => {
+    state.exteriorArenaHovered = value
   },
   setAllLoadedActual: (state, value) => {
     state.allLoadedActual = value

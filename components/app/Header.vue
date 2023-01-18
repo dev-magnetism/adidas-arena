@@ -1,18 +1,9 @@
 <template>
-  <div class="app-header">
-    <nuxt-link class="app-header__home" to="/">
-      <SvgArenaLogo class="app-header__logo" />
-    </nuxt-link>
-
-    <div class="app-header__cta" @click="onClickBurger">
-      <TP1 v-if="!$viewport.isMobile" weight="bold" class="app-header__menu">
-        {{ menuName }}
-      </TP1>
-      <div class="app-header__burger">
-        <span class="app-header__burger__line top" />
-        <span class="app-header__burger__line bottom" />
-      </div>
-    </div>
+  <div class="app-header" @click="onClickBurger">
+    <TP1 v-if="!$viewport.isMobile" weight="bold" class="app-header__menu">
+      {{ menuName }}
+    </TP1>
+    <div class="app-header__burger" />
   </div>
 </template>
 
@@ -41,17 +32,7 @@ export default {
   },
   methods: {
     onClickBurger() {
-      // if (this.menuActive) return
-
       this.setMenuActive(!this.menuActive)
-
-      // if (window.lenis) {
-      //   if (this.menuActive) {
-      //     window.lenis.stop()
-      //   } else {
-      //     window.lenis.start()
-      //   }
-      // }
     },
     ...mapMutations({
       setMenuOpen: 'setMenuOpen',
@@ -64,50 +45,17 @@ export default {
 <style lang="scss">
 .app-header {
   position: fixed;
-  top: desktop-vw(60px);
-  left: 0%;
+  top: desktop-vw(70px);
+  right: calc(var(--layout-margin) + 25px);
   z-index: 2;
-  width: 100vw;
-  padding-left: calc(var(--layout-margin) + 25px);
-  padding-right: calc(var(--layout-margin) + 25px);
   display: flex;
-  align-items: center;
   justify-content: center;
-  height: 35px;
+  align-items: center;
+  cursor: pointer;
 
   @include mobile {
-    padding-left: var(--layout-margin);
-    padding-right: var(--layout-margin);
+    right: var(--layout-margin);
     top: mobile-vw(25px);
-  }
-
-  &__logo {
-    cursor: pointer;
-
-    @include mobile {
-      width: 80%;
-    }
-  }
-
-  &__home {
-    @include mobile {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-
-  &__cta {
-    margin-left: auto;
-    display: flex;
-    position: absolute;
-    right: calc(var(--layout-margin) + 25px);
-    cursor: pointer;
-
-    @include mobile {
-      position: absolute;
-      right: var(--layout-margin);
-    }
   }
 
   &__menu {
@@ -120,18 +68,30 @@ export default {
 
   &__burger {
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    height: 20px;
+    width: 30px;
+    border: 0px;
+    padding: 0px;
+    background: transparent;
 
-    @include mobile {
-      min-height: 15px;
-    }
-
-    &__line {
-      display: block;
+    &:before,
+    &:after {
+      content: '';
       width: 30px;
       height: 2px;
+      position: absolute;
       background: black;
+    }
+
+    &:before {
+      transform: translateY(-4px);
+    }
+
+    &:after {
+      transform: translateY(4px);
     }
   }
 }

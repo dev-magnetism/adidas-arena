@@ -12,13 +12,7 @@
       <TP1 v-if="!$viewport.isMobile" weight="bold" class="app-menu__cta__menu">
         {{ menuCloseName }}
       </TP1>
-      <div
-        class="app-menu__cta__burger"
-        :class="{ active: burgerCloseActivated }"
-      >
-        <span class="app-menu__cta__burger__line top" />
-        <span class="app-menu__cta__burger__line bottom" />
-      </div>
+      <div class="app-menu__burger" :class="{ active: burgerCloseActivated }" />
     </div>
 
     <div class="app-menu__inner">
@@ -944,33 +938,45 @@ export default {
       text-transform: uppercase;
       margin-right: 20px;
     }
+  }
 
-    &__burger {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-evenly;
+  &__burger {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    height: 20px;
+    width: 30px;
+    border: 0px;
+    padding: 0px;
+    background: transparent;
+    cursor: pointer;
 
-      &.active {
-        .app-menu__cta__burger__line.top {
-          transform: translate(0px, 2px) rotate(45deg);
-        }
-        .app-menu__cta__burger__line.bottom {
-          transform: translate(0px, -4px) rotate(-45deg);
+    &:before,
+    &:after {
+      content: '';
+      width: 30px;
+      height: 2px;
+      position: absolute;
+      background: black;
+      transition: transform 0.75s var(--ease-out-expo);
+      will-change: transform;
+    }
 
-          @include mobile {
-            transform: translate(0px, -2px) rotate(-45deg);
-          }
-        }
-      }
+    &:before {
+      transform: translateY(-4px);
+    }
 
-      &__line {
-        display: block;
-        width: 30px;
-        height: 2px;
-        background: black;
-        transition: transform 0.75s var(--ease-out-expo);
-        will-change: transform;
-      }
+    &:after {
+      transform: translateY(4px);
+    }
+
+    &.active:before {
+      transform: translateY(0) rotate(45deg);
+    }
+
+    &.active:after {
+      transform: translateY(0) rotate(-45deg);
     }
   }
 

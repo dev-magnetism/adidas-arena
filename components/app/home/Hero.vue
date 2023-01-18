@@ -1,6 +1,12 @@
 <template>
   <div class="app-home-hero block-inner">
     <div class="app-home-hero__inner grid">
+      <AtomsCTABack
+        :class="{ hide: !viewExteriorOpen }"
+        @click.native="onVisit()"
+      >
+        Retour
+      </AtomsCTABack>
       <ERichText
         v-if="!viewExteriorOpen"
         class="app-home-hero__title"
@@ -34,7 +40,6 @@
         />
       </div>
       <div
-        v-if="!$viewport.isMobile"
         :class="{ hide: viewExteriorOpen }"
         class="app-home-hero__scroll-indicator"
         @click="onClickScrollIndicator"
@@ -58,6 +63,7 @@
       <div ref="view" class="app-home-hero__view-exterior">
         <div class="app-home-hero__view-exterior__baseline">
           <AtomsTitleTag
+            :class="{ hide: viewExteriorOpen }"
             class="app-home-hero__view-exterior__coordinate"
             bg="grey"
             color="black"
@@ -79,6 +85,7 @@
         />
       </div>
       <AtomsTitleTag
+        :class="{ hide: viewExteriorOpen }"
         class="app-home-hero__visit"
         :arrow="false"
         bg="red-adidas"
@@ -87,6 +94,11 @@
       >
         {{ contents.visit }}
       </AtomsTitleTag>
+      <EScrollIndicator :class="{ hide: !viewExteriorOpen }" />
+      <EEnterArena
+        :content="contents.enter"
+        :class="{ hide: !viewExteriorOpen || !exteriorArenaHovered }"
+      />
     </div>
   </div>
 </template>
@@ -116,6 +128,7 @@ export default {
       exteriorVisible: (state) => state.exteriorVisible,
       allLoadedFake: (state) => state.allLoadedFake,
       allLoadedActual: (state) => state.allLoadedActual,
+      exteriorArenaHovered: (state) => state.exteriorArenaHovered,
     }),
   },
   watch: {
@@ -321,6 +334,41 @@ export default {
     }
   }
 
+  .app-element-enter-arena {
+    position: absolute;
+    grid-column: 8 / span 3;
+    top: 20%;
+  }
+
+  .app-element-scroll-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: opacity 0.35s var(--ease-in-out-cubic);
+    transition-delay: 0.65s;
+
+    &.hide {
+      opacity: 0;
+      pointer-events: none;
+      transition-delay: 0s;
+    }
+  }
+
+  .app-atoms-cta-back {
+    transition: opacity 0.35s var(--ease-in-out-cubic);
+    transition-delay: 0.65s;
+    top: desktop-vw(25px);
+    left: desktop-vw(25px);
+    position: absolute;
+
+    &.hide {
+      opacity: 0;
+      pointer-events: none;
+      transition-delay: 0s;
+    }
+  }
+
   &__sticker,
   &__stars {
     transition: transform 0.35s var(--ease-in-out-cubic);
@@ -420,8 +468,18 @@ export default {
       padding: desktop-vw(10px) desktop-vw(15px);
       display: block;
 
+      transition: opacity 0.35s var(--ease-in-out-cubic);
+      transition-delay: 0.65s;
+
+      &.hide {
+        opacity: 0;
+        transition-delay: 0s;
+        pointer-events: none;
+      }
+
       @include mobile {
         padding: mobile-vw(10px) mobile-vw(15px);
+        align-self: flex-start;
       }
 
       .P2.bold {
@@ -435,12 +493,6 @@ export default {
         }
       }
     }
-
-    &__coordinate {
-      @include mobile {
-        align-self: flex-start;
-      }
-    }
   }
 
   &__visit.app-atoms-title-tag {
@@ -450,6 +502,15 @@ export default {
     right: desktop-vw(20px);
     bottom: desktop-vw(20px);
     cursor: pointer;
+
+    transition: opacity 0.35s var(--ease-in-out-cubic);
+    transition-delay: 0.65s;
+
+    &.hide {
+      opacity: 0;
+      transition-delay: 0s;
+      pointer-events: none;
+    }
 
     @include mobile {
       right: mobile-vw(18px);
@@ -566,11 +627,15 @@ export default {
     justify-content: center;
     border-top: 1px solid #181818;
     border-right: 1px solid #181818;
-    transition: opacity 0.45s var(--ease-out-cubic);
     opacity: 1;
+    cursor: pointer;
+    transition: opacity 0.35s var(--ease-in-out-cubic);
+    transition-delay: 0.65s;
 
     &.hide {
       opacity: 0;
+      pointer-events: none;
+      transition-delay: 0s;
     }
 
     @include mobile {

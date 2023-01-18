@@ -110,6 +110,16 @@
         NOS PARTENAIRES
       </TH2>
       <EGridLogosFooter :contents="logos" />
+      <div class="app-footer__paris-e-c">
+        <a class="app-footer__paris-e-c__inner" href="#" target="_blank">
+          <TP1 color="white">
+            L’adidas arena est une salle du groupe Paris Entertainment Company.
+          </TP1>
+          <div class="app-footer__paris-e-c__logo">
+            <SvgParisEC />
+          </div>
+        </a>
+      </div>
     </div>
     <div class="app-footer__bottom">
       <TP2 color="grey"> ©2022 - Tous droits réservés</TP2>
@@ -281,7 +291,7 @@ export default {
             &:not(:checked) ~ .checkmark {
               &::after {
                 content: '';
-                transform: translate(-50%, -50%) scale(0.5);
+                transform: translate(-50%, -50%) scale(0.35);
               }
             }
           }
@@ -561,10 +571,58 @@ export default {
   &__partners {
     grid-column: 8 / span 5;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 
     @include mobile {
       grid-column: 1 / span 6;
       margin-top: mobile-vw(50px);
+    }
+  }
+
+  &__paris-e-c {
+    margin-top: auto;
+    outline: 1px solid white;
+    display: flex;
+    width: 80%;
+    flex-direction: row;
+    cursor: pointer;
+
+    @include mobile {
+      width: 100%;
+      margin-top: mobile-vw(40px);
+    }
+
+    &__inner {
+      flex-direction: row;
+      display: flex;
+    }
+
+    .P1,
+    &__logo {
+      flex: 50%;
+      // padding: 0 desktop-vw(15px);
+    }
+
+    .P1 {
+      padding: desktop-vw(20px) desktop-vw(20px);
+
+      @include mobile {
+        padding: mobile-vw(15px) mobile-vw(15px);
+      }
+    }
+
+    &__logo {
+      background: var(--c-grey);
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: 80%;
+      }
     }
   }
 
