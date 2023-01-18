@@ -51,14 +51,14 @@
 <script>
 import lottie from 'lottie-web'
 
-const lottieCircleBlueJson = require(`@/assets/lotties/404/Cercle_bleu.json`)
-const lottieGribouillisBlueJson = require(`@/assets/lotties/404/Gribouillis_bleu.json`)
-const lottieGribouillisRedJson = require(`@/assets/lotties/404/Gribouillis_rouge.json`)
-const lottieFlecheRed1 = require(`@/assets/lotties/404/Fleche_rouge_1.json`)
-const lottieFlecheRed2 = require(`@/assets/lotties/404/Fleche_rouge_2.json`)
-const lottieFlecheRed3 = require(`@/assets/lotties/404/Fleche_rouge_3.json`)
-const lottieFlecheRed4 = require(`@/assets/lotties/404/Fleche_rouge_4.json`)
-const lottieFlecheBlue = require(`@/assets/lotties/404/Fleche_bleu.json`)
+const lottieCircleBlueJson = require(`~/assets/lotties/404/Cercle_bleu.json`)
+const lottieGribouillisBlueJson = require(`~/assets/lotties/404/Gribouillis_bleu.json`)
+const lottieGribouillisRedJson = require(`~/assets/lotties/404/Gribouillis_rouge.json`)
+const lottieFlecheRed1 = require(`~/assets/lotties/404/Fleche_rouge_1.json`)
+const lottieFlecheRed2 = require(`~/assets/lotties/404/Fleche_rouge_2.json`)
+const lottieFlecheRed3 = require(`~/assets/lotties/404/Fleche_rouge_3.json`)
+const lottieFlecheRed4 = require(`~/assets/lotties/404/Fleche_rouge_4.json`)
+const lottieFlecheBlue = require(`~/assets/lotties/404/Fleche_bleu.json`)
 
 export default {
   layout: 'error-layout',
