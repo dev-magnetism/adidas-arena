@@ -24,6 +24,7 @@ export const state = () => ({
   interiorVisible: true,
 
   // UI
+  displayAppearance: false,
   menuOpen: false,
   menuActive: false,
   cursoState: 'default',
@@ -38,6 +39,9 @@ export const getters = {
 export const mutations = {
   setFontsLoaded: (state, value) => {
     state.fontsLoaded = value
+  },
+  setDisplayAppearance: (state, value) => {
+    state.displayAppearance = value
   },
   setModelsPreviewed: (state, value) => {
     state.modelsPreviewed = value

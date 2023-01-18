@@ -8,16 +8,11 @@
         Retour
       </AtomsCTABack>
       <ERichText
-        v-if="!viewExteriorOpen"
+        ref="title"
         class="app-home-hero__title"
         :content="contents.title"
       />
-
-      <div
-        v-if="!viewExteriorOpen"
-        ref="firstVisual"
-        class="app-home-hero__first-visual"
-      >
+      <div ref="firstVisual" class="app-home-hero__first-visual">
         <nuxt-picture
           class="picture-absolute"
           provider="directus"
@@ -49,12 +44,15 @@
           <SvgHomeHeroUnion ref="union" />
         </div>
       </div>
-      <div v-if="!viewExteriorOpen" class="app-home-hero__localisation">
+      <div
+        :class="{ hide: viewExteriorOpen }"
+        class="app-home-hero__localisation"
+      >
         <TP1 weight="bold" class="app-home-hero__localisation__city">
           {{ contents.city }}
         </TP1>
         <TP1
-          v-if="!viewExteriorOpen"
+          :class="{ hide: viewExteriorOpen }"
           class="app-home-hero__localisation__place"
         >
           {{ contents.localisation }}
@@ -74,12 +72,10 @@
         <AtomsCornerPoints lines-position="line-1, line-4" />
 
         <SvgHomeHeroSticker
-          v-if="!$viewport.isMobile"
           :class="{ hide: viewExteriorOpen }"
           class="app-home-hero__sticker"
         />
         <SvgHomeHeroStars
-          v-if="!$viewport.isMobile"
           :class="{ hide: viewExteriorOpen }"
           class="app-home-hero__stars"
         />
@@ -107,6 +103,7 @@
 import { gsap } from 'gsap'
 import { Flip } from 'gsap/Flip'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { SplitText } from 'gsap/SplitText'
 import { mapState, mapMutations } from 'vuex'
 
 import useWebGL from '~/hooks/webgl'
@@ -129,6 +126,8 @@ export default {
       allLoadedFake: (state) => state.allLoadedFake,
       allLoadedActual: (state) => state.allLoadedActual,
       exteriorArenaHovered: (state) => state.exteriorArenaHovered,
+      preloaderHidden: (state) => state.preloaderHidden,
+      modelsPreviewed: (state) => state.modelsPreviewed,
     }),
   },
   watch: {
@@ -140,6 +139,12 @@ export default {
       exterior.drag.enabled = false
       exterior.zoom.enabled = false
     },
+    preloaderHidden(payload) {
+      console.log(payload)
+    },
+    modelsPreviewed(payload) {
+      console.log('model', payload)
+    },
     viewExteriorOpen(payload) {
       const { exterior } = useWebGL()
 
@@ -150,6 +155,8 @@ export default {
           duration: 0.85,
           ease: 'power2.inOut',
         })
+
+        this.tlViewExteriorOpen.play()
       } else {
         gsap.to(exterior.position, {
           x: exterior.heroPosition.x,
@@ -169,6 +176,8 @@ export default {
           duration: 0.85,
           ease: 'power2.inOut',
         })
+
+        this.tlViewExteriorOpen.reverse()
       }
     },
   },
@@ -176,6 +185,10 @@ export default {
     const { exterior } = useWebGL()
 
     exterior.position.copy(exterior.heroPosition)
+
+    document.fonts.ready.then(() => {
+      this.initSplitText()
+    })
 
     this.initScrollTrigger()
 
@@ -187,11 +200,38 @@ export default {
   beforeDestroy() {
     this.resizeObserver.unobserve(this.$refs.view)
 
+    this.tl?.clear()
     this.tl?.kill()
+
+    this.tlViewExteriorOpen?.clear()
+    this.tlViewExteriorOpen?.kill()
 
     this.$raf.remove(`home-hero`, this.onFrame)
   },
   methods: {
+    initTimelineViewExteriorOpen() {
+      console.log(this.splitChild)
+
+      this.tlViewExteriorOpen = gsap
+        .timeline({ paused: true })
+        .to(this.split.lines, {
+          y: '-65%',
+          opacity: 0,
+          duration: 0.4,
+          stagger: 0.05,
+          ease: 'power1.inOut',
+        })
+    },
+    initSplitText() {
+      const titleH1 = this.$refs.title.$el.querySelector('.H1')
+
+      this.split = this.nestedLinesSplit(titleH1, {
+        type: 'lines',
+        linesClass: 'lineChild line',
+      })
+
+      this.initTimelineViewExteriorOpen()
+    },
     onVisit() {
       const { exterior } = useWebGL()
 
@@ -302,6 +342,48 @@ export default {
       window.lenis.scrollTo('.app-home-presentation', {
         duration: 1.2,
       })
+    },
+    nestedLinesSplit(target, vars) {
+      const split = new SplitText(target, vars)
+      const words = vars.type.includes('words')
+      const chars = vars.type.includes('chars')
+      const insertAt = function (a, b, i) {
+        const l = b.length
+        for (let j = 0; j < l; j++) {
+          a.splice(i++, 0, b[j])
+        }
+        return l
+      }
+      let children
+      let child
+      let i
+      if (typeof target === 'string') {
+        target = document.querySelectorAll(target)
+      }
+      if (target.length > 1) {
+        for (i = 0; i < target.length; i++) {
+          split.lines = split.lines.concat(
+            this.nestedLinesSplit(target[i], vars).lines
+          )
+        }
+        return split
+      }
+      children = (words ? split.words : []).concat(chars ? split.chars : [])
+      for (i = 0; i < children.length; i++) {
+        children[i]._protect = true
+      }
+      children = split.lines
+      for (i = 0; i < children.length; i++) {
+        child = children[i].firstChild
+        if (!child._protect && child.nodeType !== 3) {
+          children[i].parentNode.insertBefore(child, children[i])
+          children[i].parentNode.removeChild(children[i])
+          children.splice(i, 1)
+          i +=
+            insertAt(children, this.nestedLinesSplit(child, vars).lines, i) - 1
+        }
+      }
+      return split
     },
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',
@@ -540,6 +622,14 @@ export default {
     max-width: min(720px, desktop-vw(720px));
     position: relative;
 
+    .app-atoms-stroke-text {
+      display: block;
+    }
+
+    .lineParent {
+      overflow: hidden;
+    }
+
     .H1,
     h1 {
       font-size: min(130px, desktop-vw(130px)) !important;
@@ -597,6 +687,18 @@ export default {
     }
   }
 
+  &__localisation,
+  &__city {
+    transition: opacity 0.35s var(--ease-in-out-cubic);
+    transition-delay: 0.4s;
+
+    &.hide {
+      opacity: 0;
+      pointer-events: none;
+      transition-delay: 0s;
+    }
+  }
+
   &__localisation {
     position: absolute;
     bottom: 15px;
@@ -630,7 +732,7 @@ export default {
     opacity: 1;
     cursor: pointer;
     transition: opacity 0.35s var(--ease-in-out-cubic);
-    transition-delay: 0.65s;
+    transition-delay: 0.4s;
 
     &.hide {
       opacity: 0;
