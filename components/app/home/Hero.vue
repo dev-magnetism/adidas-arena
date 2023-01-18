@@ -216,6 +216,11 @@ export default {
         .timeline({ paused: true })
         .to(this.split.lines, {
           y: '-65%',
+          duration: 0.4,
+          stagger: 0.05,
+          ease: 'power1.inOut',
+        })
+        .to(this.split.lines, {
           opacity: 0,
           duration: 0.4,
           stagger: 0.05,

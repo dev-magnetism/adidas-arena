@@ -1,5 +1,5 @@
 <template>
-  <div class="app-error">
+  <div :class="{ hide: !fontsPreloaded }" class="app-error">
     <div class="app-error__content">
       <TH1 weight="bold" class="app-error__content__title-stroke">
         Désolé !
@@ -44,7 +44,7 @@
         class="app-error__lottie app-error__lottie-fleche-red-4"
       />
     </div>
-    <AtomsCTA class="app-error__cta" href="/"> Page d'accueil </AtomsCTA>
+    <AtomsCTA class="app-error__cta" href="/">Page d'accueil</AtomsCTA>
   </div>
 </template>
 
@@ -1526,7 +1526,6 @@ const lottieFlecheBlue = {
 
 export default {
   layout: 'error-layout',
-
   props: {
     error: {
       type: Object,
@@ -1536,12 +1535,18 @@ export default {
   data() {
     return {
       speedLotties: 0.5,
+      fontsPreloaded: false,
     }
   },
+
   mounted() {
     if (this.$viewport.isMobile) return
 
-    this.initLotties()
+    document.fonts.ready.then(() => {
+      this.fontsPreloaded = true
+
+      this.initLotties()
+    })
   },
   destroyed() {
     if (this.$viewport.isMobile) return
@@ -1648,9 +1653,15 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  transition: opacity 0.35s var(--ease-in-out-cubic);
+
+  &.hide {
+    opacity: 0;
+  }
 
   &__lottie {
     position: absolute;
+    pointer-events: none;
 
     @include mobile {
       display: none;
