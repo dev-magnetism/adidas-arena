@@ -24,8 +24,7 @@ export const state = () => ({
   interiorVisible: true,
 
   // UI
-  displayAppearance: false,
-  menuOpen: false,
+  displayHero: false,
   menuActive: false,
   cursoState: 'default',
 })
@@ -40,8 +39,8 @@ export const mutations = {
   setFontsLoaded: (state, value) => {
     state.fontsLoaded = value
   },
-  setDisplayAppearance: (state, value) => {
-    state.displayAppearance = value
+  setDisplayHero: (state, value) => {
+    state.displayHero = value
   },
   setModelsPreviewed: (state, value) => {
     state.modelsPreviewed = value
@@ -75,9 +74,6 @@ export const mutations = {
   },
   setMenuContent: (state, value) => {
     state.menuContent = value
-  },
-  setMenuOpen: (state, value) => {
-    state.menuOpen = value
   },
   setMenuActive: (state, value) => {
     state.menuActive = value

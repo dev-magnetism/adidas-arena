@@ -99,7 +99,7 @@ export default {
               this.onVideoLoaded
             )
 
-            this.setDisplayAppearance(true)
+            this.setDisplayHero(true)
             this.hideInner = true
           },
           ease: 'power3.out',
@@ -202,7 +202,7 @@ export default {
       setFontsLoaded: 'setFontsLoaded',
       setPreloaderHidden: 'setPreloaderHidden',
       setModelsPreviewed: 'setModelsPreviewed',
-      setDisplayAppearance: 'setDisplayAppearance',
+      setDisplayHero: 'setDisplayHero',
     }),
 
     genRand(min, max, decimalPlaces) {

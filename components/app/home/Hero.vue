@@ -2,7 +2,7 @@
   <div class="app-home-hero block-inner">
     <div class="app-home-hero__inner grid">
       <AtomsCTABack
-        :class="{ hide: !viewExteriorOpen }"
+        :class="{ hide: !viewExteriorOpen || !DOMVisible }"
         @click.native="onVisit()"
       >
         Retour
@@ -21,11 +21,7 @@
           format="webp"
         />
       </div>
-      <div
-        v-if="!viewExteriorOpen"
-        ref="secondVisual"
-        class="app-home-hero__second-visual"
-      >
+      <div ref="secondVisual" class="app-home-hero__second-visual">
         <nuxt-picture
           class="picture-absolute"
           provider="directus"
@@ -45,14 +41,14 @@
         </div>
       </div>
       <div
-        :class="{ hide: viewExteriorOpen }"
+        :class="{ hide: viewExteriorOpen || !DOMVisible }"
         class="app-home-hero__localisation"
       >
         <TP1 weight="bold" class="app-home-hero__localisation__city">
           {{ contents.city }}
         </TP1>
         <TP1
-          :class="{ hide: viewExteriorOpen }"
+          :class="{ hide: viewExteriorOpen || !DOMVisible }"
           class="app-home-hero__localisation__place"
         >
           {{ contents.localisation }}
@@ -61,7 +57,7 @@
       <div ref="view" class="app-home-hero__view-exterior">
         <div class="app-home-hero__view-exterior__baseline">
           <AtomsTitleTag
-            :class="{ hide: viewExteriorOpen }"
+            :class="{ hide: viewExteriorOpen || !DOMVisible }"
             class="app-home-hero__view-exterior__coordinate"
             bg="grey"
             color="black"
@@ -81,7 +77,7 @@
         />
       </div>
       <AtomsTitleTag
-        :class="{ hide: viewExteriorOpen }"
+        :class="{ hide: viewExteriorOpen || !DOMVisible }"
         class="app-home-hero__visit"
         :arrow="false"
         bg="red-adidas"
@@ -90,7 +86,7 @@
       >
         {{ contents.visit }}
       </AtomsTitleTag>
-      <EScrollIndicator :class="{ hide: !viewExteriorOpen }" />
+      <EScrollIndicator :class="{ hide: !viewExteriorOpen || !DOMVisible }" />
       <EEnterArena
         :content="contents.enter"
         :class="{ hide: !viewExteriorOpen || !exteriorArenaHovered }"
@@ -118,19 +114,25 @@ export default {
   data() {
     return {
       viewExteriorOpen: false,
+      DOMVisible: false,
     }
   },
   computed: {
     ...mapState({
+      fontsLoaded: (state) => state.fontsLoaded,
       exteriorVisible: (state) => state.exteriorVisible,
       allLoadedFake: (state) => state.allLoadedFake,
       allLoadedActual: (state) => state.allLoadedActual,
       exteriorArenaHovered: (state) => state.exteriorArenaHovered,
-      preloaderHidden: (state) => state.preloaderHidden,
-      modelsPreviewed: (state) => state.modelsPreviewed,
+      displayHero: (state) => state.displayHero,
     }),
   },
   watch: {
+    fontsLoaded(payload) {
+      if (!payload) return
+
+      this.initSplitText()
+    },
     allLoadedActual(payload) {
       if (!payload) return
 
@@ -139,11 +141,10 @@ export default {
       exterior.drag.enabled = false
       exterior.zoom.enabled = false
     },
-    preloaderHidden(payload) {
-      console.log(payload)
-    },
-    modelsPreviewed(payload) {
-      console.log('model', payload)
+    displayHero(payload) {
+      if (!payload) return
+
+      this.appearHeroInit(0.25)
     },
     viewExteriorOpen(payload) {
       const { exterior } = useWebGL()
@@ -153,10 +154,11 @@ export default {
           x: 0,
           z: 0,
           duration: 0.85,
+          delay: 0.1,
           ease: 'power2.inOut',
         })
 
-        this.tlViewExteriorOpen.play()
+        this.disapearDOM()
       } else {
         gsap.to(exterior.position, {
           x: exterior.heroPosition.x,
@@ -177,7 +179,7 @@ export default {
           ease: 'power2.inOut',
         })
 
-        this.tlViewExteriorOpen.reverse()
+        this.appearDOM()
       }
     },
   },
@@ -186,11 +188,13 @@ export default {
 
     exterior.position.copy(exterior.heroPosition)
 
-    document.fonts.ready.then(() => {
+    if (this.fontsLoaded) {
       this.initSplitText()
-    })
+    }
 
-    this.initScrollTrigger()
+    if (this.displayHero) {
+      this.appearHeroInit(0.8)
+    }
 
     this.resizeObserver = new ResizeObserver(this.onResize)
     this.resizeObserver.observe(this.$refs.view)
@@ -203,29 +207,227 @@ export default {
     this.tl?.clear()
     this.tl?.kill()
 
-    this.tlViewExteriorOpen?.clear()
-    this.tlViewExteriorOpen?.kill()
+    this.tlAppearHero?.clear()
+    this.tlAppearHero?.kill()
 
     this.$raf.remove(`home-hero`, this.onFrame)
   },
   methods: {
-    initTimelineViewExteriorOpen() {
-      console.log(this.splitChild)
+    disapearDOM() {
+      this.tlAppearHero?.clear()
+      this.tlAppearHero?.kill()
 
-      this.tlViewExteriorOpen = gsap
-        .timeline({ paused: true })
+      this.tlAppearHero = gsap
+        .timeline()
         .to(this.split.lines, {
-          y: '-65%',
+          y: '-80%',
+          duration: 0.4,
+          stagger: 0.035,
+          ease: 'power1.inOut',
+        })
+        .to(
+          this.split.lines,
+          {
+            opacity: 0,
+            duration: 0.3,
+            stagger: 0.035,
+            ease: 'power1.inOut',
+          },
+          '<0%'
+        )
+        .to(
+          this.$refs.secondVisual,
+          {
+            y: '70%',
+            rotate: 10,
+            duration: 0.5,
+            ease: 'power1.inOut',
+          },
+          '<0%'
+        )
+        .to(
+          this.$refs.secondVisual,
+          {
+            opacity: 0,
+            duration: 0.45,
+            ease: 'power1.inOut',
+          },
+          '<0%'
+        )
+        .to(
+          this.$refs.firstVisual,
+          {
+            y: '-50%',
+            rotate: -10,
+            duration: 0.5,
+            ease: 'power1.inOut',
+          },
+          '<0%'
+        )
+        .to(
+          this.$refs.firstVisual,
+          {
+            opacity: 0,
+            duration: 0.45,
+            ease: 'power1.inOut',
+          },
+          '<0%'
+        )
+    },
+    appearDOM() {
+      this.tlAppearHero?.clear()
+      this.tlAppearHero?.kill()
+
+      const linesReversed = [...this.split.lines].reverse()
+
+      this.tlAppearHero = gsap
+        .timeline({ delay: 0.5 })
+        .to(linesReversed, {
+          y: '0',
           duration: 0.4,
           stagger: 0.05,
           ease: 'power1.inOut',
         })
-        .to(this.split.lines, {
-          opacity: 0,
-          duration: 0.4,
-          stagger: 0.05,
-          ease: 'power1.inOut',
+        .to(
+          linesReversed,
+          {
+            opacity: 1,
+            duration: 0.4,
+            stagger: 0.05,
+            ease: 'power1.inOut',
+          },
+          '<10%'
+        )
+        .to(
+          this.$refs.secondVisual,
+          {
+            y: '0%',
+            rotate: -6,
+            duration: 0.5,
+            ease: 'power1.inOut',
+          },
+          '<0%'
+        )
+        .to(
+          this.$refs.secondVisual,
+          {
+            opacity: 1,
+            duration: 0.6,
+            ease: 'power1.inOut',
+          },
+          '<0%'
+        )
+        .to(
+          this.$refs.firstVisual,
+          {
+            y: '0%',
+            rotate: 5,
+            duration: 0.55,
+            ease: 'power1.inOut',
+          },
+          '<0%'
+        )
+        .to(
+          this.$refs.firstVisual,
+          {
+            opacity: 1,
+            duration: 0.5,
+            ease: 'power1.inOut',
+          },
+          '<0%'
+        )
+    },
+    appearHeroInit(delay = 0) {
+      this.tlAppearHeroInit?.clear()
+      this.tlAppearHeroInit?.kill()
+
+      const linesReversed = [...this.split.lines].reverse()
+
+      this.tlAppearHeroInit = gsap
+        .timeline({
+          delay,
+          onStart: () => {
+            this.DOMVisible = true
+          },
+          onComplete: () => {
+            this.initScrollTrigger()
+          },
         })
+        .fromTo(
+          linesReversed,
+          {
+            y: '-80%',
+          },
+          {
+            y: '0',
+            duration: 0.4,
+            stagger: 0.05,
+            ease: 'power1.inOut',
+          }
+        )
+        .fromTo(
+          linesReversed,
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+            duration: 0.4,
+            stagger: 0.05,
+            ease: 'power1.inOut',
+          },
+          '<10%'
+        )
+        .fromTo(
+          this.$refs.secondVisual,
+          {
+            y: '70%',
+            rotate: 10,
+          },
+          {
+            y: '0%',
+            rotate: -6,
+            duration: 0.5,
+            ease: 'power1.inOut',
+          },
+          '<0%'
+        )
+        .fromTo(
+          this.$refs.secondVisual,
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+            duration: 0.6,
+            ease: 'power1.inOut',
+          },
+          '<0%'
+        )
+        .fromTo(
+          this.$refs.firstVisual,
+          {
+            y: '-50%',
+            rotate: -10,
+          },
+          {
+            y: '0%',
+            rotate: 5,
+            duration: 0.55,
+            ease: 'power1.inOut',
+          },
+          '<0%'
+        )
+        .fromTo(
+          this.$refs.firstVisual,
+          { opacity: 0 },
+          {
+            opacity: 1,
+            duration: 0.5,
+            ease: 'power1.inOut',
+          },
+          '<0%'
+        )
     },
     initSplitText() {
       const titleH1 = this.$refs.title.$el.querySelector('.H1')
@@ -234,8 +436,6 @@ export default {
         type: 'lines',
         linesClass: 'lineChild line',
       })
-
-      this.initTimelineViewExteriorOpen()
     },
     onVisit() {
       const { exterior } = useWebGL()
@@ -252,6 +452,7 @@ export default {
       Flip.from(state, {
         absolute: true,
         duration: 0.75,
+        delay: 0.15,
         ease: 'power1.inOut',
       })
     },
@@ -589,7 +790,6 @@ export default {
     right: desktop-vw(20px);
     bottom: desktop-vw(20px);
     cursor: pointer;
-
     transition: opacity 0.35s var(--ease-in-out-cubic);
     transition-delay: 0.65s;
 

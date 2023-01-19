@@ -13,7 +13,6 @@ import { mapMutations, mapState } from 'vuex'
 export default {
   computed: {
     ...mapState({
-      menuOpen: (state) => state.menuOpen,
       menuActive: (state) => state.menuActive,
       exteriorVisible: (state) => state.exteriorVisible,
       interiorVisible: (state) => state.interiorVisible,
@@ -35,7 +34,6 @@ export default {
       this.setMenuActive(!this.menuActive)
     },
     ...mapMutations({
-      setMenuOpen: 'setMenuOpen',
       setMenuActive: 'setMenuActive',
     }),
   },

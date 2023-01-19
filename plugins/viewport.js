@@ -8,10 +8,14 @@ const viewport = new Vue({
     if (!process.client) return {} // for nuxt.js
 
     return {
-      isMobile: window.innerWidth < 800,
       width: window.innerWidth,
       height: window.innerHeight,
       ratio: window.innerWidth / window.innerHeight,
+      isTabletOrMobile: null,
+      isMobile: null,
+      isTablet: null,
+      isLandscape: null,
+      isDesktop: null,
     }
   },
   created() {
@@ -28,7 +32,21 @@ const viewport = new Vue({
       this.width = window.innerWidth
       this.height = window.innerHeight
       this.ratio = this.width / this.height
-      this.isMobile = window.innerWidth < 800
+
+      this.isMobile = window.matchMedia('(max-width: 768px)').matches
+      this.isTabletOrMobile = window.matchMedia('(max-width: 1024px)').matches
+      this.isTablet =
+        !this.isMobile && window.matchMedia('(max-width: 1024px)').matches
+      this.isDesktop = window.matchMedia('(min-width: 1025px)').matches
+      this.isLandscape = window.matchMedia('(orientation: landscape)').matches
+
+      // console.log(
+      //   this.isMobile,
+      //   this.isTablet,
+      //   this.isTabletOrMobile,
+      //   this.isDesktop,
+      //   this.isLandscape
+      // )
 
       this.events.emit('resize', this.$data)
     },

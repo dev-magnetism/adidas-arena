@@ -917,6 +917,7 @@ export default {
   &__cta {
     margin-left: auto;
     display: flex;
+    align-items: center;
     position: absolute;
     right: calc(var(--layout-margin) + 25px);
     top: desktop-vw(70.5px);
@@ -935,6 +936,9 @@ export default {
     }
 
     &__menu {
+      font-size: 16px;
+      line-height: 16px;
+      @include font-adihausDIN-cn-medium();
       text-transform: uppercase;
       margin-right: 20px;
     }

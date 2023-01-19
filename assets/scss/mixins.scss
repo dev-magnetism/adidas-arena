@@ -87,6 +87,18 @@
   }
 }
 
+@mixin antialiased() {
+  text-rendering: geometricPrecision; /* 2 */
+  -webkit-font-smoothing: antialiased; /* 3 */
+  -webkit-font-smoothing: subpixel-antialiased; /* 3 */
+  -moz-font-smoothing: antialiased; /* 3 */
+  font-smoothing: antialiased; /* 3 */
+  -moz-osx-font-smoothing: grayscale; /* 3 */
+  -khtml-font-smoothing: antialiased;
+  font-smooth: always;
+  -apple-font-smoothing: antialiased;
+}
+
 @mixin aspect-ratio-test($width, $height) {
   position: relative;
   padding-bottom: calc(100% / calc($height / $width));

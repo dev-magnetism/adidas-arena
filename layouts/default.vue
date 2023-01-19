@@ -8,6 +8,7 @@
     <AppLogo />
     <AppHeader />
     <AppMenu />
+    <AppScrollbar v-if="!$viewport.isMobile" />
     <nuxt class="app-main" />
     <AppScene />
     <WebglScene />
