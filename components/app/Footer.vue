@@ -112,9 +112,9 @@
       <EGridLogosFooter :contents="logos" />
       <div class="app-footer__paris-e-c">
         <a class="app-footer__paris-e-c__inner" href="#" target="_blank">
-          <TP1 color="white">
+          <TP2 color="white">
             L’adidas arena est une salle du groupe Paris Entertainment Company.
-          </TP1>
+          </TP2>
           <div class="app-footer__paris-e-c__logo">
             <SvgParisEC />
           </div>
@@ -137,6 +137,8 @@
 
 <script>
 import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { mapMutations } from 'vuex'
 
 export default {
   props: {
@@ -164,6 +166,12 @@ export default {
     },
   },
   mounted() {
+    ScrollTrigger.create({
+      trigger: this.$el,
+      start: 'top-=10% top',
+      onToggle: (self) => this.setHeaderWhite(self.isActive),
+    })
+
     this.tl = gsap.timeline({
       paused: true,
     })
@@ -198,6 +206,9 @@ export default {
 
       this.tl.reverse()
     },
+    ...mapMutations({
+      setHeaderWhite: 'setHeaderWhite',
+    }),
   },
 }
 </script>
@@ -599,14 +610,16 @@ export default {
       display: flex;
     }
 
-    .P1,
+    .P2,
     &__logo {
       flex: 50%;
       // padding: 0 desktop-vw(15px);
     }
 
-    .P1 {
-      padding: desktop-vw(20px) desktop-vw(20px);
+    .P2 {
+      padding: desktop-vw(20px) desktop-vw(15px);
+      text-transform: uppercase;
+      @include font-adihausDIN();
 
       @include mobile {
         padding: mobile-vw(15px) mobile-vw(15px);
@@ -621,7 +634,8 @@ export default {
       justify-content: center;
 
       svg {
-        width: 80%;
+        width: auto;
+        height: 65%;
       }
     }
   }

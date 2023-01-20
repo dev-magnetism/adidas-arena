@@ -26,6 +26,8 @@ export const state = () => ({
   // UI
   initialHeroDisplayed: false,
   menuActive: false,
+  headerReduced: false,
+  headerWhite: false,
   cursoState: 'default',
 })
 
@@ -38,6 +40,12 @@ export const getters = {
 export const mutations = {
   setFontsLoaded: (state, value) => {
     state.fontsLoaded = value
+  },
+  setHeaderReduced: (state, value) => {
+    state.headerReduced = value
+  },
+  setHeaderWhite: (state, value) => {
+    state.headerWhite = value
   },
   setInitialHeroDisplayed: (state, value) => {
     state.initialHeroDisplayed = value

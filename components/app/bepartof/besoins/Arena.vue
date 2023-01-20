@@ -1,9 +1,9 @@
 <template>
-  <div class="app-be-part-of-configurations-arena">
-    <div class="app-be-part-of-configurations-arena__inner grid-inner">
-      <div class="app-be-part-of-configurations-arena__visuals">
+  <div class="app-be-part-of-besoins-arena">
+    <div class="app-be-part-of-besoins-arena__inner grid-inner">
+      <div class="app-be-part-of-besoins-arena__visuals">
         <nuxt-img
-          class="app-be-part-of-configurations-arena__visual"
+          class="app-be-part-of-besoins-arena__visual"
           alt="arena-base"
           format="webp"
           src="/imgs/configurations/base.webp"
@@ -18,7 +18,7 @@
           <nuxt-img
             v-if="arenaDisposition === 'sport'"
             key="sport"
-            class="app-be-part-of-configurations-arena__visual"
+            class="app-be-part-of-besoins-arena__visual"
             alt="arena-sport"
             format="webp"
             src="/imgs/configurations/sport.webp"
@@ -26,7 +26,7 @@
           <nuxt-img
             v-if="arenaDisposition === 'scene_fond_gradin'"
             key="scene_fond_siege"
-            class="app-be-part-of-configurations-arena__visual"
+            class="app-be-part-of-besoins-arena__visual"
             alt="arena-scene_fond_siege"
             format="webp"
             src="/imgs/configurations/scene_fond_siege.webp"
@@ -34,7 +34,7 @@
           <nuxt-img
             v-if="arenaDisposition === 'scene_fond_fosse'"
             key="scene_fond_fosse"
-            class="app-be-part-of-configurations-arena__visual"
+            class="app-be-part-of-besoins-arena__visual"
             alt="arena-scene_fond_fosse"
             format="webp"
             src="/imgs/configurations/scene_fond_fosse.webp"
@@ -42,7 +42,7 @@
           <nuxt-img
             v-if="arenaDisposition === 'scene_centrale_gradin'"
             key="scene_central_siege"
-            class="app-be-part-of-configurations-arena__visual"
+            class="app-be-part-of-besoins-arena__visual"
             alt="arena-scene_central_siege"
             format="webp"
             src="/imgs/configurations/scene_central_siege.webp"
@@ -50,7 +50,7 @@
           <nuxt-img
             v-if="arenaDisposition === 'scene_centrale_fosse'"
             key="scene_central_fosse"
-            class="app-be-part-of-configurations-arena__visual"
+            class="app-be-part-of-besoins-arena__visual"
             alt="arena-scene_central_fosse"
             format="webp"
             src="/imgs/configurations/scene_central_fosse.webp"
@@ -62,7 +62,7 @@
               arenaDisposition === 'scene_centrale_gradin'
             "
             key="gradin_top"
-            class="app-be-part-of-configurations-arena__visual"
+            class="app-be-part-of-besoins-arena__visual"
             alt="arena-gradin_top"
             format="webp"
             src="/imgs/configurations/gradin_top.webp"
@@ -73,7 +73,7 @@
               arenaDisposition === 'scene_fond_gradin'
             "
             key="gradin_top_opacity"
-            class="app-be-part-of-configurations-arena__visual"
+            class="app-be-part-of-besoins-arena__visual"
             alt="arena-gradin_top_opacity"
             format="webp"
             src="/imgs/configurations/gradin_top_opacity.webp"
@@ -82,13 +82,13 @@
       </div>
 
       <ERichText
-        class="app-be-part-of-configurations-arena__title"
+        class="app-be-part-of-besoins-arena__title"
         :content="contents.title"
       />
-      <div class="app-be-part-of-configurations-arena__controller">
-        <div class="app-be-part-of-configurations-arena__controller__f-r">
+      <div class="app-be-part-of-besoins-arena__controller">
+        <div class="app-be-part-of-besoins-arena__controller__f-r">
           <TP1
-            class="app-be-part-of-configurations-arena__controller__f-r__title"
+            class="app-be-part-of-besoins-arena__controller__f-r__title"
             color="grey"
           >
             Configuration
@@ -96,7 +96,7 @@
           <transition-group
             tag="div"
             mode="out-in"
-            class="app-be-part-of-configurations-arena__transition"
+            class="app-be-part-of-besoins-arena__transition"
             :name="`transition-arena-${direction}`"
             :duration="1000"
           >
@@ -104,19 +104,17 @@
               v-for="(item, index) in contents.items"
               v-show="currentIndex === index"
               :key="`configuration-${index}`"
-              class="app-be-part-of-configurations-arena__controller__f-r__text"
+              class="app-be-part-of-besoins-arena__controller__f-r__text"
               color="grey"
             >
               {{ item.configuration }}
             </TH4>
           </transition-group>
         </div>
-        <div class="app-be-part-of-configurations-arena__controller__s-r">
-          <div
-            class="app-be-part-of-configurations-arena__controller__s-r__content"
-          >
+        <div class="app-be-part-of-besoins-arena__controller__s-r">
+          <div class="app-be-part-of-besoins-arena__controller__s-r__content">
             <TP1
-              class="app-be-part-of-configurations-arena__controller__s-r__title"
+              class="app-be-part-of-besoins-arena__controller__s-r__title"
               color="grey"
             >
               CAPACITE TOTALE
@@ -125,7 +123,7 @@
             <transition-group
               tag="div"
               mode="out-in"
-              class="app-be-part-of-configurations-arena__transition"
+              class="app-be-part-of-besoins-arena__transition"
               :name="`transition-arena-${direction}`"
               :duration="1000"
             >
@@ -133,18 +131,16 @@
                 v-for="(item, index) in contents.items"
                 v-show="currentIndex === index"
                 :key="`capacite-${index}`"
-                class="app-be-part-of-configurations-arena__controller__s-r__text"
+                class="app-be-part-of-besoins-arena__controller__s-r__text"
                 color="grey"
               >
                 {{ item.capacite }}
               </TH4>
             </transition-group>
           </div>
-          <div
-            class="app-be-part-of-configurations-arena__controller__s-r__content"
-          >
+          <div class="app-be-part-of-besoins-arena__controller__s-r__content">
             <TP1
-              class="app-be-part-of-configurations-arena__controller__s-r__title"
+              class="app-be-part-of-besoins-arena__controller__s-r__title"
               color="grey"
             >
               TYPE DE JAUGE
@@ -152,7 +148,7 @@
             <transition-group
               tag="div"
               mode="out-in"
-              class="app-be-part-of-configurations-arena__transition"
+              class="app-be-part-of-besoins-arena__transition"
               :name="`transition-arena-${direction}`"
               :duration="1000"
             >
@@ -160,7 +156,7 @@
                 v-for="(item, index) in contents.items"
                 v-show="currentIndex === index"
                 :key="`jauge-${index}`"
-                class="app-be-part-of-configurations-arena__controller__s-r__text"
+                class="app-be-part-of-besoins-arena__controller__s-r__text"
                 color="grey"
               >
                 {{ item.jauge }}
@@ -168,21 +164,21 @@
             </transition-group>
           </div>
         </div>
-        <div class="app-be-part-of-configurations-arena__controller__t-r">
+        <div class="app-be-part-of-besoins-arena__controller__t-r">
           <div
-            class="app-be-part-of-configurations-arena__controller__navigation left"
+            class="app-be-part-of-besoins-arena__controller__navigation left"
             @click="onLeftClick()"
           >
             <SvgUnionConfiguration />
           </div>
           <TP1
-            class="app-be-part-of-configurations-arena__controller__t-r__text"
+            class="app-be-part-of-besoins-arena__controller__t-r__text"
             color="grey"
           >
             {{ currentIndex + 1 }} - {{ contents.items.length }}
           </TP1>
           <div
-            class="app-be-part-of-configurations-arena__controller__navigation right"
+            class="app-be-part-of-besoins-arena__controller__navigation right"
             @click="onRightClick()"
           >
             <SvgUnionConfiguration />
@@ -190,7 +186,7 @@
         </div>
       </div>
 
-      <div class="app-be-part-of-configurations-arena__paragraphs">
+      <div class="app-be-part-of-besoins-arena__paragraphs">
         <TP1 color="grey">
           {{ contents.columnLeft }}
         </TP1>
@@ -249,7 +245,7 @@ export default {
 </script>
 
 <style lang="scss">
-.app-be-part-of-configurations-arena {
+.app-be-part-of-besoins-arena {
   position: relative;
   margin-bottom: desktop-vw(130px);
   padding-top: desktop-vw(80px);
@@ -533,8 +529,8 @@ export default {
       height: mobile-vw(22px);
     }
 
-    .app-be-part-of-configurations-arena__controller__f-r__text.H4,
-    .app-be-part-of-configurations-arena__controller__s-r__text.H4 {
+    .app-be-part-of-besoins-arena__controller__f-r__text.H4,
+    .app-be-part-of-besoins-arena__controller__s-r__text.H4 {
       &.transition-arena-next-enter-active,
       &.transition-arena-next-leave-active,
       &.transition-arena-previous-enter-active,

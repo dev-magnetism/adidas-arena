@@ -1,14 +1,14 @@
 <template>
-  <div class="app-be-part-of-configurations-introduction grid-inner">
-    <div class="app-be-part-of-configurations-introduction__f-row__content">
+  <div class="app-be-part-of-besoins-introduction grid-inner">
+    <div class="app-be-part-of-besoins-introduction__f-row__content">
       <ERichText
-        class="app-be-part-of-configurations-introduction__f-row__content__title"
+        class="app-be-part-of-besoins-introduction__f-row__content__title"
         :content="contents.title"
       />
 
       <TP2
         weight="bold"
-        class="app-be-part-of-configurations-introduction__f-row__content__text"
+        class="app-be-part-of-besoins-introduction__f-row__content__text"
       >
         {{ contents.subtitle }}
       </TP2>
@@ -17,7 +17,7 @@
     <EParallax
       ref="bigVisual"
       :speed="0.65"
-      class="app-be-part-of-configurations-introduction__f-row__visual"
+      class="app-be-part-of-besoins-introduction__f-row__visual"
     >
       <EKinesis :speed="5">
         <nuxt-picture
@@ -35,7 +35,7 @@
     <EParallax
       ref="pointsVisual"
       :speed="1"
-      class="app-be-part-of-configurations-introduction__s-row__visual"
+      class="app-be-part-of-besoins-introduction__s-row__visual"
     >
       <EKinesis :speed="6.5">
         <AtomsCornerPoints :size-points="8" />
@@ -50,15 +50,13 @@
       </EKinesis>
     </EParallax>
 
-    <div class="app-be-part-of-configurations-introduction__s-row__content">
-      <TH4
-        class="app-be-part-of-configurations-introduction__s-row__content__title"
-      >
+    <div class="app-be-part-of-besoins-introduction__s-row__content">
+      <TH4 class="app-be-part-of-besoins-introduction__s-row__content__title">
         {{ contents.secondTitle }}
       </TH4>
       <TP2
         weight="medium"
-        class="app-be-part-of-configurations-introduction__s-row__content__text"
+        class="app-be-part-of-besoins-introduction__s-row__content__text"
       >
         {{ contents.paragraph }}
       </TP2>
@@ -113,7 +111,7 @@ export default {
 </script>
 
 <style lang="scss">
-.app-be-part-of-configurations-introduction {
+.app-be-part-of-besoins-introduction {
   position: relative;
   margin-bottom: desktop-vw(130px);
   row-gap: desktop-vw(85px);

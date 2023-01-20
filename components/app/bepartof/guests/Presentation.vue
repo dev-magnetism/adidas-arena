@@ -1,13 +1,13 @@
 <template>
-  <div class="app-be-part-of-hospitalite-presentation grid-inner">
+  <div class="app-be-part-of-guests-presentation grid-inner">
     <ERichText
-      class="app-be-part-of-hospitalite-presentation__title"
+      class="app-be-part-of-guests-presentation__title"
       :content="contents.title"
     />
     <EParallax
       ref="bigVisual"
       :speed="0.85"
-      class="app-be-part-of-hospitalite-presentation__visual"
+      class="app-be-part-of-guests-presentation__visual"
     >
       <EKinesis :speed="5">
         <nuxt-picture
@@ -20,7 +20,7 @@
     </EParallax>
     <EParallax
       ref="framedVisual"
-      class="app-be-part-of-hospitalite-presentation__framed-visual"
+      class="app-be-part-of-guests-presentation__framed-visual"
       :speed="1"
     >
       <EKinesis :speed="5">
@@ -37,7 +37,7 @@
         </EFramedPicture>
       </EKinesis>
     </EParallax>
-    <div class="app-be-part-of-hospitalite-presentation__text">
+    <div class="app-be-part-of-guests-presentation__text">
       <TH4>{{ contents.paragraphTitle }}</TH4>
 
       <ERichText :content="contents.paragraph" />
@@ -92,7 +92,7 @@ export default {
 </script>
 
 <style lang="scss">
-.app-be-part-of-hospitalite-presentation {
+.app-be-part-of-guests-presentation {
   position: relative;
   padding-bottom: desktop-vw(800px);
 

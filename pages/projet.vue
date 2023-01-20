@@ -4,7 +4,7 @@
       <AppProjetIntroduction :contents="contentIntroduction" />
       <AppProjetCatchPhrase :contents="contentCatchphrase" />
       <AppProjetGallery :contents="contentGallery" />
-      <AppProjetWorkProgress :contents="contentWorkProgress" />
+      <!-- <AppProjetWorkProgress :contents="contentWorkProgress" /> -->
       <AppProjetPlan :contents="contentPlan" />
       <AppProjetTwoColumns :contents="contentTwoColumns" />
       <AppFooter :contents="appContent" :logos="partnersContent.data" />

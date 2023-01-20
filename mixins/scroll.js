@@ -1,4 +1,4 @@
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from '@studio-freight/lenis'
@@ -57,16 +57,25 @@ export default {
 
     this.lenis.destroy()
 
-    // window.lenis = null
+    window.lenis = null
   },
   methods: {
     onScrollLenis(args) {
       ScrollTrigger.update()
+
+      if (Math.abs(args.scroll) >= 50) {
+        this.setHeaderReduced(true)
+      } else {
+        this.setHeaderReduced(false)
+      }
 
       this.$nuxt.$emit('app:scroll', { ...args })
     },
     onFrame({ time, deltaTime }) {
       this.lenis.raf(time * 1000)
     },
+    ...mapMutations({
+      setHeaderReduced: 'setHeaderReduced',
+    }),
   },
 }

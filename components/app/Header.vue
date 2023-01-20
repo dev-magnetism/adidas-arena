@@ -1,5 +1,9 @@
 <template>
-  <div class="app-header" @click="onClickBurger">
+  <div
+    :class="{ reduced: headerReduced, white: headerWhite }"
+    class="app-header"
+    @click="onClickBurger"
+  >
     <TP1 v-if="!$viewport.isMobile" weight="bold" class="app-header__menu">
       {{ menuName }}
     </TP1>
@@ -21,6 +25,8 @@ export default {
       preloaderHidden: (state) => state.preloaderHidden,
       appContent: (state) => state.appContent,
       fontsLoaded: (state) => state.fontsLoaded,
+      headerReduced: (state) => state.headerReduced,
+      headerWhite: (state) => state.headerWhite,
     }),
     menuName() {
       return this.appContent.data.menu_name
@@ -50,18 +56,35 @@ export default {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  transition: transform 0.65s var(--ease-out-cubic);
+  will-change: transform;
+
+  &.reduced {
+    transform: translate(0%, -85%);
+  }
+
+  &.white {
+    .app-header__menu.P1 {
+      color: var(--c-grey) !important;
+    }
+    .app-header__burger::after,
+    .app-header__burger::before {
+      background-color: var(--c-grey);
+    }
+  }
 
   @include mobile {
     right: var(--layout-margin);
     top: mobile-vw(25px);
   }
 
-  &__menu {
+  &__menu.P1 {
     font-size: 16px;
     line-height: 16px;
     @include font-adihausDIN-cn-medium();
     text-transform: uppercase;
     margin-right: 20px;
+    transition: color 0.4s var(--ease-out-cubic);
   }
 
   &__burger {
@@ -73,7 +96,7 @@ export default {
     width: 30px;
     border: 0px;
     padding: 0px;
-    background: transparent;
+    background-color: transparent;
 
     &:before,
     &:after {
@@ -81,7 +104,8 @@ export default {
       width: 30px;
       height: 2px;
       position: absolute;
-      background: black;
+      background-color: black;
+      transition: background-color 0.4s var(--ease-out-cubic);
     }
 
     &:before {

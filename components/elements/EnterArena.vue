@@ -32,12 +32,13 @@ export default {
   transition: opacity 0.35s var(--ease-in-out-cubic);
 
   &.hide {
-    opacity: 0;
-    // pointer-events: none;
-  }
-
-  &__cta {
-    left: 25%;
+    .app-element-enter-arena__cta,
+    .app-element-enter-arena__title {
+      opacity: 0;
+    }
+    .app-element-enter-arena__cta {
+      transition-delay: 0s;
+    }
   }
 
   &__title {
@@ -48,6 +49,7 @@ export default {
     align-items: center;
     justify-content: center;
     width: 65%;
+    transition: opacity 0.4s var(--ease-in-out-cubic);
 
     p {
       font-size: min(54px, desktop-vw(54px));
@@ -55,6 +57,12 @@ export default {
       @include font-adihausDIN-cn-bold();
       text-transform: uppercase;
     }
+  }
+
+  &__cta {
+    left: 25%;
+    transition: opacity 0.4s var(--ease-in-out-cubic);
+    transition-delay: 0.15s;
   }
 }
 </style>

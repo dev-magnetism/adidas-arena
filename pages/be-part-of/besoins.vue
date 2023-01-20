@@ -1,7 +1,7 @@
 <template>
-  <main class="page-be-part-of-configurations">
-    <AppBepartofConfigurationsIntroduction :contents="contentIntroduction" />
-    <AppBepartofConfigurationsArena :contents="contentArena" />
+  <main class="page-be-part-of-besoins">
+    <AppBepartofBesoinsIntroduction :contents="contentIntroduction" />
+    <AppBepartofBesoinsArena :contents="contentArena" />
     <AppContactQuestion :contents="contentContactQuestion" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
@@ -74,7 +74,7 @@ export default {
 </script>
 
 <style lang="scss">
-.page-be-part-of-configurations {
+.page-be-part-of-besoins {
   margin-top: desktop-vw(300px);
 
   @include mobile {

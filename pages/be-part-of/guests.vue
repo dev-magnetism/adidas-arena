@@ -1,10 +1,10 @@
 <template>
-  <main class="page-be-part-of-hospitalite">
+  <main class="page-be-part-of-guests">
     <ETwoColumnsStick
       :left-content="contentTwoColumns.left"
       :right-content="contentTwoColumns.right"
     />
-    <AppBepartofHospitalitePresentation :contents="contentPresentation" />
+    <AppBepartofGuestsPresentation :contents="contentPresentation" />
     <ESlider :contents="contentSlider" />
     <AppContactQuestion :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
@@ -93,7 +93,7 @@ export default {
 </script>
 
 <style lang="scss">
-.page-be-part-of-hospitalite {
+.page-be-part-of-guests {
   margin-top: desktop-vw(620px);
 
   .app-two-columns-stick {
