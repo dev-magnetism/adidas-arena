@@ -115,6 +115,7 @@ export default {
     return {
       viewExteriorOpen: false,
       DOMVisible: false,
+      scissorsResizeInProgress: false,
     }
   },
   computed: {
@@ -124,7 +125,7 @@ export default {
       allLoadedFake: (state) => state.allLoadedFake,
       allLoadedActual: (state) => state.allLoadedActual,
       exteriorArenaHovered: (state) => state.exteriorArenaHovered,
-      displayHero: (state) => state.displayHero,
+      initialHeroDisplayed: (state) => state.initialHeroDisplayed,
     }),
   },
   watch: {
@@ -136,15 +137,12 @@ export default {
     allLoadedActual(payload) {
       if (!payload) return
 
-      const { exterior } = useWebGL()
-
-      exterior.drag.enabled = false
-      exterior.zoom.enabled = false
+      this.resetViewExterior()
     },
-    displayHero(payload) {
+    initialHeroDisplayed(payload) {
       if (!payload) return
 
-      this.appearHeroInit(0.25)
+      this.appearHeroInit(0.1)
     },
     viewExteriorOpen(payload) {
       const { exterior } = useWebGL()
@@ -153,9 +151,9 @@ export default {
         gsap.to(exterior.position, {
           x: 0,
           z: 0,
-          duration: 0.85,
+          duration: 0.7,
           delay: 0.1,
-          ease: 'power2.inOut',
+          ease: 'power1.inOut',
         })
 
         this.disapearDOM()
@@ -173,27 +171,18 @@ export default {
           ease: 'power2.inOut',
         })
 
-        gsap.to(exterior.zoom, {
-          target: exterior.zoom.initial,
-          duration: 0.85,
-          ease: 'power2.inOut',
-        })
-
         this.appearDOM()
       }
     },
   },
   mounted() {
-    const { exterior } = useWebGL()
-
-    exterior.position.copy(exterior.heroPosition)
-
     if (this.fontsLoaded) {
       this.initSplitText()
     }
 
-    if (this.displayHero) {
-      this.appearHeroInit(0.8)
+    if (this.allLoadedActual) {
+      this.resetViewExterior()
+      this.appearHeroInit(0.75)
     }
 
     this.resizeObserver = new ResizeObserver(this.onResize)
@@ -213,6 +202,18 @@ export default {
     this.$raf.remove(`home-hero`, this.onFrame)
   },
   methods: {
+    resetViewExterior() {
+      const { exterior, camera } = useWebGL()
+
+      exterior.drag.enabled = false
+
+      exterior.position.copy(exterior.heroPosition)
+
+      camera.position.copy(exterior.initialCamera.position)
+      camera.rotation.copy(exterior.initialCamera.rotation)
+      camera.zoom = exterior.zoom.initial
+      camera.updateProjectionMatrix()
+    },
     disapearDOM() {
       this.tlAppearHero?.clear()
       this.tlAppearHero?.kill()
@@ -443,7 +444,6 @@ export default {
       this.viewExteriorOpen = !this.viewExteriorOpen
 
       exterior.drag.enabled = this.viewExteriorOpen
-      exterior.zoom.enabled = this.viewExteriorOpen
 
       const state = Flip.getState(this.$refs.view)
 
@@ -451,8 +451,12 @@ export default {
 
       Flip.from(state, {
         absolute: true,
-        duration: 0.75,
+        duration: 0.65,
         delay: 0.15,
+
+        onUpdate: () => {
+          this.onResize()
+        },
         ease: 'power1.inOut',
       })
     },
@@ -626,6 +630,10 @@ export default {
     position: absolute;
     grid-column: 8 / span 3;
     top: 20%;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 
   .app-element-scroll-indicator {
@@ -824,7 +832,7 @@ export default {
     grid-column: 2 / span 6;
     align-self: center;
     z-index: 1;
-    max-width: min(720px, desktop-vw(720px));
+    max-width: min(620px, desktop-vw(720px));
     position: relative;
 
     .app-atoms-stroke-text {

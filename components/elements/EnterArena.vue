@@ -33,7 +33,7 @@ export default {
 
   &.hide {
     opacity: 0;
-    pointer-events: none;
+    // pointer-events: none;
   }
 
   &__cta {

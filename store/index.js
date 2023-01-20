@@ -24,7 +24,7 @@ export const state = () => ({
   interiorVisible: true,
 
   // UI
-  displayHero: false,
+  initialHeroDisplayed: false,
   menuActive: false,
   cursoState: 'default',
 })
@@ -39,8 +39,8 @@ export const mutations = {
   setFontsLoaded: (state, value) => {
     state.fontsLoaded = value
   },
-  setDisplayHero: (state, value) => {
-    state.displayHero = value
+  setInitialHeroDisplayed: (state, value) => {
+    state.initialHeroDisplayed = value
   },
   setModelsPreviewed: (state, value) => {
     state.modelsPreviewed = value

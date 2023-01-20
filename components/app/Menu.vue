@@ -935,7 +935,7 @@ export default {
       opacity: 1;
     }
 
-    &__menu {
+    &__menu.P1 {
       font-size: 16px;
       line-height: 16px;
       @include font-adihausDIN-cn-medium();

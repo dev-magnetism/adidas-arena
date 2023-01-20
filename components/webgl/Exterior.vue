@@ -62,7 +62,6 @@ export default {
           min: 8,
           max: 30,
         },
-        enabled: false,
       },
       indexArrowPosition: null,
       thresholdAngle: 40,
@@ -97,7 +96,6 @@ export default {
   mounted() {
     const { exterior } = useWebGL()
 
-    exterior.zoom = this.zoom
     exterior.drag = this.drag
 
     if (this.allLoadedActual) {
@@ -179,17 +177,17 @@ export default {
     this.tweenZoom?.kill()
 
     // GLOBAL
-    interactionManager.remove(this.adidasArenaSecondFloor)
-
     this.adidasArenaSecondFloor.removeEventListener(
       'mouseenter',
       this.onMouseEnterArena
     )
-
     this.adidasArenaSecondFloor.removeEventListener(
       'mouseleave',
       this.onMouseLeaveArena
     )
+    this.adidasArenaSecondFloor.removeEventListener('click', this.onClickArena)
+    interactionManager.remove(this.adidasArenaSecondFloor)
+
     this.observer?.kill()
     this.$raf.remove(`webgl-exterior`, this.onFrame)
   },
@@ -259,6 +257,8 @@ export default {
 
       interactionManager.add(this.adidasArenaSecondFloor)
 
+      this.adidasArenaSecondFloor.addEventListener('click', this.onClickArena)
+
       this.adidasArenaSecondFloor.addEventListener(
         'mouseenter',
         this.onMouseEnterArena
@@ -270,6 +270,37 @@ export default {
       )
     },
 
+    onClickArena() {
+      // const { camera } = useWebGL()
+
+      // const params = {
+      //   duration: 1,
+      //   ease: 'power2.inOut',
+      // }
+
+      // gsap.to(camera.position, {
+      //   y: 78,
+      //   ...params,
+      // })
+
+      // gsap.to(camera.rotation, {
+      //   x: THREE.MathUtils.degToRad(-158.06),
+      //   y: THREE.MathUtils.degToRad(36.86),
+      //   z: THREE.MathUtils.degToRad(166.84),
+      //   ...params,
+      // })
+
+      // gsap.to(camera, {
+      //   zoom: 28,
+      //   ...params,
+      //   onUpdate: () => {
+      //     camera.updateProjectionMatrix()
+      //   },
+      // })
+
+      console.log('click')
+    },
+
     onMouseEnterArena() {
       this.setExteriorArenaHovered(true)
     },
@@ -279,17 +310,20 @@ export default {
     },
 
     initCamera() {
-      const { camera } = useWebGL()
+      const { camera, exterior } = useWebGL()
 
       this.camera = loaderManager
         .getModel('exterior')
         .scene.getObjectByName('Camera_Zoom')
 
+      exterior.initialCamera = { ...this.camera }
+
       camera.position.copy(this.camera.position)
       camera.rotation.copy(this.camera.rotation)
       camera.zoom = this.zoom.current
-
       camera.updateProjectionMatrix()
+
+      exterior.zoom = this.zoom
     },
 
     initMaterials() {

@@ -96,7 +96,7 @@ class GL {
     this.interactionManager = new InteractionManager(
       this.renderer,
       this.camera,
-      this.renderer.domElement
+      document.getElementById('__nuxt')
     )
 
     this.onWindowResize()
