@@ -15,6 +15,7 @@ class GL {
 
     this.exterior = new THREE.Group()
     this.exterior.name = 'exterior'
+    this.exterior.drag = null
     this.exterior.heroPosition = new THREE.Vector3(
       -Viewport.width * 0.0125,
       0,
@@ -24,6 +25,7 @@ class GL {
 
     this.interior = new THREE.Group()
     this.interior.name = 'interior'
+    this.interior.floors = []
     this.scene.add(this.interior)
 
     this.gallery = new THREE.Group()
@@ -37,7 +39,7 @@ class GL {
       precision: 'highp',
       alpha: true,
     })
-
+    this.renderer.localClippingEnabled = true
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
     this.scissors = {

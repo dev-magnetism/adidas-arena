@@ -19,9 +19,11 @@ export const state = () => ({
   // Exterior scene
   exteriorVisible: true,
   exteriorArenaHovered: false,
+  exteriorFullwidth: false,
 
-  // Exterior scene
+  // Interior scene
   interiorVisible: true,
+  interiorIndexFloor: 0,
 
   // UI
   initialHeroDisplayed: false,
@@ -43,6 +45,12 @@ export const mutations = {
   },
   setHeaderReduced: (state, value) => {
     state.headerReduced = value
+  },
+  setExteriorFullwidth: (state, value) => {
+    state.exteriorFullwidth = value
+  },
+  setInteriorIndexFloor: (state, value) => {
+    state.interiorIndexFloor = value
   },
   setHeaderWhite: (state, value) => {
     state.headerWhite = value

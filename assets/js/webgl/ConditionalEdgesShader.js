@@ -1,16 +1,15 @@
 /* eslint-disable */
 
 export const ConditionalEdgesShader = {
+  clipping: true,
   uniforms: {
     diffuse: {
       value: new THREE.Color(),
     },
-
     opacity: {
       value: 1.0,
     },
   },
-
   vertexShader: /* glsl */ `
 		attribute vec3 control0;
 		attribute vec3 control1;

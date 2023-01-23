@@ -9,6 +9,7 @@
       </AtomsCTABack>
       <ERichText
         ref="title"
+        :class="{ hide: exteriorFullwidth }"
         class="app-home-hero__title"
         :content="contents.title"
       />
@@ -87,10 +88,6 @@
         {{ contents.visit }}
       </AtomsTitleTag>
       <EScrollIndicator :class="{ hide: !viewExteriorOpen || !DOMVisible }" />
-      <EEnterArena
-        :content="contents.enter"
-        :class="{ hide: !viewExteriorOpen || !exteriorArenaHovered }"
-      />
     </div>
   </div>
 </template>
@@ -124,8 +121,8 @@ export default {
       exteriorVisible: (state) => state.exteriorVisible,
       allLoadedFake: (state) => state.allLoadedFake,
       allLoadedActual: (state) => state.allLoadedActual,
-      exteriorArenaHovered: (state) => state.exteriorArenaHovered,
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,
+      exteriorFullwidth: (state) => state.exteriorFullwidth,
     }),
   },
   watch: {
@@ -184,6 +181,8 @@ export default {
       this.resetViewExterior()
       this.appearHeroInit(0.75)
     }
+
+    this.setExteriorFullwidth(false)
 
     this.resizeObserver = new ResizeObserver(this.onResize)
     this.resizeObserver.observe(this.$refs.view)
@@ -442,6 +441,7 @@ export default {
       const { exterior } = useWebGL()
 
       this.viewExteriorOpen = !this.viewExteriorOpen
+      this.setExteriorFullwidth(!this.exteriorFullwidth)
 
       exterior.drag.enabled = this.viewExteriorOpen
 
@@ -597,6 +597,7 @@ export default {
     },
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',
+      setExteriorFullwidth: 'setExteriorFullwidth',
     }),
   },
 }
@@ -623,16 +624,6 @@ export default {
 
     @include mobile {
       border: none;
-    }
-  }
-
-  .app-element-enter-arena {
-    position: absolute;
-    grid-column: 8 / span 3;
-    top: 20%;
-
-    &:hover {
-      opacity: 1;
     }
   }
 
@@ -834,6 +825,10 @@ export default {
     z-index: 1;
     max-width: min(620px, desktop-vw(720px));
     position: relative;
+
+    &.hide {
+      pointer-events: none;
+    }
 
     .app-atoms-stroke-text {
       display: block;

@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <WebglExterior />
-    <!-- <WebglInfo v-if="!$viewport.isMobile" /> -->
+  <div class="app-webgl-scene">
+    <!-- <WebglExterior /> -->
+    <WebglInfo v-if="!$viewport.isMobile" />
   </div>
 </template>
 
@@ -31,3 +31,14 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.app-webgl-scene {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 0;
+}
+</style>

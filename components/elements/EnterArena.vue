@@ -2,22 +2,24 @@
   <div class="app-element-enter-arena">
     <div class="app-element-enter-arena__title">
       <AtomsCornerPoints :size-points="8" />
-      <p>{{ content.title }}</p>
+      <p>L’ARENA</p>
+      <!-- <p>{{ content.title }}</p> -->
     </div>
     <AtomsCTA ref="cta" button class="app-element-enter-arena__cta">
-      {{ content.cta }}
+      <!-- {{ content.cta }} -->
+      Découvrir le lieu
     </AtomsCTA>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    content: {
-      type: Object,
-      default: () => {},
-    },
-  },
+  // props: {
+  //   content: {
+  //     type: Object,
+  //     default: () => {},
+  //   },
+  // },
 }
 </script>
 

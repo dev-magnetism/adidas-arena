@@ -1,5 +1,9 @@
 <template>
-  <div class="app-webgl-exterior" />
+  <div class="app-webgl-exterior grid-inner">
+    <EEnterArena
+      :class="{ hide: !exteriorArenaHovered || !exteriorFullwidth }"
+    />
+  </div>
 </template>
 
 <script>
@@ -32,7 +36,6 @@ export default {
         lambertMaterialEmissive: new THREE.Color(0xffffff),
         outlineColor: new THREE.Color(0x000000),
         shadowColor: new THREE.Color(0xfbe7c9),
-
         arrowColor: new THREE.Color(0xff4a48),
         logoColor: new THREE.Color(0x000000),
       },
@@ -75,6 +78,8 @@ export default {
       modelCloudLoaded: (state) => state.modelCloudLoaded,
       allLoadedActual: (state) => state.allLoadedActual,
       exteriorVisible: (state) => state.exteriorVisible,
+      exteriorArenaHovered: (state) => state.exteriorArenaHovered,
+      exteriorFullwidth: (state) => state.exteriorFullwidth,
     }),
   },
   watch: {
@@ -225,7 +230,6 @@ export default {
 
       this.drag.last = this.drag.current
     },
-
     initExterior() {
       this.model = loaderManager.getModel('exterior')
       this.gltfExterior = this.model.scene
@@ -251,7 +255,6 @@ export default {
 
       this.initEvents()
     },
-
     initEvents() {
       const { interactionManager } = useWebGL()
 
@@ -269,7 +272,6 @@ export default {
         this.onMouseLeaveArena
       )
     },
-
     onClickArena() {
       // const { camera } = useWebGL()
 
@@ -300,7 +302,6 @@ export default {
 
       console.log('click')
     },
-
     onMouseEnterArena() {
       this.setExteriorArenaHovered(true)
     },
@@ -308,7 +309,6 @@ export default {
     onMouseLeaveArena() {
       this.setExteriorArenaHovered(false)
     },
-
     initCamera() {
       const { camera, exterior } = useWebGL()
 
@@ -355,7 +355,6 @@ export default {
         ),
       })
     },
-
     initClouds() {
       const { exterior } = useWebGL()
 
@@ -388,7 +387,6 @@ export default {
         this.clouds.add(object)
       })
     },
-
     initLights() {
       const { exterior, scene } = useWebGL()
 
@@ -419,7 +417,6 @@ export default {
         scene.add(this.directionalLight)
       }
     },
-
     initLogoArena() {
       const { exterior } = useWebGL()
 
@@ -434,7 +431,6 @@ export default {
       logoArena.material.emissive = this.colors.logoColor
       this.logoArena.add(logoArena)
     },
-
     initArrow() {
       const { exterior } = useWebGL()
 
@@ -466,7 +462,6 @@ export default {
 
       arrow.material.flatShading = true
     },
-
     initFootField() {
       const { exterior } = useWebGL()
 
@@ -481,7 +476,7 @@ export default {
 
       const shadowFootField = footField.clone()
       shadowFootField.name = 'shadowModel'
-      shadowFootField.material = this.shadowMaterial.clone()
+      shadowFootField.material = this.shadowMaterial
       shadowFootField.isShadow = true
 
       const edgeFootField = this.edgeObject(footField)
@@ -492,7 +487,6 @@ export default {
       this.footField.add(edgeFootField)
       // this.footField.add(conditionalFootField)
     },
-
     initCars() {
       const { exterior } = useWebGL()
 
@@ -509,7 +503,6 @@ export default {
       this.cars.add(edgeCars)
       this.cars.add(conditionalCars)
     },
-
     initRoad() {
       const { exterior } = useWebGL()
 
@@ -523,7 +516,7 @@ export default {
 
       const shadowRoad = road.clone()
       shadowRoad.name = 'shadowModel'
-      shadowRoad.material = this.shadowMaterial.clone()
+      shadowRoad.material = this.shadowMaterial
       shadowRoad.isShadow = true
 
       const edgeRoad = this.edgeObject(road)
@@ -534,7 +527,6 @@ export default {
       this.road.add(edgeRoad)
       // this.road.add(conditionalRoad)
     },
-
     initLamps() {
       const { exterior } = useWebGL()
 
@@ -597,7 +589,7 @@ export default {
 
       const shadowFloor = floor.clone()
       shadowFloor.name = 'shadowModel'
-      shadowFloor.material = this.shadowMaterial.clone()
+      shadowFloor.material = this.shadowMaterial
       shadowFloor.isShadow = true
 
       // const conditionalFloor = this.conditionalObject(floor)
@@ -684,7 +676,7 @@ export default {
 
       const adidasArenaRoof = this.mergeObject(adidasArenaRoofGroup)
       adidasArenaRoof.name = 'shadowModel'
-      adidasArenaRoof.material = this.shadowMaterial.clone()
+      adidasArenaRoof.material = this.shadowMaterial
       adidasArenaRoof.isShadow = true
 
       this.adidasArenaRoof.add(adidasArenaRoof)
@@ -693,8 +685,9 @@ export default {
       const mergedGeom = object.geometry
 
       const lineGeom = new THREE.EdgesGeometry(mergedGeom, this.thresholdAngle)
+      const material = this.lineMaterial
 
-      const line = new THREE.LineSegments(lineGeom, this.lineMaterial)
+      const line = new THREE.LineSegments(lineGeom, material)
       line.position.copy(object.position)
       line.scale.copy(object.scale)
       line.rotation.copy(object.rotation)
@@ -712,8 +705,9 @@ export default {
       }
 
       const lineGeom = new ConditionalEdgesGeometry(mergeVertices(mergedGeom))
+      const material = this.conditionalMaterial
 
-      const mesh = new THREE.LineSegments(lineGeom, this.conditionalMaterial)
+      const mesh = new THREE.LineSegments(lineGeom, material)
       mesh.position.copy(object.position)
       mesh.scale.copy(object.scale)
       mesh.rotation.copy(object.rotation)
@@ -753,7 +747,7 @@ export default {
       mesh.receiveShadow = this.modelReceiveShadow
 
       mesh.name = 'model'
-      mesh.material = this.modelMaterial.clone()
+      mesh.material = this.modelMaterial
       mesh.isShadow = false
 
       mesh.material.polygonOffset = true
@@ -839,7 +833,7 @@ export default {
           min: 0,
           max: 1,
           step: 0.01,
-          label: 'Near',
+          label: 'Near Shadow Camera',
         })
         .on('change', (e) => {
           this.directionalLight.shadow.camera.near = e.value
@@ -852,7 +846,7 @@ export default {
           min: 0,
           max: 1000,
           step: 0.01,
-          label: 'Far',
+          label: 'Far Shadow Camera',
         })
         .on('change', (e) => {
           this.directionalLight.shadow.camera.far = e.value
@@ -1050,35 +1044,8 @@ export default {
 
 <style lang="scss">
 .app-webgl-exterior {
-  height: 100vh;
+  height: 100%;
   width: 100%;
   position: fixed;
-  .arrow-debug {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    display: flex;
-    z-index: 2;
-
-    span {
-      padding: 10px 20px;
-      margin: 0 5px;
-      cursor: pointer;
-      background: var(--c-red-adidas);
-
-      &.is-active {
-        background: var(--c-blue-adidas);
-      }
-    }
-  }
-  .test {
-    background: red;
-    width: 200px;
-    height: 200px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
 }
 </style>
