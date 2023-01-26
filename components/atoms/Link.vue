@@ -75,12 +75,14 @@ export default {
   margin-right: auto;
   cursor: pointer;
 
-  &:hover {
-    opacity: 1;
-  }
+  @include hover {
+    &:hover {
+      opacity: 1;
+    }
 
-  &:hover::after {
-    --scale: 1;
+    &:hover::after {
+      --scale: 1;
+    }
   }
 
   &::after {
@@ -97,6 +99,10 @@ export default {
     transform-origin: left center;
     transition: transform 0.3s cubic-bezier(0.51, 0.92, 0.24, 1);
     width: 100%;
+
+    @include mobile {
+      --scale: 1;
+    }
   }
 }
 </style>
