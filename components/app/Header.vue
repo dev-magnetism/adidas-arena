@@ -49,7 +49,7 @@ export default {
 <style lang="scss">
 .app-header {
   position: fixed;
-  top: desktop-vw(70px);
+  top: desktop-vw(75px);
   right: calc(var(--layout-margin) + 25px);
   z-index: 2;
   display: flex;
@@ -60,7 +60,7 @@ export default {
   will-change: transform;
 
   &.reduced {
-    transform: translate(0%, -85%);
+    transform: translate(0%, -150%);
   }
 
   &.white {
@@ -75,7 +75,7 @@ export default {
 
   @include mobile {
     right: var(--layout-margin);
-    top: mobile-vw(25px);
+    top: mobile-vw(40px);
   }
 
   &__menu.P1 {

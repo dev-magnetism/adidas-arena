@@ -1,6 +1,6 @@
 <template>
   <div class="app-webgl-scene">
-    <!-- <WebglExterior /> -->
+    <WebglExterior />
     <WebglInfo v-if="!$viewport.isMobile" />
   </div>
 </template>

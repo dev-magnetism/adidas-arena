@@ -122,12 +122,17 @@
       </div>
     </div>
     <div class="app-footer__bottom">
-      <TP2 color="grey"> ©2022 - Tous droits réservés</TP2>
-      <AtomsLink href="#">
-        <TP2 color="grey"> Cookies</TP2>
+      <TP2 color="grey">
+        ©{{ new Date().getFullYear() }} -
+        {{ contents.data.footer_all_rights_reserved }}
+      </TP2>
+      <AtomsLink :href="contents.data.footer_cookies_link">
+        <TP2 color="grey"> {{ contents.data.footer_cookies_title }}</TP2>
       </AtomsLink>
-      <AtomsLink href="#">
-        <TP2 color="grey"> Mentions légales</TP2>
+      <AtomsLink :href="contents.data.footer_mentions_legales_link">
+        <TP2 color="grey">
+          {{ contents.data.footer_mentions_legales_title }}
+        </TP2>
       </AtomsLink>
     </div>
     <SvgFooterBrush v-if="!$viewport.isMobile" class="app-footer__brush" />

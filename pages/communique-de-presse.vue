@@ -1,0 +1,120 @@
+<template>
+  <div class="app-communique-de-presse grid-inner">
+    <div class="app-communique-de-presse__inner">
+      <nuxt-picture
+        provider="directus"
+        :src="content.data.picture"
+        format="webp"
+        alt="communique-de-presse-picture-alt"
+      />
+
+      <TH2 class="app-communique-de-presse__title">{{
+        content.data.title
+      }}</TH2>
+      <TP2 weight="bold" class="app-communique-de-presse__subtitle">{{
+        content.data.subtitle
+      }}</TP2>
+      <TP2
+        weight="medium"
+        class="app-communique-de-presse__content"
+        v-html="content.data.content"
+      ></TP2>
+    </div>
+  </div>
+</template>
+
+<script>
+import scroll from '@/mixins/scroll'
+// import pageTransition from '@/mixins/page-transition'
+
+export default {
+  mixins: [scroll],
+  layout: 'second-layout',
+
+  async asyncData({ $directus }) {
+    const content = await $directus.items('Communique_de_presse').readByQuery({
+      limit: -1,
+    })
+
+    return {
+      content,
+    }
+  },
+
+  mounted() {
+    this.lenis.start()
+  },
+}
+</script>
+
+<style lang="scss">
+.app-communique-de-presse {
+  padding-top: desktop-vw(180px);
+  padding-bottom: desktop-vw(130px);
+
+  @include mobile {
+    padding-top: mobile-vw(100px);
+    padding-bottom: mobile-vw(60px);
+  }
+
+  &__inner {
+    grid-column: 2 / span 8;
+
+    @include mobile {
+      grid-column: 1 / span 6;
+    }
+  }
+
+  picture {
+    display: block;
+    aspect-ratio: 900 / 500;
+    width: 100%;
+    margin-bottom: desktop-vw(60px);
+
+    @include mobile {
+      aspect-ratio: 400 / 200;
+      margin-bottom: mobile-vw(30px);
+    }
+
+    img {
+      display: block;
+    }
+  }
+
+  &__title.H2 {
+    margin-bottom: desktop-vw(40px);
+
+    @include mobile {
+      margin-bottom: mobile-vw(25px);
+    }
+  }
+
+  &__subtitle.P2 {
+    margin-bottom: desktop-vw(40px);
+    text-transform: uppercase;
+    width: 60%;
+
+    @include mobile {
+      width: 100%;
+      margin-bottom: mobile-vw(25px);
+    }
+  }
+
+  &__content {
+    strong {
+      @include font-adihausDIN-bold();
+    }
+
+    h4 {
+      text-transform: uppercase;
+      @include font-adihausDIN-bold();
+    }
+
+    a {
+      text-decoration: underline;
+      color: var(--c-red-adidas);
+      cursor: pointer;
+    }
+  }
+}
+</style>

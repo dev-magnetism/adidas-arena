@@ -86,6 +86,9 @@ export default {
       thresholdAngle: 40,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
+      floorsGUI: [],
+      accumulatorConstant: [],
+      helpers: [],
     }
   },
   computed: {
@@ -164,6 +167,13 @@ export default {
       material.dispose()
     })
 
+    this.helpers.forEach((helper) => {
+      helper.geometry.dispose()
+      helper.material.dispose()
+
+      scene.remove(helper)
+    })
+
     interior.traverse((item) => {
       if (item instanceof THREE.Mesh || item instanceof THREE.Line) {
         item.geometry?.dispose()
@@ -200,6 +210,10 @@ export default {
     this.guiZoom?.dispose()
     this.guiAmbientLight?.dispose()
     this.guiModelColors?.dispose()
+    this.guiFloors?.dispose()
+    this.floorsGUI.forEach((gui) => {
+      gui.dispose()
+    })
 
     this.observer?.kill()
     interior.floors = []
@@ -214,7 +228,7 @@ export default {
       this.initMaterials()
       this.initLights()
 
-      this.initFloor()
+      // this.initFloor()
       this.initFootField()
       this.initMusicScene()
 
@@ -265,7 +279,7 @@ export default {
 
       this.guiModelColors = this.gui.addFolder({
         title: `Colors`,
-        expanded: true,
+        expanded: false,
       })
 
       this.guiModelColors
@@ -485,7 +499,11 @@ export default {
 
       camera.position.copy(this.cameraBase.position)
       camera.rotation.copy(this.cameraBase.rotation)
-      // camera.zoom = 15
+
+      console.log(camera.position.y)
+
+      camera.position.set(-136.753, 40.615, 157.395)
+      camera.rotation.set(-0.17453293, -0.66322512, -0.0872664626)
 
       camera.updateProjectionMatrix()
     },
@@ -703,29 +721,28 @@ export default {
       this.zoom.last = this.zoom.current
     },
     buildArenaFloor(initialObject, name = 'no-name') {
-      const clippingPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0.5)
-
-      const gui = useGUI()
-
-      gui
-        .addInput(clippingPlane, 'constant', {
-          min: -10,
-          max: 10,
-          step: 0.1,
-          label: 'Constant',
-        })
-        .on('change', (e) => {
-          clippingPlane.constant = e.value
-        })
+      // const { scene } = useWebGL()
 
       const arene = this.model.getObjectByName('Arene')
 
       const group = new THREE.Group()
       group.position.copy(arene.position)
       group.name = name
-      group.divider = null
+      group.divider = []
       group.public = []
       group.vip = []
+
+      const clippingPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0)
+      // const helper = new THREE.PlaneHelper(clippingPlane, 75, 0xff0000)
+
+      // this.helpers.push(helper)
+
+      // scene.add(helper)
+
+      const gui = useGUI()
+
+      const floorGUI = gui.addFolder({ title: name })
+      this.floorsGUI.push(floorGUI)
 
       const object = initialObject.clone()
 
@@ -775,18 +792,44 @@ export default {
         group.add(part)
       })
 
+      const { min, max } = new THREE.Box3().setFromObject(group)
+
+      // const marginError = 0.25
+      const height = max.y - min.y
+
+      const dividerBottom = group.divider.find((divider) =>
+        divider.name.includes('Bottom')
+      )
+
+      console.log(dividerBottom)
+      clippingPlane.constant = min.y * -1
+
+      group.position.y = height * -1
+
+      // this.accumulatorConstant.push(max.y - min.y)
+
+      // group.hidePosition = group.position.y
+      // group.visiblePosition = 0
+
+      console.log(group.divider.children)
+
+      floorGUI.addInput(group.position, 'y', {
+        min: -15,
+        max: 0,
+        step: 0.001,
+        label: 'Y',
+      })
+
       return group
     },
     parseFloor(object) {
       const basicObject = new THREE.Group()
       basicObject.isBasicObject = true
 
-      const { fail: objectsWithoutDivider } = this.partition(
-        object.children,
-        (e) => e.name.includes('Divider')
-      )
+      const { fail: objectsWithoutDivider, pass: objectDivider } =
+        this.partition(object.children, (e) => e.name.includes('Divider'))
 
-      const dividerObject = object.getObjectByName('Divider')
+      const dividerObject = objectDivider[0]
 
       const { fail: objectsWithoutBoole, pass: booleGroup } = this.partition(
         objectsWithoutDivider,

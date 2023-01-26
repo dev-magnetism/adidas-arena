@@ -1125,7 +1125,7 @@ export default {
       width: calc(100% + desktop-vw(40px) + desktop-vw(40px));
       height: 1px;
       position: absolute;
-      top: desktop-vh(-25px);
+      top: desktop-vh(-20px);
       left: desktop-vw(-40px);
       transform: scaleX(0);
       transform-origin: left center;

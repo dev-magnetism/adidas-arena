@@ -10,7 +10,7 @@
     >
       <nuxt-img
         provider="directus"
-        :src="logo.logo"
+        :src="logo.logo_white"
         :alt="logo.logo_alt"
         format="webp"
       />

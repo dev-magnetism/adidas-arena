@@ -63,10 +63,12 @@ export default {
     onScrollLenis(args) {
       ScrollTrigger.update()
 
-      if (Math.abs(args.scroll) >= 50) {
-        this.setHeaderReduced(true)
-      } else {
-        this.setHeaderReduced(false)
+      if (!this.$viewport.isMobile) {
+        if (Math.abs(args.scroll) >= 50) {
+          this.setHeaderReduced(true)
+        } else {
+          this.setHeaderReduced(false)
+        }
       }
 
       this.$nuxt.$emit('app:scroll', { ...args })
