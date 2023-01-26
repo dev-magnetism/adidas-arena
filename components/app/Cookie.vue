@@ -78,6 +78,12 @@ export default {
 
     .app-atoms-cta {
       width: 65%;
+
+      svg {
+        @include mobile {
+          padding: 0px mobile-vw(10px) mobile-vw(0px) mobile-vw(5px);
+        }
+      }
     }
 
     .app-atoms-link {

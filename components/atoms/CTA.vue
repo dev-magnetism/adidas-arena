@@ -117,7 +117,7 @@ export default {
     },
   },
   mounted() {
-    if (!this.arrow) return
+    if (!this.arrow || this.$viewport.isMobile) return
 
     this.tl = gsap.timeline({ paused: true })
 
@@ -166,14 +166,6 @@ export default {
     @include mobile {
       padding: mobile-vw(18px) mobile-vw(5px) mobile-vw(18px) mobile-vw(25px);
     }
-
-    // .app-atoms-cta__text {
-    //   margin-right: desktop-vw(10px);
-
-    //   @include mobile {
-    //     margin-right: desktop-vw(5px);
-    //   }
-    // }
   }
 
   &::after {

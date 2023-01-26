@@ -16,7 +16,6 @@ import {
   mergeBufferGeometries,
   mergeVertices,
 } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
-import { MeshLineMaterial } from 'meshline'
 
 import useWebGL from '~/hooks/webgl'
 import useGUI from '~/hooks/gui'
@@ -140,10 +139,7 @@ export default {
     exterior.remove(this.trees)
     exterior.remove(this.lamps)
     exterior.remove(this.clouds)
-    exterior.remove(this.adidasArenaGroundFloor)
-    exterior.remove(this.adidasArenaFirstFloor)
-    exterior.remove(this.adidasArenaSecondFloor)
-    exterior.remove(this.adidasArenaRoof)
+    exterior.remove(this.adidasArena)
     exterior.remove(this.paniers)
     exterior.remove(this.footField)
     exterior.remove(this.tram)
@@ -155,6 +151,8 @@ export default {
     this.modelMaterial?.dispose()
     this.conditionalMaterial?.dispose()
     this.lineMaterial?.dispose()
+    this.logoMaterial?.dispose()
+    this.arrowMaterial?.dispose()
 
     // LIGHTS
     this.ambientLight.dispose()
@@ -176,22 +174,17 @@ export default {
     this.guiModel?.dispose()
     this.guiZoom?.dispose()
     this.guiClouds?.dispose()
+    this.guiColors?.dispose()
 
     // TWEEN
     this.tweenArrowTranslate?.kill()
     this.tweenZoom?.kill()
 
     // GLOBAL
-    this.adidasArenaSecondFloor.removeEventListener(
-      'mouseenter',
-      this.onMouseEnterArena
-    )
-    this.adidasArenaSecondFloor.removeEventListener(
-      'mouseleave',
-      this.onMouseLeaveArena
-    )
-    this.adidasArenaSecondFloor.removeEventListener('click', this.onClickArena)
-    interactionManager.remove(this.adidasArenaSecondFloor)
+    this.adidasArena.removeEventListener('mouseenter', this.onMouseEnterArena)
+    this.adidasArena.removeEventListener('mouseleave', this.onMouseLeaveArena)
+    this.adidasArena.removeEventListener('click', this.onClickArena)
+    interactionManager.remove(this.adidasArena)
 
     this.observer?.kill()
     this.$raf.remove(`webgl-exterior`, this.onFrame)
@@ -241,11 +234,8 @@ export default {
       this.initFloor()
       this.initRoad()
       this.initBuildings()
+      this.initAdidasArena()
       this.initLogoArena()
-      this.initAdidasArenaGroundFloor()
-      this.initAdidasArenaFirstFloor()
-      this.initAdidasArenaSecondFloor()
-      this.initAdidasArenaRoof()
       this.initCars()
       this.initTram()
       this.initTrees()
@@ -257,20 +247,10 @@ export default {
     },
     initEvents() {
       const { interactionManager } = useWebGL()
-
-      interactionManager.add(this.adidasArenaSecondFloor)
-
-      this.adidasArenaSecondFloor.addEventListener('click', this.onClickArena)
-
-      this.adidasArenaSecondFloor.addEventListener(
-        'mouseenter',
-        this.onMouseEnterArena
-      )
-
-      this.adidasArenaSecondFloor.addEventListener(
-        'mouseleave',
-        this.onMouseLeaveArena
-      )
+      interactionManager.add(this.adidasArena)
+      this.adidasArena.addEventListener('click', this.onClickArena)
+      this.adidasArena.addEventListener('mouseenter', this.onMouseEnterArena)
+      this.adidasArena.addEventListener('mouseleave', this.onMouseLeaveArena)
     },
     onClickArena() {
       // const { camera } = useWebGL()
@@ -333,6 +313,16 @@ export default {
         emissiveIntensity: 0.7,
       })
 
+      this.logoMaterial = new THREE.MeshBasicMaterial({
+        color: this.colors.logoColor,
+      })
+
+      this.arrowMaterial = new THREE.MeshLambertMaterial({
+        color: this.colors.arrowColor,
+        emissive: this.colors.arrowColor,
+        emissiveIntensity: 0.7,
+      })
+
       this.shadowMaterial = new THREE.ShadowMaterial({
         color: this.colors.shadowColor,
         transparent: true,
@@ -345,14 +335,9 @@ export default {
         this.colors.outlineColor
       )
 
-      this.lineMaterial = new MeshLineMaterial({
+      this.lineMaterial = new THREE.LineBasicMaterial({
         color: this.colors.outlineColor,
-        sizeAttenuation: 0.5,
-        transparent: true,
-        resolution: new THREE.Vector2(
-          this.$viewport.width,
-          this.$viewport.height
-        ),
+        linewidth: 1,
       })
     },
     initClouds() {
@@ -427,8 +412,7 @@ export default {
       const logoArenaGroup = this.gltfExterior.getObjectByName('Logo_Arena')
 
       const logoArena = this.mergeObject(logoArenaGroup)
-      logoArena.material.color = this.colors.logoColor
-      logoArena.material.emissive = this.colors.logoColor
+      logoArena.material = this.logoMaterial
       this.logoArena.add(logoArena)
     },
     initArrow() {
@@ -441,8 +425,7 @@ export default {
       const arrowGroup = this.gltfExterior.getObjectByName('Arrow_001')
 
       const arrow = this.mergeObject(arrowGroup)
-      arrow.material.color = this.colors.arrowColor
-      arrow.material.emissive = this.colors.arrowColor
+      arrow.material = this.arrowMaterial
       arrow.castShadow = true
       arrow.receiveShadow = true
 
@@ -477,7 +460,6 @@ export default {
       const shadowFootField = footField.clone()
       shadowFootField.name = 'shadowModel'
       shadowFootField.material = this.shadowMaterial
-      shadowFootField.isShadow = true
 
       const edgeFootField = this.edgeObject(footField)
       // const conditionalFootField = this.conditionalObject(footField)
@@ -517,15 +499,15 @@ export default {
       const shadowRoad = road.clone()
       shadowRoad.name = 'shadowModel'
       shadowRoad.material = this.shadowMaterial
-      shadowRoad.isShadow = true
+
+      road.castShadow = false
+      road.receiveShadow = false
 
       const edgeRoad = this.edgeObject(road)
-      // const conditionalRoad = this.conditionalObject(road)
 
       this.road.add(road)
       this.road.add(shadowRoad)
       this.road.add(edgeRoad)
-      // this.road.add(conditionalRoad)
     },
     initLamps() {
       const { exterior } = useWebGL()
@@ -590,13 +572,12 @@ export default {
       const shadowFloor = floor.clone()
       shadowFloor.name = 'shadowModel'
       shadowFloor.material = this.shadowMaterial
-      shadowFloor.isShadow = true
 
-      // const conditionalFloor = this.conditionalObject(floor)
+      floor.castShadow = false
+      floor.receiveShadow = false
 
       this.floor.add(floor)
       this.floor.add(shadowFloor)
-      // this.floor.add(conditionalFloor)
     },
     initBuildings() {
       const { exterior } = useWebGL()
@@ -615,71 +596,23 @@ export default {
       this.buildings.add(edgeBuildings)
       // this.buildings.add(conditionalBuildings)
     },
-    initAdidasArenaGroundFloor() {
+
+    initAdidasArena() {
       const { exterior } = useWebGL()
 
-      this.adidasArenaGroundFloor = new THREE.Group()
-      this.adidasArenaGroundFloor.position.y = 0.02
-      exterior.add(this.adidasArenaGroundFloor)
+      this.adidasArena = new THREE.Group()
 
-      const adidasArenaGroup = this.gltfExterior.getObjectByName('Arena_02')
-
-      const adidasArena = this.mergeObject(adidasArenaGroup)
-      const edgeAdidasArena = this.edgeObject(adidasArena)
-      const conditionalAdidasArena = this.conditionalObject(adidasArena)
-
-      this.adidasArenaGroundFloor.add(adidasArena)
-      this.adidasArenaGroundFloor.add(edgeAdidasArena)
-      this.adidasArenaGroundFloor.add(conditionalAdidasArena)
-    },
-    initAdidasArenaFirstFloor() {
-      const { exterior } = useWebGL()
-
-      this.adidasArenaFirstFloor = new THREE.Group()
-
-      exterior.add(this.adidasArenaFirstFloor)
-
-      const adidasArenaGroup = this.gltfExterior.getObjectByName('Arena_01')
-
-      const adidasArena = this.mergeObject(adidasArenaGroup)
-      const edgeAdidasArena = this.edgeObject(adidasArena)
-      const conditionalAdidasArena = this.conditionalObject(adidasArena)
-
-      this.adidasArenaFirstFloor.add(adidasArena)
-      this.adidasArenaFirstFloor.add(edgeAdidasArena)
-      this.adidasArenaFirstFloor.add(conditionalAdidasArena)
-    },
-    initAdidasArenaSecondFloor() {
-      const { exterior } = useWebGL()
-
-      this.adidasArenaSecondFloor = new THREE.Group()
-
-      exterior.add(this.adidasArenaSecondFloor)
+      exterior.add(this.adidasArena)
 
       const adidasArenaGroup = this.gltfExterior.getObjectByName('Arena_00')
+
       const adidasArena = this.mergeObject(adidasArenaGroup)
       const edgeAdidasArena = this.edgeObject(adidasArena)
       const conditionalAdidasArena = this.conditionalObject(adidasArena)
 
-      this.adidasArenaSecondFloor.add(adidasArena)
-      this.adidasArenaSecondFloor.add(edgeAdidasArena)
-      this.adidasArenaSecondFloor.add(conditionalAdidasArena)
-    },
-    initAdidasArenaRoof() {
-      const { exterior } = useWebGL()
-
-      this.adidasArenaRoof = new THREE.Group()
-      exterior.add(this.adidasArenaRoof)
-
-      const adidasArenaRoofGroup =
-        this.gltfExterior.getObjectByName('PlaneArena')
-
-      const adidasArenaRoof = this.mergeObject(adidasArenaRoofGroup)
-      adidasArenaRoof.name = 'shadowModel'
-      adidasArenaRoof.material = this.shadowMaterial
-      adidasArenaRoof.isShadow = true
-
-      this.adidasArenaRoof.add(adidasArenaRoof)
+      this.adidasArena.add(adidasArena)
+      this.adidasArena.add(edgeAdidasArena)
+      this.adidasArena.add(conditionalAdidasArena)
     },
     edgeObject(object) {
       const mergedGeom = object.geometry
@@ -748,7 +681,6 @@ export default {
 
       mesh.name = 'model'
       mesh.material = this.modelMaterial
-      mesh.isShadow = false
 
       mesh.material.polygonOffset = true
       mesh.material.polygonOffsetFactor = this.polygonOffsetFactor
@@ -764,7 +696,7 @@ export default {
 
       this.gui = gui.addFolder({
         title: `Exterior`,
-        expanded: false,
+        expanded: true,
       })
 
       this.guiAmbientLight = this.gui.addFolder({
@@ -917,33 +849,9 @@ export default {
         label: 'Position',
       })
 
-      this.guiModel
-        .addInput(this, 'modelCastShadow', {
-          label: 'Cast shadow',
-        })
-        .on('change', (e) => {
-          exterior.traverse((child) => {
-            if (child.isMesh && !child.isShadow) {
-              child.castShadow = e.value
-            }
-          })
-        })
+      this.guiColors = this.gui.addFolder({ title: `Colors`, expanded: true })
 
-      this.guiModel
-        .addInput(this, 'modelReceiveShadow', {
-          label: 'Receive shadow',
-        })
-        .on('change', (e) => {
-          exterior.traverse((child) => {
-            if (child.isMesh && !child.isShadow) {
-              child.receiveShadow = e.value
-            }
-          })
-        })
-
-      this.guiModel.addSeparator()
-
-      this.guiModel
+      this.guiColors
         .addInput(this.colors, 'outlineColor', {
           color: { type: 'float' },
           label: 'Outline color',
@@ -954,78 +862,57 @@ export default {
           this.conditionalMaterial.uniforms.diffuse.value.set(e.value)
         })
 
-      this.guiModel.addSeparator()
+      this.guiColors.addSeparator()
 
-      this.guiModel
-        .addInput(this.modelMaterial, 'color', {
-          color: { type: 'float' },
-          label: 'Color',
-        })
-        .on('change', (e) => {
-          exterior.traverse((child) => {
-            if (child.isMesh && !child.isShadow) {
-              child.material.color = e.value
-            }
-          })
-        })
+      this.guiColors.addInput(this.modelMaterial, 'color', {
+        color: { type: 'float' },
+        label: 'Color',
+      })
 
-      this.guiModel
-        .addInput(this.modelMaterial, 'emissive', {
-          color: { type: 'float' },
-          label: 'Emissive',
-        })
-        .on('change', (e) => {
-          exterior.traverse((child) => {
-            if (child.isMesh && !child.isShadow) {
-              child.material.emissive = e.value
-            }
-          })
-        })
+      this.guiColors.addInput(this.modelMaterial, 'emissive', {
+        color: { type: 'float' },
+        label: 'Emissive',
+      })
 
-      this.guiModel
-        .addInput(this.modelMaterial, 'emissiveIntensity', {
-          min: 0,
-          max: 1,
-          step: 0.01,
-          label: 'Color intensity',
-        })
-        .on('change', (e) => {
-          exterior.traverse((child) => {
-            if (child.isMesh && !child.isShadow) {
-              child.material.emissiveIntensity = e.value
-            }
-          })
-        })
+      this.guiColors.addInput(this.modelMaterial, 'emissiveIntensity', {
+        min: 0,
+        max: 1,
+        step: 0.01,
+        label: 'Color intensity',
+      })
 
-      this.guiModel.addSeparator()
+      this.guiColors.addSeparator()
 
-      this.guiModel
-        .addInput(this.shadowMaterial, 'color', {
-          color: { type: 'float' },
-          label: 'Shadow color',
-        })
-        .on('change', (e) => {
-          exterior.traverse((child) => {
-            if (child.isMesh && child.isShadow) {
-              child.material.color = e.value
-            }
-          })
-        })
+      this.guiColors.addInput(this.logoMaterial, 'color', {
+        color: { type: 'float' },
+        label: 'Logo Color',
+      })
 
-      this.guiModel
-        .addInput(this.shadowMaterial, 'opacity', {
-          min: 0,
-          max: 1,
-          step: 0.01,
-          label: 'Shadow color opacity',
-        })
-        .on('change', (e) => {
-          exterior.traverse((child) => {
-            if (child.isMesh && child.isShadow) {
-              child.material.opacity = e.value
-            }
-          })
-        })
+      this.guiColors.addSeparator()
+
+      this.guiColors.addInput(this.arrowMaterial, 'color', {
+        color: { type: 'float' },
+        label: 'Arrow Color',
+      })
+
+      this.guiColors.addInput(this.arrowMaterial, 'emissive', {
+        color: { type: 'float' },
+        label: 'Arrow Emissive',
+      })
+
+      this.guiColors.addSeparator()
+
+      this.guiColors.addInput(this.shadowMaterial, 'color', {
+        color: { type: 'float' },
+        label: 'Shadow color',
+      })
+
+      this.guiColors.addInput(this.shadowMaterial, 'opacity', {
+        min: 0,
+        max: 1,
+        step: 0.01,
+        label: 'Shadow color opacity',
+      })
     },
     ...mapMutations({
       setExteriorArenaHovered: 'setExteriorArenaHovered',
