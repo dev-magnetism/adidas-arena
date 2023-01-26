@@ -81,12 +81,19 @@ export default {
     }
 
     .app-atoms-link {
-      margin: 0 auto;
+      margin: 0 auto 0 desktop-vw(25px);
       text-align: center;
       align-self: center;
+      text-transform: uppercase;
+
+      @include mobile {
+        margin: 0 auto 0 mobile-vw(20px);
+      }
 
       &::after {
         background: var(--c-black);
+
+        --scale: 1 !important;
       }
     }
   }
