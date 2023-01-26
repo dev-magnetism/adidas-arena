@@ -1,15 +1,16 @@
 <template>
   <div :class="{ accepted }" class="app-cookie">
     <TP1>
-      This website uses cookies to improve your experiences. By continuing to
-      browse the site, you are agreeing to our use of cookies.
+      {{ appContent.data.cookies_text }}
     </TP1>
 
     <div class="app-cookie__bottom">
-      <AtomsCTA button @click.native="accepted = true">I agree</AtomsCTA>
+      <AtomsCTA button @click.native="accepted = true">
+        {{ appContent.data.cookies_accept }}
+      </AtomsCTA>
 
       <AtomsLink :href="'google.fr'">
-        <TP2 weight="bold"> Read more </TP2>
+        <TP2 weight="bold"> {{ appContent.data.cookies_read_more }} </TP2>
       </AtomsLink>
     </div>
 
@@ -18,11 +19,21 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data() {
     return {
       accepted: false,
     }
+  },
+  computed: {
+    ...mapState({
+      appContent: (state) => state.appContent,
+    }),
+  },
+  mounted() {
+    console.log(this.appContent)
   },
 }
 </script>
