@@ -124,7 +124,7 @@ export default {
     }
   }
   .app-contact-question {
-    margin-top: desktop-vw(150px);
+    margin-top: desktop-vw(175px);
 
     @include mobile {
       margin-bottom: mobile-vw(120px);

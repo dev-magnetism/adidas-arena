@@ -97,9 +97,11 @@ export default {
   },
   methods: {
     onPointerUp() {
+      console.log('onPointerUp', this.embla.canScrollPrev())
       this.hold = false
     },
     onPointerDown() {
+      console.log('onPointerDown')
       this.hold = true
     },
     calculateParallaxTransforms() {
@@ -125,11 +127,13 @@ export default {
     },
 
     setParallax() {
+      console.log('setParallax')
+
       const slides = this.embla.slideNodes()
       const layers = slides.map((s) =>
         s.querySelector('.app-element-slider__item__visual')
       )
-      const parallaxTransforms = this.calculateParallaxTransforms(this.embla)
+      const parallaxTransforms = this.calculateParallaxTransforms()
 
       parallaxTransforms.forEach((transform, index) => {
         layers[index].style.transform = `translateX(${transform}%)`

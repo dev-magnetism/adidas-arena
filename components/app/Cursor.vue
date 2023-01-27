@@ -1,15 +1,8 @@
 <template>
-  <div :class="{ slider: slider }" class="app-cursor">
+  <div :class="{ isLeft, hold: mouseDown }" class="app-cursor">
     <div ref="wrapper" class="app-cursor__wrapper">
       <div class="app-cursor__inner">
-        <div class="app-cursor__left">
-          <svgCursorDefault v-if="!mouseDown" />
-          <svgCursorDown v-if="mouseDown" />
-        </div>
-        <div class="app-cursor__right">
-          <svgCursorDefault v-if="!mouseDown" />
-          <svgCursorDown v-if="mouseDown" />
-        </div>
+        <SvgCursorUnion ref="arrow" />
       </div>
     </div>
   </div>
@@ -23,7 +16,7 @@ export default {
   data() {
     return {
       mouseDown: false,
-      slider: false,
+      isLeft: false,
     }
   },
   computed: {
@@ -59,11 +52,11 @@ export default {
       this.xTo(e.clientX)
       this.yTo(e.clientY)
 
-      // if (e.clientX > this.$viewport.width / 2) {
-      //   this.slider = true
-      // } else {
-      //   this.slider = false
-      // }
+      if (e.clientX > this.$viewport.width / 2) {
+        this.isLeft = false
+      } else {
+        this.isLeft = true
+      }
     },
   },
 }
@@ -84,38 +77,34 @@ export default {
     display: none;
   }
 
-  &.slider {
-    .app-cursor__left {
-      transform: rotate(0deg);
-    }
-    .app-cursor__right {
-      transform: translateX(0%) scale(-1, 1);
-    }
-    .app-cursor__inner {
-      // transform: translateX(-50%);
+  &.isLeft {
+    svg {
+      transform: scaleX(-1);
     }
   }
 
   &__wrapper {
-  }
-
-  &__inner {
-    display: inline-flex;
-    transition: transform 0.4s var(--ease-out-expo);
     will-change: transform;
   }
 
-  &__left {
-    width: 60px;
-    transform: rotate(40deg) scale(1, -1);
-    transition: transform 0.35s var(--ease-out-cubic);
-    margin-right: 10px;
+  &__inner {
+    transition: transform 0.4s var(--ease-out-expo);
+    will-change: transform;
+    width: desktop-vw(120px);
+    height: desktop-vw(120px);
+    background: var(--c-red-adidas);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-  &__right {
-    width: 60px;
-    margin-left: 10px;
-    transform: translateX(-50%) scale(0, 0);
-    transition: transform 0.35s var(--ease-out-cubic);
+
+  svg {
+    width: 40%;
+    transition: transform 0.65s var(--ease-out-expo);
+    transform: scaleX(1);
+    will-change: transform;
   }
 }
 </style>

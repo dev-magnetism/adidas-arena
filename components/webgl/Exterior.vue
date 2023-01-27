@@ -31,33 +31,32 @@ export default {
       colors: {
         ambientLightColor: new THREE.Color(0xf1e7d9),
         directionalLightColor: new THREE.Color(0xffffff),
-        lambertMaterialColor: new THREE.Color(0xf1e7d9),
-        lambertMaterialEmissive: new THREE.Color(0xffffff),
-        outlineColor: new THREE.Color(0x000000),
+        lambertMaterialColor: new THREE.Color(0xd8d8d8),
+        lambertMaterialEmissive: new THREE.Color(0xefefef),
+        emissiveIntensity: 0.75,
+        outlineColor: new THREE.Color(0x161616),
         shadowColor: new THREE.Color(0xfbe7c9),
-        arrowColor: new THREE.Color(0xff4a48),
-        logoColor: new THREE.Color(0x000000),
+        arrowColor: new THREE.Color(0xe2540f),
+        logoColor: new THREE.Color(0x161616),
       },
-      rotation: [0, 0, 0],
-      polar: [0, Math.PI / 2],
-      azimuth: { min: -Math.PI / 1.4, max: Math.PI * 1 },
+      azimuth: { min: -1.5, max: 0.9 },
       directionalLightCastShadow: true,
       directionalLightIsStatic: true,
       cloudsParams: {
-        speed: 0.0075,
+        speed: 0.003,
       },
       drag: {
-        ease: 0.065,
+        ease: 0.04,
         current: 0,
         target: 0,
         last: 0,
         speed: 2,
-        dragSpeed: 0.005,
+        dragSpeed: 0.0025,
         enabled: true,
       },
       zoom: {
-        initial: 12.5,
-        current: 12.5,
+        initial: 18,
+        current: 18,
         range: {
           min: 5,
           max: 30,
@@ -68,9 +67,9 @@ export default {
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
       timeCars: 0,
-      speedCars: 0.00005,
+      speedCars: 0.00004,
       timeTrams: 0,
-      speedTrams: 0.00025,
+      speedTrams: 0.00015,
     }
   },
   computed: {
@@ -88,7 +87,7 @@ export default {
       this.initExterior()
     },
     modelCloudLoaded() {
-      this.initClouds()
+      // this.initClouds()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -106,7 +105,7 @@ export default {
 
     if (this.allLoadedActual) {
       this.initExterior()
-      this.initClouds()
+      // this.initClouds()
       this.initGUI()
     }
 
@@ -232,7 +231,7 @@ export default {
       })
 
       this.timeTrams += deltaTime * this.speedTrams
-      const progressTrams = this.timeTrams % 5
+      const progressTrams = this.timeTrams % 3
 
       this.trams?.children?.forEach((tram) => {
         tram.position.x = this.mapRange(
@@ -290,24 +289,20 @@ export default {
     },
     onClickArena() {
       // const { camera } = useWebGL()
-
       // const params = {
       //   duration: 1,
       //   ease: 'power2.inOut',
       // }
-
       // gsap.to(camera.position, {
       //   y: 78,
       //   ...params,
       // })
-
       // gsap.to(camera.rotation, {
       //   x: THREE.MathUtils.degToRad(-158.06),
       //   y: THREE.MathUtils.degToRad(36.86),
       //   z: THREE.MathUtils.degToRad(166.84),
       //   ...params,
       // })
-
       // gsap.to(camera, {
       //   zoom: 28,
       //   ...params,
@@ -315,8 +310,7 @@ export default {
       //     camera.updateProjectionMatrix()
       //   },
       // })
-
-      console.log('click')
+      // console.log('click')
     },
     onMouseEnterArena() {
       if (!this.exteriorFullwidth) return
@@ -356,7 +350,7 @@ export default {
       this.modelMaterial = new THREE.MeshLambertMaterial({
         color: this.colors.lambertMaterialColor,
         emissive: this.colors.lambertMaterialEmissive,
-        emissiveIntensity: 0.7,
+        emissiveIntensity: this.emissiveIntensity,
       })
 
       this.logoMaterial = new THREE.MeshBasicMaterial({
@@ -366,12 +360,13 @@ export default {
       this.arrowMaterial = new THREE.MeshLambertMaterial({
         color: this.colors.arrowColor,
         emissive: this.colors.arrowColor,
-        emissiveIntensity: 0.7,
+        emissiveIntensity: this.emissiveIntensity,
       })
 
       this.shadowMaterial = new THREE.ShadowMaterial({
         color: this.colors.shadowColor,
         transparent: true,
+        opacity: 0.75,
       })
 
       this.conditionalMaterial = new THREE.ShaderMaterial(
@@ -928,7 +923,7 @@ export default {
         label: 'Emissive',
       })
 
-      this.guiColors.addInput(this.modelMaterial, 'emissiveIntensity', {
+      this.guiColors.addInput(this.colors, 'emissiveIntensity', {
         min: 0,
         max: 1,
         step: 0.01,

@@ -16,7 +16,7 @@
     "@studio-freight/lenis": "^0.2.28",
     "@tweakpane/plugin-essentials": "^0.1.5",
     "core-js": "^3.26.1",
-    "embla-carousel": "^7.0.5",
+    "embla-carousel": "^7.0.9",
     "fontfaceobserver": "^2.3.0",
     "glslify-loader": "^2.0.0",
     "gsap": "npm:@gsap/shockingly@^3.11.4",
