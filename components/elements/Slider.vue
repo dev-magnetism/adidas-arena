@@ -16,7 +16,7 @@
     </div>
 
     <div ref="wrapper" :class="{ hold }" class="app-element-slider__wrapper">
-      <div class="app-element-slider__inner">
+      <div @click="onClickSlider" class="app-element-slider__inner">
         <div
           v-for="(item, index) in contents.items"
           :key="index"
@@ -96,12 +96,16 @@ export default {
     this.embla?.destroy()
   },
   methods: {
+    onClickSlider(e) {
+      const isLeft = e.clientX < this.$viewport.width / 2
+      console.log('click', isLeft)
+    },
     onPointerUp() {
-      console.log('onPointerUp', this.embla.canScrollPrev())
+      // console.log('onPointerUp', this.embla.canScrollPrev())
       this.hold = false
     },
     onPointerDown() {
-      console.log('onPointerDown')
+      // console.log('onPointerDown')
       this.hold = true
     },
     calculateParallaxTransforms() {

@@ -35,7 +35,7 @@ export default {
         lambertMaterialEmissive: new THREE.Color(0xefefef),
         emissiveIntensity: 0.75,
         outlineColor: new THREE.Color(0x161616),
-        shadowColor: new THREE.Color(0xfbe7c9),
+        shadowColor: new THREE.Color(0xede5db),
         arrowColor: new THREE.Color(0xe2540f),
         logoColor: new THREE.Color(0x161616),
       },
