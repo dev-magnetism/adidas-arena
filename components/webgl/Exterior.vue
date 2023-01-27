@@ -70,6 +70,7 @@ export default {
       speedCars: 0.00004,
       timeTrams: 0,
       speedTrams: 0.00015,
+      delayRepeatTrams: 2,
     }
   },
   computed: {
@@ -87,7 +88,7 @@ export default {
       this.initExterior()
     },
     modelCloudLoaded() {
-      this.initClouds()
+      // this.initClouds()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -105,7 +106,7 @@ export default {
 
     if (this.allLoadedActual) {
       this.initExterior()
-      this.initClouds()
+      // this.initClouds()
       this.initGUI()
     }
 
@@ -231,7 +232,7 @@ export default {
       })
 
       this.timeTrams += deltaTime * this.speedTrams
-      const progressTrams = this.timeTrams % 3
+      const progressTrams = this.timeTrams % this.delayRepeatTrams
 
       this.trams?.children?.forEach((tram) => {
         tram.position.x = this.mapRange(
@@ -889,6 +890,13 @@ export default {
         max: 0.002,
         step: 0.00001,
         label: 'Speed Trams',
+      })
+
+      this.guiModel.addInput(this, 'delayRepeatTrams', {
+        min: 1,
+        max: 10,
+        step: 0.1,
+        label: 'Delay Repeat Trams',
       })
 
       this.guiModel.addInput(exterior, 'position', {
