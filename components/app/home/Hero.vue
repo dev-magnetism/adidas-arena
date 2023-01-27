@@ -820,11 +820,12 @@ export default {
   }
 
   &__title.app-element-rich-text {
-    grid-column: 2 / span 6;
+    grid-column: 2 / span 7;
     align-self: center;
     z-index: 1;
-    max-width: min(620px, desktop-vw(720px));
+    max-width: 50vw;
     position: relative;
+    left: -5%;
 
     &.hide {
       pointer-events: none;
