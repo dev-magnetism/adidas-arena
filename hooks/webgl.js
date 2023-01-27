@@ -131,7 +131,7 @@ class GL {
   initGUI() {
     const gui = useGUI()
 
-    this.gui = gui.addFolder({ title: `Global` })
+    this.gui = gui.addFolder({ title: `Global`, expanded: false })
 
     this.gui
       .addInput(this.camera, 'near', {
