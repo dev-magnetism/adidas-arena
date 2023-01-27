@@ -266,6 +266,7 @@ export default {
     display: block;
     aspect-ratio: 580 / 785;
     transform: translate(0%, -50%) rotate(15deg);
+    justify-self: center;
 
     @include mobile {
       grid-column: 1 / span 6;
@@ -331,8 +332,8 @@ export default {
     display: block;
     background: radial-gradient(
       53.1% 72.86% at 70.11% 37.32%,
-      #2929d2 0%,
-      #343472 100%
+      #113694 0%,
+      #0b1846 100%
     );
     position: absolute;
     top: 0;
@@ -398,8 +399,8 @@ export default {
   &__controller {
     grid-column: 2 / span 3;
     border: 1px solid var(--c-white);
-    margin-top: desktop-vw(80px);
-    margin-bottom: desktop-vw(135px);
+    margin-top: desktop-vw(150px);
+    margin-bottom: desktop-vw(160px);
 
     @include mobile {
       grid-column: 1 / span 6;

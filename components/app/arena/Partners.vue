@@ -89,15 +89,33 @@ export default {
 <style lang="scss">
 .app-arena-partners {
   position: relative;
-  margin-bottom: desktop-vw(140px);
+  margin-bottom: desktop-vw(250px);
   margin-top: desktop-vw(130px);
 
   @include mobile {
     margin-top: mobile-vw(70px);
   }
 
+  &__grid-logos.app-element-grid-logos {
+    grid-column: 7 / span 6;
+    position: absolute;
+    top: desktop-vw(180px);
+    left: 5%;
+    width: 95%;
+
+    @include mobile {
+      grid-row: 2;
+      grid-column: 1 / span 6;
+      left: 0;
+      position: relative;
+      top: 0px;
+      width: 100%;
+      margin-top: mobile-vw(80px);
+    }
+  }
+
   &__content {
-    grid-column: 2 / span 6;
+    grid-column: 2 / span 7;
 
     @include mobile {
       grid-row: 1;
@@ -159,24 +177,6 @@ export default {
 
     &__text.P2 {
       @include font-adihausDIN-cn-bold();
-    }
-  }
-
-  &__grid-logos.app-element-grid-logos {
-    grid-column: 7 / span 6;
-    position: absolute;
-    top: desktop-vw(260px);
-    left: 5%;
-    width: 95%;
-
-    @include mobile {
-      grid-row: 2;
-      grid-column: 1 / span 6;
-      left: 0;
-      position: relative;
-      top: 0px;
-      width: 100%;
-      margin-top: mobile-vw(80px);
     }
   }
 }

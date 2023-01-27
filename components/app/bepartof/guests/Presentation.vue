@@ -23,7 +23,7 @@
       class="app-be-part-of-guests-presentation__framed-visual"
       :speed="1"
     >
-      <EKinesis :speed="5">
+      <EKinesis :speed="4">
         <EFramedPicture color="blue-adidas">
           <EKinesis :speed="-3.5">
             <nuxt-picture
@@ -94,14 +94,14 @@ export default {
 <style lang="scss">
 .app-be-part-of-guests-presentation {
   position: relative;
-  padding-bottom: desktop-vw(800px);
+  padding-bottom: desktop-vw(720px);
 
   @include mobile {
     padding-bottom: mobile-vw(80px);
   }
 
   &__title {
-    grid-column: 1 / span 5;
+    grid-column: 1 / span 6;
 
     @include mobile {
       grid-column: 1 / span 6;
@@ -114,7 +114,7 @@ export default {
     grid-column: 4 / span 4;
     width: 100%;
     aspect-ratio: 440 / 545;
-    top: desktop-vw(250px);
+    top: desktop-vw(375px);
     transform: rotate(-2deg);
 
     @include mobile {
@@ -136,7 +136,7 @@ export default {
     width: 100%;
     aspect-ratio: 405 / 500;
     transform: rotate(4deg);
-    top: desktop-vw(550px);
+    top: desktop-vw(625px);
 
     @include mobile {
       grid-column: 4 / span 3;
@@ -158,12 +158,14 @@ export default {
 
   &__text {
     margin-top: desktop-vw(150px);
-    grid-column: 8 / span 4;
+    grid-column: 8 / span 5;
+    width: 75%;
 
     @include mobile {
       grid-column: 1 / span 6;
       grid-row: 3;
       margin-top: mobile-vw(0px);
+      width: 100%;
     }
 
     .H4 {

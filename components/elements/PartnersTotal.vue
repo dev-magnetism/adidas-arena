@@ -9,7 +9,7 @@
         >{{ char }}</TH1
       >
     </div>
-    <TH2 ref="text" class="app-element-partners-total__text">partenaires</TH2>
+    <TH2 ref="text" class="app-element-partners-total__text">{{ text }}</TH2>
   </div>
 </template>
 
@@ -21,6 +21,10 @@ export default {
     total: {
       type: Number,
       default: 0,
+    },
+    text: {
+      type: String,
+      default: 'partenaires',
     },
   },
 

@@ -37,7 +37,7 @@ export default {
     }
 
     .H2.wysiwyg-text {
-      line-height: desktop-vw(110px);
+      line-height: desktop-vw(90px);
 
       @include mobile {
         line-height: mobile-vw(78px);
@@ -62,7 +62,7 @@ export default {
     left: 0;
     width: 100%;
     aspect-ratio: 190 / 300;
-    transform: translateY(-50%);
+    transform: translateY(-40%);
 
     @include mobile {
       grid-column: 5 / span 2;

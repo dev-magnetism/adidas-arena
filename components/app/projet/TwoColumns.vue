@@ -28,12 +28,12 @@
                 <ELottieWord id="Cercle_3" />
                 {{ contents.firstRow.cardSubtitle }}
               </TH2>
-              <TH3
+              <TH4
                 weight="medium"
                 class="app-projet-two-columns__f-r__card__content__paragraph"
               >
                 {{ contents.firstRow.cardParagraph }}
-              </TH3>
+              </TH4>
             </div>
             <AtomsCTA bg="blue-adidas" color="white">
               {{ contents.firstRow.cardCtaText }}
@@ -104,12 +104,12 @@
               >
                 {{ contents.secondRow.cardSubtitle }}
               </TH2>
-              <TH3
+              <TH4
                 weight="medium"
                 class="app-projet-two-columns__s-r__card__content__paragraph"
               >
                 {{ contents.secondRow.cardParagraph }}
-              </TH3>
+              </TH4>
             </div>
           </EKinesis>
         </EParallax>
@@ -168,7 +168,7 @@ export default {
     }
 
     &__card.app-parallax {
-      width: columns(3.95);
+      width: columns(3.75);
       margin-left: auto;
       transform: rotate(5deg);
       position: relative;
@@ -190,16 +190,16 @@ export default {
         background-size: 1.3em 1.3em;
 
         .app-projet-two-columns__s-r__card__content__title {
-          font-size: desktop-vw(160px);
+          font-size: desktop-vw(190px);
           line-height: desktop-vw(160px);
           position: relative;
           display: inline-block;
 
           .app-element-lottie-word {
             position: absolute;
-            width: 150%;
+            width: 100%;
             height: auto;
-            left: 50%;
+            left: 30%;
             top: 50%;
             transform: translate(-50%, -50%);
             align-items: center;
@@ -207,13 +207,11 @@ export default {
         }
 
         .app-projet-two-columns__s-r__card__content__subtitle {
-          font-size: desktop-vw(88px);
-          line-height: desktop-vw(106px);
+          font-size: desktop-vw(64px);
+          line-height: desktop-vw(76px);
         }
 
         .app-projet-two-columns__s-r__card__content__paragraph {
-          font-size: desktop-vw(32px);
-          line-height: desktop-vw(32px);
           opacity: 0.4;
           margin-top: desktop-vw(20px);
         }
@@ -315,30 +313,28 @@ export default {
         background-size: 1.3em 1.3em;
 
         .app-projet-two-columns__f-r__card__content__title {
-          font-size: desktop-vw(160px);
+          font-size: desktop-vw(190px);
           line-height: desktop-vw(160px);
         }
 
         .app-projet-two-columns__f-r__card__content__subtitle {
-          font-size: desktop-vw(88px);
+          font-size: desktop-vw(96px);
           line-height: desktop-vw(106px);
           display: inline-block;
           position: relative;
 
           .app-element-lottie-word {
             position: absolute;
-            width: 160%;
+            width: 130%;
             height: auto;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
+            left: 45%;
+            top: 40%;
+            transform: translate(-50%, -50%) rotate(5deg);
             align-items: center;
           }
         }
 
         .app-projet-two-columns__f-r__card__content__paragraph {
-          font-size: desktop-vw(32px);
-          line-height: desktop-vw(32px);
           opacity: 0.4;
         }
       }
@@ -365,7 +361,7 @@ export default {
       }
     }
     &__content {
-      grid-column: 8 / span 4;
+      grid-column: 8 / span 5;
       height: 100%;
 
       @include mobile {

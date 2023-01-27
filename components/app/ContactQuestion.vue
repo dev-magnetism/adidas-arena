@@ -30,7 +30,7 @@ export default {
   }
 
   &__title.app-element-rich-text {
-    grid-column: 4 / span 6;
+    grid-column: 3 / span 8;
     text-align: center;
 
     @include mobile {
@@ -38,9 +38,6 @@ export default {
     }
 
     .H2.wysiwyg-text {
-      font-size: desktop-vw(100px);
-      line-height: desktop-vw(120px);
-
       @include mobile {
         font-size: mobile-vw(72px);
         line-height: mobile-vw(88px);
@@ -49,9 +46,9 @@ export default {
       .app-element-lottie-word.Cercle_3 {
         svg {
           position: absolute;
-          width: 115% !important;
+          width: 100% !important;
           height: auto !important;
-          top: 50%;
+          top: 40%;
           left: 50%;
           transform: translate(-50%, -50%) rotate(5deg) !important;
 

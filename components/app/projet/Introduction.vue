@@ -43,7 +43,7 @@
 
     <EParallax
       ref="visualTransparent"
-      :speed="0.35"
+      :speed="0.6"
       class="app-projet-introduction__row-second-visual-transparent"
     >
       <EKinesis :speed="10">
@@ -142,7 +142,7 @@ export default {
     }
 
     .H2 {
-      line-height: desktop-vw(110px);
+      line-height: desktop-vw(90px);
 
       @include mobile {
         line-height: mobile-vw(78px);

@@ -63,6 +63,7 @@ export default {
     &.right {
       text-align: left;
       margin-left: desktop-vw(10px);
+      margin-top: auto;
 
       @include mobile {
         grid-column: 1 / span 6;
@@ -78,19 +79,20 @@ export default {
       }
 
       > :first-child {
-        margin-top: desktop-vw(120px);
+        // margin-top: desktop-vw(100px);
 
-        @include mobile {
-          margin-top: mobile-vw(0px);
-        }
+        // @include mobile {
+        //   margin-top: mobile-vw(0px);
+        // }
       }
     }
 
     .app-element-rich-text {
       .wysiwyg-text.H2 {
         font-size: desktop-vw(110px);
-        line-height: desktop-vw(120px);
+        line-height: desktop-vw(100px);
         @include font-adihausDIN-cn-bold();
+        position: relative;
 
         @include mobile {
           font-size: mobile-vw(70px);
@@ -98,8 +100,13 @@ export default {
         }
 
         sup {
-          font-size: desktop-vw(70px);
-          line-height: desktop-vw(60px);
+          font-size: desktop-vw(50px);
+          line-height: desktop-vw(50px);
+          align-self: flex-start;
+          transform: translateY(-80%);
+          position: absolute;
+          top: 0;
+          left: 100%;
 
           @include mobile {
             font-size: mobile-vw(28px);

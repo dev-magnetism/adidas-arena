@@ -42,6 +42,7 @@ export default {
       return {
         title: this.content.data.presentation_title,
         subtitle: this.content.data.presentation_subtitle,
+        subtitleList: this.content.data.presentation_subtitle_list,
         secondTitle: this.content.data.presentation_second_title,
         paragraph: this.content.data.presentation_paragraph,
         pictureFramed: {
@@ -75,7 +76,7 @@ export default {
 
 <style lang="scss">
 .page-be-part-of-besoins {
-  margin-top: desktop-vw(300px);
+  margin-top: desktop-vw(200px);
 
   @include mobile {
     margin-top: mobile-vw(115px);

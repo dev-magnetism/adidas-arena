@@ -121,8 +121,8 @@ export default {
 .app-element-lottie-word {
   position: relative;
   display: inline-flex;
-  z-index: 9;
   z-index: 999;
+  pointer-events: none;
 
   &.Cercle_1 {
     svg {

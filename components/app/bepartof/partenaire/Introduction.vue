@@ -120,11 +120,11 @@ export default {
 
   &__f-row {
     &__content {
-      grid-column: 2 / span 5;
+      grid-column: 2 / span 6;
       grid-row: 1;
       display: flex;
       flex-direction: column;
-      width: 95%;
+      width: 100%;
 
       @include mobile {
         grid-row: 1;
@@ -140,9 +140,9 @@ export default {
           margin-bottom: mobile-vw(25px);
         }
       }
-      &__text {
+      &__text.P2 {
         text-transform: uppercase;
-        width: 80%;
+        width: 62%;
       }
     }
     &__visual.app-parallax {

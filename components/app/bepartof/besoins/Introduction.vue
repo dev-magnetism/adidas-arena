@@ -8,10 +8,19 @@
 
       <TP2
         weight="bold"
-        class="app-be-part-of-besoins-introduction__f-row__content__text"
+        class="app-be-part-of-besoins-introduction__f-row__content__subtitle"
       >
         {{ contents.subtitle }}
       </TP2>
+      <ul
+        class="app-be-part-of-besoins-introduction__f-row__content__subtitle-list"
+      >
+        <li v-for="(item, index) in contents.subtitleList" :key="index">
+          <TP2 weight="medium">
+            {{ item.text }}
+          </TP2>
+        </li>
+      </ul>
     </div>
 
     <EParallax
@@ -122,9 +131,8 @@ export default {
 
   &__f-row {
     &__content {
-      grid-column: 2 / span 6;
+      grid-column: 2 / span 5;
       grid-row: 1;
-      z-index: 1;
 
       @include mobile {
         grid-column: 1 / span 6;
@@ -133,10 +141,23 @@ export default {
       &__title {
       }
 
-      &__text {
+      &__subtitle {
         text-transform: uppercase;
-        margin-top: desktop-vw(15px);
+        margin-top: desktop-vw(20px);
         width: 65%;
+
+        @include mobile {
+          margin-top: mobile-vw(20px);
+        }
+      }
+      &__subtitle-list {
+        margin-top: desktop-vw(25px);
+        width: 80%;
+
+        li {
+          list-style-position: outside;
+          margin-left: 1em;
+        }
 
         @include mobile {
           margin-top: mobile-vw(20px);
@@ -148,7 +169,7 @@ export default {
       grid-column: 8 / span 5;
       aspect-ratio: 650 / 785;
       left: columns(-1);
-      margin-top: desktop-vw(125px);
+      margin-top: desktop-vw(225px);
       transform: rotate(-4.8deg);
       grid-row: 1;
 
@@ -213,7 +234,7 @@ export default {
       transform: rotate(5.5deg);
       left: 0;
       position: absolute;
-      top: desktop-vw(-400px);
+      top: desktop-vw(-250px);
       grid-row: 2;
       width: 100%;
 

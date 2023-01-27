@@ -254,6 +254,10 @@ export default {
       @include mobile {
         margin-top: mobile-vw(25px);
       }
+
+      &::after {
+        background: var(--c-black);
+      }
     }
 
     .P2 {

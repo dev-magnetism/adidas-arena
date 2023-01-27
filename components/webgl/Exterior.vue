@@ -42,8 +42,6 @@ export default {
       polar: [0, Math.PI / 2],
       azimuth: { min: -Math.PI / 1.4, max: Math.PI * 1 },
       directionalLightCastShadow: true,
-      modelCastShadow: true,
-      modelReceiveShadow: true,
       directionalLightIsStatic: true,
       cloudsParams: {
         speed: 0.0075,
@@ -58,10 +56,10 @@ export default {
         enabled: true,
       },
       zoom: {
-        initial: 15,
-        current: 15,
+        initial: 12.5,
+        current: 12.5,
         range: {
-          min: 8,
+          min: 5,
           max: 30,
         },
       },
@@ -69,6 +67,10 @@ export default {
       thresholdAngle: 40,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
+      timeCars: 0,
+      speedCars: 0.00005,
+      timeTrams: 0,
+      speedTrams: 0.0005,
     }
   },
   computed: {
@@ -86,7 +88,7 @@ export default {
       this.initExterior()
     },
     modelCloudLoaded() {
-      this.initClouds()
+      // this.initClouds()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -104,7 +106,7 @@ export default {
 
     if (this.allLoadedActual) {
       this.initExterior()
-      this.initClouds()
+      // this.initClouds()
       this.initGUI()
     }
 
@@ -133,18 +135,13 @@ export default {
     })
 
     exterior.remove(this.floor)
-    exterior.remove(this.buildings)
-    exterior.remove(this.road)
     exterior.remove(this.cars)
-    exterior.remove(this.trees)
-    exterior.remove(this.lamps)
+    exterior.remove(this.trams)
     exterior.remove(this.clouds)
     exterior.remove(this.adidasArena)
-    exterior.remove(this.paniers)
-    exterior.remove(this.footField)
-    exterior.remove(this.tram)
     exterior.remove(this.arrow)
     exterior.remove(this.logoArena)
+    exterior.remove(this.staticObjects)
 
     // MATERIAL
     this.shadowMaterial?.dispose()
@@ -213,6 +210,48 @@ export default {
         cloud.position.z = gsap.utils.wrap(100, -100, z)
       })
 
+      this.timeCars += deltaTime * this.speedCars
+      const progressCars = this.timeCars % 1
+
+      this.cars?.children?.forEach((car) => {
+        car.position.x = this.mapRange(
+          0,
+          1,
+          progressCars,
+          car.startPosition.x,
+          car.finalPosition.x
+        )
+
+        car.position.z = this.mapRange(
+          0,
+          1,
+          progressCars,
+          car.startPosition.z,
+          car.finalPosition.z
+        )
+      })
+
+      this.timeTrams += deltaTime * this.speedTrams
+      const progressTrams = this.timeTrams % 1
+
+      this.trams?.children?.forEach((tram) => {
+        tram.position.x = this.mapRange(
+          0,
+          1,
+          progressTrams,
+          tram.startPosition.x,
+          tram.finalPosition.x
+        )
+
+        tram.position.z = this.mapRange(
+          0,
+          1,
+          progressTrams,
+          tram.startPosition.z,
+          tram.finalPosition.z
+        )
+      })
+
       this.drag.current = this.lerp(
         this.drag.current,
         this.drag.target,
@@ -231,20 +270,17 @@ export default {
       this.initMaterials()
       this.initLights()
 
+      this.initStaticObjects()
       this.initFloor()
-      this.initRoad()
-      this.initBuildings()
       this.initAdidasArena()
       this.initLogoArena()
       this.initCars()
-      this.initTram()
-      this.initTrees()
-      this.initFootField()
-      this.initLamps()
+      this.initTrams()
       this.initArrow()
 
       this.initEvents()
     },
+
     initEvents() {
       const { interactionManager } = useWebGL()
       interactionManager.add(this.adidasArena)
@@ -283,10 +319,20 @@ export default {
       console.log('click')
     },
     onMouseEnterArena() {
+      if (!this.exteriorFullwidth) return
+
+      document.documentElement.style.cursor = 'pointer'
+
+      this.tweenArrowTranslate?.timeScale(2.5)
       this.setExteriorArenaHovered(true)
     },
 
     onMouseLeaveArena() {
+      if (!this.exteriorFullwidth) return
+
+      document.documentElement.style.cursor = 'initial'
+
+      this.tweenArrowTranslate?.timeScale(1)
       this.setExteriorArenaHovered(false)
     },
     initCamera() {
@@ -445,29 +491,46 @@ export default {
 
       arrow.material.flatShading = true
     },
-    initFootField() {
+    initTrams() {
       const { exterior } = useWebGL()
 
-      this.footField = new THREE.Group()
-      this.footField.position.y = 0.015
+      this.trams = new THREE.Group()
+      this.trams.name = 'trams'
 
-      exterior.add(this.footField)
+      const tramRight = this.gltfExterior.getObjectByName('Tram_001')
+      this.initTram(tramRight)
 
-      const footFieldGroup = this.gltfExterior.getObjectByName('FootField')
+      const tramLeft = this.gltfExterior.getObjectByName('Tram_002')
+      this.initTram(tramLeft)
 
-      const footField = this.mergeObject(footFieldGroup)
+      exterior.add(this.trams)
+    },
+    initTram(object) {
+      const tramGroup = new THREE.Group()
+      tramGroup.name = 'tram'
 
-      const shadowFootField = footField.clone()
-      shadowFootField.name = 'shadowModel'
-      shadowFootField.material = this.shadowMaterial
+      const tramObject = object.children.find((obj) =>
+        obj.name.includes('Tram')
+      )
+      const startMesh = object.children.find((obj) => obj.name.includes('part'))
+      const finalMesh = object.children.find((obj) => obj.name.includes('nale'))
 
-      const edgeFootField = this.edgeObject(footField)
-      // const conditionalFootField = this.conditionalObject(footField)
+      tramGroup.startPosition = startMesh.position.clone()
+      // .sub(tramObject.position)
+      tramGroup.finalPosition = finalMesh.position.clone()
+      // .sub(tramObject.position)
 
-      this.footField.add(footField)
-      this.footField.add(shadowFootField)
-      this.footField.add(edgeFootField)
-      // this.footField.add(conditionalFootField)
+      const tram = this.mergeObject(tramObject)
+      const edgeTram = this.edgeObject(tram)
+      const conditionalTram = this.conditionalObject(tram)
+
+      tramGroup.add(tram)
+      tramGroup.add(edgeTram)
+      tramGroup.add(conditionalTram)
+
+      tramGroup.position.copy(tramGroup.startPosition)
+
+      this.trams.add(tramGroup)
     },
     initCars() {
       const { exterior } = useWebGL()
@@ -477,92 +540,83 @@ export default {
 
       const carsGroup = this.gltfExterior.getObjectByName('Cars')
 
-      const cars = this.mergeObject(carsGroup)
-      const edgeCars = this.edgeObject(cars)
-      const conditionalCars = this.conditionalObject(cars)
+      carsGroup.children.forEach((car, index) => {
+        // if (index > 0) return
 
-      this.cars.add(cars)
-      this.cars.add(edgeCars)
-      this.cars.add(conditionalCars)
+        this.initCar(car)
+      })
     },
-    initRoad() {
+    mapRange(inMin, inMax, input, outMin, outMax) {
+      return ((input - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin
+    },
+    initCar(object) {
+      const carGroup = new THREE.Group()
+      carGroup.name = 'car'
+
+      const carObject = object.children.find((obj) => obj.type === 'Object3D')
+      const startMesh = object.children.find((obj) => obj.name.includes('part'))
+      const finalMesh = object.children.find((obj) => obj.name.includes('nale'))
+
+      carGroup.startPosition = startMesh.position
+        .clone()
+        .sub(carObject.position)
+      carGroup.finalPosition = finalMesh.position
+        .clone()
+        .sub(carObject.position)
+
+      const car = this.mergeObject(carObject)
+      const edgeCar = this.edgeObject(car)
+      const conditionalCar = this.conditionalObject(car)
+
+      carGroup.add(car)
+      carGroup.add(edgeCar)
+      carGroup.add(conditionalCar)
+
+      carGroup.position.copy(carGroup.startPosition)
+
+      this.cars.add(carGroup)
+    },
+    initStaticObjects() {
       const { exterior } = useWebGL()
 
-      this.road = new THREE.Group()
-      this.road.position.y = 0.015
-      exterior.add(this.road)
+      this.staticObjects = new THREE.Group()
+      this.staticObjects.name = 'staticObjects'
+      exterior.add(this.staticObjects)
 
-      const roadGroup = this.gltfExterior.getObjectByName('Road')
+      const group = new THREE.Group()
 
-      const road = this.mergeObject(roadGroup)
+      const buildings = this.gltfExterior.getObjectByName('Buildings')
+      group.add(buildings.clone())
 
-      const shadowRoad = road.clone()
-      shadowRoad.name = 'shadowModel'
-      shadowRoad.material = this.shadowMaterial
+      const lamps = this.gltfExterior.getObjectByName('Lamps')
+      group.add(lamps.clone())
 
-      road.castShadow = false
-      road.receiveShadow = false
+      const trees = this.gltfExterior.getObjectByName('Trees')
+      group.add(trees.clone())
 
-      const edgeRoad = this.edgeObject(road)
+      const footField = this.gltfExterior.getObjectByName('FootField')
+      group.add(footField.clone())
 
-      this.road.add(road)
-      this.road.add(shadowRoad)
-      this.road.add(edgeRoad)
-    },
-    initLamps() {
-      const { exterior } = useWebGL()
+      const tramStructure = this.gltfExterior.getObjectByName('Tram_2')
+      group.add(tramStructure.clone())
 
-      this.lamps = new THREE.Group()
-      exterior.add(this.lamps)
+      const road = this.gltfExterior.getObjectByName('Road')
+      group.add(road.clone())
 
-      const lampsGroup = this.gltfExterior.getObjectByName('Lamps')
+      const model = this.mergeObject(group)
+      const edge = this.edgeObject(model)
+      const conditional = this.conditionalObject(model)
 
-      const lamps = this.mergeObject(lampsGroup)
-      const edgeLamps = this.edgeObject(lamps)
-      const conditionalLamps = this.conditionalObject(lamps)
-
-      this.lamps.add(lamps)
-      this.lamps.add(edgeLamps)
-      this.lamps.add(conditionalLamps)
-    },
-    initTram() {
-      const { exterior } = useWebGL()
-
-      this.tram = new THREE.Group()
-      exterior.add(this.tram)
-
-      const tramGroup = this.gltfExterior.getObjectByName('Tram')
-
-      const tram = this.mergeObject(tramGroup)
-      const edgeTram = this.edgeObject(tram)
-      const conditionalTram = this.conditionalObject(tram)
-
-      this.tram.add(tram)
-      this.tram.add(edgeTram)
-      this.tram.add(conditionalTram)
-    },
-    initTrees() {
-      const { exterior } = useWebGL()
-
-      this.trees = new THREE.Group()
-      this.trees.name = 'trees'
-      exterior.add(this.trees)
-
-      const treesGroup = this.gltfExterior.getObjectByName('Trees')
-
-      const trees = this.mergeObject(treesGroup)
-      const edgeTrees = this.edgeObject(trees)
-      const conditionalTrees = this.conditionalObject(trees)
-
-      this.trees.add(trees)
-      this.trees.add(edgeTrees)
-      this.trees.add(conditionalTrees)
+      this.staticObjects.add(model)
+      this.staticObjects.add(edge)
+      this.staticObjects.add(conditional)
     },
     initFloor() {
       const { exterior } = useWebGL()
 
       this.floor = new THREE.Group()
       this.floor.name = 'floor'
+      this.floor.position.y = -0.01
       exterior.add(this.floor)
 
       const floorGroup = this.gltfExterior.getObjectByName('Floor')
@@ -579,28 +633,12 @@ export default {
       this.floor.add(floor)
       this.floor.add(shadowFloor)
     },
-    initBuildings() {
-      const { exterior } = useWebGL()
-
-      this.buildings = new THREE.Group()
-      exterior.add(this.buildings)
-
-      const buildingsGroup = this.gltfExterior.getObjectByName('Buildings')
-
-      const buildings = this.mergeObject(buildingsGroup)
-
-      const edgeBuildings = this.edgeObject(buildings)
-      // const conditionalBuildings = this.conditionalObject(buildings)
-
-      this.buildings.add(buildings)
-      this.buildings.add(edgeBuildings)
-      // this.buildings.add(conditionalBuildings)
-    },
-
     initAdidasArena() {
       const { exterior } = useWebGL()
 
       this.adidasArena = new THREE.Group()
+      this.adidasArena.name = 'AdidasArena'
+      this.adidasArena.position.y = 0.01
 
       exterior.add(this.adidasArena)
 
@@ -676,8 +714,8 @@ export default {
 
       const mesh = new THREE.Mesh(mergedGeometry)
 
-      mesh.castShadow = this.modelCastShadow
-      mesh.receiveShadow = this.modelReceiveShadow
+      mesh.castShadow = true
+      mesh.receiveShadow = true
 
       mesh.name = 'model'
       mesh.material = this.modelMaterial
@@ -842,6 +880,20 @@ export default {
 
       this.guiModel = this.gui.addFolder({ title: `Model`, expanded: false })
 
+      this.guiModel.addInput(this, 'speedCars', {
+        min: 0.000001,
+        max: 0.0005,
+        step: 0.000001,
+        label: 'Speed Cars',
+      })
+
+      this.guiModel.addInput(this, 'speedTrams', {
+        min: 0.00001,
+        max: 0.002,
+        step: 0.00001,
+        label: 'Speed Trams',
+      })
+
       this.guiModel.addInput(exterior, 'position', {
         x: { step: 1, max: 1000, min: -1000 },
         y: { step: 1, max: 1000, min: -1000 },
@@ -920,7 +972,7 @@ export default {
     lerp(p1, p2, t) {
       return p1 + (p2 - p1) * t
     },
-    genRand(min, max, decimalPlaces) {
+    genRand(min, max, decimalPlaces = 0) {
       const rand = Math.random() * (max - min) + min
       const power = Math.pow(10, decimalPlaces)
       return Math.floor(rand * power) / power

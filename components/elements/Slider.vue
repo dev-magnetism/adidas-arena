@@ -2,24 +2,17 @@
   <div class="app-element-slider">
     <div class="app-element-slider__heading grid-inner">
       <ERichText
+        :split="true"
+        :scrub="false"
+        :overflow="true"
         class="app-element-slider__heading__title"
         :content="contents.title"
       />
-      <div class="app-element-slider__heading__spaces">
-        <div class="app-element-slider__heading__spaces__total">
-          <TH1
-            v-for="(char, index) in totalFinal"
-            :key="index"
-            ref="numbers"
-            weight="bold"
-            >{{ char }}</TH1
-          >
-        </div>
-
-        <TH4 class="app-element-slider__heading__spaces__text" weight="medium"
-          >Espaces</TH4
-        >
-      </div>
+      <EPartnersTotal
+        class="app-element-slider__heading__spaces"
+        :total="contents.items.length"
+        :text="'Espaces'"
+      />
     </div>
 
     <div ref="wrapper" :class="{ hold }" class="app-element-slider__wrapper">
@@ -170,7 +163,7 @@ export default {
   }
 
   &__heading {
-    margin-bottom: desktop-vw(70px);
+    margin-bottom: desktop-vw(85px);
     position: relative;
 
     @include mobile {
@@ -178,16 +171,17 @@ export default {
     }
 
     &__title {
-      grid-column: 1 / span 6;
+      grid-column: 1 / span 8;
 
       @include mobile {
+        grid-column: 1 / span 6;
         grid-row: 1;
         width: 85%;
       }
     }
 
     &__spaces {
-      grid-column: 11 / span 1;
+      grid-column: 12 / span 1;
       align-self: center;
       position: absolute;
 
@@ -195,33 +189,6 @@ export default {
         grid-column: 1 / span 6;
         position: relative;
         grid-row: 2;
-      }
-
-      &__total {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-
-        .H1 {
-          display: inline-block;
-
-          &:first-child {
-            -webkit-text-stroke: 1.5px var(--c-black);
-            -webkit-text-fill-color: transparent;
-          }
-        }
-      }
-
-      &__text.H4 {
-        font-size: desktop-vw(24px);
-        line-height: desktop-vw(24px);
-        opacity: 0.25;
-
-        @include mobile {
-          font-size: mobile-vw(16px);
-          line-height: mobile-vw(24px);
-          text-align: right;
-        }
       }
     }
   }

@@ -175,7 +175,7 @@ export default {
     onProgressLoader({ normalized }, id) {
       this.tlLoading.to(this, {
         tweenValue: normalized,
-        duration: this.genRand(0.35, 1.5, 2),
+        duration: this.genRand(0.2, 1, 2),
         ease: 'power3.out',
       })
 

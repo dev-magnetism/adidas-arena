@@ -1,5 +1,6 @@
 <template>
   <main class="page-be-part-of-guests">
+    <AppBepartofGuestsHero />
     <ETwoColumnsStick
       :left-content="contentTwoColumns.left"
       :right-content="contentTwoColumns.right"
@@ -94,8 +95,6 @@ export default {
 
 <style lang="scss">
 .page-be-part-of-guests {
-  margin-top: desktop-vw(620px);
-
   .app-two-columns-stick {
     @include mobile {
       row-gap: 20px;
@@ -106,8 +105,8 @@ export default {
         left: 50%;
         width: 100%;
         height: auto !important;
-        bottom: -35px;
-        transform: translateX(-50%) !important;
+        bottom: -75%;
+        transform: translate(-50%, -50%) !important;
 
         @include mobile {
           bottom: -20px;

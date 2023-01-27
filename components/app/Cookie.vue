@@ -32,9 +32,6 @@ export default {
       appContent: (state) => state.appContent,
     }),
   },
-  mounted() {
-    console.log(this.appContent)
-  },
 }
 </script>
 
@@ -42,7 +39,6 @@ export default {
 .app-cookie {
   position: fixed;
   width: desktop-vw(375px);
-  max-width: 375px;
   background-color: #fdf8f2;
   z-index: 8;
   padding: desktop-vw(25px) desktop-vw(35px);
@@ -55,12 +51,11 @@ export default {
     width: calc(100% - mobile-vw(24px));
     bottom: mobile-vw(25px);
     padding: mobile-vw(25px) mobile-vw(35px);
-    max-width: initial;
   }
 
   &.accepted {
-    opacity: 0;
-    pointer-events: none;
+    // opacity: 0;
+    // pointer-events: none;
   }
 
   .P1 {
@@ -77,7 +72,7 @@ export default {
     flex-direction: row;
 
     .app-atoms-cta {
-      width: 65%;
+      flex: 0 0 60%;
 
       svg {
         @include mobile {
@@ -87,7 +82,7 @@ export default {
     }
 
     .app-atoms-link {
-      margin: 0 auto 0 desktop-vw(25px);
+      margin: 0 auto;
       text-align: center;
       align-self: center;
       text-transform: uppercase;

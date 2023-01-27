@@ -1,5 +1,7 @@
 <template>
   <main class="app-le-bloc">
+    <AppLeblocHero />
+
     <ETwoColumnsStick
       :left-content="contentTwoColumns.left"
       :right-content="contentTwoColumns.right"
@@ -98,8 +100,6 @@ export default {
 
 <style lang="scss">
 .app-le-bloc {
-  padding-top: 65vh;
-
   .app-two-columns-stick {
     .app-element-lottie-word {
       &.Trait_2 svg {
@@ -107,8 +107,8 @@ export default {
         left: 100%;
         width: 100%;
         height: auto !important;
-        bottom: -15px;
-        transform: translateX(-50%) !important;
+        bottom: -50%;
+        transform: translate(-50%, -50%) !important;
 
         @include mobile {
           bottom: -8px;
@@ -116,9 +116,9 @@ export default {
       }
       &.Cercle_1 svg {
         position: absolute;
-        width: 135% !important;
+        width: 120% !important;
         height: auto !important;
-        left: 50%;
+        left: 40%;
         top: 50%;
         transform: translate(-50%, -50%) rotate(5deg) !important;
       }

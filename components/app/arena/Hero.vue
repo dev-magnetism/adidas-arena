@@ -1,7 +1,7 @@
 <template>
   <div class="app-arena-hero">
     <div class="app-arena-hero__wrapper">
-      <AtomsCornerPoints :size-points="8" />
+      <AtomsCornerPoints :size-points="12" />
     </div>
   </div>
 </template>

@@ -195,7 +195,7 @@ export default {
         }
 
         &::placeholder {
-          color: rgba(245, 245, 243, 0.25);
+          color: rgba(24, 24, 24, 0.25);
         }
       }
 
@@ -230,7 +230,7 @@ export default {
             opacity: 1;
 
             path {
-              fill: var(--c-white);
+              fill: var(--c-black);
             }
           }
         }
@@ -241,7 +241,7 @@ export default {
           left: 0;
           width: 100%;
           height: 100%;
-          background: var(--c-black);
+          background: var(--c-grey);
           z-index: 0;
           transform: scaleY(0);
           transform-origin: top center;
@@ -255,6 +255,10 @@ export default {
           opacity: 0.25;
           z-index: 1;
           transition: opacity 0.2s var(--ease-out-cubic);
+
+          path {
+            fill: var(--c-black);
+          }
 
           @include mobile {
             padding: mobile-vw(15px);
