@@ -232,7 +232,7 @@ export default {
       })
 
       this.timeTrams += deltaTime * this.speedTrams
-      const progressTrams = this.timeTrams % 1
+      const progressTrams = this.timeTrams % 5
 
       this.trams?.children?.forEach((tram) => {
         tram.position.x = this.mapRange(
@@ -515,10 +515,12 @@ export default {
       const startMesh = object.children.find((obj) => obj.name.includes('part'))
       const finalMesh = object.children.find((obj) => obj.name.includes('nale'))
 
-      tramGroup.startPosition = startMesh.position.clone()
-      // .sub(tramObject.position)
-      tramGroup.finalPosition = finalMesh.position.clone()
-      // .sub(tramObject.position)
+      tramGroup.startPosition = startMesh.position
+        .clone()
+        .sub(tramObject.position)
+      tramGroup.finalPosition = finalMesh.position
+        .clone()
+        .sub(tramObject.position)
 
       const tram = this.mergeObject(tramObject)
       const edgeTram = this.edgeObject(tram)
