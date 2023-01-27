@@ -3,7 +3,8 @@
     <div ref="mainWrapper" class="app-projet__wrapper">
       <AppProjetIntroduction :contents="contentIntroduction" />
       <AppProjetCatchPhrase :contents="contentCatchphrase" />
-      <AppProjetGallery :contents="contentGallery" />
+      <!-- <AppProjetGallery :contents="contentGallery" /> -->
+      <ESlider :contents="contentSlider" />
       <!-- <AppProjetWorkProgress :contents="contentWorkProgress" /> -->
       <AppProjetPlan :contents="contentPlan" />
       <AppProjetTwoColumns :contents="contentTwoColumns" />
@@ -30,7 +31,12 @@ export default {
       limit: -1,
     })
 
+    const slider = await $directus.items('Projet_slider').readByQuery({
+      limit: -1,
+    })
+
     return {
+      slider,
       content,
     }
   },
@@ -39,6 +45,13 @@ export default {
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
     }),
+    contentSlider() {
+      return {
+        title: this.content.data.slider_title,
+        totalText: this.content.data.slider_total_text,
+        items: this.slider.data,
+      }
+    },
     contentIntroduction() {
       return {
         title: this.content.data.projet_introduction_title,
@@ -65,20 +78,20 @@ export default {
         catchphrase: this.content.data.projet_catchphrase,
       }
     },
-    contentGallery() {
-      return {
-        leftPicture: this.content.data.projet_gallery_left_picture,
-        leftPictureAlt: this.content.data.projet_gallery_left_picture_alt,
-        leftTitle: this.content.data.projet_gallery_left_title,
-        leftSubtitle: this.content.data.projet_gallery_left_subtitle,
-        leftParagraph: this.content.data.projet_gallery_left_paragraph,
-        rightPicture: this.content.data.projet_gallery_right_picture,
-        rightPictureAlt: this.content.data.projet_gallery_right_picture_alt,
-        rightTitle: this.content.data.projet_gallery_right_title,
-        rightSubtitle: this.content.data.projet_gallery_right_subtitle,
-        rightParagraph: this.content.data.projet_gallery_right_paragraph,
-      }
-    },
+    // contentGallery() {
+    //   return {
+    //     leftPicture: this.content.data.projet_gallery_left_picture,
+    //     leftPictureAlt: this.content.data.projet_gallery_left_picture_alt,
+    //     leftTitle: this.content.data.projet_gallery_left_title,
+    //     leftSubtitle: this.content.data.projet_gallery_left_subtitle,
+    //     leftParagraph: this.content.data.projet_gallery_left_paragraph,
+    //     rightPicture: this.content.data.projet_gallery_right_picture,
+    //     rightPictureAlt: this.content.data.projet_gallery_right_picture_alt,
+    //     rightTitle: this.content.data.projet_gallery_right_title,
+    //     rightSubtitle: this.content.data.projet_gallery_right_subtitle,
+    //     rightParagraph: this.content.data.projet_gallery_right_paragraph,
+    //   }
+    // },
     contentWorkProgress() {
       return {
         title: this.content.data.work_progress_title,

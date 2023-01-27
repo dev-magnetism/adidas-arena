@@ -11,7 +11,7 @@
       <EPartnersTotal
         class="app-element-slider__heading__spaces"
         :total="contents.items.length"
-        :text="'Espaces'"
+        :text="contents.totalText"
       />
     </div>
 
@@ -27,7 +27,7 @@
             <nuxt-picture
               provider="directus"
               class="app-element-slider__item__visual"
-              :src="item.hospitalite_slider_picture"
+              :src="item.picture"
               format="webp"
               :alt="`slider-visual-${index}`"
             />
@@ -35,10 +35,10 @@
 
           <div class="app-element-slider__item__content">
             <TH4 class="app-element-slider__item__content__title">{{
-              item.hospitalite_slider_title
+              item.title
             }}</TH4>
             <TP2 class="app-element-slider__item__content__text">
-              {{ item.hospitalite_slider_paragraph }}
+              {{ item.paragraph }}
             </TP2>
           </div>
         </div>
@@ -275,6 +275,7 @@ export default {
       width: 100%;
       height: 100%;
       will-change: transform;
+      @include noise();
 
       img {
         transition: transform 0.95s var(--ease-out-quart);

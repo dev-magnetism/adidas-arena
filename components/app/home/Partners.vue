@@ -100,7 +100,7 @@ export default {
   }
 
   &__content {
-    grid-column: 1 / span 6;
+    grid-column: 1 / span 5;
 
     .app-atoms-cta {
       .P2 {
@@ -126,7 +126,7 @@ export default {
 
   &__principal-paragraph {
     margin-bottom: desktop-vw(25px);
-    width: 50%;
+    width: 65%;
     text-transform: uppercase;
     opacity: 0.8;
     will-change: transform;
@@ -139,7 +139,7 @@ export default {
 
   &__secondary-paragraph {
     margin-bottom: desktop-vw(50px);
-    width: 52.5%;
+    width: 65%;
     opacity: 0.8;
     will-change: transform;
 

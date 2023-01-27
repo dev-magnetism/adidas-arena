@@ -35,7 +35,8 @@
   }
 
   &.bold,
-  .bold {
+  .bold,
+  strong {
     @include font-adihausDIN-cn-bold();
   }
 }
@@ -57,7 +58,8 @@
     line-height: mobile-vw(40px);
   }
 
-  &.bold {
+  &.bold,
+  strong {
     @include font-adihausDIN-cn-bold();
   }
 
@@ -85,7 +87,8 @@
     @include font-adihausDIN-cn();
   }
 
-  &.bold {
+  &.bold,
+  strong {
     @include font-adihausDIN-cn-bold();
   }
 
@@ -109,7 +112,8 @@
     @include font-adihausDIN();
   }
 
-  &.bold {
+  &.bold,
+  strong {
     @include font-adihausDIN-bold();
   }
 
@@ -131,7 +135,8 @@
     @include font-adihausDIN();
   }
 
-  &.bold {
+  &.bold,
+  strong {
     @include font-adihausDIN-bold();
   }
 

@@ -70,7 +70,7 @@ export default {
       timeCars: 0,
       speedCars: 0.00005,
       timeTrams: 0,
-      speedTrams: 0.0005,
+      speedTrams: 0.00025,
     }
   },
   computed: {

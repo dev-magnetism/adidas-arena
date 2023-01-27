@@ -73,6 +73,7 @@ export default {
     contentSlider() {
       return {
         title: this.content.data.slider_title,
+        totalText: this.content.data.slider_total_text,
         items: this.slider.data,
       }
     },

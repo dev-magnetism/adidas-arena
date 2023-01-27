@@ -22,6 +22,7 @@ export default {
 .app-projet__catch-phrase {
   position: relative;
   padding-top: desktop-vw(30px);
+  margin-bottom: desktop-vw(250px);
 
   @include mobile {
     padding-top: mobile-vw(120px);

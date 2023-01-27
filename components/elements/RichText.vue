@@ -1,4 +1,5 @@
 <script>
+import { mapState } from 'vuex'
 import JSSoup from 'jssoup'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
@@ -27,7 +28,17 @@ export default {
       require: true,
     },
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      fontsLoaded: (state) => state.fontsLoaded,
+    }),
+  },
+
+  watch: {
+    fontsLoaded() {
+      // this.initSplitText()
+    },
+  },
 
   created() {},
 
@@ -35,9 +46,7 @@ export default {
     document.fonts.ready.then(() => {
       if (!this.split || this.$viewport.isMobile) return
 
-      setTimeout(() => {
-        this.initSplitText()
-      }, 500)
+      this.initSplitText()
     })
   },
 
@@ -45,14 +54,14 @@ export default {
     initSplitText() {
       Object.values(this.$el.children).forEach((child) => {
         if (this.overflow) {
-          this.splitting = new SplitText(child, {
-            type: 'lines',
-            linesClass: 'H1__child line',
-          })
-
-          this.splittingParent = new SplitText(child, {
+          this.splittingParent = this.nestedLinesSplit(child, {
             type: 'lines',
             linesClass: 'H1__parent',
+          })
+
+          this.splitting = this.nestedLinesSplit(child, {
+            type: 'lines',
+            linesClass: 'H1__child line',
           })
         } else {
           this.splitting = new SplitText(child, {
@@ -79,20 +88,22 @@ export default {
           }
         }
 
-        gsap.fromTo(
-          this.splitting.lines,
-          {
-            yPercent: this.overflow ? -100 : 100,
-          },
-          {
-            yPercent: 0,
-            stagger: 0.08,
-            delay: this.scrub ? 0 : 0.2,
-            duration: 0.85,
-            ease: 'expo.out',
-            scrollTrigger,
-          }
-        )
+        if (this.splitting.lines.length) {
+          gsap.fromTo(
+            this.splitting.lines,
+            {
+              yPercent: this.overflow ? -100 : 100,
+            },
+            {
+              yPercent: 0,
+              stagger: 0.08,
+              delay: this.scrub ? 0 : 0.2,
+              duration: 0.85,
+              ease: 'expo.out',
+              scrollTrigger,
+            }
+          )
+        }
       })
     },
 
@@ -198,17 +209,16 @@ export default {
 
 <style lang="scss">
 .app-element-rich-text {
-  & > .H1,
-  & > .H2 {
-    // display: block;
-  }
   .line {
+    display: inline-block !important;
+  }
+  .H1__parent {
     // display: inline-block !important;
   }
 
   strong,
-  .bold {
-    // display: inline-block !important;
+  span {
+    display: inline-block !important;
   }
 }
 </style>
