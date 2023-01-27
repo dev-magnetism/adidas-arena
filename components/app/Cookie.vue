@@ -54,8 +54,8 @@ export default {
   }
 
   &.accepted {
-    // opacity: 0;
-    // pointer-events: none;
+    opacity: 0;
+    pointer-events: none;
   }
 
   .P1 {
