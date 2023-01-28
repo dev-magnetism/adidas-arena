@@ -351,7 +351,7 @@ export default {
       this.modelMaterial = new THREE.MeshLambertMaterial({
         color: this.colors.lambertMaterialColor,
         emissive: this.colors.lambertMaterialEmissive,
-        emissiveIntensity: this.emissiveIntensity,
+        emissiveIntensity: this.colors.emissiveIntensity,
       })
 
       this.logoMaterial = new THREE.MeshBasicMaterial({
@@ -361,7 +361,7 @@ export default {
       this.arrowMaterial = new THREE.MeshLambertMaterial({
         color: this.colors.arrowColor,
         emissive: this.colors.arrowColor,
-        emissiveIntensity: this.emissiveIntensity,
+        emissiveIntensity: this.colors.emissiveIntensity,
       })
 
       this.shadowMaterial = new THREE.ShadowMaterial({

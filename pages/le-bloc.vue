@@ -20,6 +20,7 @@
       </EMarqueeScroll>
     </div>
     <EFullwidth :contents="contentFullwidth" />
+    <ESlider :contents="contentSlider" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
@@ -42,8 +43,13 @@ export default {
       limit: -1,
     })
 
+    const slider = await $directus.items('Le_Bloc_Slider').readByQuery({
+      limit: -1,
+    })
+
     return {
       content,
+      slider,
     }
   },
   data() {
@@ -55,6 +61,13 @@ export default {
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
     }),
+    contentSlider() {
+      return {
+        title: this.content.data.slider_title,
+        totalText: this.content.data.slider_total_text,
+        items: this.slider.data,
+      }
+    },
     contentFullwidth() {
       return {
         src: this.content.data.fullwidth_picture,
@@ -123,6 +136,11 @@ export default {
         transform: translate(-50%, -50%) rotate(5deg) !important;
       }
     }
+  }
+
+  .app-element-slider {
+    margin-top: desktop-vw(130px);
+    margin-bottom: desktop-vw(165px);
   }
 
   &__marquees {

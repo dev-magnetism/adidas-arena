@@ -30,7 +30,6 @@ export default {
   data() {
     return {
       progressUI: 0,
-      tweenValue: 0,
       hideInner: false,
       videoLoaded: false,
     }
@@ -147,9 +146,8 @@ export default {
         paused: true,
         onUpdate: () => {
           const progress = this.tlLoading.progress()
-          if (progress >= 0.925) this.setModelsPreviewed(true)
 
-          this.progressUI = Math.round(progress * 100)
+          if (progress >= 0.925) this.setModelsPreviewed(true)
         },
         onComplete: () => {
           if (!this.allLoadedActual) return
@@ -172,11 +170,10 @@ export default {
       )
     },
 
-    onProgressLoader({ normalized }, id) {
-      this.tlLoading.to(this, {
-        tweenValue: normalized,
-        duration: this.genRand(0.2, 1, 2),
-        ease: 'power3.out',
+    onProgressLoader({ normalized, percentage }, id) {
+      this.tlLoading.set(this, {
+        progressUI: Math.round(percentage),
+        delay: this.genRand(0.5, 1, 2),
       })
 
       if (id === 'exterior') {

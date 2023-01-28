@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ isLeft, hold: mouseDown }" class="app-cursor">
+  <div :class="{ ...classes }" class="app-cursor">
     <div ref="wrapper" class="app-cursor__wrapper">
       <div class="app-cursor__inner">
         <SvgCursorUnion ref="arrow" />
@@ -10,19 +10,29 @@
 
 <script>
 import { gsap } from 'gsap'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   data() {
     return {
       mouseDown: false,
-      isLeft: false,
     }
   },
   computed: {
     ...mapState({
       cursoState: (state) => state.cursoState,
+      cursorSliderHold: (state) => state.cursorSliderHold,
+      cursorSliderLeftZone: (state) => state.cursorSliderLeftZone,
+      cursorSliderDisabled: (state) => state.cursorSliderDisabled,
     }),
+    classes() {
+      return {
+        'app-cursor--slider': this.cursoState === 'slider',
+        'slider-hold': this.cursorSliderHold && this.cursoState === 'slider',
+        'is-left': this.cursorSliderLeftZone,
+        'slider-disabled': this.cursorSliderDisabled,
+      }
+    },
   },
   mounted() {
     this.xTo = gsap.quickTo(this.$refs.wrapper, 'x', {
@@ -53,11 +63,14 @@ export default {
       this.yTo(e.clientY)
 
       if (e.clientX > this.$viewport.width / 2) {
-        this.isLeft = false
+        this.setCursorSliderLeftZone(false)
       } else {
-        this.isLeft = true
+        this.setCursorSliderLeftZone(true)
       }
     },
+    ...mapMutations({
+      setCursorSliderLeftZone: 'setCursorSliderLeftZone',
+    }),
   },
 }
 </script>
@@ -77,9 +90,31 @@ export default {
     display: none;
   }
 
-  &.isLeft {
+  &.is-left {
     svg {
-      transform: scaleX(-1);
+      transform: scale(-1, 1);
+    }
+  }
+
+  &--slider {
+    .app-cursor__inner {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  &.slider-hold {
+    svg {
+      transform: scale(0, 0);
+    }
+
+    .app-cursor__inner {
+      transform: translate(-50%, -50%) scale(0.7);
+    }
+  }
+
+  &.slider-disabled {
+    svg {
+      opacity: 0.5;
     }
   }
 
@@ -94,7 +129,7 @@ export default {
     height: desktop-vw(120px);
     background: var(--c-red-adidas);
     border-radius: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -103,7 +138,7 @@ export default {
   svg {
     width: 40%;
     transition: transform 0.65s var(--ease-out-expo);
-    transform: scaleX(1);
+    transform: scale(1, 1);
     will-change: transform;
   }
 }

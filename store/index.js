@@ -30,7 +30,10 @@ export const state = () => ({
   menuActive: false,
   headerReduced: false,
   headerWhite: false,
-  cursoState: 'default',
+  cursoState: 'hide',
+  cursorSliderHold: false,
+  cursorSliderLeftZone: false,
+  cursorSliderDisabled: false,
 })
 
 export const getters = {
@@ -45,6 +48,15 @@ export const mutations = {
   },
   setHeaderReduced: (state, value) => {
     state.headerReduced = value
+  },
+  setCursorSliderHold: (state, value) => {
+    state.cursorSliderHold = value
+  },
+  setCursorSliderDisabled: (state, value) => {
+    state.cursorSliderDisabled = value
+  },
+  setCursorSliderLeftZone: (state, value) => {
+    state.cursorSliderLeftZone = value
   },
   setExteriorFullwidth: (state, value) => {
     state.exteriorFullwidth = value

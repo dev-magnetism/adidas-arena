@@ -1,8 +1,8 @@
 <template>
   <div :class="{ accepted }" class="app-cookie">
-    <TP1>
+    <TP2 class="app-cookie__text">
       {{ appContent.data.cookies_text }}
-    </TP1>
+    </TP2>
 
     <div class="app-cookie__bottom">
       <AtomsCTA button @click.native="accepted = true">
@@ -38,12 +38,12 @@ export default {
 <style lang="scss">
 .app-cookie {
   position: fixed;
-  width: desktop-vw(375px);
+  width: 375px;
   background-color: #fdf8f2;
   z-index: 8;
-  padding: desktop-vw(25px) desktop-vw(35px);
-  bottom: desktop-vw(25px);
-  left: desktop-vw(25px);
+  padding: 25px 35px;
+  bottom: var(--layout-margin);
+  left: var(--layout-margin);
   transition: opacity 0.35s var(--ease-in-out-cubic);
 
   @include mobile {
@@ -58,9 +58,13 @@ export default {
     pointer-events: none;
   }
 
-  .P1 {
+  &__text.P2 {
     text-align: center;
     margin-bottom: desktop-vw(25px);
+    @include font-adihausDIN();
+    text-transform: uppercase;
+    // font-size: 14px;
+    // line-height: 20px;
 
     @include mobile {
       margin-bottom: mobile-vw(25px);
@@ -72,7 +76,13 @@ export default {
     flex-direction: row;
 
     .app-atoms-cta {
-      flex: 0 0 60%;
+      flex: 0 0 55%;
+      padding: 10px 10px 10px 20px;
+
+      .P2 {
+        font-size: 20px;
+        line-height: 28px;
+      }
 
       svg {
         @include mobile {
@@ -89,6 +99,11 @@ export default {
 
       @include mobile {
         margin: 0 auto 0 mobile-vw(20px);
+      }
+
+      .P2 {
+        font-size: 14px;
+        line-height: 20px;
       }
 
       &::after {

@@ -15,8 +15,15 @@
       />
     </div>
 
-    <div ref="wrapper" :class="{ hold }" class="app-element-slider__wrapper">
-      <div @click="onClickSlider" class="app-element-slider__inner">
+    <div
+      ref="wrapper"
+      :class="{ cursorSliderHold }"
+      class="app-element-slider__wrapper"
+      @mouseenter="setCursoState('slider')"
+      @mouseleave="setCursoState('hide')"
+      @click="onClickSlider"
+    >
+      <div class="app-element-slider__inner">
         <div
           v-for="(item, index) in contents.items"
           :key="index"
@@ -48,6 +55,7 @@
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex'
 import EmblaCarousel from 'embla-carousel'
 
 export default {
@@ -60,13 +68,17 @@ export default {
   data() {
     return {
       parallaxFactor: 2.5,
-      hold: false,
     }
   },
   computed: {
-    totalFinal() {
-      const value = ('0' + this.contents.items.length).slice(-2)
-      return value.split('')
+    ...mapState({
+      cursorSliderHold: (state) => state.cursorSliderHold,
+      cursorSliderLeftZone: (state) => state.cursorSliderLeftZone,
+    }),
+  },
+  watch: {
+    cursorSliderLeftZone() {
+      this.handleDisabledCursor()
     },
   },
   mounted() {
@@ -74,40 +86,79 @@ export default {
       // skipSnaps: false
       dragFree: true,
       containScroll: 'keepSnaps',
-      speed: 5,
+      speed: 10,
       breakpoints: {
         '(max-width: 800px)': { dragFree: false, skipSnaps: false, speed: 10 },
       },
     })
 
     this.embla.on('init', this.setParallax)
-    this.embla.on('scroll', this.setParallax)
+    this.embla.on('scroll', this.onScroll)
     this.embla.on('resize', this.setParallax)
+    this.embla.on('select', this.onSelect)
     this.embla.on('pointerUp', this.onPointerUp)
     this.embla.on('pointerDown', this.onPointerDown)
   },
   beforeDestroy() {
     this.embla.off('init', this.setParallax)
-    this.embla.off('scroll', this.setParallax)
+    this.embla.off('scroll', this.onScroll)
     this.embla.off('resize', this.setParallax)
+    this.embla.off('select', this.onSelect)
     this.embla.off('pointerUp', this.onPointerUp)
     this.embla.off('pointerDown', this.onPointerDown)
 
     this.embla?.destroy()
   },
   methods: {
-    onClickSlider(e) {
-      const isLeft = e.clientX < this.$viewport.width / 2
-      console.log('click', isLeft)
+    onClickTest() {
+      console.log('onClickTest')
     },
-    onPointerUp() {
-      // console.log('onPointerUp', this.embla.canScrollPrev())
-      this.hold = false
+    onClickSlider(e) {
+      console.log('click')
+      // this.setCursorSliderHold(false)
+
+      const isLeft = e.clientX < this.$viewport.width / 2
+      const canScrollPrev = this.embla.canScrollPrev()
+      const canScrollNext = this.embla.canScrollNext()
+
+      if (isLeft && canScrollPrev) {
+        this.embla.scrollPrev()
+      } else if (!isLeft && canScrollNext) {
+        this.embla.scrollNext()
+      }
+    },
+    onScroll() {
+      // this.setCursorSliderHold(true)
+
+      this.setParallax()
+    },
+    onSelect(e) {
+      this.handleDisabledCursor()
     },
     onPointerDown() {
-      // console.log('onPointerDown')
-      this.hold = true
+      // this.setCursorSliderHold(true)
+
+      console.log('onPointerDown')
     },
+
+    onPointerUp() {
+      // console.log('onPointerUp')
+      // this.setCursorSliderHold(false)
+    },
+    handleDisabledCursor() {
+      const canScrollPrev = this.embla.canScrollPrev()
+      const canScrollNext = this.embla.canScrollNext()
+
+      if (
+        (this.cursorSliderLeftZone && !canScrollPrev) ||
+        (!this.cursorSliderLeftZone && !canScrollNext)
+      ) {
+        this.setCursorSliderDisabled(true)
+      } else {
+        this.setCursorSliderDisabled(false)
+      }
+    },
+
     calculateParallaxTransforms() {
       const engine = this.embla.internalEngine()
       const scrollProgress = this.embla.scrollProgress()
@@ -129,10 +180,7 @@ export default {
         return diffToTarget * (-1 / this.parallaxFactor) * 100
       })
     },
-
     setParallax() {
-      console.log('setParallax')
-
       const slides = this.embla.slideNodes()
       const layers = slides.map((s) =>
         s.querySelector('.app-element-slider__item__visual')
@@ -143,6 +191,11 @@ export default {
         layers[index].style.transform = `translateX(${transform}%)`
       })
     },
+    ...mapMutations({
+      setCursoState: 'setCursoState',
+      setCursorSliderHold: 'setCursorSliderHold',
+      setCursorSliderDisabled: 'setCursorSliderDisabled',
+    }),
   },
 }
 </script>

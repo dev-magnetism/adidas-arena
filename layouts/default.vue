@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" :class="{ 'cursor-custom': cursoState === 'slider' }">
     <div ref="layerBlue" class="app-transition-layer blue" />
     <div ref="layerRed" class="app-transition-layer red" />
     <AppCursor v-if="!$viewport.isMobile" />
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 // import { gsap } from 'gsap'
 // import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -28,6 +30,11 @@ export default {
     return {}
   },
 
+  computed: {
+    ...mapState({
+      cursoState: (state) => state.cursoState,
+    }),
+  },
   watch: {},
 
   mounted() {

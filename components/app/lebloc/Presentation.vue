@@ -98,7 +98,7 @@ export default {
 <style lang="scss">
 .app-le-bloc-presentation {
   position: relative;
-  padding-bottom: desktop-vw(825px);
+  padding-bottom: desktop-vw(750px);
 
   @include mobile {
     padding-bottom: mobile-vw(100px);
@@ -118,7 +118,7 @@ export default {
     grid-column: 4 / span 4;
     width: 100%;
     aspect-ratio: 440 / 545;
-    top: desktop-vw(250px);
+    top: desktop-vw(200px);
     transform: rotate(-2deg);
     height: auto;
 
@@ -137,7 +137,7 @@ export default {
     grid-column: 7 / span 4;
     width: 100%;
     aspect-ratio: 405 / 500;
-    top: desktop-vw(550px);
+    top: desktop-vw(450px);
     height: auto;
 
     @include mobile {

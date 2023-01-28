@@ -6,9 +6,8 @@
           class="app-be-part-of-besoins-arena__visual"
           alt="arena-base"
           format="webp"
-          src="/imgs/configurations/base.webp"
+          src="/imgs/configurations/base.png"
         />
-
         <transition-group
           name="transition-arena"
           tag="div"
@@ -16,72 +15,21 @@
           :duration="1000"
         >
           <nuxt-img
-            v-if="arenaDisposition === 'sport'"
-            key="sport"
+            v-for="(item, index) in contents.items"
+            v-show="arenaDisposition === item.arena_disposition"
+            :key="`picture-${index}`"
             class="app-be-part-of-besoins-arena__visual"
             alt="arena-sport"
             format="webp"
-            src="/imgs/configurations/sport.webp"
-          />
-          <nuxt-img
-            v-if="arenaDisposition === 'scene_fond_gradin'"
-            key="scene_fond_siege"
-            class="app-be-part-of-besoins-arena__visual"
-            alt="arena-scene_fond_siege"
-            format="webp"
-            src="/imgs/configurations/scene_fond_siege.webp"
-          />
-          <nuxt-img
-            v-if="arenaDisposition === 'scene_fond_fosse'"
-            key="scene_fond_fosse"
-            class="app-be-part-of-besoins-arena__visual"
-            alt="arena-scene_fond_fosse"
-            format="webp"
-            src="/imgs/configurations/scene_fond_fosse.webp"
-          />
-          <nuxt-img
-            v-if="arenaDisposition === 'scene_centrale_gradin'"
-            key="scene_central_siege"
-            class="app-be-part-of-besoins-arena__visual"
-            alt="arena-scene_central_siege"
-            format="webp"
-            src="/imgs/configurations/scene_central_siege.webp"
-          />
-          <nuxt-img
-            v-if="arenaDisposition === 'scene_centrale_fosse'"
-            key="scene_central_fosse"
-            class="app-be-part-of-besoins-arena__visual"
-            alt="arena-scene_central_fosse"
-            format="webp"
-            src="/imgs/configurations/scene_central_fosse.webp"
-          />
-          <nuxt-img
-            v-if="
-              arenaDisposition === 'sport' ||
-              arenaDisposition === 'scene_centrale_fosse' ||
-              arenaDisposition === 'scene_centrale_gradin'
-            "
-            key="gradin_top"
-            class="app-be-part-of-besoins-arena__visual"
-            alt="arena-gradin_top"
-            format="webp"
-            src="/imgs/configurations/gradin_top.webp"
-          />
-          <nuxt-img
-            v-if="
-              arenaDisposition === 'scene_fond_fosse' ||
-              arenaDisposition === 'scene_fond_gradin'
-            "
-            key="gradin_top_opacity"
-            class="app-be-part-of-besoins-arena__visual"
-            alt="arena-gradin_top_opacity"
-            format="webp"
-            src="/imgs/configurations/gradin_top_opacity.webp"
+            :src="`/imgs/configurations/${item.arena_disposition}.png`"
           />
         </transition-group>
       </div>
 
       <ERichText
+        :split="true"
+        :scrub="false"
+        :overflow="true"
         class="app-be-part-of-besoins-arena__title"
         :content="contents.title"
       />
@@ -210,13 +158,17 @@ export default {
     return {
       currentIndex: 0,
       direction: 'next',
-      arenaDisposition: 'sport',
+      arenaDisposition: null,
       // sport
       // scene_centrale_fosse
       // scene_fond_fosse
       // scene_centrale_gradin
       // scene_fond_gradin
     }
+  },
+  created() {
+    this.arenaDisposition =
+      this.contents.items[this.currentIndex].arena_disposition
   },
   mounted() {},
   methods: {

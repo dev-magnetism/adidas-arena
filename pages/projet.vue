@@ -1,10 +1,10 @@
 <template>
   <main class="app-projet">
     <div class="app-projet__wrapper">
-      <ESlider :contents="contentSlider" />
       <AppProjetIntroduction :contents="contentIntroduction" />
       <AppProjetCatchPhrase :contents="contentCatchphrase" />
       <!-- <AppProjetGallery :contents="contentGallery" /> -->
+      <ESlider :contents="contentSlider" />
       <!-- <AppProjetWorkProgress :contents="contentWorkProgress" /> -->
       <AppProjetPlan :contents="contentPlan" />
       <AppProjetTwoColumns :contents="contentTwoColumns" />
