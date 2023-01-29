@@ -31,9 +31,22 @@ export default {
   mixins: [scroll],
   layout: 'second-layout',
 
-  async asyncData({ $directus }) {
+  async asyncData({ $directus, $seo }) {
     const content = await $directus.items('Communique_de_presse').readByQuery({
       limit: -1,
+    })
+
+    $seo({
+      title: content.data.page_title,
+      description: content.data.page_description_seo,
+      openGraph: {
+        title: content.data.page_title,
+        description: content.data.page_description_seo,
+      },
+      twitter: {
+        title: content.data.page_title,
+        description: content.data.page_description_seo,
+      },
     })
 
     return {

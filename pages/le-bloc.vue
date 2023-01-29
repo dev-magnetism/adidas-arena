@@ -38,13 +38,26 @@ export default {
 
     return pageTransition.basic
   },
-  async asyncData({ $directus }) {
+  async asyncData({ $directus, $seo }) {
     const content = await $directus.items('Le_Bloc_page').readByQuery({
       limit: -1,
     })
 
     const slider = await $directus.items('Le_Bloc_Slider').readByQuery({
       limit: -1,
+    })
+
+    $seo({
+      title: content.data.page_title,
+      description: content.data.page_description_seo,
+      openGraph: {
+        title: content.data.page_title,
+        description: content.data.page_description_seo,
+      },
+      twitter: {
+        title: content.data.page_title,
+        description: content.data.page_description_seo,
+      },
     })
 
     return {

@@ -4,10 +4,6 @@ export default {
   target: 'static',
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'adidas-arena',
-    htmlAttrs: {
-      lang: 'en',
-    },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -133,6 +129,16 @@ export default {
     ],
     'nuxt-seo',
   ],
+
+  seo: {
+    lang: 'fr',
+    language: 'French',
+    baseUrl: 'https://www.google.feeeeeeeer/',
+    name: 'Adidas Arena',
+    templateTitle: '%name% — %title%',
+    keywords: 'adidas, arena, sports, concerts',
+    image: '/seo.jpg',
+  },
 
   render: {
     bundleRenderer: {
