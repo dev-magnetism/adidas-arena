@@ -31,7 +31,7 @@ export default {
 
     return pageTransition.basic
   },
-  async asyncData({ $directus, $seo }) {
+  async asyncData({ $directus, $seo, store }) {
     const content = await $directus.items('Homepage').readByQuery({
       limit: -1,
     })
@@ -40,11 +40,11 @@ export default {
       title: content.data.page_title,
       description: content.data.page_description_seo,
       openGraph: {
-        title: content.data.page_title,
+        title: store.state.appContent.data.seo_title,
         description: content.data.page_description_seo,
       },
       twitter: {
-        title: content.data.page_title,
+        title: store.state.appContent.data.seo_title,
         description: content.data.page_description_seo,
       },
     })
