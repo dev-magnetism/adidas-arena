@@ -14,7 +14,7 @@ html {
 }
 
 /* Remove all the styles of the "User-Agent-Stylesheet", except for the 'display' property */
-*:not(iframe, canvas, img, svg, video, svg *) {
+*:not(iframe, canvas, img, svg, video, picture, svg *) {
   all: unset;
   display: revert;
 }

@@ -138,6 +138,13 @@ export default {
     templateTitle: '%name% — %title%',
     keywords: 'adidas, arena, sports, concerts',
     image: '/seo.jpg',
+    openGraph: {
+      type: 'website',
+      name: 'Adidas Arena',
+      image: {
+        url: '/seo.jpg',
+      },
+    },
   },
 
   render: {

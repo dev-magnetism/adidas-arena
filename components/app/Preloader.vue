@@ -11,7 +11,12 @@
       <source src="/videos/preloader.mp4" type="video/mp4" />
     </video>
 
-    <TH1 ref="progress" class="app-preloader__progress" weight="bold">
+    <TH1
+      tag="span"
+      ref="progress"
+      class="app-preloader__progress"
+      weight="bold"
+    >
       {{ progressUIFormated }}
     </TH1>
     <div ref="layerBlue" class="app-preloader__layer blue" />
