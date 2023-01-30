@@ -76,6 +76,8 @@ export default {
         title: this.content.data.partners_title,
         subtitle: this.content.data.partners_subtitle,
         paragraph: this.content.data.partners_paragraph,
+        ctaTitle: this.content.data.partners_cta_title,
+        ctaLink: this.content.data.partners_cta_link,
         list: this.partnersContent.data,
       }
     },
@@ -98,6 +100,7 @@ export default {
         projetPicture4: this.content.data.projet_picture_4,
         projetPicture5: this.content.data.projet_picture_5,
         projetCtaTitle: this.content.data.projet_cta_title,
+        projetCtaHref: this.content.data.projet_cta_link,
         projetMapTitle: this.content.data.projet_map_title,
         projetMapRef: this.content.data.projet_map_ref,
         projetMapRefNumber: this.content.data.projet_map_ref_number,

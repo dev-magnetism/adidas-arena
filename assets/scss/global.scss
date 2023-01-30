@@ -25,6 +25,7 @@ html {
 // * {
 //   cursor: none !important;
 // }
+
 .app.cursor-custom {
   cursor: none !important;
 }
@@ -89,7 +90,7 @@ img {
 picture {
   height: 100%;
   width: 100%;
-  display: block !important;
+  display: block;
 }
 
 .tp-rotv {

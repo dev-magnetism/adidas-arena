@@ -1,7 +1,10 @@
 <template>
   <div class="app-arena-hero">
-    <div class="app-arena-hero__wrapper">
+    <div class="app-arena-hero__wrapper grid-inner">
       <AtomsCornerPoints :size-points="12" />
+      <EEnterArena
+        :class="{ hide: !exteriorArenaHovered || !exteriorFullwidth }"
+      />
     </div>
   </div>
 </template>
@@ -17,6 +20,8 @@ export default {
     ...mapState({
       exteriorVisible: (state) => state.exteriorVisible,
       allLoadedFake: (state) => state.allLoadedFake,
+      exteriorArenaHovered: (state) => state.exteriorArenaHovered,
+      exteriorFullwidth: (state) => state.exteriorFullwidth,
     }),
   },
   watch: {

@@ -16,11 +16,6 @@ class GL {
     this.exterior = new THREE.Group()
     this.exterior.name = 'exterior'
     this.exterior.drag = null
-    this.exterior.heroPosition = new THREE.Vector3(
-      -Viewport.width * 0.0125,
-      0,
-      -Viewport.width * 0.0125
-    )
     this.scene.add(this.exterior)
 
     this.interior = new THREE.Group()

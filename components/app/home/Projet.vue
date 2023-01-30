@@ -57,7 +57,12 @@
           <div ref="lottieArrow" class="app-home-projet__arrow" />
           <div ref="lottieLittleArrow" class="app-home-projet__little-arrow" />
 
-          <AtomsCTA class="app-home-projet__cta" color="grey" bg="blue-adidas">
+          <AtomsCTA
+            class="app-home-projet__cta"
+            :href="contents.projetCtaHref"
+            color="grey"
+            bg="blue-adidas"
+          >
             {{ contents.projetCtaTitle }}
           </AtomsCTA>
 

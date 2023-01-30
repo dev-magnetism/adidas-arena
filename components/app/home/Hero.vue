@@ -1,6 +1,10 @@
 <template>
   <div class="app-home-hero block-inner">
     <div class="app-home-hero__inner grid">
+      <EEnterArena
+        :class="{ hide: !exteriorArenaHovered || !exteriorFullwidth }"
+      />
+
       <AtomsCTABack
         :class="{ hide: !viewExteriorOpen || !DOMVisible }"
         @click.native="onVisit()"
@@ -123,6 +127,7 @@ export default {
       allLoadedActual: (state) => state.allLoadedActual,
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,
       exteriorFullwidth: (state) => state.exteriorFullwidth,
+      exteriorArenaHovered: (state) => state.exteriorArenaHovered,
     }),
   },
   watch: {
@@ -155,12 +160,12 @@ export default {
 
         this.disapearDOM()
       } else {
-        gsap.to(exterior.position, {
-          x: exterior.heroPosition.x,
-          z: exterior.heroPosition.z,
-          duration: 0.85,
-          ease: 'power2.inOut',
-        })
+        // gsap.to(exterior.position, {
+        //   x: exterior.heroPosition.x,
+        //   z: exterior.heroPosition.z,
+        //   duration: 0.85,
+        //   ease: 'power2.inOut',
+        // })
 
         gsap.to(exterior.drag, {
           target: 0,
@@ -184,7 +189,7 @@ export default {
 
     this.setExteriorFullwidth(false)
 
-    this.resizeObserver = new ResizeObserver(this.onResize)
+    this.resizeObserver = new ResizeObserver(this.onResizePreviewExterior)
     this.resizeObserver.observe(this.$refs.view)
 
     this.$raf.add(`home-hero`, this.onFrame)
@@ -206,7 +211,7 @@ export default {
 
       exterior.drag.enabled = false
 
-      exterior.position.copy(exterior.heroPosition)
+      // exterior.position.copy(exterior.heroPosition)
 
       camera.position.copy(exterior.initialCamera.position)
       camera.rotation.copy(exterior.initialCamera.rotation)
@@ -284,17 +289,17 @@ export default {
         .timeline({ delay: 0.5 })
         .to(linesReversed, {
           y: '0',
-          duration: 0.4,
+          duration: 0.6,
           stagger: 0.05,
-          ease: 'power1.inOut',
+          ease: 'power3.out',
         })
         .to(
           linesReversed,
           {
             opacity: 1,
-            duration: 0.4,
+            duration: 0.65,
             stagger: 0.05,
-            ease: 'power1.inOut',
+            ease: 'power3.out',
           },
           '<10%'
         )
@@ -303,8 +308,8 @@ export default {
           {
             y: '0%',
             rotate: -6,
-            duration: 0.5,
-            ease: 'power1.inOut',
+            duration: 0.65,
+            ease: 'power3.out',
           },
           '<0%'
         )
@@ -312,8 +317,8 @@ export default {
           this.$refs.secondVisual,
           {
             opacity: 1,
-            duration: 0.6,
-            ease: 'power1.inOut',
+            duration: 0.7,
+            ease: 'power3.out',
           },
           '<0%'
         )
@@ -322,8 +327,8 @@ export default {
           {
             y: '0%',
             rotate: 5,
-            duration: 0.55,
-            ease: 'power1.inOut',
+            duration: 0.65,
+            ease: 'power3.out',
           },
           '<0%'
         )
@@ -331,8 +336,8 @@ export default {
           this.$refs.firstVisual,
           {
             opacity: 1,
-            duration: 0.5,
-            ease: 'power1.inOut',
+            duration: 0.7,
+            ease: 'power3.out',
           },
           '<0%'
         )
@@ -360,9 +365,9 @@ export default {
           },
           {
             y: '0',
-            duration: 0.4,
+            duration: 0.6,
             stagger: 0.05,
-            ease: 'power1.inOut',
+            ease: 'power3.out',
           }
         )
         .fromTo(
@@ -372,9 +377,9 @@ export default {
           },
           {
             opacity: 1,
-            duration: 0.4,
+            duration: 0.6,
             stagger: 0.05,
-            ease: 'power1.inOut',
+            ease: 'power3.out',
           },
           '<10%'
         )
@@ -387,8 +392,8 @@ export default {
           {
             y: '0%',
             rotate: -6,
-            duration: 0.5,
-            ease: 'power1.inOut',
+            duration: 0.7,
+            ease: 'power3.out',
           },
           '<0%'
         )
@@ -399,8 +404,8 @@ export default {
           },
           {
             opacity: 1,
-            duration: 0.6,
-            ease: 'power1.inOut',
+            duration: 0.8,
+            ease: 'power3.out',
           },
           '<0%'
         )
@@ -413,8 +418,8 @@ export default {
           {
             y: '0%',
             rotate: 5,
-            duration: 0.55,
-            ease: 'power1.inOut',
+            duration: 0.75,
+            ease: 'power3.out',
           },
           '<0%'
         )
@@ -423,8 +428,8 @@ export default {
           { opacity: 0 },
           {
             opacity: 1,
-            duration: 0.5,
-            ease: 'power1.inOut',
+            duration: 0.8,
+            ease: 'power3.out',
           },
           '<0%'
         )
@@ -455,7 +460,7 @@ export default {
         delay: 0.15,
 
         onUpdate: () => {
-          this.onResize()
+          this.onResizePreviewExterior()
         },
         ease: 'power1.inOut',
       })
@@ -477,7 +482,7 @@ export default {
         scissors.current.height
       )
     },
-    onResize() {
+    onResizePreviewExterior() {
       const { left, top, height, width } =
         this.$refs.view.getBoundingClientRect()
 
@@ -674,8 +679,8 @@ export default {
     top: 30%;
     left: 0;
     z-index: 9;
-    width: desktop-vw(110px);
-    height: desktop-vw(110px);
+    width: min(110px, desktop-vw(110px));
+    height: min(110px, desktop-vw(110px));
 
     @include mobile {
       display: none;

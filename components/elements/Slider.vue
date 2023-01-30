@@ -100,12 +100,12 @@ export default {
     this.embla.on('pointerDown', this.onPointerDown)
   },
   beforeDestroy() {
-    this.embla.off('init', this.setParallax)
-    this.embla.off('scroll', this.onScroll)
-    this.embla.off('resize', this.setParallax)
-    this.embla.off('select', this.onSelect)
-    this.embla.off('pointerUp', this.onPointerUp)
-    this.embla.off('pointerDown', this.onPointerDown)
+    this.embla?.off('init', this.setParallax)
+    this.embla?.off('scroll', this.onScroll)
+    this.embla?.off('resize', this.setParallax)
+    this.embla?.off('select', this.onSelect)
+    this.embla?.off('pointerUp', this.onPointerUp)
+    this.embla?.off('pointerDown', this.onPointerDown)
 
     this.embla?.destroy()
   },

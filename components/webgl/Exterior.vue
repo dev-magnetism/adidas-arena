@@ -1,9 +1,5 @@
 <template>
-  <div class="app-webgl-exterior grid-inner">
-    <EEnterArena
-      :class="{ hide: !exteriorArenaHovered || !exteriorFullwidth }"
-    />
-  </div>
+  <div class="app-webgl-exterior grid-inner"></div>
 </template>
 
 <script>
@@ -41,7 +37,6 @@ export default {
       },
       azimuth: { min: -1.5, max: 0.9 },
       directionalLightCastShadow: true,
-      directionalLightIsStatic: true,
       cloudsParams: {
         speed: 0.003,
       },
@@ -88,7 +83,7 @@ export default {
       this.initExterior()
     },
     modelCloudLoaded() {
-      this.initClouds()
+      // this.initClouds()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -100,13 +95,15 @@ export default {
     },
   },
   mounted() {
-    const { exterior } = useWebGL()
+    const { exterior, scene } = useWebGL()
+
+    console.log('mounted', scene)
 
     exterior.drag = this.drag
 
     if (this.allLoadedActual) {
       this.initExterior()
-      this.initClouds()
+      // this.initClouds()
       this.initGUI()
     }
 
@@ -121,7 +118,7 @@ export default {
     this.$raf.add(`webgl-exterior`, this.onFrame)
   },
   beforeDestroy() {
-    const { exterior, scene, interactionManager } = useWebGL()
+    const { exterior, interactionManager } = useWebGL()
 
     this.cloud?.material?.dispose()
     this.cloud?.geometry?.dispose()
@@ -153,15 +150,9 @@ export default {
 
     // LIGHTS
     this.ambientLight.dispose()
-    scene.remove(this.ambientLight)
-
+    exterior.remove(this.ambientLight)
     this.directionalLight.dispose()
-
-    if (this.directionalLightIsStatic) {
-      exterior.remove(this.directionalLight)
-    } else {
-      scene.remove(this.directionalLight)
-    }
+    exterior.remove(this.directionalLight)
 
     // GUI
     this.gui?.dispose()
@@ -280,7 +271,6 @@ export default {
 
       this.initEvents()
     },
-
     initEvents() {
       const { interactionManager } = useWebGL()
       interactionManager.add(this.adidasArena)
@@ -321,7 +311,6 @@ export default {
       this.tweenArrowTranslate?.timeScale(2.5)
       this.setExteriorArenaHovered(true)
     },
-
     onMouseLeaveArena() {
       if (!this.exteriorFullwidth) return
 
@@ -346,7 +335,6 @@ export default {
 
       exterior.zoom = this.zoom
     },
-
     initMaterials() {
       this.modelMaterial = new THREE.MeshLambertMaterial({
         color: this.colors.lambertMaterialColor,
@@ -415,10 +403,10 @@ export default {
       })
     },
     initLights() {
-      const { exterior, scene } = useWebGL()
+      const { exterior } = useWebGL()
 
       this.ambientLight = new THREE.AmbientLight(this.colors.ambientLightColor)
-      scene.add(this.ambientLight)
+      exterior.add(this.ambientLight)
 
       this.directionalLight = new THREE.DirectionalLight(
         this.colors.directionalLightColor,
@@ -438,11 +426,7 @@ export default {
       this.directionalLight.shadow.camera.top = 65
       this.directionalLight.shadow.camera.bottom = -65
 
-      if (this.directionalLightIsStatic) {
-        exterior.add(this.directionalLight)
-      } else {
-        scene.add(this.directionalLight)
-      }
+      exterior.add(this.directionalLight)
     },
     initLogoArena() {
       const { exterior } = useWebGL()
@@ -728,7 +712,7 @@ export default {
     initGUI() {
       const gui = useGUI()
 
-      const { exterior, scene } = useWebGL()
+      const { exterior } = useWebGL()
 
       this.gui = gui.addFolder({
         title: `Exterior`,
@@ -756,22 +740,6 @@ export default {
         title: `Directional Light`,
         expanded: false,
       })
-
-      this.guiDirectionalLight
-        .addInput(this, 'directionalLightIsStatic', {
-          label: 'Static',
-        })
-        .on('change', (e) => {
-          if (e.value) {
-            scene.remove(this.directionalLight)
-
-            exterior.add(this.directionalLight)
-          } else {
-            exterior.remove(this.directionalLight)
-
-            scene.add(this.directionalLight)
-          }
-        })
 
       this.guiDirectionalLight.addInput(this.directionalLight, 'castShadow', {
         label: 'Cast shadow',

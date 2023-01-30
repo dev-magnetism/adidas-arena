@@ -1,5 +1,8 @@
 <template>
-  <div class="app-webgl-scene">
+  <div
+    :class="{ front: exteriorArenaHovered && exteriorVisible }"
+    class="app-webgl-scene"
+  >
     <WebglExterior />
     <WebglInfo v-if="!$viewport.isMobile" />
   </div>
@@ -13,6 +16,8 @@ export default {
     ...mapState({
       allLoadedFake: (state) => state.allLoadedFake,
       modelsPreviewed: (state) => state.modelsPreviewed,
+      exteriorArenaHovered: (state) => state.exteriorArenaHovered,
+      exteriorVisible: (state) => state.exteriorVisible,
     }),
   },
   watch: {
@@ -40,5 +45,9 @@ export default {
   left: 0;
   top: 0;
   z-index: 0;
+
+  // &.front {
+  //   z-index: 2;
+  // }
 }
 </style>

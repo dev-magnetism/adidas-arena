@@ -1,5 +1,8 @@
 <template>
-  <div class="app-element-enter-arena">
+  <div
+    :class="{ activated: exteriorFullwidth }"
+    class="app-element-enter-arena"
+  >
     <div class="app-element-enter-arena__title">
       <AtomsCornerPoints :size-points="8" />
       <p>L’ARENA</p>
@@ -13,6 +16,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   // props: {
   //   content: {
@@ -20,6 +25,11 @@ export default {
   //     default: () => {},
   //   },
   // },
+  computed: {
+    ...mapState({
+      exteriorFullwidth: (state) => state.exteriorFullwidth,
+    }),
+  },
 }
 </script>
 
@@ -32,11 +42,27 @@ export default {
   flex-direction: column;
   width: 100%;
   transition: opacity 0.35s var(--ease-in-out-cubic);
+  z-index: 1;
+  pointer-events: none;
 
   &.hide {
     .app-element-enter-arena__cta,
     .app-element-enter-arena__title {
       opacity: 0;
+    }
+    .app-element-enter-arena__cta {
+      transition-delay: 0s;
+    }
+  }
+
+  &.activated {
+    pointer-events: all;
+  }
+
+  &.activated:hover {
+    .app-element-enter-arena__cta,
+    .app-element-enter-arena__title {
+      opacity: 1;
     }
     .app-element-enter-arena__cta {
       transition-delay: 0s;

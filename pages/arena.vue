@@ -105,7 +105,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.content)
     // this.$nuxt.$on('app:scroll', this.onScrollApp)
     // console.log(this.galerieTest)
   },

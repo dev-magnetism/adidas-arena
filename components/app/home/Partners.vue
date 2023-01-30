@@ -21,8 +21,8 @@
       >
         {{ contents.paragraph }}
       </TP2>
-      <AtomsCTA ref="cta" class="partners-apparition">
-        Devenir partenaire
+      <AtomsCTA ref="cta" :href="contents.ctaLink" class="partners-apparition">
+        {{ contents.ctaTitle }}
       </AtomsCTA>
     </div>
     <EGridLogos
