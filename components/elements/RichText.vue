@@ -54,14 +54,14 @@ export default {
     initSplitText() {
       Object.values(this.$el.children).forEach((child) => {
         if (this.overflow) {
-          this.splittingParent = this.nestedLinesSplit(child, {
-            type: 'lines',
-            linesClass: 'H1__parent',
-          })
-
-          this.splitting = this.nestedLinesSplit(child, {
+          this.splitting = new SplitText(child, {
             type: 'lines',
             linesClass: 'H1__child line',
+          })
+
+          this.splittingParent = new SplitText(child, {
+            type: 'lines',
+            linesClass: 'H1__parent',
           })
         } else {
           this.splitting = new SplitText(child, {

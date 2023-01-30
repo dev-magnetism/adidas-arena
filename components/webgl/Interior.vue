@@ -87,7 +87,6 @@ export default {
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
       floorsGUI: [],
-      accumulatorConstant: [],
       helpers: [],
     }
   },
@@ -228,7 +227,7 @@ export default {
       this.initMaterials()
       this.initLights()
 
-      // this.initFloor()
+      this.initFloor()
       this.initFootField()
       this.initMusicScene()
 
@@ -500,11 +499,6 @@ export default {
       camera.position.copy(this.cameraBase.position)
       camera.rotation.copy(this.cameraBase.rotation)
 
-      console.log(camera.position.y)
-
-      camera.position.set(-136.753, 40.615, 157.395)
-      camera.rotation.set(-0.17453293, -0.66322512, -0.0872664626)
-
       camera.updateProjectionMatrix()
     },
     initMaterials() {
@@ -620,7 +614,7 @@ export default {
         .getObjectByName('Arene')
         .getObjectByName('RDC')
 
-      this.zeroFloor = this.buildArenaFloor(floorGroup, `floor-${0}`)
+      this.zeroFloor = this.buildArenaFloor(floorGroup, `floor-${0}`, true)
       interior.add(this.zeroFloor)
       interior.floors.push(this.zeroFloor)
     },
@@ -720,7 +714,7 @@ export default {
       this.drag.last = this.drag.current
       this.zoom.last = this.zoom.current
     },
-    buildArenaFloor(initialObject, name = 'no-name') {
+    buildArenaFloor(initialObject, name = 'no-name', isGroundFloor = false) {
       // const { scene } = useWebGL()
 
       const arene = this.model.getObjectByName('Arene')
@@ -731,10 +725,10 @@ export default {
       group.divider = []
       group.public = []
       group.vip = []
+      group.isGroundFloor = isGroundFloor
 
       const clippingPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0)
       // const helper = new THREE.PlaneHelper(clippingPlane, 75, 0xff0000)
-
       // this.helpers.push(helper)
 
       // scene.add(helper)
@@ -792,33 +786,32 @@ export default {
         group.add(part)
       })
 
-      const { min, max } = new THREE.Box3().setFromObject(group)
+      // const { min, max } = new THREE.Box3().setFromObject(group)
 
-      // const marginError = 0.25
-      const height = max.y - min.y
+      // console.log(group.position.y, min)
 
-      const dividerBottom = group.divider.find((divider) =>
-        divider.name.includes('Bottom')
-      )
+      // const height = max.y - min.y
 
-      console.log(dividerBottom)
-      clippingPlane.constant = min.y * -1
+      // const dividerBottom = group.divider.find((divider) =>
+      //   divider.name.includes('Bottom')
+      // )
 
-      group.position.y = height * -1
+      // console.log(dividerBottom)
+      // clippingPlane.constant = min.y * -1
 
-      // this.accumulatorConstant.push(max.y - min.y)
+      // if (!group.isGroundFloor) {
+      //   group.position.y = height * -1
+      // }
 
       // group.hidePosition = group.position.y
       // group.visiblePosition = 0
 
-      console.log(group.divider.children)
-
-      floorGUI.addInput(group.position, 'y', {
-        min: -15,
-        max: 0,
-        step: 0.001,
-        label: 'Y',
-      })
+      // floorGUI.addInput(group.position, 'y', {
+      //   min: -15,
+      //   max: height * -1 + height,
+      //   step: 0.0001,
+      //   label: 'Y',
+      // })
 
       return group
     },

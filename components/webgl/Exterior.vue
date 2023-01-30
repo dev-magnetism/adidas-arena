@@ -83,7 +83,7 @@ export default {
       this.initExterior()
     },
     modelCloudLoaded() {
-      // this.initClouds()
+      this.initClouds()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -95,15 +95,13 @@ export default {
     },
   },
   mounted() {
-    const { exterior, scene } = useWebGL()
-
-    console.log('mounted', scene)
+    const { exterior } = useWebGL()
 
     exterior.drag = this.drag
 
     if (this.allLoadedActual) {
       this.initExterior()
-      // this.initClouds()
+      this.initClouds()
       this.initGUI()
     }
 
@@ -716,7 +714,7 @@ export default {
 
       this.gui = gui.addFolder({
         title: `Exterior`,
-        expanded: true,
+        expanded: false,
       })
 
       this.guiAmbientLight = this.gui.addFolder({

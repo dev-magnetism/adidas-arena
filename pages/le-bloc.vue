@@ -114,12 +114,6 @@ export default {
       }
     },
   },
-  beforeDestroy() {
-    console.log('beforeDestroy page le-bloc')
-  },
-  destroyed() {
-    console.log('destroyed page le-bloc')
-  },
 }
 </script>
 

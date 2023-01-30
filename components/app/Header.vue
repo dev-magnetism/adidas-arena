@@ -81,7 +81,6 @@ export default {
   &__menu.P1 {
     font-size: 16px;
     line-height: 16px;
-    @include font-adihausDIN-cn-medium();
     text-transform: uppercase;
     margin-right: 20px;
     transition: color 0.4s var(--ease-out-cubic);
