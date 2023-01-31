@@ -215,8 +215,21 @@ export default {
 
       this.floors.forEach((floor, index) => {
         const visible = index <= this.interiorIndexFloor.id
+        const inferior = index < this.interiorIndexFloor.id
 
         floor.visible = visible
+
+        if (inferior) {
+          Object.values(floor.materials).forEach((material) => {
+            material.opacity = 0.5
+            material.needsUpdate = true
+          })
+        } else {
+          Object.values(floor.materials).forEach((material) => {
+            material.opacity = 1
+            material.needsUpdate = true
+          })
+        }
 
         if (visible) {
           floor.position.copy(floor.initialPosition)
@@ -564,6 +577,7 @@ export default {
         color: this.colors.lambertMaterialColor,
         emissive: this.colors.lambertMaterialEmissive,
         emissiveIntensity: 0.7,
+        transparent: true,
       })
 
       this.conditionalMaterial = new THREE.ShaderMaterial(
@@ -576,18 +590,21 @@ export default {
       this.lineMaterial = new THREE.LineBasicMaterial({
         color: this.colors.outlineColor,
         linewidth: 1,
+        transparent: true,
       })
 
       this.modelMaterialPublic = new THREE.MeshLambertMaterial({
         color: this.colors.public.lambertMaterialColor,
         emissive: this.colors.public.lambertMaterialEmissive,
         emissiveIntensity: 0.7,
+        transparent: true,
       })
 
       this.modelMaterialVIP = new THREE.MeshLambertMaterial({
         color: this.colors.vip.lambertMaterialColor,
         emissive: this.colors.vip.lambertMaterialEmissive,
         emissiveIntensity: 0.7,
+        transparent: true,
       })
     },
     initFootField() {
