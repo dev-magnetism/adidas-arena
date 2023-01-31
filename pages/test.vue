@@ -1,6 +1,5 @@
 <template>
   <div>
-    <WebglInterior />
     <EFloorSelector />
   </div>
 </template>

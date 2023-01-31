@@ -4,6 +4,7 @@
     class="app-webgl-scene"
   >
     <WebglExterior />
+    <WebglInterior />
     <WebglInfo v-if="!$viewport.isMobile" />
   </div>
 </template>
