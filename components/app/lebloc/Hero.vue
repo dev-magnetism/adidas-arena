@@ -2,84 +2,93 @@
   <div class="app-le-bloc-hero">
     <div class="app-le-bloc-hero__wrapper">
       <AtomsCornerPoints :size-points="12" />
+      <EFloorSelector />
     </div>
   </div>
 </template>
 
 <script>
-// import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { mapState, mapMutations } from 'vuex'
 
-// import useWebGL from '~/hooks/webgl'
+import useWebGL from '~/hooks/webgl'
 
 export default {
   computed: {
     ...mapState({
       exteriorVisible: (state) => state.exteriorVisible,
+      interiorVisible: (state) => state.interiorVisible,
+      allLoadedActual: (state) => state.allLoadedActual,
       allLoadedFake: (state) => state.allLoadedFake,
     }),
   },
   watch: {
-    // allLoadedFake() {
-    //   const { exterior } = useWebGL()
-    //   exterior.drag.enabled = true
-    //   exterior.zoom.enabled = false
-    //   this.setExteriorVisible(true)
-    // },
+    allLoadedFake() {
+      // const { exterior } = useWebGL()
+      // exterior.drag.enabled = true
+      // exterior.zoom.enabled = false
+
+      this.initInteriorView()
+    },
   },
   mounted() {
-    // if (!this.exteriorVisible) this.setExteriorVisible(true)
-    // this.setExteriorFullwidth(true)
-    // const { scissors, renderer, exterior } = useWebGL()
-    // scissors.current = { ...scissors.hero }
-    // renderer.setScissor(
-    //   scissors.current.x,
-    //   scissors.current.y,
-    //   scissors.current.width,
-    //   scissors.current.height
-    // )
-    // exterior.position.set(0, 0, 0)
-    // ScrollTrigger.create({
-    //   trigger: this.$el,
-    //   start: 'top bottom',
-    //   end: 'bottom+=25% top',
-    //   onToggle: (self) => this.setExteriorVisible(self.isActive),
-    // })
-    // this.$viewport.events.on('resize', this.onResize)
-    // this.$raf.add(`le-bloc-hero`, this.onFrame)
+    if (this.allLoadedFake) this.initInteriorView()
+
+    this.scrollTrigger = ScrollTrigger.create({
+      trigger: this.$el,
+      start: 'top bottom',
+      end: 'bottom+=25% top',
+      onToggle: (self) => this.setInteriorVisible(self.isActive),
+    })
+
+    this.$viewport.events.on('resize', this.onResize)
+    this.$raf.add(`le-bloc-hero`, this.onFrame)
   },
   beforeDestroy() {
-    // this.$viewport.events.off('resize', this.onResize)
-    // this.$raf.remove(`le-bloc-hero`, this.onFrame)
+    this.scrollTrigger?.kill()
+
+    this.$viewport.events.off('resize', this.onResize)
+    this.$raf.remove(`le-bloc-hero`, this.onFrame)
   },
   methods: {
-    // onResize() {
-    //   const { scissors } = useWebGL()
+    initInteriorView() {
+      this.setInteriorVisible(true)
 
-    //   scissors.current.x = scissors.hero.x
-    //   scissors.current.width = scissors.hero.width
-    //   scissors.current.height = scissors.hero.height
-    // },
-    // onFrame() {
-    //   if (!window.lenis && !this.exteriorVisible) return
+      this.setInteriorIndexFloor({ id: 2, immediate: true })
+    },
+    onResize() {
+      const { scissors, renderer } = useWebGL()
 
-    //   const { exterior, camera, scissors, renderer } = useWebGL()
+      scissors.current = { ...scissors.hero }
 
-    //   exterior.position.y =
-    //     window.lenis.scroll / (camera.zoom - camera.zoom * 0.125)
+      renderer.setScissor(
+        scissors.current.x,
+        scissors.current.y,
+        scissors.current.width,
+        scissors.current.height
+      )
+    },
+    onFrame() {
+      if (!window.lenis && !this.interiorVisible) return
 
-    //   scissors.current.y = window.lenis.scroll + scissors.hero?.y
+      const { interior, camera, scissors, renderer } = useWebGL()
 
-    //   renderer.setScissor(
-    //     scissors.current.x,
-    //     scissors.current.y,
-    //     scissors.current.width,
-    //     scissors.current.height
-    //   )
-    // },
+      interior.position.y =
+        window.lenis.scroll / (camera.zoom - camera.zoom * 0.125)
+
+      scissors.current.y = window.lenis.scroll + scissors.hero?.y
+
+      renderer.setScissor(
+        scissors.current.x,
+        scissors.current.y,
+        scissors.current.width,
+        scissors.current.height
+      )
+    },
     ...mapMutations({
-      setExteriorVisible: 'setExteriorVisible',
+      setInteriorVisible: 'setInteriorVisible',
       setExteriorFullwidth: 'setExteriorFullwidth',
+      setInteriorIndexFloor: 'setInteriorIndexFloor',
     }),
   },
 }

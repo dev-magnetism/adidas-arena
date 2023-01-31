@@ -71,17 +71,12 @@ export default {
         enabled: true,
       },
       zoom: {
-        ease: 0.065,
-        initial: 10,
-        current: 10,
-        target: 10,
-        last: 10,
-        wheelSpeed: 0.015,
+        initial: 12,
+        current: 12,
         range: {
           min: 5,
           max: 30,
         },
-        enabled: true,
       },
       thresholdAngle: 40,
       polygonOffsetFactor: 1,
@@ -115,6 +110,8 @@ export default {
     interiorVisible(payload) {
       const { interior } = useWebGL()
 
+      console.log('here', payload)
+
       interior.visible = payload
     },
   },
@@ -137,7 +134,6 @@ export default {
     this.observer = Observer.create({
       target: this.$nuxt.$el,
       type: 'touch,pointer,wheel',
-      onWheel: this.onWheel,
       onDrag: this.onDrag,
       dragMinimum: 5,
       tolerance: 5,
@@ -209,13 +205,18 @@ export default {
   },
   methods: {
     handleImmediateTransition() {
+      const { camera } = useWebGL()
+
+      this.drag.target = 0
+
+      camera.zoom = this.zoom.current
+
+      camera.updateProjectionMatrix()
+
       this.floors.forEach((floor, index) => {
         const visible = index <= this.interiorIndexFloor.id
 
         floor.visible = visible
-
-        this.drag.target = 0
-        this.zoom.target = this.zoom.initial
 
         if (visible) {
           floor.position.copy(floor.initialPosition)
@@ -523,26 +524,23 @@ export default {
 
       this.guiZoom = this.gui.addFolder({ title: `Zoom`, expanded: false })
 
-      this.guiZoom.addInput(this.zoom, 'range', {
-        min: 5,
-        max: 100,
-        label: 'Range (min/max)',
-        step: 0.1,
-      })
+      this.guiZoom
+        .addInput(this.zoom, 'current', {
+          min: this.zoom.range.min,
+          max: this.zoom.range.max,
+          label: 'Zoom value',
+          step: 1,
+        })
+        .on('change', (payload) => {
+          const { camera } = useWebGL()
 
-      this.guiZoom.addInput(this.zoom, 'ease', {
-        min: 0,
-        max: 0.25,
-        label: 'Zoom ease',
-        step: 0.0001,
-      })
+          this.zoom.current = payload.value
+          this.zoom.initial = payload.value
 
-      this.guiZoom.addInput(this.zoom, 'wheelSpeed', {
-        min: 0,
-        max: 0.065,
-        label: 'Wheel speed',
-        step: 0.0001,
-      })
+          camera.zoom = this.zoom.current
+
+          camera.updateProjectionMatrix()
+        })
     },
     initCamera() {
       const { camera } = useWebGL()
@@ -715,17 +713,7 @@ export default {
       interior.add(this.fourthFloor)
       this.floors.push(this.fourthFloor)
     },
-    onWheel(e) {
-      if (!this.zoom.enabled) return
 
-      const delta = e.deltaY * this.zoom.wheelSpeed
-
-      this.zoom.target = gsap.utils.clamp(
-        this.zoom.range.min,
-        this.zoom.range.max,
-        this.zoom.target + delta
-      )
-    },
     onDrag(e) {
       if (!this.drag.enabled) return
 
@@ -740,7 +728,7 @@ export default {
     onFrame({ time, deltaTime, frame, deltaRatio }) {
       if (!this.interiorVisible) return
 
-      const { camera, interior } = useWebGL()
+      const { interior } = useWebGL()
 
       this.drag.current = this.lerp(
         this.drag.current,
@@ -750,22 +738,7 @@ export default {
 
       interior.rotation.y = this.drag.current
 
-      this.zoom.current = this.lerp(
-        this.zoom.current,
-        this.zoom.target,
-        this.zoom.ease
-      )
-
-      camera.zoom = gsap.utils.clamp(
-        this.zoom.range.min,
-        this.zoom.range.max,
-        this.zoom.current
-      )
-
-      camera.updateProjectionMatrix()
-
       this.drag.last = this.drag.current
-      this.zoom.last = this.zoom.current
     },
     buildArenaFloor(initialObject, name = 'no-name', isGroundFloor = false) {
       // const { scene } = useWebGL()

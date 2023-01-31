@@ -60,11 +60,11 @@ export default {
 <style lang="scss">
 .app-element-floor-selector {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 20px;
   background: var(--c-grey);
-  width: 200px;
-  height: 200px;
+  right: 20px;
+  width: 170px;
+  height: 80px;
 
   &__wrapper {
     display: flex;
@@ -118,12 +118,14 @@ export default {
   }
 
   &__floor {
-    width: 35px;
-    height: 35px;
+    --width: 30px;
+
+    width: var(--width);
+    height: var(--width);
     display: inline-block;
     transform: scale3d(1, 1, 1) rotateX(58deg) rotateY(0deg) rotateZ(45deg)
       translate3d(0px, 0px, 0px) skew(0deg, 0deg);
-    margin-bottom: -27.5px;
+    margin-bottom: calc((var(--width) / -1.35));
     user-select: none;
     background-color: var(--c-grey);
     border: 2px dashed var(--c-black);
@@ -137,7 +139,7 @@ export default {
       background-color: #3171ff;
       border: 2px solid var(--c-blue-adidas);
       margin-top: 5px;
-      margin-bottom: -25px;
+      margin-bottom: calc((var(--width) / -1.5));
     }
 
     &:last-child {
@@ -146,14 +148,14 @@ export default {
       }
     }
 
-    &:hover {
+    &:not(.active):hover {
       border: 2px solid var(--c-blue-adidas);
 
       &:not(:last-child) {
-        margin-top: 10px;
+        margin-top: calc((var(--width) / 4));
       }
 
-      margin-bottom: -20px;
+      margin-bottom: calc((var(--width) / -2));
     }
   }
 }
