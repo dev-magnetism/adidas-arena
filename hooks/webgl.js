@@ -20,7 +20,6 @@ class GL {
 
     this.interior = new THREE.Group()
     this.interior.name = 'interior'
-    this.interior.floors = []
     this.scene.add(this.interior)
 
     this.gallery = new THREE.Group()

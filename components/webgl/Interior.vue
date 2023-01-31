@@ -4,8 +4,8 @@
       <span
         v-for="i in 5"
         :key="i"
-        :class="{ active: i - 1 === interiorIndexFloor }"
-        @click="setInteriorIndexFloor(i - 1)"
+        :class="{ active: i - 1 === interiorIndexFloor.id }"
+        @click="setInteriorIndexFloor({ id: i - 1, immediate: true })"
         >floor {{ i - 1 }}</span
       >
     </div>
@@ -87,6 +87,7 @@ export default {
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
       floorsGUI: [],
+      floors: [],
       helpers: [],
     }
   },
@@ -97,25 +98,16 @@ export default {
       interiorVisible: (state) => state.interiorVisible,
       interiorIndexFloor: (state) => state.interiorIndexFloor,
     }),
-    floorsActivated() {
-      const { interior } = useWebGL()
-
-      return interior.floors.filter(
-        (floor, index) => index <= this.interiorIndexFloor
-      )
-    },
   },
   watch: {
-    interiorIndexFloor(value) {
-      const { interior } = useWebGL()
+    interiorIndexFloor(newVal, oldVal) {
+      if (newVal.id === oldVal.id) return
 
-      console.log(value, this.floorsActivated)
-
-      interior.floors.forEach((floor, index) => {
-        floor.visible = index <= value
-
-        console.log(floor.visible, floor.name)
-      })
+      if (newVal.immediate) {
+        this.handleImmediateTransition()
+      } else {
+        this.handleAnimatedTransition(oldVal)
+      }
     },
     modelInteriorLoaded() {
       this.initInterior()
@@ -127,10 +119,7 @@ export default {
     },
   },
   mounted() {
-    const { scissors, renderer, interior } = useWebGL()
-
-    interior.zoom = this.zoom
-    interior.drag = this.drag
+    const { scissors, renderer } = useWebGL()
 
     if (this.allLoadedActual) {
       this.initInterior()
@@ -215,10 +204,75 @@ export default {
     })
 
     this.observer?.kill()
-    interior.floors = []
+    this.tlFloors?.kill()
     this.$raf.remove(`webgl-interior`, this.onFrame)
   },
   methods: {
+    handleImmediateTransition() {
+      this.floors.forEach((floor, index) => {
+        const visible = index <= this.interiorIndexFloor.id
+
+        floor.visible = visible
+
+        this.drag.target = 0
+        this.zoom.target = this.zoom.initial
+
+        if (visible) {
+          floor.position.copy(floor.initialPosition)
+        } else {
+          floor.position.copy(floor.hidePosition)
+        }
+      })
+    },
+    handleAnimatedTransition(oldVal) {
+      this.tlFloors?.clear()
+      this.tlFloors?.kill()
+
+      this.tlFloors = gsap.timeline()
+
+      const isAscendant = oldVal.id < this.interiorIndexFloor.id
+
+      if (isAscendant) {
+        this.floors.forEach((floor, index) => {
+          const isTweenable =
+            index <= this.interiorIndexFloor.id && !floor.visible && index !== 0
+
+          if (isTweenable) {
+            this.tlFloors.to(floor.position, {
+              y: floor.initialPosition.y,
+              onStart: () => {
+                floor.visible = true
+              },
+              ease: 'back.out(2)',
+              duration: 0.75,
+            })
+          }
+        })
+      } else {
+        const reversedFloors = [...this.floors].reverse()
+        reversedFloors.pop()
+
+        reversedFloors.forEach((floor, index) => {
+          const reversedIndex = reversedFloors.length - index
+
+          const isTweenable =
+            reversedIndex <= oldVal.id &&
+            reversedIndex > this.interiorIndexFloor.id &&
+            floor.visible
+
+          if (isTweenable) {
+            this.tlFloors.to(floor.position, {
+              y: floor.hidePosition.y,
+              ease: 'back.in(1.5)',
+              duration: 0.55,
+              onComplete: () => {
+                floor.visible = false
+              },
+            })
+          }
+        })
+      }
+    },
     initInterior() {
       this.gltf = loaderManager.getModel('interior')
       this.model = this.gltf.scene
@@ -238,6 +292,9 @@ export default {
       this.initFourthFloor()
 
       this.initGUI()
+
+      this.setInteriorIndexFloor({ id: 0, immediate: true })
+      this.handleImmediateTransition()
     },
     initLights() {
       const { interior, scene } = useWebGL()
@@ -270,8 +327,6 @@ export default {
       }
     },
     initGUI() {
-      const { interior } = useWebGL()
-
       const gui = useGUI()
 
       this.gui = gui.addFolder({ title: `Interior` })
@@ -289,7 +344,7 @@ export default {
         .on('change', (e) => {
           this.modelMaterial.color = e.value
 
-          interior.floors.forEach((floor) => {
+          this.floors.forEach((floor) => {
             floor.materials.basicMaterial.color = e.value
           })
         })
@@ -302,7 +357,7 @@ export default {
         .on('change', (e) => {
           this.modelMaterial.emissive = e.value
 
-          interior.floors.forEach((floor) => {
+          this.floors.forEach((floor) => {
             floor.materials.basicMaterial.emissive = e.value
           })
         })
@@ -317,7 +372,7 @@ export default {
         .on('change', (e) => {
           this.modelMaterial.emissiveIntensity = e.value
 
-          interior.floors.forEach((floor) => {
+          this.floors.forEach((floor) => {
             floor.materials.basicMaterial.emissiveIntensity = e.value
           })
         })
@@ -332,7 +387,7 @@ export default {
         .on('change', (e) => {
           this.modelMaterialPublic.color = e.value
 
-          interior.floors.forEach((floor) => {
+          this.floors.forEach((floor) => {
             floor.materials.basicMaterialPublic.color = e.value
           })
         })
@@ -345,7 +400,7 @@ export default {
         .on('change', (e) => {
           this.modelMaterialPublic.emissive = e.value
 
-          interior.floors.forEach((floor) => {
+          this.floors.forEach((floor) => {
             floor.materials.basicMaterialPublic.emissive = e.value
           })
         })
@@ -360,7 +415,7 @@ export default {
         .on('change', (e) => {
           this.modelMaterialPublic.emissiveIntensity = e.value
 
-          interior.floors.forEach((floor) => {
+          this.floors.forEach((floor) => {
             floor.materials.basicMaterialPublic.emissiveIntensity = e.value
           })
         })
@@ -375,7 +430,7 @@ export default {
         .on('change', (e) => {
           this.modelMaterialVIP.color = e.value
 
-          interior.floors.forEach((floor) => {
+          this.floors.forEach((floor) => {
             floor.materials.basicMaterialVIP.color = e.value
           })
         })
@@ -388,7 +443,7 @@ export default {
         .on('change', (e) => {
           this.modelMaterialVIP.emissive = e.value
 
-          interior.floors.forEach((floor) => {
+          this.floors.forEach((floor) => {
             floor.materials.basicMaterialVIP.emissive = e.value
           })
         })
@@ -403,7 +458,7 @@ export default {
         .on('change', (e) => {
           this.modelMaterialVIP.emissiveIntensity = e.value
 
-          interior.floors.forEach((floor) => {
+          this.floors.forEach((floor) => {
             floor.materials.basicMaterialVIP.emissiveIntensity = e.value
           })
         })
@@ -551,7 +606,6 @@ export default {
       const shadowFootField = footField.clone()
       shadowFootField.name = 'shadowModel'
       shadowFootField.material = this.shadowMaterial
-      shadowFootField.isShadow = true
 
       footField.receiveShadow = false
 
@@ -594,7 +648,6 @@ export default {
       const shadowFloor = floor.clone()
       shadowFloor.name = 'shadowModel'
       shadowFloor.material = this.shadowMaterial
-      shadowFloor.isShadow = true
 
       floor.castShadow = false
       floor.receiveShadow = false
@@ -616,7 +669,7 @@ export default {
 
       this.zeroFloor = this.buildArenaFloor(floorGroup, `floor-${0}`, true)
       interior.add(this.zeroFloor)
-      interior.floors.push(this.zeroFloor)
+      this.floors.push(this.zeroFloor)
     },
     initFirstFloor() {
       const { interior } = useWebGL()
@@ -627,7 +680,7 @@ export default {
 
       this.firstFloor = this.buildArenaFloor(floorGroup, `floor-${1}`)
       interior.add(this.firstFloor)
-      interior.floors.push(this.firstFloor)
+      this.floors.push(this.firstFloor)
     },
     initSecondFloor() {
       const { interior } = useWebGL()
@@ -638,7 +691,7 @@ export default {
 
       this.secondFloor = this.buildArenaFloor(floorGroup, `floor-${2}`)
       interior.add(this.secondFloor)
-      interior.floors.push(this.secondFloor)
+      this.floors.push(this.secondFloor)
     },
     initThirdFloor() {
       const { interior } = useWebGL()
@@ -649,7 +702,7 @@ export default {
 
       this.thirdFloor = this.buildArenaFloor(floorGroup, `floor-${3}`)
       interior.add(this.thirdFloor)
-      interior.floors.push(this.thirdFloor)
+      this.floors.push(this.thirdFloor)
     },
     initFourthFloor() {
       const { interior } = useWebGL()
@@ -660,7 +713,7 @@ export default {
 
       this.fourthFloor = this.buildArenaFloor(floorGroup, `floor-${4}`)
       interior.add(this.fourthFloor)
-      interior.floors.push(this.fourthFloor)
+      this.floors.push(this.fourthFloor)
     },
     onWheel(e) {
       if (!this.zoom.enabled) return
@@ -786,32 +839,23 @@ export default {
         group.add(part)
       })
 
-      // const { min, max } = new THREE.Box3().setFromObject(group)
+      group.initialPosition = group.position.clone()
 
-      // console.log(group.position.y, min)
+      const { min, max } = new THREE.Box3().setFromObject(group)
 
-      // const height = max.y - min.y
+      const height = max.y - min.y
 
-      // const dividerBottom = group.divider.find((divider) =>
-      //   divider.name.includes('Bottom')
-      // )
+      clippingPlane.constant = min.y * -1 + 0.1
 
-      // console.log(dividerBottom)
-      // clippingPlane.constant = min.y * -1
+      group.hidePosition = group.position.clone()
+      group.hidePosition.y = height * -1 - 0.2
 
-      // if (!group.isGroundFloor) {
-      //   group.position.y = height * -1
-      // }
-
-      // group.hidePosition = group.position.y
-      // group.visiblePosition = 0
-
-      // floorGUI.addInput(group.position, 'y', {
-      //   min: -15,
-      //   max: height * -1 + height,
-      //   step: 0.0001,
-      //   label: 'Y',
-      // })
+      floorGUI.addInput(group.position, 'y', {
+        min: group.hidePosition.y,
+        max: group.initialPosition.y,
+        step: 0.00001,
+        label: 'Y',
+      })
 
       return group
     },
@@ -913,7 +957,6 @@ export default {
 
       mesh.name = 'model'
       mesh.material = this.modelMaterial
-      mesh.isShadow = false
 
       mesh.material.polygonOffset = true
       mesh.material.polygonOffsetFactor = this.polygonOffsetFactor

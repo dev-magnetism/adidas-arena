@@ -23,7 +23,7 @@ export const state = () => ({
 
   // Interior scene
   interiorVisible: true,
-  interiorIndexFloor: 0,
+  interiorIndexFloor: { id: 0, immediate: true },
 
   // UI
   initialHeroDisplayed: false,
