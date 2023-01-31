@@ -44,6 +44,7 @@ export default {
         lambertMaterialEmissive: new THREE.Color(0xffffff),
         emissiveIntensity: 0.7,
         outlineColor: new THREE.Color(0x000000),
+        outlineHiddenColor: new THREE.Color(0x808080),
         public: {
           lambertMaterialColor: new THREE.Color(0xaee7d9),
           lambertMaterialEmissive: new THREE.Color(0x00ffff),
@@ -215,24 +216,45 @@ export default {
 
       this.floors.forEach((floor, index) => {
         const visible = index <= this.interiorIndexFloor.id
-        const inferior = index < this.interiorIndexFloor.id
 
         floor.visible = visible
 
-        if (inferior) {
-          Object.values(floor.materials).forEach((material) => {
-            material.opacity = 0.5
-            material.needsUpdate = true
-          })
-        } else {
-          Object.values(floor.materials).forEach((material) => {
-            material.opacity = 1
-            material.needsUpdate = true
-          })
-        }
-
         if (visible) {
           floor.position.copy(floor.initialPosition)
+
+          if (index < this.interiorIndexFloor.id) {
+            floor.materials.basicMaterialPublic.color =
+              this.colors.lambertMaterialColor
+            floor.materials.basicMaterialPublic.emissive =
+              this.colors.lambertMaterialEmissive
+
+            floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
+              this.colors.outlineHiddenColor
+            )
+
+            floor.materials.lineMaterial.color = this.colors.outlineHiddenColor
+
+            floor.materials.basicMaterialVIP.color =
+              this.colors.lambertMaterialColor
+            floor.materials.basicMaterialVIP.emissive =
+              this.colors.lambertMaterialEmissive
+          } else {
+            floor.materials.basicMaterialPublic.color =
+              this.colors.public.lambertMaterialColor
+            floor.materials.basicMaterialPublic.emissive =
+              this.colors.public.lambertMaterialEmissive
+
+            floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
+              this.colors.outlineColor
+            )
+
+            floor.materials.lineMaterial.color = this.colors.outlineColor
+
+            floor.materials.basicMaterialVIP.color =
+              this.colors.vip.lambertMaterialColor
+            floor.materials.basicMaterialVIP.emissive =
+              this.colors.vip.lambertMaterialEmissive
+          }
         } else {
           floor.position.copy(floor.hidePosition)
         }
