@@ -125,7 +125,7 @@ export default {
     display: inline-block;
     transform: scale3d(1, 1, 1) rotateX(58deg) rotateY(0deg) rotateZ(45deg)
       translate3d(0px, 0px, 0px) skew(0deg, 0deg);
-    margin-bottom: calc((var(--width) / -1.35));
+    margin-bottom: 22px;
     user-select: none;
     background-color: var(--c-grey);
     border: 2px dashed var(--c-black);
@@ -139,7 +139,7 @@ export default {
       background-color: #3171ff;
       border: 2px solid var(--c-blue-adidas);
       margin-top: 5px;
-      margin-bottom: calc((var(--width) / -1.5));
+      margin-bottom: -20px;
     }
 
     &:last-child {
@@ -152,10 +152,10 @@ export default {
       border: 2px solid var(--c-blue-adidas);
 
       &:not(:last-child) {
-        margin-top: calc((var(--width) / 4));
+        margin-top: 7.5;
       }
 
-      margin-bottom: calc((var(--width) / -2));
+      margin-bottom: -15px;
     }
   }
 }
