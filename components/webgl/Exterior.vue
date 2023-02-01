@@ -327,7 +327,7 @@ export default {
       // console.log('click')
     },
     onMouseEnterArena() {
-      if (!this.exteriorFullwidth && this.exteriorVisible) return
+      if (!this.exteriorFullwidth || !this.exteriorVisible) return
 
       document.documentElement.style.cursor = 'pointer'
 
@@ -335,7 +335,7 @@ export default {
       this.setExteriorArenaHovered(true)
     },
     onMouseLeaveArena() {
-      if (!this.exteriorFullwidth && this.exteriorVisible) return
+      if (!this.exteriorFullwidth || !this.exteriorVisible) return
 
       document.documentElement.style.cursor = 'initial'
 

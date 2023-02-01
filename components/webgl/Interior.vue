@@ -39,6 +39,9 @@ export default {
           lambertMaterialColor: new THREE.Color(0x3070ff),
           lambertMaterialEmissive: new THREE.Color(0x285bd1),
           emissiveIntensity: 0.6,
+          lambertMaterialColorActive: new THREE.Color(0xe2520f),
+          lambertMaterialEmissiveActive: new THREE.Color(0xdb500f),
+          emissiveIntensityActive: 0.7,
         },
         vip: {
           lambertMaterialColor: new THREE.Color(0xf46b2b),
@@ -255,57 +258,7 @@ export default {
 
         if (visible) {
           floor.position.copy(floor.initialPosition)
-
-          // if (index < this.interiorIndexFloor.id) {
-          //   floor.materials.basicMaterialPublic.color =
-          //     this.colors.lambertMaterialColor
-          //   floor.materials.basicMaterialPublic.emissive =
-          //     this.colors.lambertMaterialEmissive
-
-          //   floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
-          //     this.colors.outlineHiddenColor
-          //   )
-
-          //   floor.materials.lineMaterial.color = this.colors.outlineHiddenColor
-
-          //   floor.materials.basicMaterialVIP.color =
-          //     this.colors.lambertMaterialColor
-          //   floor.materials.basicMaterialVIP.emissive =
-          //     this.colors.lambertMaterialEmissive
-          // } else {
-          //   floor.materials.basicMaterialPublic.color =
-          //     this.colors.public.lambertMaterialColor
-          //   floor.materials.basicMaterialPublic.emissive =
-          //     this.colors.public.lambertMaterialEmissive
-
-          //   floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
-          //     this.colors.outlineColor
-          //   )
-
-          //   floor.materials.lineMaterial.color = this.colors.outlineColor
-
-          //   floor.materials.basicMaterialVIP.color =
-          //     this.colors.vip.lambertMaterialColor
-          //   floor.materials.basicMaterialVIP.emissive =
-          //     this.colors.vip.lambertMaterialEmissive
-          // }
         } else {
-          // floor.materials.basicMaterialPublic.color =
-          //   this.colors.public.lambertMaterialColor
-          // floor.materials.basicMaterialPublic.emissive =
-          //   this.colors.public.lambertMaterialEmissive
-
-          // floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
-          //   this.colors.outlineColor
-          // )
-
-          // floor.materials.lineMaterial.color = this.colors.outlineColor
-
-          // floor.materials.basicMaterialVIP.color =
-          //   this.colors.vip.lambertMaterialColor
-          // floor.materials.basicMaterialVIP.emissive =
-          //   this.colors.vip.lambertMaterialEmissive
-
           floor.position.copy(floor.hidePosition)
         }
       })
@@ -326,9 +279,9 @@ export default {
           const isTweenable =
             index <= this.interiorIndexFloor.id && !floor.visible && index !== 0
 
-          const isHidden =
-            (index >= oldVal.id || oldVal.id === 0) &&
-            index < this.interiorIndexFloor.id
+          // const isHidden =
+          //   (index >= oldVal.id || oldVal.id === 0) &&
+          //   index < this.interiorIndexFloor.id
 
           if (isTweenable) {
             this.tlFloors.to(floor.position, {
@@ -341,42 +294,8 @@ export default {
             })
           }
 
-          if (isHidden) {
-            // floor.materials.basicMaterialPublic.color =
-            //   this.colors.lambertMaterialColor
-            // floor.materials.basicMaterialPublic.emissive =
-            //   this.colors.lambertMaterialEmissive
-            // floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
-            //   this.colors.outlineHiddenColor
-            // )
-            // floor.materials.lineMaterial.color = this.colors.outlineHiddenColor
-            // floor.materials.basicMaterialVIP.color =
-            //   this.colors.lambertMaterialColor
-            // floor.materials.basicMaterialVIP.emissive =
-            //   this.colors.lambertMaterialEmissive
-            // console.log(
-            //   floor.name,
-            //   floor.materials.lineMaterial.id,
-            //   this.colors
-            // )
-            // gsap.to(floor.materials.lineMaterial.color, {
-            //   r: this.colors.outlineHiddenColor.r,
-            //   g: this.colors.outlineHiddenColor.g,
-            //   b: this.colors.outlineHiddenColor.b,
-            //   onUpdate: () => {
-            //     floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
-            //       floor.materials.lineMaterial.color
-            //     )
-            //   },
-            // })
-            // gsap.to(floor.materials.basicMaterialPublic, {
-            //   color: {
-            //     r: 1,
-            //     g: 1,
-            //     b: 0,
-            //   },
-            // })
-          }
+          // if (isHidden) {
+          // }
         })
       } else {
         const reversedFloors = [...this.floors].reverse()
@@ -389,8 +308,6 @@ export default {
             reversedIndex > this.interiorIndexFloor.id &&
             floor.visible
 
-          // console.log(floor.name, isTweenable, reversedIndex)
-
           if (isTweenable) {
             this.tlFloors.to(floor.position, {
               y: floor.hidePosition.y,
@@ -401,25 +318,6 @@ export default {
               },
             })
           }
-
-          // if (index !== this.interiorIndexFloor.id) {
-          //   // console.log(floor.name)
-          //   floor.materials.basicMaterialPublic.color =
-          //     this.colors.public.lambertMaterialColor
-          //   floor.materials.basicMaterialPublic.emissive =
-          //     this.colors.public.lambertMaterialEmissive
-
-          //   floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
-          //     this.colors.outlineColor
-          //   )
-
-          //   floor.materials.lineMaterial.color = this.colors.outlineColor
-
-          //   floor.materials.basicMaterialVIP.color =
-          //     this.colors.vip.lambertMaterialColor
-          //   floor.materials.basicMaterialVIP.emissive =
-          //     this.colors.vip.lambertMaterialEmissive
-          // }
         })
       }
 
@@ -501,7 +399,7 @@ export default {
           label: 'Color',
         })
         .on('change', (e) => {
-          this.modelMaterial.color = e.value
+          this.basicMaterial.color = e.value
 
           this.floors.forEach((floor) => {
             floor.materials.basicMaterial.color = e.value
@@ -514,7 +412,7 @@ export default {
           label: 'Emissive Color',
         })
         .on('change', (e) => {
-          this.modelMaterial.emissive = e.value
+          this.basicMaterial.emissive = e.value
 
           this.floors.forEach((floor) => {
             floor.materials.basicMaterial.emissive = e.value
@@ -529,96 +427,10 @@ export default {
           label: 'Emissive Intensity',
         })
         .on('change', (e) => {
-          this.modelMaterial.emissiveIntensity = e.value
+          this.basicMaterial.emissiveIntensity = e.value
 
           this.floors.forEach((floor) => {
             floor.materials.basicMaterial.emissiveIntensity = e.value
-          })
-        })
-
-      this.guiModelColors.addSeparator()
-
-      this.guiModelColors
-        .addInput(this.colors.public, 'lambertMaterialColor', {
-          color: { type: 'float' },
-          label: 'Color Public',
-        })
-        .on('change', (e) => {
-          this.modelMaterialPublic.color = e.value
-
-          this.floors.forEach((floor) => {
-            floor.materials.basicMaterialPublic.color = e.value
-          })
-        })
-
-      this.guiModelColors
-        .addInput(this.colors.public, 'lambertMaterialEmissive', {
-          color: { type: 'float' },
-          label: 'Emissive Color Public',
-        })
-        .on('change', (e) => {
-          this.modelMaterialPublic.emissive = e.value
-
-          this.floors.forEach((floor) => {
-            floor.materials.basicMaterialPublic.emissive = e.value
-          })
-        })
-
-      this.guiModelColors
-        .addInput(this.colors.public, 'emissiveIntensity', {
-          min: 0,
-          max: 1,
-          step: 0.01,
-          label: 'Emissive Intensity Public',
-        })
-        .on('change', (e) => {
-          this.modelMaterialPublic.emissiveIntensity = e.value
-
-          this.floors.forEach((floor) => {
-            floor.materials.basicMaterialPublic.emissiveIntensity = e.value
-          })
-        })
-
-      this.guiModelColors.addSeparator()
-
-      // this.guiModelColors
-      //   .addInput(this.colors.vip, 'lambertMaterialColor', {
-      //     color: { type: 'float' },
-      //     label: 'Color VIP',
-      //   })
-      //   .on('change', (e) => {
-      //     this.modelMaterialVIP.color = e.value
-
-      //     this.floors.forEach((floor) => {
-      //       floor.materials.basicMaterialVIP.color = e.value
-      //     })
-      //   })
-
-      this.guiModelColors
-        .addInput(this.colors.vip, 'lambertMaterialEmissive', {
-          color: { type: 'float' },
-          label: 'Emissive Color VIP',
-        })
-        .on('change', (e) => {
-          this.modelMaterialVIP.emissive = e.value
-
-          this.floors.forEach((floor) => {
-            floor.materials.basicMaterialVIP.emissive = e.value
-          })
-        })
-
-      this.guiModelColors
-        .addInput(this.colors.vip, 'emissiveIntensity', {
-          min: 0,
-          max: 1,
-          step: 0.01,
-          label: 'Emissive Intensity VIP',
-        })
-        .on('change', (e) => {
-          this.modelMaterialVIP.emissiveIntensity = e.value
-
-          this.floors.forEach((floor) => {
-            floor.materials.basicMaterialVIP.emissiveIntensity = e.value
           })
         })
 
@@ -637,6 +449,25 @@ export default {
       })
 
       this.guiModelColors.addSeparator()
+
+      this.guiModelColors
+        .addInput(this.colors, 'outlineColor', {
+          color: { type: 'float' },
+          label: 'Outline color',
+        })
+        .on('change', (e) => {
+          this.lineMaterial.color = e.value
+
+          this.conditionalMaterial.uniforms.diffuse.value.set(e.value)
+
+          this.floors.forEach((floor) => {
+            floor.materials.lineMaterial.color = e.value
+
+            floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
+              e.value
+            )
+          })
+        })
 
       this.guiAmbientLight = this.gui.addFolder({
         title: `Ambient Light`,
@@ -708,11 +539,6 @@ export default {
       this.cameraBase = this.cameras.getObjectByName('BaseCamera')
 
       interior.initialCamera = { ...this.cameraBase }
-
-      // camera.position.copy(this.cameraBase.position)
-      // camera.rotation.copy(this.cameraBase.rotation)
-
-      // camera.updateProjectionMatrix()
     },
     resetView() {
       console.log('reset interior')
@@ -737,10 +563,17 @@ export default {
         opacity: 0.75,
       })
 
-      this.modelMaterial = new THREE.MeshLambertMaterial({
+      const polygonsParams = {
+        polygonOffset: true,
+        polygonOffsetFactor: this.polygonOffsetFactor,
+        polygonOffsetUnits: this.polygonOffsetUnits,
+      }
+
+      this.basicMaterial = new THREE.MeshLambertMaterial({
         color: this.colors.lambertMaterialColor,
         emissive: this.colors.lambertMaterialEmissive,
         emissiveIntensity: 0.7,
+        ...polygonsParams,
       })
 
       this.conditionalMaterial = new THREE.ShaderMaterial(
@@ -755,16 +588,18 @@ export default {
         linewidth: 2,
       })
 
-      this.modelMaterialPublic = new THREE.MeshLambertMaterial({
+      this.publicMaterial = new THREE.MeshLambertMaterial({
         color: this.colors.public.lambertMaterialColor,
         emissive: this.colors.public.lambertMaterialEmissive,
         emissiveIntensity: 0.7,
+        ...polygonsParams,
       })
 
-      this.modelMaterialVIP = new THREE.MeshLambertMaterial({
+      this.vipMaterial = new THREE.MeshLambertMaterial({
         color: this.colors.vip.lambertMaterialColor,
         emissive: this.colors.vip.lambertMaterialEmissive,
         emissiveIntensity: 0.7,
+        ...polygonsParams,
       })
     },
     initFootField() {
@@ -777,18 +612,10 @@ export default {
       const footFieldGroup = this.model.getObjectByName('FootField')
 
       const footField = this.mergeObject(footFieldGroup)
-
-      const shadowFootField = footField.clone()
-      shadowFootField.name = 'shadowModel'
-      shadowFootField.material = this.shadowMaterial
-
-      footField.receiveShadow = false
-
       const edgeFootField = this.edgeObject(footField)
       const conditionalFootField = this.conditionalObject(footField)
 
       this.footField.add(footField)
-      this.footField.add(shadowFootField)
       this.footField.add(edgeFootField)
       this.footField.add(conditionalFootField)
     },
@@ -845,6 +672,7 @@ export default {
 
       this.floor = new THREE.Group()
       this.floor.name = 'floor'
+      this.floor.position.y -= 0.05
       interior.add(this.floor)
 
       const floorGroup = this.model.getObjectByName('Floor')
@@ -921,7 +749,6 @@ export default {
       interior.add(this.fourthFloor)
       this.floors.push(this.fourthFloor)
     },
-
     onDrag(e) {
       if (!this.drag.enabled || !this.interiorVisible) return
 
@@ -948,9 +775,34 @@ export default {
 
       this.drag.last = this.drag.current
     },
-    buildArenaFloor(initialObject, name = 'no-name', isGroundFloor = false) {
-      // const { scene } = useWebGL()
+    initFloorMaterials() {
+      const basicMaterial = this.basicMaterial.clone()
 
+      const outlineColor = this.colors.outlineColor.clone()
+      const conditionalMaterial = this.conditionalMaterial.clone()
+      conditionalMaterial.uniforms.diffuse.value.set(outlineColor)
+
+      const lineMaterial = this.lineMaterial.clone()
+      lineMaterial.color = outlineColor
+
+      const publicMaterial = this.publicMaterial.clone()
+      publicMaterial.color = this.colors.public.lambertMaterialColor.clone()
+      publicMaterial.emissive =
+        this.colors.public.lambertMaterialEmissive.clone()
+
+      const vipMaterial = this.vipMaterial.clone()
+      vipMaterial.color = this.colors.vip.lambertMaterialColor.clone()
+      vipMaterial.emissive = this.colors.vip.lambertMaterialEmissive.clone()
+
+      return {
+        basicMaterial,
+        lineMaterial,
+        conditionalMaterial,
+        publicMaterial,
+        vipMaterial,
+      }
+    },
+    buildArenaFloor(initialObject, name = 'no-name', isGroundFloor = false) {
       const arene = this.model.getObjectByName('Arene')
 
       const group = new THREE.Group()
@@ -959,32 +811,10 @@ export default {
       group.divider = []
       group.public = []
       group.vip = []
-      group.materials = {}
+      group.materials = this.initFloorMaterials()
       group.isGroundFloor = isGroundFloor
 
-      const basicMaterial = this.modelMaterial.clone()
-      const lineMaterial = this.lineMaterial.clone()
-      const conditionalMaterial = this.conditionalMaterial.clone()
-      const basicMaterialPublic = this.modelMaterialPublic.clone()
-      const basicMaterialVIP = this.modelMaterialVIP.clone()
-
-      console.log(this.modelMaterialVIP.id)
-      console.log(basicMaterialVIP.id)
-      console.log('-------')
-
-      group.materials = {
-        basicMaterial,
-        lineMaterial,
-        conditionalMaterial,
-        basicMaterialPublic,
-        basicMaterialVIP,
-      }
-
       const clippingPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0)
-      // const helper = new THREE.PlaneHelper(clippingPlane, 75, 0xff0000)
-      // this.helpers.push(helper)
-
-      // scene.add(helper)
 
       const object = initialObject.clone()
 
@@ -1016,6 +846,7 @@ export default {
         )
 
         part.add(...meshes)
+        part.position.y += 0.05
 
         if (part.name.includes('VIP')) {
           group.vip.push(part)
@@ -1040,21 +871,8 @@ export default {
       group.hidePosition = group.position.clone()
       group.hidePosition.y = height * -1 - 0.2
 
-      // const gui = useGUI()
-
-      // const floorGUI = gui.addFolder({ title: name })
-      // this.floorsGUI.push(floorGUI)
-
-      // floorGUI.addInput(group.position, 'y', {
-      //   min: group.hidePosition.y,
-      //   max: group.initialPosition.y,
-      //   step: 0.00001,
-      //   label: 'Y',
-      // })
-
       return group
     },
-
     parseFloor(object) {
       const basicObject = new THREE.Group()
       basicObject.isBasicObject = true
@@ -1085,39 +903,26 @@ export default {
     buildMergedObjects(object, clippingPlane, materials) {
       const normalObject = this.mergeObject(object)
 
-      console.log(object.name)
-
       if (!object.isBasicObject) {
-        // const test = new THREE.MeshLambertMaterial({
-        //   color: this.colors.vip.lambertMaterialColor,
-        //   emissive: this.colors.vip.lambertMaterialEmissive,
-        //   emissiveIntensity: 0.7,
-        // })
-
-        normalObject.material = materials.basicMaterialVIP
-
-        // if (object.publicAccess) {
-        //   normalObject.material = materials.basicMaterialPublic
-        // } else {
-        //   normalObject.material = materials.basicMaterialVIP
-        // }
+        if (object.publicAccess) {
+          normalObject.material = materials.publicMaterial
+        } else {
+          normalObject.material = materials.vipMaterial
+        }
       } else {
         normalObject.material = materials.basicMaterial
       }
 
-      normalObject.material.needsUpdate = true
       normalObject.material.clippingPlanes = [clippingPlane]
       normalObject.material.clipShadows = true
 
       const edgeBasicObject = this.edgeObject(normalObject)
       edgeBasicObject.material = materials.lineMaterial
-      edgeBasicObject.material.needsUpdate = true
       edgeBasicObject.material.clippingPlanes = [clippingPlane]
       edgeBasicObject.material.clipShadows = true
 
       const conditionalObject = this.conditionalObject(normalObject)
       conditionalObject.material = materials.conditionalMaterial
-      conditionalObject.material.needsUpdate = true
       conditionalObject.material.clippingPlanes = [clippingPlane]
       conditionalObject.material.clipShadows = true
 
@@ -1165,11 +970,8 @@ export default {
       mesh.receiveShadow = true
 
       mesh.name = 'model'
-      mesh.material = this.modelMaterial
+      mesh.material = this.basicMaterial
 
-      mesh.material.polygonOffset = true
-      mesh.material.polygonOffsetFactor = this.polygonOffsetFactor
-      mesh.material.polygonOffsetUnits = this.polygonOffsetUnits
       mesh.material.needsUpdate = true
 
       return mesh

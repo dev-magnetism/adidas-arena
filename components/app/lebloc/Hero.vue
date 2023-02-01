@@ -52,7 +52,7 @@ export default {
     initInteriorView() {
       this.$nuxt.$emit('reset:interior')
 
-      this.setInteriorIndexFloor({ id: 2, immediate: true })
+      this.setInteriorIndexFloor({ id: 0, immediate: true })
 
       this.onResize()
     },
