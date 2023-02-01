@@ -1,15 +1,5 @@
 <template>
-  <div class="app-webgl-interior grid-inner">
-    <div class="floors">
-      <span
-        v-for="i in 5"
-        :key="i"
-        :class="{ active: i - 1 === interiorIndexFloor.id }"
-        @click="setInteriorIndexFloor({ id: i - 1, immediate: true })"
-        >floor {{ i - 1 }}</span
-      >
-    </div>
-  </div>
+  <div class="app-webgl-interior grid-inner"></div>
 </template>
 
 <script>
@@ -93,9 +83,13 @@ export default {
       allLoadedActual: (state) => state.allLoadedActual,
       interiorVisible: (state) => state.interiorVisible,
       interiorIndexFloor: (state) => state.interiorIndexFloor,
+      interiorMusicScene: (state) => state.interiorMusicScene,
     }),
   },
   watch: {
+    interiorMusicScene() {
+      this.switchMiddleScene()
+    },
     interiorIndexFloor(newVal, oldVal) {
       if (newVal.id === oldVal.id) return
 
@@ -170,6 +164,7 @@ export default {
     interior.remove(this.floor)
     interior.remove(this.footField)
     interior.remove(this.musicScene)
+    interior.remove(this.terrain)
 
     interior.remove(this.zeroFloor)
     interior.remove(this.firstFloor)
@@ -202,9 +197,49 @@ export default {
 
     this.observer?.kill()
     this.tlFloors?.kill()
+    this.tlSwitchMiddleScene?.kill()
+    this.tlFloorsHidden?.kill()
     this.$raf.remove(`webgl-interior`, this.onFrame)
   },
   methods: {
+    switchMiddleScene() {
+      this.tlSwitchMiddleScene?.clear()
+      this.tlSwitchMiddleScene?.kill()
+
+      this.tlSwitchMiddleScene = gsap.timeline()
+
+      if (this.interiorMusicScene) {
+        this.tlSwitchMiddleScene.to(this.terrain.position, {
+          y: this.terrain.hidePosition.y,
+          ease: 'back.in(1.5)',
+          duration: 0.6,
+        })
+        this.tlSwitchMiddleScene.to(
+          this.musicScene.position,
+          {
+            y: this.musicScene.initialPosition.y,
+            ease: 'back.out(1)',
+            duration: 0.6,
+          },
+          '+=25%'
+        )
+      } else {
+        this.tlSwitchMiddleScene.to(this.musicScene.position, {
+          y: this.musicScene.hidePosition.y,
+          ease: 'back.in(1.5)',
+          duration: 0.6,
+        })
+        this.tlSwitchMiddleScene.to(
+          this.terrain.position,
+          {
+            y: this.terrain.initialPosition.y,
+            ease: 'back.out(1)',
+            duration: 0.6,
+          },
+          '+=25%'
+        )
+      }
+    },
     handleImmediateTransition() {
       const { camera } = useWebGL()
 
@@ -256,6 +291,22 @@ export default {
               this.colors.vip.lambertMaterialEmissive
           }
         } else {
+          floor.materials.basicMaterialPublic.color =
+            this.colors.public.lambertMaterialColor
+          floor.materials.basicMaterialPublic.emissive =
+            this.colors.public.lambertMaterialEmissive
+
+          floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
+            this.colors.outlineColor
+          )
+
+          floor.materials.lineMaterial.color = this.colors.outlineColor
+
+          floor.materials.basicMaterialVIP.color =
+            this.colors.vip.lambertMaterialColor
+          floor.materials.basicMaterialVIP.emissive =
+            this.colors.vip.lambertMaterialEmissive
+
           floor.position.copy(floor.hidePosition)
         }
       })
@@ -263,8 +314,11 @@ export default {
     handleAnimatedTransition(oldVal) {
       this.tlFloors?.clear()
       this.tlFloors?.kill()
+      this.tlFloorsHidden?.clear()
+      this.tlFloorsHidden?.kill()
 
       this.tlFloors = gsap.timeline()
+      this.tlFloorsHidden = gsap.timeline()
 
       const isAscendant = oldVal.id < this.interiorIndexFloor.id
 
@@ -272,6 +326,10 @@ export default {
         this.floors.forEach((floor, index) => {
           const isTweenable =
             index <= this.interiorIndexFloor.id && !floor.visible && index !== 0
+
+          const isHidden =
+            (index >= oldVal.id || oldVal.id === 0) &&
+            index < this.interiorIndexFloor.id
 
           if (isTweenable) {
             this.tlFloors.to(floor.position, {
@@ -283,18 +341,62 @@ export default {
               duration: 0.75,
             })
           }
+
+          if (isHidden) {
+            floor.materials.basicMaterialPublic.color =
+              this.colors.lambertMaterialColor
+            floor.materials.basicMaterialPublic.emissive =
+              this.colors.lambertMaterialEmissive
+
+            floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
+              this.colors.outlineHiddenColor
+            )
+
+            floor.materials.lineMaterial.color = this.colors.outlineHiddenColor
+
+            floor.materials.basicMaterialVIP.color =
+              this.colors.lambertMaterialColor
+            floor.materials.basicMaterialVIP.emissive =
+              this.colors.lambertMaterialEmissive
+
+            console.log(
+              floor.name,
+              floor.materials.lineMaterial.id,
+              this.colors
+            )
+
+            // gsap.to(floor.materials.lineMaterial.color, {
+            //   r: this.colors.outlineHiddenColor.r,
+            //   g: this.colors.outlineHiddenColor.g,
+            //   b: this.colors.outlineHiddenColor.b,
+            //   onUpdate: () => {
+            //     floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
+            //       floor.materials.lineMaterial.color
+            //     )
+            //   },
+            // })
+
+            // gsap.to(floor.materials.basicMaterialPublic, {
+            //   color: {
+            //     r: 1,
+            //     g: 1,
+            //     b: 0,
+            //   },
+            // })
+          }
         })
       } else {
         const reversedFloors = [...this.floors].reverse()
-        reversedFloors.pop()
 
         reversedFloors.forEach((floor, index) => {
-          const reversedIndex = reversedFloors.length - index
+          const reversedIndex = reversedFloors.length - 1 - index
 
           const isTweenable =
             reversedIndex <= oldVal.id &&
             reversedIndex > this.interiorIndexFloor.id &&
             floor.visible
+
+          // console.log(floor.name, isTweenable, reversedIndex)
 
           if (isTweenable) {
             this.tlFloors.to(floor.position, {
@@ -306,8 +408,29 @@ export default {
               },
             })
           }
+
+          if (index !== this.interiorIndexFloor.id) {
+            // console.log(floor.name)
+            floor.materials.basicMaterialPublic.color =
+              this.colors.public.lambertMaterialColor
+            floor.materials.basicMaterialPublic.emissive =
+              this.colors.public.lambertMaterialEmissive
+
+            floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
+              this.colors.outlineColor
+            )
+
+            floor.materials.lineMaterial.color = this.colors.outlineColor
+
+            floor.materials.basicMaterialVIP.color =
+              this.colors.vip.lambertMaterialColor
+            floor.materials.basicMaterialVIP.emissive =
+              this.colors.vip.lambertMaterialEmissive
+          }
         })
       }
+
+      console.log('------------')
     },
     initInterior() {
       this.gltf = loaderManager.getModel('interior')
@@ -320,6 +443,7 @@ export default {
       this.initFloor()
       this.initFootField()
       this.initMusicScene()
+      this.initTerrain()
 
       this.initZeroFloor()
       this.initFirstFloor()
@@ -328,6 +452,12 @@ export default {
       this.initFourthFloor()
 
       this.initGUI()
+
+      if (this.interiorMusicScene) {
+        this.terrain.position.copy(this.terrain.hidePosition)
+      } else {
+        this.musicScene.position.copy(this.musicScene.hidePosition)
+      }
 
       this.setInteriorIndexFloor({ id: 0, immediate: true })
       this.handleImmediateTransition()
@@ -592,14 +722,12 @@ export default {
     initMaterials() {
       this.shadowMaterial = new THREE.ShadowMaterial({
         color: this.colors.shadowColor,
-        transparent: true,
       })
 
       this.modelMaterial = new THREE.MeshLambertMaterial({
         color: this.colors.lambertMaterialColor,
         emissive: this.colors.lambertMaterialEmissive,
         emissiveIntensity: 0.7,
-        transparent: true,
       })
 
       this.conditionalMaterial = new THREE.ShaderMaterial(
@@ -612,21 +740,18 @@ export default {
       this.lineMaterial = new THREE.LineBasicMaterial({
         color: this.colors.outlineColor,
         linewidth: 1,
-        transparent: true,
       })
 
       this.modelMaterialPublic = new THREE.MeshLambertMaterial({
         color: this.colors.public.lambertMaterialColor,
         emissive: this.colors.public.lambertMaterialEmissive,
         emissiveIntensity: 0.7,
-        transparent: true,
       })
 
       this.modelMaterialVIP = new THREE.MeshLambertMaterial({
         color: this.colors.vip.lambertMaterialColor,
         emissive: this.colors.vip.lambertMaterialEmissive,
         emissiveIntensity: 0.7,
-        transparent: true,
       })
     },
     initFootField() {
@@ -670,6 +795,37 @@ export default {
       this.musicScene.add(musicScene)
       this.musicScene.add(edgeMusicScene)
       this.musicScene.add(conditionalMusicScene)
+
+      const { min, max } = new THREE.Box3().setFromObject(this.musicScene)
+
+      this.musicScene.initialPosition = this.musicScene.position.clone()
+
+      this.musicScene.hidePosition = this.musicScene.position.clone()
+      this.musicScene.hidePosition.y = (max.y - min.y) * -1 - 0.5
+    },
+    initTerrain() {
+      const { interior } = useWebGL()
+
+      this.terrain = new THREE.Group()
+      this.terrain.name = 'terrain'
+      interior.add(this.terrain)
+
+      const terrainGroup = this.model.getObjectByName('Terrain_001')
+
+      const terrain = this.mergeObject(terrainGroup)
+      const edgeTerrain = this.edgeObject(terrain)
+      const conditionalTerrain = this.conditionalObject(terrain)
+
+      this.terrain.add(terrain)
+      this.terrain.add(edgeTerrain)
+      this.terrain.add(conditionalTerrain)
+
+      const { min, max } = new THREE.Box3().setFromObject(this.terrain)
+
+      this.terrain.initialPosition = this.terrain.position.clone()
+
+      this.terrain.hidePosition = this.terrain.position.clone()
+      this.terrain.hidePosition.y = (max.y - min.y) * -1 - 0.5
     },
     initFloor() {
       const { interior } = useWebGL()
@@ -810,12 +966,18 @@ export default {
 
       group.divider = dividerObject
 
+      const basicMaterial = this.modelMaterial.clone()
+      const lineMaterial = this.lineMaterial.clone()
+      const conditionalMaterial = this.conditionalMaterial.clone()
+      const basicMaterialPublic = this.modelMaterialPublic.clone()
+      const basicMaterialVIP = this.modelMaterialVIP.clone()
+
       group.materials = {
-        basicMaterial: this.modelMaterial.clone(),
-        lineMaterial: this.lineMaterial.clone(),
-        conditionalMaterial: this.conditionalMaterial.clone(),
-        basicMaterialPublic: this.modelMaterialPublic.clone(),
-        basicMaterialVIP: this.modelMaterialVIP.clone(),
+        basicMaterial,
+        lineMaterial,
+        conditionalMaterial,
+        basicMaterialPublic,
+        basicMaterialVIP,
       }
 
       const basicMeshes = this.buildMergedObjects(
@@ -848,6 +1010,9 @@ export default {
           group.public.push(part)
         }
 
+        // const box = new THREE.BoxHelper(part, 0xff0000)
+        // part.add(box)
+
         group.add(part)
       })
 
@@ -871,6 +1036,7 @@ export default {
 
       return group
     },
+
     parseFloor(object) {
       const basicObject = new THREE.Group()
       basicObject.isBasicObject = true
@@ -913,16 +1079,19 @@ export default {
 
       normalObject.material.clippingPlanes = [clippingPlane]
       normalObject.material.clipShadows = true
+      normalObject.material.needsUpdate = true
 
       const edgeBasicObject = this.edgeObject(normalObject)
       edgeBasicObject.material = materials.lineMaterial
       edgeBasicObject.material.clippingPlanes = [clippingPlane]
       edgeBasicObject.material.clipShadows = true
+      edgeBasicObject.material.needsUpdate = true
 
       const conditionalObject = this.conditionalObject(normalObject)
       conditionalObject.material = materials.conditionalMaterial
       conditionalObject.material.clippingPlanes = [clippingPlane]
       conditionalObject.material.clipShadows = true
+      conditionalObject.material.needsUpdate = true
 
       return [normalObject, edgeBasicObject, conditionalObject]
     },
@@ -1042,28 +1211,5 @@ export default {
   height: 100%;
   width: 100%;
   position: fixed;
-
-  .floors {
-    display: flex;
-    width: 100%;
-    grid-column: 1 / span 12;
-    justify-content: flex-end;
-    align-items: flex-end;
-
-    span {
-      padding: 20px;
-      background: red;
-      margin-right: 10px;
-      cursor: pointer;
-
-      &.active {
-        background: blue;
-      }
-
-      &:last-child {
-        margin-right: 0px;
-      }
-    }
-  }
 }
 </style>

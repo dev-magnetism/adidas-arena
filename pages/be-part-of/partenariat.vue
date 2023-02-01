@@ -82,6 +82,9 @@ export default {
       return {
         title: this.content.data.contact_newsletter,
         placeholder: this.appContent.data.footer_input_placeholder,
+        text: this.content.data.contact_newsletter_text,
+        ctaText: this.content.data.contact_newsletter_cta_text,
+        ctaHref: this.content.data.contact_newsletter_cta_href,
       }
     },
     contentIntroduction() {
@@ -146,7 +149,7 @@ export default {
       }
     }
   }
-  .app-contact-newsletter {
+  .app-contact-actus {
     margin-bottom: desktop-vw(180px);
 
     @include mobile {

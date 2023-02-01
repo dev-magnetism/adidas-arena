@@ -31,7 +31,7 @@ export default {
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: auto;
+  height: 100%;
 
   @include mobile {
     padding: mobile-vw(10px);

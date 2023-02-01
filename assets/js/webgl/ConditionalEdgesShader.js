@@ -2,7 +2,6 @@
 
 export const ConditionalEdgesShader = {
   clipping: true,
-  transparent: true,
   uniforms: {
     diffuse: {
       value: new THREE.Color(),

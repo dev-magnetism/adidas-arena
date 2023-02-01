@@ -1,14 +1,14 @@
 <template>
-  <div class="app-contact-newsletter grid-inner">
-    <div class="app-contact-newsletter__newsletter">
+  <div class="app-contact-actus grid-inner">
+    <div class="app-contact-actus__wrapper">
       <AtomsCornerPoints :size-points="8" />
 
       <ERichText :content="contents.title" />
 
-      <form action="#" class="app-contact-newsletter__newsletter__form">
+      <form action="#" class="app-contact-actus__form">
         <input
           v-model="email"
-          class="app-contact-newsletter__newsletter__form__field-mail"
+          class="app-contact-actus__form__field-mail"
           :placeholder="contents.placeholder"
           type="email"
           name="name"
@@ -16,18 +16,35 @@
         />
         <button
           :class="{ valid: validateForm }"
-          class="app-contact-newsletter__newsletter__form__submit"
+          class="app-contact-actus__form__submit"
           type="submit"
           @mouseenter="onMouseEnter"
           @mouseleave="onMouseLeave"
         >
-          <span class="app-footer__newsletter__submit__overlay" />
+          <span class="app-contact-actus__form__submit__overlay" />
           <SvgFooterUnion ref="union" />
         </button>
+        <div class="app-contact-actus__accept-politic">
+          <input
+            id="accept-politic"
+            v-model="accept"
+            type="checkbox"
+            required
+          />
+          <label for="accept-politic">
+            <TP2 color="black">
+              {{ contents.text }}
+              <AtomsLink :href="contents.ctaHref">
+                {{ contents.ctaText }}
+              </AtomsLink>
+            </TP2>
+          </label>
+          <span class="checkmark" />
+        </div>
       </form>
     </div>
 
-    <div class="app-contact-newsletter__visual-transparent"></div>
+    <div class="app-contact-actus__visual-transparent"></div>
   </div>
 </template>
 
@@ -44,6 +61,7 @@ export default {
   data() {
     return {
       email: '',
+      accept: false,
     }
   },
   computed: {
@@ -51,7 +69,7 @@ export default {
       /* eslint-disable-next-line */ const reg =
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
 
-      return reg.test(this.email)
+      return reg.test(this.email) && this.accept
     },
   },
   mounted() {
@@ -94,7 +112,7 @@ export default {
 </script>
 
 <style lang="scss">
-.app-contact-newsletter {
+.app-contact-actus {
   row-gap: 0;
   position: relative;
 
@@ -117,7 +135,102 @@ export default {
     }
   }
 
-  &__newsletter {
+  &__accept-politic {
+    flex-basis: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: desktop-vw(25px);
+    margin-left: 6%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin-top: desktop-vw(5px);
+
+    @include mobile {
+      padding-left: mobile-vw(25px);
+      margin-top: mobile-vw(20px);
+    }
+
+    @include hover {
+      &:hover {
+        input {
+          &:not(:checked) ~ .checkmark {
+            &::after {
+              content: '';
+              transform: translate(-50%, -50%) scale(0.35);
+            }
+          }
+        }
+      }
+    }
+
+    .P2 {
+      font-size: desktop-vw(16px);
+      line-height: desktop-vw(21px);
+      color: var(--c-black);
+      cursor: pointer;
+      transition: color 0.4s var(--ease-out-cubic);
+
+      @include mobile {
+        font-size: mobile-vw(14px);
+        line-height: mobile-vw(16px);
+      }
+    }
+
+    a {
+      text-decoration: underline;
+      @include font-adihausDIN-medium();
+      position: relative;
+    }
+
+    input {
+      opacity: 0;
+      position: absolute;
+      width: desktop-vw(25px);
+      height: 100%;
+      top: 0;
+      left: 0;
+      cursor: pointer;
+
+      &:checked ~ .checkmark {
+        // background-color: var(--c-black);
+
+        &::after {
+          content: '';
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+    }
+
+    .checkmark {
+      position: absolute;
+      left: 0;
+      height: 12px;
+      width: 12px;
+      background-color: transparent;
+      border: 1px solid var(--c-black);
+      pointer-events: none;
+      cursor: pointer;
+
+      &::after {
+        content: '';
+        width: 75%;
+        height: 75%;
+        background: var(--c-black);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transform-origin: center;
+        transition: transform 0.3s var(--ease-out-cubic);
+        will-change: transform;
+      }
+    }
+  }
+
+  &__wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -164,105 +277,105 @@ export default {
         }
       }
     }
+  }
 
-    &__form {
+  &__form {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    margin-top: desktop-vw(20px);
+    justify-content: center;
+    width: 85%;
+
+    @include mobile {
+      margin-top: mobile-vw(20px);
       display: flex;
-      flex-flow: row wrap;
-      align-items: center;
-      margin-top: desktop-vw(20px);
-      justify-content: center;
-      width: 85%;
+      flex-flow: column wrap;
+      width: 100%;
+    }
+
+    &__field-mail {
+      @include font-adihausDIN-cn-medium();
+      text-transform: uppercase;
+      font-size: desktop-vw(82px);
+      line-height: desktop-vw(106px);
+      letter-spacing: -0.04em;
+      width: 75%;
 
       @include mobile {
+        font-size: mobile-vw(40px);
+        line-height: mobile-vw(40px);
+        text-align: center;
+      }
+
+      &::placeholder {
+        color: rgba(24, 24, 24, 0.25);
+      }
+    }
+
+    &__submit {
+      border: 1px solid rgb(24 24 24 / 25%);
+      width: desktop-vw(56px);
+      height: desktop-vw(56px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: desktop-vw(40px);
+      cursor: not-allowed;
+      overflow: hidden;
+      align-self: center;
+      position: relative;
+
+      @include mobile {
+        width: mobile-vw(56px);
+        height: mobile-vw(56px);
+        margin-left: 0px;
         margin-top: mobile-vw(20px);
-        display: flex;
-        flex-flow: column wrap;
-        width: 100%;
       }
 
-      &__field-mail {
-        @include font-adihausDIN-cn-medium();
-        text-transform: uppercase;
-        font-size: desktop-vw(82px);
-        line-height: desktop-vw(106px);
-        letter-spacing: -0.04em;
-        width: 75%;
+      &.valid {
+        cursor: pointer;
 
-        @include mobile {
-          font-size: mobile-vw(40px);
-          line-height: mobile-vw(40px);
-          text-align: center;
-        }
-
-        &::placeholder {
-          color: rgba(24, 24, 24, 0.25);
-        }
-      }
-
-      &__submit {
-        border: 1px solid rgb(24 24 24 / 25%);
-        width: desktop-vw(56px);
-        height: desktop-vw(56px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-left: desktop-vw(40px);
-        cursor: not-allowed;
-        overflow: hidden;
-        align-self: center;
-        position: relative;
-
-        @include mobile {
-          width: mobile-vw(56px);
-          height: mobile-vw(56px);
-          margin-left: 0px;
-          margin-top: mobile-vw(20px);
-        }
-
-        &.valid {
-          cursor: pointer;
-
-          .app-footer__newsletter__submit__overlay {
-            transform: scaleY(1);
-          }
-
-          svg {
-            opacity: 1;
-
-            path {
-              fill: var(--c-black);
-            }
-          }
-        }
-
-        &__overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: var(--c-grey);
-          z-index: 0;
-          transform: scaleY(0);
-          transform-origin: top center;
-          transition: transform 0.4s var(--ease-out-cubic);
+        .app-contact-actus__form__submit__overlay {
+          transform: scaleY(1);
         }
 
         svg {
-          width: 100%;
-          padding: desktop-vw(15px);
-          height: auto;
-          opacity: 0.25;
-          z-index: 1;
-          transition: opacity 0.2s var(--ease-out-cubic);
+          opacity: 1;
 
           path {
             fill: var(--c-black);
           }
+        }
+      }
 
-          @include mobile {
-            padding: mobile-vw(15px);
-          }
+      &__overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--c-grey);
+        z-index: 0;
+        transform: scaleY(0);
+        transform-origin: top center;
+        transition: transform 0.4s var(--ease-out-cubic);
+      }
+
+      svg {
+        width: 100%;
+        padding: desktop-vw(15px);
+        height: auto;
+        opacity: 0.25;
+        z-index: 1;
+        transition: opacity 0.2s var(--ease-out-cubic);
+
+        path {
+          fill: var(--c-black);
+        }
+
+        @include mobile {
+          padding: mobile-vw(15px);
         }
       }
     }

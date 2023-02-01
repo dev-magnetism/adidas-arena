@@ -24,6 +24,7 @@ export const state = () => ({
   // Interior scene
   interiorVisible: true,
   interiorIndexFloor: { id: 0, immediate: true },
+  interiorMusicScene: true,
 
   // UI
   initialHeroDisplayed: false,
@@ -48,6 +49,9 @@ export const mutations = {
   },
   setHeaderReduced: (state, value) => {
     state.headerReduced = value
+  },
+  setInteriorMusicScene: (state, value) => {
+    state.interiorMusicScene = value
   },
   setCursorSliderHold: (state, value) => {
     state.cursorSliderHold = value

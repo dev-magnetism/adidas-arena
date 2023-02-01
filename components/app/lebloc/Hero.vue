@@ -3,6 +3,7 @@
     <div class="app-le-bloc-hero__wrapper">
       <AtomsCornerPoints :size-points="12" />
       <EFloorSelector />
+      <ESceneSelector />
     </div>
   </div>
 </template>
