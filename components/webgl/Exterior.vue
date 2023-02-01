@@ -299,9 +299,9 @@ export default {
       this.adidasArena.addEventListener('mouseleave', this.onMouseLeaveArena)
     },
     onClickArena() {
-      if (!this.exteriorFullwidth && this.exteriorVisible) return
+      if (!this.exteriorFullwidth || !this.exteriorVisible) return
 
-      console.log('clickedd')
+      console.log('clickedd', this.exteriorFullwidth)
       // const { camera } = useWebGL()
       // const params = {
       //   duration: 1,

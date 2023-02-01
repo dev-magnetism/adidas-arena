@@ -12,6 +12,7 @@
     <nuxt class="app-main" />
     <AppScene />
     <WebglScene />
+    <WebglInfo v-if="!$viewport.isMobile" />
   </div>
 </template>
 

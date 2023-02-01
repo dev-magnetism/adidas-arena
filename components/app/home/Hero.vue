@@ -181,6 +181,8 @@ export default {
       this.initSplitText()
     }
 
+    console.log('here here')
+
     if (this.allLoadedFake) {
       this.appearHeroInit(0.75)
       this.resetView()

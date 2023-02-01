@@ -17,10 +17,9 @@ import useWebGL from '~/hooks/webgl'
 export default {
   computed: {
     ...mapState({
-      exteriorVisible: (state) => state.exteriorVisible,
       interiorVisible: (state) => state.interiorVisible,
-      allLoadedActual: (state) => state.allLoadedActual,
       allLoadedFake: (state) => state.allLoadedFake,
+      interiorIndexFloor: (state) => state.interiorIndexFloor,
     }),
   },
   watch: {
@@ -88,7 +87,6 @@ export default {
     },
     ...mapMutations({
       setInteriorVisible: 'setInteriorVisible',
-      setExteriorFullwidth: 'setExteriorFullwidth',
       setInteriorIndexFloor: 'setInteriorIndexFloor',
     }),
   },

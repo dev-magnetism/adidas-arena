@@ -189,7 +189,6 @@ export default {
     this.guiZoom?.dispose()
     this.guiAmbientLight?.dispose()
     this.guiModelColors?.dispose()
-    this.guiFloors?.dispose()
     this.floorsGUI.forEach((gui) => {
       gui.dispose()
     })
@@ -987,11 +986,6 @@ export default {
 
       // scene.add(helper)
 
-      const gui = useGUI()
-
-      const floorGUI = gui.addFolder({ title: name })
-      this.floorsGUI.push(floorGUI)
-
       const object = initialObject.clone()
 
       const { basicObject, specialObjects, dividerObject } =
@@ -1046,12 +1040,17 @@ export default {
       group.hidePosition = group.position.clone()
       group.hidePosition.y = height * -1 - 0.2
 
-      floorGUI.addInput(group.position, 'y', {
-        min: group.hidePosition.y,
-        max: group.initialPosition.y,
-        step: 0.00001,
-        label: 'Y',
-      })
+      // const gui = useGUI()
+
+      // const floorGUI = gui.addFolder({ title: name })
+      // this.floorsGUI.push(floorGUI)
+
+      // floorGUI.addInput(group.position, 'y', {
+      //   min: group.hidePosition.y,
+      //   max: group.initialPosition.y,
+      //   step: 0.00001,
+      //   label: 'Y',
+      // })
 
       return group
     },
