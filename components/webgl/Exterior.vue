@@ -618,6 +618,9 @@ export default {
       const road = this.gltfExterior.getObjectByName('Road')
       group.add(road.clone())
 
+      const floorArena = this.gltfExterior.getObjectByName('Floor_Arena')
+      group.add(floorArena.clone())
+
       const model = this.mergeObject(group)
       const edge = this.edgeObject(model)
       const conditional = this.conditionalObject(model)
