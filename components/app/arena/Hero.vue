@@ -26,34 +26,13 @@ export default {
   },
   watch: {
     allLoadedFake() {
-      this.$nuxt.$emit('reset:exterior')
-
-      const { exterior } = useWebGL()
-
-      exterior.drag.enabled = true
+      this.resetView()
     },
   },
   mounted() {
     if (this.allLoadedFake) {
-      this.$nuxt.$emit('reset:exterior')
-
-      const { exterior } = useWebGL()
-
-      exterior.drag.enabled = true
+      this.resetView()
     }
-
-    this.setExteriorFullwidth(true)
-
-    const { scissors, renderer } = useWebGL()
-
-    scissors.current = { ...scissors.hero }
-
-    renderer.setScissor(
-      scissors.current.x,
-      scissors.current.y,
-      scissors.current.width,
-      scissors.current.height
-    )
 
     ScrollTrigger.create({
       trigger: this.$el,
@@ -72,12 +51,28 @@ export default {
     this.$raf.remove(`arena-hero`, this.onFrame)
   },
   methods: {
-    onResize() {
-      const { scissors } = useWebGL()
+    resetView() {
+      this.setExteriorFullwidth(true)
 
-      scissors.current.x = scissors.hero.x
-      scissors.current.width = scissors.hero.width
-      scissors.current.height = scissors.hero.height
+      this.$nuxt.$emit('reset:exterior')
+
+      const { exterior } = useWebGL()
+
+      exterior.drag.enabled = true
+
+      this.onResize()
+    },
+    onResize() {
+      const { scissors, renderer } = useWebGL()
+
+      scissors.current = { ...scissors.hero }
+
+      renderer.setScissor(
+        scissors.current.x,
+        scissors.current.y,
+        scissors.current.width,
+        scissors.current.height
+      )
     },
     onFrame() {
       if (!window.lenis && !this.exteriorVisible) return

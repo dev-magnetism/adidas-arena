@@ -143,13 +143,7 @@ export default {
       this.appearHeroInit(0.1)
     },
     allLoadedFake() {
-      this.$nuxt.$emit('reset:exterior')
-
-      const { exterior } = useWebGL()
-
-      exterior.drag.enabled = false
-
-      this.setExteriorFullwidth(false)
+      this.resetView()
     },
     viewExteriorOpen(payload) {
       const { exterior } = useWebGL()
@@ -187,20 +181,16 @@ export default {
       this.initSplitText()
     }
 
-    this.setExteriorFullwidth(false)
-
     if (this.allLoadedFake) {
       this.appearHeroInit(0.75)
-
-      const { exterior } = useWebGL()
-
-      exterior.drag.enabled = false
+      this.resetView()
     }
 
     this.resizeObserver = new ResizeObserver(this.onResizePreviewExterior)
     this.resizeObserver.observe(this.$refs.view)
     this.$raf.add(`home-hero`, this.onFrame)
   },
+
   beforeDestroy() {
     this.resizeObserver.unobserve(this.$refs.view)
 
@@ -213,6 +203,15 @@ export default {
     this.$raf.remove(`home-hero`, this.onFrame)
   },
   methods: {
+    resetView() {
+      this.setExteriorFullwidth(false)
+
+      const { exterior } = useWebGL()
+
+      exterior.drag.enabled = false
+
+      this.$nuxt.$emit('reset:exterior')
+    },
     disapearDOM() {
       this.tlAppearHero?.clear()
       this.tlAppearHero?.kill()
