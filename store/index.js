@@ -31,7 +31,7 @@ export const state = () => ({
   menuActive: false,
   headerReduced: false,
   headerWhite: false,
-  cursoState: 'hide',
+  cursorState: 'hide',
   cursorSliderHold: false,
   cursorSliderLeftZone: false,
   cursorSliderDisabled: false,
@@ -110,8 +110,8 @@ export const mutations = {
   setMenuActive: (state, value) => {
     state.menuActive = value
   },
-  setCursoState: (state, value) => {
-    state.cursoState = value
+  setCursorState: (state, value) => {
+    state.cursorState = value
   },
   setExteriorVisible: (state, value) => {
     state.exteriorVisible = value

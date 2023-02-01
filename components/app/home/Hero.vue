@@ -136,15 +136,20 @@ export default {
 
       this.initSplitText()
     },
-    allLoadedActual(payload) {
-      if (!payload) return
 
-      this.resetViewExterior()
-    },
     initialHeroDisplayed(payload) {
       if (!payload) return
 
       this.appearHeroInit(0.1)
+    },
+    allLoadedFake() {
+      this.$nuxt.$emit('reset:exterior')
+
+      const { exterior } = useWebGL()
+
+      exterior.drag.enabled = false
+
+      this.setExteriorFullwidth(false)
     },
     viewExteriorOpen(payload) {
       const { exterior } = useWebGL()
@@ -160,12 +165,12 @@ export default {
 
         this.disapearDOM()
       } else {
-        // gsap.to(exterior.position, {
-        //   x: exterior.heroPosition.x,
-        //   z: exterior.heroPosition.z,
-        //   duration: 0.85,
-        //   ease: 'power2.inOut',
-        // })
+        gsap.to(exterior.position, {
+          x: exterior.homeCustomPosition.x,
+          z: exterior.homeCustomPosition.z,
+          duration: 0.85,
+          ease: 'power2.inOut',
+        })
 
         gsap.to(exterior.drag, {
           target: 0,
@@ -182,16 +187,18 @@ export default {
       this.initSplitText()
     }
 
-    if (this.allLoadedActual) {
-      this.resetViewExterior()
-      this.appearHeroInit(0.75)
-    }
-
     this.setExteriorFullwidth(false)
+
+    if (this.allLoadedFake) {
+      this.appearHeroInit(0.75)
+
+      const { exterior } = useWebGL()
+
+      exterior.drag.enabled = false
+    }
 
     this.resizeObserver = new ResizeObserver(this.onResizePreviewExterior)
     this.resizeObserver.observe(this.$refs.view)
-
     this.$raf.add(`home-hero`, this.onFrame)
   },
   beforeDestroy() {
@@ -206,18 +213,6 @@ export default {
     this.$raf.remove(`home-hero`, this.onFrame)
   },
   methods: {
-    resetViewExterior() {
-      const { exterior, camera } = useWebGL()
-
-      exterior.drag.enabled = false
-
-      // exterior.position.copy(exterior.heroPosition)
-
-      camera.position.copy(exterior.initialCamera.position)
-      camera.rotation.copy(exterior.initialCamera.rotation)
-      camera.zoom = exterior.zoom.initial
-      camera.updateProjectionMatrix()
-    },
     disapearDOM() {
       this.tlAppearHero?.clear()
       this.tlAppearHero?.kill()
@@ -483,10 +478,10 @@ export default {
       )
     },
     onResizePreviewExterior() {
+      const { scissors, renderer } = useWebGL()
+
       const { left, top, height, width } =
         this.$refs.view.getBoundingClientRect()
-
-      const { scissors, renderer } = useWebGL()
 
       scissors.mask = {
         x: left,

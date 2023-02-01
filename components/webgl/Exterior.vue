@@ -36,7 +36,6 @@ export default {
         logoColor: new THREE.Color(0x161616),
       },
       azimuth: { min: -1.5, max: 0.9 },
-      directionalLightCastShadow: true,
       cloudsParams: {
         speed: 0.003,
       },
@@ -48,6 +47,10 @@ export default {
         speed: 2,
         dragSpeed: 0.0025,
         enabled: true,
+      },
+      homeCustomPosition: {
+        x: -0.0105,
+        z: -0.0115,
       },
       zoom: {
         initial: 18,
@@ -98,6 +101,9 @@ export default {
     const { exterior } = useWebGL()
 
     exterior.drag = this.drag
+    exterior.zoom = this.zoom
+
+    this.onResize()
 
     if (this.allLoadedActual) {
       this.initExterior()
@@ -113,6 +119,8 @@ export default {
       tolerance: 5,
     })
 
+    this.$viewport.events.on('resize', this.onResize)
+    this.$nuxt.$on('reset:exterior', this.resetView)
     this.$raf.add(`webgl-exterior`, this.onFrame)
   },
   beforeDestroy() {
@@ -173,9 +181,23 @@ export default {
     interactionManager.remove(this.adidasArena)
 
     this.observer?.kill()
+    this.$viewport.events.off('resize', this.onResize)
+    this.$nuxt.$off('reset:exterior', this.resetView)
     this.$raf.remove(`webgl-exterior`, this.onFrame)
   },
   methods: {
+    onResize() {
+      const { exterior } = useWebGL()
+
+      const x = this.homeCustomPosition.x * this.$viewport.width
+      const z = this.homeCustomPosition.z * this.$viewport.width
+
+      exterior.homeCustomPosition = new THREE.Vector3(x, 0, z)
+
+      if (!this.exteriorFullwidth)
+        exterior.position.copy(exterior.homeCustomPosition)
+      else exterior.position.copy(new THREE.Vector3(0, 0, 0))
+    },
     onDrag(e) {
       if (!this.drag.enabled) return
 
@@ -277,6 +299,9 @@ export default {
       this.adidasArena.addEventListener('mouseleave', this.onMouseLeaveArena)
     },
     onClickArena() {
+      if (!this.exteriorFullwidth && this.exteriorVisible) return
+
+      console.log('clickedd')
       // const { camera } = useWebGL()
       // const params = {
       //   duration: 1,
@@ -302,7 +327,7 @@ export default {
       // console.log('click')
     },
     onMouseEnterArena() {
-      if (!this.exteriorFullwidth) return
+      if (!this.exteriorFullwidth && this.exteriorVisible) return
 
       document.documentElement.style.cursor = 'pointer'
 
@@ -310,7 +335,7 @@ export default {
       this.setExteriorArenaHovered(true)
     },
     onMouseLeaveArena() {
-      if (!this.exteriorFullwidth) return
+      if (!this.exteriorFullwidth && this.exteriorVisible) return
 
       document.documentElement.style.cursor = 'initial'
 
@@ -318,20 +343,13 @@ export default {
       this.setExteriorArenaHovered(false)
     },
     initCamera() {
-      const { camera, exterior } = useWebGL()
+      const { exterior } = useWebGL()
 
       this.camera = loaderManager
         .getModel('exterior')
         .scene.getObjectByName('Camera_Zoom')
 
       exterior.initialCamera = { ...this.camera }
-
-      camera.position.copy(this.camera.position)
-      camera.rotation.copy(this.camera.rotation)
-      camera.zoom = this.zoom.current
-      camera.updateProjectionMatrix()
-
-      exterior.zoom = this.zoom
     },
     initMaterials() {
       this.modelMaterial = new THREE.MeshLambertMaterial({
@@ -399,6 +417,23 @@ export default {
 
         this.clouds.add(object)
       })
+    },
+    resetView() {
+      this.setExteriorVisible(true)
+
+      const { exterior, camera } = useWebGL()
+
+      this.drag.current = 0
+      this.drag.target = 0
+      this.drag.last = 0
+
+      camera.position.copy(exterior.initialCamera.position)
+      camera.rotation.copy(exterior.initialCamera.rotation)
+      camera.zoom = this.zoom.initial
+
+      camera.updateProjectionMatrix()
+
+      this.onResize()
     },
     initLights() {
       const { exterior } = useWebGL()
@@ -865,12 +900,17 @@ export default {
         label: 'Delay Repeat Trams',
       })
 
-      this.guiModel.addInput(exterior, 'position', {
-        x: { step: 1, max: 1000, min: -1000 },
-        y: { step: 1, max: 1000, min: -1000 },
-        z: { step: 1, max: 1000, min: -1000 },
-        label: 'Position',
-      })
+      this.guiModel
+        .addInput(exterior, 'position', {
+          x: { step: 0.0001, min: -1, max: 1 },
+          z: { step: 0.0001, min: -1, max: 1 },
+          label: 'Position',
+        })
+        .on('change', (e) => {
+          console.log(e)
+          exterior.position.x = e.value.x * this.$viewport.width
+          exterior.position.z = e.value.z * this.$viewport.width
+        })
 
       this.guiColors = this.gui.addFolder({ title: `Colors`, expanded: true })
 
@@ -939,6 +979,7 @@ export default {
     },
     ...mapMutations({
       setExteriorArenaHovered: 'setExteriorArenaHovered',
+      setExteriorVisible: 'setExteriorVisible',
     }),
     lerp(p1, p2, t) {
       return p1 + (p2 - p1) * t

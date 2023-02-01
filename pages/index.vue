@@ -136,12 +136,12 @@ export default {
     },
   },
   watch: {
-    allLoadedFake() {
-      this.setExteriorVisible(true)
-    },
+    // allLoadedFake() {
+    //   this.setExteriorVisible(true)
+    // },
   },
   mounted() {
-    if (!this.exteriorVisible) this.setExteriorVisible(true)
+    // if (!this.exteriorVisible) this.setExteriorVisible(true)
   },
   methods: {
     ...mapMutations({

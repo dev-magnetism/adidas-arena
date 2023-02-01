@@ -26,20 +26,25 @@ export default {
   },
   watch: {
     allLoadedFake() {
+      this.$nuxt.$emit('reset:exterior')
+
       const { exterior } = useWebGL()
 
       exterior.drag.enabled = true
-      exterior.zoom.enabled = false
-
-      this.setExteriorVisible(true)
     },
   },
   mounted() {
-    if (!this.exteriorVisible) this.setExteriorVisible(true)
+    if (this.allLoadedFake) {
+      this.$nuxt.$emit('reset:exterior')
+
+      const { exterior } = useWebGL()
+
+      exterior.drag.enabled = true
+    }
 
     this.setExteriorFullwidth(true)
 
-    const { scissors, renderer, exterior } = useWebGL()
+    const { scissors, renderer } = useWebGL()
 
     scissors.current = { ...scissors.hero }
 
@@ -49,8 +54,6 @@ export default {
       scissors.current.width,
       scissors.current.height
     )
-
-    exterior.position.set(0, 0, 0)
 
     ScrollTrigger.create({
       trigger: this.$el,

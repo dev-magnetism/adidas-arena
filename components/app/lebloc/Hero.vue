@@ -25,15 +25,13 @@ export default {
   },
   watch: {
     allLoadedFake() {
-      // const { exterior } = useWebGL()
-      // exterior.drag.enabled = true
-      // exterior.zoom.enabled = false
-
       this.initInteriorView()
     },
   },
   mounted() {
-    if (this.allLoadedFake) this.initInteriorView()
+    if (this.allLoadedFake) {
+      this.initInteriorView()
+    }
 
     this.scrollTrigger = ScrollTrigger.create({
       trigger: this.$el,
@@ -53,9 +51,11 @@ export default {
   },
   methods: {
     initInteriorView() {
-      this.setInteriorVisible(true)
+      this.$nuxt.$emit('reset:interior')
 
       this.setInteriorIndexFloor({ id: 2, immediate: true })
+
+      this.onResize()
     },
     onResize() {
       const { scissors, renderer } = useWebGL()

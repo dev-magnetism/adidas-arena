@@ -19,8 +19,8 @@
       ref="wrapper"
       :class="{ cursorSliderHold }"
       class="app-element-slider__wrapper"
-      @mouseenter="setCursoState('slider')"
-      @mouseleave="setCursoState('hide')"
+      @mouseenter="setCursorState('slider')"
+      @mouseleave="setCursorState('hide')"
       @click="onClickSlider"
     >
       <div class="app-element-slider__inner">
@@ -192,7 +192,7 @@ export default {
       })
     },
     ...mapMutations({
-      setCursoState: 'setCursoState',
+      setCursorState: 'setCursorState',
       setCursorSliderHold: 'setCursorSliderHold',
       setCursorSliderDisabled: 'setCursorSliderDisabled',
     }),

@@ -1,5 +1,5 @@
 <template>
-  <div class="app" :class="{ 'cursor-custom': cursoState === 'slider' }">
+  <div class="app" :class="{ 'cursor-custom': cursorState === 'slider' }">
     <div ref="layerBlue" class="app-transition-layer blue" />
     <div ref="layerRed" class="app-transition-layer red" />
     <AppCursor v-if="!$viewport.isMobile" />
@@ -32,7 +32,7 @@ export default {
 
   computed: {
     ...mapState({
-      cursoState: (state) => state.cursoState,
+      cursorState: (state) => state.cursorState,
     }),
   },
   watch: {},

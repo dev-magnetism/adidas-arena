@@ -20,15 +20,15 @@ export default {
   },
   computed: {
     ...mapState({
-      cursoState: (state) => state.cursoState,
+      cursorState: (state) => state.cursorState,
       cursorSliderHold: (state) => state.cursorSliderHold,
       cursorSliderLeftZone: (state) => state.cursorSliderLeftZone,
       cursorSliderDisabled: (state) => state.cursorSliderDisabled,
     }),
     classes() {
       return {
-        'app-cursor--slider': this.cursoState === 'slider',
-        'slider-hold': this.cursorSliderHold && this.cursoState === 'slider',
+        'app-cursor--slider': this.cursorState === 'slider',
+        'slider-hold': this.cursorSliderHold && this.cursorState === 'slider',
         'is-left': this.cursorSliderLeftZone,
         'slider-disabled': this.cursorSliderDisabled,
       }
