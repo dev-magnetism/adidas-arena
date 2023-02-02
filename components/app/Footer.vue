@@ -219,39 +219,16 @@ export default {
   methods: {
     onSubmit() {
       this.submited = true
-      console.log('here submit', this)
 
-      // const url = 'https://hooks.delight-data.com/v1/contacts'
-
-      // const xhr = new XMLHttpRequest()
-      // xhr.open('POST', url)
-
-      // xhr.setRequestHeader('Content-Type', 'application/json')
-      // xhr.setRequestHeader('x-api-key', 'MMcR9vQkDKfuug')
-
-      // xhr.onreadystatechange = function () {
-      //   if (xhr.readyState === 4) {
-      //     console.log(xhr.status)
-      //     console.log(xhr.responseText)
-      //   }
-      // }
-
-      // const data =
-      //   '[{"email": "testemail@email.com", "listname": "test_list", "misc": { optin_nl: 1 }}]'
-
-      // xhr.send(data)
-
+      const endpoint = 'https://hooks.delight-data.com/v1/contacts'
       const misc = { optin_nl: 1 }
 
-      this.$axios.$post(
-        '/api/',
-        JSON.stringify([{ listname: 'newsletter', email: this.email, misc }]),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': this.$config.apiKeyDelight,
-          },
-        }
+      const xhr = new XMLHttpRequest()
+      xhr.open('POST', endpoint)
+      xhr.setRequestHeader('Content-Type', 'application/json')
+      xhr.setRequestHeader('x-api-key', this.$config.apiKeyDelight)
+      xhr.send(
+        JSON.stringify([{ listname: 'newsletter', email: this.email, misc }])
       )
     },
     onMouseEnter() {

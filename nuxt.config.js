@@ -135,25 +135,8 @@ export default {
       },
     ],
     'nuxt-seo',
-    '@nuxtjs/axios',
   ],
 
-  axios: {
-    proxy: true,
-    prefix: process.env.BASE_URL,
-  },
-  proxy: {
-    '/api/': {
-      target: 'https://hooks.delight-data.com/v1/contacts',
-      pathRewrite: {
-        '^/api/': '',
-      },
-      changeOrigin: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    },
-  },
   seo: {
     lang: 'fr',
     language: 'French',
