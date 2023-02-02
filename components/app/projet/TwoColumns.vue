@@ -35,9 +35,9 @@
                 {{ contents.firstRow.cardParagraph }}
               </TH4>
             </div>
-            <AtomsCTA bg="blue-adidas" color="white">
+            <!-- <AtomsCTA bg="blue-adidas" color="white">
               {{ contents.firstRow.cardCtaText }}
-            </AtomsCTA>
+            </AtomsCTA> -->
           </EKinesis>
         </EParallax>
       </div>
