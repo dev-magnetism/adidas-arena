@@ -859,8 +859,8 @@ export default {
           group.public.push(part)
         }
 
-        const box = new THREE.BoxHelper(part, 0xff0000)
-        part.add(box)
+        // const box = new THREE.BoxHelper(part, 0xff0000)
+        // part.add(box)
 
         // const { interactionManager } = useWebGL()
         // interactionManager.add(part)
