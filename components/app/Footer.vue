@@ -170,8 +170,7 @@ export default {
     return {
       email: '',
       accept: false,
-      // email: 'AMMGM@GMAIL.COM',
-      // accept: true,
+
       submited: false,
     }
   },
@@ -322,6 +321,7 @@ export default {
 
       .app-footer__newsletter__successful {
         opacity: 1;
+        pointer-events: all;
       }
     }
 
@@ -335,6 +335,7 @@ export default {
       align-items: center;
       justify-content: center;
       transition: opacity 0.35s 0.35s var(--ease-in-out-cubic);
+      pointer-events: none;
 
       .H4 {
         align-self: flex-end;

@@ -69,10 +69,8 @@ export default {
   },
   data() {
     return {
-      // email: '',
-      // accept: false,
-      email: 'AMMGM@GMAIL.COM',
-      accept: true,
+      email: '',
+      accept: false,
       submited: false,
     }
   },
@@ -336,6 +334,7 @@ export default {
       }
 
       .app-contact-actus__form__successful {
+        pointer-events: all;
         opacity: 1;
       }
     }
@@ -348,6 +347,7 @@ export default {
       transform: translate(-50%, -50%);
       opacity: 0;
       transition: opacity 0.35s 0.35s var(--ease-in-out-cubic);
+      pointer-events: none;
     }
 
     &__field-mail {
