@@ -12,7 +12,9 @@
           v-for="i in 5"
           v-show="i - 1 === interiorIndexFloor.id"
           :key="'iii' + i"
-          >{{ i - 1 }}</TP2
+          >{{ i === 1 ? 'RDC' : '' }} {{ i === 2 ? '1er' : '' }}
+          {{ i === 3 ? '2ème' : '' }} {{ i === 4 ? '3ème' : '' }}
+          {{ i === 5 ? '5ème' : '' }}</TP2
         >
       </transition-group>
 
@@ -115,6 +117,7 @@ export default {
     transform-style: preserve-3d;
     flex: 1;
     align-self: center;
+    transform: translateY(-10px);
   }
 
   &__floor {

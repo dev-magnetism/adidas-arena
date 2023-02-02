@@ -293,10 +293,10 @@ export default {
         this.indexImageVisible = this.indexLinkHovered + 1
 
         if (this.indexLinkHovered !== this.menu.length - 1) {
-          this.appearLottieHovered(target, index)
+          // this.appearLottieHovered(target, index)
         }
       } else {
-        this.appearLottieHovered(target, index)
+        // this.appearLottieHovered(target, index)
       }
     },
     onLinkUnselected(target, index) {
