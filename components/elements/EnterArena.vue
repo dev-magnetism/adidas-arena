@@ -8,7 +8,7 @@
       <p>L’ARENA</p>
       <!-- <p>{{ content.title }}</p> -->
     </div>
-    <AtomsCTA ref="cta" button class="app-element-enter-arena__cta">
+    <AtomsCTA ref="cta" href="/arena" class="app-element-enter-arena__cta">
       <!-- {{ content.cta }} -->
       Découvrir le lieu
     </AtomsCTA>

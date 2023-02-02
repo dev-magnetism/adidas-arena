@@ -39,12 +39,12 @@
           class="app-footer__newsletter__accept-politic"
         >
           <input
-            id="accept-politic"
+            id="accept-politic-footer"
             v-model="accept"
             type="checkbox"
             required
           />
-          <label for="accept-politic">
+          <label for="accept-politic-footer">
             <TP2 color="grey">
               J’accepte la
               <a href="https://www.magnetism.fr/" :blank="true">

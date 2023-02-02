@@ -57,11 +57,13 @@ export default {
         last: 0,
         speed: 2,
         dragSpeed: 0.0025,
-        enabled: true,
+        enabled: false,
       },
       zoom: {
-        initial: 16,
-        current: 16,
+        initial: 14,
+        current: 14,
+        // initial: 16,
+        // current: 16,
         range: {
           min: 5,
           max: 30,
@@ -92,7 +94,7 @@ export default {
       if (newVal.id === oldVal.id) return
 
       if (newVal.immediate) {
-        this.handleImmediateTransition()
+        this.handleImmediateTransition(oldVal)
       } else {
         this.handleAnimatedTransition(oldVal)
       }
@@ -191,6 +193,7 @@ export default {
       gui.dispose()
     })
 
+    interior.floors = []
     this.observer?.kill()
     this.tlFloors?.kill()
     this.tlSwitchMiddleScene?.kill()
@@ -249,7 +252,7 @@ export default {
         )
       }
     },
-    handleImmediateTransition() {
+    handleImmediateTransition(oldVal) {
       const { camera } = useWebGL()
 
       this.drag.target = 0
@@ -258,10 +261,20 @@ export default {
 
       camera.updateProjectionMatrix()
 
+      this.$nuxt.$emit('interior:immediate-transition')
+
       this.floors.forEach((floor, index) => {
         const visible = index <= this.interiorIndexFloor.id
 
         floor.visible = visible
+
+        const isHidden =
+          (index >= oldVal.id || oldVal.id === 0) &&
+          index < this.interiorIndexFloor.id
+
+        if (isHidden) {
+          this.hideParts(floor)
+        }
 
         if (visible) {
           floor.position.copy(floor.initialPosition)
@@ -281,14 +294,16 @@ export default {
 
       const isAscendant = oldVal.id < this.interiorIndexFloor.id
 
+      this.$nuxt.$emit('interior:animated-transition')
+
       if (isAscendant) {
         this.floors.forEach((floor, index) => {
           const isTweenable =
             index <= this.interiorIndexFloor.id && !floor.visible && index !== 0
 
-          // const isHidden =
-          //   (index >= oldVal.id || oldVal.id === 0) &&
-          //   index < this.interiorIndexFloor.id
+          const isHidden =
+            (index >= oldVal.id || oldVal.id === 0) &&
+            index < this.interiorIndexFloor.id
 
           if (isTweenable) {
             this.tlFloors.to(floor.position, {
@@ -301,8 +316,9 @@ export default {
             })
           }
 
-          // if (isHidden) {
-          // }
+          if (isHidden) {
+            this.hideParts(floor)
+          }
         })
       } else {
         const reversedFloors = [...this.floors].reverse()
@@ -325,12 +341,46 @@ export default {
               },
             })
           }
+          if (reversedIndex >= this.interiorIndexFloor.id) {
+            this.appearParts(floor)
+          }
         })
       }
+    },
+    appearParts(floor) {
+      floor.materials.publicMaterial.color =
+        this.colors.public.lambertMaterialColor.clone()
+      floor.materials.publicMaterial.emissive =
+        this.colors.public.lambertMaterialEmissive.clone()
+      floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
+        this.colors.outlineColor.clone()
+      )
+      floor.materials.lineMaterial.color = this.colors.outlineColor.clone()
+      floor.materials.vipMaterial.color =
+        this.colors.vip.lambertMaterialColor.clone()
+      floor.materials.vipMaterial.emissive =
+        this.colors.vip.lambertMaterialEmissive.clone()
+    },
+    hideParts(floor) {
+      floor.materials.publicMaterial.color =
+        floor.materials.basicMaterial.color.clone()
 
-      console.log('------------')
+      floor.materials.publicMaterial.emissive =
+        floor.materials.basicMaterial.emissive.clone()
+
+      floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
+        this.colors.outlineHiddenColor.clone()
+      )
+      floor.materials.lineMaterial.color =
+        this.colors.outlineHiddenColor.clone()
+      floor.materials.vipMaterial.color =
+        floor.materials.basicMaterial.color.clone()
+      floor.materials.vipMaterial.emissive =
+        floor.materials.basicMaterial.emissive.clone()
     },
     initInterior() {
+      const { interior } = useWebGL()
+
       this.gltf = loaderManager.getModel('interior')
       this.model = this.gltf.scene
 
@@ -359,8 +409,9 @@ export default {
         this.musicScene.visible = false
       }
 
+      interior.floors = this.floors
       this.setInteriorIndexFloor({ id: 0, immediate: true })
-      this.handleImmediateTransition()
+      this.handleImmediateTransition(this.interiorIndexFloor)
     },
     initLights() {
       const { interior, scene } = useWebGL()
@@ -816,6 +867,7 @@ export default {
       group.divider = []
       group.public = []
       group.vip = []
+      group.specialObjects = []
       group.materials = this.initFloorMaterials()
       group.isGroundFloor = isGroundFloor
 
@@ -853,11 +905,18 @@ export default {
         part.add(...meshes)
         part.position.y += 0.05
 
+        const { min, max } = new THREE.Box3().setFromObject(part)
+
+        part.min = min
+        part.max = max
+
         if (part.name.includes('VIP')) {
           group.vip.push(part)
         } else {
           group.public.push(part)
         }
+
+        group.specialObjects.push(part)
 
         // const box = new THREE.BoxHelper(part, 0xff0000)
         // part.add(box)

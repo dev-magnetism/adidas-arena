@@ -12,8 +12,11 @@ export default {
         this.$nuxt.$emit('reset:exterior')
       }
 
+      // if (this.$route.name.includes('arena')) {
+      //   this.$nuxt.$emit('reset:exterior')
+      // }
       if (this.$route.name.includes('arena')) {
-        this.$nuxt.$emit('reset:exterior')
+        this.$nuxt.$emit('reset:interior')
       }
 
       if (this.$route.name.includes('le-bloc')) {
@@ -66,19 +69,25 @@ export default {
                 this.$store.commit('setInteriorVisible', false)
               }
 
+              console.log(this.$route.name)
+
               if (
                 this.$route.name.includes('le-bloc') ||
-                this.$route.name.includes('be-part-of-guests')
+                this.$route.name.includes('be-part-of-guests') ||
+                this.$route.name.includes('arena')
               ) {
                 this.$store.commit('setExteriorVisible', false)
               }
 
-              if (
-                this.$route.name.includes('index') ||
-                this.$route.name.includes('arena')
-              ) {
+              if (this.$route.name.includes('index')) {
                 this.$store.commit('setInteriorVisible', false)
               }
+              // if (
+              //   this.$route.name.includes('index') ||
+              //   this.$route.name.includes('arena')
+              // ) {
+              //   this.$store.commit('setInteriorVisible', false)
+              // }
 
               console.log('transition full done', this.$route.name)
 

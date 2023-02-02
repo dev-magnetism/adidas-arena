@@ -13,5 +13,9 @@
   justify-content: center;
   outline: 1px solid var(--c-black);
   pointer-events: none;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>

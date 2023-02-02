@@ -4,6 +4,8 @@
       <AtomsCornerPoints :size-points="12" />
       <EFloorSelector />
       <ESceneSelector />
+      <EScrollIndicator />
+      <EInteriorTags />
     </div>
   </div>
 </template>
@@ -32,8 +34,6 @@ export default {
       this.initInteriorView()
     }
 
-    console.log(this.$config.apiKeyDelight)
-
     this.scrollTrigger = ScrollTrigger.create({
       trigger: this.$el,
       start: 'top bottom',
@@ -54,7 +54,7 @@ export default {
     initInteriorView() {
       this.$nuxt.$emit('reset:interior')
 
-      this.setInteriorIndexFloor({ id: 0, immediate: true })
+      this.setInteriorIndexFloor({ id: 2, immediate: true })
 
       this.onResize()
     },

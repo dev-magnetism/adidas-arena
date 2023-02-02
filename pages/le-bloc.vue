@@ -59,6 +59,7 @@ export default {
         description: content.data.page_description_seo,
       },
     })
+
     return {
       content,
       slider,

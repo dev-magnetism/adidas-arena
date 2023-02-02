@@ -1,11 +1,10 @@
 <template>
   <div class="app-arena-hero">
-    <div class="app-arena-hero__wrapper">
+    <div class="app-arena-hero__wrapper grid-inner">
       <AtomsCornerPoints :size-points="12" />
-      <EFloorSelector />
-      <ESceneSelector />
-      <EScrollIndicator />
-      <EInteriorTags />
+      <EEnterArena
+        :class="{ hide: !exteriorArenaHovered || !exteriorFullwidth }"
+      />
     </div>
   </div>
 </template>
@@ -19,42 +18,47 @@ import useWebGL from '~/hooks/webgl'
 export default {
   computed: {
     ...mapState({
-      interiorVisible: (state) => state.interiorVisible,
+      exteriorVisible: (state) => state.exteriorVisible,
       allLoadedFake: (state) => state.allLoadedFake,
-      interiorIndexFloor: (state) => state.interiorIndexFloor,
+      exteriorArenaHovered: (state) => state.exteriorArenaHovered,
+      exteriorFullwidth: (state) => state.exteriorFullwidth,
     }),
   },
   watch: {
     allLoadedFake() {
-      this.initInteriorView()
+      this.resetView()
     },
   },
   mounted() {
     if (this.allLoadedFake) {
-      this.initInteriorView()
+      this.resetView()
     }
 
-    this.scrollTrigger = ScrollTrigger.create({
+    ScrollTrigger.create({
       trigger: this.$el,
       start: 'top bottom',
       end: 'bottom+=25% top',
-      onToggle: (self) => this.setInteriorVisible(self.isActive),
+      onToggle: (self) => this.setExteriorVisible(self.isActive),
     })
 
     this.$viewport.events.on('resize', this.onResize)
+
     this.$raf.add(`arena-hero`, this.onFrame)
   },
   beforeDestroy() {
-    this.scrollTrigger?.kill()
-
     this.$viewport.events.off('resize', this.onResize)
+
     this.$raf.remove(`arena-hero`, this.onFrame)
   },
   methods: {
-    initInteriorView() {
-      this.$nuxt.$emit('reset:interior')
+    resetView() {
+      this.setExteriorFullwidth(true)
 
-      this.setInteriorIndexFloor({ id: 4, immediate: true })
+      this.$nuxt.$emit('reset:exterior')
+
+      const { exterior } = useWebGL()
+
+      exterior.drag.enabled = true
 
       this.onResize()
     },
@@ -71,11 +75,11 @@ export default {
       )
     },
     onFrame() {
-      if (!window.lenis && !this.interiorVisible) return
+      if (!window.lenis && !this.exteriorVisible) return
 
-      const { interior, camera, scissors, renderer } = useWebGL()
+      const { exterior, camera, scissors, renderer } = useWebGL()
 
-      interior.position.y =
+      exterior.position.y =
         window.lenis.scroll / (camera.zoom - camera.zoom * 0.125)
 
       scissors.current.y = window.lenis.scroll + scissors.hero?.y
@@ -88,8 +92,8 @@ export default {
       )
     },
     ...mapMutations({
-      setInteriorVisible: 'setInteriorVisible',
-      setInteriorIndexFloor: 'setInteriorIndexFloor',
+      setExteriorVisible: 'setExteriorVisible',
+      setExteriorFullwidth: 'setExteriorFullwidth',
     }),
   },
 }

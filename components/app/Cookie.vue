@@ -9,7 +9,7 @@
         {{ appContent.data.cookies_accept }}
       </AtomsCTA>
 
-      <AtomsLink :href="'google.fr'">
+      <AtomsLink href="/cookies">
         <TP2 weight="bold"> {{ appContent.data.cookies_read_more }} </TP2>
       </AtomsLink>
     </div>

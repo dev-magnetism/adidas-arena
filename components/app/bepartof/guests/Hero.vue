@@ -4,6 +4,8 @@
       <AtomsCornerPoints :size-points="12" />
       <EFloorSelector />
       <ESceneSelector />
+      <EInteriorTags />
+      <EScrollIndicator />
     </div>
   </div>
 </template>
@@ -17,7 +19,6 @@ import useWebGL from '~/hooks/webgl'
 export default {
   computed: {
     ...mapState({
-      exteriorVisible: (state) => state.exteriorVisible,
       interiorVisible: (state) => state.interiorVisible,
       allLoadedActual: (state) => state.allLoadedActual,
       allLoadedFake: (state) => state.allLoadedFake,
@@ -53,7 +54,7 @@ export default {
     initInteriorView() {
       this.$nuxt.$emit('reset:interior')
 
-      this.setInteriorIndexFloor({ id: 2, immediate: true })
+      this.setInteriorIndexFloor({ id: 4, immediate: true })
 
       this.onResize()
     },

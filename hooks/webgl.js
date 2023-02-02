@@ -1,4 +1,4 @@
-import Stats from 'stats.js'
+// import Stats from 'stats.js'
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { InteractionManager } from 'three.interactive'
 // import { InteractionManager } from '~/assets/js/webgl/InteractiveMouse'
@@ -77,11 +77,11 @@ class GL {
 
     this.camera.position.z = 500
 
-    if (!Viewport.isMobile) {
-      this.stats = new Stats()
+    // if (!Viewport.isMobile) {
+    //   this.stats = new Stats()
 
-      document.body.appendChild(this.stats.dom)
-    }
+    //   document.body.appendChild(this.stats.dom)
+    // }
 
     // this.controls = new OrbitControls(
     //   this.camera,
@@ -173,7 +173,7 @@ class GL {
   }
 
   update({ deltaTime }) {
-    this.stats?.begin()
+    // this.stats?.begin()
 
     // this.controls.update()
 
@@ -181,7 +181,7 @@ class GL {
 
     this.renderer.render(this.scene, this.camera)
 
-    this.stats?.end()
+    // this.stats?.end()
   }
 
   destroy() {
