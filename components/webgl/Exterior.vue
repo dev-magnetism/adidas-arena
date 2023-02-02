@@ -448,16 +448,16 @@ export default {
       this.directionalLight.castShadow = true
       this.directionalLight.position.set(-100, 150, 300)
 
-      this.directionalLight.shadow.mapSize.width = 4096 // 2048
-      this.directionalLight.shadow.mapSize.height = 4096 // 2048
+      this.directionalLight.shadow.mapSize.width = 1024 // 4096
+      this.directionalLight.shadow.mapSize.height = 1024 // 4096
 
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
 
-      this.directionalLight.shadow.camera.left = -65
-      this.directionalLight.shadow.camera.right = 65
-      this.directionalLight.shadow.camera.top = 65
-      this.directionalLight.shadow.camera.bottom = -65
+      this.directionalLight.shadow.camera.left = -50
+      this.directionalLight.shadow.camera.right = 50
+      this.directionalLight.shadow.camera.top = 50
+      this.directionalLight.shadow.camera.bottom = -50
 
       exterior.add(this.directionalLight)
     },

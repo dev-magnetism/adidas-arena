@@ -56,7 +56,7 @@ class GL {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
     // THREE.BasicShadowMap
     // THREE.PCFShadowMap (default)
-    // THREE.PCFSoftShadowMap
+    // THREE.PCFSoftShadowMap (best)
     // THREE.VSMShadowMap
 
     // this.renderer.outputEncoding = THREE.sRGBEncoding
@@ -154,28 +154,6 @@ class GL {
     this.gui.addSeparator()
 
     this.gui.addInput(this.renderer, 'physicallyCorrectLights')
-
-    // this.gui
-    //   .addInput(guiObject, 'shadowMapType', {
-    //     options: {
-    //       default: 0,
-    //       basic: 1,
-    //       PCFSoft: 2,
-    //       VSMS: 3,
-    //     },
-    //   })
-    //   .on('change', (e) => {
-    //     console.log(e.value)
-    //     if (e.value === 0) {
-    //       this.renderer.shadowMap.type = THREE.PCFShadowMap
-    //     } else if (e.value === 1) {
-    //       this.renderer.shadowMap.type = THREE.BasicShadowMap
-    //     } else if (e.value === 2) {
-    //       this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
-    //     } else if (e.value === 3) {
-    //       this.renderer.shadowMap.type = THREE.VSMShadowMap
-    //     }
-    //   })
   }
 
   onWindowResize() {

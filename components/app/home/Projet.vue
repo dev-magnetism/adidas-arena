@@ -972,6 +972,7 @@ export default {
     z-index: -2;
     padding: desktop-vw(35px) desktop-vw(35px);
     transform: rotate(-2deg);
+    height: auto;
 
     picture {
       @include noise();

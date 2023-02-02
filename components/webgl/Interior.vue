@@ -50,7 +50,6 @@ export default {
         },
       },
       azimuth: { min: -1.6, max: 0.6 },
-      directionalLightIsStatic: true,
       drag: {
         ease: 0.04,
         current: 0,
@@ -180,11 +179,7 @@ export default {
 
     this.directionalLight.dispose()
 
-    if (this.directionalLightIsStatic) {
-      interior.remove(this.directionalLight)
-    } else {
-      scene.remove(this.directionalLight)
-    }
+    interior.remove(this.directionalLight)
 
     // GUI
     this.gui?.dispose()
@@ -215,6 +210,9 @@ export default {
           y: this.terrain.hidePosition.y,
           ease: 'back.in(1.5)',
           duration: 0.6,
+          onComplete: () => {
+            this.terrain.visible = false
+          },
         })
         this.tlSwitchMiddleScene.to(
           this.musicScene.position,
@@ -222,6 +220,9 @@ export default {
             y: this.musicScene.initialPosition.y,
             ease: 'back.out(1)',
             duration: 0.6,
+            onStart: () => {
+              this.musicScene.visible = true
+            },
           },
           '+=25%'
         )
@@ -230,6 +231,9 @@ export default {
           y: this.musicScene.hidePosition.y,
           ease: 'back.in(1.5)',
           duration: 0.6,
+          onComplete: () => {
+            this.musicScene.visible = false
+          },
         })
         this.tlSwitchMiddleScene.to(
           this.terrain.position,
@@ -237,6 +241,9 @@ export default {
             y: this.terrain.initialPosition.y,
             ease: 'back.out(1)',
             duration: 0.6,
+            onStart: () => {
+              this.terrain.visible = true
+            },
           },
           '+=25%'
         )
@@ -346,8 +353,10 @@ export default {
 
       if (this.interiorMusicScene) {
         this.terrain.position.copy(this.terrain.hidePosition)
+        this.terrain.visible = false
       } else {
         this.musicScene.position.copy(this.musicScene.hidePosition)
+        this.musicScene.visible = false
       }
 
       this.setInteriorIndexFloor({ id: 0, immediate: true })
@@ -366,22 +375,18 @@ export default {
       this.directionalLight.castShadow = true
       this.directionalLight.position.set(-100, 150, 300)
 
-      this.directionalLight.shadow.mapSize.width = 4096 // 2048
-      this.directionalLight.shadow.mapSize.height = 4096 // 2048
+      this.directionalLight.shadow.mapSize.width = 1024 // 4096
+      this.directionalLight.shadow.mapSize.height = 1024 // 4096
 
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
 
-      this.directionalLight.shadow.camera.left = -65
-      this.directionalLight.shadow.camera.right = 65
-      this.directionalLight.shadow.camera.top = 65
-      this.directionalLight.shadow.camera.bottom = -65
+      this.directionalLight.shadow.camera.left = -50
+      this.directionalLight.shadow.camera.right = 50
+      this.directionalLight.shadow.camera.top = 50
+      this.directionalLight.shadow.camera.bottom = -50
 
-      if (this.directionalLightIsStatic) {
-        interior.add(this.directionalLight)
-      } else {
-        scene.add(this.directionalLight)
-      }
+      interior.add(this.directionalLight)
     },
     initGUI() {
       const gui = useGUI()
