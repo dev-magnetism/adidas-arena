@@ -32,6 +32,8 @@ export default {
       this.initInteriorView()
     }
 
+    console.log(this.$config.apiKeyDelight)
+
     this.scrollTrigger = ScrollTrigger.create({
       trigger: this.$el,
       start: 'top bottom',

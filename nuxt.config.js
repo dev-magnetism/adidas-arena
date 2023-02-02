@@ -15,7 +15,10 @@ export default {
 
   publicRuntimeConfig: {
     baseURL: process.env.BASE_URL || 'https://www.adidasarena.com/',
+    apiKeyDelight: process.env.API_KEY_DELIGHT,
   },
+
+  // privateRuntimeConfig: {},
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ['~assets/scss/global.scss', '~assets/scss/main.scss'],
@@ -132,7 +135,25 @@ export default {
       },
     ],
     'nuxt-seo',
+    '@nuxtjs/axios',
   ],
+
+  axios: {
+    proxy: true,
+    baseURL: process.env.BASE_URL,
+  },
+  proxy: {
+    '/api/': {
+      target: 'https://hooks.delight-data.com/v1/contacts',
+      pathRewrite: {
+        '^/api/': '',
+      },
+      changeOrigin: true,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
+    },
+  },
 
   seo: {
     lang: 'fr',

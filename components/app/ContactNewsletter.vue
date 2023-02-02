@@ -5,7 +5,7 @@
 
       <ERichText :content="contents.title" />
 
-      <form action="#" class="app-contact-actus__form">
+      <form class="app-contact-actus__form" @submit.prevent="onSubmit">
         <input
           v-model="email"
           class="app-contact-actus__form__field-mail"
@@ -60,8 +60,8 @@ export default {
   },
   data() {
     return {
-      email: '',
-      accept: false,
+      email: 'AMMGM@GMAIL.COM',
+      accept: true,
     }
   },
   computed: {
@@ -97,6 +97,23 @@ export default {
     this.tl?.kill()
   },
   methods: {
+    onSubmit() {
+      console.log('here submit', this)
+
+      const misc = { optin_nl: 1 }
+
+      this.$axios.$post(
+        'https://hooks.delight-data.com/v1/contacts',
+        JSON.stringify([{ listname: 'newsletter', email: this.email, misc }]),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'x-api-key': this.$config.API_KEY_DELIGHT,
+          },
+        }
+      )
+    },
     onMouseEnter() {
       if (!this.validateForm) return
 
