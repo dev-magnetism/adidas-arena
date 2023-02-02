@@ -2,7 +2,10 @@
   <main class="page-be-part-of-besoins">
     <AppBepartofBesoinsIntroduction :contents="contentIntroduction" />
     <AppBepartofBesoinsArena :contents="contentArena" />
-    <AppContactQuestion :contents="contentContactQuestion" />
+    <AppContactQuestion
+      :urltemporaire="'arenaforbusiness@adidasarena.com'"
+      :contents="contentContactQuestion"
+    />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>

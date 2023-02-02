@@ -448,8 +448,13 @@ export default {
       this.directionalLight.castShadow = true
       this.directionalLight.position.set(-100, 150, 300)
 
-      this.directionalLight.shadow.mapSize.width = 1024 // 4096
-      this.directionalLight.shadow.mapSize.height = 1024 // 4096
+      this.directionalLight.shadow.mapSize.width =
+        window.devicePixelRatio !== 2 ? 1024 : 1024 // 4096
+      this.directionalLight.shadow.mapSize.height =
+        window.devicePixelRatio !== 2 ? 1024 : 1024 // 4096
+
+      console.log(this.directionalLight.shadow.mapSize.width)
+      console.log(this.directionalLight.shadow.mapSize.height)
 
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000

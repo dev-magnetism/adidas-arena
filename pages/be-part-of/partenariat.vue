@@ -3,7 +3,10 @@
     <!-- <AppGallery :contents="contentGallerie" /> -->
     <AppBepartofPartenaireIntroduction :contents="contentIntroduction" />
     <AppBepartofPartenairePartenaires :contents="contentPartners" />
-    <AppContactQuestion :contents="contentContactQuestion" />
+    <AppContactQuestion
+      :contents="contentContactQuestion"
+      :urltemporaire="'partenariat@adidasarena.com'"
+    />
     <AppContactNewsletter :contents="contentContactNewsletter" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>

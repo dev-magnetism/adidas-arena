@@ -3,7 +3,7 @@
     <ERichText class="app-contact-question__title" :content="contents.title" />
 
     <div class="app-contact-question__ask">
-      <AtomsCTA>Poser une question</AtomsCTA>
+      <AtomsCTA :href="`mailto:${urltemporaire}`">Poser une question</AtomsCTA>
     </div>
   </div>
 </template>
@@ -14,6 +14,10 @@ export default {
     contents: {
       type: Object,
       default: () => {},
+    },
+    urltemporaire: {
+      type: String,
+      default: '#',
     },
   },
 }

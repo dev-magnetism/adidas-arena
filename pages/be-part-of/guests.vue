@@ -7,7 +7,10 @@
     />
     <AppBepartofGuestsPresentation :contents="contentPresentation" />
     <ESlider :contents="contentSlider" />
-    <AppContactQuestion :contents="contentContactQuestion" />
+    <AppContactQuestion
+      :contents="contentContactQuestion"
+      :urltemporaire="'hospitalites@adidasarena.com'"
+    />
     <AppContactNewsletter :contents="contentContactNewsletter" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
