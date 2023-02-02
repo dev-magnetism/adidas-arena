@@ -963,7 +963,7 @@ export default {
     }
   }
 
-  &__framed-picture {
+  &__framed-picture.app-element-framed-picture {
     background-color: var(--c-white);
     grid-column: 8 / span 3;
     aspect-ratio: 250/315;

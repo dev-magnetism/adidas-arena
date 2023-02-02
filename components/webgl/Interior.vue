@@ -859,8 +859,14 @@ export default {
           group.public.push(part)
         }
 
-        // const box = new THREE.BoxHelper(part, 0xff0000)
-        // part.add(box)
+        const box = new THREE.BoxHelper(part, 0xff0000)
+        part.add(box)
+
+        // const { interactionManager } = useWebGL()
+        // interactionManager.add(part)
+        // part.addEventListener('click', this.onClickArena)
+        // group.addEventListener('mouseenter', this.onMouseEnterArena)
+        // group.addEventListener('mouseleave', this.onMouseLeaveArena)
 
         group.add(part)
       })
@@ -877,6 +883,15 @@ export default {
       group.hidePosition.y = height * -1 - 0.2
 
       return group
+    },
+    onClickArena(e) {
+      console.log('here onClickArena', e)
+    },
+    onMouseEnterArena() {
+      // console.log('here onMouseEnterArena')
+    },
+    onMouseLeaveArena() {
+      // console.log('here onMouseLeaveArena')
     },
     parseFloor(object) {
       const basicObject = new THREE.Group()

@@ -13,6 +13,10 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
 
+  publicRuntimeConfig: {
+    baseURL: process.env.BASE_URL || 'https://www.adidasarena.com/',
+  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ['~assets/scss/global.scss', '~assets/scss/main.scss'],
 
@@ -133,7 +137,7 @@ export default {
   seo: {
     lang: 'fr',
     language: 'French',
-    baseUrl: 'https://www.google.feeeeeeeer/',
+    baseUrl: process.env.BASE_URL || 'https://www.adidasarena.com/',
     name: 'Adidas Arena',
     templateTitle: '%name% — %title%',
     keywords: 'adidas, arena, sports, concerts',
