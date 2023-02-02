@@ -139,21 +139,21 @@ export default {
   ],
 
   axios: {
-    proxy: true,
+    // proxy: true,
     baseURL: process.env.BASE_URL,
   },
-  proxy: {
-    '/api/': {
-      target: 'https://hooks.delight-data.com/v1/contacts',
-      pathRewrite: {
-        '^/api/': '',
-      },
-      changeOrigin: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    },
-  },
+  // proxy: {
+  //   '/api/': {
+  //     target: 'https://hooks.delight-data.com/v1/contacts',
+  //     pathRewrite: {
+  //       '^/api/': '',
+  //     },
+  //     changeOrigin: true,
+  //     headers: {
+  //       'Access-Control-Allow-Origin': '*',
+  //     },
+  //   },
+  // },
 
   seo: {
     lang: 'fr',

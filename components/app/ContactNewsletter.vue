@@ -109,7 +109,7 @@ export default {
           headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
-            'x-api-key': this.$config.API_KEY_DELIGHT,
+            'x-api-key': this.$config.apiKeyDelight,
           },
         }
       )
