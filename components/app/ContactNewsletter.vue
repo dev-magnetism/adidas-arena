@@ -5,7 +5,15 @@
 
       <ERichText :content="contents.title" />
 
-      <form class="app-contact-actus__form" @submit.prevent="onSubmit">
+      <form
+        :class="{ submited }"
+        class="app-contact-actus__form"
+        @submit.prevent="onSubmit"
+      >
+        <div class="app-contact-actus__form__successful">
+          <TH2 weight="bold">{{ appContent.data.newsletter_big_text }}</TH2>
+          <TH4>{{ appContent.data.newsletter_text }}</TH4>
+        </div>
         <input
           v-model="email"
           class="app-contact-actus__form__field-mail"
@@ -50,6 +58,7 @@
 
 <script>
 import { gsap } from 'gsap'
+import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -60,11 +69,17 @@ export default {
   },
   data() {
     return {
-      email: 'AMMGM@GMAIL.COM',
-      accept: true,
+      email: '',
+      accept: false,
+      // email: 'AMMGM@GMAIL.COM',
+      // accept: true,
+      submited: false,
     }
   },
   computed: {
+    ...mapState({
+      appContent: (state) => state.appContent,
+    }),
     validateForm() {
       /* eslint-disable-next-line */ const reg =
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
@@ -73,6 +88,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.appContent)
     this.tl = gsap.timeline({
       paused: true,
     })
@@ -98,17 +114,37 @@ export default {
   },
   methods: {
     onSubmit() {
+      this.submited = true
       console.log('here submit', this)
+
+      // const url = 'https://hooks.delight-data.com/v1/contacts'
+
+      // const xhr = new XMLHttpRequest()
+      // xhr.open('POST', url)
+
+      // xhr.setRequestHeader('Content-Type', 'application/json')
+      // xhr.setRequestHeader('x-api-key', 'MMcR9vQkDKfuug')
+
+      // xhr.onreadystatechange = function () {
+      //   if (xhr.readyState === 4) {
+      //     console.log(xhr.status)
+      //     console.log(xhr.responseText)
+      //   }
+      // }
+
+      // const data =
+      //   '[{"email": "testemail@email.com", "listname": "test_list", "misc": { optin_nl: 1 }}]'
+
+      // xhr.send(data)
 
       const misc = { optin_nl: 1 }
 
       this.$axios.$post(
-        'https://hooks.delight-data.com/v1/contacts',
+        '/api/',
         JSON.stringify([{ listname: 'newsletter', email: this.email, misc }]),
         {
           headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
             'x-api-key': this.$config.apiKeyDelight,
           },
         }
@@ -303,12 +339,38 @@ export default {
     margin-top: desktop-vw(20px);
     justify-content: center;
     width: 85%;
+    position: relative;
 
     @include mobile {
       margin-top: mobile-vw(20px);
       display: flex;
       flex-flow: column wrap;
       width: 100%;
+    }
+
+    &.submited {
+      .app-contact-actus__form__field-mail,
+      .app-contact-actus__form__submit,
+      .app-contact-actus__accept-politic {
+        opacity: 0;
+        pointer-events: none;
+
+        transition: opacity 0.35s var(--ease-in-out-cubic);
+      }
+
+      .app-contact-actus__form__successful {
+        opacity: 1;
+      }
+    }
+
+    &__successful {
+      position: absolute;
+      text-align: center;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.35s 0.35s var(--ease-in-out-cubic);
     }
 
     &__field-mail {

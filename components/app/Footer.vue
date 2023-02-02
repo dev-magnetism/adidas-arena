@@ -4,7 +4,17 @@
       <TH2 weight="bold" color="grey" class="app-footer__newsletter-title">
         {{ contents.data.footer_title }}
       </TH2>
-      <form id="form1" action="#" class="app-footer__newsletter">
+      <form
+        :class="{ submited }"
+        class="app-footer__newsletter"
+        @submit.prevent="onSubmit"
+      >
+        <div class="app-footer__newsletter__successful">
+          <TH2 weight="bold" color="red-adidas">
+            {{ appContent.data.newsletter_big_text }}
+          </TH2>
+          <TH4 color="white">{{ appContent.data.newsletter_text }}</TH4>
+        </div>
         <input
           v-model="email"
           class="app-footer__newsletter__field-mail"
@@ -143,7 +153,7 @@
 <script>
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 
 export default {
   props: {
@@ -160,9 +170,15 @@ export default {
     return {
       email: '',
       accept: false,
+      // email: 'AMMGM@GMAIL.COM',
+      // accept: true,
+      submited: false,
     }
   },
   computed: {
+    ...mapState({
+      appContent: (state) => state.appContent,
+    }),
     validateForm() {
       /* eslint-disable-next-line */ const reg =
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
@@ -201,6 +217,43 @@ export default {
     this.tl?.kill()
   },
   methods: {
+    onSubmit() {
+      this.submited = true
+      console.log('here submit', this)
+
+      // const url = 'https://hooks.delight-data.com/v1/contacts'
+
+      // const xhr = new XMLHttpRequest()
+      // xhr.open('POST', url)
+
+      // xhr.setRequestHeader('Content-Type', 'application/json')
+      // xhr.setRequestHeader('x-api-key', 'MMcR9vQkDKfuug')
+
+      // xhr.onreadystatechange = function () {
+      //   if (xhr.readyState === 4) {
+      //     console.log(xhr.status)
+      //     console.log(xhr.responseText)
+      //   }
+      // }
+
+      // const data =
+      //   '[{"email": "testemail@email.com", "listname": "test_list", "misc": { optin_nl: 1 }}]'
+
+      // xhr.send(data)
+
+      const misc = { optin_nl: 1 }
+
+      this.$axios.$post(
+        '/api/',
+        JSON.stringify([{ listname: 'newsletter', email: this.email, misc }]),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': this.$config.apiKeyDelight,
+          },
+        }
+      )
+    },
     onMouseEnter() {
       if (!this.validateForm) return
 
@@ -278,6 +331,39 @@ export default {
     flex-flow: row wrap;
     align-items: center;
     margin-top: desktop-vw(10px);
+    position: relative;
+
+    &.submited {
+      .app-footer__newsletter__field-mail,
+      .app-footer__newsletter__submit,
+      .app-footer__newsletter__accept-politic {
+        opacity: 0;
+        pointer-events: none;
+
+        transition: opacity 0.35s var(--ease-in-out-cubic);
+      }
+
+      .app-footer__newsletter__successful {
+        opacity: 1;
+      }
+    }
+
+    &__successful {
+      position: absolute;
+      text-align: center;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.35s 0.35s var(--ease-in-out-cubic);
+
+      .H4 {
+        align-self: flex-end;
+        margin-left: 10px;
+      }
+    }
 
     @include mobile {
       margin-top: mobile-vw(20px);
