@@ -111,10 +111,10 @@ export default {
   },
   methods: {
     onClickTest() {
-      console.log('onClickTest')
+      // console.log('onClickTest')
     },
     onClickSlider(e) {
-      console.log('click')
+      // console.log('click')
       // this.setCursorSliderHold(false)
 
       const isLeft = e.clientX < this.$viewport.width / 2
@@ -137,8 +137,7 @@ export default {
     },
     onPointerDown() {
       // this.setCursorSliderHold(true)
-
-      console.log('onPointerDown')
+      // console.log('onPointerDown')
     },
 
     onPointerUp() {

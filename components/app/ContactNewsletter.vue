@@ -86,7 +86,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.appContent)
     this.tl = gsap.timeline({
       paused: true,
     })

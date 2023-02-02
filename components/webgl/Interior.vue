@@ -105,7 +105,7 @@ export default {
     interiorVisible(payload) {
       const { interior } = useWebGL()
 
-      console.log('here', payload)
+      // console.log('here', payload)
 
       interior.visible = payload
     },
@@ -597,7 +597,7 @@ export default {
       interior.initialCamera = { ...this.cameraBase }
     },
     resetView() {
-      console.log('reset interior')
+      // console.log('reset interior')
 
       this.setInteriorVisible(true)
 
@@ -944,7 +944,7 @@ export default {
       return group
     },
     onClickArena(e) {
-      console.log('here onClickArena', e)
+      // console.log('here onClickArena', e)
     },
     onMouseEnterArena() {
       // console.log('here onMouseEnterArena')

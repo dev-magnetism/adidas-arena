@@ -146,12 +146,11 @@ export default {
   },
   methods: {
     onAnimatedTransition() {
-      console.log('here')
+      // console.log('here')
     },
     onImmediateTransition() {
-      console.log('here')
-
-      console.log()
+      // console.log('here')
+      // console.log()
     },
     onFrame() {
       // const { interior } = useWebGL()

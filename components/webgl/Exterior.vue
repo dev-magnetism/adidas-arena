@@ -299,9 +299,8 @@ export default {
       this.adidasArena.addEventListener('mouseleave', this.onMouseLeaveArena)
     },
     onClickArena() {
-      if (!this.exteriorFullwidth || !this.exteriorVisible) return
-
-      console.log('clickedd', this.exteriorFullwidth)
+      // if (!this.exteriorFullwidth || !this.exteriorVisible) return
+      // console.log('clickedd', this.exteriorFullwidth)
       // const { camera } = useWebGL()
       // const params = {
       //   duration: 1,
@@ -453,8 +452,8 @@ export default {
       this.directionalLight.shadow.mapSize.height =
         window.devicePixelRatio !== 2 ? 1024 : 1024 // 4096
 
-      console.log(this.directionalLight.shadow.mapSize.width)
-      console.log(this.directionalLight.shadow.mapSize.height)
+      // console.log(this.directionalLight.shadow.mapSize.width)
+      // console.log(this.directionalLight.shadow.mapSize.height)
 
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
