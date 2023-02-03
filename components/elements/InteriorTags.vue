@@ -27,7 +27,7 @@
 
 <script>
 import { mapState } from 'vuex'
-// import useWebGL from '~/hooks/webgl'
+import useWebGL from '~/hooks/webgl'
 
 export default {
   data() {
@@ -35,6 +35,7 @@ export default {
       floors: [
         {
           name: 'RDC',
+          positionMobile: new THREE.Vector3(-15, 0, 0),
           zones: [
             {
               name: 'ESPACE DE CIRCULATION',
@@ -63,6 +64,8 @@ export default {
         },
         {
           name: '1',
+          positionMobile: new THREE.Vector3(-15, 0, 0),
+
           zones: [
             {
               name: 'LES SALONS',
@@ -74,6 +77,7 @@ export default {
         },
         {
           name: '2',
+          positionMobile: new THREE.Vector3(-20, 0, 0),
           zones: [
             {
               name: 'LE BLOC',
@@ -98,6 +102,7 @@ export default {
         },
         {
           name: '3',
+          positionMobile: new THREE.Vector3(20, 0, 0),
           zones: [
             {
               name: 'LE ROOFTOP',
@@ -109,6 +114,7 @@ export default {
         },
         {
           name: '4',
+          positionMobile: new THREE.Vector3(-30, 0, 0),
           zones: [
             {
               name: 'LES GYM’S',
@@ -132,6 +138,9 @@ export default {
       interiorIndexFloor: (state) => state.interiorIndexFloor,
     }),
   },
+  watch: {
+    interiorIndexFloor(newVal) {},
+  },
   mounted() {
     this.$raf.add(`interior-tags`, this.onFrame)
 
@@ -146,9 +155,23 @@ export default {
   },
   methods: {
     onAnimatedTransition() {
+      const { interior } = useWebGL()
+
+      if (this.$viewport.isMobile)
+        interior.position.copy(
+          this.floors[this.interiorIndexFloor.id].positionMobile
+        )
+
       // console.log('here')
     },
     onImmediateTransition() {
+      const { interior } = useWebGL()
+
+      if (this.$viewport.isMobile)
+        interior.position.copy(
+          this.floors[this.interiorIndexFloor.id].positionMobile
+        )
+
       // console.log('here')
       // console.log()
     },
@@ -212,10 +235,22 @@ export default {
     &.PUBLIC_Room_002 {
       top: 65vh;
       left: 15%;
+
+      @include mobile {
+        bottom: 12%;
+        top: initial;
+        left: 0;
+        width: 250px;
+      }
     }
     &.VIP_Room_003 {
       top: 42vh;
       left: 58%;
+
+      @include mobile {
+        top: 48%;
+        left: 5%;
+      }
       .P2 {
         width: 220px;
       }
@@ -223,20 +258,41 @@ export default {
     &.PUBLIC_Room_004 {
       top: 15vh;
       right: 20%;
+
+      @include mobile {
+        top: 25%;
+        right: 0;
+      }
       .P2 {
         width: 250px;
+
+        @include mobile {
+          width: 150px;
+        }
       }
     }
     &.VIP_area {
       top: 25vh;
       right: 15%;
+
+      @include mobile {
+        top: 8vh;
+      }
       .P2 {
         width: 250px;
+        @include mobile {
+          width: 150px;
+        }
       }
     }
     &.VIP_Loge {
       top: 25vh;
       left: 25%;
+      @include mobile {
+        top: initial;
+        left: 0;
+        bottom: 25%;
+      }
       .P2 {
         width: 250px;
       }
@@ -244,6 +300,11 @@ export default {
     &.PUBLIC_Cantine {
       top: 40vh;
       right: 5%;
+
+      @include mobile {
+        top: 15%;
+        right: 0;
+      }
       .P2 {
         width: 250px;
       }
@@ -251,22 +312,50 @@ export default {
     &.PUBLIC_Terrasse {
       bottom: 5vh;
       left: 5%;
+
+      @include mobile {
+        bottom: 50%;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
       .P2 {
         width: 250px;
+        @include mobile {
+          width: 150px;
+        }
       }
     }
     &.PUBLIC_Terrain_002 {
       top: 15vh;
       left: 50%;
+
+      @include mobile {
+        top: 12%;
+        left: initial;
+        right: 0;
+      }
       .P2 {
         width: 250px;
+        @include mobile {
+          width: 150px;
+        }
       }
     }
     &.VIP_Skybar {
       bottom: 30vh;
       left: 50%;
+
+      @include mobile {
+        bottom: 12%;
+        left: 50%;
+        transform: translateX(-50%);
+      }
       .P2 {
         width: 250px;
+        @include mobile {
+          width: 150px;
+        }
       }
     }
   }

@@ -444,6 +444,15 @@ export default {
 
       this.gui = gui.addFolder({ title: `Interior` })
 
+      const { interior } = useWebGL()
+
+      this.gui.addInput(interior, 'position', {
+        x: { step: 1, max: 1000, min: -1000 },
+        y: { step: 1, max: 1000, min: -1000 },
+        z: { step: 1, max: 1000, min: -1000 },
+        label: 'Position',
+      })
+
       this.guiModelColors = this.gui.addFolder({
         title: `Colors`,
         expanded: false,
@@ -609,6 +618,10 @@ export default {
 
       camera.position.copy(interior.initialCamera.position)
       camera.rotation.copy(interior.initialCamera.rotation)
+
+      this.zoom.initial = this.$viewport.isMobile ? 10 : this.zoom.initial
+      this.zoom.current = this.$viewport.isMobile ? 10 : this.zoom.current
+
       camera.zoom = this.zoom.initial
 
       camera.updateProjectionMatrix()

@@ -518,7 +518,7 @@ export default {
         onToggle: (self) => {
           this.setExteriorVisible(self.isActive)
 
-          if (self.isActive && this.exteriorVisible) {
+          if (self.isActive || this.exteriorVisible) {
             this.onResizePreviewExterior()
           }
         },

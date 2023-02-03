@@ -68,6 +68,10 @@ export default {
   width: 170px;
   height: 80px;
 
+  @include mobile {
+    display: none;
+  }
+
   &__wrapper {
     display: flex;
     flex-direction: row;

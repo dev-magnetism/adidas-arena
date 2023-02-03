@@ -20,7 +20,9 @@
       >
         {{ contents.paragraph }}
       </TP2>
-      <AtomsCTA class="partners-apparition">Devenir partenaire</AtomsCTA>
+      <AtomsCTA :href="contents.ctaLink" class="partners-apparition">
+        {{ contents.ctaTitle }}
+      </AtomsCTA>
     </div>
     <EGridLogos
       :cols="!$viewport.isMobile ? 6 : 4"

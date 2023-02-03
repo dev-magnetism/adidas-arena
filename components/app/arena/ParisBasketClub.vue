@@ -124,6 +124,10 @@ export default {
   position: relative;
   margin-top: desktop-vw(100px);
 
+  @include mobile {
+    margin-top: mobile-vw(100px);
+  }
+
   &__lottie-arrow.app-element-lottie {
     position: absolute;
     grid-column: 6 / span 1;

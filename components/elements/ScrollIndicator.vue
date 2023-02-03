@@ -17,5 +17,9 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
+
+  @include mobile {
+    padding: mobile-vw(20px) mobile-vw(20px);
+  }
 }
 </style>

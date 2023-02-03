@@ -21,7 +21,7 @@
       >
         {{ contents.paragraph }}
       </TP2>
-      <AtomsCTA ref="cta" :href="contents.ctaLink" class="partners-apparition">
+      <AtomsCTA :href="contents.ctaLink" class="partners-apparition">
         {{ contents.ctaTitle }}
       </AtomsCTA>
     </div>

@@ -146,13 +146,13 @@ export default {
     lang: 'fr',
     language: 'French',
     baseUrl: process.env.BASE_URL || 'https://www.adidasarena.com/',
-    name: 'Adidas Arena',
+    name: 'adidas arena',
     templateTitle: '%name% — %title%',
     keywords: 'adidas, arena, sports, concerts',
     image: '/seo.jpg',
     openGraph: {
       type: 'website',
-      name: 'Adidas Arena',
+      name: 'adidas arena',
       image: {
         url: '/seo.jpg',
       },

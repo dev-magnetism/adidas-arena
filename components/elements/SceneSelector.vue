@@ -42,6 +42,12 @@ export default {
   right: 20px;
   display: flex;
 
+  @include mobile {
+    left: 0;
+    right: initial;
+    bottom: 0;
+  }
+
   &__icon {
     width: desktop-vw(40px);
     min-width: 40px;
@@ -52,6 +58,13 @@ export default {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+
+    @include mobile {
+      width: mobile-vw(40px);
+      min-width: 40px;
+      height: mobile-vw(40px);
+      border-bottom: none;
+    }
 
     &.active {
       background-color: var(--c-blue-adidas);

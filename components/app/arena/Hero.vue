@@ -3,6 +3,7 @@
     <div class="app-arena-hero__wrapper">
       <AtomsCornerPoints :size-points="12" />
       <EFloorSelector />
+      <EFloorSelectorMobile />
       <ESceneSelector />
       <EScrollIndicator />
       <EInteriorTags />
@@ -100,6 +101,10 @@ export default {
   height: 100vh;
   padding: var(--layout-margin);
   position: relative;
+
+  @include mobile {
+    height: calc(100 * var(--vh, 1vh));
+  }
 
   &__wrapper {
     position: relative;
