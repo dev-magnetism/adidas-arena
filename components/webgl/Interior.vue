@@ -830,7 +830,7 @@ export default {
       )
     },
     onFrame({ time, deltaTime, frame, deltaRatio }) {
-      if (!this.interiorVisible) return
+      if (!this.interiorVisible || this.$viewport.isMobile) return
 
       const { interior } = useWebGL()
 
