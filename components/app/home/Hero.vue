@@ -76,7 +76,6 @@
               : 'line-1, line-4'
           "
         />
-        {{ $viewport.isMobile }}
         <SvgHomeHeroSticker
           :class="{ hide: viewExteriorOpen }"
           class="app-home-hero__sticker"
@@ -187,6 +186,7 @@ export default {
     if (this.allLoadedFake && !this.$viewport.isMobile) {
       this.initSplitText()
       this.appearHeroInit(0.75)
+      this.resetView()
     } else if (this.allLoadedFake) {
       this.resetView()
     }
