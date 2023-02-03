@@ -31,27 +31,28 @@ export default {
 
     return pageTransition.basic
   },
-  async asyncData({ $directus, $seo, store }) {
+  async asyncData({ $directus }) {
     const content = await $directus.items('Homepage').readByQuery({
       limit: -1,
-    })
-
-    $seo({
-      title: content.data.page_title,
-      description: content.data.page_description_seo,
-      openGraph: {
-        title: store.state.appContent.data.seo_title,
-        description: content.data.page_description_seo,
-      },
-      twitter: {
-        title: store.state.appContent.data.seo_title,
-        description: content.data.page_description_seo,
-      },
     })
 
     return {
       content,
     }
+  },
+  head({ $seo }) {
+    return $seo({
+      title: this.content.data.page_title,
+      description: this.content.data.page_description_seo,
+      openGraph: {
+        title: this.appContent.data.seo_title,
+        description: this.content.data.page_description_seo,
+      },
+      twitter: {
+        title: this.appContent.data.seo_title,
+        description: this.content.data.page_description_seo,
+      },
+    })
   },
   computed: {
     ...mapState({

@@ -31,29 +31,29 @@ export default {
   mixins: [scroll],
   layout: 'second-layout',
 
-  async asyncData({ $directus, $seo }) {
+  async asyncData({ $directus }) {
     const content = await $directus.items('Communique_de_presse').readByQuery({
       limit: -1,
-    })
-
-    $seo({
-      title: content.data.page_title,
-      description: content.data.page_description_seo,
-      openGraph: {
-        title: content.data.page_title,
-        description: content.data.page_description_seo,
-      },
-      twitter: {
-        title: content.data.page_title,
-        description: content.data.page_description_seo,
-      },
     })
 
     return {
       content,
     }
   },
-
+  head({ $seo }) {
+    return $seo({
+      title: this.content.data.page_title,
+      description: this.content.data.page_description_seo,
+      openGraph: {
+        title: this.content.data.page_title,
+        description: this.content.data.page_description_seo,
+      },
+      twitter: {
+        title: this.content.data.page_title,
+        description: this.content.data.page_description_seo,
+      },
+    })
+  },
   mounted() {
     this.lenis.start()
   },

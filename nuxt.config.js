@@ -136,9 +136,10 @@ export default {
   'nuxt-compress': {
     gzip: {
       threshold: 8192,
+      cache: true,
     },
     brotli: {
-      threshold: 8192,
+      threshold: 10240,
     },
   },
 
