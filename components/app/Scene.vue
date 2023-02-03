@@ -32,8 +32,8 @@ export default {
 <style lang="scss">
 .app-webgl {
   position: fixed;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   left: 0;
   top: 0;
   z-index: 0;

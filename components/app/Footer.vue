@@ -186,7 +186,7 @@ export default {
     },
   },
   mounted() {
-    ScrollTrigger.create({
+    this.scrollTrigger = ScrollTrigger.create({
       trigger: this.$el,
       start: 'top-=10% top',
       onToggle: (self) => this.setHeaderWhite(self.isActive),
@@ -213,7 +213,10 @@ export default {
     })
   },
   beforeDestroy() {
+    this.tl?.clear()
     this.tl?.kill()
+
+    this.scrollTrigger?.kill()
   },
   methods: {
     onSubmit() {
@@ -583,6 +586,10 @@ export default {
 
       a:not(:first-child) {
         margin-top: desktop-vw(6px);
+
+        @include mobile {
+          margin-top: mobile-vw(10px);
+        }
       }
     }
   }
@@ -692,6 +699,8 @@ export default {
 
       @include mobile {
         padding: mobile-vw(15px) mobile-vw(15px);
+        font-size: mobile-vw(12px);
+        line-height: mobile-vw(18px);
       }
     }
 
@@ -705,6 +714,11 @@ export default {
       svg {
         width: auto;
         height: 65%;
+
+        @include mobile {
+          width: auto;
+          height: 45%;
+        }
       }
     }
   }

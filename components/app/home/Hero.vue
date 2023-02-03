@@ -4,7 +4,6 @@
       <EEnterArena
         :class="{ hide: !exteriorArenaHovered || !exteriorFullwidth }"
       />
-
       <AtomsCTABack
         :class="{ hide: !viewExteriorOpen || !DOMVisible }"
         @click.native="onVisit()"
@@ -70,7 +69,13 @@
             {{ contents.coordinate }}
           </AtomsTitleTag>
         </div>
-        <AtomsCornerPoints lines-position="line-1, line-4" />
+        <AtomsCornerPoints
+          :lines-position="
+            $viewport.isMobile
+              ? 'line-1, line-2, line-3, line-4'
+              : 'line-1, line-4'
+          "
+        />
 
         <SvgHomeHeroSticker
           :class="{ hide: viewExteriorOpen }"
@@ -132,18 +137,18 @@ export default {
   },
   watch: {
     fontsLoaded(payload) {
-      if (!payload) return
+      if (!payload || this.$viewport.isMobile) return
 
       this.initSplitText()
     },
-
     initialHeroDisplayed(payload) {
-      if (!payload) return
+      if (!payload || this.$viewport.isMobile) return
 
       this.appearHeroInit(0.1)
     },
     allLoadedFake() {
       this.resetView()
+      this.onResizePreviewExterior()
     },
     viewExteriorOpen(payload) {
       const { exterior } = useWebGL()
@@ -157,7 +162,7 @@ export default {
           ease: 'power1.inOut',
         })
 
-        this.disapearDOM()
+        if (!this.$viewport.isMobile) this.disapearDOM()
       } else {
         gsap.to(exterior.position, {
           x: exterior.homeCustomPosition.x,
@@ -172,32 +177,38 @@ export default {
           ease: 'power2.inOut',
         })
 
-        this.appearDOM()
+        if (!this.$viewport.isMobile) this.appearDOM()
       }
     },
   },
   mounted() {
-    if (this.fontsLoaded) {
+    this.initScrollTrigger()
+
+    if (this.allLoadedFake && !this.$viewport.isMobile) {
       this.initSplitText()
+      this.appearHeroInit(0.75)
+    } else if (this.allLoadedFake) {
+      this.resetView()
     }
 
-    console.log('here here')
-
-    if (this.allLoadedFake) {
-      this.appearHeroInit(0.75)
-      this.resetView()
+    if (this.$viewport.isMobile) {
+      this.DOMVisible = true
+      this.onResizePreviewExterior()
     }
 
     this.resizeObserver = new ResizeObserver(this.onResizePreviewExterior)
     this.resizeObserver.observe(this.$refs.view)
+
     this.$raf.add(`home-hero`, this.onFrame)
   },
 
   beforeDestroy() {
-    this.resizeObserver.unobserve(this.$refs.view)
+    this.resizeObserver?.unobserve(this.$refs.view)
 
     this.tl?.clear()
     this.tl?.kill()
+
+    this.scrollTrigger?.kill()
 
     this.tlAppearHero?.clear()
     this.tlAppearHero?.kill()
@@ -441,25 +452,29 @@ export default {
     onVisit() {
       const { exterior } = useWebGL()
 
-      this.viewExteriorOpen = !this.viewExteriorOpen
-      this.setExteriorFullwidth(!this.exteriorFullwidth)
+      if (this.$viewport.isMobile) {
+        // fdsfs
+      } else {
+        this.viewExteriorOpen = !this.viewExteriorOpen
+        this.setExteriorFullwidth(!this.exteriorFullwidth)
 
-      exterior.drag.enabled = this.viewExteriorOpen
+        exterior.drag.enabled = this.viewExteriorOpen
 
-      const state = Flip.getState(this.$refs.view)
+        const state = Flip.getState(this.$refs.view)
 
-      this.$refs.view.classList.toggle('fullwidth')
+        this.$refs.view.classList.toggle('fullwidth')
 
-      Flip.from(state, {
-        absolute: true,
-        duration: 0.65,
-        delay: 0.15,
+        Flip.from(state, {
+          absolute: true,
+          duration: 0.65,
+          delay: 0.15,
 
-        onUpdate: () => {
-          this.onResizePreviewExterior()
-        },
-        ease: 'power1.inOut',
-      })
+          onUpdate: () => {
+            this.onResizePreviewExterior()
+          },
+          ease: 'power1.inOut',
+        })
+      }
     },
     onFrame() {
       if (!window.lenis && !this.exteriorVisible) return
@@ -467,9 +482,10 @@ export default {
       const { exterior, camera, renderer, scissors } = useWebGL()
 
       exterior.position.y =
-        window.lenis.scroll / (camera.zoom - camera.zoom * 0.125)
+        (window.lenis?.scroll + scissors.mask?.y) /
+        (camera.zoom - camera.zoom * 0.125)
 
-      scissors.current.y = window.lenis.scroll + scissors.mask?.y
+      scissors.current.y = window.lenis?.scroll + scissors.mask?.y
 
       renderer.setScissor(
         scissors.current.x,
@@ -486,7 +502,7 @@ export default {
 
       scissors.mask = {
         x: left,
-        y: this.$viewport.height - top - height - window.lenis.scroll,
+        y: this.$viewport.height - top - height - window.lenis?.scroll,
         width,
         height,
       }
@@ -501,34 +517,40 @@ export default {
       )
     },
     initScrollTrigger() {
-      ScrollTrigger.create({
+      this.scrollTrigger = ScrollTrigger.create({
         trigger: this.$el,
         start: 'top bottom',
         end: 'bottom+=15% top',
-        onToggle: (self) => this.setExteriorVisible(self.isActive),
-      })
+        onToggle: (self) => {
+          this.setExteriorVisible(self.isActive)
 
-      gsap.to(this.$refs.firstVisual, {
-        yPercent: -50,
-        rotate: -6,
-        scrollTrigger: {
-          trigger: this.$el,
-          scrub: 0.5,
-          start: 'top top',
-        },
-      })
-
-      gsap.to(this.$refs.secondVisual, {
-        yPercent: -50,
-        rotate: 6,
-        scrollTrigger: {
-          trigger: this.$el,
-          scrub: 0.5,
-          start: 'top top',
+          if (self.isActive) {
+            this.onResizePreviewExterior()
+          }
         },
       })
 
       if (!this.$viewport.isMobile) {
+        gsap.to(this.$refs.firstVisual, {
+          yPercent: -50,
+          rotate: -6,
+          scrollTrigger: {
+            trigger: this.$el,
+            scrub: 0.5,
+            start: 'top top',
+          },
+        })
+
+        gsap.to(this.$refs.secondVisual, {
+          yPercent: -50,
+          rotate: 6,
+          scrollTrigger: {
+            trigger: this.$el,
+            scrub: 0.5,
+            start: 'top top',
+          },
+        })
+
         this.tl = gsap.timeline({ repeat: -1, repeatDelay: 5 })
 
         this.tl.to(this.$refs.union.$el, {
@@ -626,34 +648,47 @@ export default {
     @include mobile {
       border: none;
     }
-  }
-
-  .app-element-scroll-indicator {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    transition: opacity 0.35s var(--ease-in-out-cubic);
-    transition-delay: 0.65s;
-
-    &.hide {
-      opacity: 0;
-      pointer-events: none;
-      transition-delay: 0s;
+    .app-element-enter-arena {
+      @include mobile {
+        display: none;
+      }
     }
-  }
 
-  .app-atoms-cta-back {
-    transition: opacity 0.35s var(--ease-in-out-cubic);
-    transition-delay: 0.65s;
-    top: desktop-vw(25px);
-    left: desktop-vw(25px);
-    position: absolute;
+    .app-element-scroll-indicator {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: opacity 0.35s var(--ease-in-out-cubic);
+      transition-delay: 0.65s;
 
-    &.hide {
-      opacity: 0;
-      pointer-events: none;
-      transition-delay: 0s;
+      @include mobile {
+        display: none;
+      }
+
+      &.hide {
+        opacity: 0;
+        pointer-events: none;
+        transition-delay: 0s;
+      }
+    }
+
+    .app-atoms-cta-back {
+      transition: opacity 0.35s var(--ease-in-out-cubic);
+      transition-delay: 0.65s;
+      top: desktop-vw(25px);
+      left: desktop-vw(25px);
+      position: absolute;
+
+      @include mobile {
+        display: none;
+      }
+
+      &.hide {
+        opacity: 0;
+        pointer-events: none;
+        transition-delay: 0s;
+      }
     }
   }
 
@@ -711,18 +746,19 @@ export default {
     transform-origin: right bottom;
     will-change: transform, width, height;
 
+    @include mobile {
+      grid-column: 1 / span 6;
+      height: 100%;
+      aspect-ratio: 345 / 665;
+      margin-top: mobile-vw(120px);
+      width: 100%;
+      position: relative;
+    }
+
     &.fullwidth {
       grid-column: 1 / span 12;
       max-height: 100%;
       height: 100%;
-    }
-
-    @include mobile {
-      grid-column: 1 / span 6;
-      height: auto;
-      aspect-ratio: 345 / 665;
-      margin-top: mobile-vw(135px);
-      width: 100%;
     }
 
     @include desktop {
@@ -828,6 +864,12 @@ export default {
     position: relative;
     left: -5%;
 
+    @include mobile {
+      grid-column: 1 / span 6;
+      max-width: 100%;
+      left: 0%;
+    }
+
     &.hide {
       pointer-events: none;
     }
@@ -842,18 +884,13 @@ export default {
 
     .H1,
     h1 {
-      font-size: min(130px, desktop-vw(130px)) !important;
-      line-height: min(110px, desktop-vw(110px)) !important;
+      font-size: min(130px, desktop-vw(130px));
+      line-height: min(110px, desktop-vw(110px));
 
       @include mobile {
-        font-size: min(80px, mobile-vw(80px)) !important;
-        line-height: min(86px, mobile-vw(86px)) !important;
+        font-size: mobile-vw(80px);
+        line-height: mobile-vw(72px);
       }
-    }
-
-    @include mobile {
-      grid-column: 1 / span 6;
-      max-width: 100%;
     }
   }
 
@@ -944,14 +981,14 @@ export default {
     transition: opacity 0.35s var(--ease-in-out-cubic);
     transition-delay: 0.4s;
 
+    @include mobile {
+      display: none;
+    }
+
     &.hide {
       opacity: 0;
       pointer-events: none;
       transition-delay: 0s;
-    }
-
-    @include mobile {
-      display: none;
     }
 
     .P1 {

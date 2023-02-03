@@ -100,6 +100,10 @@ export default {
       will-change: transform;
       transform: translateY(-100%);
 
+      @include mobile {
+        transform: translateY(0%);
+      }
+
       &:first-child {
         -webkit-text-stroke: 1.5px var(--c-black);
         -webkit-text-fill-color: transparent;

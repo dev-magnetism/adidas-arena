@@ -7,7 +7,14 @@
     }"
     class="app-preloader"
   >
-    <video ref="video" class="app-preloader__video" autoplay loop muted>
+    <video
+      ref="video"
+      class="app-preloader__video"
+      autoplay
+      loop
+      muted
+      playsinline
+    >
       <source src="/videos/preloader.mp4" type="video/mp4" />
     </video>
 
@@ -219,8 +226,8 @@ export default {
 <style lang="scss">
 .app-preloader {
   position: fixed;
-  width: 100%;
-  height: 100vh;
+  width: 100vw;
+  height: calc(100 * var(--vh, 1vh));
   background-color: var(--c-grey);
   z-index: 999;
   overflow: hidden;

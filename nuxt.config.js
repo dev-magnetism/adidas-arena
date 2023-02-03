@@ -2,7 +2,6 @@ import webpack from 'webpack'
 
 export default {
   target: 'static',
-  // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     meta: [
       { charset: 'utf-8' },
@@ -18,12 +17,8 @@ export default {
     apiKeyDelight: process.env.API_KEY_DELIGHT || 'MMcR9vQkDKfuug',
   },
 
-  // privateRuntimeConfig: {},
+  css: ['~assets/scss/global.scss'],
 
-  // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['~assets/scss/global.scss', '~assets/scss/main.scss'],
-
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/gsap.js', mode: 'client' },
     { src: '~/plugins/utils.js', mode: 'client' },
@@ -43,7 +38,6 @@ export default {
     port: 3000,
   },
 
-  // Auto import components: https://go.nuxtjs.dev/config-components
   components: [
     {
       path: '@/components',
@@ -86,19 +80,21 @@ export default {
 
   pageTransition: false,
 
-  // router: {
-  //   scrollBehavior: (to, from, savedPosition) => {
-  //     return { x: 0, y: 0 }
-  //   },
-  // },
+  router: {
+    scrollBehavior: (to, from, savedPosition) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({ x: 0, y: 0 })
+        }, 1250)
+      })
+    },
+  },
 
   styleResources: {
     scss: ['~assets/scss/main.scss'],
   },
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
     '@nuxt/image',
@@ -126,7 +122,6 @@ export default {
     },
   },
 
-  // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     [
       '~/modules/directus',
@@ -164,7 +159,6 @@ export default {
 
   loading: false,
 
-  // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     extractCSS: {
       ignoreOrder: false,

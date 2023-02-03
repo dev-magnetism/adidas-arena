@@ -11,6 +11,8 @@ export default {
     ...mapState({
       menuActive: (state) => state.menuActive,
       allLoadedFake: (state) => state.allLoadedFake,
+      preloaderHidden: (state) => state.preloaderHidden,
+      initialHeroDisplayed: (state) => state.initialHeroDisplayed,
     }),
   },
   watch: {
@@ -23,7 +25,7 @@ export default {
         this.lenis.start()
       }
     },
-    allLoadedFake(payload) {
+    initialHeroDisplayed(payload) {
       if (!this.lenis) return
 
       if (payload) {
@@ -37,10 +39,17 @@ export default {
     this.lenis = new Lenis({
       duration: 1.2,
       easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
-      direction: 'vertical',
-      gestureDirection: 'vertical',
-      smooth: true,
+      smoothTouch: true,
+      touchMultiplier: 3,
     })
+
+    // this.lenis = new Lenis({
+    //   duration: 1.2,
+    //   easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+    //   direction: 'vertical',
+    //   gestureDirection: 'vertical',
+    //   smooth: true,
+    // })
 
     if (!this.allLoadedFake) this.lenis.stop()
 

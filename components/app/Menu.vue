@@ -856,7 +856,7 @@ export default {
 <style lang="scss">
 .app-menu {
   width: 100vw;
-  height: 100vh;
+  height: calc(100 * var(--vh, 1vh));
   position: fixed;
   background-color: transparent;
   z-index: 3;

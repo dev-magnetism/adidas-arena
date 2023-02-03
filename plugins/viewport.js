@@ -48,6 +48,10 @@ const viewport = new Vue({
       //   this.isLandscape
       // )
 
+      // https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
+      const vh = this.height * 0.01
+      document.documentElement.style.setProperty('--vh', `${vh}px`)
+
       this.events.emit('resize', this.$data)
     },
   },

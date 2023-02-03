@@ -20,21 +20,14 @@
 html {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: initial;
-}
-
-// * {
-//   cursor: none !important;
-// }
-
-.app.cursor-custom {
-  cursor: none !important;
+  overflow: overlay;
 }
 
 html,
 body {
-  width: 100%;
-  min-height: 100%;
-  overscroll-behavior: none;
+  overscroll-behavior-y: none !important;
+  min-height: 100vh;
+  height: auto;
 }
 
 body {
@@ -46,16 +39,12 @@ body {
   color: var(--c-white);
 }
 
-body,
-#__nuxt,
-#__layout {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-}
-
 ::-webkit-scrollbar {
   display: none;
+}
+
+.app.cursor-custom {
+  cursor: none !important;
 }
 
 a,

@@ -108,7 +108,7 @@ export default {
     this.tl?.kill()
   },
   mounted() {
-    if (this.transparent) return
+    if (this.transparent || this.$viewport.isMobile) return
 
     this.tl = gsap.timeline({
       scrollTrigger: {

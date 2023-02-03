@@ -1,5 +1,5 @@
 <template>
-  <div class="app-webgl-exterior grid-inner"></div>
+  <div />
 </template>
 
 <script>
@@ -86,7 +86,7 @@ export default {
       this.initExterior()
     },
     modelCloudLoaded() {
-      this.initClouds()
+      // this.initClouds()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -107,8 +107,9 @@ export default {
 
     if (this.allLoadedActual) {
       this.initExterior()
-      this.initClouds()
+      // this.initClouds()
       this.initGUI()
+      this.resetView()
     }
 
     this.observer = Observer.create({
@@ -194,9 +195,13 @@ export default {
 
       exterior.homeCustomPosition = new THREE.Vector3(x, 0, z)
 
-      if (!this.exteriorFullwidth)
+      if (!this.exteriorFullwidth && !this.$viewport.isMobile) {
         exterior.position.copy(exterior.homeCustomPosition)
-      else exterior.position.copy(new THREE.Vector3(0, 0, 0))
+      } else if (this.exteriorFullwidth && !this.$viewport.isMobile) {
+        exterior.position.copy(new THREE.Vector3(0, 0, 0))
+      } else {
+        exterior.position.copy(new THREE.Vector3(0, 0, 0))
+      }
     },
     onDrag(e) {
       if (!this.drag.enabled) return
@@ -210,7 +215,7 @@ export default {
       )
     },
     onFrame({ time, deltaTime, frame, deltaRatio }) {
-      if (!this.exteriorVisible) return
+      if (!this.exteriorVisible || this.$viewport.isMobile) return
 
       const { exterior } = useWebGL()
 
@@ -285,7 +290,7 @@ export default {
       this.initFloor()
       this.initAdidasArena()
       this.initLogoArena()
-      this.initCars()
+      // this.initCars()
       this.initTrams()
       this.initArrow()
 
@@ -752,8 +757,6 @@ export default {
     initGUI() {
       const gui = useGUI()
 
-      const { exterior } = useWebGL()
-
       this.gui = gui.addFolder({
         title: `Exterior`,
         expanded: false,
@@ -907,18 +910,6 @@ export default {
         label: 'Delay Repeat Trams',
       })
 
-      this.guiModel
-        .addInput(exterior, 'position', {
-          x: { step: 0.0001, min: -1, max: 1 },
-          z: { step: 0.0001, min: -1, max: 1 },
-          label: 'Position',
-        })
-        .on('change', (e) => {
-          console.log(e)
-          exterior.position.x = e.value.x * this.$viewport.width
-          exterior.position.z = e.value.z * this.$viewport.width
-        })
-
       this.guiColors = this.gui.addFolder({ title: `Colors`, expanded: true })
 
       this.guiColors
@@ -999,11 +990,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-.app-webgl-exterior {
-  height: 100%;
-  width: 100%;
-  position: fixed;
-}
-</style>

@@ -4,7 +4,7 @@
     <div ref="layerRed" class="app-transition-layer red" />
     <AppCursor v-if="!$viewport.isMobile" />
     <AppPreloader />
-    <AppCookie />
+    <!-- <AppCookie /> -->
     <AppLogo />
     <AppHeader />
     <AppMenu />
@@ -26,11 +26,9 @@ import useGUI from '~/hooks/gui'
 
 export default {
   layout: 'DefaultLayout',
-
   data() {
     return {}
   },
-
   computed: {
     ...mapState({
       cursorState: (state) => state.cursorState,
@@ -67,7 +65,7 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     transform: scaleY(0);
     transform-origin: center top;

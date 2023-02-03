@@ -68,24 +68,6 @@ export default {
         })
       }
 
-      gsap.fromTo(
-        this.$refs.wrapper,
-        {
-          x: this.inverted ? -this.$viewport.width : this.$viewport.width,
-        },
-        {
-          duration: 4,
-          x: 0,
-          ease: 'expo.out',
-          scrollTrigger: {
-            trigger: this.$refs.wrapper,
-            start: 'top bottom',
-            end: 'bottom top',
-            toggleActions: 'play none none none',
-          },
-        }
-      )
-
       this.tween = gsap.to(this.$refs.marquees, {
         duration: this.duration,
         xPercent: this.inverted ? 0 : -100,
@@ -99,19 +81,40 @@ export default {
         },
       })
 
-      ScrollTrigger.create({
-        trigger: this.$refs.marquee,
-        scrub: 5,
-        onUpdate: (self) => {
-          const velocity = Math.abs(self.getVelocity()) * 0.0000015
-          const progress = this.tween.progress() + velocity
+      if (!this.$viewport.isMobile) {
+        gsap.fromTo(
+          this.$refs.wrapper,
+          {
+            x: this.inverted ? -this.$viewport.width : this.$viewport.width,
+          },
+          {
+            duration: 4,
+            x: 0,
+            ease: 'expo.out',
+            scrollTrigger: {
+              trigger: this.$refs.wrapper,
+              start: 'top bottom',
+              end: 'bottom top',
+              toggleActions: 'play none none none',
+            },
+          }
+        )
 
-          this.tween.progress(progress)
-        },
-      })
+        this.scrollTrigger = ScrollTrigger.create({
+          trigger: this.$refs.marquee,
+          scrub: 5,
+          onUpdate: (self) => {
+            const velocity = Math.abs(self.getVelocity()) * 0.0000015
+            const progress = this.tween.progress() + velocity
+
+            this.tween.progress(progress)
+          },
+        })
+      }
     })
   },
   beforeDestroy() {
+    this.scrollTrigger?.kill()
     this.tween?.kill()
   },
   methods: {

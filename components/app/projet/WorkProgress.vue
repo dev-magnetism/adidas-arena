@@ -138,7 +138,7 @@ export default {
   },
   mounted() {
     if (!this.$viewport.isMobile) {
-      ScrollTrigger.create({
+      this.scrollTrigger = ScrollTrigger.create({
         trigger: this.$refs.sketch,
         start: this.$viewport.isMobile ? 'top center' : 'top+=25% center',
         onEnter: () => {
@@ -186,6 +186,7 @@ export default {
     this.animationLight.destroy()
     this.tweenLights?.kill()
     this.tweenArena?.kill()
+    this.scrollTrigger?.kill()
   },
   methods: {
     onIndexChanged(index) {

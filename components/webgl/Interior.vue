@@ -1,5 +1,5 @@
 <template>
-  <div class="app-webgl-interior grid-inner"></div>
+  <div />
 </template>
 
 <script>
@@ -1115,11 +1115,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-.app-webgl-interior {
-  height: 100%;
-  width: 100%;
-  position: fixed;
-}
-</style>

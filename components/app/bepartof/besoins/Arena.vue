@@ -134,8 +134,12 @@
         </div>
       </div>
 
-      <div class="app-be-part-of-besoins-arena__paragraphs">
+      <div
+        v-if="contents.columnLeft.length - 1 && contents.columnRight.length - 1"
+        class="app-be-part-of-besoins-arena__paragraphs"
+      >
         <TP1 color="grey">
+          {{ contents.columnLeft.length }}
           {{ contents.columnLeft }}
         </TP1>
         <TP1 color="grey">
@@ -224,8 +228,7 @@ export default {
       grid-column: 1 / span 6;
       grid-row: 3;
       position: relative;
-      transform: translate(-50%, -50%) rotate(15deg);
-      left: 50%;
+      transform: translate(0%, -50%) rotate(15deg);
     }
   }
 

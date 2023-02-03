@@ -284,19 +284,18 @@ export default {
       margin-top: desktop-vw(40px);
       display: flex;
       flex-direction: row;
-      align-items: center;
+      align-items: flex-start;
 
       @include mobile {
         margin-top: mobile-vw(25px);
         flex-direction: column;
-        align-items: flex-start;
       }
 
       &__title.H4 {
         flex: 2;
         margin-right: desktop-vw(40px);
         font-size: desktop-vw(48px);
-        line-height: desktop-vw(62px);
+        line-height: desktop-vw(48px);
 
         @include mobile {
           font-size: mobile-vw(40px);

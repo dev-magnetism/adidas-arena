@@ -75,18 +75,26 @@ export default {
       duration: 10,
     })
 
-    ScrollTrigger.create({
-      trigger: this.$el,
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: 0.5,
-      onUpdate: (self) => {
-        const velocity = Math.abs(self.getVelocity()) * 0.000015
+    if (!this.$viewport.isMobile) {
+      this.scrollTrigger = ScrollTrigger.create({
+        trigger: this.$el,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 0.5,
+        onUpdate: (self) => {
+          const velocity = Math.abs(self.getVelocity()) * 0.000015
 
-        const progress = this.tween.progress() + velocity
-        this.tween.progress(progress)
-      },
-    })
+          const progress = this.tween.progress() + velocity
+          this.tween.progress(progress)
+        },
+      })
+    }
+  },
+  beforeDestroy() {
+    this.tween?.clear()
+    this.tween?.kill()
+
+    this.scrollTrigger?.kill()
   },
 }
 </script>

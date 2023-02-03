@@ -105,15 +105,28 @@ export default {
     },
   },
   mounted() {
-    this.LottieScrollTrigger({
-      target: this.$refs.lottie,
-      start: this.start,
-      end: this.end,
-      scrub: this.scrub,
-    })
+    if (this.$viewport.isMobile) {
+      this.animation = lottie.loadAnimation({
+        container: this.$refs.lottie,
+        // renderer: vars.renderer || 'svg',
+        renderer: 'svg',
+        loop: false,
+        autoplay: false,
+        animationData: this.src,
+      })
+
+      this.animation.goToAndStop(this.animation.totalFrames - 1, true)
+    } else {
+      this.LottieScrollTrigger({
+        target: this.$refs.lottie,
+        start: this.start,
+        end: this.end,
+        scrub: this.scrub,
+      })
+    }
   },
   beforeDestroy() {
-    this.animation.destroy()
+    this.animation?.destroy()
     this.tween?.kill()
   },
   methods: {
