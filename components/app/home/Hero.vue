@@ -447,7 +447,7 @@ export default {
       const { exterior } = useWebGL()
 
       if (this.$viewport.isMobile) {
-        // fdsfs
+        this.$router.push({ path: '/arena' })
       } else {
         this.viewExteriorOpen = !this.viewExteriorOpen
         this.setExteriorFullwidth(!this.exteriorFullwidth)
