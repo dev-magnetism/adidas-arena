@@ -20,13 +20,19 @@ export default {
     }),
   },
   mounted() {
+    if (this.$viewport.isMobile) return
+
     this.$nuxt.$on('app:scroll', this.onScroll)
   },
   beforeDestroy() {
+    if (this.$viewport.isMobile) return
+
     this.$nuxt.$off('app:scroll', this.onScroll)
   },
   methods: {
     onScroll({ progress, velocity }) {
+      if (this.$viewport.isMobile) return
+
       this.hidden = Math.abs(velocity) <= 0.25
 
       this.$refs.indicator.style.transform = `translate3d(0,${

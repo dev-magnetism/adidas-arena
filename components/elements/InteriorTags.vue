@@ -230,6 +230,19 @@ export default {
       text-transform: uppercase;
       font-size: 14px;
       line-height: 16px;
+
+      @include mobile {
+        font-size: 12px;
+        line-height: 14px;
+      }
+    }
+
+    .H4 {
+      @include mobile {
+        font-size: mobile-vw(20px);
+        line-height: mobile-vw(18px);
+        margin-bottom: 5px;
+      }
     }
 
     &.PUBLIC_Room_002 {

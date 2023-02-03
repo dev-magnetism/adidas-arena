@@ -155,7 +155,7 @@ export default {
 
     initTimeline() {
       this.tlLoading = gsap.timeline({
-        paused: true,
+        delay: 0.5,
         onUpdate: () => {
           const progress = this.tlLoading.progress()
 
@@ -199,7 +199,6 @@ export default {
 
     onCompleteLoader() {
       this.setAllLoadedActual(true)
-      this.tlLoading.play()
     },
 
     ...mapMutations({

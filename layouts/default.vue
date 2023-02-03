@@ -8,7 +8,7 @@
     <AppLogo />
     <AppHeader />
     <AppMenu />
-    <AppScrollbar v-if="!$viewport.isMobile" />
+    <AppScrollbar />
     <nuxt class="app-main" />
     <AppScene />
     <WebglScene />
@@ -40,7 +40,7 @@ export default {
     const gui = useGUI()
 
     if (this.$viewport.isMobile) {
-      gui.hidden = false
+      gui.hidden = true
     }
   },
 
