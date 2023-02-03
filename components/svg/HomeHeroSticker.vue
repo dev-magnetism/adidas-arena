@@ -91,7 +91,6 @@ export default {
     }
   },
   beforeDestroy() {
-    this.tween?.clear()
     this.tween?.kill()
 
     this.scrollTrigger?.kill()

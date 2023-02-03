@@ -74,14 +74,12 @@ export default {
   },
   computed: {
     borders() {
-      const borders = {
+      return {
         top: this.position.includes('1') && this.position.includes('2'),
         right: this.position.includes('2') && this.position.includes('3'),
         bottom: this.position.includes('3') && this.position.includes('4'),
         left: this.position.includes('4') && this.position.includes('1'),
       }
-
-      return borders
     },
   },
 }

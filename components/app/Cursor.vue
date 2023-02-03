@@ -35,6 +35,8 @@ export default {
     },
   },
   mounted() {
+    if (this.$viewport.isMobile) return
+
     this.xTo = gsap.quickTo(this.$refs.wrapper, 'x', {
       duration: 0.1,
     })
@@ -47,6 +49,8 @@ export default {
     document.addEventListener('mouseup', this.onMouseUp)
   },
   beforeDestroy() {
+    if (this.$viewport.isMobile) return
+
     document.removeEventListener('mousemove', this.onMouseMove)
     document.removeEventListener('mousedown', this.onMouseDown)
     document.removeEventListener('mouseup', this.onMouseUp)

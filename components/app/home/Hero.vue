@@ -76,7 +76,7 @@
               : 'line-1, line-4'
           "
         />
-
+        {{ $viewport.isMobile }}
         <SvgHomeHeroSticker
           :class="{ hide: viewExteriorOpen }"
           class="app-home-hero__sticker"

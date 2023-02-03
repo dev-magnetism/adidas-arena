@@ -39,7 +39,7 @@ export default {
 .app-cookie {
   position: fixed;
   width: 375px;
-  background-color: #fdf8f2;
+  background-color: var(--c-grey);
   z-index: 8;
   padding: 25px 35px;
   bottom: var(--layout-margin);
