@@ -86,7 +86,7 @@ export default {
       this.initExterior()
     },
     modelCloudLoaded() {
-      // this.initClouds()
+      this.initClouds()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -107,7 +107,7 @@ export default {
 
     if (this.allLoadedActual) {
       this.initExterior()
-      // this.initClouds()
+      this.initClouds()
       this.initGUI()
       this.resetView()
     }
@@ -290,7 +290,7 @@ export default {
       this.initFloor()
       this.initAdidasArena()
       this.initLogoArena()
-      // this.initCars()
+      this.initCars()
       this.initTrams()
       this.initArrow()
 
