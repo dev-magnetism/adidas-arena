@@ -69,13 +69,7 @@
             {{ contents.coordinate }}
           </AtomsTitleTag>
         </div>
-        <AtomsCornerPoints
-          :lines-position="
-            $viewport.isMobile
-              ? 'line-1, line-2, line-3, line-4'
-              : 'line-1, line-4'
-          "
-        />
+        <AtomsCornerPoints />
         <SvgHomeHeroSticker
           :class="{ hide: viewExteriorOpen }"
           class="app-home-hero__sticker"
@@ -524,7 +518,7 @@ export default {
         onToggle: (self) => {
           this.setExteriorVisible(self.isActive)
 
-          if (self.isActive) {
+          if (self.isActive && this.exteriorVisible) {
             this.onResizePreviewExterior()
           }
         },
@@ -763,8 +757,10 @@ export default {
 
     @include desktop {
       .app-atoms-corner-points {
-        border-bottom: none !important;
-        border-right: none !important;
+        &__line--right,
+        &__line--bottom {
+          display: none;
+        }
       }
     }
 

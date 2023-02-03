@@ -69,6 +69,7 @@ export default {
         title: this.content.data.partners_title,
         subtitle: this.content.data.partners_subtitle,
         paragraph: this.content.data.partners_paragraph,
+        totalText: this.content.data.partners_total_text,
       }
     },
     contentParisBasketClub() {

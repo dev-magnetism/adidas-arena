@@ -28,7 +28,7 @@
       :logos="contents.list"
       class="app-arena-partners__grid-logos"
     />
-    <EPartnersTotal :total="contents.list.length" />
+    <EPartnersTotal :total="contents.list.length" :text="contents.totalText" />
   </div>
 </template>
 

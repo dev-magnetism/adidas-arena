@@ -75,6 +75,7 @@ export default {
       return {
         title: this.content.data.partners_title,
         subtitle: this.content.data.partners_subtitle,
+        totalText: this.content.data.partners_total_text,
         paragraph: this.content.data.partners_paragraph,
         ctaTitle: this.content.data.partners_cta_title,
         ctaLink: this.content.data.partners_cta_link,

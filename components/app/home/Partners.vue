@@ -31,7 +31,7 @@
       :rows="!$viewport.isMobile ? 7 : 8"
       class="app-home-partners__grid-logos"
     />
-    <EPartnersTotal :total="contents.list.length" />
+    <EPartnersTotal :total="contents.list.length" :text="contents.totalText" />
   </div>
 </template>
 
