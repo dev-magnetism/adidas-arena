@@ -130,7 +130,17 @@ export default {
       },
     ],
     'nuxt-seo',
+    'nuxt-compress',
   ],
+
+  'nuxt-compress': {
+    gzip: {
+      threshold: 8192,
+    },
+    brotli: {
+      threshold: 8192,
+    },
+  },
 
   seo: {
     lang: 'fr',
