@@ -29,6 +29,7 @@ export const state = () => ({
   // UI
   initialHeroDisplayed: false,
   menuActive: false,
+  overlayContactOpen: false,
   headerReduced: false,
   headerWhite: false,
   cursorState: 'hide',
@@ -49,6 +50,9 @@ export const mutations = {
   },
   setHeaderReduced: (state, value) => {
     state.headerReduced = value
+  },
+  setOverlayContactOpen: (state, value) => {
+    state.overlayContactOpen = value
   },
   setInteriorMusicScene: (state, value) => {
     state.interiorMusicScene = value

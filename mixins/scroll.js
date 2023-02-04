@@ -13,6 +13,7 @@ export default {
       allLoadedFake: (state) => state.allLoadedFake,
       preloaderHidden: (state) => state.preloaderHidden,
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,
+      overlayContactOpen: (state) => state.overlayContactOpen,
     }),
   },
   watch: {
@@ -24,6 +25,14 @@ export default {
       } else {
         this.lenis.start()
       }
+    },
+    overlayContactOpen(payload) {
+      // if (!this.lenis) return
+      // if (payload) {
+      //   this.lenis.stop()
+      // } else {
+      //   this.lenis.start()
+      // }
     },
     initialHeroDisplayed(payload) {
       if (!this.lenis) return

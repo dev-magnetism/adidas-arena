@@ -8,6 +8,7 @@
       :urltemporaire="'partenariat@adidasarena.com'"
     />
     <AppContactNewsletter :contents="contentContactNewsletter" />
+    <EOverlayContact />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>

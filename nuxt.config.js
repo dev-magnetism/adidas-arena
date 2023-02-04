@@ -131,7 +131,18 @@ export default {
     ],
     'nuxt-seo',
     'nuxt-compress',
+    '@nuxtjs/sitemap',
   ],
+
+  sitemap: {
+    hostname: process.env.BASE_URL || 'https://www.adidasarena.com/',
+    path: '/sitemap.xml',
+    defaults: {
+      changefreq: 'daily',
+      priority: 1,
+      lastmod: new Date(),
+    },
+  },
 
   'nuxt-compress': {
     gzip: {

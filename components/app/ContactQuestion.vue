@@ -3,12 +3,13 @@
     <ERichText class="app-contact-question__title" :content="contents.title" />
 
     <div class="app-contact-question__ask">
-      <AtomsCTA :href="`mailto:${urltemporaire}`">Poser une question</AtomsCTA>
+      <AtomsCTA button @click.native="onClick()">Poser une question</AtomsCTA>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   props: {
     contents: {
@@ -18,6 +19,18 @@ export default {
     urltemporaire: {
       type: String,
       default: '#',
+    },
+  },
+  computed: {
+    ...mapState({
+      overlayContactOpen: (state) => state.overlayContactOpen,
+    }),
+  },
+  methods: {
+    onClick() {
+      if (this.overlayContactOpen) return
+
+      this.$nuxt.$emit('contact:overlay', this.urltemporaire)
     },
   },
 }
