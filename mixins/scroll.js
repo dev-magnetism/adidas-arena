@@ -27,12 +27,13 @@ export default {
       }
     },
     overlayContactOpen(payload) {
-      // if (!this.lenis) return
-      // if (payload) {
-      //   this.lenis.stop()
-      // } else {
-      //   this.lenis.start()
-      // }
+      if (!this.lenis) return
+
+      if (payload) {
+        this.lenis.stop()
+      } else {
+        this.lenis.start()
+      }
     },
     initialHeroDisplayed(payload) {
       if (!this.lenis) return

@@ -21,10 +21,15 @@ html {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: initial;
   overflow: overlay;
+
+  &.lenis-stopped {
+    overflow: hidden;
+  }
 }
 
 html,
 body {
+  overscroll-behavior-y: none;
   min-height: 100vh;
   height: auto;
 }

@@ -10,7 +10,7 @@ class LoaderManager {
     this.models = {}
 
     this.dracoLoader = new DRACOLoader()
-    this.dracoLoader.setDecoderPath('three/examples/js/libs/draco/')
+    this.dracoLoader.setDecoderPath('/draco/')
 
     this.gltfLoader = new GLTFLoader()
     this.gltfLoader.setDRACOLoader(this.dracoLoader)
