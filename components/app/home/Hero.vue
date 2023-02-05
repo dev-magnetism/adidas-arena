@@ -1,5 +1,5 @@
 <template>
-  <div class="app-home-hero block-inner">
+  <div :class="{ open: viewExteriorOpen }" class="app-home-hero block-inner">
     <div class="app-home-hero__inner grid">
       <EEnterArena
         :class="{ hide: !exteriorArenaHovered || !exteriorFullwidth }"
@@ -58,7 +58,11 @@
           {{ contents.localisation }}
         </TP1>
       </div>
-      <div ref="view" class="app-home-hero__view-exterior">
+      <div
+        ref="view"
+        class="app-home-hero__view-exterior"
+        @click="!viewExteriorOpen ? onVisit() : ''"
+      >
         <div class="app-home-hero__view-exterior__baseline">
           <AtomsTitleTag
             :class="{ hide: viewExteriorOpen || !DOMVisible }"
@@ -197,6 +201,8 @@ export default {
     this.resizeObserver.observe(this.$refs.view)
 
     this.$raf.add(`home-hero`, this.onFrame)
+
+    window.addEventListener('keyup', this.onKeyUp)
   },
 
   beforeDestroy() {
@@ -211,8 +217,15 @@ export default {
     this.tlAppearHero?.kill()
 
     this.$raf.remove(`home-hero`, this.onFrame)
+
+    window.addEventListener('keyup', this.onKeyUp)
   },
   methods: {
+    onKeyUp(e) {
+      if (e.key === 'Escape' && this.viewExteriorOpen && this.exteriorVisible) {
+        this.onVisit()
+      }
+    },
     resetView() {
       this.setExteriorFullwidth(false)
 
@@ -637,6 +650,12 @@ export default {
   padding-top: desktop-vw(40px);
   padding-bottom: desktop-vw(40px);
 
+  &.open {
+    .app-home-hero__view-exterior {
+      cursor: initial;
+    }
+  }
+
   @include mobile {
     height: 100%;
     padding-top: mobile-vw(190px);
@@ -749,6 +768,7 @@ export default {
     max-height: calc(85vh - desktop-vw(80px));
     transform-origin: right bottom;
     will-change: transform, width, height;
+    cursor: pointer;
 
     @include mobile {
       grid-column: 1 / span 6;

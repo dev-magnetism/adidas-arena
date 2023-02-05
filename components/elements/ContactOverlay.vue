@@ -147,8 +147,6 @@ export default {
     onKeyUp(e) {
       if (!this.overlayContactOpen) return
 
-      console.log('here escape')
-
       if (e.key === 'Escape') {
         this.setOverlayContactOpen(false)
       }

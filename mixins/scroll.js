@@ -14,10 +14,20 @@ export default {
       preloaderHidden: (state) => state.preloaderHidden,
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,
       overlayContactOpen: (state) => state.overlayContactOpen,
+      popinNewsletterOpen: (state) => state.popinNewsletterOpen,
     }),
   },
   watch: {
     menuActive(payload) {
+      if (!this.lenis) return
+
+      if (payload) {
+        this.lenis.stop()
+      } else {
+        this.lenis.start()
+      }
+    },
+    popinNewsletterOpen(payload) {
       if (!this.lenis) return
 
       if (payload) {

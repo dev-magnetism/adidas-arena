@@ -29,6 +29,7 @@ export const state = () => ({
   // UI
   initialHeroDisplayed: false,
   menuActive: false,
+  popinNewsletterOpen: false,
   overlayContactOpen: false,
   headerReduced: false,
   headerWhite: false,
@@ -48,6 +49,9 @@ export const getters = {
 export const mutations = {
   setFontsLoaded: (state, value) => {
     state.fontsLoaded = value
+  },
+  setPopinNewsletterOpen: (state, value) => {
+    state.popinNewsletterOpen = value
   },
   setHeaderReduced: (state, value) => {
     state.headerReduced = value

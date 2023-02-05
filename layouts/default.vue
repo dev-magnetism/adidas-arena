@@ -5,6 +5,7 @@
     <AppCursor />
     <AppPreloader />
     <AppCookie />
+    <AppPopinNewsletter />
     <AppHeader />
     <AppMenu />
     <AppScrollbar />
