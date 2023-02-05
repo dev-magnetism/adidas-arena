@@ -5,7 +5,7 @@
       <EFloorSelector />
       <EFloorSelectorMobile />
       <ESceneSelector />
-      <EScrollIndicator />
+      <EScrollIndicator @click.native="scrollHero()" />
       <EInteriorTags />
     </div>
   </div>
@@ -52,6 +52,13 @@ export default {
     this.$raf.remove(`le-bloc-hero`, this.onFrame)
   },
   methods: {
+    scrollHero() {
+      if (!window.lenis) return
+
+      window.lenis.scrollTo('.app-two-columns-stick', {
+        duration: 1.2,
+      })
+    },
     initInteriorView() {
       this.$nuxt.$emit('reset:interior')
 

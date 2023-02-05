@@ -4,7 +4,7 @@
       {{ appContent.data.cookies_text }}
     </TP2>
 
-    <AtomsLink class="app-cookie__read-more" button href="/cookies">
+    <AtomsLink class="app-cookie__read-more" href="/cookies">
       <TP2 weight="bold"> {{ appContent.data.cookies_read_more }} </TP2>
     </AtomsLink>
 

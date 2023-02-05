@@ -34,10 +34,13 @@ export default {
 .app-two-columns-stick {
   display: flex;
   flex-direction: row;
-  margin-top: desktop-vw(160px);
+  padding-top: desktop-vw(160px);
   margin-bottom: desktop-vw(200px);
 
   @include mobile {
+    padding-top: mobile-vw(80px);
+    margin-bottom: mobile-vw(90px);
+
     display: grid;
     grid-gap: 0;
   }

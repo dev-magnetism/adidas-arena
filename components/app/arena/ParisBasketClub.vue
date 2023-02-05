@@ -122,10 +122,12 @@ export default {
 <style lang="scss">
 .app-arena-paris-basket-club {
   position: relative;
-  margin-top: desktop-vw(100px);
+  margin-top: desktop-vw(50px);
+  padding-top: desktop-vw(50px);
 
   @include mobile {
-    margin-top: mobile-vw(100px);
+    margin-top: mobile-vw(50px);
+    padding-top: mobile-vw(50px);
   }
 
   &__lottie-arrow.app-element-lottie {

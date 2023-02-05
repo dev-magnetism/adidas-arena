@@ -89,7 +89,10 @@
       >
         {{ contents.visit }}
       </AtomsTitleTag>
-      <EScrollIndicator :class="{ hide: !viewExteriorOpen || !DOMVisible }" />
+      <EScrollIndicator
+        :class="{ hide: !viewExteriorOpen || !DOMVisible }"
+        @click.native="scrollHero()"
+      />
     </div>
   </div>
 </template>
@@ -342,6 +345,13 @@ export default {
           },
           '<0%'
         )
+    },
+    scrollHero() {
+      if (!window.lenis) return
+
+      window.lenis.scrollTo('.app-home-presentation', {
+        duration: 1.2,
+      })
     },
     appearHeroInit(delay = 0) {
       this.tlAppearHeroInit?.clear()
