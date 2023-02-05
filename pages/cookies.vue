@@ -1,5 +1,7 @@
 <template>
   <div class="app-cookies grid-inner">
+    <AtomsCTABack @click.native="onBack()"> Retour </AtomsCTABack>
+
     <div class="app-cookies__inner">
       <TH2 class="app-cookies__title">{{ content.data.title }}</TH2>
       <TP2 weight="bold" class="app-cookies__subtitle">{{
@@ -16,11 +18,15 @@
 
 <script>
 import scroll from '@/mixins/scroll'
+import pageTransition from '@/mixins/page-transition'
 
 export default {
   mixins: [scroll],
-  layout: 'second-layout',
+  transition(to, from) {
+    if (!to || !from) return
 
+    return pageTransition.basic
+  },
   async asyncData({ $directus }) {
     const content = await $directus.items('Cookies').readByQuery({
       limit: -1,
@@ -47,6 +53,11 @@ export default {
   mounted() {
     this.lenis.start()
   },
+  methods: {
+    onBack() {
+      this.$router.push({ path: '/' })
+    },
+  },
 }
 </script>
 
@@ -54,10 +65,18 @@ export default {
 .app-cookies {
   padding-top: desktop-vw(180px);
   padding-bottom: desktop-vw(130px);
+  z-index: 10;
+  background-color: var(--c-grey);
 
   @include mobile {
     padding-top: mobile-vw(100px);
     padding-bottom: mobile-vw(60px);
+  }
+
+  .app-atoms-cta-back {
+    position: fixed;
+    left: desktop-vw(65px);
+    top: desktop-vw(65px);
   }
 
   &__inner {

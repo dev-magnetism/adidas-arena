@@ -1,5 +1,7 @@
 <template>
   <div class="app-communique-de-presse grid-inner">
+    <AtomsCTABack @click.native="onBack()"> Retour </AtomsCTABack>
+
     <div class="app-communique-de-presse__inner">
       <nuxt-picture
         provider="directus"
@@ -25,12 +27,15 @@
 
 <script>
 import scroll from '@/mixins/scroll'
-// import pageTransition from '@/mixins/page-transition'
+import pageTransition from '@/mixins/page-transition'
 
 export default {
   mixins: [scroll],
-  layout: 'second-layout',
+  transition(to, from) {
+    if (!to || !from) return
 
+    return pageTransition.basic
+  },
   async asyncData({ $directus }) {
     const content = await $directus.items('Communique_de_presse').readByQuery({
       limit: -1,
@@ -57,6 +62,11 @@ export default {
   mounted() {
     this.lenis.start()
   },
+  methods: {
+    onBack() {
+      this.$router.push({ path: '/' })
+    },
+  },
 }
 </script>
 
@@ -64,6 +74,14 @@ export default {
 .app-communique-de-presse {
   padding-top: desktop-vw(180px);
   padding-bottom: desktop-vw(130px);
+  z-index: 10;
+  background-color: var(--c-grey);
+
+  .app-atoms-cta-back {
+    position: fixed;
+    left: desktop-vw(65px);
+    top: desktop-vw(65px);
+  }
 
   @include mobile {
     padding-top: mobile-vw(100px);

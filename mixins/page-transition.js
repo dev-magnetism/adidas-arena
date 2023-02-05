@@ -27,6 +27,17 @@ export default {
         this.$nuxt.$emit('reset:interior')
       }
 
+      if (
+        this.$route.name.includes('mentions-legales') ||
+        this.$route.name.includes('cookies') ||
+        this.$route.name.includes('communique-de-presse')
+      ) {
+        console.log('here')
+        this.$store.commit('setHeaderHided', false)
+      } else {
+        this.$store.commit('setHeaderHided', true)
+      }
+
       done()
     },
     leave(el, done) {

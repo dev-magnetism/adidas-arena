@@ -1,16 +1,20 @@
 <template>
-  <div :class="{ accepted }" class="app-cookie">
+  <div :class="{ hide: accepted || denied }" class="app-cookie">
     <TP2 class="app-cookie__text">
       {{ appContent.data.cookies_text }}
     </TP2>
 
+    <AtomsLink class="app-cookie__read-more" button href="/cookies">
+      <TP2 weight="bold"> {{ appContent.data.cookies_read_more }} </TP2>
+    </AtomsLink>
+
     <div class="app-cookie__bottom">
-      <AtomsCTA button @click.native="accepted = true">
+      <AtomsCTA button @click.native="onAccept()">
         {{ appContent.data.cookies_accept }}
       </AtomsCTA>
 
-      <AtomsLink href="/cookies">
-        <TP2 weight="bold"> {{ appContent.data.cookies_read_more }} </TP2>
+      <AtomsLink button @click.native="onDenied()">
+        <TP2 weight="bold"> {{ appContent.data.cookies_denied }} </TP2>
       </AtomsLink>
     </div>
 
@@ -25,6 +29,7 @@ export default {
   data() {
     return {
       accepted: false,
+      denied: false,
     }
   },
   computed: {
@@ -32,13 +37,21 @@ export default {
       appContent: (state) => state.appContent,
     }),
   },
+  methods: {
+    onAccept() {
+      this.accepted = true
+    },
+    onDenied() {
+      this.denied = true
+    },
+  },
 }
 </script>
 
 <style lang="scss">
 .app-cookie {
   position: fixed;
-  width: 375px;
+  width: max(375px, desktop-vw(375px));
   background-color: var(--c-grey);
   z-index: 7;
   padding: 25px 35px;
@@ -50,24 +63,50 @@ export default {
     left: mobile-vw(12px);
     width: calc(100% - mobile-vw(24px));
     bottom: mobile-vw(25px);
-    padding: mobile-vw(25px) mobile-vw(35px);
+    padding: mobile-vw(15px) mobile-vw(25px);
   }
 
-  &.accepted {
+  &.hide {
     opacity: 0;
     pointer-events: none;
   }
 
-  &__text.P2 {
+  &__read-more.app-atoms-link {
+    margin: 0 auto;
     text-align: center;
-    margin-bottom: desktop-vw(25px);
-    @include font-adihausDIN();
+    align-self: center;
     text-transform: uppercase;
-    // font-size: 14px;
-    // line-height: 20px;
+    margin-bottom: desktop-vw(25px);
 
     @include mobile {
-      margin-bottom: mobile-vw(25px);
+      margin: 0 auto mobile-vw(20px) 0;
+    }
+
+    .P2 {
+      font-size: desktop-vw(14px);
+      line-height: desktop-vw(20px);
+
+      @include mobile {
+        font-size: mobile-vw(14px);
+        line-height: mobile-vw(20px);
+      }
+    }
+
+    &::after {
+      background: var(--c-black);
+
+      --scale: 1 !important;
+    }
+  }
+
+  &__text.P2 {
+    text-align: left;
+    margin-bottom: desktop-vw(15px);
+    @include font-adihausDIN();
+    text-transform: uppercase;
+
+    @include mobile {
+      margin-bottom: mobile-vw(15px);
     }
   }
 
@@ -102,8 +141,13 @@ export default {
       }
 
       .P2 {
-        font-size: 14px;
-        line-height: 20px;
+        font-size: desktop-vw(14px);
+        line-height: desktop-vw(20px);
+
+        @include mobile {
+          font-size: mobile-vw(14px);
+          line-height: mobile-vw(20px);
+        }
       }
 
       &::after {

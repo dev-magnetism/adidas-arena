@@ -72,11 +72,12 @@ export default {
 
     &.blue {
       background-color: var(--c-blue-adidas);
-      z-index: 9;
+      z-index: 98;
     }
+
     &.red {
       background-color: var(--c-red-adidas);
-      z-index: 10;
+      z-index: 99;
     }
   }
 }

@@ -1,15 +1,17 @@
 <template>
-  <div class="app-mentions-legales grid-inner">
+  <div class="app-politique-de-confidentialite grid-inner">
     <AtomsCTABack @click.native="onBack()"> Retour </AtomsCTABack>
 
-    <div class="app-mentions-legales__inner">
-      <TH2 class="app-mentions-legales__title">{{ content.data.title }}</TH2>
-      <TP2 weight="bold" class="app-mentions-legales__subtitle">{{
+    <div class="app-politique-de-confidentialite__inner">
+      <TH2 class="app-politique-de-confidentialite__title">{{
+        content.data.title
+      }}</TH2>
+      <TP2 weight="bold" class="app-politique-de-confidentialite__subtitle">{{
         content.data.subtitle
       }}</TP2>
       <TP2
         weight="medium"
-        class="app-mentions-legales__content"
+        class="app-politique-de-confidentialite__content"
         v-html="content.data.content"
       ></TP2>
     </div>
@@ -28,9 +30,11 @@ export default {
     return pageTransition.basic
   },
   async asyncData({ $directus }) {
-    const content = await $directus.items('Mentions_Legales').readByQuery({
-      limit: -1,
-    })
+    const content = await $directus
+      .items('Politique_de_confidentialite')
+      .readByQuery({
+        limit: -1,
+      })
 
     return {
       content,
@@ -62,7 +66,7 @@ export default {
 </script>
 
 <style lang="scss">
-.app-mentions-legales {
+.app-politique-de-confidentialite {
   padding-top: desktop-vw(180px);
   padding-bottom: desktop-vw(130px);
   z-index: 10;

@@ -1,6 +1,9 @@
 <template>
   <div
-    :class="{ reduced: headerReduced, hide: overlayContactOpen }"
+    :class="{
+      reduced: headerReduced,
+      hide: !headerHided || overlayContactOpen,
+    }"
     class="app-header"
   >
     <nuxt-link
@@ -38,7 +41,7 @@ export default {
       appContent: (state) => state.appContent,
       headerReduced: (state) => state.headerReduced,
       headerWhite: (state) => state.headerWhite,
-      headerHide: (state) => state.headerHide,
+      headerHided: (state) => state.headerHided,
       overlayContactOpen: (state) => state.overlayContactOpen,
     }),
     menuName() {

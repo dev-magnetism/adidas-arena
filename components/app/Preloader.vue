@@ -184,7 +184,7 @@ export default {
     onProgressLoader({ normalized, percentage }, id) {
       this.tlLoading.set(this, {
         progressUI: Math.round(percentage),
-        delay: this.genRand(0.75, 1.5, 2),
+        delay: this.genRand(0.5, 1, 2),
       })
 
       if (id === 'exterior') {

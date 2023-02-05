@@ -47,9 +47,9 @@
           <label for="accept-politic-footer">
             <TP2 color="grey">
               J’accepte la
-              <a href="https://www.magnetism.fr/" :blank="true">
+              <nuxt-link to="/politique-de-confidentialite">
                 politique de confidentialité
-              </a>
+              </nuxt-link>
             </TP2>
           </label>
           <span class="checkmark" />
@@ -121,7 +121,11 @@
       </TH2>
       <EGridLogosFooter :contents="logos" />
       <div class="app-footer__paris-e-c">
-        <a class="app-footer__paris-e-c__inner" href="#" target="_blank">
+        <a
+          class="app-footer__paris-e-c__inner"
+          href="https://parisentertainmentcompany.com/"
+          target="_blank"
+        >
           <TP2 color="white">
             L’adidas arena est une salle du groupe Paris Entertainment Company.
           </TP2>

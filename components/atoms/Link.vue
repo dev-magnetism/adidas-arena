@@ -8,13 +8,16 @@
     <slot />
   </a>
   <nuxt-link
-    v-else
+    v-else-if="!button && (!external || !automaticHref)"
     class="app-atoms-link"
     :to="href"
     :target="blank ? '_blank' : false"
   >
     <slot />
   </nuxt-link>
+  <button v-else-if="button" class="app-atoms-link">
+    <slot />
+  </button>
 </template>
 
 <script>
@@ -29,6 +32,10 @@ export default {
     href: {
       type: String,
       default: '#',
+    },
+    button: {
+      type: Boolean,
+      default: false,
     },
     blank: {
       type: Boolean,
