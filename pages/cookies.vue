@@ -65,7 +65,7 @@ export default {
 .app-cookies {
   padding-top: desktop-vw(180px);
   padding-bottom: desktop-vw(130px);
-  z-index: 10;
+  z-index: 8;
   background-color: var(--c-grey);
 
   @include mobile {

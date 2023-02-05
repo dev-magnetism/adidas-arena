@@ -2,7 +2,7 @@
   <div
     :class="{
       reduced: headerReduced,
-      hide: !headerHided || overlayContactOpen,
+      hide: headerHided || overlayContactOpen,
     }"
     class="app-header"
   >

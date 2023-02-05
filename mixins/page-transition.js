@@ -32,10 +32,9 @@ export default {
         this.$route.name.includes('cookies') ||
         this.$route.name.includes('communique-de-presse')
       ) {
-        console.log('here')
-        this.$store.commit('setHeaderHided', false)
-      } else {
         this.$store.commit('setHeaderHided', true)
+      } else {
+        this.$store.commit('setHeaderHided', false)
       }
 
       done()

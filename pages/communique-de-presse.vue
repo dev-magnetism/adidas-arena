@@ -74,7 +74,7 @@ export default {
 .app-communique-de-presse {
   padding-top: desktop-vw(180px);
   padding-bottom: desktop-vw(130px);
-  z-index: 10;
+  z-index: 8;
   background-color: var(--c-grey);
 
   .app-atoms-cta-back {
