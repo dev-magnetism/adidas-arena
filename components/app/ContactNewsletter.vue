@@ -143,6 +143,10 @@ export default {
   row-gap: 0;
   position: relative;
 
+  @include mobile {
+    margin-top: mobile-vw(140px);
+  }
+
   &__visual-transparent {
     @include fake-transparent();
 
@@ -178,6 +182,8 @@ export default {
     @include mobile {
       padding-left: mobile-vw(25px);
       margin-top: mobile-vw(20px);
+      order: 2;
+      flex: 1;
     }
 
     @include hover {
@@ -220,6 +226,7 @@ export default {
       top: 0;
       left: 0;
       cursor: pointer;
+      order: 1;
 
       &:checked ~ .checkmark {
         // background-color: var(--c-black);
@@ -386,6 +393,7 @@ export default {
         height: mobile-vw(56px);
         margin-left: 0px;
         margin-top: mobile-vw(20px);
+        order: 3;
       }
 
       &.valid {

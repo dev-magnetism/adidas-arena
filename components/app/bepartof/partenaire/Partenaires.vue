@@ -31,7 +31,7 @@ export default {
 
   &__title.app-element-rich-text {
     margin-bottom: desktop-vw(20px);
-    width: 65%;
+    width: 85%;
 
     @include mobile {
       margin-bottom: mobile-vw(40px);

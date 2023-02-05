@@ -21,12 +21,13 @@ export default {
 <style lang="scss">
 .app-projet__catch-phrase {
   position: relative;
-  padding-top: desktop-vw(30px);
+  margin-top: desktop-vw(30px);
   margin-bottom: desktop-vw(250px);
 
   @include mobile {
-    padding-top: mobile-vw(120px);
-    overflow: hidden;
+    padding: 0px mobile-vw(20px);
+    margin-top: mobile-vw(120px);
+    margin-bottom: mobile-vw(135px);
   }
 
   .app-element-rich-text {
@@ -35,14 +36,6 @@ export default {
 
     @include mobile {
       grid-column: 1 / span 6;
-    }
-
-    .H2.wysiwyg-text {
-      line-height: desktop-vw(90px);
-
-      @include mobile {
-        line-height: mobile-vw(78px);
-      }
     }
 
     .app-element-lottie-word {
@@ -70,6 +63,8 @@ export default {
       left: 20%;
       aspect-ratio: 80 / 175;
       transform: translateY(0%) rotate(-15deg);
+      top: initial;
+      bottom: 65%;
     }
   }
 }

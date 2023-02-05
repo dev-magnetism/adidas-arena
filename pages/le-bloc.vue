@@ -132,7 +132,7 @@ export default {
         transform: translate(-50%, -50%) !important;
 
         @include mobile {
-          bottom: -8px;
+          bottom: -25px;
         }
       }
       &.Cercle_1 svg {
@@ -142,6 +142,10 @@ export default {
         left: 40%;
         top: 50%;
         transform: translate(-50%, -50%) rotate(5deg) !important;
+
+        @include mobile {
+          left: 50%;
+        }
       }
     }
   }

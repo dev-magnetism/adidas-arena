@@ -141,14 +141,6 @@ export default {
       width: 100%;
     }
 
-    .H2 {
-      line-height: desktop-vw(90px);
-
-      @include mobile {
-        line-height: mobile-vw(78px);
-      }
-    }
-
     .P2.wysiwyg-text {
       width: 80%;
       text-transform: uppercase;

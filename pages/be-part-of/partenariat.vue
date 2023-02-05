@@ -3,12 +3,8 @@
     <!-- <AppGallery :contents="contentGallerie" /> -->
     <AppBepartofPartenaireIntroduction :contents="contentIntroduction" />
     <AppBepartofPartenairePartenaires :contents="contentPartners" />
-    <AppContactQuestion
-      :contents="contentContactQuestion"
-      :urltemporaire="'partenariat@adidasarena.com'"
-    />
+    <AppContactQuestion :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
-    <EOverlayContact />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
@@ -80,6 +76,10 @@ export default {
     contentContactQuestion() {
       return {
         title: this.content.data.contact_question,
+        cta: this.content.data.contact_question_cta,
+        email: this.content.data.contact_question_email,
+        emailSubject: this.content.data.contact_question_email_sujet,
+        formType: this.content.data.contact_question_form_type,
       }
     },
     contentContactNewsletter() {
@@ -108,10 +108,7 @@ export default {
       }
     },
   },
-
-  mounted() {
-    // console.log(this.galerieTest)
-  },
+  mounted() {},
 }
 </script>
 
@@ -119,8 +116,16 @@ export default {
 .page-be-part-of-partenaire {
   margin-top: desktop-vw(300px);
 
+  @include mobile {
+    margin-top: mobile-vw(120px);
+  }
+
   .app-contact-question {
     margin-top: desktop-vw(280px);
+
+    @include mobile {
+      margin-top: mobile-vw(60px);
+    }
 
     &__title.app-element-rich-text {
       grid-column: 2 / span 10;
@@ -149,6 +154,11 @@ export default {
           left: initial;
           transform: translate(50%, 20%) !important;
           bottom: 0;
+
+          @include mobile {
+            height: 100% !important;
+            transform: translate(50%, 65%) !important;
+          }
         }
       }
     }

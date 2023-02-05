@@ -32,6 +32,7 @@ export const state = () => ({
   overlayContactOpen: false,
   headerReduced: false,
   headerWhite: false,
+  headerHide: false,
   cursorState: 'hide',
   cursorSliderHold: false,
   cursorSliderLeftZone: false,
@@ -50,6 +51,9 @@ export const mutations = {
   },
   setHeaderReduced: (state, value) => {
     state.headerReduced = value
+  },
+  setHeaderHide: (state, value) => {
+    state.headerHide = value
   },
   setOverlayContactOpen: (state, value) => {
     state.overlayContactOpen = value

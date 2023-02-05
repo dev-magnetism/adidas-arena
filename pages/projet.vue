@@ -177,7 +177,7 @@ export default {
   padding-top: desktop-vw(200px);
 
   @include mobile {
-    padding-top: mobile-vw(80px);
+    padding-top: mobile-vw(120px);
   }
 
   .app-footer {

@@ -8,8 +8,13 @@
     <div ref="layerRed" class="app-menu__layer red" />
     <div ref="layerBlue" class="app-menu__layer blue" />
 
-    <div ref="cta" class="app-menu__cta" @click="onCloseBurger">
-      <TP1 v-if="!$viewport.isMobile" weight="bold" class="app-menu__cta__menu">
+    <div
+      ref="cta"
+      :class="{ reduced: headerReduced }"
+      class="app-menu__cta"
+      @click="onCloseBurger"
+    >
+      <TP1 weight="bold" class="app-menu__cta__menu">
         {{ menuCloseName }}
       </TP1>
       <div class="app-menu__burger" :class="{ active: burgerCloseActivated }" />
@@ -133,6 +138,7 @@ export default {
       menuActive: (state) => state.menuActive,
       menuContent: (state) => state.menuContent,
       appContent: (state) => state.appContent,
+      headerReduced: (state) => state.headerReduced,
     }),
     menu() {
       return this.menuContent.data.filter(
@@ -859,7 +865,7 @@ export default {
   height: calc(100 * var(--vh, 1vh));
   position: fixed;
   background-color: transparent;
-  z-index: 3;
+  z-index: 8;
   pointer-events: none;
   opacity: 0;
 
@@ -919,16 +925,28 @@ export default {
     display: flex;
     align-items: center;
     position: absolute;
-    right: calc(var(--layout-margin) + 25px);
-    top: desktop-vw(70.5px);
+    right: desktop-vw(60px);
+    top: desktop-vw(75px);
     z-index: 1;
     opacity: 0;
     cursor: pointer;
+    height: 40px;
 
     @include mobile {
-      top: mobile-vw(35px);
-      right: calc(var(--layout-margin));
-      height: 12px;
+      right: var(--layout-margin);
+      top: mobile-vw(25px);
+    }
+
+    @include mobile {
+      top: mobile-vw(25px);
+    }
+
+    &.reduced {
+      transform: translate(0%, -100%);
+
+      @include mobile {
+        transform: translate(0%, 0%);
+      }
     }
 
     &.visible {

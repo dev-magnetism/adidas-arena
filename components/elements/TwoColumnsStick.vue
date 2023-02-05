@@ -88,6 +88,11 @@ export default {
     }
 
     .app-element-rich-text {
+      @include mobile {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+      }
       .wysiwyg-text.H2 {
         font-size: desktop-vw(110px);
         line-height: desktop-vw(100px);
@@ -96,7 +101,9 @@ export default {
 
         @include mobile {
           font-size: mobile-vw(70px);
-          line-height: mobile-vw(80px);
+          line-height: mobile-vw(62px);
+          display: inline-flex;
+          text-align: center;
         }
 
         sup {

@@ -102,12 +102,8 @@ export default {
   &__content {
     grid-column: 1 / span 5;
 
-    .app-atoms-cta {
-      .P2 {
-        @include font-adihausDIN-cn-medium();
-
-        letter-spacing: 0.04em;
-      }
+    @include mobile {
+      grid-column: 1 / span 6;
     }
   }
 

@@ -7,10 +7,7 @@
     />
     <AppBepartofGuestsPresentation :contents="contentPresentation" />
     <ESlider :contents="contentSlider" />
-    <AppContactQuestion
-      :contents="contentContactQuestion"
-      :urltemporaire="'hospitalites@adidasarena.com'"
-    />
+    <AppContactQuestion :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
@@ -96,6 +93,10 @@ export default {
     contentContactQuestion() {
       return {
         title: this.content.data.contact_question,
+        cta: this.content.data.contact_question_cta,
+        email: this.content.data.contact_question_email,
+        emailSubject: this.content.data.contact_question_email_sujet,
+        formType: this.content.data.contact_question_form_type,
       }
     },
     contentContactNewsletter() {
@@ -116,9 +117,6 @@ export default {
 <style lang="scss">
 .page-be-part-of-guests {
   .app-two-columns-stick {
-    @include mobile {
-      row-gap: 20px;
-    }
     .app-element-lottie-word {
       &.Trait_2 svg {
         position: absolute;

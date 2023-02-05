@@ -40,7 +40,7 @@ export default {
   position: fixed;
   width: 375px;
   background-color: var(--c-grey);
-  z-index: 8;
+  z-index: 7;
   padding: 25px 35px;
   bottom: var(--layout-margin);
   left: var(--layout-margin);

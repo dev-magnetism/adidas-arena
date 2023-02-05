@@ -1,13 +1,30 @@
 <template>
   <div
-    :class="{ reduced: headerReduced, white: headerWhite }"
+    :class="{ reduced: headerReduced, hide: overlayContactOpen }"
     class="app-header"
-    @click="onClickBurger"
   >
-    <TP1 v-if="!$viewport.isMobile" weight="bold" class="app-header__menu">
-      {{ menuName }}
-    </TP1>
-    <div class="app-header__burger" />
+    <nuxt-link
+      :class="{ reduced: headerReduced, white: headerWhite }"
+      class="app-header__logo"
+      to="/"
+    >
+      <SvgArenaLogo />
+    </nuxt-link>
+
+    <div
+      :class="{ reduced: headerReduced, white: headerWhite }"
+      class="app-header__burger"
+      @click="onClickBurger"
+    >
+      <TP1
+        v-if="!$viewport.isMobile"
+        weight="bold"
+        class="app-header__burger__menu"
+      >
+        {{ menuName }}
+      </TP1>
+      <div class="app-header__burger__icon" />
+    </div>
   </div>
 </template>
 
@@ -18,15 +35,11 @@ export default {
   computed: {
     ...mapState({
       menuActive: (state) => state.menuActive,
-      exteriorVisible: (state) => state.exteriorVisible,
-      interiorVisible: (state) => state.interiorVisible,
-      allLoadedFake: (state) => state.allLoadedFake,
-      allLoadedActual: (state) => state.allLoadedActual,
-      preloaderHidden: (state) => state.preloaderHidden,
       appContent: (state) => state.appContent,
-      fontsLoaded: (state) => state.fontsLoaded,
       headerReduced: (state) => state.headerReduced,
       headerWhite: (state) => state.headerWhite,
+      headerHide: (state) => state.headerHide,
+      overlayContactOpen: (state) => state.overlayContactOpen,
     }),
     menuName() {
       return this.appContent.data.menu_name
@@ -50,69 +63,115 @@ export default {
 .app-header {
   position: fixed;
   top: desktop-vw(75px);
-  right: calc(var(--layout-margin) + 25px);
-  z-index: 2;
+  left: 50%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: transform 0.65s var(--ease-out-cubic);
+  width: 50%;
+  justify-content: space-between;
+  transition: transform 0.65s var(--ease-out-cubic),
+    opacity 0.35s 0.4s var(--ease-in-out-cubic);
   will-change: transform;
-
-  &.reduced {
-    transform: translate(0%, -150%);
-  }
-
-  &.white {
-    .app-header__menu.P1 {
-      color: var(--c-grey) !important;
-    }
-    .app-header__burger::after,
-    .app-header__burger::before {
-      background-color: var(--c-grey);
-    }
-  }
+  z-index: 2;
+  height: 40px;
 
   @include mobile {
-    right: var(--layout-margin);
-    top: mobile-vw(40px);
+    top: mobile-vw(25px);
   }
 
-  &__menu.P1 {
-    font-size: 16px;
-    line-height: 16px;
-    text-transform: uppercase;
-    margin-right: 20px;
-    transition: color 0.4s var(--ease-out-cubic);
+  &.reduced {
+    transform: translate(0%, -100%);
+
+    @include mobile {
+      transform: translate(0%, 0%);
+    }
   }
 
+  &.hide {
+    transition-delay: 0s;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &__logo {
+    z-index: 2;
+    transform: translateX(-50%);
+
+    &.white {
+      svg g {
+        fill: #f5f5f3;
+      }
+    }
+
+    svg {
+      cursor: pointer;
+
+      g {
+        transition: fill 0.4s var(--ease-out-cubic);
+      }
+
+      @include mobile {
+        width: 100%;
+      }
+    }
+  }
   &__burger {
+    z-index: 2;
     display: flex;
     justify-content: center;
     align-items: center;
-    outline: none;
-    height: 20px;
-    width: 30px;
-    border: 0px;
-    padding: 0px;
-    background-color: transparent;
+    cursor: pointer;
+    margin-right: desktop-vw(60px);
+    align-self: center;
 
-    &:before,
-    &:after {
-      content: '';
+    @include mobile {
+      margin-right: var(--layout-margin);
+    }
+
+    &.white {
+      .app-header__menu.P1 {
+        color: var(--c-grey) !important;
+      }
+      .app-header__burger::after,
+      .app-header__burger::before {
+        background-color: var(--c-grey);
+      }
+    }
+
+    &__menu.P1 {
+      font-size: 16px;
+      line-height: 16px;
+      text-transform: uppercase;
+      margin-right: 20px;
+      transition: color 0.4s var(--ease-out-cubic);
+    }
+
+    &__icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      outline: none;
+      height: 20px;
       width: 30px;
-      height: 2px;
-      position: absolute;
-      background-color: black;
-      transition: background-color 0.4s var(--ease-out-cubic);
-    }
+      border: 0px;
+      padding: 0px;
+      background-color: transparent;
 
-    &:before {
-      transform: translateY(-4px);
-    }
+      &:before,
+      &:after {
+        content: '';
+        width: 30px;
+        height: 2px;
+        position: absolute;
+        background-color: black;
+        transition: background-color 0.4s var(--ease-out-cubic);
+      }
 
-    &:after {
-      transform: translateY(4px);
+      &:before {
+        transform: translateY(-4px);
+      }
+
+      &:after {
+        transform: translateY(4px);
+      }
     }
   }
 }

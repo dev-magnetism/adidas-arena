@@ -2,10 +2,7 @@
   <main class="page-be-part-of-besoins">
     <AppBepartofBesoinsIntroduction :contents="contentIntroduction" />
     <AppBepartofBesoinsArena :contents="contentArena" />
-    <AppContactQuestion
-      :urltemporaire="'arenaforbusiness@adidasarena.com'"
-      :contents="contentContactQuestion"
-    />
+    <AppContactQuestion :contents="contentContactQuestion" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
@@ -82,6 +79,10 @@ export default {
     contentContactQuestion() {
       return {
         title: this.content.data.contact_question,
+        cta: this.content.data.contact_question_cta,
+        email: this.content.data.contact_question_email,
+        emailSubject: this.content.data.contact_question_email_sujet,
+        formType: this.content.data.contact_question_form_type,
       }
     },
   },

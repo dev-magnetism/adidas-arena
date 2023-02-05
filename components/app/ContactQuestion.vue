@@ -3,22 +3,23 @@
     <ERichText class="app-contact-question__title" :content="contents.title" />
 
     <div class="app-contact-question__ask">
-      <AtomsCTA button @click.native="onClick()">Poser une question</AtomsCTA>
+      <AtomsCTA button @click.native="onClick()">{{ contents.cta }}</AtomsCTA>
     </div>
+    <EContactOverlay
+      :form-type="contents.formType"
+      :subject="contents.emailSubject"
+      :mail-to="contents.email"
+    />
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   props: {
     contents: {
       type: Object,
       default: () => {},
-    },
-    urltemporaire: {
-      type: String,
-      default: '#',
     },
   },
   computed: {
@@ -30,8 +31,11 @@ export default {
     onClick() {
       if (this.overlayContactOpen) return
 
-      this.$nuxt.$emit('contact:overlay', this.urltemporaire)
+      this.setOverlayContactOpen(true)
     },
+    ...mapMutations({
+      setOverlayContactOpen: 'setOverlayContactOpen',
+    }),
   },
 }
 </script>
@@ -43,7 +47,7 @@ export default {
   row-gap: 0;
 
   @include mobile {
-    margin-bottom: mobile-vw(100px);
+    margin-bottom: mobile-vw(70px);
   }
 
   &__title.app-element-rich-text {
@@ -55,11 +59,6 @@ export default {
     }
 
     .H2.wysiwyg-text {
-      @include mobile {
-        font-size: mobile-vw(72px);
-        line-height: mobile-vw(88px);
-      }
-
       .app-element-lottie-word.Cercle_3 {
         svg {
           position: absolute;
@@ -70,7 +69,7 @@ export default {
           transform: translate(-50%, -50%) rotate(5deg) !important;
 
           @include mobile {
-            width: 100% !important;
+            width: 120% !important;
           }
 
           path {
