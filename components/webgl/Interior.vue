@@ -78,6 +78,7 @@ export default {
       currentIntersect: null,
       currentNameZoneFocus: '',
       focusZoneActivated: false,
+      dragInProgress: false,
     }
   },
   computed: {
@@ -148,6 +149,7 @@ export default {
       target: this.$nuxt.$el,
       type: 'touch,pointer,wheel',
       onDrag: this.onDrag,
+      onStop: this.onStopDrag,
       dragMinimum: 5,
       tolerance: 5,
     })
@@ -216,8 +218,8 @@ export default {
     window.removeEventListener('click', this.onClickZone)
   },
   methods: {
-    onClickZone() {
-      // if (this.currentIntersect) {
+    onClickZone(e) {
+      // if (this.currentIntersect && !this.dragInProgress) {
       //   // const basicObject = this.currentIntersect.object
       //   const zone = this.currentIntersect.object.parent
       //   const isDifferentThanSelected = zone.name !== this.currentNameZoneFocus
@@ -907,8 +909,13 @@ export default {
       interior.add(this.fourthFloor)
       this.floors.push(this.fourthFloor)
     },
+    onStopDrag() {
+      this.dragInProgress = false
+    },
     onDrag(e) {
       if (!this.drag.enabled || !this.interiorVisible) return
+
+      this.dragInProgress = true
 
       const delta = e.deltaX * this.drag.dragSpeed
 
@@ -921,8 +928,8 @@ export default {
     onFrame({ time, deltaTime, frame, deltaRatio }) {
       if (!this.interiorVisible || this.$viewport.isMobile) return
 
-      // const { interior, raycaster } = useWebGL()
       const { interior } = useWebGL()
+      // const { interior, raycaster } = useWebGL()
 
       // if (this.currentFloor && this.currentFloor.basicObjectRaycast) {
       //   const intersects = raycaster.intersectObjects(
@@ -1052,9 +1059,6 @@ export default {
         }
 
         group.specialObjects.push(part)
-
-        // const box = new THREE.BoxHelper(part, 0xffff00)
-        // part.add(box)
 
         group.add(part)
       })

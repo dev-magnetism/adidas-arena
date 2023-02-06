@@ -3,7 +3,8 @@
     <ERichText class="app-contact-question__title" :content="contents.title" />
 
     <div class="app-contact-question__ask">
-      <AtomsCTA button @click.native="onClick()">{{ contents.cta }}</AtomsCTA>
+      <AtomsCTA :href="`mailto:${contents.email}`">{{ contents.cta }}</AtomsCTA>
+      <!-- <AtomsCTA button @click.native="onClick()">{{ contents.cta }}</AtomsCTA> -->
     </div>
     <EContactOverlay
       :form-type="contents.formType"
