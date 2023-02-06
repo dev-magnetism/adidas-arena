@@ -14,6 +14,7 @@ export const state = () => ({
   // Content
   partnersContent: null,
   appContent: null,
+  interiorContent: null,
   menuContent: null,
 
   // Exterior scene
@@ -52,6 +53,9 @@ export const mutations = {
   },
   setPopinNewsletterOpen: (state, value) => {
     state.popinNewsletterOpen = value
+  },
+  setInteriorContent: (state, value) => {
+    state.interiorContent = value
   },
   setHeaderReduced: (state, value) => {
     state.headerReduced = value
@@ -155,5 +159,13 @@ export const actions = {
     })
 
     commit('setMenuContent', menu)
+
+    const interiorFloors = await $directus
+      .items('Interior_Floors')
+      .readByQuery({
+        limit: -1,
+      })
+
+    commit('setInteriorContent', interiorFloors.data)
   },
 }

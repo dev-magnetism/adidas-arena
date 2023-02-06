@@ -24,9 +24,6 @@
             {{ content.firstRow.cardParagraph }}
           </TH3>
         </div>
-        <AtomsCTA bg="blue-adidas" color="white">
-          {{ content.firstRow.cardCtaText }}
-        </AtomsCTA>
       </div>
       <div class="app-projet-two-columns-slider__s-card">
         <AtomsCornerPoints :size-points="6" />

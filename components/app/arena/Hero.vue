@@ -5,6 +5,7 @@
       <EFloorSelector />
       <EFloorSelectorMobile />
       <ESceneSelector />
+      <ELegendZones />
       <EScrollIndicator @click.native="scrollHero()" />
       <EInteriorTags />
     </div>

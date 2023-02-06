@@ -1,5 +1,8 @@
 <template>
-  <div :class="{ hide: !popinNewsletterOpen }" class="app-popin-newsletter">
+  <div
+    :class="{ hide: !popinNewsletterOpen && !submited }"
+    class="app-popin-newsletter"
+  >
     <div class="app-popin-newsletter__wrapper">
       <span
         class="app-popin-newsletter__close"
@@ -88,6 +91,9 @@ export default {
     $route() {
       this.setPopinNewsletterOpen(false)
     },
+    popinNewsletterOpen(newVal) {
+      console.log(newVal)
+    },
   },
   mounted() {
     this.tl = gsap.timeline({
@@ -133,11 +139,11 @@ export default {
       )
     },
     onKeyUp(e) {
+      if (e.target.tagName.toLowerCase() === 'input') return
+
       if (e.key === 'Shift' && !this.popinNewsletterOpen) {
         this.setPopinNewsletterOpen(true)
-      }
-
-      if (e.key === 'Escape' && this.popinNewsletterOpen) {
+      } else if (e.key === 'Escape' && this.popinNewsletterOpen) {
         this.setPopinNewsletterOpen(false)
       }
     },

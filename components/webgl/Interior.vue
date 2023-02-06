@@ -39,14 +39,17 @@ export default {
           lambertMaterialColor: new THREE.Color(0x3070ff),
           lambertMaterialEmissive: new THREE.Color(0x285bd1),
           emissiveIntensity: 0.6,
-          lambertMaterialColorActive: new THREE.Color(0xe2520f),
-          lambertMaterialEmissiveActive: new THREE.Color(0xdb500f),
+          lambertMaterialColorActive: new THREE.Color(0x0000ff),
+          lambertMaterialEmissiveActive: new THREE.Color(0x0202d6),
           emissiveIntensityActive: 0.7,
         },
         vip: {
           lambertMaterialColor: new THREE.Color(0xf46b2b),
           lambertMaterialEmissive: new THREE.Color(0xe2723d),
           emissiveIntensity: 0.6,
+          lambertMaterialColorActive: new THREE.Color(0xe2520f),
+          lambertMaterialEmissiveActive: new THREE.Color(0xdb500f),
+          emissiveIntensityActive: 0.7,
         },
       },
       azimuth: { min: -1.6, max: 0.6 },
@@ -60,10 +63,8 @@ export default {
         enabled: false,
       },
       zoom: {
-        initial: 14,
-        current: 14,
-        // initial: 16,
-        // current: 16,
+        initial: 15,
+        current: 15,
         range: {
           min: 5,
           max: 30,
@@ -74,7 +75,9 @@ export default {
       polygonOffsetUnits: 1,
       floorsGUI: [],
       floors: [],
-      helpers: [],
+      currentIntersect: null,
+      currentNameZoneFocus: '',
+      focusZoneActivated: false,
     }
   },
   computed: {
@@ -84,7 +87,16 @@ export default {
       interiorVisible: (state) => state.interiorVisible,
       interiorIndexFloor: (state) => state.interiorIndexFloor,
       interiorMusicScene: (state) => state.interiorMusicScene,
+      interiorContent: (state) => state.interiorContent,
     }),
+    currentFloor() {
+      return this.floors[this.interiorIndexFloor.id]
+    },
+    currentZone() {
+      return this.floors[this.interiorIndexFloor.id].specialObjects.find(
+        (obj) => obj.name === this.currentNameZoneFocus
+      )
+    },
   },
   watch: {
     interiorMusicScene() {
@@ -105,10 +117,16 @@ export default {
     interiorVisible(payload) {
       const { interior } = useWebGL()
 
-      // console.log('here', payload)
-
       interior.visible = payload
     },
+    // currentIntersect(newVal, oldVal) {
+    //   if (newVal) {
+    //     console.log()
+    //     this.onMouseEnterZone()
+    //   } else {
+    //     this.onMouseLeaveZone()
+    //   }
+    // },
   },
   mounted() {
     const { scissors, renderer } = useWebGL()
@@ -137,9 +155,11 @@ export default {
     this.$nuxt.$on('reset:interior', this.resetView)
 
     this.$raf.add(`webgl-interior`, this.onFrame)
+
+    window.addEventListener('click', this.onClickZone)
   },
   beforeDestroy() {
-    const { interior, scene } = useWebGL()
+    const { interior } = useWebGL()
 
     // MATERIAL
     const materials = this.buildGraph(interior).materials
@@ -147,13 +167,6 @@ export default {
     materials.forEach((material, index) => {
       material.dispose()
       materials.splice(index, 1)
-    })
-
-    this.helpers.forEach((helper) => {
-      helper.geometry.dispose()
-      helper.material.dispose()
-
-      scene.remove(helper)
     })
 
     interior.traverse((item) => {
@@ -177,10 +190,9 @@ export default {
 
     // LIGHTS
     this.ambientLight.dispose()
-    scene.remove(this.ambientLight)
+    interior.remove(this.ambientLight)
 
     this.directionalLight.dispose()
-
     interior.remove(this.directionalLight)
 
     // GUI
@@ -200,8 +212,85 @@ export default {
     this.tlFloorsHidden?.kill()
     this.$nuxt.$off('reset:interior', this.resetView)
     this.$raf.remove(`webgl-interior`, this.onFrame)
+
+    window.removeEventListener('click', this.onClickZone)
   },
   methods: {
+    onClickZone() {
+      // if (this.currentIntersect) {
+      //   // const basicObject = this.currentIntersect.object
+      //   const zone = this.currentIntersect.object.parent
+      //   const isDifferentThanSelected = zone.name !== this.currentNameZoneFocus
+      //   if (!this.focusZoneActivated) {
+      //     this.focusZone(zone)
+      //   } else if (this.focusZoneActivated && !isDifferentThanSelected) {
+      //     this.unfocusZone()
+      //   }
+      //   console.log(this.currentZone, zone)
+      // }
+    },
+    focusZone(zone) {
+      this.focusZoneActivated = true
+      this.currentNameZoneFocus = zone.name
+
+      const { camera } = useWebGL()
+
+      this.drag.enabled = false
+      this.drag.target = 0
+
+      const cameraSelected = this.cameras.getObjectByName(
+        zone.content.name_camera
+      )
+
+      gsap.to(camera.position, {
+        duration: 1,
+        x: cameraSelected.position.x,
+        y: cameraSelected.position.y,
+        z: cameraSelected.position.z,
+      })
+      gsap.to(camera.rotation, {
+        duration: 1,
+        x: cameraSelected.rotation.x,
+        y: cameraSelected.rotation.y,
+        z: cameraSelected.rotation.z,
+      })
+      gsap.to(camera, {
+        duration: 1,
+        zoom: zone.content.camera_zoom,
+        onUpdate: () => {
+          camera.updateProjectionMatrix()
+        },
+      })
+    },
+    unfocusZone() {
+      this.focusZoneActivated = false
+      this.currentNameZoneFocus = ''
+
+      const { camera } = useWebGL()
+
+      this.drag.enabled = true
+
+      gsap.to(camera.position, {
+        duration: 1,
+        x: this.cameraBase.position.x,
+        y: this.cameraBase.position.y,
+        z: this.cameraBase.position.z,
+      })
+      gsap.to(camera.rotation, {
+        duration: 1,
+        x: this.cameraBase.rotation.x,
+        y: this.cameraBase.rotation.y,
+        z: this.cameraBase.rotation.z,
+      })
+      gsap.to(camera, {
+        duration: 1,
+        zoom: this.zoom.initial,
+        // zoom: this.currentFloor.content.camera_zoom || this.zoom.initial,
+        onUpdate: () => {
+          camera.updateProjectionMatrix()
+        },
+      })
+    },
     switchMiddleScene() {
       this.tlSwitchMiddleScene?.clear()
       this.tlSwitchMiddleScene?.kill()
@@ -414,10 +503,10 @@ export default {
       this.handleImmediateTransition(this.interiorIndexFloor)
     },
     initLights() {
-      const { interior, scene } = useWebGL()
+      const { interior } = useWebGL()
 
       this.ambientLight = new THREE.AmbientLight(this.colors.ambientLightColor)
-      scene.add(this.ambientLight)
+      interior.add(this.ambientLight)
 
       this.directionalLight = new THREE.DirectionalLight(
         this.colors.directionalLightColor,
@@ -432,10 +521,10 @@ export default {
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
 
-      this.directionalLight.shadow.camera.left = -50
-      this.directionalLight.shadow.camera.right = 50
-      this.directionalLight.shadow.camera.top = 50
-      this.directionalLight.shadow.camera.bottom = -50
+      this.directionalLight.shadow.camera.left = -40
+      this.directionalLight.shadow.camera.right = 40
+      this.directionalLight.shadow.camera.top = 40
+      this.directionalLight.shadow.camera.bottom = -40
 
       interior.add(this.directionalLight)
     },
@@ -770,7 +859,7 @@ export default {
         .getObjectByName('Arene')
         .getObjectByName('RDC')
 
-      this.zeroFloor = this.buildArenaFloor(floorGroup, `floor-${0}`, true)
+      this.zeroFloor = this.buildArenaFloor(floorGroup, 0, true)
       interior.add(this.zeroFloor)
       this.floors.push(this.zeroFloor)
     },
@@ -781,7 +870,7 @@ export default {
         .getObjectByName('Arene')
         .getObjectByName('Niveau_1')
 
-      this.firstFloor = this.buildArenaFloor(floorGroup, `floor-${1}`)
+      this.firstFloor = this.buildArenaFloor(floorGroup, 1)
       interior.add(this.firstFloor)
       this.floors.push(this.firstFloor)
     },
@@ -792,7 +881,7 @@ export default {
         .getObjectByName('Arene')
         .getObjectByName('Niveau_2')
 
-      this.secondFloor = this.buildArenaFloor(floorGroup, `floor-${2}`)
+      this.secondFloor = this.buildArenaFloor(floorGroup, 2)
       interior.add(this.secondFloor)
       this.floors.push(this.secondFloor)
     },
@@ -803,7 +892,7 @@ export default {
         .getObjectByName('Arene')
         .getObjectByName('Niveau_3')
 
-      this.thirdFloor = this.buildArenaFloor(floorGroup, `floor-${3}`)
+      this.thirdFloor = this.buildArenaFloor(floorGroup, 3)
       interior.add(this.thirdFloor)
       this.floors.push(this.thirdFloor)
     },
@@ -814,7 +903,7 @@ export default {
         .getObjectByName('Arene')
         .getObjectByName('Niveau_4')
 
-      this.fourthFloor = this.buildArenaFloor(floorGroup, `floor-${4}`)
+      this.fourthFloor = this.buildArenaFloor(floorGroup, 4)
       interior.add(this.fourthFloor)
       this.floors.push(this.fourthFloor)
     },
@@ -832,7 +921,33 @@ export default {
     onFrame({ time, deltaTime, frame, deltaRatio }) {
       if (!this.interiorVisible || this.$viewport.isMobile) return
 
+      // const { interior, raycaster } = useWebGL()
       const { interior } = useWebGL()
+
+      // if (this.currentFloor && this.currentFloor.basicObjectRaycast) {
+      //   const intersects = raycaster.intersectObjects(
+      //     this.currentFloor?.basicObjectRaycast
+      //   )
+
+      //   if (intersects.length) {
+      //     if (!this.currentIntersect) {
+      //       // this.onMouseEnterZone()
+      //       // console.log('mouse enter')
+      //     }
+
+      //     this.currentIntersect = intersects[0]
+      //     this.currentZoneNameIntersect =
+      //       this.currentIntersect.object.parent.name
+      //   } else {
+      //     if (this.currentIntersect) {
+      //       // this.onMouseLeaveZone()
+      //       // console.log('mouse leave')
+      //       this.currentZoneNameIntersect = ''
+      //     }
+
+      //     this.currentIntersect = null
+      //   }
+      // }
 
       this.drag.current = this.lerp(
         this.drag.current,
@@ -871,15 +986,16 @@ export default {
         vipMaterial,
       }
     },
-    buildArenaFloor(initialObject, name = 'no-name', isGroundFloor = false) {
+    buildArenaFloor(initialObject, indexFloor, isGroundFloor = false) {
       const arene = this.model.getObjectByName('Arene')
 
       const group = new THREE.Group()
       group.position.copy(arene.position)
-      group.name = name
-      group.divider = []
+      group.name = `floor-${indexFloor}`
+      group.content = { ...this.interiorContent[indexFloor] }
       group.public = []
       group.vip = []
+      group.basicObjectRaycast = []
       group.specialObjects = []
       group.materials = this.initFloorMaterials()
       group.isGroundFloor = isGroundFloor
@@ -888,10 +1004,7 @@ export default {
 
       const object = initialObject.clone()
 
-      const { basicObject, specialObjects, dividerObject } =
-        this.parseFloor(object)
-
-      group.divider = dividerObject
+      const { basicObject, specialObjects } = this.parseFloor(object)
 
       const basicMeshes = this.buildMergedObjects(
         basicObject,
@@ -908,12 +1021,21 @@ export default {
         part.name = obj.name
         part.isBasicObject = obj.isBasicObject
         part.publicAccess = obj.publicAccess
+        part.content = group.content.zones.find(
+          (zone) => part.name === zone.name_gltf
+        )
 
         const meshes = this.buildMergedObjects(
           obj,
           clippingPlane,
-          group.materials
+          group.materials,
+          !obj.isBasicObject
         )
+
+        const basicObjectForRaycast = meshes.find(
+          (mesh) => mesh.name === 'model' && mesh.type === 'Mesh'
+        )
+        group.basicObjectRaycast.push(basicObjectForRaycast)
 
         part.add(...meshes)
         part.position.y += 0.05
@@ -931,14 +1053,8 @@ export default {
 
         group.specialObjects.push(part)
 
-        // const box = new THREE.BoxHelper(part, 0xff0000)
+        // const box = new THREE.BoxHelper(part, 0xffff00)
         // part.add(box)
-
-        // const { interactionManager } = useWebGL()
-        // interactionManager.add(part)
-        // part.addEventListener('click', this.onClickArena)
-        // group.addEventListener('mouseenter', this.onMouseEnterArena)
-        // group.addEventListener('mouseleave', this.onMouseLeaveArena)
 
         group.add(part)
       })
@@ -949,7 +1065,7 @@ export default {
 
       const height = max.y - min.y
 
-      clippingPlane.constant = min.y * -1 + 0.1
+      clippingPlane.constant = min.y * -1 + 0.15
 
       group.hidePosition = group.position.clone()
       group.hidePosition.y = height * -1 - 0.2
@@ -959,23 +1075,18 @@ export default {
     onClickArena(e) {
       // console.log('here onClickArena', e)
     },
-    onMouseEnterArena() {
-      // console.log('here onMouseEnterArena')
+    onMouseEnterZone() {
+      console.log('here onMouseEnter')
     },
-    onMouseLeaveArena() {
-      // console.log('here onMouseLeaveArena')
+    onMouseLeaveZone() {
+      console.log('here onMouseLeave')
     },
     parseFloor(object) {
       const basicObject = new THREE.Group()
       basicObject.isBasicObject = true
 
-      const { fail: objectsWithoutDivider, pass: objectDivider } =
-        this.partition(object.children, (e) => e.name.includes('Divider'))
-
-      const dividerObject = objectDivider[0]
-
       const { fail: objectsWithoutBoole, pass: booleGroup } = this.partition(
-        objectsWithoutDivider,
+        object.children,
         (e) => e.name.includes('Boole')
       )
 
@@ -990,16 +1101,22 @@ export default {
 
       if (basicObjectsBoole.length) basicObject.add(...basicObjectsBoole)
 
-      return { basicObject, specialObjects, dividerObject }
+      return { basicObject, specialObjects }
     },
-    buildMergedObjects(object, clippingPlane, materials) {
+    buildMergedObjects(object, clippingPlane, materials, cloned = false) {
       const normalObject = this.mergeObject(object)
 
       if (!object.isBasicObject) {
         if (object.publicAccess) {
           normalObject.material = materials.publicMaterial
+          // normalObject.material = cloned
+          //   ? materials.publicMaterial.clone()
+          //   : materials.publicMaterial
         } else {
           normalObject.material = materials.vipMaterial
+          // normalObject.material = cloned
+          //   ? materials.vipMaterial.clone()
+          //   : materials.vipMaterial
         }
       } else {
         normalObject.material = materials.basicMaterial

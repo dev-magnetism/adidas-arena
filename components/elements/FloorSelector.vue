@@ -9,22 +9,21 @@
         name="selector-text"
       >
         <TP2
-          v-for="i in 5"
-          v-show="i - 1 === interiorIndexFloor.id"
-          :key="'iii' + i"
-          >{{ i === 1 ? 'RDC' : '' }} {{ i === 2 ? '1er' : '' }}
-          {{ i === 3 ? '2ème' : '' }} {{ i === 4 ? '3ème' : '' }}
-          {{ i === 5 ? '4ème' : '' }}</TP2
+          v-for="(floor, index) in interiorContent"
+          v-show="index === interiorIndexFloor.id"
+          :key="`floor-text-${index}`"
+          weight="medium"
+          >{{ floor.name_short }}</TP2
         >
       </transition-group>
 
       <div class="app-element-floor-selector__floors">
         <span
-          v-for="i in 5"
-          :key="i"
-          :class="{ active: i - 1 === interiorIndexFloor.id }"
+          v-for="(floor, index) in interiorContent"
+          :key="`floor-${index}`"
+          :class="{ active: index === interiorIndexFloor.id }"
           class="app-element-floor-selector__floor"
-          @click="onClick(i - 1)"
+          @click="onClick(index)"
         />
       </div>
     </div>
@@ -46,8 +45,10 @@ export default {
     ...mapState({
       exteriorFullwidth: (state) => state.exteriorFullwidth,
       interiorIndexFloor: (state) => state.interiorIndexFloor,
+      interiorContent: (state) => state.interiorContent,
     }),
   },
+  mounted() {},
   methods: {
     onClick(i) {
       this.setInteriorIndexFloor({ id: i, immediate: false })
@@ -65,7 +66,7 @@ export default {
   bottom: 20px;
   background: var(--c-grey);
   right: 20px;
-  width: 170px;
+  width: 150px;
   height: 80px;
 
   @include mobile {
@@ -88,6 +89,7 @@ export default {
 
     .P2 {
       position: absolute;
+      text-transform: uppercase;
 
       &.selector-text-enter-active,
       &.selector-text-leave-active {

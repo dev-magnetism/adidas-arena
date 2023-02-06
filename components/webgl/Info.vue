@@ -34,5 +34,9 @@ export default {
   padding: 8px;
   position: fixed;
   z-index: 10000;
+
+  @include mobile {
+    display: none;
+  }
 }
 </style>

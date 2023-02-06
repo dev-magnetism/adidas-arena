@@ -1,5 +1,4 @@
 // import Stats from 'stats.js'
-// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { InteractionManager } from 'three.interactive'
 // import { InteractionManager } from '~/assets/js/webgl/InteractiveMouse'
 import Raf from '~/plugins/raf'
@@ -95,6 +94,12 @@ class GL {
       document.getElementById('__nuxt')
     )
 
+    this.raycaster = new THREE.Raycaster()
+
+    this.mouse = new THREE.Vector2()
+
+    window.addEventListener('mousemove', this.onMouseMove.bind(this))
+
     this.onWindowResize()
 
     Viewport.events.on('resize', this.onWindowResize.bind(this))
@@ -102,6 +107,11 @@ class GL {
     this.initGUI()
 
     Raf.add('webgl', this.update.bind(this), 1)
+  }
+
+  onMouseMove(event) {
+    this.mouse.x = (event.clientX / Viewport.width) * 2 - 1
+    this.mouse.y = -(event.clientY / Viewport.height) * 2 + 1
   }
 
   calculateScissors() {
@@ -157,6 +167,8 @@ class GL {
   }
 
   onWindowResize() {
+    this.calculateScissors()
+
     if (this.camera.type === 'OrthographicCamera') {
       this.camera.left = Viewport.width / -2
       this.camera.right = Viewport.width / 2
@@ -166,27 +178,27 @@ class GL {
       this.camera.aspect = Viewport.width / Viewport.height
     }
 
-    this.calculateScissors()
+    this.camera.updateProjectionMatrix()
 
     this.renderer.setSize(Viewport.width, Viewport.height)
-    this.camera.updateProjectionMatrix()
   }
 
   update({ deltaTime }) {
-    // this.stats?.begin()
+    this.stats?.begin()
 
-    // this.controls.update()
+    this.raycaster?.setFromCamera(this.mouse, this.camera)
 
-    this.interactionManager.update()
+    this.interactionManager?.update()
 
-    this.renderer.render(this.scene, this.camera)
+    this.renderer?.render(this.scene, this.camera)
 
-    // this.stats?.end()
+    this.stats?.end()
   }
 
   destroy() {
     this.gui?.dispose()
 
+    window.addEventListener('mousemove', this.onMouseMove.bind(this))
     Viewport.events.off('resize', this.onWindowResize.bind(this))
 
     Raf.remove('webgl', this.update.bind(this))

@@ -307,9 +307,9 @@ export default {
       &__text.P2 {
         flex: 3;
         margin-right: desktop-vw(60px);
+        text-transform: uppercase;
 
         @include mobile {
-          text-transform: uppercase;
           margin-right: mobile-vw(0px);
           margin-left: mobile-vw(40px);
         }

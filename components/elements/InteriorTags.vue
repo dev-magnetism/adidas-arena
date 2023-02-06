@@ -48,14 +48,14 @@ export default {
               id: 'PUBLIC_Room_004',
             },
             {
-              name: 'LOGE BUNKER',
+              name: 'SALON COURTSIDE',
               description:
                 'Un salon vitré longeant le tunnel d’accès des joueurs',
               id: 'VIP_Room_001',
               hide: true,
             },
             {
-              name: 'LOGE BUNKER',
+              name: 'SALON COURTSIDE',
               description:
                 'Un salon vitré longeant le tunnel d’accès des joueurs',
               id: 'VIP_Room_003',
@@ -70,7 +70,7 @@ export default {
             {
               name: 'LES SALONS',
               description:
-                'une surface totale de 900 m2, POUR de vivre un événement dans un environnement privilégié.',
+                'une surface totale de 900 m2, POUR vivre un événement dans un environnement privilégié.',
               id: 'VIP_area',
             },
           ],
@@ -83,20 +83,20 @@ export default {
               name: 'LE BLOC',
               id: 'PUBLIC_Cantine',
               description:
-                'une surface totale de 900 m2, POUR de vivre un événement dans un environnement privilégié.',
+                'une surface totale de 900 m2, POUR vivre un événement dans un environnement privilégié.',
             },
             {
               name: 'LES LOGES',
               id: 'VIP_Loge',
               description:
-                'Des loges privées à la fois en retrait mais aussi avec vue sur la salle (vitrées ou ouvertes).',
+                'Des loges privées à la fois en retrait mais aussi avec vue sur la salle.',
             },
             {
               name: 'LES LOGES',
               id: 'VIP_Tribunes',
               hide: true,
               description:
-                'Des loges privées à la fois en retrait mais aussi avec vue sur la salle (vitrées ou ouvertes).',
+                'Des loges privées à la fois en retrait mais aussi avec vue sur la salle.',
             },
           ],
         },

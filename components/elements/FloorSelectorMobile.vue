@@ -71,6 +71,14 @@ export default {
     background-color: var(--c-grey);
     border: 1px solid var(--c-black);
     transition: background-color 0.45s var(--ease-out-expo);
+    border-right: 0;
+
+    &:not(:first-child) {
+      border-top: 0;
+    }
+    &:last-child {
+      border-bottom: 0;
+    }
 
     &.active {
       background-color: var(--c-blue-adidas);

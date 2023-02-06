@@ -1,5 +1,23 @@
 <template>
   <div :class="{ open: viewExteriorOpen }" class="app-home-hero block-inner">
+    <div ref="firstVisual" class="app-home-hero__first-visual">
+      <nuxt-picture
+        class="picture-absolute"
+        provider="directus"
+        :src="contents.pictureTop.src"
+        :alt="contents.pictureTop.alt"
+        format="webp"
+      />
+    </div>
+    <div ref="secondVisual" class="app-home-hero__second-visual">
+      <nuxt-picture
+        class="picture-absolute"
+        provider="directus"
+        :src="contents.pictureBottom.src"
+        :alt="contents.pictureBottom.alt"
+        format="webp"
+      />
+    </div>
     <div class="app-home-hero__inner grid">
       <EEnterArena
         :class="{ hide: !exteriorArenaHovered || !exteriorFullwidth }"
@@ -16,24 +34,7 @@
         class="app-home-hero__title"
         :content="contents.title"
       />
-      <div ref="firstVisual" class="app-home-hero__first-visual">
-        <nuxt-picture
-          class="picture-absolute"
-          provider="directus"
-          :src="contents.pictureTop.src"
-          :alt="contents.pictureTop.alt"
-          format="webp"
-        />
-      </div>
-      <div ref="secondVisual" class="app-home-hero__second-visual">
-        <nuxt-picture
-          class="picture-absolute"
-          provider="directus"
-          :src="contents.pictureBottom.src"
-          :alt="contents.pictureBottom.alt"
-          format="webp"
-        />
-      </div>
+
       <div
         :class="{ hide: viewExteriorOpen }"
         class="app-home-hero__scroll-indicator"
@@ -649,6 +650,7 @@ export default {
   height: 100vh;
   padding-top: desktop-vw(40px);
   padding-bottom: desktop-vw(40px);
+  position: relative;
 
   &.open {
     .app-home-hero__view-exterior {
@@ -922,41 +924,36 @@ export default {
 
   &__first-visual {
     position: absolute !important;
-    left: 0;
-    top: desktop-vw(-250px);
-    // max-width: 350px;
+    top: desktop-vw(-200px);
     min-width: 250px;
-    grid-column: 1 / span 3;
-    width: 100%;
+    width: columns(3);
+    left: var(--layout-margin);
     aspect-ratio: 350 / 440;
     transform: rotate(5deg);
     @include noise();
 
     @include mobile {
-      grid-column: 1 / span 4;
-      width: 80%;
-      min-width: 75%;
+      width: columns(3);
+      min-width: initial;
       aspect-ratio: 185 / 235;
-      top: mobile-vw(-225px);
+      top: mobile-vw(-50px);
     }
   }
   &__second-visual {
     position: absolute !important;
-    left: 0;
-    bottom: calc(min(-20px, desktop-vw(65px)));
-    grid-column: 4 / span 3;
-    width: 75%;
+    bottom: calc(min(-20px, desktop-vw(100px)));
+    width: columns(2.25);
+    left: columns(3.75);
     min-width: 200px;
     aspect-ratio: 255 / 320;
     transform: rotate(-6deg);
     @include noise();
 
     @include mobile {
-      grid-column: 4 / span 2;
-      width: 100%;
-      min-width: 100%;
+      width: columns(2);
+      min-width: initial;
       aspect-ratio: 115 / 145;
-      top: mobile-vw(300px);
+      top: mobile-vw(500px);
     }
   }
 

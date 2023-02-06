@@ -58,7 +58,7 @@
       />
     </div>
 
-    <AppProjetTwoColumnsSlider v-if="$viewport.isMobile" :content="contents" />
+    <AppProjetTwoColumnsSlider :content="contents" />
 
     <div class="app-projet-two-columns__s-r grid">
       <div class="app-projet-two-columns__s-r__content">
