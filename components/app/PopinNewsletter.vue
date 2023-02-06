@@ -92,7 +92,7 @@ export default {
       this.setPopinNewsletterOpen(false)
     },
     popinNewsletterOpen(newVal) {
-      console.log(newVal)
+      // console.log(newVal)
     },
   },
   mounted() {
