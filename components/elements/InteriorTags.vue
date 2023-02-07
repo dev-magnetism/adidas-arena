@@ -27,7 +27,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import useWebGL from '~/hooks/webgl'
 
 export default {
   data() {
@@ -141,54 +140,9 @@ export default {
   watch: {
     interiorIndexFloor(newVal) {},
   },
-  mounted() {
-    this.$raf.add(`interior-tags`, this.onFrame)
-
-    this.$nuxt.$on('interior:animated-transition', this.onAnimatedTransition)
-    this.$nuxt.$on('interior:immediate-transition', this.onImmediateTransition)
-  },
-  beforeDestroy() {
-    this.$raf.remove(`interior-tags`, this.onFrame)
-
-    this.$nuxt.$off('interior:animated-transition', this.onAnimatedTransition)
-    this.$nuxt.$off('interior:immediate-transition', this.onImmediateTransition)
-  },
-  methods: {
-    onAnimatedTransition() {
-      const { interior } = useWebGL()
-
-      if (this.$viewport.isMobile)
-        interior.position.copy(
-          this.floors[this.interiorIndexFloor.id].positionMobile
-        )
-
-      // console.log('here')
-    },
-    onImmediateTransition() {
-      const { interior } = useWebGL()
-
-      if (this.$viewport.isMobile)
-        interior.position.copy(
-          this.floors[this.interiorIndexFloor.id].positionMobile
-        )
-
-      // console.log('here')
-      // console.log()
-    },
-    onFrame() {
-      // const { interior } = useWebGL()
-      // if (!interior.floors) return
-      // const floor = interior.floors[this.interiorIndexFloor.id]
-      // floor.specialObjects.forEach((zone) => {
-      //   const vec3 = new THREE.Vector3()
-      //   const screenPosition = zone.getWorldPosition(vec3)
-      //   console.log(screenPosition)
-      //   const translateX = screenPosition.x
-      //   const translateY = -screenPosition.y
-      //   zone.el.style.transform = `translateX(${translateX}px) translateY(${translateY}px)`
-      // })
-    },
-  },
+  mounted() {},
+  beforeDestroy() {},
+  methods: {},
 }
 </script>
 

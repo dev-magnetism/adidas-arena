@@ -1,6 +1,6 @@
 <template>
   <div class="app-element-legend-zones">
-    <TP2 weight="medium" class="public"><span />Publique</TP2>
+    <TP2 weight="medium" class="public"><span />Public</TP2>
     <TP2 weight="medium" class="vip"><span />VIP</TP2>
   </div>
 </template>
@@ -37,13 +37,13 @@
 
     &.public {
       span {
-        background: var(--c-red-adidas);
+        background: #3171ff;
       }
     }
 
     &.vip {
       span {
-        background: #3171ff;
+        background: var(--c-red-adidas);
       }
     }
 

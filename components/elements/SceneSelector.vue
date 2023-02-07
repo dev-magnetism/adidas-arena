@@ -1,9 +1,9 @@
 <template>
-  <div class="app-element-scene-selector">
+  <div class="app-element-scene-selector" @click.stop="() => {}">
     <div
       :class="{ active: interiorMusicScene }"
       class="app-element-scene-selector__icon micro"
-      @click="setInteriorMusicScene(true)"
+      @click.stop="setInteriorMusicScene(true)"
     >
       <SvgInteriorMicro />
     </div>

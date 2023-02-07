@@ -133,7 +133,9 @@ export default {
         url: 'https://adidasarena.directus.app/',
       },
     ],
+    'cookie-universal-nuxt',
     'nuxt-seo',
+    '@nuxtjs/gtm',
     'nuxt-compress',
     '@nuxtjs/sitemap',
   ],
@@ -150,7 +152,7 @@ export default {
 
   'nuxt-compress': {
     gzip: {
-      threshold: 8192,
+      // threshold: 8192,
       cache: true,
     },
     brotli: {

@@ -82,12 +82,6 @@ class GL {
     //   document.body.appendChild(this.stats.dom)
     // }
 
-    // this.controls = new OrbitControls(
-    //   this.camera,
-    //   document.getElementById('__nuxt')
-    // )
-    // this.controls = new OrbitControls(this.camera, this.renderer.domElement)
-
     this.interactionManager = new InteractionManager(
       this.renderer,
       this.camera,
@@ -95,6 +89,7 @@ class GL {
     )
 
     this.raycaster = new THREE.Raycaster()
+    console.log(this.raycaster)
 
     this.mouse = new THREE.Vector2()
 

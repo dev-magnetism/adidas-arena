@@ -1,5 +1,11 @@
 <template>
-  <div class="app" :class="{ 'cursor-custom': cursorState === 'slider' }">
+  <div
+    class="app"
+    :class="{
+      'cursor-slider': cursorState === 'slider',
+      'cursor-hover': cursorState === 'hover',
+    }"
+  >
     <div ref="layerBlue" class="app-transition-layer blue" />
     <div ref="layerRed" class="app-transition-layer red" />
     <AppCursor />

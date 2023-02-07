@@ -236,6 +236,11 @@ export default {
       xhr.send(
         JSON.stringify([{ listname: 'newsletter', email: this.email, misc }])
       )
+
+      this.$cookies.set('aa-newsletter-hide', true, {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7 * 4 * 2,
+      })
     },
     onMouseEnter() {
       if (!this.validateForm) return

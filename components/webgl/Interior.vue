@@ -41,7 +41,7 @@ export default {
           emissiveIntensity: 0.6,
           lambertMaterialColorActive: new THREE.Color(0x0000ff),
           lambertMaterialEmissiveActive: new THREE.Color(0x0202d6),
-          emissiveIntensityActive: 0.7,
+          emissiveIntensityActive: 0.5,
         },
         vip: {
           lambertMaterialColor: new THREE.Color(0xf46b2b),
@@ -75,9 +75,8 @@ export default {
       polygonOffsetUnits: 1,
       floorsGUI: [],
       floors: [],
-      currentIntersect: null,
-      currentNameZoneFocus: '',
-      focusZoneActivated: false,
+      currentZoneIntersect: null,
+      zoneFocusEnabled: false,
       dragInProgress: false,
     }
   },
@@ -89,13 +88,19 @@ export default {
       interiorIndexFloor: (state) => state.interiorIndexFloor,
       interiorMusicScene: (state) => state.interiorMusicScene,
       interiorContent: (state) => state.interiorContent,
+      interiorCurrentZoneName: (state) => state.interiorCurrentZoneName,
     }),
     currentFloor() {
       return this.floors[this.interiorIndexFloor.id]
     },
     currentZone() {
       return this.floors[this.interiorIndexFloor.id].specialObjects.find(
-        (obj) => obj.name === this.currentNameZoneFocus
+        (obj) => obj.name === this.interiorCurrentZoneName
+      )
+    },
+    inactiveZones() {
+      return this.currentFloor.specialObjects.filter(
+        (object) => object.name !== this.interiorCurrentZoneName
       )
     },
   },
@@ -104,8 +109,6 @@ export default {
       this.switchMiddleScene()
     },
     interiorIndexFloor(newVal, oldVal) {
-      if (newVal.id === oldVal.id) return
-
       if (newVal.immediate) {
         this.handleImmediateTransition(oldVal)
       } else {
@@ -120,14 +123,6 @@ export default {
 
       interior.visible = payload
     },
-    // currentIntersect(newVal, oldVal) {
-    //   if (newVal) {
-    //     console.log()
-    //     this.onMouseEnterZone()
-    //   } else {
-    //     this.onMouseLeaveZone()
-    //   }
-    // },
   },
   mounted() {
     const { scissors, renderer } = useWebGL()
@@ -158,7 +153,9 @@ export default {
 
     this.$raf.add(`webgl-interior`, this.onFrame)
 
-    window.addEventListener('click', this.onClickZone)
+    document
+      .getElementById('__nuxt')
+      .addEventListener('click', this.onClickZone)
   },
   beforeDestroy() {
     const { interior } = useWebGL()
@@ -215,84 +212,11 @@ export default {
     this.$nuxt.$off('reset:interior', this.resetView)
     this.$raf.remove(`webgl-interior`, this.onFrame)
 
-    window.removeEventListener('click', this.onClickZone)
+    document
+      .getElementById('__nuxt')
+      .removeEventListener('click', this.onClickZone)
   },
   methods: {
-    onClickZone(e) {
-      // if (this.currentIntersect && !this.dragInProgress) {
-      //   // const basicObject = this.currentIntersect.object
-      //   const zone = this.currentIntersect.object.parent
-      //   const isDifferentThanSelected = zone.name !== this.currentNameZoneFocus
-      //   if (!this.focusZoneActivated) {
-      //     this.focusZone(zone)
-      //   } else if (this.focusZoneActivated && !isDifferentThanSelected) {
-      //     this.unfocusZone()
-      //   }
-      //   console.log(this.currentZone, zone)
-      // }
-    },
-    focusZone(zone) {
-      this.focusZoneActivated = true
-      this.currentNameZoneFocus = zone.name
-
-      const { camera } = useWebGL()
-
-      this.drag.enabled = false
-      this.drag.target = 0
-
-      const cameraSelected = this.cameras.getObjectByName(
-        zone.content.name_camera
-      )
-
-      gsap.to(camera.position, {
-        duration: 1,
-        x: cameraSelected.position.x,
-        y: cameraSelected.position.y,
-        z: cameraSelected.position.z,
-      })
-      gsap.to(camera.rotation, {
-        duration: 1,
-        x: cameraSelected.rotation.x,
-        y: cameraSelected.rotation.y,
-        z: cameraSelected.rotation.z,
-      })
-      gsap.to(camera, {
-        duration: 1,
-        zoom: zone.content.camera_zoom,
-        onUpdate: () => {
-          camera.updateProjectionMatrix()
-        },
-      })
-    },
-    unfocusZone() {
-      this.focusZoneActivated = false
-      this.currentNameZoneFocus = ''
-
-      const { camera } = useWebGL()
-
-      this.drag.enabled = true
-
-      gsap.to(camera.position, {
-        duration: 1,
-        x: this.cameraBase.position.x,
-        y: this.cameraBase.position.y,
-        z: this.cameraBase.position.z,
-      })
-      gsap.to(camera.rotation, {
-        duration: 1,
-        x: this.cameraBase.rotation.x,
-        y: this.cameraBase.rotation.y,
-        z: this.cameraBase.rotation.z,
-      })
-      gsap.to(camera, {
-        duration: 1,
-        zoom: this.zoom.initial,
-        // zoom: this.currentFloor.content.camera_zoom || this.zoom.initial,
-        onUpdate: () => {
-          camera.updateProjectionMatrix()
-        },
-      })
-    },
     switchMiddleScene() {
       this.tlSwitchMiddleScene?.clear()
       this.tlSwitchMiddleScene?.kill()
@@ -344,15 +268,14 @@ export default {
       }
     },
     handleImmediateTransition(oldVal) {
+      this.currentZoneIntersect = null
+      this.setInteriorCurrentZoneName(null)
       const { camera } = useWebGL()
 
       this.drag.target = 0
 
-      camera.zoom = this.zoom.current
-
+      camera.zoom = this.currentFloor.content.camera_zoom || this.zoom.current
       camera.updateProjectionMatrix()
-
-      this.$nuxt.$emit('interior:immediate-transition')
 
       this.floors.forEach((floor, index) => {
         const visible = index <= this.interiorIndexFloor.id
@@ -364,15 +287,35 @@ export default {
           index < this.interiorIndexFloor.id
 
         if (isHidden) {
-          this.hideParts(floor)
+          this.hideFloorImmediate(floor)
         }
 
         if (visible) {
           floor.position.copy(floor.initialPosition)
+
+          if (index === this.interiorIndexFloor.id)
+            this.appearFloorImmediate(floor)
         } else {
           floor.position.copy(floor.hidePosition)
         }
       })
+
+      if (this.interiorIndexFloor.focus) {
+        console.log('focus', this.currentFloor)
+
+        const { fail: zonesNotSelected, pass: zoneSelected } = this.partition(
+          this.currentFloor.specialObjects,
+          (e) => e.name === this.interiorIndexFloor.focus
+        )
+
+        this.focusZoneImmediate(zoneSelected[0], zonesNotSelected)
+
+        // const zone = this.currentFloor.specialObjects.find(
+        //   (object) => object.name === this.interiorIndexFloor.focus
+        // )
+
+        // this.focusZone(zone)
+      }
     },
     handleAnimatedTransition(oldVal) {
       this.tlFloors?.clear()
@@ -408,7 +351,11 @@ export default {
           }
 
           if (isHidden) {
-            this.hideParts(floor)
+            this.hideFloorImmediate(floor)
+            // floor.specialObjects.forEach((zone) => {
+            //   this.handlerColorsZonesInactives(zone, false, true)
+            // })
+            // color change smooth to white for vip et public + change outline line material + shader material
           }
         })
       } else {
@@ -433,41 +380,81 @@ export default {
             })
           }
           if (reversedIndex >= this.interiorIndexFloor.id) {
-            this.appearParts(floor)
+            this.appearFloorImmediate(floor)
           }
         })
       }
     },
-    appearParts(floor) {
-      floor.materials.publicMaterial.color =
-        this.colors.public.lambertMaterialColor.clone()
-      floor.materials.publicMaterial.emissive =
-        this.colors.public.lambertMaterialEmissive.clone()
-      floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
-        this.colors.outlineColor.clone()
+    focusZoneImmediate(zoneSelected, zonesNotSelected) {
+      this.zoneFocusEnabled = true
+      this.setInteriorCurrentZoneName(zoneSelected.name)
+      this.drag.enabled = false
+
+      const { camera } = useWebGL()
+
+      const cameraSelected = this.cameras.getObjectByName(
+        zoneSelected.content.name_camera
       )
-      floor.materials.lineMaterial.color = this.colors.outlineColor.clone()
-      floor.materials.vipMaterial.color =
-        this.colors.vip.lambertMaterialColor.clone()
-      floor.materials.vipMaterial.emissive =
-        this.colors.vip.lambertMaterialEmissive.clone()
+
+      camera.position.copy(cameraSelected.position)
+      camera.rotation.copy(cameraSelected.rotation)
+
+      camera.zoom = zoneSelected.content.camera_zoom
+
+      camera.updateProjectionMatrix()
+
+      zonesNotSelected.forEach((zone) => {
+        zone.materials.forEach((material) => {
+          if (material instanceof THREE.MeshLambertMaterial) {
+            material.color = this.colors.lambertMaterialColor.clone()
+
+            material.emissive = this.colors.lambertMaterialEmissive.clone()
+
+            material.emissiveIntensity = this.colors.emissiveIntensity
+          }
+        })
+      })
     },
-    hideParts(floor) {
-      floor.materials.publicMaterial.color =
-        floor.materials.basicMaterial.color.clone()
+    appearFloorImmediate(floor) {
+      console.log(floor)
 
-      floor.materials.publicMaterial.emissive =
-        floor.materials.basicMaterial.emissive.clone()
+      floor.specialObjects.forEach((zone) => {
+        zone.materials.forEach((material) => {
+          const zoneType = zone.publicAccess ? 'public' : 'vip'
 
-      floor.materials.conditionalMaterial.uniforms.diffuse.value.set(
-        this.colors.outlineHiddenColor.clone()
-      )
-      floor.materials.lineMaterial.color =
-        this.colors.outlineHiddenColor.clone()
-      floor.materials.vipMaterial.color =
-        floor.materials.basicMaterial.color.clone()
-      floor.materials.vipMaterial.emissive =
-        floor.materials.basicMaterial.emissive.clone()
+          if (material instanceof THREE.MeshLambertMaterial) {
+            material.color = this.colors[zoneType].lambertMaterialColor.clone()
+            material.emissive =
+              this.colors[zoneType].lambertMaterialEmissive.clone()
+            material.emissiveIntensity = this.colors[zoneType].emissiveIntensity
+          } else if (material instanceof THREE.ShaderMaterial) {
+            material.uniforms.diffuse.value.set(
+              this.colors.outlineColor.clone()
+            )
+          } else if (material instanceof THREE.LineBasicMaterial) {
+            material.color = this.colors.outlineColor.clone()
+          }
+        })
+      })
+    },
+    hideFloorImmediate(floor) {
+      const graphFloor = this.buildGraph(floor)
+
+      graphFloor.materials.forEach((material) => {
+        if (material instanceof THREE.MeshLambertMaterial) {
+          material.color = this.colors.lambertMaterialColor.clone()
+
+          material.emissive = this.colors.lambertMaterialEmissive.clone()
+
+          material.emissiveIntensity = this.colors.emissiveIntensity
+        } else if (material instanceof THREE.ShaderMaterial) {
+          material.uniforms.diffuse.value.set(
+            this.colors.outlineHiddenColor.clone()
+          )
+        } else if (material instanceof THREE.LineBasicMaterial) {
+          material.color = this.colors.outlineHiddenColor.clone()
+        }
+      })
     },
     initInterior() {
       const { interior } = useWebGL()
@@ -500,9 +487,17 @@ export default {
         this.musicScene.visible = false
       }
 
+      console.log('here mounted interior')
+
       interior.floors = this.floors
-      this.setInteriorIndexFloor({ id: 0, immediate: true })
-      this.handleImmediateTransition(this.interiorIndexFloor)
+
+      // this.setInteriorIndexFloor({
+      //   id: 2,
+      //   focus: 'PUBLIC_Cantine',
+      //   immediate: true,
+      // })
+
+      // this.handleImmediateTransition()
     },
     initLights() {
       const { interior } = useWebGL()
@@ -536,6 +531,37 @@ export default {
       this.gui = gui.addFolder({ title: `Interior` })
 
       const { interior } = useWebGL()
+
+      this.interiorContent.forEach((floor, floorIndex) => {
+        const floorButton = this.gui.addButton({
+          title: `Floor ${floorIndex}`,
+          label: 'counter', // optional
+        })
+
+        floorButton.on('click', (e) => {
+          this.setInteriorIndexFloor({
+            id: floorIndex,
+            immediate: true,
+          })
+        })
+
+        floor.zones.forEach((zone, zoneIndex) => {
+          const zoneButton = this.gui.addButton({
+            title: `Zone ${zone.name_gltf}`,
+            label: 'counter', // optional
+          })
+
+          zoneButton.on('click', (e) => {
+            this.setInteriorIndexFloor({
+              id: floorIndex,
+              focus: zone.name_gltf,
+              immediate: true,
+            })
+          })
+        })
+
+        this.gui.addSeparator()
+      })
 
       this.gui.addInput(interior, 'position', {
         x: { step: 1, max: 1000, min: -1000 },
@@ -732,7 +758,7 @@ export default {
       this.basicMaterial = new THREE.MeshLambertMaterial({
         color: this.colors.lambertMaterialColor,
         emissive: this.colors.lambertMaterialEmissive,
-        emissiveIntensity: 0.7,
+        emissiveIntensity: this.colors.emissiveIntensity,
         ...polygonsParams,
       })
 
@@ -751,14 +777,14 @@ export default {
       this.publicMaterial = new THREE.MeshLambertMaterial({
         color: this.colors.public.lambertMaterialColor,
         emissive: this.colors.public.lambertMaterialEmissive,
-        emissiveIntensity: 0.7,
+        emissiveIntensity: this.colors.public.emissiveIntensity,
         ...polygonsParams,
       })
 
       this.vipMaterial = new THREE.MeshLambertMaterial({
         color: this.colors.vip.lambertMaterialColor,
         emissive: this.colors.vip.lambertMaterialEmissive,
-        emissiveIntensity: 0.7,
+        emissiveIntensity: this.colors.vip.emissiveIntensity,
         ...polygonsParams,
       })
     },
@@ -925,34 +951,265 @@ export default {
         this.drag.target + delta
       )
     },
+    onClickZone(e) {
+      if (!this.interiorVisible) return
+
+      if (this.currentZoneIntersect && !this.dragInProgress) {
+        const basicObject = this.currentZoneIntersect.object
+        const zone = basicObject.parent
+        const isDifferentThanSelected =
+          zone.name !== this.interiorCurrentZoneName
+
+        if (!this.zoneFocusEnabled) {
+          this.focusZone(zone)
+        } else if (this.zoneFocusEnabled && !isDifferentThanSelected) {
+          this.unfocusZone()
+        }
+      } else if (!this.currentZoneIntersect && this.zoneFocusEnabled) {
+        this.unfocusZone()
+      }
+    },
+    focusZone(zone) {
+      this.zoneFocusEnabled = true
+      this.setInteriorCurrentZoneName(zone.name)
+
+      const { camera } = useWebGL()
+
+      this.drag.enabled = false
+      this.drag.target = 0
+
+      this.setCursorState('hide')
+
+      const cameraSelected = this.cameras.getObjectByName(
+        zone.content.name_camera
+      )
+
+      const params = {
+        ease: 'power1.inOut',
+        duration: 1,
+      }
+
+      gsap.to(camera.position, {
+        x: cameraSelected.position.x,
+        y: cameraSelected.position.y,
+        z: cameraSelected.position.z,
+        ...params,
+      })
+      gsap.to(camera.rotation, {
+        x: cameraSelected.rotation.x,
+        y: cameraSelected.rotation.y,
+        z: cameraSelected.rotation.z,
+        ...params,
+      })
+      gsap.to(camera, {
+        zoom: zone.content.camera_zoom,
+        ...params,
+        onUpdate: () => {
+          camera.updateProjectionMatrix()
+        },
+      })
+
+      this.inactiveZones.forEach((object) => {
+        this.handlerColorsZonesInactives(object, false)
+      })
+    },
+    handlerColorsZonesInactives(zone, appear, outline = false) {
+      const params = {
+        ease: 'power1.inOut',
+        duration: 0.5,
+      }
+
+      const typeZone = zone.publicAccess ? 'public' : 'vip'
+
+      const color = appear
+        ? this.colors[typeZone].lambertMaterialColor
+        : this.colors.lambertMaterialColor
+
+      const emissive = appear
+        ? this.colors[typeZone].lambertMaterialEmissive
+        : this.colors.lambertMaterialEmissive
+
+      const outlineColor = appear
+        ? this.colors.outlineColor
+        : this.colors.outlineHiddenColor
+
+      zone.materials.forEach((material) => {
+        if (material instanceof THREE.MeshLambertMaterial) {
+          gsap.to(material.color, {
+            r: color.r,
+            g: color.g,
+            b: color.b,
+            ...params,
+          })
+
+          gsap.to(material.emissive, {
+            r: emissive.r,
+            g: emissive.g,
+            b: emissive.b,
+            ...params,
+          })
+
+          gsap.to(material, {
+            emissiveIntensity: appear
+              ? this.colors[typeZone].emissiveIntensity
+              : this.colors.emissiveIntensity,
+            ...params,
+          })
+        } else if (material instanceof THREE.LineBasicMaterial && outline) {
+          gsap.to(material, {
+            color: outlineColor,
+            ...params,
+            onUpdate: () => {
+              console.log(material.color)
+              // const color = material.color.clone()
+              // conditionnalMaterial.uniforms.diffuse.value.set(color)
+            },
+          })
+        } else if (material instanceof THREE.LineBasicMaterial && outline) {
+          gsap.to(material, {
+            color: outlineColor,
+            ...params,
+            onUpdate: () => {
+              console.log(material.color)
+              // const color = material.color.clone()
+              // conditionnalMaterial.uniforms.diffuse.value.set(color)
+            },
+          })
+        }
+      })
+    },
+    unfocusZone() {
+      this.zoneFocusEnabled = false
+      this.currentZoneIntersect = null
+      this.setInteriorCurrentZoneName(null)
+
+      const { camera } = useWebGL()
+
+      this.drag.enabled = true
+
+      const params = {
+        ease: 'power1.inOut',
+        duration: 1,
+      }
+
+      gsap.to(camera.position, {
+        duration: 1,
+        x: this.cameraBase.position.x,
+        y: this.cameraBase.position.y,
+        z: this.cameraBase.position.z,
+        ...params,
+      })
+      gsap.to(camera.rotation, {
+        duration: 1,
+        x: this.cameraBase.rotation.x,
+        y: this.cameraBase.rotation.y,
+        z: this.cameraBase.rotation.z,
+        ...params,
+      })
+      gsap.to(camera, {
+        duration: 1,
+        zoom: this.zoom.initial,
+        // zoom: this.currentFloor.content.camera_zoom || this.zoom.initial,
+        ...params,
+        onUpdate: () => {
+          camera.updateProjectionMatrix()
+        },
+      })
+
+      this.inactiveZones.forEach((object) => {
+        this.handlerColorsZonesInactives(object, true)
+      })
+    },
+    onMouseEnterZone(object) {
+      this.setCursorState('hover')
+
+      const zone = object.parent.publicAccess ? 'public' : 'vip'
+
+      const params = {
+        ease: 'power2.inOut',
+        duration: 0.45,
+      }
+
+      gsap.to(object.material.color, {
+        r: this.colors[zone].lambertMaterialColorActive.r,
+        g: this.colors[zone].lambertMaterialColorActive.g,
+        b: this.colors[zone].lambertMaterialColorActive.b,
+        ...params,
+      })
+      gsap.to(object.material.emissive, {
+        r: this.colors[zone].lambertMaterialColorActive.r,
+        g: this.colors[zone].lambertMaterialColorActive.g,
+        b: this.colors[zone].lambertMaterialColorActive.b,
+        ...params,
+      })
+      gsap.to(object.material, {
+        emissiveIntensity: this.colors[zone].emissiveIntensityActive,
+        ...params,
+      })
+    },
+    onMouseLeaveZone(object) {
+      this.setCursorState('hide')
+
+      const params = {
+        ease: 'power2.out',
+        duration: 0.45,
+      }
+
+      const zone = object.parent.publicAccess ? 'public' : 'vip'
+
+      gsap.to(object.material.color, {
+        r: this.colors[zone].lambertMaterialColor.r,
+        g: this.colors[zone].lambertMaterialColor.g,
+        b: this.colors[zone].lambertMaterialColor.b,
+        ...params,
+      })
+      gsap.to(object.material.emissive, {
+        r: this.colors[zone].lambertMaterialEmissive.r,
+        g: this.colors[zone].lambertMaterialEmissive.g,
+        b: this.colors[zone].lambertMaterialEmissive.b,
+        ...params,
+      })
+      gsap.to(object.material, {
+        emissiveIntensity: this.colors[zone].emissiveIntensity,
+        ...params,
+      })
+    },
     onFrame({ time, deltaTime, frame, deltaRatio }) {
       if (!this.interiorVisible || this.$viewport.isMobile) return
 
       const { interior } = useWebGL()
       // const { interior, raycaster } = useWebGL()
 
-      // if (this.currentFloor && this.currentFloor.basicObjectRaycast) {
+      // if (
+      //   this.currentFloor &&
+      //   this.currentFloor.basicObjectRaycast &&
+      //   !this.zoneFocusEnabled
+      //   // add !this.zoneFocusEnabled to disable intersect when a zone is selected
+      // ) {
       //   const intersects = raycaster.intersectObjects(
-      //     this.currentFloor?.basicObjectRaycast
+      //     this.currentFloor?.basicObjectRaycast,
+      //     false
       //   )
 
       //   if (intersects.length) {
-      //     if (!this.currentIntersect) {
-      //       // this.onMouseEnterZone()
-      //       // console.log('mouse enter')
+      //     if (
+      //       !this.currentZoneIntersect ||
+      //       intersects[0].object.parent.name !==
+      //         this.currentZoneIntersect?.object?.parent.name
+      //     ) {
+      //       if (this.currentZoneIntersect) {
+      //         // this.onMouseLeaveZone(this.currentZoneIntersect.object)
+      //       }
+      //       // this.onMouseEnterZone(intersects[0].object)
       //     }
 
-      //     this.currentIntersect = intersects[0]
-      //     this.currentZoneNameIntersect =
-      //       this.currentIntersect.object.parent.name
+      //     this.currentZoneIntersect = intersects[0]
       //   } else {
-      //     if (this.currentIntersect) {
-      //       // this.onMouseLeaveZone()
-      //       // console.log('mouse leave')
-      //       this.currentZoneNameIntersect = ''
+      //     if (this.currentZoneIntersect) {
+      //       // this.onMouseLeaveZone(this.currentZoneIntersect.object)
       //     }
 
-      //     this.currentIntersect = null
+      //     this.currentZoneIntersect = null
       //   }
       // }
 
@@ -1044,6 +1301,12 @@ export default {
         )
         group.basicObjectRaycast.push(basicObjectForRaycast)
 
+        part.materials = [
+          meshes[0].material,
+          meshes[1].material,
+          meshes[2].material,
+        ]
+
         part.add(...meshes)
         part.position.y += 0.05
 
@@ -1076,15 +1339,6 @@ export default {
 
       return group
     },
-    onClickArena(e) {
-      // console.log('here onClickArena', e)
-    },
-    onMouseEnterZone() {
-      console.log('here onMouseEnter')
-    },
-    onMouseLeaveZone() {
-      console.log('here onMouseLeave')
-    },
     parseFloor(object) {
       const basicObject = new THREE.Group()
       basicObject.isBasicObject = true
@@ -1112,15 +1366,13 @@ export default {
 
       if (!object.isBasicObject) {
         if (object.publicAccess) {
-          normalObject.material = materials.publicMaterial
-          // normalObject.material = cloned
-          //   ? materials.publicMaterial.clone()
-          //   : materials.publicMaterial
+          normalObject.material = cloned
+            ? materials.publicMaterial.clone()
+            : materials.publicMaterial
         } else {
-          normalObject.material = materials.vipMaterial
-          // normalObject.material = cloned
-          //   ? materials.vipMaterial.clone()
-          //   : materials.vipMaterial
+          normalObject.material = cloned
+            ? materials.vipMaterial.clone()
+            : materials.vipMaterial
         }
       } else {
         normalObject.material = materials.basicMaterial
@@ -1245,6 +1497,8 @@ export default {
     ...mapMutations({
       setInteriorIndexFloor: 'setInteriorIndexFloor',
       setInteriorVisible: 'setInteriorVisible',
+      setCursorState: 'setCursorState',
+      setInteriorCurrentZoneName: 'setInteriorCurrentZoneName',
     }),
   },
 }

@@ -2,6 +2,7 @@
   <div class="app-le-bloc-hero">
     <div class="app-le-bloc-hero__wrapper">
       <AtomsCornerPoints :size-points="12" />
+      <!-- <EInteriorZoneInformation /> -->
       <EFloorSelector />
       <EFloorSelectorMobile />
       <ESceneSelector />
@@ -63,7 +64,11 @@ export default {
     initInteriorView() {
       this.$nuxt.$emit('reset:interior')
 
-      this.setInteriorIndexFloor({ id: 2, immediate: true })
+      this.setInteriorIndexFloor({
+        id: 2,
+        focus: null,
+        immediate: true,
+      })
 
       this.onResize()
     },

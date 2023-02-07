@@ -37,12 +37,30 @@ export default {
       appContent: (state) => state.appContent,
     }),
   },
+  watch: {
+    accepted(newVal) {
+      if (newVal) this.initializeGTM()
+    },
+  },
+  mounted() {
+    this.accepted = this.$cookies.get('aa-cookies')
+  },
   methods: {
     onAccept() {
-      this.accepted = true
+      if (!this.accepted) {
+        this.$cookies.set('aa-cookies', true, {
+          path: '/',
+          maxAge: 60 * 60 * 24 * 7 * 4 * 6,
+        })
+
+        this.accepted = true
+      }
     },
     onDenied() {
       this.denied = true
+    },
+    initializeGTM() {
+      this.$gtm.init('GTM-TJGC9WK')
     },
   },
 }

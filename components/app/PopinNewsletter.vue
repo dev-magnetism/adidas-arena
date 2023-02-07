@@ -1,8 +1,5 @@
 <template>
-  <div
-    :class="{ hide: !popinNewsletterOpen && !submited }"
-    class="app-popin-newsletter"
-  >
+  <div :class="{ hide: !popinNewsletterOpen }" class="app-popin-newsletter">
     <div class="app-popin-newsletter__wrapper">
       <span
         class="app-popin-newsletter__close"
@@ -72,6 +69,9 @@ export default {
       email: '',
       accept: false,
       submited: false,
+      timeInactivity: null,
+      cookieExist: false,
+      durationMaxInactivity: 30000,
     }
   },
 
@@ -79,6 +79,8 @@ export default {
     ...mapState({
       appContent: (state) => state.appContent,
       popinNewsletterOpen: (state) => state.popinNewsletterOpen,
+      allLoadedFake: (state) => state.allLoadedFake,
+      overlayContactOpen: (state) => state.overlayContactOpen,
     }),
     validateForm() {
       /* eslint-disable-next-line */ const reg =
@@ -87,44 +89,89 @@ export default {
       return reg.test(this.email) && this.accept
     },
   },
+
   watch: {
     $route() {
       this.setPopinNewsletterOpen(false)
     },
-    popinNewsletterOpen(newVal) {
-      // console.log(newVal)
+    allLoadedFake() {
+      this.initEvents()
     },
   },
+  created() {},
   mounted() {
-    this.tl = gsap.timeline({
-      paused: true,
-    })
+    this.cookieExist = this.$cookies.get('aa-newsletter-hide')
 
-    this.tl.to(this.$refs.union.$el, {
-      xPercent: 100,
-      duration: 0.25,
-      ease: 'power1.out',
-    })
-
-    this.tl.set(this.$refs.union.$el, {
-      xPercent: -100,
-    })
-
-    this.tl.to(this.$refs.union.$el, {
-      xPercent: 0,
-      duration: 0.25,
-      ease: 'power1.out',
-    })
-
-    window.addEventListener('keyup', this.onKeyUp)
+    if (this.allLoadedFake && !this.cookieExist) this.initEvents()
   },
   beforeDestroy() {
-    this.tl?.kill()
-
-    window.removeEventListener('keyup', this.onKeyUp)
+    this.destroyEvents()
   },
   methods: {
+    initEvents() {
+      if (this.cookieExist) return
+
+      document.addEventListener(
+        'visibilitychange',
+        this.onBrowserChangeTab.bind(this)
+      )
+
+      document.addEventListener('mousemove', this.resetTimer.bind(this))
+      document.addEventListener('keyup', this.onKeyUp.bind(this))
+
+      this.tl = gsap.timeline({
+        paused: true,
+      })
+
+      this.tl.to(this.$refs.union.$el, {
+        xPercent: 100,
+        duration: 0.25,
+        ease: 'power1.out',
+      })
+
+      this.tl.set(this.$refs.union.$el, {
+        xPercent: -100,
+      })
+
+      this.tl.to(this.$refs.union.$el, {
+        xPercent: 0,
+        duration: 0.25,
+        ease: 'power1.out',
+      })
+    },
+    destroyEvents() {
+      if (this.cookieExist) return
+
+      document.removeEventListener(
+        'visibilitychange',
+        this.onBrowserChangeTab.bind(this)
+      )
+
+      this.tl?.kill()
+
+      document.addEventListener('mousemove', this.resetTimer.bind(this))
+      document.addEventListener('keyup', this.onKeyUp.bind(this))
+    },
+    onBrowserChangeTab() {
+      if (document.hidden && !this.cookieExist) {
+        this.setPopinNewsletterOpen(true)
+      }
+    },
+    resetTimer() {
+      if (this.cookieExist || this.popinNewsletterOpen) return
+
+      clearTimeout(this.timeInactivity)
+      this.timeInactivity = setTimeout(this.userIsInactive, 3000) // 3000 milliseconds = 3 seconds
+    },
+    userIsInactive() {
+      console.log(this.overlayContactOpen)
+      if (this.popinNewsletterOpen || this.overlayContactOpen) return
+
+      this.setPopinNewsletterOpen(true)
+    },
     onSubmit() {
+      if (this.cookieExist) return
+
       this.submited = true
 
       const endpoint = 'https://hooks.delight-data.com/v1/contacts'
@@ -137,25 +184,34 @@ export default {
       xhr.send(
         JSON.stringify([{ listname: 'newsletter', email: this.email, misc }])
       )
+
+      this.$cookies.set('aa-newsletter-hide', true, {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7 * 4 * 2,
+      })
+
+      this.cookieExist = true
+
+      this.destroyEvents()
+
+      clearTimeout(this.timeInactivity)
     },
     onKeyUp(e) {
       if (e.target.tagName.toLowerCase() === 'input') return
 
-      if (e.key === 'Shift' && !this.popinNewsletterOpen) {
-        this.setPopinNewsletterOpen(true)
-      } else if (e.key === 'Escape' && this.popinNewsletterOpen) {
+      if (e.key === 'Escape' && this.popinNewsletterOpen) {
         this.setPopinNewsletterOpen(false)
       }
     },
     onMouseEnter() {
-      if (!this.validateForm) return
+      if (!this.validateForm && this.cookieExist) return
 
-      this.tl.play()
+      this.tl?.play()
     },
     onMouseLeave() {
-      if (!this.validateForm) return
+      if (!this.validateForm && this.cookieExist) return
 
-      this.tl.reverse()
+      this.tl?.reverse()
     },
     ...mapMutations({
       setPopinNewsletterOpen: 'setPopinNewsletterOpen',

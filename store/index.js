@@ -24,8 +24,9 @@ export const state = () => ({
 
   // Interior scene
   interiorVisible: true,
-  interiorIndexFloor: { id: 0, immediate: true },
+  interiorIndexFloor: { id: 0, focus: null, immediate: true },
   interiorMusicScene: true,
+  interiorCurrentZoneName: null,
 
   // UI
   initialHeroDisplayed: false,
@@ -62,6 +63,9 @@ export const mutations = {
   },
   setHeaderHided: (state, value) => {
     state.headerHided = value
+  },
+  setInteriorCurrentZoneName: (state, value) => {
+    state.interiorCurrentZoneName = value
   },
   setOverlayContactOpen: (state, value) => {
     state.overlayContactOpen = value

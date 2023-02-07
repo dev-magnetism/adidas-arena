@@ -47,8 +47,11 @@ body {
   display: none;
 }
 
-.app.cursor-custom {
+.app.cursor-slider {
   cursor: none !important;
+}
+.app.cursor-hover {
+  cursor: pointer !important;
 }
 
 a,

@@ -139,10 +139,25 @@ export default {
     onSubmit() {
       this.submited = true
 
-      const mail = document.createElement('a')
-      mail.href = `mailto:${this.mailTo}?subject=${this.subject}&body=Nom: ${this.nom}%0D%0APrénom: ${this.prenom}%0D%0ATéléphone: ${this.telephone}%0D%0AEmail: ${this.email}%0D%0A%0D%0AMessage: ${this.body}`
+      const url =
+        'https://5ovs8mt0r8.execute-api.eu-central-1.amazonaws.com/prod/contact/'
 
-      mail.click()
+      const xhr = new XMLHttpRequest()
+
+      xhr.open('POST', url)
+      xhr.setRequestHeader('Content-Type', 'application/json')
+
+      const data = {
+        name: this.prenom,
+        surname: this.nom,
+        email: this.email,
+        phone: this.telephone,
+        message: this.body,
+        recipient: this.mailTo,
+        formTitle: this.subject,
+      }
+
+      xhr.send(JSON.stringify(data))
     },
     onKeyUp(e) {
       if (!this.overlayContactOpen) return

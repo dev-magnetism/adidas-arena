@@ -5,6 +5,7 @@
       hide: headerHided || overlayContactOpen,
     }"
     class="app-header"
+    @click.stop="() => {}"
   >
     <nuxt-link
       :class="{ reduced: headerReduced, white: headerWhite }"
@@ -81,7 +82,7 @@ export default {
   }
 
   &.reduced {
-    transform: translate(0%, -125%);
+    transform: translate(0%, -85%);
 
     @include mobile {
       transform: translate(0%, 0%);

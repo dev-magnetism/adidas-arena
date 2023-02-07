@@ -1,5 +1,5 @@
 <template>
-  <div class="app-element-floor-selector">
+  <div class="app-element-floor-selector" @click.stop="() => {}">
     <AtomsCornerPoints :size-points="8" />
 
     <div class="app-element-floor-selector__wrapper">
