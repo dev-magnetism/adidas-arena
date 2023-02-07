@@ -161,7 +161,10 @@ export default {
       if (this.cookieExist || this.popinNewsletterOpen) return
 
       clearTimeout(this.timeInactivity)
-      this.timeInactivity = setTimeout(this.userIsInactive, 3000) // 3000 milliseconds = 3 seconds
+      this.timeInactivity = setTimeout(
+        this.userIsInactive,
+        this.durationMaxInactivity
+      )
     },
     userIsInactive() {
       console.log(this.overlayContactOpen)
