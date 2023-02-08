@@ -60,7 +60,7 @@ export default {
         last: 0,
         speed: 2,
         dragSpeed: 0.0025,
-        enabled: false,
+        enabled: true,
       },
       zoom: {
         initial: 15,
@@ -208,7 +208,6 @@ export default {
     this.observer?.kill()
     this.tlFloors?.kill()
     this.tlSwitchMiddleScene?.kill()
-    this.tlFloorsHidden?.kill()
     this.$nuxt.$off('reset:interior', this.resetView)
     this.$raf.remove(`webgl-interior`, this.onFrame)
 
@@ -320,42 +319,25 @@ export default {
     handleAnimatedTransition(oldVal) {
       this.tlFloors?.clear()
       this.tlFloors?.kill()
-      this.tlFloorsHidden?.clear()
-      this.tlFloorsHidden?.kill()
 
       this.tlFloors = gsap.timeline()
-      this.tlFloorsHidden = gsap.timeline()
 
       const isAscendant = oldVal.id < this.interiorIndexFloor.id
-
-      this.$nuxt.$emit('interior:animated-transition')
 
       if (isAscendant) {
         this.floors.forEach((floor, index) => {
           const isTweenable =
             index <= this.interiorIndexFloor.id && !floor.visible && index !== 0
 
-          const isHidden =
-            (index >= oldVal.id || oldVal.id === 0) &&
-            index < this.interiorIndexFloor.id
+          // const isHidden =
+          //   (index >= oldVal.id || oldVal.id === 0) &&
+          //   index < this.interiorIndexFloor.id &&
+          //   index !== 0
 
           if (isTweenable) {
-            this.tlFloors.to(floor.position, {
-              y: floor.initialPosition.y,
-              onStart: () => {
-                floor.visible = true
-              },
-              ease: 'back.out(2)',
-              duration: 0.75,
-            })
-          }
+            const lastFloor = this.floors[index - 1]
 
-          if (isHidden) {
-            this.hideFloorImmediate(floor)
-            // floor.specialObjects.forEach((zone) => {
-            //   this.handlerColorsZonesInactives(zone, false, true)
-            // })
-            // color change smooth to white for vip et public + change outline line material + shader material
+            this.addFloorToTimelineAppear(floor, lastFloor, index)
           }
         })
       } else {
@@ -364,24 +346,370 @@ export default {
         reversedFloors.forEach((floor, index) => {
           const reversedIndex = reversedFloors.length - 1 - index
 
+          const nextFloor = this.floors[this.interiorIndexFloor.id]
+
           const isTweenable =
             reversedIndex <= oldVal.id &&
             reversedIndex > this.interiorIndexFloor.id &&
             floor.visible
 
           if (isTweenable) {
-            this.tlFloors.to(floor.position, {
-              y: floor.hidePosition.y,
-              ease: 'back.in(1.5)',
-              duration: 0.55,
-              onComplete: () => {
-                floor.visible = false
+            this.addFloorToTimelineDisappear(
+              floor,
+              nextFloor,
+              reversedIndex - 1
+            )
+          }
+        })
+      }
+    },
+    addFloorToTimelineDisappear(floor, nextFloor, index) {
+      const { camera } = useWebGL()
+
+      // const graphFloor = this.buildGraph(floor)
+      const graphNextFloor = this.buildGraph(nextFloor)
+
+      this.tlFloors.addLabel(`${floor.name}`, '<35%')
+      this.tlFloors.addLabel(`leave-${floor.name}`, `${floor.name}`)
+      this.tlFloors.addLabel(`enter-${floor.name}`, `${floor.name}`)
+
+      const isFinalFloor = index === this.interiorIndexFloor.id
+
+      // APPEAR NEW FLOOR
+      this.tlFloors.to(
+        camera,
+        {
+          zoom: floor.content.camera_zoom || this.zoom.initial,
+          onUpdate: () => {
+            camera.updateProjectionMatrix()
+          },
+          ease: 'power1.inOut',
+          duration: 0.75,
+        },
+        `leave-${floor.name}`
+      )
+
+      this.tlFloors.to(
+        floor.position,
+        {
+          y: floor.hidePosition.y,
+          onComplete: () => {
+            floor.visible = false
+          },
+          ease: 'back.in(1)',
+          duration: 0.85,
+        },
+        `leave-${floor.name}`
+      )
+
+      floor.specialObjects.forEach((zone) => {
+        const color = this.colors.lambertMaterialColor.clone()
+
+        const emissive = this.colors.lambertMaterialEmissive.clone()
+
+        zone.materials.forEach((material) => {
+          if (material instanceof THREE.MeshLambertMaterial) {
+            const paramsLeave = {
+              ease: 'power1.out',
+              duration: 0.35,
+            }
+            this.tlFloors.to(
+              material.color,
+              {
+                r: color.r,
+                g: color.g,
+                b: color.b,
+                ...paramsLeave,
               },
-            })
+              `leave-${floor.name}`
+            )
+
+            this.tlFloors.to(
+              material.emissive,
+              {
+                r: emissive.r,
+                g: emissive.g,
+                b: emissive.b,
+                ...paramsLeave,
+              },
+              `leave-${floor.name}`
+            )
+
+            this.tlFloors.to(
+              material,
+              {
+                emissiveIntensity: this.colors.emissiveIntensity,
+                ...paramsLeave,
+              },
+              `leave-${floor.name}`
+            )
           }
-          if (reversedIndex >= this.interiorIndexFloor.id) {
-            this.appearFloorImmediate(floor)
+        })
+      })
+
+      if (isFinalFloor) {
+        const lineMaterials = graphNextFloor.materials.filter(
+          (material) =>
+            material.name === 'conditionalMaterial' ||
+            material.name === 'lineMaterial'
+        )
+
+        const params = {
+          ease: 'power1.out',
+          duration: 0.35,
+          delay: 0.5,
+        }
+
+        const outlineColor = this.colors.outlineColor.clone()
+
+        lineMaterials.forEach((material) => {
+          if (material instanceof THREE.LineBasicMaterial) {
+            this.tlFloors.to(
+              material.color,
+              {
+                r: outlineColor.r,
+                g: outlineColor.g,
+                b: outlineColor.b,
+                ...params,
+              },
+              `enter-${floor.name}`
+            )
+          } else if (material instanceof THREE.ShaderMaterial) {
+            this.tlFloors.to(
+              material.uniforms.diffuse.value,
+              {
+                r: outlineColor.r,
+                g: outlineColor.g,
+                b: outlineColor.b,
+                ...params,
+              },
+              `enter-${floor.name}`
+            )
           }
+        })
+
+        nextFloor.specialObjects.forEach((zone) => {
+          const typeZone = zone.publicAccess ? 'public' : 'vip'
+
+          const color = this.colors[typeZone].lambertMaterialColor.clone()
+
+          const emissive = this.colors[typeZone].lambertMaterialEmissive.clone()
+
+          zone.materials.forEach((material) => {
+            if (material instanceof THREE.MeshLambertMaterial) {
+              this.tlFloors.to(
+                material.color,
+                {
+                  r: color.r,
+                  g: color.g,
+                  b: color.b,
+                  ...params,
+                },
+                `enter-${floor.name}`
+              )
+
+              this.tlFloors.to(
+                material.emissive,
+                {
+                  r: emissive.r,
+                  g: emissive.g,
+                  b: emissive.b,
+                  ...params,
+                },
+                `enter-${floor.name}`
+              )
+
+              this.tlFloors.to(
+                material,
+                {
+                  emissiveIntensity: this.colors[typeZone].emissiveIntensity,
+                  ...params,
+                },
+                `enter-${floor.name}`
+              )
+            }
+          })
+        })
+      }
+    },
+    addFloorToTimelineAppear(floor, lastFloor, index) {
+      const { camera } = useWebGL()
+
+      const graphFloor = this.buildGraph(floor)
+      const graphLastFloor = this.buildGraph(lastFloor)
+
+      this.tlFloors.addLabel(`${floor.name}`, '<40%')
+      this.tlFloors.addLabel(`leave-${floor.name}`, `${floor.name}`)
+      this.tlFloors.addLabel(`enter-${floor.name}`, `${floor.name}`)
+
+      const isFinalFloor = index === this.interiorIndexFloor.id
+
+      // LEAVE LAST FLOOR
+      const specialMaterials = graphLastFloor.materials.filter(
+        (material) =>
+          material.name === 'vipMaterial' || material.name === 'publicMaterial'
+      )
+
+      const lineMaterials = graphLastFloor.materials.filter(
+        (material) =>
+          material.name === 'conditionalMaterial' ||
+          material.name === 'lineMaterial'
+      )
+
+      const color = this.colors.lambertMaterialColor.clone()
+      const emissive = this.colors.lambertMaterialEmissive.clone()
+      const outlineHiddenColor = this.colors.outlineHiddenColor.clone()
+
+      const leaveParams = {
+        ease: 'power1.inOut',
+        duration: 0.3,
+      }
+
+      specialMaterials.forEach((material) => {
+        this.tlFloors.to(
+          material.color,
+          {
+            r: color.r,
+            g: color.g,
+            b: color.b,
+            ...leaveParams,
+          },
+          `leave-${floor.name}`
+        )
+        this.tlFloors.to(
+          material.emissive,
+          {
+            r: emissive.r,
+            g: emissive.g,
+            b: emissive.b,
+            ...leaveParams,
+          },
+          `leave-${floor.name}`
+        )
+
+        this.tlFloors.to(
+          material,
+          {
+            emissiveIntensity: this.colors.emissiveIntensity,
+            ...leaveParams,
+          },
+          `leave-${floor.name}`
+        )
+      })
+
+      lineMaterials.forEach((material) => {
+        if (material instanceof THREE.LineBasicMaterial) {
+          this.tlFloors.to(
+            material.color,
+            {
+              r: outlineHiddenColor.r,
+              g: outlineHiddenColor.g,
+              b: outlineHiddenColor.b,
+              ...leaveParams,
+            },
+            `leave-${floor.name}`
+          )
+        } else if (material instanceof THREE.ShaderMaterial) {
+          this.tlFloors.to(
+            material.uniforms.diffuse.value,
+            {
+              r: outlineHiddenColor.r,
+              g: outlineHiddenColor.g,
+              b: outlineHiddenColor.b,
+              ...leaveParams,
+            },
+            `leave-${floor.name}`
+          )
+        }
+      })
+
+      // APPEAR NEW FLOOR
+      graphFloor.materials.forEach((material) => {
+        if (material instanceof THREE.MeshLambertMaterial) {
+          material.color = this.colors.lambertMaterialColor.clone()
+          material.emissive = this.colors.lambertMaterialEmissive.clone()
+          material.emissiveIntensity = this.colors.emissiveIntensity
+        } else if (material instanceof THREE.ShaderMaterial) {
+          material.uniforms.diffuse.value.set(this.colors.outlineColor.clone())
+        } else if (material instanceof THREE.LineBasicMaterial) {
+          material.color = this.colors.outlineColor.clone()
+        }
+      })
+
+      this.tlFloors.to(
+        camera,
+        {
+          zoom: floor.content.camera_zoom || this.zoom.initial,
+          onUpdate: () => {
+            camera.updateProjectionMatrix()
+          },
+          ease: 'expo.out',
+          duration: 0.75,
+        },
+        `enter-${floor.name}`
+      )
+
+      this.tlFloors.to(
+        floor.position,
+        {
+          y: floor.initialPosition.y,
+          onStart: () => {
+            floor.visible = true
+          },
+          ease: 'back.out(2)',
+          duration: 0.85,
+        },
+        `enter-${floor.name}`
+      )
+
+      if (isFinalFloor) {
+        floor.specialObjects.forEach((zone) => {
+          const params = {
+            ease: 'power1.out',
+            duration: 0.35,
+            delay: 0.3,
+          }
+
+          const typeZone = zone.publicAccess ? 'public' : 'vip'
+
+          const color = this.colors[typeZone].lambertMaterialColor.clone()
+
+          const emissive = this.colors[typeZone].lambertMaterialEmissive.clone()
+
+          zone.materials.forEach((material) => {
+            if (material instanceof THREE.MeshLambertMaterial) {
+              this.tlFloors.to(
+                material.color,
+                {
+                  r: color.r,
+                  g: color.g,
+                  b: color.b,
+                  ...params,
+                },
+                `enter-${floor.name}`
+              )
+
+              this.tlFloors.to(
+                material.emissive,
+                {
+                  r: emissive.r,
+                  g: emissive.g,
+                  b: emissive.b,
+                  ...params,
+                },
+                `enter-${floor.name}`
+              )
+
+              this.tlFloors.to(
+                material,
+                {
+                  emissiveIntensity: this.colors[typeZone].emissiveIntensity,
+                  ...params,
+                },
+                `enter-${floor.name}`
+              )
+            }
+          })
         })
       }
     },
@@ -416,8 +744,6 @@ export default {
       })
     },
     appearFloorImmediate(floor) {
-      console.log(floor)
-
       floor.specialObjects.forEach((zone) => {
         zone.materials.forEach((material) => {
           const zoneType = zone.publicAccess ? 'public' : 'vip'
@@ -487,8 +813,6 @@ export default {
         this.musicScene.visible = false
       }
 
-      console.log('here mounted interior')
-
       interior.floors = this.floors
 
       // this.setInteriorIndexFloor({
@@ -518,10 +842,10 @@ export default {
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
 
-      this.directionalLight.shadow.camera.left = -40
-      this.directionalLight.shadow.camera.right = 40
-      this.directionalLight.shadow.camera.top = 40
-      this.directionalLight.shadow.camera.bottom = -40
+      this.directionalLight.shadow.camera.left = -100
+      this.directionalLight.shadow.camera.right = 100
+      this.directionalLight.shadow.camera.top = 100
+      this.directionalLight.shadow.camera.bottom = -100
 
       interior.add(this.directionalLight)
     },
@@ -545,20 +869,20 @@ export default {
           })
         })
 
-        floor.zones.forEach((zone, zoneIndex) => {
-          const zoneButton = this.gui.addButton({
-            title: `Zone ${zone.name_gltf}`,
-            label: 'counter', // optional
-          })
+        // floor.zones.forEach((zone, zoneIndex) => {
+        //   const zoneButton = this.gui.addButton({
+        //     title: `Zone ${zone.name_gltf}`,
+        //     label: 'counter', // optional
+        //   })
 
-          zoneButton.on('click', (e) => {
-            this.setInteriorIndexFloor({
-              id: floorIndex,
-              focus: zone.name_gltf,
-              immediate: true,
-            })
-          })
-        })
+        //   zoneButton.on('click', (e) => {
+        //     this.setInteriorIndexFloor({
+        //       id: floorIndex,
+        //       focus: zone.name_gltf,
+        //       immediate: true,
+        //     })
+        //   })
+        // })
 
         this.gui.addSeparator()
       })
@@ -761,6 +1085,7 @@ export default {
         emissiveIntensity: this.colors.emissiveIntensity,
         ...polygonsParams,
       })
+      this.basicMaterial.name = 'basicMaterial'
 
       this.conditionalMaterial = new THREE.ShaderMaterial(
         ConditionalEdgesShader
@@ -768,11 +1093,13 @@ export default {
       this.conditionalMaterial.uniforms.diffuse.value.set(
         this.colors.outlineColor
       )
+      this.conditionalMaterial.name = 'conditionalMaterial'
 
       this.lineMaterial = new THREE.LineBasicMaterial({
         color: this.colors.outlineColor,
         linewidth: 2,
       })
+      this.lineMaterial.name = 'lineMaterial'
 
       this.publicMaterial = new THREE.MeshLambertMaterial({
         color: this.colors.public.lambertMaterialColor,
@@ -780,6 +1107,7 @@ export default {
         emissiveIntensity: this.colors.public.emissiveIntensity,
         ...polygonsParams,
       })
+      this.publicMaterial.name = 'publicMaterial'
 
       this.vipMaterial = new THREE.MeshLambertMaterial({
         color: this.colors.vip.lambertMaterialColor,
@@ -787,6 +1115,7 @@ export default {
         emissiveIntensity: this.colors.vip.emissiveIntensity,
         ...polygonsParams,
       })
+      this.vipMaterial.name = 'vipMaterial'
     },
     initFootField() {
       const { interior } = useWebGL()
@@ -1013,7 +1342,7 @@ export default {
         this.handlerColorsZonesInactives(object, false)
       })
     },
-    handlerColorsZonesInactives(zone, appear, outline = false) {
+    handlerColorsZonesInactives(zone, appear) {
       const params = {
         ease: 'power1.inOut',
         duration: 0.5,
@@ -1028,10 +1357,6 @@ export default {
       const emissive = appear
         ? this.colors[typeZone].lambertMaterialEmissive
         : this.colors.lambertMaterialEmissive
-
-      const outlineColor = appear
-        ? this.colors.outlineColor
-        : this.colors.outlineHiddenColor
 
       zone.materials.forEach((material) => {
         if (material instanceof THREE.MeshLambertMaterial) {
@@ -1054,26 +1379,6 @@ export default {
               ? this.colors[typeZone].emissiveIntensity
               : this.colors.emissiveIntensity,
             ...params,
-          })
-        } else if (material instanceof THREE.LineBasicMaterial && outline) {
-          gsap.to(material, {
-            color: outlineColor,
-            ...params,
-            onUpdate: () => {
-              console.log(material.color)
-              // const color = material.color.clone()
-              // conditionnalMaterial.uniforms.diffuse.value.set(color)
-            },
-          })
-        } else if (material instanceof THREE.LineBasicMaterial && outline) {
-          gsap.to(material, {
-            color: outlineColor,
-            ...params,
-            onUpdate: () => {
-              console.log(material.color)
-              // const color = material.color.clone()
-              // conditionnalMaterial.uniforms.diffuse.value.set(color)
-            },
           })
         }
       })
@@ -1108,8 +1413,7 @@ export default {
       })
       gsap.to(camera, {
         duration: 1,
-        zoom: this.zoom.initial,
-        // zoom: this.currentFloor.content.camera_zoom || this.zoom.initial,
+        zoom: this.currentFloor.content.camera_zoom || this.zoom.initial,
         ...params,
         onUpdate: () => {
           camera.updateProjectionMatrix()
@@ -1122,6 +1426,8 @@ export default {
     },
     onMouseEnterZone(object) {
       this.setCursorState('hover')
+
+      this.setInteriorCurrentZoneHovered(object.parent.name)
 
       const zone = object.parent.publicAccess ? 'public' : 'vip'
 
@@ -1150,6 +1456,8 @@ export default {
     onMouseLeaveZone(object) {
       this.setCursorState('hide')
 
+      this.setInteriorCurrentZoneHovered(null)
+
       const params = {
         ease: 'power2.out',
         duration: 0.45,
@@ -1177,41 +1485,40 @@ export default {
     onFrame({ time, deltaTime, frame, deltaRatio }) {
       if (!this.interiorVisible || this.$viewport.isMobile) return
 
-      const { interior } = useWebGL()
-      // const { interior, raycaster } = useWebGL()
+      const { interior, raycaster } = useWebGL()
 
-      // if (
-      //   this.currentFloor &&
-      //   this.currentFloor.basicObjectRaycast &&
-      //   !this.zoneFocusEnabled
-      //   // add !this.zoneFocusEnabled to disable intersect when a zone is selected
-      // ) {
-      //   const intersects = raycaster.intersectObjects(
-      //     this.currentFloor?.basicObjectRaycast,
-      //     false
-      //   )
+      if (
+        this.currentFloor &&
+        this.currentFloor.basicObjectRaycast &&
+        !this.zoneFocusEnabled
+        // add !this.zoneFocusEnabled to disable intersect when a zone is selected
+      ) {
+        const intersects = raycaster.intersectObjects(
+          this.currentFloor?.basicObjectRaycast,
+          false
+        )
 
-      //   if (intersects.length) {
-      //     if (
-      //       !this.currentZoneIntersect ||
-      //       intersects[0].object.parent.name !==
-      //         this.currentZoneIntersect?.object?.parent.name
-      //     ) {
-      //       if (this.currentZoneIntersect) {
-      //         // this.onMouseLeaveZone(this.currentZoneIntersect.object)
-      //       }
-      //       // this.onMouseEnterZone(intersects[0].object)
-      //     }
+        if (intersects.length) {
+          if (
+            !this.currentZoneIntersect ||
+            intersects[0].object.parent.name !==
+              this.currentZoneIntersect?.object?.parent.name
+          ) {
+            if (this.currentZoneIntersect) {
+              this.onMouseLeaveZone(this.currentZoneIntersect.object)
+            }
+            this.onMouseEnterZone(intersects[0].object)
+          }
 
-      //     this.currentZoneIntersect = intersects[0]
-      //   } else {
-      //     if (this.currentZoneIntersect) {
-      //       // this.onMouseLeaveZone(this.currentZoneIntersect.object)
-      //     }
+          this.currentZoneIntersect = intersects[0]
+        } else {
+          if (this.currentZoneIntersect) {
+            this.onMouseLeaveZone(this.currentZoneIntersect.object)
+          }
 
-      //     this.currentZoneIntersect = null
-      //   }
-      // }
+          this.currentZoneIntersect = null
+        }
+      }
 
       this.drag.current = this.lerp(
         this.drag.current,
@@ -1335,7 +1642,7 @@ export default {
       clippingPlane.constant = min.y * -1 + 0.15
 
       group.hidePosition = group.position.clone()
-      group.hidePosition.y = height * -1 - 0.2
+      group.hidePosition.y = height * -2
 
       return group
     },
@@ -1499,6 +1806,7 @@ export default {
       setInteriorVisible: 'setInteriorVisible',
       setCursorState: 'setCursorState',
       setInteriorCurrentZoneName: 'setInteriorCurrentZoneName',
+      setInteriorCurrentZoneHovered: 'setInteriorCurrentZoneHovered',
     }),
   },
 }

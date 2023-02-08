@@ -37,7 +37,7 @@ export default {
 <style lang="scss">
 .app-element-scene-selector {
   position: absolute;
-  bottom: 140px;
+  bottom: 120px;
   background: var(--c-grey);
   right: 20px;
   display: flex;

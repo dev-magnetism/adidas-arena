@@ -45,7 +45,7 @@ export default {
         this.lenis.start()
       }
     },
-    initialHeroDisplayed(payload) {
+    preloaderHidden(payload) {
       if (!this.lenis) return
 
       if (payload) {

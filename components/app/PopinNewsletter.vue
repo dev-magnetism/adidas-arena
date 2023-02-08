@@ -71,7 +71,7 @@ export default {
       submited: false,
       timeInactivity: null,
       cookieExist: false,
-      durationMaxInactivity: 30000,
+      durationMaxInactivity: 15000,
     }
   },
 

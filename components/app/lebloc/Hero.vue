@@ -2,13 +2,13 @@
   <div class="app-le-bloc-hero">
     <div class="app-le-bloc-hero__wrapper">
       <AtomsCornerPoints :size-points="12" />
-      <!-- <EInteriorZoneInformation /> -->
+      <EInteriorZoneInformation />
       <EFloorSelector />
       <EFloorSelectorMobile />
       <ESceneSelector />
       <ELegendZones />
       <EScrollIndicator @click.native="scrollHero()" />
-      <EInteriorTags />
+      <!-- <EInteriorTags /> -->
     </div>
   </div>
 </template>

@@ -183,8 +183,6 @@ export default {
     },
   },
   mounted() {
-    this.initScrollTrigger()
-
     if (this.allLoadedFake && !this.$viewport.isMobile) {
       this.initSplitText()
       this.appearHeroInit(0.75)

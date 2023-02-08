@@ -8,11 +8,12 @@
 <style lang="scss">
 .app-element-legend-zones {
   position: absolute;
-  bottom: 20px;
-  right: 200px;
+  bottom: 175px;
+  right: 30px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  flex-direction: column;
 
   @include mobile {
     left: 10px;
@@ -28,11 +29,7 @@
     text-transform: uppercase;
 
     &:first-child {
-      margin-right: 30px;
-
-      @include mobile {
-        margin-right: 0px;
-      }
+      margin-bottom: 5px;
     }
 
     &.public {
@@ -49,8 +46,8 @@
 
     span {
       display: block;
-      width: 10px;
-      height: 10px;
+      width: 15px;
+      height: 15px;
       border: 1px solid var(--c-black);
       margin-right: 10px;
     }

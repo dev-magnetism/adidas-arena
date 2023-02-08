@@ -27,6 +27,7 @@ export const state = () => ({
   interiorIndexFloor: { id: 0, focus: null, immediate: true },
   interiorMusicScene: true,
   interiorCurrentZoneName: null,
+  interiorCurrentZoneHovered: null,
 
   // UI
   initialHeroDisplayed: false,
@@ -51,6 +52,9 @@ export const getters = {
 export const mutations = {
   setFontsLoaded: (state, value) => {
     state.fontsLoaded = value
+  },
+  setInteriorCurrentZoneHovered: (state, value) => {
+    state.interiorCurrentZoneHovered = value
   },
   setPopinNewsletterOpen: (state, value) => {
     state.popinNewsletterOpen = value
