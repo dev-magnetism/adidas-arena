@@ -7,6 +7,7 @@
       provider="directus"
       format="webp"
       alt="placeholder"
+      sizes="sm:35vw md:15vw"
     />
     <nuxt-picture
       v-if="!$viewport.isMobile"
@@ -15,6 +16,7 @@
       provider="directus"
       format="webp"
       alt="placeholder"
+      sizes="sm:35vw md:15vw"
     />
 
     <nuxt-picture
@@ -23,6 +25,7 @@
       provider="directus"
       format="webp"
       alt="placeholder"
+      sizes="sm:50vw md:35vw"
     />
   </div>
 </template>

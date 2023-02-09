@@ -30,6 +30,7 @@
             alt="red"
             :src="item.image"
             provider="directus"
+            sizes="md:100vw"
           />
         </transition-group>
       </div>

@@ -13,6 +13,7 @@
           format="webp"
           :alt="contents.pictureFramed.alt"
           class="picture-absolute"
+          sizes="sm:35vw md:50vw"
         />
         <ELottie id="Cadre_01" start="top bottom-=15%" />
       </EKinesis>
@@ -26,6 +27,7 @@
         :src="contents.pictureLogo.src"
         format="webp"
         :alt="contents.pictureLogo.alt"
+        sizes="sm:35vw md:20vw"
       />
       <AtomsCornerPoints :size-points="8" />
     </EKinesis>
@@ -41,6 +43,7 @@
           :src="contents.picture.src"
           format="webp"
           :alt="contents.picture.alt"
+          sizes="sm:35vw md:35vw"
         />
       </EKinesis>
     </EParallax>
@@ -122,7 +125,7 @@ export default {
 <style lang="scss">
 .app-arena-paris-basket-club {
   position: relative;
-  margin-top: desktop-vw(50px);
+  margin-top: desktop-vw(80px);
   padding-top: desktop-vw(50px);
 
   @include mobile {

@@ -19,6 +19,7 @@
           :src="contents.pictureBigVisual"
           :alt="contents.pictureBigVisualAlt"
           format="webp"
+          sizes="sm:50vw md:40vw"
         />
       </EKinesis>
     </EParallax>
@@ -36,6 +37,7 @@
               :src="contents.pictureFramed"
               :alt="contents.pictureFramedAlt"
               format="webp"
+              sizes="sm:50vw md:40vw"
             />
           </EKinesis>
         </EFramedPicture>

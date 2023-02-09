@@ -16,6 +16,7 @@
           format="webp"
           :alt="contents.picture.alt"
           class="picture-absolute"
+          sizes="sm:35vw md:75vw"
         />
       </EKinesis>
     </EParallax>
@@ -30,6 +31,7 @@
               :src="contents.pictureFramed.src"
               :alt="contents.pictureFramed.alt"
               format="webp"
+              sizes="sm:35vw md:70vw"
             />
           </EKinesis>
         </EFramedPicture>
@@ -96,6 +98,10 @@ export default {
 
   @include mobile {
     padding-bottom: mobile-vw(100px);
+  }
+
+  picture {
+    @include noise();
   }
 
   &__title {

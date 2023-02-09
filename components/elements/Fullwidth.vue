@@ -7,6 +7,7 @@
       :src="contents.src"
       format="webp"
       :alt="contents.alt"
+      sizes="sm:100vw md:100vw"
     />
   </div>
 </template>

@@ -24,6 +24,7 @@
           src="imgs/projet/plan.png"
           format="webp"
           alt="alt"
+          sizes="sm:50vw md:35vw"
         />
       </div>
     </div>

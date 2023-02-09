@@ -18,6 +18,7 @@
               :src="contents.pictureFramedImage"
               format="webp"
               :alt="contents.pictureFramedAlt"
+              sizes="sm:35vw md:50vw"
             />
           </EKinesis>
         </EFramedPicture>
@@ -36,6 +37,7 @@
             :src="contents.pictureLabelImage"
             :alt="contents.pictureLabelAlt"
             format="webp"
+            sizes="sm:35vw md:50vw"
           />
         </EKinesis>
       </EParallax>

@@ -244,6 +244,10 @@ export default {
   &.hide {
     pointer-events: none;
 
+    * {
+      pointer-events: none;
+    }
+
     &::after {
       opacity: 0;
       transition-duration: 0s;

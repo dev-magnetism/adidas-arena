@@ -7,6 +7,7 @@
         :src="contents.pictureTop.src"
         :alt="contents.pictureTop.alt"
         format="webp"
+        sizes="sm:50vw md:30vw"
       />
     </div>
     <div ref="secondVisual" class="app-home-hero__second-visual">
@@ -16,6 +17,7 @@
         :src="contents.pictureBottom.src"
         :alt="contents.pictureBottom.alt"
         format="webp"
+        sizes="sm:50vw md:30vw"
       />
     </div>
     <div class="app-home-hero__inner grid">

@@ -593,6 +593,14 @@ export default {
         }
       }
 
+      .app-atoms-link {
+        &.nuxt-link-exact-active.nuxt-link-active {
+          &::after {
+            --scale: 1;
+          }
+        }
+      }
+
       a:not(:first-child) {
         margin-top: desktop-vw(6px);
 

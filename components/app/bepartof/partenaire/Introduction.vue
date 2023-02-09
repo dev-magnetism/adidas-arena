@@ -25,6 +25,7 @@
           :src="contents.picture.src"
           format="webp"
           :alt="contents.picture.alt"
+          sizes="sm:35vw md:75vw"
         />
       </EKinesis>
     </EParallax>
@@ -42,6 +43,7 @@
               :src="contents.pictureFramed.src"
               format="webp"
               :alt="contents.pictureFramed.alt"
+              sizes="sm:35vw md:75vw"
             />
           </EKinesis>
         </EFramedPicture>
@@ -116,6 +118,10 @@ export default {
 
   @include mobile {
     margin-bottom: mobile-vw(100px);
+  }
+
+  picture {
+    @include noise();
   }
 
   &__f-row {

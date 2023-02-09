@@ -83,6 +83,7 @@
               :src="contents.secondRow.picture"
               format="webp"
               :alt="contents.secondRow.pictureAlt"
+              sizes="sm:40vw md:35vw"
             />
           </EKinesis>
         </EParallax>

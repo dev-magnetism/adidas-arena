@@ -36,6 +36,7 @@
           format="webp"
           :alt="contents.pictureFramed.alt"
           class="picture-absolute"
+          sizes="sm:35vw md:90vw"
         />
         <ELottie id="Cadre_02" />
       </EKinesis>
@@ -55,6 +56,7 @@
           format="webp"
           :alt="contents.picture.alt"
           class="picture-absolute"
+          sizes="sm:35vw md:65vw"
         />
       </EKinesis>
     </EParallax>
@@ -185,6 +187,7 @@ export default {
 
       picture {
         z-index: 0;
+        @include noise();
       }
 
       svg,
@@ -247,6 +250,7 @@ export default {
 
       picture {
         z-index: 0;
+        @include noise();
       }
     }
   }

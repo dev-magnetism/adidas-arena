@@ -31,7 +31,7 @@ export default {
   },
   mounted() {
     if (this.allLoadedFake) {
-      this.initInteriorView(650)
+      this.initInteriorView(850)
     }
 
     this.scrollTrigger = ScrollTrigger.create({

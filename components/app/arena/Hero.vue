@@ -63,10 +63,6 @@ export default {
 
       this.setInteriorIndexFloor({ id: 0, immediate: true })
 
-      setTimeout(() => {
-        this.setInteriorIndexFloor({ id: 4, immediate: false })
-      }, 850)
-
       this.onResize()
     },
     onResize() {
