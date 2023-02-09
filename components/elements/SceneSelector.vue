@@ -36,16 +36,13 @@ export default {
 
 <style lang="scss">
 .app-element-scene-selector {
-  position: absolute;
-  bottom: 120px;
-  background: var(--c-grey);
-  right: 20px;
+  position: relative;
   display: flex;
+  margin-bottom: 20px;
+  justify-content: flex-end;
 
   @include mobile {
-    left: 0;
-    right: initial;
-    bottom: 0;
+    margin-bottom: 0px;
   }
 
   &__icon {
@@ -58,6 +55,7 @@ export default {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    background: var(--c-grey);
 
     @include mobile {
       width: mobile-vw(40px);
@@ -86,7 +84,7 @@ export default {
     }
 
     &:first-child {
-      border-right: none;
+      border-left: none;
     }
   }
 }

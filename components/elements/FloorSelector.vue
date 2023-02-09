@@ -1,5 +1,9 @@
 <template>
-  <div class="app-element-floor-selector" @click.stop="() => {}">
+  <div
+    class="app-element-floor-selector"
+    :class="{ disabled: interiorTimelineFloorsInProgress }"
+    @click.stop="() => {}"
+  >
     <AtomsCornerPoints :size-points="8" />
 
     <div class="app-element-floor-selector__wrapper">
@@ -46,11 +50,15 @@ export default {
       exteriorFullwidth: (state) => state.exteriorFullwidth,
       interiorIndexFloor: (state) => state.interiorIndexFloor,
       interiorContent: (state) => state.interiorContent,
+      interiorTimelineFloorsInProgress: (state) =>
+        state.interiorTimelineFloorsInProgress,
     }),
   },
   mounted() {},
   methods: {
     onClick(i) {
+      if (this.interiorTimelineFloorsInProgress) return
+
       this.setInteriorIndexFloor({ id: i, immediate: false })
     },
     ...mapMutations({
@@ -62,12 +70,20 @@ export default {
 
 <style lang="scss">
 .app-element-floor-selector {
-  position: absolute;
-  bottom: 20px;
+  position: relative;
   background: var(--c-grey);
-  right: 20px;
   width: 150px;
   height: 80px;
+  transition: opacity 0.35s var(--ease-in-out-cubic);
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    .app-element-floor-selector__floor {
+      cursor: not-allowed;
+    }
+  }
 
   @include mobile {
     display: none;
@@ -90,6 +106,8 @@ export default {
     .P2 {
       position: absolute;
       text-transform: uppercase;
+      font-size: min(14px, desktop-vw(14px));
+      line-height: min(20px, desktop-vw(20px));
 
       &.selector-text-enter-active,
       &.selector-text-leave-active {
@@ -143,6 +161,7 @@ export default {
       margin-top 0.45s var(--ease-out-expo),
       background-color 0.45s var(--ease-out-expo);
     will-change: margin-top, margin-bottom;
+    cursor: pointer;
 
     &.active {
       background-color: #3171ff;

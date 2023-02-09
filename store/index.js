@@ -28,6 +28,7 @@ export const state = () => ({
   interiorMusicScene: true,
   interiorCurrentZoneName: null,
   interiorCurrentZoneHovered: null,
+  interiorTimelineFloorsInProgress: false,
 
   // UI
   initialHeroDisplayed: false,
@@ -64,6 +65,9 @@ export const mutations = {
   },
   setHeaderReduced: (state, value) => {
     state.headerReduced = value
+  },
+  setInteriorTimelineFloorsInProgress: (state, value) => {
+    state.interiorTimelineFloorsInProgress = value
   },
   setHeaderHided: (state, value) => {
     state.headerHided = value

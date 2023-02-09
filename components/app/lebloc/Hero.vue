@@ -3,10 +3,8 @@
     <div class="app-le-bloc-hero__wrapper">
       <AtomsCornerPoints :size-points="12" />
       <EInteriorZoneInformation />
-      <EFloorSelector />
+      <EInteriorInformations />
       <EFloorSelectorMobile />
-      <ESceneSelector />
-      <ELegendZones />
       <EScrollIndicator @click.native="scrollHero()" />
       <!-- <EInteriorTags /> -->
     </div>
@@ -66,7 +64,7 @@ export default {
 
       this.setInteriorIndexFloor({
         id: 2,
-        focus: null,
+        focus: 'PUBLIC_Cantine',
         immediate: true,
       })
 

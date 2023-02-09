@@ -1,5 +1,9 @@
 <template>
-  <div :class="{ hide: !popinNewsletterOpen }" class="app-popin-newsletter">
+  <div
+    @click.stop="() => {}"
+    :class="{ hide: !popinNewsletterOpen }"
+    class="app-popin-newsletter"
+  >
     <div class="app-popin-newsletter__wrapper">
       <span
         class="app-popin-newsletter__close"
@@ -233,6 +237,10 @@ export default {
   align-items: center;
   justify-content: center;
 
+  @include mobile {
+    height: calc(100 * var(--vh, 1vh));
+  }
+
   &.hide {
     pointer-events: none;
 
@@ -258,6 +266,10 @@ export default {
     background: var(--c-grey);
     opacity: 0.7;
     transition: opacity 0.35s var(--ease-in-out-cubic);
+
+    @include mobile {
+      opacity: 0.85;
+    }
   }
 
   &__wrapper {
@@ -285,8 +297,8 @@ export default {
       grid-column: 1 / span 6;
       padding: mobile-vw(30px) mobile-vw(0px) mobile-vw(25px) mobile-vw(0px);
       aspect-ratio: 340 / 280;
-      width: 95%;
-      left: 2.5%;
+      width: 90%;
+      left: 0;
       background-size: 1em 1em;
     }
 
@@ -328,6 +340,11 @@ export default {
     letter-spacing: -0.04em;
     display: inline-block;
     cursor: pointer;
+
+    @include mobile {
+      font-size: mobile-vw(14px);
+      line-height: mobile-vw(18px);
+    }
   }
 
   &__accept-politic {

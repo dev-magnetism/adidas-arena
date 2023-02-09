@@ -862,12 +862,16 @@ export default {
 <style lang="scss">
 .app-menu {
   width: 100vw;
-  height: calc(100 * var(--vh, 1vh));
+  height: 100vh;
   position: fixed;
   background-color: transparent;
   z-index: 8;
   pointer-events: none;
   opacity: 0;
+
+  @include mobile {
+    height: calc(100 * var(--vh, 1vh));
+  }
 
   &.pointer-events {
     pointer-events: all;

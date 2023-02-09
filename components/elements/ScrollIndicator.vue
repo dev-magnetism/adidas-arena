@@ -1,5 +1,5 @@
 <template>
-  <div class="app-element-scroll-indicator">
+  <div @click.stop="() => {}" class="app-element-scroll-indicator">
     <SvgScrollIndicatorDoubleArrow />
   </div>
 </template>

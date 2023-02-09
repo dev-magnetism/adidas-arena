@@ -89,6 +89,8 @@ export default {
       interiorMusicScene: (state) => state.interiorMusicScene,
       interiorContent: (state) => state.interiorContent,
       interiorCurrentZoneName: (state) => state.interiorCurrentZoneName,
+      interiorTimelineFloorsInProgress: (state) =>
+        state.interiorTimelineFloorsInProgress,
     }),
     currentFloor() {
       return this.floors[this.interiorIndexFloor.id]
@@ -112,6 +114,8 @@ export default {
       if (newVal.immediate) {
         this.handleImmediateTransition(oldVal)
       } else {
+        if (this.interiorTimelineFloorsInProgress) return
+
         this.handleAnimatedTransition(oldVal)
       }
     },
@@ -150,6 +154,7 @@ export default {
     })
 
     this.$nuxt.$on('reset:interior', this.resetView)
+    this.$nuxt.$on('interior:unfocus', this.unfocusZone)
 
     this.$raf.add(`webgl-interior`, this.onFrame)
 
@@ -206,9 +211,11 @@ export default {
 
     interior.floors = []
     this.observer?.kill()
+    this.tweenCamera?.kill()
     this.tlFloors?.kill()
     this.tlSwitchMiddleScene?.kill()
     this.$nuxt.$off('reset:interior', this.resetView)
+    this.$nuxt.$off('interior:unfocus', this.unfocusZone)
     this.$raf.remove(`webgl-interior`, this.onFrame)
 
     document
@@ -300,39 +307,53 @@ export default {
       })
 
       if (this.interiorIndexFloor.focus) {
-        console.log('focus', this.currentFloor)
-
+        this.setHeaderHided(true)
         const { fail: zonesNotSelected, pass: zoneSelected } = this.partition(
           this.currentFloor.specialObjects,
           (e) => e.name === this.interiorIndexFloor.focus
         )
 
         this.focusZoneImmediate(zoneSelected[0], zonesNotSelected)
-
-        // const zone = this.currentFloor.specialObjects.find(
-        //   (object) => object.name === this.interiorIndexFloor.focus
-        // )
-
-        // this.focusZone(zone)
       }
     },
     handleAnimatedTransition(oldVal) {
       this.tlFloors?.clear()
       this.tlFloors?.kill()
+      this.tweenCamera?.kill()
 
-      this.tlFloors = gsap.timeline()
+      if (this.currentZoneIntersect) this.unfocusZone(true)
+
+      this.tlFloors = gsap.timeline({
+        onStart: () => {
+          this.setInteriorTimelineFloorsInProgress(true)
+        },
+        onComplete: () => {
+          this.setInteriorTimelineFloorsInProgress(false)
+        },
+      })
 
       const isAscendant = oldVal.id < this.interiorIndexFloor.id
+
+      const { camera } = useWebGL()
+
+      const coef = Math.abs(this.interiorIndexFloor.id - oldVal.id)
+
+      this.tweenCamera = gsap.to(camera, {
+        zoom:
+          this.floors[this.interiorIndexFloor.id].content.camera_zoom ||
+          this.zoom.initial,
+        onUpdate: () => {
+          camera.updateProjectionMatrix()
+        },
+        delay: !isAscendant && coef < 2 ? 0.2 : 0,
+        ease: 'power3.inOut',
+        duration: coef > 2 ? coef * 0.65 : coef * 1,
+      })
 
       if (isAscendant) {
         this.floors.forEach((floor, index) => {
           const isTweenable =
             index <= this.interiorIndexFloor.id && !floor.visible && index !== 0
-
-          // const isHidden =
-          //   (index >= oldVal.id || oldVal.id === 0) &&
-          //   index < this.interiorIndexFloor.id &&
-          //   index !== 0
 
           if (isTweenable) {
             const lastFloor = this.floors[index - 1]
@@ -364,30 +385,13 @@ export default {
       }
     },
     addFloorToTimelineDisappear(floor, nextFloor, index) {
-      const { camera } = useWebGL()
-
-      // const graphFloor = this.buildGraph(floor)
       const graphNextFloor = this.buildGraph(nextFloor)
 
-      this.tlFloors.addLabel(`${floor.name}`, '<35%')
+      this.tlFloors.addLabel(`${floor.name}`, '<10%')
       this.tlFloors.addLabel(`leave-${floor.name}`, `${floor.name}`)
       this.tlFloors.addLabel(`enter-${floor.name}`, `${floor.name}`)
 
       const isFinalFloor = index === this.interiorIndexFloor.id
-
-      // APPEAR NEW FLOOR
-      this.tlFloors.to(
-        camera,
-        {
-          zoom: floor.content.camera_zoom || this.zoom.initial,
-          onUpdate: () => {
-            camera.updateProjectionMatrix()
-          },
-          ease: 'power1.inOut',
-          duration: 0.75,
-        },
-        `leave-${floor.name}`
-      )
 
       this.tlFloors.to(
         floor.position,
@@ -396,7 +400,7 @@ export default {
           onComplete: () => {
             floor.visible = false
           },
-          ease: 'back.in(1)',
+          ease: 'back.in(1.5)',
           duration: 0.85,
         },
         `leave-${floor.name}`
@@ -455,9 +459,9 @@ export default {
         )
 
         const params = {
-          ease: 'power1.out',
-          duration: 0.35,
-          delay: 0.5,
+          ease: 'power2.out',
+          duration: 0.5,
+          delay: 0.75,
         }
 
         const outlineColor = this.colors.outlineColor.clone()
@@ -533,8 +537,6 @@ export default {
       }
     },
     addFloorToTimelineAppear(floor, lastFloor, index) {
-      const { camera } = useWebGL()
-
       const graphFloor = this.buildGraph(floor)
       const graphLastFloor = this.buildGraph(lastFloor)
 
@@ -635,19 +637,6 @@ export default {
           material.color = this.colors.outlineColor.clone()
         }
       })
-
-      this.tlFloors.to(
-        camera,
-        {
-          zoom: floor.content.camera_zoom || this.zoom.initial,
-          onUpdate: () => {
-            camera.updateProjectionMatrix()
-          },
-          ease: 'expo.out',
-          duration: 0.75,
-        },
-        `enter-${floor.name}`
-      )
 
       this.tlFloors.to(
         floor.position,
@@ -842,10 +831,10 @@ export default {
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
 
-      this.directionalLight.shadow.camera.left = -100
-      this.directionalLight.shadow.camera.right = 100
-      this.directionalLight.shadow.camera.top = 100
-      this.directionalLight.shadow.camera.bottom = -100
+      this.directionalLight.shadow.camera.left = -65
+      this.directionalLight.shadow.camera.right = 65
+      this.directionalLight.shadow.camera.top = 65
+      this.directionalLight.shadow.camera.bottom = -65
 
       interior.add(this.directionalLight)
     },
@@ -1047,8 +1036,6 @@ export default {
       interior.initialCamera = { ...this.cameraBase }
     },
     resetView() {
-      // console.log('reset interior')
-
       this.setInteriorVisible(true)
 
       const { interior, camera } = useWebGL()
@@ -1281,7 +1268,7 @@ export default {
       )
     },
     onClickZone(e) {
-      if (!this.interiorVisible) return
+      if (!this.interiorVisible && this.interiorTimelineFloorsInProgress) return
 
       if (this.currentZoneIntersect && !this.dragInProgress) {
         const basicObject = this.currentZoneIntersect.object
@@ -1301,6 +1288,8 @@ export default {
     focusZone(zone) {
       this.zoneFocusEnabled = true
       this.setInteriorCurrentZoneName(zone.name)
+
+      if (this.$viewport.isMobile) this.setHeaderHided(true)
 
       const { camera } = useWebGL()
 
@@ -1383,10 +1372,13 @@ export default {
         }
       })
     },
-    unfocusZone() {
+    unfocusZone(forceUnfocus = false) {
       this.zoneFocusEnabled = false
       this.currentZoneIntersect = null
       this.setInteriorCurrentZoneName(null)
+      this.setInteriorCurrentZoneHovered(null)
+      this.setCursorState('hide')
+      if (this.$viewport.isMobile) this.setHeaderHided(false)
 
       const { camera } = useWebGL()
 
@@ -1397,6 +1389,17 @@ export default {
         duration: 1,
       }
 
+      if (!forceUnfocus) {
+        gsap.to(camera, {
+          duration: 1,
+          zoom: this.currentFloor.content.camera_zoom || this.zoom.initial,
+          ...params,
+          onUpdate: () => {
+            camera.updateProjectionMatrix()
+          },
+        })
+      }
+
       gsap.to(camera.position, {
         duration: 1,
         x: this.cameraBase.position.x,
@@ -1404,6 +1407,7 @@ export default {
         z: this.cameraBase.position.z,
         ...params,
       })
+
       gsap.to(camera.rotation, {
         duration: 1,
         x: this.cameraBase.rotation.x,
@@ -1411,20 +1415,16 @@ export default {
         z: this.cameraBase.rotation.z,
         ...params,
       })
-      gsap.to(camera, {
-        duration: 1,
-        zoom: this.currentFloor.content.camera_zoom || this.zoom.initial,
-        ...params,
-        onUpdate: () => {
-          camera.updateProjectionMatrix()
-        },
-      })
 
-      this.inactiveZones.forEach((object) => {
-        this.handlerColorsZonesInactives(object, true)
-      })
+      if (!forceUnfocus) {
+        this.inactiveZones.forEach((object) => {
+          this.handlerColorsZonesInactives(object, true)
+        })
+      }
     },
     onMouseEnterZone(object) {
+      if (this.$viewport.isMobile) return
+
       this.setCursorState('hover')
 
       this.setInteriorCurrentZoneHovered(object.parent.name)
@@ -1454,6 +1454,8 @@ export default {
       })
     },
     onMouseLeaveZone(object) {
+      if (this.$viewport.isMobile) return
+
       this.setCursorState('hide')
 
       this.setInteriorCurrentZoneHovered(null)
@@ -1483,14 +1485,16 @@ export default {
       })
     },
     onFrame({ time, deltaTime, frame, deltaRatio }) {
-      if (!this.interiorVisible || this.$viewport.isMobile) return
+      if (!this.interiorVisible) return
 
       const { interior, raycaster } = useWebGL()
 
       if (
         this.currentFloor &&
         this.currentFloor.basicObjectRaycast &&
-        !this.zoneFocusEnabled
+        !this.zoneFocusEnabled &&
+        !this.dragInProgress &&
+        !this.interiorTimelineFloorsInProgress
         // add !this.zoneFocusEnabled to disable intersect when a zone is selected
       ) {
         const intersects = raycaster.intersectObjects(
@@ -1507,6 +1511,7 @@ export default {
             if (this.currentZoneIntersect) {
               this.onMouseLeaveZone(this.currentZoneIntersect.object)
             }
+
             this.onMouseEnterZone(intersects[0].object)
           }
 
@@ -1633,13 +1638,14 @@ export default {
         group.add(part)
       })
 
+      group.position.y += indexFloor * 0.05
       group.initialPosition = group.position.clone()
 
       const { min, max } = new THREE.Box3().setFromObject(group)
 
       const height = max.y - min.y
 
-      clippingPlane.constant = min.y * -1 + 0.15
+      clippingPlane.constant = min.y * -1 + 0.05
 
       group.hidePosition = group.position.clone()
       group.hidePosition.y = height * -2
@@ -1807,6 +1813,9 @@ export default {
       setCursorState: 'setCursorState',
       setInteriorCurrentZoneName: 'setInteriorCurrentZoneName',
       setInteriorCurrentZoneHovered: 'setInteriorCurrentZoneHovered',
+      setHeaderHided: 'setHeaderHided',
+      setInteriorTimelineFloorsInProgress:
+        'setInteriorTimelineFloorsInProgress',
     }),
   },
 }

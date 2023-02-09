@@ -7,17 +7,20 @@
 
 <style lang="scss">
 .app-element-legend-zones {
-  position: absolute;
-  bottom: 175px;
-  right: 30px;
+  position: relative;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   flex-direction: column;
+  margin-bottom: 15px;
+  margin-left: auto;
+  width: desktop-vw(80px);
+  min-width: 80px;
 
   @include mobile {
-    left: 10px;
-    bottom: 50px;
+    left: mobile-vw(10px);
+    width: 100%;
+    bottom: 0;
     flex-direction: column;
     align-items: flex-start;
   }
