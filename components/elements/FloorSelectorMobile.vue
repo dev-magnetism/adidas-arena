@@ -1,5 +1,8 @@
 <template>
-  <div class="app-element-floor-selector-mobile">
+  <div
+    :class="{ hide: interiorCurrentZoneName && $viewport.isMobile }"
+    class="app-element-floor-selector-mobile"
+  >
     <div class="app-element-floor-selector-mobile__wrapper">
       <div
         v-for="i in 5"
@@ -29,10 +32,15 @@ export default {
     ...mapState({
       exteriorFullwidth: (state) => state.exteriorFullwidth,
       interiorIndexFloor: (state) => state.interiorIndexFloor,
+      interiorCurrentZoneName: (state) => state.interiorCurrentZoneName,
+      interiorTimelineFloorsInProgress: (state) =>
+        state.interiorTimelineFloorsInProgress,
     }),
   },
   methods: {
     onClick(i) {
+      if (this.interiorTimelineFloorsInProgress) return
+
       this.setInteriorIndexFloor({ id: i, immediate: false })
     },
     ...mapMutations({
@@ -49,6 +57,12 @@ export default {
   background: var(--c-grey);
   right: 0;
   width: 40px;
+  transition: opacity 0.35s var(--ease-in-out-cubic);
+
+  &.hide {
+    opacity: 0;
+    pointer-events: none;
+  }
 
   @include desktop {
     display: none;
@@ -56,7 +70,7 @@ export default {
 
   &__wrapper {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     height: 100%;
     width: 100%;
   }
@@ -73,10 +87,10 @@ export default {
     transition: background-color 0.45s var(--ease-out-expo);
     border-right: 0;
 
-    &:not(:first-child) {
+    &:not(:last-child) {
       border-top: 0;
     }
-    &:last-child {
+    &:first-child {
       border-bottom: 0;
     }
 

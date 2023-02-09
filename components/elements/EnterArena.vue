@@ -44,6 +44,7 @@ export default {
   transition: opacity 0.35s var(--ease-in-out-cubic);
   z-index: 1;
   pointer-events: none;
+  max-width: 450px;
 
   &.hide {
     .app-element-enter-arena__cta,

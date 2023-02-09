@@ -69,6 +69,7 @@ export default {
       timeTrams: 0,
       speedTrams: 0.00015,
       delayRepeatTrams: 2,
+      currentIntersect: null,
     }
   },
   computed: {
@@ -86,7 +87,7 @@ export default {
       this.initExterior()
     },
     modelCloudLoaded() {
-      this.initClouds()
+      // this.initClouds()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -107,7 +108,7 @@ export default {
 
     if (this.allLoadedActual) {
       this.initExterior()
-      this.initClouds()
+      // this.initClouds()
       this.initGUI()
       this.resetView()
     }
@@ -217,7 +218,30 @@ export default {
     onFrame({ time, deltaTime, frame, deltaRatio }) {
       if (!this.exteriorVisible || this.$viewport.isMobile) return
 
-      const { exterior } = useWebGL()
+      const { exterior, raycaster } = useWebGL()
+
+      const intersects = raycaster.intersectObject(
+        this.adidasArena.basicObjectRaycast,
+        false
+      )
+
+      if (intersects.length) {
+        // console.log(intersects)
+        intersects.forEach((el) => {
+          console.log(el.object.name, el.object.parent.name)
+        })
+        if (!this.currentIntersect) {
+          console.log('mouse enter')
+        }
+
+        this.currentIntersect = intersects[0]
+      } else {
+        if (this.currentIntersect) {
+          console.log('mouse leave')
+        }
+
+        this.currentIntersect = null
+      }
 
       this.clouds?.children?.forEach((cloud) => {
         const z = cloud.direction
@@ -643,7 +667,7 @@ export default {
 
       this.floor = new THREE.Group()
       this.floor.name = 'floor'
-      this.floor.position.y = -0.01
+      this.floor.position.y = -0.025
       exterior.add(this.floor)
 
       const floorGroup = this.gltfExterior.getObjectByName('Floor')
@@ -675,9 +699,28 @@ export default {
       const edgeAdidasArena = this.edgeObject(adidasArena)
       const conditionalAdidasArena = this.conditionalObject(adidasArena)
 
+      this.adidasArena.basicObjectRaycast = adidasArena
       this.adidasArena.add(adidasArena)
       this.adidasArena.add(edgeAdidasArena)
       this.adidasArena.add(conditionalAdidasArena)
+
+      const test = new THREE.Box3().setFromObject(this.adidasArena)
+
+      const geometry = new THREE.PlaneGeometry(1, 1)
+      const material = new THREE.MeshBasicMaterial({
+        color: 0xffff00,
+        side: THREE.DoubleSide,
+      })
+      const plane = new THREE.Mesh(geometry, material)
+
+      const widthBox = Math.abs(test.min.x - test.max.x)
+      const heightBox = Math.abs(test.min.z - test.max.z)
+
+      plane.scale.set(widthBox, heightBox, 1)
+      plane.rotation.set(THREE.MathUtils.degToRad(90), 0, 0)
+      plane.position.x = -5
+      plane.position.y = test.min.y
+      this.adidasArena.add(plane)
     },
     edgeObject(object) {
       const mergedGeom = object.geometry

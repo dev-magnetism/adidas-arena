@@ -108,6 +108,7 @@ export default {
       text-transform: uppercase;
       font-size: min(14px, desktop-vw(14px));
       line-height: min(20px, desktop-vw(20px));
+      user-select: none;
 
       &.selector-text-enter-active,
       &.selector-text-leave-active {

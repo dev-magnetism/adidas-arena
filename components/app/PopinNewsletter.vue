@@ -1,8 +1,8 @@
 <template>
   <div
-    @click.stop="() => {}"
     :class="{ hide: !popinNewsletterOpen }"
     class="app-popin-newsletter"
+    @click.stop="() => {}"
   >
     <div class="app-popin-newsletter__wrapper">
       <span

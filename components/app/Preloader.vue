@@ -19,8 +19,8 @@
     </video>
 
     <TH1
-      tag="span"
       ref="progress"
+      tag="span"
       class="app-preloader__progress"
       weight="bold"
     >

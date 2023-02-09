@@ -26,7 +26,7 @@ export default {
   },
   watch: {
     allLoadedFake() {
-      this.initInteriorView(2000)
+      this.initInteriorView(2250)
     },
   },
   mounted() {

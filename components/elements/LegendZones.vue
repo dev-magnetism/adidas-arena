@@ -30,6 +30,7 @@
     align-items: center;
     justify-content: center;
     text-transform: uppercase;
+    user-select: none;
 
     &:first-child {
       margin-bottom: 5px;

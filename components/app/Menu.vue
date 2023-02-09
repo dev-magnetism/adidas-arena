@@ -938,7 +938,7 @@ export default {
     height: 40px;
 
     @include mobile {
-      right: var(--layout-margin);
+      right: calc(var(--layout-margin) + 10px);
       top: mobile-vw(25px);
     }
 

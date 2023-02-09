@@ -114,6 +114,7 @@ export default {
 
       @include mobile {
         width: 100%;
+        display: block;
       }
     }
   }
@@ -127,7 +128,7 @@ export default {
     align-self: center;
 
     @include mobile {
-      margin-right: var(--layout-margin);
+      margin-right: calc(var(--layout-margin) + 10px);
     }
 
     &.white {
@@ -146,6 +147,7 @@ export default {
       text-transform: uppercase;
       margin-right: 20px;
       transition: color 0.4s var(--ease-out-cubic);
+      user-select: none;
     }
 
     &__icon {

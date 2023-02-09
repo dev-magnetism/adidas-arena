@@ -320,7 +320,7 @@ export default {
       this.tlFloors?.kill()
       this.tweenCamera?.kill()
 
-      if (this.currentZoneIntersect) this.unfocusZone(true)
+      if (this.interiorCurrentZoneName) this.unfocusZone(true)
 
       this.tlFloors = gsap.timeline({
         onStart: () => {
@@ -704,7 +704,11 @@ export default {
     focusZoneImmediate(zoneSelected, zonesNotSelected) {
       this.zoneFocusEnabled = true
       this.setInteriorCurrentZoneName(zoneSelected.name)
+      this.setInteriorCurrentZoneHovered(zoneSelected.name)
+
       this.drag.enabled = false
+
+      if (this.$viewport.isMobile) this.setHeaderHided(true)
 
       const { camera } = useWebGL()
 
@@ -1236,7 +1240,7 @@ export default {
       )
     },
     onClickZone(e) {
-      if (!this.interiorVisible && this.interiorTimelineFloorsInProgress) return
+      if (!this.interiorVisible || this.interiorTimelineFloorsInProgress) return
 
       if (this.currentZoneIntersect && !this.dragInProgress) {
         const basicObject = this.currentZoneIntersect.object

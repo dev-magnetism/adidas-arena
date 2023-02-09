@@ -1,5 +1,11 @@
 <template>
   <div class="app-element-scene-selector" @click.stop="() => {}">
+    <div class="app-element-scene-selector__switch">
+      <span
+        :class="{ active: !interiorMusicScene }"
+        class="app-element-scene-selector__switch__cursor"
+      />
+    </div>
     <div
       :class="{ active: interiorMusicScene }"
       class="app-element-scene-selector__icon micro"
@@ -40,9 +46,36 @@ export default {
   display: flex;
   margin-bottom: 20px;
   justify-content: flex-end;
+  margin-left: auto;
 
   @include mobile {
     margin-bottom: 0px;
+    margin-left: 0px;
+  }
+
+  &__switch {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--c-grey);
+
+    &__cursor {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: var(--c-blue-adidas);
+      width: 50%;
+      height: 100%;
+      transition: transform 0.5s var(--ease-in-out-cubic);
+      pointer-events: none;
+      z-index: 1;
+
+      &.active {
+        transform: translateX(100%);
+      }
+    }
   }
 
   &__icon {
@@ -55,7 +88,7 @@ export default {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background: var(--c-grey);
+    z-index: 1;
 
     @include mobile {
       width: mobile-vw(40px);
@@ -64,9 +97,15 @@ export default {
       border-bottom: none;
     }
 
-    &.active {
-      background-color: var(--c-blue-adidas);
+    &.micro {
+      border-right: none;
 
+      @include mobile {
+        border-left: none;
+      }
+    }
+
+    &.active {
       svg {
         path {
           stroke: var(--c-grey);
@@ -80,11 +119,8 @@ export default {
 
       path {
         stroke: var(--c-black);
+        transition: stroke 0.5s var(--ease-in-out-cubic);
       }
-    }
-
-    &:first-child {
-      border-left: none;
     }
   }
 }
