@@ -7,6 +7,7 @@
           alt="arena-base"
           format="webp"
           src="/imgs/configurations/base.png"
+          sizes="sm:50vw md:50vw"
         />
         <transition-group
           name="transition-arena"
@@ -22,6 +23,7 @@
             alt="arena-sport"
             format="webp"
             :src="`/imgs/configurations/${item.arena_disposition}.png`"
+            sizes="sm:50vw md:65vw"
           />
         </transition-group>
       </div>

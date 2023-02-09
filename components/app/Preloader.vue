@@ -173,7 +173,7 @@ export default {
       loaderManager.load(
         [
           { id: 'exterior', path: '/models/exterior.glb' },
-          { id: 'cloud', path: '/models/cloud.gltf' },
+          { id: 'cloud', path: '/models/cloud.glb' },
           { id: 'interior', path: '/models/interior.glb' },
         ],
         this.onProgressLoader,
