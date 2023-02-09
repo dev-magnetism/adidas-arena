@@ -8,7 +8,8 @@ const useGUI = () => {
     gui = new Pane({ title: 'GUI', container: document.body })
     gui.registerPlugin(EssentialsPlugin)
 
-    // gui.hidden = true
+    gui.disabled = true
+    gui.hidden = true
   }
 
   return gui

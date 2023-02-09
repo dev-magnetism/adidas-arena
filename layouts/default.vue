@@ -25,9 +25,6 @@
 <script>
 import { mapState } from 'vuex'
 
-// import { gsap } from 'gsap'
-// import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
 import useGUI from '~/hooks/gui'
 
 export default {

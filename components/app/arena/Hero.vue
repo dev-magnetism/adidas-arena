@@ -2,12 +2,10 @@
   <div class="app-arena-hero">
     <div class="app-arena-hero__wrapper">
       <AtomsCornerPoints :size-points="12" />
-      <EFloorSelector />
+      <EInteriorZoneInformation />
+      <EInteriorInformations />
       <EFloorSelectorMobile />
-      <ESceneSelector />
-      <ELegendZones />
       <EScrollIndicator @click.native="scrollHero()" />
-      <EInteriorTags />
     </div>
   </div>
 </template>
@@ -63,7 +61,11 @@ export default {
     initInteriorView() {
       this.$nuxt.$emit('reset:interior')
 
-      this.setInteriorIndexFloor({ id: 4, immediate: true })
+      this.setInteriorIndexFloor({ id: 0, immediate: true })
+
+      setTimeout(() => {
+        this.setInteriorIndexFloor({ id: 4, immediate: false })
+      }, 850)
 
       this.onResize()
     },

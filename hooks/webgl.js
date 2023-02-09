@@ -1,4 +1,4 @@
-import Stats from 'stats.js'
+// import Stats from 'stats.js'
 import { InteractionManager } from 'three.interactive'
 // import { InteractionManager } from '~/assets/js/webgl/InteractiveMouse'
 import Raf from '~/plugins/raf'
@@ -76,11 +76,11 @@ class GL {
 
     this.camera.position.z = 500
 
-    if (!Viewport.isMobile) {
-      this.stats = new Stats()
+    // if (!Viewport.isMobile) {
+    //   this.stats = new Stats()
 
-      document.body.appendChild(this.stats.dom)
-    }
+    //   document.body.appendChild(this.stats.dom)
+    // }
 
     this.interactionManager = new InteractionManager(
       this.renderer,

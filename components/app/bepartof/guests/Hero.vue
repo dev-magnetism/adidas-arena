@@ -2,11 +2,9 @@
   <div class="app-guests-hero">
     <div class="app-guests-hero__wrapper">
       <AtomsCornerPoints :size-points="12" />
-      <EFloorSelector />
+      <EInteriorZoneInformation />
+      <EInteriorInformations />
       <EFloorSelectorMobile />
-      <ESceneSelector />
-      <ELegendZones />
-      <EInteriorTags />
       <EScrollIndicator @click.native="scrollHero()" />
     </div>
   </div>
@@ -28,12 +26,12 @@ export default {
   },
   watch: {
     allLoadedFake() {
-      this.initInteriorView()
+      this.initInteriorView(2000)
     },
   },
   mounted() {
     if (this.allLoadedFake) {
-      this.initInteriorView()
+      this.initInteriorView(650)
     }
 
     this.scrollTrigger = ScrollTrigger.create({
@@ -60,10 +58,14 @@ export default {
         duration: 1.2,
       })
     },
-    initInteriorView() {
+    initInteriorView(delay) {
       this.$nuxt.$emit('reset:interior')
 
-      this.setInteriorIndexFloor({ id: 4, immediate: true })
+      this.setInteriorIndexFloor({ id: 0, immediate: true })
+
+      setTimeout(() => {
+        this.setInteriorIndexFloor({ id: 4, immediate: false })
+      }, delay)
 
       this.onResize()
     },

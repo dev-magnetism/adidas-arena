@@ -307,7 +307,6 @@ export default {
       })
 
       if (this.interiorIndexFloor.focus) {
-        this.setHeaderHided(true)
         const { fail: zonesNotSelected, pass: zoneSelected } = this.partition(
           this.currentFloor.specialObjects,
           (e) => e.name === this.interiorIndexFloor.focus
@@ -844,37 +843,6 @@ export default {
       this.gui = gui.addFolder({ title: `Interior` })
 
       const { interior } = useWebGL()
-
-      this.interiorContent.forEach((floor, floorIndex) => {
-        const floorButton = this.gui.addButton({
-          title: `Floor ${floorIndex}`,
-          label: 'counter', // optional
-        })
-
-        floorButton.on('click', (e) => {
-          this.setInteriorIndexFloor({
-            id: floorIndex,
-            immediate: true,
-          })
-        })
-
-        // floor.zones.forEach((zone, zoneIndex) => {
-        //   const zoneButton = this.gui.addButton({
-        //     title: `Zone ${zone.name_gltf}`,
-        //     label: 'counter', // optional
-        //   })
-
-        //   zoneButton.on('click', (e) => {
-        //     this.setInteriorIndexFloor({
-        //       id: floorIndex,
-        //       focus: zone.name_gltf,
-        //       immediate: true,
-        //     })
-        //   })
-        // })
-
-        this.gui.addSeparator()
-      })
 
       this.gui.addInput(interior, 'position', {
         x: { step: 1, max: 1000, min: -1000 },
