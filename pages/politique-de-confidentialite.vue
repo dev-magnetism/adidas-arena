@@ -75,6 +75,10 @@ export default {
   td {
     border: 1px solid var(--c-black);
     padding: desktop-vw(15px) desktop-vw(20px);
+
+    @include mobile {
+      padding: mobile-vw(15px) mobile-vw(20px);
+    }
   }
 
   @include mobile {
