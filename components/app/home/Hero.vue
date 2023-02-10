@@ -64,7 +64,7 @@
       <div
         ref="view"
         class="app-home-hero__view-exterior"
-        @click="!viewExteriorOpen ? onVisit() : ''"
+        @click="!viewExteriorOpen && !$viewport.isMobile ? onVisit() : ''"
       >
         <div class="app-home-hero__view-exterior__baseline">
           <AtomsTitleTag

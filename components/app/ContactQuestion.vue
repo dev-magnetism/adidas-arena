@@ -69,7 +69,7 @@ export default {
           transform: translate(-50%, -50%) rotate(5deg) !important;
 
           @include mobile {
-            width: 120% !important;
+            width: 90% !important;
           }
 
           path {

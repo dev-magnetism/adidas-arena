@@ -127,7 +127,7 @@ export default {
         transform: translate(-50%, -50%) !important;
 
         @include mobile {
-          bottom: -20px;
+          bottom: -50px;
         }
       }
       &.Cercle_1 svg {
