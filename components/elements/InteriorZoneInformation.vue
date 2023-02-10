@@ -26,6 +26,7 @@
             {{ zone?.name }}
           </TH3>
           <TP2
+            weight="bold"
             class="app-element-interior-zone-informations__zone-selected__text"
             v-html="zone?.description"
           />

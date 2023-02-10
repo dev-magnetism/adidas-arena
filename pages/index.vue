@@ -29,6 +29,8 @@ export default {
   transition(to, from) {
     if (!to || !from) return
 
+    console.log(from, to)
+
     return pageTransition.basic
   },
   async asyncData({ $directus }) {

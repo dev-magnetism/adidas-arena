@@ -161,6 +161,8 @@ export default {
     document
       .getElementById('__nuxt')
       .addEventListener('click', this.onClickZone)
+
+    window.addEventListener('keyup', this.onKeyUp)
   },
   beforeDestroy() {
     const { interior } = useWebGL()
@@ -218,11 +220,21 @@ export default {
     this.$nuxt.$off('interior:unfocus', this.unfocusZone)
     this.$raf.remove(`webgl-interior`, this.onFrame)
 
+    window.removeEventListener('keyup', this.onKeyUp)
     document
       .getElementById('__nuxt')
       .removeEventListener('click', this.onClickZone)
   },
   methods: {
+    onKeyUp(e) {
+      if (
+        e.key === 'Escape' &&
+        this.zoneFocusEnabled &&
+        this.interiorCurrentZoneName
+      ) {
+        this.unfocusZone()
+      }
+    },
     switchMiddleScene() {
       this.tlSwitchMiddleScene?.clear()
       this.tlSwitchMiddleScene?.kill()

@@ -1,4 +1,4 @@
-import Stats from 'stats.js'
+// import Stats from 'stats.js'
 import Raf from '~/plugins/raf'
 import Viewport from '~/plugins/viewport'
 // import Composer from '~/assets/webgl/composer-three'
@@ -74,11 +74,11 @@ class GL {
 
     this.camera.position.z = 500
 
-    if (!Viewport.isMobile) {
-      this.stats = new Stats()
+    // if (!Viewport.isMobile) {
+    //   this.stats = new Stats()
 
-      document.body.appendChild(this.stats.dom)
-    }
+    //   document.body.appendChild(this.stats.dom)
+    // }
 
     this.raycaster = new THREE.Raycaster()
 

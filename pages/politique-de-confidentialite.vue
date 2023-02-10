@@ -72,6 +72,11 @@ export default {
   z-index: 8;
   background-color: var(--c-grey);
 
+  td {
+    border: 1px solid var(--c-black);
+    padding: desktop-vw(15px) desktop-vw(20px);
+  }
+
   @include mobile {
     padding-top: mobile-vw(100px);
     padding-bottom: mobile-vw(60px);
