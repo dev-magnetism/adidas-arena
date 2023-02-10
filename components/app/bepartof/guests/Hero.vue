@@ -26,12 +26,12 @@ export default {
   },
   watch: {
     allLoadedFake() {
-      this.initInteriorView(2250)
+      this.initInteriorView(3000)
     },
   },
   mounted() {
     if (this.allLoadedFake) {
-      this.initInteriorView(850)
+      this.initInteriorView(875)
     }
 
     this.scrollTrigger = ScrollTrigger.create({

@@ -53,8 +53,8 @@ export default {
         z: -0.0115,
       },
       zoom: {
-        initial: 18,
-        current: 18,
+        initial: this.$viewport.isMobile ? 12 : 18,
+        current: this.$viewport.isMobile ? 12 : 18,
         range: {
           min: 5,
           max: 30,
@@ -87,7 +87,7 @@ export default {
       this.initExterior()
     },
     modelCloudLoaded() {
-      // this.initClouds()
+      this.initClouds()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -108,7 +108,7 @@ export default {
 
     if (this.allLoadedActual) {
       this.initExterior()
-      // this.initClouds()
+      this.initClouds()
       this.initGUI()
       this.resetView()
     }
@@ -126,7 +126,7 @@ export default {
     this.$raf.add(`webgl-exterior`, this.onFrame)
   },
   beforeDestroy() {
-    const { exterior, interactionManager } = useWebGL()
+    const { exterior } = useWebGL()
 
     this.cloud?.material?.dispose()
     this.cloud?.geometry?.dispose()
@@ -139,6 +139,7 @@ export default {
       }
     })
 
+    exterior.remove(this.hitbox)
     exterior.remove(this.floor)
     exterior.remove(this.cars)
     exterior.remove(this.trams)
@@ -176,12 +177,6 @@ export default {
     this.tweenArrowTranslate?.kill()
     this.tweenZoom?.kill()
 
-    // GLOBAL
-    this.adidasArena.removeEventListener('mouseenter', this.onMouseEnterArena)
-    this.adidasArena.removeEventListener('mouseleave', this.onMouseLeaveArena)
-    this.adidasArena.removeEventListener('click', this.onClickArena)
-    interactionManager.remove(this.adidasArena)
-
     this.observer?.kill()
     this.$viewport.events.off('resize', this.onResize)
     this.$nuxt.$off('reset:exterior', this.resetView)
@@ -216,31 +211,33 @@ export default {
       )
     },
     onFrame({ time, deltaTime, frame, deltaRatio }) {
-      if (!this.exteriorVisible || this.$viewport.isMobile) return
+      if (!this.exteriorVisible) return
 
       const { exterior, raycaster } = useWebGL()
 
-      const intersects = raycaster.intersectObject(
-        this.adidasArena.basicObjectRaycast,
-        false
-      )
+      if (
+        this.adidasArena?.basicObjectRaycast &&
+        this.exteriorFullwidth
+        // add !this.zoneFocusEnabled to disable intersect when a zone is selected
+      ) {
+        const intersects = raycaster.intersectObject(
+          this.adidasArena.basicObjectRaycast,
+          false
+        )
 
-      if (intersects.length) {
-        // console.log(intersects)
-        intersects.forEach((el) => {
-          console.log(el.object.name, el.object.parent.name)
-        })
-        if (!this.currentIntersect) {
-          console.log('mouse enter')
+        if (intersects.length) {
+          if (!this.currentIntersect) {
+            this.onMouseEnterArena()
+          }
+
+          this.currentIntersect = intersects[0]
+        } else {
+          if (this.currentIntersect) {
+            this.onMouseLeaveArena()
+          }
+
+          this.currentIntersect = null
         }
-
-        this.currentIntersect = intersects[0]
-      } else {
-        if (this.currentIntersect) {
-          console.log('mouse leave')
-        }
-
-        this.currentIntersect = null
       }
 
       this.clouds?.children?.forEach((cloud) => {
@@ -317,16 +314,8 @@ export default {
       this.initCars()
       this.initTrams()
       this.initArrow()
+    },
 
-      this.initEvents()
-    },
-    initEvents() {
-      const { interactionManager } = useWebGL()
-      interactionManager.add(this.adidasArena)
-      this.adidasArena.addEventListener('click', this.onClickArena)
-      this.adidasArena.addEventListener('mouseenter', this.onMouseEnterArena)
-      this.adidasArena.addEventListener('mouseleave', this.onMouseLeaveArena)
-    },
     onClickArena() {
       // if (!this.exteriorFullwidth || !this.exteriorVisible) return
       // console.log('clickedd', this.exteriorFullwidth)
@@ -357,7 +346,7 @@ export default {
     onMouseEnterArena() {
       if (!this.exteriorFullwidth || !this.exteriorVisible) return
 
-      document.documentElement.style.cursor = 'pointer'
+      this.setCursorState('hover')
 
       this.tweenArrowTranslate?.timeScale(2.5)
       this.setExteriorArenaHovered(true)
@@ -365,7 +354,7 @@ export default {
     onMouseLeaveArena() {
       if (!this.exteriorFullwidth || !this.exteriorVisible) return
 
-      document.documentElement.style.cursor = 'initial'
+      this.setCursorState('hide')
 
       this.tweenArrowTranslate?.timeScale(1)
       this.setExteriorArenaHovered(false)
@@ -699,28 +688,27 @@ export default {
       const edgeAdidasArena = this.edgeObject(adidasArena)
       const conditionalAdidasArena = this.conditionalObject(adidasArena)
 
-      this.adidasArena.basicObjectRaycast = adidasArena
       this.adidasArena.add(adidasArena)
       this.adidasArena.add(edgeAdidasArena)
       this.adidasArena.add(conditionalAdidasArena)
 
-      const test = new THREE.Box3().setFromObject(this.adidasArena)
+      const bounding = new THREE.Box3().setFromObject(this.adidasArena)
 
-      const geometry = new THREE.PlaneGeometry(1, 1)
-      const material = new THREE.MeshBasicMaterial({
-        color: 0xffff00,
-        side: THREE.DoubleSide,
-      })
-      const plane = new THREE.Mesh(geometry, material)
+      const geometry = new THREE.BoxGeometry(1, 1, 1)
+      const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+      this.hitbox = new THREE.Mesh(geometry, material)
+      this.hitbox.visible = false
 
-      const widthBox = Math.abs(test.min.x - test.max.x)
-      const heightBox = Math.abs(test.min.z - test.max.z)
+      const widthBox = Math.abs(bounding.min.x - bounding.max.x)
+      const heightBox = Math.abs(bounding.min.y - bounding.max.y)
+      const depthBox = Math.abs(bounding.min.z - bounding.max.z)
 
-      plane.scale.set(widthBox, heightBox, 1)
-      plane.rotation.set(THREE.MathUtils.degToRad(90), 0, 0)
-      plane.position.x = -5
-      plane.position.y = test.min.y
-      this.adidasArena.add(plane)
+      this.hitbox.scale.set(widthBox, heightBox, depthBox)
+      this.hitbox.position.x = -4
+      this.hitbox.position.y = heightBox / 2
+
+      this.adidasArena.basicObjectRaycast = this.hitbox
+      this.adidasArena.add(this.hitbox)
     },
     edgeObject(object) {
       const mergedGeom = object.geometry
@@ -1021,6 +1009,7 @@ export default {
     ...mapMutations({
       setExteriorArenaHovered: 'setExteriorArenaHovered',
       setExteriorVisible: 'setExteriorVisible',
+      setCursorState: 'setCursorState',
     }),
     lerp(p1, p2, t) {
       return p1 + (p2 - p1) * t

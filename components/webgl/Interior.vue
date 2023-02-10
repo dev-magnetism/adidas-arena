@@ -280,7 +280,9 @@ export default {
 
       this.drag.target = 0
 
-      camera.zoom = this.currentFloor.content.camera_zoom || this.zoom.current
+      camera.zoom = this.$viewport.isMobile
+        ? this.currentFloor.content.camera_zoom_mobile
+        : this.currentFloor.content.camera_zoom || this.zoom.current
       camera.updateProjectionMatrix()
 
       this.floors.forEach((floor, index) => {
@@ -338,9 +340,10 @@ export default {
       const coef = Math.abs(this.interiorIndexFloor.id - oldVal.id)
 
       this.tweenCamera = gsap.to(camera, {
-        zoom:
-          this.floors[this.interiorIndexFloor.id].content.camera_zoom ||
-          this.zoom.initial,
+        zoom: this.$viewport.isMobile
+          ? this.floors[this.interiorIndexFloor.id].content.camera_zoom_mobile
+          : this.floors[this.interiorIndexFloor.id].content.camera_zoom ||
+            this.zoom.initial,
         onUpdate: () => {
           camera.updateProjectionMatrix()
         },
@@ -719,7 +722,9 @@ export default {
       camera.position.copy(cameraSelected.position)
       camera.rotation.copy(cameraSelected.rotation)
 
-      camera.zoom = zoneSelected.content.camera_zoom
+      camera.zoom = this.$viewport.isMobile
+        ? zoneSelected.content.camera_zoom_mobile
+        : zoneSelected.content.camera_zoom
 
       camera.updateProjectionMatrix()
 
@@ -1292,7 +1297,9 @@ export default {
         ...params,
       })
       gsap.to(camera, {
-        zoom: zone.content.camera_zoom,
+        zoom: this.$viewport.isMobile
+          ? zone.content.camera_zoom_mobile
+          : zone.content.camera_zoom,
         ...params,
         onUpdate: () => {
           camera.updateProjectionMatrix()
@@ -1364,7 +1371,9 @@ export default {
       if (!forceUnfocus) {
         gsap.to(camera, {
           duration: 1,
-          zoom: this.currentFloor.content.camera_zoom || this.zoom.initial,
+          zoom: this.$viewport.isMobile
+            ? this.currentFloor.content.camera_zoom_mobile
+            : this.currentFloor.content.camera_zoom || this.zoom.initial,
           ...params,
           onUpdate: () => {
             camera.updateProjectionMatrix()
@@ -1467,7 +1476,6 @@ export default {
         !this.zoneFocusEnabled &&
         !this.dragInProgress &&
         !this.interiorTimelineFloorsInProgress
-        // add !this.zoneFocusEnabled to disable intersect when a zone is selected
       ) {
         const intersects = raycaster.intersectObjects(
           this.currentFloor?.basicObjectRaycast,
@@ -1539,6 +1547,7 @@ export default {
 
       const group = new THREE.Group()
       group.position.copy(arene.position)
+      group.updateMatrixWorld()
       group.name = `floor-${indexFloor}`
       group.content = { ...this.interiorContent[indexFloor] }
       group.public = []
@@ -1560,6 +1569,18 @@ export default {
         group.materials
       )
       group.add(...basicMeshes)
+
+      group.position.y += indexFloor * 0.05
+      group.initialPosition = group.position.clone()
+
+      const { min, max } = new THREE.Box3().setFromObject(group)
+
+      const height = max.y - min.y
+
+      clippingPlane.constant = min.y * -1 + 0.05
+
+      group.hidePosition = group.position.clone()
+      group.hidePosition.y = height * -2
 
       specialObjects.forEach((obj) => {
         obj.isBasicObject = false
@@ -1594,10 +1615,10 @@ export default {
         part.add(...meshes)
         part.position.y += 0.05
 
-        const { min, max } = new THREE.Box3().setFromObject(part)
+        const bounding = new THREE.Box3().setFromObject(part)
 
-        part.min = min
-        part.max = max
+        part.min = bounding.min
+        part.max = bounding.max
 
         if (part.name.includes('VIP')) {
           group.vip.push(part)
@@ -1610,20 +1631,9 @@ export default {
         group.add(part)
       })
 
-      group.position.y += indexFloor * 0.05
-      group.initialPosition = group.position.clone()
-
-      const { min, max } = new THREE.Box3().setFromObject(group)
-
-      const height = max.y - min.y
-
-      clippingPlane.constant = min.y * -1 + 0.05
-
-      group.hidePosition = group.position.clone()
-      group.hidePosition.y = height * -2
-
       return group
     },
+
     parseFloor(object) {
       const basicObject = new THREE.Group()
       basicObject.isBasicObject = true
@@ -1715,7 +1725,7 @@ export default {
       const mergedGeometry = mergeVertices(mergedGeometries)
 
       const mesh = new THREE.Mesh(mergedGeometry)
-
+      mesh.updateMatrixWorld()
       mesh.castShadow = true
       mesh.receiveShadow = true
 

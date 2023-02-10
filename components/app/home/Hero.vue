@@ -232,7 +232,7 @@ export default {
 
       const { exterior } = useWebGL()
 
-      exterior.drag.enabled = false
+      exterior.drag.enabled = this.$viewport.isMobile
 
       this.$nuxt.$emit('reset:exterior')
     },
@@ -652,9 +652,9 @@ export default {
   padding-bottom: desktop-vw(40px);
   position: relative;
 
-  &.open {
+  &:not(.open) {
     .app-home-hero__view-exterior {
-      cursor: initial;
+      cursor: pointer;
     }
   }
 
@@ -770,7 +770,6 @@ export default {
     max-height: calc(85vh - desktop-vw(80px));
     transform-origin: right bottom;
     will-change: transform, width, height;
-    cursor: pointer;
 
     @include mobile {
       grid-column: 1 / span 6;

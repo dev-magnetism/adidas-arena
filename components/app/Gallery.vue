@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { InteractionManager } from 'three.interactive'
+// import { InteractionManager } from 'three.interactive'
 
 import { Observer } from 'gsap/Observer'
 

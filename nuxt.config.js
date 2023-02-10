@@ -3,6 +3,9 @@ import webpack from 'webpack'
 export default {
   target: 'static',
   head: {
+    htmlAttrs: {
+      lang: 'fr',
+    },
     meta: [
       { charset: 'utf-8' },
       {

@@ -1,6 +1,4 @@
 import Stats from 'stats.js'
-import { InteractionManager } from 'three.interactive'
-// import { InteractionManager } from '~/assets/js/webgl/InteractiveMouse'
 import Raf from '~/plugins/raf'
 import Viewport from '~/plugins/viewport'
 // import Composer from '~/assets/webgl/composer-three'
@@ -82,14 +80,7 @@ class GL {
       document.body.appendChild(this.stats.dom)
     }
 
-    this.interactionManager = new InteractionManager(
-      this.renderer,
-      this.camera,
-      document.getElementById('__nuxt')
-    )
-
     this.raycaster = new THREE.Raycaster()
-    console.log(this.raycaster)
 
     this.mouse = new THREE.Vector2()
 
@@ -182,8 +173,6 @@ class GL {
     this.stats?.begin()
 
     this.raycaster?.setFromCamera(this.mouse, this.camera)
-
-    this.interactionManager?.update()
 
     this.renderer?.render(this.scene, this.camera)
 
