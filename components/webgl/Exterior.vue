@@ -148,6 +148,7 @@ export default {
     exterior.remove(this.arrow)
     exterior.remove(this.logoArena)
     exterior.remove(this.staticObjects)
+    exterior.remove(this.staticObjectsConditionalRender)
 
     // MATERIAL
     this.shadowMaterial?.dispose()
@@ -308,6 +309,7 @@ export default {
       this.initLights()
 
       this.initStaticObjects()
+      this.initStaticObjectsConditionalRender()
       this.initFloor()
       this.initAdidasArena()
       this.initLogoArena()
@@ -394,6 +396,7 @@ export default {
       this.conditionalMaterial = new THREE.ShaderMaterial(
         ConditionalEdgesShader
       )
+      this.conditionalMaterial.clipping = false
       this.conditionalMaterial.uniforms.diffuse.value.set(
         this.colors.outlineColor
       )
@@ -413,14 +416,14 @@ export default {
       this.gltfCloud = loaderManager.getModel('cloud').scene
 
       const cloud = this.mergeObject(this.gltfCloud)
-      const edgeCloud = this.edgeObject(cloud)
+      // const edgeCloud = this.edgeObject(cloud)
       const conditionalCloud = this.conditionalObject(cloud)
 
       this.cloud = new THREE.Group()
       this.cloud.name = 'cloud'
 
       this.cloud.add(cloud)
-      this.cloud.add(edgeCloud)
+      // this.cloud.add(edgeCloud)
       this.cloud.add(conditionalCloud)
 
       const planesGroup = this.gltfExterior.getObjectByName('Plane')
@@ -510,11 +513,9 @@ export default {
       arrow.receiveShadow = true
 
       const edgeArrow = this.edgeObject(arrow)
-      const conditionalArrow = this.conditionalObject(arrow)
 
       this.arrow.add(arrow)
       this.arrow.add(edgeArrow)
-      this.arrow.add(conditionalArrow)
 
       this.tweenArrowTranslate = gsap.to(this.arrow.position, {
         y: 2,
@@ -556,11 +557,9 @@ export default {
 
       const tram = this.mergeObject(tramObject)
       const edgeTram = this.edgeObject(tram)
-      const conditionalTram = this.conditionalObject(tram)
 
       tramGroup.add(tram)
       tramGroup.add(edgeTram)
-      tramGroup.add(conditionalTram)
 
       tramGroup.position.copy(tramGroup.startPosition)
 
@@ -599,11 +598,11 @@ export default {
         .sub(carObject.position)
 
       const car = this.mergeObject(carObject)
-      const edgeCar = this.edgeObject(car)
+      // const edgeCar = this.edgeObject(car)
       const conditionalCar = this.conditionalObject(car)
 
       carGroup.add(car)
-      carGroup.add(edgeCar)
+      // carGroup.add(edgeCar)
       carGroup.add(conditionalCar)
 
       carGroup.position.copy(carGroup.startPosition)
@@ -622,15 +621,6 @@ export default {
       const buildings = this.gltfExterior.getObjectByName('Buildings')
       group.add(buildings.clone())
 
-      const lamps = this.gltfExterior.getObjectByName('Lamps')
-      group.add(lamps.clone())
-
-      const trees = this.gltfExterior.getObjectByName('Trees')
-      group.add(trees.clone())
-
-      const footField = this.gltfExterior.getObjectByName('FootField')
-      group.add(footField.clone())
-
       const tramStructure = this.gltfExterior.getObjectByName('Tram_2')
       group.add(tramStructure.clone())
 
@@ -642,11 +632,36 @@ export default {
 
       const model = this.mergeObject(group)
       const edge = this.edgeObject(model)
-      const conditional = this.conditionalObject(model)
 
       this.staticObjects.add(model)
       this.staticObjects.add(edge)
-      this.staticObjects.add(conditional)
+    },
+    initStaticObjectsConditionalRender() {
+      const { exterior } = useWebGL()
+
+      this.staticObjectsConditionalRender = new THREE.Group()
+      this.staticObjectsConditionalRender.name =
+        'staticObjectsConditionalRender'
+      exterior.add(this.staticObjectsConditionalRender)
+
+      const group = new THREE.Group()
+
+      const lamps = this.gltfExterior.getObjectByName('Lamps')
+      group.add(lamps.clone())
+
+      const trees = this.gltfExterior.getObjectByName('Trees')
+      group.add(trees.clone())
+
+      const footField = this.gltfExterior.getObjectByName('FootField')
+      group.add(footField.clone())
+
+      const model = this.mergeObject(group)
+      // const edge = this.edgeObject(model)
+      const conditional = this.conditionalObject(model)
+
+      this.staticObjectsConditionalRender.add(model)
+      // this.staticObjectsConditionalRender.add(edge)
+      this.staticObjectsConditionalRender.add(conditional)
     },
     initFloor() {
       const { exterior } = useWebGL()
@@ -682,11 +697,11 @@ export default {
       const adidasArenaGroup = this.gltfExterior.getObjectByName('Arena_00')
 
       const adidasArena = this.mergeObject(adidasArenaGroup)
-      const edgeAdidasArena = this.edgeObject(adidasArena)
+      // const edgeAdidasArena = this.edgeObject(adidasArena)
       const conditionalAdidasArena = this.conditionalObject(adidasArena)
 
       this.adidasArena.add(adidasArena)
-      this.adidasArena.add(edgeAdidasArena)
+      // this.adidasArena.add(edgeAdidasArena)
       this.adidasArena.add(conditionalAdidasArena)
 
       const bounding = new THREE.Box3().setFromObject(this.adidasArena)
