@@ -405,6 +405,7 @@ export default {
         color: this.colors.outlineColor,
         linewidth: 1,
       })
+      this.lineMaterial.fog = false
     },
     initClouds() {
       const { exterior } = useWebGL()
@@ -465,14 +466,11 @@ export default {
         this.colors.directionalLightColor,
         1
       )
-      // this.directionalLight.castShadow = true
+      this.directionalLight.castShadow = true
       this.directionalLight.position.set(-100, 150, 300)
 
       this.directionalLight.shadow.mapSize.width = 1024 // 4096
       this.directionalLight.shadow.mapSize.height = 1024 // 4096
-
-      // console.log(this.directionalLight.shadow.mapSize.width)
-      // console.log(this.directionalLight.shadow.mapSize.height)
 
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
@@ -656,11 +654,13 @@ export default {
       group.add(footField.clone())
 
       const model = this.mergeObject(group)
-      // const edge = this.edgeObject(model)
+      const edge = this.edgeObject(model)
       const conditional = this.conditionalObject(model)
 
+      console.log(model, edge, conditional)
+
       this.staticObjectsConditionalRender.add(model)
-      // this.staticObjectsConditionalRender.add(edge)
+      this.staticObjectsConditionalRender.add(edge)
       this.staticObjectsConditionalRender.add(conditional)
     },
     initFloor() {
@@ -697,11 +697,11 @@ export default {
       const adidasArenaGroup = this.gltfExterior.getObjectByName('Arena_00')
 
       const adidasArena = this.mergeObject(adidasArenaGroup)
-      // const edgeAdidasArena = this.edgeObject(adidasArena)
+      const edgeAdidasArena = this.edgeObject(adidasArena)
       const conditionalAdidasArena = this.conditionalObject(adidasArena)
 
       this.adidasArena.add(adidasArena)
-      // this.adidasArena.add(edgeAdidasArena)
+      this.adidasArena.add(edgeAdidasArena)
       this.adidasArena.add(conditionalAdidasArena)
 
       const bounding = new THREE.Box3().setFromObject(this.adidasArena)

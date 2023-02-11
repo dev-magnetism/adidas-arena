@@ -50,11 +50,11 @@ class GL {
 
     this.renderer.physicallyCorrectLights = true
     this.renderer.shadowMap.enabled = true
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
-    // THREE.BasicShadowMap
-    // THREE.PCFShadowMap (default)
-    // THREE.PCFSoftShadowMap (best)
-    // THREE.VSMShadowMap
+    this.renderer.shadowMap.type = THREE.BasicShadowMap
+    // THREE.BasicShadowMap (Very performant but lousy quality)
+    // THREE.PCFShadowMap (default) (Less performant but smoother edges)
+    // THREE.PCFSoftShadowMap (best) (Less performant but even softer edges)
+    // THREE.VSMShadowMap (Less performant, more constraints, can have unexpected results)
 
     // this.renderer.outputEncoding = THREE.sRGBEncoding
     // this.renderer.toneMapping = THREE.LinearToneMapping
