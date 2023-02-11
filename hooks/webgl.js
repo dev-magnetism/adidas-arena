@@ -24,11 +24,11 @@ class GL {
     this.scene.add(this.gallery)
 
     this.renderer = new THREE.WebGLRenderer({
-      // powerPreference: 'high-performance',
-      // antialias: window.devicePixelRatio !== 2,
-      // stencil: true,
-      // precision: 'highp',
-      // alpha: true,
+      powerPreference: 'high-performance',
+      antialias: window.devicePixelRatio !== 2,
+      stencil: true,
+      precision: 'highp',
+      alpha: true,
     })
     this.renderer.localClippingEnabled = true
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))

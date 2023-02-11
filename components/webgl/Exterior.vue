@@ -414,14 +414,14 @@ export default {
 
       const cloud = this.mergeObject(this.gltfCloud)
       const edgeCloud = this.edgeObject(cloud)
-      // const conditionalCloud = this.conditionalObject(cloud)
+      const conditionalCloud = this.conditionalObject(cloud)
 
       this.cloud = new THREE.Group()
       this.cloud.name = 'cloud'
 
       this.cloud.add(cloud)
       this.cloud.add(edgeCloud)
-      // this.cloud.add(conditionalCloud)
+      this.cloud.add(conditionalCloud)
 
       const planesGroup = this.gltfExterior.getObjectByName('Plane')
 
@@ -506,15 +506,15 @@ export default {
       const arrow = this.mergeObject(arrowGroup)
       arrow.material = this.arrowMaterial
       arrow.material.flatShading = true
-      // arrow.castShadow = true
-      // arrow.receiveShadow = true
+      arrow.castShadow = true
+      arrow.receiveShadow = true
 
       const edgeArrow = this.edgeObject(arrow)
-      // const conditionalArrow = this.conditionalObject(arrow)
+      const conditionalArrow = this.conditionalObject(arrow)
 
       this.arrow.add(arrow)
       this.arrow.add(edgeArrow)
-      // this.arrow.add(conditionalArrow)
+      this.arrow.add(conditionalArrow)
 
       this.tweenArrowTranslate = gsap.to(this.arrow.position, {
         y: 2,
@@ -556,11 +556,11 @@ export default {
 
       const tram = this.mergeObject(tramObject)
       const edgeTram = this.edgeObject(tram)
-      // const conditionalTram = this.conditionalObject(tram)
+      const conditionalTram = this.conditionalObject(tram)
 
       tramGroup.add(tram)
       tramGroup.add(edgeTram)
-      // tramGroup.add(conditionalTram)
+      tramGroup.add(conditionalTram)
 
       tramGroup.position.copy(tramGroup.startPosition)
 
@@ -600,11 +600,11 @@ export default {
 
       const car = this.mergeObject(carObject)
       const edgeCar = this.edgeObject(car)
-      // const conditionalCar = this.conditionalObject(car)
+      const conditionalCar = this.conditionalObject(car)
 
       carGroup.add(car)
       carGroup.add(edgeCar)
-      // carGroup.add(conditionalCar)
+      carGroup.add(conditionalCar)
 
       carGroup.position.copy(carGroup.startPosition)
 
@@ -642,11 +642,11 @@ export default {
 
       const model = this.mergeObject(group)
       const edge = this.edgeObject(model)
-      // const conditional = this.conditionalObject(model)
+      const conditional = this.conditionalObject(model)
 
       this.staticObjects.add(model)
       this.staticObjects.add(edge)
-      // this.staticObjects.add(conditional)
+      this.staticObjects.add(conditional)
     },
     initFloor() {
       const { exterior } = useWebGL()
@@ -683,11 +683,11 @@ export default {
 
       const adidasArena = this.mergeObject(adidasArenaGroup)
       const edgeAdidasArena = this.edgeObject(adidasArena)
-      // const conditionalAdidasArena = this.conditionalObject(adidasArena)
+      const conditionalAdidasArena = this.conditionalObject(adidasArena)
 
       this.adidasArena.add(adidasArena)
       this.adidasArena.add(edgeAdidasArena)
-      // this.adidasArena.add(conditionalAdidasArena)
+      this.adidasArena.add(conditionalAdidasArena)
 
       const bounding = new THREE.Box3().setFromObject(this.adidasArena)
 
@@ -769,12 +769,11 @@ export default {
 
       const mesh = new THREE.Mesh(mergedGeometry)
 
-      // mesh.castShadow = true
-      // mesh.receiveShadow = true
+      mesh.castShadow = true
+      mesh.receiveShadow = true
 
       mesh.name = 'model'
       mesh.material = this.modelMaterial
-
       mesh.material.polygonOffset = true
       mesh.material.polygonOffsetFactor = this.polygonOffsetFactor
       mesh.material.polygonOffsetUnits = this.polygonOffsetUnits
