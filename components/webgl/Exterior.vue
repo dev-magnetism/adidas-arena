@@ -462,7 +462,7 @@ export default {
         this.colors.directionalLightColor,
         1
       )
-      this.directionalLight.castShadow = true
+      // this.directionalLight.castShadow = true
       this.directionalLight.position.set(-100, 150, 300)
 
       this.directionalLight.shadow.mapSize.width = 1024 // 4096
@@ -506,8 +506,8 @@ export default {
       const arrow = this.mergeObject(arrowGroup)
       arrow.material = this.arrowMaterial
       arrow.material.flatShading = true
-      arrow.castShadow = true
-      arrow.receiveShadow = true
+      // arrow.castShadow = true
+      // arrow.receiveShadow = true
 
       const edgeArrow = this.edgeObject(arrow)
       const conditionalArrow = this.conditionalObject(arrow)
@@ -769,8 +769,8 @@ export default {
 
       const mesh = new THREE.Mesh(mergedGeometry)
 
-      mesh.castShadow = true
-      mesh.receiveShadow = true
+      // mesh.castShadow = true
+      // mesh.receiveShadow = true
 
       mesh.name = 'model'
       mesh.material = this.modelMaterial
