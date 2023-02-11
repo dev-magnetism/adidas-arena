@@ -16,6 +16,7 @@ const viewport = new Vue({
       isTablet: null,
       isLandscape: null,
       isDesktop: null,
+      isFirefox: navigator.userAgent.toLowerCase().includes('firefox'),
     }
   },
   created() {

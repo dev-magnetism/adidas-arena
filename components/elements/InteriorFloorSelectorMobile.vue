@@ -2,6 +2,7 @@
   <div
     :class="{ hide: interiorCurrentZoneName && $viewport.isMobile }"
     class="app-element-floor-selector-mobile"
+    @click.stop="() => {}"
   >
     <div class="app-element-floor-selector-mobile__wrapper">
       <div

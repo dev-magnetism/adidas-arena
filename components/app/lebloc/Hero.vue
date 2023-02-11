@@ -4,7 +4,7 @@
       <AtomsCornerPoints :size-points="$viewport.isMobile ? 6 : 12" />
       <EInteriorZoneInformation />
       <EInteriorInformations />
-      <EFloorSelectorMobile />
+      <EInteriorFloorSelectorMobile />
       <EScrollIndicator @click.native="scrollHero()" />
     </div>
   </div>

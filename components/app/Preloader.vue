@@ -61,6 +61,8 @@ export default {
     videoLoaded(payload) {
       if (!payload) return
 
+      console.log('videoLoaded')
+
       this.loadModels()
     },
   },
@@ -105,10 +107,12 @@ export default {
             this.$refs.video.pause()
             this.$refs.video.currentTime = 0
 
-            this.$refs.video.removeEventListener(
-              'canplaythrough',
-              this.onVideoLoaded
-            )
+            if (!this.$viewport.isFirefox) {
+              this.$refs.video.removeEventListener(
+                'canplaythrough',
+                this.onVideoLoaded
+              )
+            }
 
             this.setInitialHeroDisplayed(true)
             this.hideInner = true
@@ -117,6 +121,7 @@ export default {
         })
     },
     onVideoLoaded() {
+      console.log('onVideoLoaded')
       this.videoLoaded = true
     },
     loadFonts() {
@@ -141,10 +146,21 @@ export default {
 
       Promise.all(observers)
         .then((fonts) => {
-          this.$refs.video.addEventListener(
-            'canplaythrough',
-            this.onVideoLoaded
+          console.log(
+            this.$refs.video,
+            this.$refs.video.readyState,
+            this.$viewport.isFirefox
           )
+
+          if (this.$viewport.isFirefox && this.$refs.video.readyState > 3) {
+            this.onVideoLoaded()
+          } else {
+            this.$refs.video.addEventListener(
+              'canplaythrough',
+              this.onVideoLoaded
+            )
+          }
+
           this.setFontsLoaded(true)
           ScrollTrigger.refresh()
         })

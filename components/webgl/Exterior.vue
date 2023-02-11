@@ -87,7 +87,7 @@ export default {
       this.initExterior()
     },
     modelCloudLoaded() {
-      this.initClouds()
+      // this.initClouds()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -108,7 +108,7 @@ export default {
 
     if (this.allLoadedActual) {
       this.initExterior()
-      this.initClouds()
+      // this.initClouds()
       this.initGUI()
       this.resetView()
     }
@@ -311,7 +311,7 @@ export default {
       this.initFloor()
       this.initAdidasArena()
       this.initLogoArena()
-      this.initCars()
+      // this.initCars()
       this.initTrams()
       this.initArrow()
     },
@@ -465,10 +465,8 @@ export default {
       this.directionalLight.castShadow = true
       this.directionalLight.position.set(-100, 150, 300)
 
-      this.directionalLight.shadow.mapSize.width =
-        window.devicePixelRatio !== 2 ? 1024 : 1024 // 4096
-      this.directionalLight.shadow.mapSize.height =
-        window.devicePixelRatio !== 2 ? 1024 : 1024 // 4096
+      this.directionalLight.shadow.mapSize.width = 1024 // 4096
+      this.directionalLight.shadow.mapSize.height = 1024 // 4096
 
       // console.log(this.directionalLight.shadow.mapSize.width)
       // console.log(this.directionalLight.shadow.mapSize.height)
@@ -507,6 +505,7 @@ export default {
 
       const arrow = this.mergeObject(arrowGroup)
       arrow.material = this.arrowMaterial
+      arrow.material.flatShading = true
       arrow.castShadow = true
       arrow.receiveShadow = true
 
@@ -523,8 +522,6 @@ export default {
         yoyo: true,
         duration: 1,
       })
-
-      arrow.material.flatShading = true
     },
     initTrams() {
       const { exterior } = useWebGL()

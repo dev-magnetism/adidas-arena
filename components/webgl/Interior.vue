@@ -187,6 +187,7 @@ export default {
     interior.remove(this.footField)
     interior.remove(this.musicScene)
     interior.remove(this.terrain)
+    interior.remove(this.arrow)
 
     interior.remove(this.zeroFloor)
     interior.remove(this.firstFloor)
@@ -811,6 +812,7 @@ export default {
       this.initSecondFloor()
       this.initThirdFloor()
       this.initFourthFloor()
+      this.initArrow()
 
       this.initGUI()
 
@@ -831,6 +833,45 @@ export default {
       // })
 
       // this.handleImmediateTransition()
+    },
+    initArrow() {
+      const { interior } = useWebGL()
+
+      this.arrow = new THREE.Group()
+      this.arrow.name = 'arrow'
+      interior.add(this.arrow)
+
+      const arrowGroup = this.model.getObjectByName('Arrow')
+      arrowGroup.scale.y = -1
+
+      const arrowMaterial = new THREE.MeshLambertMaterial({
+        color: this.colors.arrowColor,
+        emissive: this.colors.arrowColor,
+        emissiveIntensity: this.colors.emissiveIntensity,
+      })
+      const arrow = this.mergeObject(arrowGroup)
+
+      arrow.material = arrowMaterial
+      arrow.material.side = THREE.DoubleSide
+      arrow.material.flatShading = true
+      arrow.castShadow = true
+      arrow.receiveShadow = true
+
+      const edgeArrow = this.edgeObject(arrow)
+      const conditionalArrow = this.conditionalObject(arrow)
+
+      this.arrow.add(arrow)
+      this.arrow.add(edgeArrow)
+      this.arrow.add(conditionalArrow)
+
+      // this.tweenArrowTranslate = gsap.to(this.arrow.position, {
+      //   y: 2,
+      //   repeat: -1,
+      //   yoyo: true,
+      //   duration: 1,
+      // })
+
+      // this.arrow.material.flatShading = true
     },
     initLights() {
       const { interior } = useWebGL()
@@ -1062,6 +1103,7 @@ export default {
         ...polygonsParams,
       })
       this.basicMaterial.name = 'basicMaterial'
+      this.basicMaterial.side = THREE.DoubleSide
 
       this.conditionalMaterial = new THREE.ShaderMaterial(
         ConditionalEdgesShader
@@ -1084,6 +1126,7 @@ export default {
         ...polygonsParams,
       })
       this.publicMaterial.name = 'publicMaterial'
+      this.publicMaterial.side = THREE.DoubleSide
 
       this.vipMaterial = new THREE.MeshLambertMaterial({
         color: this.colors.vip.lambertMaterialColor,
@@ -1092,6 +1135,7 @@ export default {
         ...polygonsParams,
       })
       this.vipMaterial.name = 'vipMaterial'
+      this.vipMaterial.side = THREE.DoubleSide
     },
     initFootField() {
       const { interior } = useWebGL()
