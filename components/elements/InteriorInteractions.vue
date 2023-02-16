@@ -1,7 +1,7 @@
 <template>
   <div
     :class="{ hide: interiorCurrentZoneName && $viewport.isMobile }"
-    class="app-element-interior-informations"
+    class="app-element-interior-interactions"
   >
     <ELegendZones />
     <ESceneSelector />
@@ -22,7 +22,7 @@ export default {
 </script>
 
 <style lang="scss">
-.app-element-interior-informations {
+.app-element-interior-interactions {
   position: absolute;
   bottom: 20px;
   right: 20px;

@@ -15,6 +15,11 @@
       muted
       playsinline
     >
+      <source
+        src="/videos/preloader-mobile.mp4"
+        type="video/mp4"
+        media="(max-width:800px)"
+      />
       <source src="/videos/preloader.mp4" type="video/mp4" />
     </video>
 
@@ -60,8 +65,6 @@ export default {
   watch: {
     videoLoaded(payload) {
       if (!payload) return
-
-      console.log('videoLoaded')
 
       this.loadModels()
     },
@@ -121,7 +124,6 @@ export default {
         })
     },
     onVideoLoaded() {
-      console.log('onVideoLoaded')
       this.videoLoaded = true
     },
     loadFonts() {
@@ -146,12 +148,6 @@ export default {
 
       Promise.all(observers)
         .then((fonts) => {
-          console.log(
-            this.$refs.video,
-            this.$refs.video.readyState,
-            this.$viewport.isFirefox
-          )
-
           if (this.$viewport.isFirefox && this.$refs.video.readyState > 3) {
             this.onVideoLoaded()
           } else {
@@ -174,7 +170,7 @@ export default {
         onUpdate: () => {
           const progress = this.tlLoading.progress()
 
-          if (progress >= 0.925) this.setModelsPreviewed(true)
+          if (progress >= 0.95) this.setModelsPreviewed(true)
         },
         onComplete: () => {
           if (!this.allLoadedActual) return

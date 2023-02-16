@@ -2,8 +2,8 @@
   <div class="app-guests-hero">
     <div class="app-guests-hero__wrapper">
       <AtomsCornerPoints :size-points="12" />
-      <EInteriorZoneInformation />
-      <EInteriorInformations />
+      <EInteriorZoneInformations />
+      <EInteriorInteractions />
       <EInteriorFloorSelectorMobile />
       <EScrollIndicator @click.native="scrollHero()" />
     </div>

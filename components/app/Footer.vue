@@ -192,7 +192,7 @@ export default {
   mounted() {
     this.scrollTrigger = ScrollTrigger.create({
       trigger: this.$el,
-      start: 'top-=10% top',
+      start: 'top-=7.5% top',
       onToggle: (self) => this.setHeaderWhite(self.isActive),
     })
 
@@ -237,10 +237,8 @@ export default {
         JSON.stringify([{ listname: 'newsletter', email: this.email, misc }])
       )
 
-      this.$cookies.set('aa-newsletter-hide', true, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7 * 4 * 2,
-      })
+      if (!localStorage.getItem('popin-newsletter'))
+        localStorage.setItem('popin-newsletter', true)
     },
     onMouseEnter() {
       if (!this.validateForm) return

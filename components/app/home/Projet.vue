@@ -644,7 +644,7 @@ export default {
 
   &__circle {
     position: absolute;
-    left: columns(5.5);
+    left: columns(5.65);
     top: desktop-vw(420px);
     width: desktop-vw(200px);
     transform: rotate(6deg);

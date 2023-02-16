@@ -70,6 +70,10 @@ export default {
       speedTrams: 0.00015,
       delayRepeatTrams: 2,
       currentIntersect: null,
+      speedClouds: [],
+      directionClouds: [],
+      matrix: new THREE.Matrix4(),
+      dummy: new THREE.Object3D(),
     }
   },
   computed: {
@@ -128,9 +132,6 @@ export default {
   beforeDestroy() {
     const { exterior } = useWebGL()
 
-    this.cloud?.material?.dispose()
-    this.cloud?.geometry?.dispose()
-
     exterior.traverse((item) => {
       if (item instanceof THREE.Mesh || item instanceof THREE.Line) {
         item.geometry?.dispose()
@@ -143,7 +144,8 @@ export default {
     exterior.remove(this.floor)
     exterior.remove(this.cars)
     exterior.remove(this.trams)
-    exterior.remove(this.clouds)
+    // exterior.remove(this.cloudsBasic)
+    // exterior.remove(this.cloudsEdge)
     exterior.remove(this.adidasArena)
     exterior.remove(this.arrow)
     exterior.remove(this.logoArena)
@@ -216,11 +218,7 @@ export default {
 
       const { exterior, raycaster } = useWebGL()
 
-      if (
-        this.adidasArena?.basicObjectRaycast &&
-        this.exteriorFullwidth
-        // add !this.zoneFocusEnabled to disable intersect when a zone is selected
-      ) {
+      if (this.adidasArena?.basicObjectRaycast && this.exteriorFullwidth) {
         const intersects = raycaster.intersectObject(
           this.adidasArena.basicObjectRaycast,
           false
@@ -241,11 +239,22 @@ export default {
         }
       }
 
-      this.clouds?.children?.forEach((cloud) => {
-        const z = cloud.direction
-          ? cloud.position.z - cloud.coefParallax * this.cloudsParams.speed
-          : cloud.position.z + cloud.coefParallax * this.cloudsParams.speed
-        cloud.position.z = gsap.utils.wrap(100, -100, z)
+      this.planesGroup?.children?.forEach((plane, index) => {
+        // this.cloudsBasic.getMatrixAt(index, this.matrix)
+        // this.matrix.decompose(
+        //   this.dummy.position,
+        //   this.dummy.quaternion,
+        //   this.dummy.scale
+        // )
+        // const positionZ = this.directionClouds[index]
+        //   ? this.dummy.position.z -
+        //     this.speedClouds[index] * this.cloudsParams.speed
+        //   : this.dummy.position.z +
+        //     this.speedClouds[index] * this.cloudsParams.speed
+        // this.dummy.position.z = gsap.utils.wrap(100, -100, positionZ)
+        // this.dummy.updateMatrix()
+        // this.cloudsBasic.setMatrixAt(index, this.dummy.matrix)
+        // this.cloudsBasic.instanceMatrix.needsUpdate = true
       })
 
       this.timeCars += deltaTime * this.speedCars
@@ -313,7 +322,7 @@ export default {
       this.initFloor()
       this.initAdidasArena()
       this.initLogoArena()
-      // this.initCars()
+      this.initCars()
       this.initTrams()
       this.initArrow()
     },
@@ -410,33 +419,44 @@ export default {
     initClouds() {
       const { exterior } = useWebGL()
 
-      this.clouds = new THREE.Group()
-      this.clouds.name = 'clouds'
-      exterior.add(this.clouds)
-
       this.gltfCloud = loaderManager.getModel('cloud').scene
+      this.planesGroup = this.gltfExterior.getObjectByName('Plane')
 
       const cloud = this.mergeObject(this.gltfCloud)
-      // const edgeCloud = this.edgeObject(cloud)
-      const conditionalCloud = this.conditionalObject(cloud)
+      const edgeCloud = this.edgeObject(cloud)
+      // const conditionalCloud = this.conditionalObject(cloud)
 
-      this.cloud = new THREE.Group()
-      this.cloud.name = 'cloud'
+      this.cloudsBasic = new THREE.InstancedMesh(
+        cloud.geometry,
+        this.modelMaterial,
+        this.planesGroup.children.length - 1
+      )
+      this.cloudsBasic.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
+      exterior.add(this.cloudsBasic)
 
-      this.cloud.add(cloud)
-      // this.cloud.add(edgeCloud)
-      this.cloud.add(conditionalCloud)
+      this.cloudsEdge = new THREE.InstancedMesh(
+        edgeCloud.geometry,
+        this.lineMaterial,
+        this.planesGroup.children.length - 1
+      )
+      this.cloudsEdge.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
+      exterior.add(this.cloudsEdge)
 
-      const planesGroup = this.gltfExterior.getObjectByName('Plane')
+      this.planesGroup.children.forEach((plane, index) => {
+        const randomParallax = this.genRand(1, 10, 2)
 
-      planesGroup.traverse((plane) => {
-        const object = this.cloud.clone()
-        object.coefParallax = this.genRand(1, 10, 2)
-        object.direction = Math.random() < 0.5
-        object.position.copy(plane.position)
-        object.initialPosition = object.position
+        this.speedClouds.push(randomParallax)
+        this.directionClouds.push(Math.random() < 0.5)
 
-        this.clouds.add(object)
+        this.dummy.position = plane.position.clone()
+        this.dummy.updateMatrix()
+
+        this.cloudsBasic.setMatrixAt(index, this.dummy.matrix)
+
+        this.dummy.position = plane.position.clone()
+        this.dummy.updateMatrix()
+
+        this.cloudsEdge.setMatrixAt(index, this.dummy.matrix)
       })
     },
     resetView() {
@@ -619,7 +639,7 @@ export default {
       const buildings = this.gltfExterior.getObjectByName('Buildings')
       group.add(buildings.clone())
 
-      const tramStructure = this.gltfExterior.getObjectByName('Tram_2')
+      const tramStructure = this.gltfExterior.getObjectByName('Tram_Structure')
       group.add(tramStructure.clone())
 
       const road = this.gltfExterior.getObjectByName('Road')
@@ -656,8 +676,6 @@ export default {
       const model = this.mergeObject(group)
       const edge = this.edgeObject(model)
       const conditional = this.conditionalObject(model)
-
-      console.log(model, edge, conditional)
 
       this.staticObjectsConditionalRender.add(model)
       this.staticObjectsConditionalRender.add(edge)
@@ -704,9 +722,10 @@ export default {
       this.adidasArena.add(edgeAdidasArena)
       this.adidasArena.add(conditionalAdidasArena)
 
-      const bounding = new THREE.Box3().setFromObject(this.adidasArena)
+      const bounding = new THREE.Box3().setFromObject(adidasArenaGroup)
 
       const geometry = new THREE.BoxGeometry(1, 1, 1)
+
       const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
       this.hitbox = new THREE.Mesh(geometry, material)
       this.hitbox.visible = false

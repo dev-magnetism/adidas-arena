@@ -7,6 +7,7 @@
       :src="src"
       format="webp"
       :alt="alt"
+      @load="onLoad"
     />
   </div>
 </template>
@@ -66,34 +67,38 @@ export default {
   },
   mounted() {
     this.offsetX = this.$viewport.width * 1.5 // 300vw en CSS
-    // this.initTexture()
-    document.addEventListener('click', this.onClickDocument)
   },
 
   beforeDestroy() {
-    this.mesh.removeEventListener('click', this.onClickPicture)
-    document.removeEventListener('click', this.onClickDocument)
-
-    this.$parent.interactionManager.remove(this.mesh)
-
     const { gallery } = useWebGL()
 
-    this.mesh.geometry.dispose()
-    this.mesh.material.dispose()
+    this.mesh?.geometry.dispose()
+    this.mesh?.material.dispose()
 
     gallery.remove(this.mesh)
   },
 
   methods: {
-    onClickDocument(e) {
-      if (!this.open) return
+    onLoad(e) {
+      this.currentSrc = e.currentTarget.currentSrc
 
-      setTimeout(() => {
-        this.open = false
-
-        e.stopPropagation()
-      }, 100)
+      this.initTexture()
     },
+    async initTexture() {
+      this.texture = await this.loadTexture(this.currentSrc)
+
+      this.initMesh()
+    },
+
+    // onClickDocument(e) {
+    //   if (!this.open) return
+
+    //   setTimeout(() => {
+    //     this.open = false
+
+    //     e.stopPropagation()
+    //   }, 100)
+    // },
     focusPicture() {
       this.$parent.pictureIsSelected = true
       this.$parent.pictureSelected = this
@@ -180,21 +185,6 @@ export default {
       this.$parent.pictureSelected = null
       this.$parent.indexPictureSelected = null
     },
-    async initTexture() {
-      this.currentSrc = this.$img(
-        this.$refs.picture.src,
-        {
-          format: 'webp',
-        },
-        {
-          provider: 'directus',
-        }
-      )
-
-      this.texture = await this.loadTexture(this.currentSrc)
-
-      this.initMesh()
-    },
     initMesh() {
       this.geometry = new THREE.PlaneGeometry(1, 1, 1)
 
@@ -206,7 +196,6 @@ export default {
           uMap: {
             value: this.texture,
           },
-
           uRatio: {
             value: new THREE.Vector2(0, 0),
           },
@@ -238,10 +227,6 @@ export default {
 
       gallery.add(this.mesh)
 
-      this.$parent.interactionManager.add(this.mesh)
-
-      this.mesh.addEventListener('click', this.onClickPicture)
-
       this.onResize()
 
       this.parallaxCoef = this.mesh.scale.x * 0.001 + this.mesh.scale.y * 0.001
@@ -262,31 +247,19 @@ export default {
     update({ scroll, velocity }) {
       if (!this.mesh) return
 
-      // const test = -297
-      // const testbis = 130.703125 + this.mesh.scale.x / 2
-
-      // const x = gsap.utils.wrap(
-      //   test - this.mesh.scale.x / 2, // left
-      //   testbis, // right
-      //   scroll.current + this.mesh.initialPosition.x
-      // )
-
       const x = gsap.utils.wrap(
-        -this.$viewport.width / 2 -
-          this.mesh.scale.x / 2 -
-          this.$viewport.width, // left
-        this.$viewport.width / 2 - this.mesh.scale.x / 2 + this.$viewport.width, // right
+        -this.$viewport.width / 2, // left
+        this.$viewport.width / 2, // right
         scroll.current + this.mesh.initialPosition.x
       )
 
       const position = new THREE.Vector3(
         x,
-        this.mesh.initialPosition?.y,
+        this.mesh.position?.y,
         this.mesh.position?.z
       )
 
-      this.mesh.material.uniforms.uVelocity.value = velocity
-
+      // this.mesh.material.uniforms.uVelocity.value = velocity
       this.mesh.position.copy(position).add(this.mesh._uOffset)
     },
     loadTexture(src) {

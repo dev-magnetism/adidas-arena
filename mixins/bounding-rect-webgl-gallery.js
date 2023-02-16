@@ -9,7 +9,6 @@ export default {
         xThree: null,
         yThree: null,
       },
-      meshReady: false,
     }
   },
   mounted() {
@@ -27,18 +26,20 @@ export default {
       const contentRect = entries
         ? entries[0].contentRect
         : this.$el.getBoundingClientRect()
+
       const el = entries ? entries[0].target : this.$el
 
       this.boundingRect.width = contentRect.width
       this.boundingRect.height = contentRect.height
 
       this.boundingRect.top = this.offsetTop(el)
-      this.boundingRect.left = this.offsetLeft(el, -this.$viewport.width)
+      this.boundingRect.left = this.offsetLeft(el, -this.$viewport.width * 1.5)
 
       this.updateBoundingRect()
     },
     offsetTop(element, accumulator = 0) {
       const top = accumulator + element.offsetTop
+
       if (element.offsetParent) {
         return this.offsetTop(element.offsetParent, top)
       }

@@ -109,14 +109,18 @@ export default {
   &.slider-hold {
     svg {
       transform: scale(0, 0);
+      transition-delay: 0.15s;
     }
 
     .app-cursor__inner {
       transform: translate(-50%, -50%) scale(0.7);
+      transition-delay: 0.15s;
     }
   }
 
   &.slider-disabled {
+    opacity: 0.75;
+
     svg {
       opacity: 0.5;
     }
@@ -127,7 +131,7 @@ export default {
   }
 
   &__inner {
-    transition: transform 0.4s var(--ease-out-expo);
+    transition: transform 0.5s var(--ease-out-expo);
     will-change: transform;
     width: desktop-vw(120px);
     height: desktop-vw(120px);
@@ -141,7 +145,7 @@ export default {
 
   svg {
     width: 40%;
-    transition: transform 0.65s var(--ease-out-expo);
+    transition: transform 0.6s var(--ease-out-expo);
     transform: scale(1, 1);
     will-change: transform;
   }

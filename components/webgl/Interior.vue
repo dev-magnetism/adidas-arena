@@ -52,7 +52,8 @@ export default {
           emissiveIntensityActive: 0.7,
         },
       },
-      azimuth: { min: -1.6, max: 0.6 },
+      azimuth: { min: -3.14, max: 3.14 },
+      // azimuth: { min: -1.6, max: 0.6 },
       drag: {
         ease: 0.04,
         current: 0,
@@ -67,7 +68,7 @@ export default {
         current: 15,
         range: {
           min: 5,
-          max: 30,
+          max: 50,
         },
       },
       thresholdAngle: 40,
@@ -207,6 +208,7 @@ export default {
     this.guiDrag?.dispose()
     this.guiZoom?.dispose()
     this.guiAmbientLight?.dispose()
+    this.guiDirectionalLight?.dispose()
     this.guiModelColors?.dispose()
     this.floorsGUI.forEach((gui) => {
       gui.dispose()
@@ -231,7 +233,8 @@ export default {
       if (
         e.key === 'Escape' &&
         this.zoneFocusEnabled &&
-        this.interiorCurrentZoneName
+        this.interiorCurrentZoneName &&
+        this.interiorVisible
       ) {
         this.unfocusZone()
       }
@@ -728,9 +731,12 @@ export default {
 
       const { camera } = useWebGL()
 
-      const cameraSelected = this.cameras.getObjectByName(
-        zoneSelected.content.name_camera
-      )
+      const cameraSelected =
+        this.$viewport.isMobile && zoneSelected.content.name_camera_mobile
+          ? this.cameras.getObjectByName(
+              zoneSelected.content.name_camera_mobile
+            )
+          : this.cameras.getObjectByName(zoneSelected.content.name_camera)
 
       camera.position.copy(cameraSelected.position)
       camera.rotation.copy(cameraSelected.rotation)
@@ -796,6 +802,7 @@ export default {
       const { interior } = useWebGL()
 
       this.gltf = loaderManager.getModel('interior')
+
       this.model = this.gltf.scene
 
       this.initCamera()
@@ -843,6 +850,7 @@ export default {
 
       const arrowGroup = this.model.getObjectByName('Arrow')
       arrowGroup.scale.y = -1
+      arrowGroup.position.set(0, 0, 0)
 
       const arrowMaterial = new THREE.MeshLambertMaterial({
         color: this.colors.arrowColor,
@@ -912,6 +920,60 @@ export default {
         z: { step: 1, max: 1000, min: -1000 },
         label: 'Position',
       })
+
+      this.guiDirectionalLight = this.gui.addFolder({
+        title: `Directional Light`,
+        expanded: false,
+      })
+
+      this.guiDirectionalLight.addInput(this.directionalLight, 'castShadow', {
+        label: 'Cast shadow',
+      })
+
+      this.guiDirectionalLight.addInput(this.directionalLight, 'position', {
+        x: { step: 1, max: 1000, min: -1000 },
+        y: { step: 1, max: 1000, min: -1000 },
+        z: { step: 1, max: 1000, min: -1000 },
+        label: 'Position',
+      })
+
+      this.guiDirectionalLight.addInput(this.directionalLight, 'color', {
+        color: { type: 'float' },
+        label: 'Color',
+      })
+
+      this.guiDirectionalLight.addInput(this.directionalLight, 'intensity', {
+        min: 0,
+        max: 2,
+        step: 0.01,
+        label: 'Intensity',
+      })
+
+      this.guiDirectionalLight
+        .addInput(this.directionalLight.shadow.camera, 'near', {
+          min: 0,
+          max: 1,
+          step: 0.01,
+          label: 'Near Shadow Camera',
+        })
+        .on('change', (e) => {
+          this.directionalLight.shadow.camera.near = e.value
+
+          this.directionalLight.shadow.camera.updateProjectionMatrix()
+        })
+
+      this.guiDirectionalLight
+        .addInput(this.directionalLight.shadow.camera, 'far', {
+          min: 0,
+          max: 1000,
+          step: 0.01,
+          label: 'Far Shadow Camera',
+        })
+        .on('change', (e) => {
+          this.directionalLight.shadow.camera.far = e.value
+
+          this.directionalLight.shadow.camera.updateProjectionMatrix()
+        })
 
       this.guiModelColors = this.gui.addFolder({
         title: `Colors`,
@@ -1161,7 +1223,7 @@ export default {
       this.musicScene.name = 'musicScene'
       interior.add(this.musicScene)
 
-      const musicSceneGroup = this.model.getObjectByName('Scene')
+      const musicSceneGroup = this.model.getObjectByName('Scene_Music')
 
       const musicScene = this.mergeObject(musicSceneGroup)
       const edgeMusicScene = this.edgeObject(musicScene)
@@ -1207,7 +1269,7 @@ export default {
 
       this.floor = new THREE.Group()
       this.floor.name = 'floor'
-      this.floor.position.y -= 0.05
+      this.floor.position.y -= 0.1
       interior.add(this.floor)
 
       const floorGroup = this.model.getObjectByName('Floor')
@@ -1224,7 +1286,7 @@ export default {
       const edgeFloor = this.edgeObject(floor)
       const conditionalFloor = this.conditionalObject(floor)
 
-      this.floor.add(floor)
+      // this.floor.add(floor)
       this.floor.add(shadowFloor)
       this.floor.add(edgeFloor)
       this.floor.add(conditionalFloor)
@@ -1331,9 +1393,10 @@ export default {
 
       this.setCursorState('hide')
 
-      const cameraSelected = this.cameras.getObjectByName(
-        zone.content.name_camera
-      )
+      const cameraSelected =
+        this.$viewport.isMobile && zone.content.name_camera_mobile
+          ? this.cameras.getObjectByName(zone.content.name_camera_mobile)
+          : this.cameras.getObjectByName(zone.content.name_camera)
 
       const params = {
         ease: 'power1.inOut',
@@ -1463,29 +1526,38 @@ export default {
       if (this.$viewport.isMobile) return
 
       this.setCursorState('hover')
-
       this.setInteriorCurrentZoneHovered(object.parent.name)
 
       const zone = object.parent.publicAccess ? 'public' : 'vip'
+
+      const { min, max } = new THREE.Box3().setFromObject(object)
+
+      console.log(min, max)
+
+      // const test = new THREE.Vector3()
+
+      this.arrow.position.copy(max)
+
+      // this.arrow.position.y += 4
 
       const params = {
         ease: 'power2.inOut',
         duration: 0.45,
       }
 
-      gsap.to(object.material.color, {
+      gsap.to(object.parent.normalObject.material.color, {
         r: this.colors[zone].lambertMaterialColorActive.r,
         g: this.colors[zone].lambertMaterialColorActive.g,
         b: this.colors[zone].lambertMaterialColorActive.b,
         ...params,
       })
-      gsap.to(object.material.emissive, {
+      gsap.to(object.parent.normalObject.material.emissive, {
         r: this.colors[zone].lambertMaterialColorActive.r,
         g: this.colors[zone].lambertMaterialColorActive.g,
         b: this.colors[zone].lambertMaterialColorActive.b,
         ...params,
       })
-      gsap.to(object.material, {
+      gsap.to(object.parent.normalObject.material, {
         emissiveIntensity: this.colors[zone].emissiveIntensityActive,
         ...params,
       })
@@ -1504,19 +1576,19 @@ export default {
 
       const zone = object.parent.publicAccess ? 'public' : 'vip'
 
-      gsap.to(object.material.color, {
+      gsap.to(object.parent.normalObject.material.color, {
         r: this.colors[zone].lambertMaterialColor.r,
         g: this.colors[zone].lambertMaterialColor.g,
         b: this.colors[zone].lambertMaterialColor.b,
         ...params,
       })
-      gsap.to(object.material.emissive, {
+      gsap.to(object.parent.normalObject.material.emissive, {
         r: this.colors[zone].lambertMaterialEmissive.r,
         g: this.colors[zone].lambertMaterialEmissive.g,
         b: this.colors[zone].lambertMaterialEmissive.b,
         ...params,
       })
-      gsap.to(object.material, {
+      gsap.to(object.parent.normalObject.material, {
         emissiveIntensity: this.colors[zone].emissiveIntensity,
         ...params,
       })
@@ -1619,14 +1691,12 @@ export default {
 
       const { basicObject, specialObjects } = this.parseFloor(object)
 
-      const basicMeshes = this.buildMergedObjects(
-        basicObject,
-        clippingPlane,
-        group.materials
-      )
-      group.add(...basicMeshes)
+      const { normalObject, edgeObject, conditionalObject } =
+        this.buildMergedObjects(basicObject, clippingPlane, group.materials)
 
-      group.position.y += indexFloor * 0.05
+      group.add(normalObject, edgeObject, conditionalObject)
+
+      group.position.y += indexFloor * 4
       group.initialPosition = group.position.clone()
 
       const { min, max } = new THREE.Box3().setFromObject(group)
@@ -1650,25 +1720,25 @@ export default {
           (zone) => part.name === zone.name_gltf
         )
 
-        const meshes = this.buildMergedObjects(
-          obj,
-          clippingPlane,
-          group.materials,
-          !obj.isBasicObject
-        )
+        const { normalObject, edgeObject, conditionalObject, hitbox } =
+          this.buildMergedObjects(
+            obj,
+            clippingPlane,
+            group.materials,
+            !obj.isBasicObject
+          )
 
-        const basicObjectForRaycast = meshes.find(
-          (mesh) => mesh.name === 'model' && mesh.type === 'Mesh'
-        )
-        group.basicObjectRaycast.push(basicObjectForRaycast)
+        part.normalObject = normalObject
+        part.add(hitbox)
+        group.basicObjectRaycast.push(hitbox)
 
         part.materials = [
-          meshes[0].material,
-          meshes[1].material,
-          meshes[2].material,
+          normalObject.material,
+          edgeObject.material,
+          conditionalObject.material,
         ]
 
-        part.add(...meshes)
+        part.add(normalObject, edgeObject, conditionalObject)
         part.position.y += 0.05
 
         const bounding = new THREE.Box3().setFromObject(part)
@@ -1713,6 +1783,21 @@ export default {
       return { basicObject, specialObjects }
     },
     buildMergedObjects(object, clippingPlane, materials, cloned = false) {
+      const originalHitbox = object.children.find((el) =>
+        el.name.includes('itbox')
+      )
+
+      let hitbox
+
+      if (cloned && originalHitbox) {
+        hitbox = originalHitbox.clone()
+        hitbox.visible = false
+        object.remove(originalHitbox)
+
+        const objWorldPosition = object.getWorldPosition(new THREE.Vector3())
+        hitbox.position.add(objWorldPosition)
+      }
+
       const normalObject = this.mergeObject(object)
 
       if (!object.isBasicObject) {
@@ -1732,17 +1817,22 @@ export default {
       normalObject.material.clippingPlanes = [clippingPlane]
       normalObject.material.clipShadows = true
 
-      const edgeBasicObject = this.edgeObject(normalObject)
-      edgeBasicObject.material = materials.lineMaterial
-      edgeBasicObject.material.clippingPlanes = [clippingPlane]
-      edgeBasicObject.material.clipShadows = true
+      const edgeObject = this.edgeObject(normalObject)
+      edgeObject.material = materials.lineMaterial
+      edgeObject.material.clippingPlanes = [clippingPlane]
+      edgeObject.material.clipShadows = true
 
       const conditionalObject = this.conditionalObject(normalObject)
       conditionalObject.material = materials.conditionalMaterial
       conditionalObject.material.clippingPlanes = [clippingPlane]
       conditionalObject.material.clipShadows = true
 
-      return [normalObject, edgeBasicObject, conditionalObject]
+      return {
+        normalObject,
+        edgeObject,
+        conditionalObject,
+        hitbox: hitbox || normalObject,
+      }
     },
     partition(array, filter) {
       const pass = []

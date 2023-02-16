@@ -43,12 +43,12 @@
         </button>
         <div class="app-popin-newsletter__accept-politic">
           <input
-            id="accept-politic"
+            id="accept-politic-popin"
             v-model="accept"
             type="checkbox"
             required
           />
-          <label for="accept-politic">
+          <label for="accept-politic-popin">
             <TP2 color="black">
               {{ appContent.data.popin_newsletter_text }}
               <AtomsLink :href="appContent.data.popin_newsletter__cta_href">
@@ -74,7 +74,7 @@ export default {
       accept: false,
       submited: false,
       timeInactivity: null,
-      cookieExist: false,
+      setInLocalStorage: null,
       durationMaxInactivity: 15000,
     }
   },
@@ -98,31 +98,41 @@ export default {
     $route() {
       this.setPopinNewsletterOpen(false)
     },
-    allLoadedFake() {
+    allLoadedFake(newVal) {
+      if (!newVal && this.setInLocalStorage) return
+
+      this.initTimeline()
       this.initEvents()
     },
   },
-  created() {},
+  created() {
+    if (process.client) {
+      this.setInLocalStorage = localStorage.getItem('popin-newsletter')
+    }
+  },
   mounted() {
-    this.cookieExist = this.$cookies.get('aa-newsletter-hide')
-
-    if (this.allLoadedFake && !this.cookieExist) this.initEvents()
+    if (this.allLoadedFake && !this.setInLocalStorage) {
+      this.initTimeline()
+      this.initEvents()
+    }
   },
   beforeDestroy() {
+    if (this.setInLocalStorage) return
+
     this.destroyEvents()
   },
   methods: {
     initEvents() {
-      if (this.cookieExist) return
-
       document.addEventListener(
         'visibilitychange',
         this.onBrowserChangeTab.bind(this)
       )
 
+      window.lenis.on('scroll', this.resetTimer.bind(this))
       document.addEventListener('mousemove', this.resetTimer.bind(this))
       document.addEventListener('keyup', this.onKeyUp.bind(this))
-
+    },
+    initTimeline() {
       this.tl = gsap.timeline({
         paused: true,
       })
@@ -143,41 +153,34 @@ export default {
         ease: 'power1.out',
       })
     },
-    destroyEvents() {
-      if (this.cookieExist) return
-
-      document.removeEventListener(
-        'visibilitychange',
-        this.onBrowserChangeTab.bind(this)
-      )
-
-      this.tl?.kill()
-
-      document.addEventListener('mousemove', this.resetTimer.bind(this))
-      document.addEventListener('keyup', this.onKeyUp.bind(this))
-    },
     onBrowserChangeTab() {
-      if (document.hidden && !this.cookieExist) {
+      if (document.hidden && !this.setInLocalStorage) {
         this.setPopinNewsletterOpen(true)
       }
     },
     resetTimer() {
-      if (this.cookieExist || this.popinNewsletterOpen) return
+      if (this.setInLocalStorage || this.popinNewsletterOpen) return
 
       clearTimeout(this.timeInactivity)
+
       this.timeInactivity = setTimeout(
         this.userIsInactive,
         this.durationMaxInactivity
       )
     },
     userIsInactive() {
-      console.log(this.overlayContactOpen)
       if (this.popinNewsletterOpen || this.overlayContactOpen) return
 
-      this.setPopinNewsletterOpen(true)
+      this.setInLocalStorage = localStorage.getItem('popin-newsletter')
+
+      if (this.setInLocalStorage) {
+        this.destroyEvents()
+      } else {
+        this.setPopinNewsletterOpen(true)
+      }
     },
     onSubmit() {
-      if (this.cookieExist) return
+      if (this.setInLocalStorage) return
 
       this.submited = true
 
@@ -192,12 +195,9 @@ export default {
         JSON.stringify([{ listname: 'newsletter', email: this.email, misc }])
       )
 
-      this.$cookies.set('aa-newsletter-hide', true, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7 * 4 * 2,
-      })
+      localStorage.setItem('popin-newsletter', true)
 
-      this.cookieExist = true
+      this.setInLocalStorage = localStorage.getItem('popin-newsletter')
 
       this.destroyEvents()
 
@@ -211,14 +211,28 @@ export default {
       }
     },
     onMouseEnter() {
-      if (!this.validateForm && this.cookieExist) return
+      if (!this.validateForm && this.setInLocalStorage) return
 
       this.tl?.play()
     },
     onMouseLeave() {
-      if (!this.validateForm && this.cookieExist) return
+      if (!this.validateForm && this.setInLocalStorage) return
 
       this.tl?.reverse()
+    },
+    destroyEvents() {
+      if (this.setInLocalStorage) return
+
+      document.removeEventListener(
+        'visibilitychange',
+        this.onBrowserChangeTab.bind(this)
+      )
+
+      this.tl?.kill()
+
+      window.lenis.off('scroll', this.resetTimer.bind(this))
+      document.addEventListener('mousemove', this.resetTimer.bind(this))
+      document.addEventListener('keyup', this.onKeyUp.bind(this))
     },
     ...mapMutations({
       setPopinNewsletterOpen: 'setPopinNewsletterOpen',

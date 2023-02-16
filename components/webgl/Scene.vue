@@ -14,7 +14,6 @@ import { mapState, mapMutations } from 'vuex'
 export default {
   computed: {
     ...mapState({
-      allLoadedFake: (state) => state.allLoadedFake,
       modelsPreviewed: (state) => state.modelsPreviewed,
       exteriorArenaHovered: (state) => state.exteriorArenaHovered,
       exteriorVisible: (state) => state.exteriorVisible,

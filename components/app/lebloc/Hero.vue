@@ -2,8 +2,8 @@
   <div class="app-le-bloc-hero">
     <div class="app-le-bloc-hero__wrapper">
       <AtomsCornerPoints :size-points="$viewport.isMobile ? 6 : 12" />
-      <EInteriorZoneInformation />
-      <EInteriorInformations />
+      <EInteriorZoneInformations />
+      <EInteriorInteractions />
       <EInteriorFloorSelectorMobile />
       <EScrollIndicator @click.native="scrollHero()" />
     </div>

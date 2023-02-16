@@ -2,6 +2,7 @@
   <main class="app-projet">
     <div class="app-projet__wrapper">
       <AppProjetIntroduction :contents="contentIntroduction" />
+      <AppGallery :contents="contentGallery" />
       <AppProjetCatchPhrase :contents="contentCatchphrase" />
       <!-- <AppProjetGallery :contents="contentGallery" /> -->
       <ESlider :contents="contentSlider" />
@@ -31,6 +32,10 @@ export default {
       limit: -1,
     })
 
+    const galerie = await $directus.items('Galerie_arena').readByQuery({
+      limit: -1,
+    })
+
     const slider = await $directus.items('Projet_slider').readByQuery({
       limit: -1,
     })
@@ -38,6 +43,7 @@ export default {
     return {
       slider,
       content,
+      galerie,
     }
   },
   head({ $seo }) {
@@ -85,6 +91,11 @@ export default {
         pictureLogoImage:
           this.content.data.projet_introduction_picture_logo_image,
         pictureLogoAlt: this.content.data.projet_introduction_picture_logo_alt,
+      }
+    },
+    contentGallery() {
+      return {
+        items: this.galerie.data,
       }
     },
     contentCatchphrase() {

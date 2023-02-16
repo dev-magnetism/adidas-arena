@@ -87,7 +87,7 @@ export default {
       // skipSnaps: false
       dragFree: true,
       containScroll: 'keepSnaps',
-      speed: 10,
+      speed: 7.5,
       breakpoints: {
         '(max-width: 800px)': { dragFree: false, skipSnaps: false, speed: 10 },
       },
@@ -111,13 +111,7 @@ export default {
     this.embla?.destroy()
   },
   methods: {
-    onClickTest() {
-      // console.log('onClickTest')
-    },
     onClickSlider(e) {
-      // console.log('click')
-      // this.setCursorSliderHold(false)
-
       const isLeft = e.clientX < this.$viewport.width / 2
       const canScrollPrev = this.embla.canScrollPrev()
       const canScrollNext = this.embla.canScrollNext()
@@ -129,21 +123,16 @@ export default {
       }
     },
     onScroll() {
-      // this.setCursorSliderHold(true)
-
       this.setParallax()
     },
     onSelect(e) {
       this.handleDisabledCursor()
     },
     onPointerDown() {
-      // this.setCursorSliderHold(true)
-      // console.log('onPointerDown')
+      this.setCursorSliderHold(true)
     },
-
     onPointerUp() {
-      // console.log('onPointerUp')
-      // this.setCursorSliderHold(false)
+      this.setCursorSliderHold(false)
     },
     handleDisabledCursor() {
       const canScrollPrev = this.embla.canScrollPrev()
@@ -158,7 +147,6 @@ export default {
         this.setCursorSliderDisabled(false)
       }
     },
-
     calculateParallaxTransforms() {
       const engine = this.embla.internalEngine()
       const scrollProgress = this.embla.scrollProgress()

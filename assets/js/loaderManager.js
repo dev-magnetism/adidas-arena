@@ -17,8 +17,6 @@ class LoaderManager {
   }
 
   async load(files, cbUpdate, cbComplete) {
-    console.log('here preloader')
-
     this.nbModels = files.length
 
     for (const [i, file] of files.entries()) {

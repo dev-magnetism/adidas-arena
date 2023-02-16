@@ -2,8 +2,8 @@
   <div class="app-arena-hero">
     <div class="app-arena-hero__wrapper">
       <AtomsCornerPoints :size-points="12" />
-      <EInteriorZoneInformation />
-      <EInteriorInformations />
+      <EInteriorZoneInformations />
+      <EInteriorInteractions />
       <EInteriorFloorSelectorMobile />
       <EScrollIndicator @click.native="scrollHero()" />
     </div>

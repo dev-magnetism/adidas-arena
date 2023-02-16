@@ -10,15 +10,12 @@
         :src="item.picture"
         format="webp"
         :alt="item.picture_alt"
-        @test="onTest"
       />
     </div>
   </div>
 </template>
 
 <script>
-// import { InteractionManager } from 'three.interactive'
-
 import { Observer } from 'gsap/Observer'
 
 import useWebGL from '~/hooks/webgl'
@@ -34,14 +31,14 @@ export default {
   data() {
     return {
       scroll: {
-        // ease: 0.04,
-        ease: 1,
+        ease: 0.04,
+        // ease: 1,
         current: 0,
         target: 0,
         last: 0,
         speed: 0.8,
-        wheelSpeed: 1,
-        // wheelSpeed: 4,
+        // wheelSpeed: 1,
+        wheelSpeed: 4,
       },
       pictureIsSelected: false,
       pictureSelected: null,
@@ -66,24 +63,17 @@ export default {
       },
     })
 
-    // this.$refs.pictures.forEach((element) => {
-    //   console.log(element.$el.getBoundingClientRect())
-    //   console.log(element.boundingRect.left)
-    // })
+    this.initTest()
 
     this.$raf.add(`arena-gallery`, this.onFrame)
 
     this.$nuxt.$on('app:scroll', this.onScrollApp)
 
-    const { renderer, camera } = useWebGL()
-
-    this.interactionManager = new InteractionManager(renderer, camera, this.$el)
-
-    this.initGUI()
+    // this.initGUI()
   },
 
   beforeDestroy() {
-    this.observer.kill()
+    this.observer?.kill()
 
     const { gallery } = useWebGL()
 
@@ -93,11 +83,18 @@ export default {
 
     this.$nuxt.$off('app:scroll', this.onScrollApp)
 
-    this.interactionManager.dispose()
-
-    this.gui.dispose()
+    this.gui?.dispose()
   },
   methods: {
+    initTest() {
+      this.resizeObserver = new ResizeObserver((entries) => {
+        // this.calculateGridMinMaxX()
+      })
+      console.log(this.$refs.pictures)
+      //     this.$refs.pictures.forEach(item => {
+      //   this.resizeObserver.observe(this.$refs.gridItem[item.id - 1])
+      // })
+    },
     onTest(index) {
       console.log('here', index)
       const test = Math.min(
@@ -158,9 +155,7 @@ export default {
         this.speed = this.speed * -1
       }
 
-      this.interactionManager.update()
-
-      this.$refs.pictures.forEach((layer) => {
+      this.$refs.pictures?.forEach((layer) => {
         layer.update({ scroll: this.scroll, velocity: this.observer.velocityX })
       })
 
@@ -227,7 +222,7 @@ export default {
 
   &__title.H2 {
     font-size: desktop-vw(290px);
-    line-height: desktop-vw(400px);
+    line-height: desktop-vw(290px);
     pointer-events: none;
     user-select: none;
     position: absolute;

@@ -34,12 +34,12 @@
         </button>
         <div class="app-contact-actus__accept-politic">
           <input
-            id="accept-politic"
+            id="accept-politic-contact-bloc"
             v-model="accept"
             type="checkbox"
             required
           />
-          <label for="accept-politic">
+          <label for="accept-politic-contact-bloc">
             <TP2 color="black">
               {{ contents.text }}
               <AtomsLink :href="contents.ctaHref">
@@ -124,10 +124,8 @@ export default {
         JSON.stringify([{ listname: 'newsletter', email: this.email, misc }])
       )
 
-      this.$cookies.set('aa-newsletter-hide', true, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7 * 4 * 2,
-      })
+      if (!localStorage.getItem('popin-newsletter'))
+        localStorage.setItem('popin-newsletter', true)
     },
     onMouseEnter() {
       if (!this.validateForm) return

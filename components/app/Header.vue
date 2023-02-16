@@ -82,7 +82,7 @@ export default {
   }
 
   &.reduced {
-    transform: translate(0%, -85%);
+    transform: translate(0%, -50px);
 
     @include mobile {
       transform: translate(0%, 0%);
