@@ -73,11 +73,11 @@ export default {
       thresholdAngle: 40,
       polygonOffsetFactor: 1,
       polygonOffsetUnits: 1,
-      floorsGUI: [],
       floors: [],
       currentZoneIntersect: null,
       zoneFocusEnabled: false,
       dragInProgress: false,
+      arrowPositionYoyo: new THREE.Vector3(),
     }
   },
   computed: {
@@ -209,13 +209,11 @@ export default {
     this.guiAmbientLight?.dispose()
     this.guiDirectionalLight?.dispose()
     this.guiModelColors?.dispose()
-    this.floorsGUI.forEach((gui) => {
-      gui.dispose()
-    })
 
     interior.floors = []
     this.observer?.kill()
     this.tweenCamera?.kill()
+    this.tweenArrowTranslate?.kill()
     this.tlFloors?.kill()
     this.tlSwitchMiddleScene?.kill()
     this.$nuxt.$off('reset:interior', this.resetView)
@@ -291,9 +289,10 @@ export default {
     handleImmediateTransition(oldVal) {
       this.currentZoneIntersect = null
       this.setInteriorCurrentZoneName(null)
-      const { camera } = useWebGL()
 
       this.drag.target = 0
+
+      const { camera } = useWebGL()
 
       camera.zoom = this.$viewport.isMobile
         ? this.currentFloor.content.camera_zoom_mobile
@@ -730,6 +729,15 @@ export default {
 
       const { camera } = useWebGL()
 
+      const zone = zoneSelected.publicAccess ? 'public' : 'vip'
+
+      zoneSelected.normalObject.material.color =
+        this.colors[zone].lambertMaterialColorActive.clone()
+      zoneSelected.normalObject.material.emissive =
+        this.colors[zone].lambertMaterialEmissiveActive.clone()
+      zoneSelected.normalObject.material.emissiveIntensity =
+        this.colors[zone].emissiveIntensityActive
+
       const cameraSelected =
         this.$viewport.isMobile && zoneSelected.content.name_camera_mobile
           ? this.cameras.getObjectByName(
@@ -818,7 +826,7 @@ export default {
       this.initSecondFloor()
       this.initThirdFloor()
       this.initFourthFloor()
-      this.initArrow()
+      if (!this.$viewport.isMobile) this.initArrow()
 
       this.initGUI()
 
@@ -851,34 +859,35 @@ export default {
       arrowGroup.scale.y = -1
       arrowGroup.position.set(0, 0, 0)
 
-      const arrowMaterial = new THREE.MeshLambertMaterial({
-        color: this.colors.arrowColor,
-        emissive: this.colors.arrowColor,
-        emissiveIntensity: this.colors.emissiveIntensity,
-      })
       const arrow = this.mergeObject(arrowGroup)
 
-      arrow.material = arrowMaterial
+      arrow.material = this.arrowMaterial
       arrow.material.side = THREE.DoubleSide
       arrow.material.flatShading = true
       arrow.castShadow = true
       arrow.receiveShadow = true
 
       const edgeArrow = this.edgeObject(arrow)
+      edgeArrow.material = this.lineMaterial.clone()
+      edgeArrow.material.transparent = true
+
       const conditionalArrow = this.conditionalObject(arrow)
+      conditionalArrow.material = this.conditionalMaterial.clone()
+      conditionalArrow.material.transparent = true
 
       this.arrow.add(arrow)
       this.arrow.add(edgeArrow)
       this.arrow.add(conditionalArrow)
 
-      // this.tweenArrowTranslate = gsap.to(this.arrow.position, {
-      //   y: 2,
-      //   repeat: -1,
-      //   yoyo: true,
-      //   duration: 1,
-      // })
+      this.tweenArrowTranslate = gsap.to(this.arrowPositionYoyo, {
+        y: 2,
+        repeat: -1,
+        yoyo: true,
+        duration: 0.3,
+        paused: true,
+      })
 
-      // this.arrow.material.flatShading = true
+      this.arrow.scale.set(0, 0, 0)
     },
     initLights() {
       const { interior } = useWebGL()
@@ -1198,6 +1207,14 @@ export default {
       })
       this.vipMaterial.name = 'vipMaterial'
       this.vipMaterial.side = THREE.DoubleSide
+
+      this.arrowMaterial = new THREE.MeshLambertMaterial({
+        color: this.colors.arrowColor,
+        emissive: this.colors.arrowColor,
+        emissiveIntensity: this.colors.emissiveIntensity,
+        opacity: 0,
+        transparent: true,
+      })
     },
     initFootField() {
       const { interior } = useWebGL()
@@ -1391,6 +1408,8 @@ export default {
       this.drag.enabled = false
       this.drag.target = 0
 
+      this.tweenArrowTranslate?.pause()
+
       this.setCursorState('hide')
 
       const cameraSelected =
@@ -1402,6 +1421,22 @@ export default {
         ease: 'power1.inOut',
         duration: 1,
       }
+
+      const materials = this.buildGraph(this.arrow).materials
+
+      gsap.to([materials], {
+        opacity: 0,
+        ease: 'power1.inOut',
+        duration: 0.5,
+      })
+
+      gsap.to(this.arrow.scale, {
+        x: 0,
+        y: 0,
+        z: 0,
+        ease: 'power1.inOut',
+        duration: 0.5,
+      })
 
       gsap.to(camera.position, {
         x: cameraSelected.position.x,
@@ -1498,6 +1533,8 @@ export default {
             camera.updateProjectionMatrix()
           },
         })
+
+        this.tweenArrowTranslate?.play()
       }
 
       gsap.to(camera.position, {
@@ -1530,20 +1567,26 @@ export default {
 
       const zone = object.parent.publicAccess ? 'public' : 'vip'
 
-      const { min, max } = new THREE.Box3().setFromObject(object)
-
-      console.log(min, max)
-
-      // const test = new THREE.Vector3()
-
-      this.arrow.position.copy(max)
-
-      // this.arrow.position.y += 4
-
       const params = {
         ease: 'power2.inOut',
         duration: 0.45,
       }
+
+      const materials = this.buildGraph(this.arrow).materials
+
+      this.tweenArrowTranslate?.play()
+
+      gsap.to([materials], {
+        opacity: 1,
+        ...params,
+      })
+
+      gsap.to(this.arrow.scale, {
+        x: 1,
+        y: 1,
+        z: 1,
+        ...params,
+      })
 
       gsap.to(object.parent.normalObject.material.color, {
         r: this.colors[zone].lambertMaterialColorActive.r,
@@ -1574,7 +1617,25 @@ export default {
         duration: 0.45,
       }
 
+      this.tweenArrowTranslate?.pause()
+
       const zone = object.parent.publicAccess ? 'public' : 'vip'
+
+      const materials = this.buildGraph(this.arrow).materials
+
+      gsap.to([materials], {
+        opacity: 0,
+        ease: 'power2.inOut',
+        duration: 0.2,
+      })
+
+      gsap.to(this.arrow.scale, {
+        x: 0,
+        y: 0,
+        z: 0,
+        ease: 'power2.inOut',
+        duration: 0.2,
+      })
 
       gsap.to(object.parent.normalObject.material.color, {
         r: this.colors[zone].lambertMaterialColor.r,
@@ -1624,6 +1685,18 @@ export default {
           }
 
           this.currentZoneIntersect = intersects[0]
+
+          if (!this.$viewport.isMobile) {
+            const targetPosition = this.arrow.parent.worldToLocal(
+              this.currentZoneIntersect.point.clone()
+            )
+
+            targetPosition.y += 3
+
+            targetPosition.add(this.arrowPositionYoyo)
+
+            this.arrow.position.lerp(targetPosition, 0.3)
+          }
         } else {
           if (this.currentZoneIntersect) {
             this.onMouseLeaveZone(this.currentZoneIntersect.object)

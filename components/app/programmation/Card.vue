@@ -71,11 +71,7 @@ export default {
   },
   computed: {
     theme() {
-      return Math.random() < 0.33
-        ? 'red'
-        : Math.random() < 0.5
-        ? 'blue'
-        : 'grey'
+      return Math.random() < 0.5 ? 'red' : Math.random() < 0.5 ? 'blue' : 'grey'
     },
     bgColor() {
       return {

@@ -58,6 +58,8 @@
       ref="visualBack"
       class="app-programmation-hero__visual-back-transparent"
     />
+    <div class="app-programmation-arrow-left" />
+    <div class="app-programmation-arrow-right" />
   </div>
 </template>
 

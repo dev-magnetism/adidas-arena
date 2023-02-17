@@ -139,7 +139,7 @@ export default {
         position: absolute;
         width: 120% !important;
         height: auto !important;
-        left: 40%;
+        left: 50%;
         top: 50%;
         transform: translate(-50%, -50%) rotate(5deg) !important;
 
