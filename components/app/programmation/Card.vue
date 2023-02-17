@@ -1,10 +1,16 @@
 <template>
   <div :style="bgColor" class="app-programmation-card">
-    <nuxt-picture
-      sizes="sm:100vw md:40vw"
-      src="/imgs/placeholder.png"
-      alt="test"
-    />
+    <div class="app-programmation-card__visual">
+      <div :class="{ visible }" class="app-programmation-card__layer" />
+
+      <nuxt-picture
+        provider="directus"
+        sizes="sm:100vw md:40vw"
+        :src="content.visual"
+        :alt="`visual-${content.name}`"
+      />
+    </div>
+
     <div class="app-programmation-card__informations">
       <div class="app-programmation-card__head">
         <TP2
@@ -12,18 +18,18 @@
           weight="bold"
           :color="whitedTexts ? 'white' : 'black'"
         >
-          Sport
+          {{ content.type }}
         </TP2>
         <TP2
           class="date"
           weight="medium"
           :color="whitedTexts ? 'white' : 'black'"
         >
-          22 JANV. AU 09 AVR.
+          {{ content.date }}
         </TP2>
       </div>
       <TH2 :color="whitedTexts ? 'white' : 'black'" weight="bold">
-        paris basket ball games 2023
+        {{ content.name }}
       </TH2>
 
       <TP2
@@ -31,29 +37,49 @@
         weight="medium"
         :color="whitedTexts ? 'white' : 'black'"
       >
-        À partir de 48,50€
+        À partir de {{ content.from_price }}€
       </TP2>
 
-      <button><SvgCtaUnion :color="ctaColor" /></button>
+      <a
+        class="app-programmation-card__cta"
+        :href="content.link"
+        target="_blank"
+      >
+        <SvgCtaUnion :color="ctaColor" />
+      </a>
     </div>
-    <span class="app-programmation-card__full">
+    <span v-if="content.full" class="app-programmation-card__full">
       <TP2 weight="bold" :color="ctaColor">Complet</TP2>
     </span>
   </div>
 </template>
 
 <script>
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
 export default {
   props: {
-    theme: {
-      type: String,
-      default: 'red',
+    content: {
+      type: Object,
+      default: () => {},
     },
   },
+  data() {
+    return {
+      visible: false,
+    }
+  },
   computed: {
+    theme() {
+      return Math.random() < 0.33
+        ? 'red'
+        : Math.random() < 0.5
+        ? 'blue'
+        : 'grey'
+    },
     bgColor() {
       return {
-        'background-color':
+        '--bg':
           this.theme === 'blue'
             ? 'var(--c-blue-adidas)'
             : this.theme === 'red'
@@ -72,6 +98,21 @@ export default {
       return this.theme === 'blue' || this.theme === 'red'
     },
   },
+  mounted() {
+    if (this.$viewport.isMobile) return
+
+    this.scrollTrigger = ScrollTrigger.create({
+      trigger: this.$el,
+      start: 'top+=20% bottom',
+      toggleActions: 'play none none none',
+      onToggle: () => {
+        this.visible = true
+      },
+    })
+  },
+  beforeDestroy() {
+    this.scrollTrigger?.kill()
+  },
 }
 </script>
 
@@ -83,6 +124,49 @@ export default {
   flex-direction: column;
   position: relative;
   border: 1px solid var(--c-black);
+  background-color: var(--bg);
+
+  @include mobile {
+    grid-column: span 6;
+    padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(15px) mobile-vw(15px);
+  }
+
+  &:nth-child(3n + 1) {
+    .app-programmation-card__layer {
+      transition-delay: 0.1s;
+    }
+  }
+  &:nth-child(3n + 2) {
+    .app-programmation-card__layer {
+      transition-delay: 0.3s;
+    }
+  }
+  &:nth-child(3n + 3) {
+    .app-programmation-card__layer {
+      transition-delay: 0.5s;
+    }
+  }
+
+  &__layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg);
+    z-index: 9999;
+    transform: scaleY(1);
+    transform-origin: center bottom;
+    transition: transform 0.8s var(--ease-in-out-cubic);
+
+    &.visible {
+      transform: scaleY(0);
+    }
+
+    @include mobile {
+      display: none;
+    }
+  }
 
   &__full {
     position: absolute;
@@ -95,22 +179,44 @@ export default {
     border-right: none;
     padding: desktop-vw(5px) desktop-vw(8px);
 
+    @include mobile {
+      padding: mobile-vw(5px) mobile-vw(8px);
+    }
+
     .P2 {
       text-transform: uppercase;
     }
+  }
+
+  &__visual {
+    width: 100%;
+    display: block;
+    position: relative;
+    z-index: 0;
   }
 
   picture {
     aspect-ratio: 435 / 435;
     width: 100%;
     display: block;
+    position: relative;
     @include noise();
+
+    img {
+      display: block;
+    }
   }
 
   &__informations {
     display: flex;
     flex-direction: column;
     padding: desktop-vw(15px) desktop-vw(25px);
+    height: 100%;
+
+    @include mobile {
+      padding: 0px;
+      margin-top: mobile-vw(15px);
+    }
   }
 
   &__head {
@@ -132,9 +238,20 @@ export default {
     line-height: desktop-vw(58px);
     margin-top: desktop-vw(5px);
     margin-bottom: desktop-vw(40px);
+
+    @include mobile {
+      margin-top: mobile-vw(5px);
+      margin-bottom: mobile-vw(40px);
+      font-size: mobile-vw(46px);
+      line-height: mobile-vw(42px);
+    }
   }
 
-  button {
+  &__from-price.P2 {
+    margin-top: auto;
+  }
+
+  &__cta {
     position: absolute;
     bottom: 0;
     height: desktop-vw(55px);
@@ -148,6 +265,11 @@ export default {
     border: 1px solid var(--c-black);
     border-right: none;
     border-bottom: none;
+
+    @include mobile {
+      height: mobile-vw(50px);
+      width: mobile-vw(55px);
+    }
   }
 }
 </style>

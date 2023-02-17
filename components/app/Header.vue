@@ -15,16 +15,20 @@
       <SvgArenaLogo />
     </nuxt-link>
 
+    <nuxt-link
+      :class="{ reduced: headerReduced, white: headerWhite }"
+      class="app-header__programmation"
+      to="/programmation"
+    >
+      <TP1 weight="bold"> {{ programmationName }} </TP1>
+    </nuxt-link>
+
     <div
       :class="{ reduced: headerReduced, white: headerWhite }"
       class="app-header__burger"
       @click="onClickBurger"
     >
-      <TP1
-        v-if="!$viewport.isMobile"
-        weight="bold"
-        class="app-header__burger__menu"
-      >
+      <TP1 weight="bold" class="app-header__burger__menu">
         {{ menuName }}
       </TP1>
       <div class="app-header__burger__icon" />
@@ -47,6 +51,9 @@ export default {
     }),
     menuName() {
       return this.appContent.data.menu_name
+    },
+    programmationName() {
+      return this.appContent.data.menu_programmation
     },
     headerNameMobile() {
       return this.appContent.data.header_name_mobile
@@ -82,7 +89,7 @@ export default {
   }
 
   &.reduced {
-    transform: translate(0%, -50px);
+    transform: translate(0%, -40px);
 
     @include mobile {
       transform: translate(0%, 0%);
@@ -93,6 +100,23 @@ export default {
     transition-delay: 0s;
     opacity: 0;
     pointer-events: none;
+  }
+
+  &__programmation {
+    margin-left: auto;
+    margin-right: desktop-vw(25px);
+    align-self: center;
+    cursor: pointer;
+
+    @include mobile {
+      display: none;
+    }
+
+    .P1.bold {
+      font-size: 16px;
+      line-height: 16px;
+      text-transform: uppercase;
+    }
   }
 
   &__logo {
@@ -148,6 +172,10 @@ export default {
       margin-right: 20px;
       transition: color 0.4s var(--ease-out-cubic);
       user-select: none;
+
+      @include mobile {
+        display: none;
+      }
     }
 
     &__icon {

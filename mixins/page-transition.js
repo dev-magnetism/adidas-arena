@@ -6,8 +6,6 @@ export default {
     css: false,
     mode: 'out-in',
     enter(el, done) {
-      // console.log('here enter', this.$route.name)
-
       if (this.$route.name.includes('index')) {
         this.$nuxt.$emit('reset:exterior')
       }
@@ -43,8 +41,6 @@ export default {
       const layerBlue = document.querySelector('.app-transition-layer.blue')
       const layerRed = document.querySelector('.app-transition-layer.red')
 
-      // console.log('here leave', this.$route.name)
-
       this.tl = gsap
         .timeline({
           delay: 0.35,
@@ -73,13 +69,12 @@ export default {
               if (
                 this.$route.name.includes('projet') ||
                 this.$route.name.includes('be-part-of-partenariat') ||
-                this.$route.name.includes('be-part-of-besoins')
+                this.$route.name.includes('be-part-of-besoins') ||
+                this.$route.name.includes('programmation')
               ) {
                 this.$store.commit('setExteriorVisible', false)
                 this.$store.commit('setInteriorVisible', false)
               }
-
-              // console.log(this.$route.name)
 
               if (
                 this.$route.name.includes('le-bloc') ||
@@ -98,8 +93,6 @@ export default {
               // ) {
               //   this.$store.commit('setInteriorVisible', false)
               // }
-
-              // console.log('transition full done', this.$route.name)
 
               this.$nuxt.$emit('menu:reset')
 

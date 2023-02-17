@@ -16,6 +16,7 @@ export const state = () => ({
   appContent: null,
   interiorContent: null,
   menuContent: null,
+  programmationsContent: null,
 
   // Exterior scene
   exteriorVisible: true,
@@ -132,6 +133,9 @@ export const mutations = {
   setAppContent: (state, value) => {
     state.appContent = value
   },
+  setProgrammationsContent: (state, value) => {
+    state.programmationsContent = value
+  },
   setMenuContent: (state, value) => {
     state.menuContent = value
   },
@@ -179,5 +183,11 @@ export const actions = {
       })
 
     commit('setInteriorContent', interiorFloors.data)
+
+    const programmations = await $directus.items('Programmations').readByQuery({
+      limit: -1,
+    })
+
+    commit('setProgrammationsContent', programmations.data)
   },
 }

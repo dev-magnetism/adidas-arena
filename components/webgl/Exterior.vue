@@ -91,7 +91,7 @@ export default {
       this.initExterior()
     },
     modelCloudLoaded() {
-      // this.initClouds()
+      this.initClouds()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -112,7 +112,7 @@ export default {
 
     if (this.allLoadedActual) {
       this.initExterior()
-      // this.initClouds()
+      this.initClouds()
       this.initGUI()
       this.resetView()
     }
@@ -239,22 +239,29 @@ export default {
         }
       }
 
-      this.planesGroup?.children?.forEach((plane, index) => {
-        // this.cloudsBasic.getMatrixAt(index, this.matrix)
-        // this.matrix.decompose(
-        //   this.dummy.position,
-        //   this.dummy.quaternion,
-        //   this.dummy.scale
-        // )
-        // const positionZ = this.directionClouds[index]
-        //   ? this.dummy.position.z -
-        //     this.speedClouds[index] * this.cloudsParams.speed
-        //   : this.dummy.position.z +
-        //     this.speedClouds[index] * this.cloudsParams.speed
-        // this.dummy.position.z = gsap.utils.wrap(100, -100, positionZ)
-        // this.dummy.updateMatrix()
-        // this.cloudsBasic.setMatrixAt(index, this.dummy.matrix)
-        // this.cloudsBasic.instanceMatrix.needsUpdate = true
+      // this.planesGroup?.children?.forEach((plane, index) => {
+      //   // this.cloudsBasic.getMatrixAt(index, this.matrix)
+      //   // this.matrix.decompose(
+      //   //   this.dummy.position,
+      //   //   this.dummy.quaternion,
+      //   //   this.dummy.scale
+      //   // )
+      //   // const positionZ = this.directionClouds[index]
+      //   //   ? this.dummy.position.z -
+      //   //     this.speedClouds[index] * this.cloudsParams.speed
+      //   //   : this.dummy.position.z +
+      //   //     this.speedClouds[index] * this.cloudsParams.speed
+      //   // this.dummy.position.z = gsap.utils.wrap(100, -100, positionZ)
+      //   // this.dummy.updateMatrix()
+      //   // this.cloudsBasic.setMatrixAt(index, this.dummy.matrix)
+      //   // this.cloudsBasic.instanceMatrix.needsUpdate = true
+      // })
+
+      this.clouds?.children?.forEach((cloud) => {
+        const z = cloud.direction
+          ? cloud.position.z - cloud.coefParallax * this.cloudsParams.speed
+          : cloud.position.z + cloud.coefParallax * this.cloudsParams.speed
+        cloud.position.z = gsap.utils.wrap(100, -100, z)
       })
 
       this.timeCars += deltaTime * this.speedCars
@@ -418,6 +425,30 @@ export default {
     },
     initClouds() {
       const { exterior } = useWebGL()
+      this.clouds = new THREE.Group()
+      this.clouds.name = 'clouds'
+      exterior.add(this.clouds)
+      this.gltfCloud = loaderManager.getModel('cloud').scene
+      const cloud = this.mergeObject(this.gltfCloud)
+      const edgeCloud = this.edgeObject(cloud)
+      const conditionalCloud = this.conditionalObject(cloud)
+      this.cloud = new THREE.Group()
+      this.cloud.name = 'cloud'
+      this.cloud.add(cloud)
+      this.cloud.add(edgeCloud)
+      this.cloud.add(conditionalCloud)
+      const planesGroup = this.gltfExterior.getObjectByName('Plane')
+      planesGroup.traverse((plane) => {
+        const object = this.cloud.clone()
+        object.coefParallax = this.genRand(1, 10, 2)
+        object.direction = Math.random() < 0.5
+        object.position.copy(plane.position)
+        object.initialPosition = object.position
+        this.clouds.add(object)
+      })
+    },
+    initCloudsNew() {
+      const { exterior } = useWebGL()
 
       this.gltfCloud = loaderManager.getModel('cloud').scene
       this.planesGroup = this.gltfExterior.getObjectByName('Plane')
@@ -491,6 +522,7 @@ export default {
 
       this.directionalLight.shadow.mapSize.width = 1024 // 4096
       this.directionalLight.shadow.mapSize.height = 1024 // 4096
+      this.directionalLight.shadow.bias = -0.001
 
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
@@ -616,11 +648,11 @@ export default {
         .sub(carObject.position)
 
       const car = this.mergeObject(carObject)
-      // const edgeCar = this.edgeObject(car)
+      const edgeCar = this.edgeObject(car)
       const conditionalCar = this.conditionalObject(car)
 
       carGroup.add(car)
-      // carGroup.add(edgeCar)
+      carGroup.add(edgeCar)
       carGroup.add(conditionalCar)
 
       carGroup.position.copy(carGroup.startPosition)

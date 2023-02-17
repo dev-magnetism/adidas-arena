@@ -52,8 +52,7 @@ export default {
           emissiveIntensityActive: 0.7,
         },
       },
-      azimuth: { min: -3.14, max: 3.14 },
-      // azimuth: { min: -1.6, max: 0.6 },
+      azimuth: { min: -1.6, max: 0.6 },
       drag: {
         ease: 0.04,
         current: 0,
@@ -896,6 +895,7 @@ export default {
 
       this.directionalLight.shadow.mapSize.width = 1024 // 4096
       this.directionalLight.shadow.mapSize.height = 1024 // 4096
+      this.directionalLight.shadow.bias = -0.001
 
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
@@ -1696,7 +1696,7 @@ export default {
 
       group.add(normalObject, edgeObject, conditionalObject)
 
-      group.position.y += indexFloor * 4
+      group.position.y += indexFloor * 0.05
       group.initialPosition = group.position.clone()
 
       const { min, max } = new THREE.Box3().setFromObject(group)

@@ -1,7 +1,13 @@
 <template>
   <main class="app-programmation">
     <AppProgrammationHero :contents="contentHero" />
-    <AppProgrammationGrid />
+    <div class="app-programmation-grid grid-inner">
+      <AppProgrammationCard
+        v-for="(event, index) in contentProgrammationEvents"
+        :key="index"
+        :content="event"
+      />
+    </div>
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
@@ -16,8 +22,6 @@ export default {
   mixins: [scroll],
   transition(to, from) {
     if (!to || !from) return
-
-    console.log(from, to)
 
     return pageTransition.basic
   },
@@ -49,8 +53,11 @@ export default {
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
       allLoadedFake: (state) => state.allLoadedFake,
+      programmationsContent: (state) => state.programmationsContent,
     }),
-
+    contentProgrammationEvents() {
+      return this.programmationsContent.filter((el) => !el.main_event)
+    },
     contentHero() {
       return {
         title: this.content.data.hero_title,
@@ -58,14 +65,7 @@ export default {
       }
     },
   },
-  watch: {
-    // allLoadedFake() {
-    //   this.setExteriorVisible(true)
-    // },
-  },
-  mounted() {
-    // if (!this.exteriorVisible) this.setExteriorVisible(true)
-  },
+
   methods: {
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',
