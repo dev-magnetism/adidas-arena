@@ -3,6 +3,7 @@
     :class="{
       'pointer-events': pointerEventsActivated,
     }"
+    data-lenis-prevent
     class="app-menu"
   >
     <div ref="layerRed" class="app-menu__layer red" />
@@ -683,6 +684,8 @@ export default {
 
       Flip.fit(this.elTitleSubmenuWrapper, elTitleSubmenuSave)
 
+      this.$el.scrollTo(0, 0)
+
       gsap.set(this.$refs.submenuCross, {
         rotation: 0,
       })
@@ -718,10 +721,16 @@ export default {
 
   @include mobile {
     height: calc(100 * var(--vh, 1vh));
+    overscroll-behavior: contain;
+    overflow-y: hidden;
   }
 
   &.pointer-events {
     pointer-events: all;
+
+    @include mobile {
+      overflow-y: scroll;
+    }
   }
 
   &__inner {
@@ -729,6 +738,11 @@ export default {
     height: 100%;
     display: flex;
     flex-direction: row;
+
+    @include mobile {
+      height: auto;
+      min-height: 100%;
+    }
   }
 
   &__visual {
@@ -863,8 +877,10 @@ export default {
 
     @include mobile {
       flex: 0 0 100%;
-      padding: mobile-vw(0px) var(--layout-margin) mobile-vw(0px)
+      padding: mobile-vw(35px) var(--layout-margin) mobile-vw(0px)
         var(--layout-margin);
+      height: auto;
+      min-height: 100%;
     }
   }
 
@@ -1069,7 +1085,7 @@ export default {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     transform: scaleY(0);
     transform-origin: center top;
     cursor: initial;

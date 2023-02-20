@@ -1,6 +1,6 @@
 <template>
-  <div class="app-guests-hero">
-    <div class="app-guests-hero__wrapper">
+  <div :data-allow-drag="true" class="app-guests-hero">
+    <div :data-allow-drag="true" class="app-guests-hero__wrapper">
       <AtomsCornerPoints :size-points="12" />
       <EInteriorZoneInformations />
       <EInteriorInteractions />

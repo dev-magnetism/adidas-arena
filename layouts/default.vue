@@ -43,7 +43,7 @@ export default {
     const gui = useGUI()
 
     if (this.$viewport.isMobile) {
-      gui.hidden = true
+      gui.hidden = false
     }
   },
 

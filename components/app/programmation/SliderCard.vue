@@ -223,6 +223,7 @@ export default {
     flex-direction: column;
     padding: desktop-vw(15px) desktop-vw(25px);
     height: 100%;
+    border-top: 1px solid var(--c-black);
 
     @include mobile {
       padding: mobile-vw(15px) mobile-vw(15px);

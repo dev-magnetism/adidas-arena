@@ -1,6 +1,6 @@
 <template>
-  <div class="app-arena-hero">
-    <div class="app-arena-hero__wrapper">
+  <div :data-allow-drag="true" class="app-arena-hero">
+    <div :data-allow-drag="true" class="app-arena-hero__wrapper">
       <AtomsCornerPoints :size-points="12" />
       <EInteriorZoneInformations />
       <EInteriorInteractions />

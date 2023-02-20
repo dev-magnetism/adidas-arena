@@ -91,7 +91,7 @@ export default {
       this.initExterior()
     },
     modelCloudLoaded() {
-      this.initClouds()
+      // this.initClouds()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -112,16 +112,24 @@ export default {
 
     if (this.allLoadedActual) {
       this.initExterior()
-      this.initClouds()
+      // this.initClouds()
       this.initGUI()
       this.resetView()
     }
 
     this.observer = Observer.create({
+      axis: 'x',
       target: this.$nuxt.$el,
       type: 'touch,pointer,wheel',
       onDrag: this.onDrag,
-      dragMinimum: 5,
+      onDragStart: (e) => {
+        if (e.axis === 'x') this.setAllowScroll(false)
+      },
+      onDragEnd: (e) => {
+        if (e.axis === 'x') this.setAllowScroll(true)
+      },
+      dragMinimum: 10,
+      lockAxis: true,
       tolerance: 5,
     })
 
@@ -146,6 +154,7 @@ export default {
     exterior.remove(this.trams)
     // exterior.remove(this.cloudsBasic)
     // exterior.remove(this.cloudsEdge)
+    exterior.remove(this.clouds)
     exterior.remove(this.adidasArena)
     exterior.remove(this.arrow)
     exterior.remove(this.logoArena)
@@ -203,7 +212,11 @@ export default {
       }
     },
     onDrag(e) {
-      if (!this.drag.enabled) return
+      if (!this.drag.enabled || !this.exteriorVisible) return
+
+      const allowDrag = e.event.target.getAttribute('data-allow-drag')
+
+      if (!allowDrag || allowDrag === null) return
 
       const delta = e.deltaX * this.drag.dragSpeed
 
@@ -329,7 +342,7 @@ export default {
       this.initFloor()
       this.initAdidasArena()
       this.initLogoArena()
-      this.initCars()
+      // this.initCars()
       this.initTrams()
       this.initArrow()
     },
@@ -428,16 +441,21 @@ export default {
       this.clouds = new THREE.Group()
       this.clouds.name = 'clouds'
       exterior.add(this.clouds)
+
       this.gltfCloud = loaderManager.getModel('cloud').scene
+
       const cloud = this.mergeObject(this.gltfCloud)
       const edgeCloud = this.edgeObject(cloud)
       const conditionalCloud = this.conditionalObject(cloud)
+
       this.cloud = new THREE.Group()
       this.cloud.name = 'cloud'
       this.cloud.add(cloud)
       this.cloud.add(edgeCloud)
       this.cloud.add(conditionalCloud)
+
       const planesGroup = this.gltfExterior.getObjectByName('Plane')
+
       planesGroup.traverse((plane) => {
         const object = this.cloud.clone()
         object.coefParallax = this.genRand(1, 10, 2)
@@ -1072,6 +1090,7 @@ export default {
       setExteriorArenaHovered: 'setExteriorArenaHovered',
       setExteriorVisible: 'setExteriorVisible',
       setCursorState: 'setCursorState',
+      setAllowScroll: 'setAllowScroll',
     }),
     lerp(p1, p2, t) {
       return p1 + (p2 - p1) * t

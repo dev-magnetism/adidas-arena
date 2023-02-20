@@ -146,14 +146,7 @@ export default {
       }
     },
   },
-  watch: {
-    // allLoadedFake() {
-    //   this.setExteriorVisible(true)
-    // },
-  },
-  mounted() {
-    // if (!this.exteriorVisible) this.setExteriorVisible(true)
-  },
+
   methods: {
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',

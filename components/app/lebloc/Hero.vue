@@ -1,6 +1,6 @@
 <template>
-  <div class="app-le-bloc-hero">
-    <div class="app-le-bloc-hero__wrapper">
+  <div :data-allow-drag="true" class="app-le-bloc-hero">
+    <div :data-allow-drag="true" class="app-le-bloc-hero__wrapper">
       <AtomsCornerPoints :size-points="$viewport.isMobile ? 6 : 12" />
       <EInteriorZoneInformations />
       <EInteriorInteractions />

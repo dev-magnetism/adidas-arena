@@ -145,11 +145,19 @@ export default {
     )
 
     this.observer = Observer.create({
+      axis: 'x',
       target: this.$nuxt.$el,
       type: 'touch,pointer,wheel',
       onDrag: this.onDrag,
       onStop: this.onStopDrag,
-      dragMinimum: 5,
+      onDragStart: (e) => {
+        if (e.axis === 'x') this.setAllowScroll(false)
+      },
+      onDragEnd: (e) => {
+        if (e.axis === 'x') this.setAllowScroll(true)
+      },
+      dragMinimum: 10,
+      lockAxis: true,
       tolerance: 5,
     })
 
@@ -1369,6 +1377,10 @@ export default {
     onDrag(e) {
       if (!this.drag.enabled || !this.interiorVisible) return
 
+      const allowDrag = e.event.target.getAttribute('data-allow-drag')
+
+      if (!allowDrag || allowDrag === null) return
+
       this.dragInProgress = true
 
       const delta = e.deltaX * this.drag.dragSpeed
@@ -1422,21 +1434,23 @@ export default {
         duration: 1,
       }
 
-      const materials = this.buildGraph(this.arrow).materials
+      if (!this.$viewport.isMobile) {
+        const materials = this.buildGraph(this.arrow).materials
 
-      gsap.to([materials], {
-        opacity: 0,
-        ease: 'power1.inOut',
-        duration: 0.5,
-      })
+        gsap.to([materials], {
+          opacity: 0,
+          ease: 'power1.inOut',
+          duration: 0.5,
+        })
 
-      gsap.to(this.arrow.scale, {
-        x: 0,
-        y: 0,
-        z: 0,
-        ease: 'power1.inOut',
-        duration: 0.5,
-      })
+        gsap.to(this.arrow.scale, {
+          x: 0,
+          y: 0,
+          z: 0,
+          ease: 'power1.inOut',
+          duration: 0.5,
+        })
+      }
 
       gsap.to(camera.position, {
         x: cameraSelected.position.x,
@@ -1511,6 +1525,7 @@ export default {
       this.setInteriorCurrentZoneName(null)
       this.setInteriorCurrentZoneHovered(null)
       this.setCursorState('hide')
+
       if (this.$viewport.isMobile) this.setHeaderHided(false)
 
       const { camera } = useWebGL()
@@ -2015,6 +2030,7 @@ export default {
       setInteriorCurrentZoneName: 'setInteriorCurrentZoneName',
       setInteriorCurrentZoneHovered: 'setInteriorCurrentZoneHovered',
       setHeaderHided: 'setHeaderHided',
+      setAllowScroll: 'setAllowScroll',
       setInteriorTimelineFloorsInProgress:
         'setInteriorTimelineFloorsInProgress',
     }),

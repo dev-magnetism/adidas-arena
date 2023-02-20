@@ -212,7 +212,7 @@ export default {
   flex-direction: column;
 
   @include mobile {
-    margin-top: mobile-vw(130px);
+    margin-top: mobile-vw(80px);
     margin-bottom: mobile-vw(100px);
     display: flex;
     flex-direction: column;

@@ -64,6 +64,7 @@
       <div
         ref="view"
         class="app-home-hero__view-exterior"
+        :data-allow-drag="true"
         @click="!viewExteriorOpen && !$viewport.isMobile ? onVisit() : ''"
       >
         <div class="app-home-hero__view-exterior__baseline">
@@ -808,7 +809,6 @@ export default {
       display: flex;
       justify-content: space-between;
       flex-direction: row;
-
       width: 100%;
       padding: desktop-vw(0px) desktop-vw(20px) desktop-vw(20px)
         desktop-vw(20px);
@@ -816,6 +816,7 @@ export default {
       position: absolute;
       bottom: 0;
       left: 0;
+      pointer-events: none;
 
       @include mobile {
         height: 100%;
