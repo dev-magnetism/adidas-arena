@@ -75,6 +75,7 @@ export default {
     ...mapState({
       cursorSliderHold: (state) => state.cursorSliderHold,
       cursorSliderLeftZone: (state) => state.cursorSliderLeftZone,
+      allowScroll: (state) => state.allowScroll,
     }),
   },
   watch: {
@@ -93,23 +94,25 @@ export default {
       },
     })
 
+    this.embla.on('pointerUp', this.onPointerUp)
+    this.embla.on('pointerDown', this.onPointerDown)
+
     if (!this.$viewport.isMobile) {
       this.embla.on('init', this.onScroll)
       this.embla.on('scroll', this.onScroll)
       this.embla.on('resize', this.onScroll)
       this.embla.on('select', this.onSelect)
-      this.embla.on('pointerUp', this.onPointerUp)
-      this.embla.on('pointerDown', this.onPointerDown)
     }
   },
   beforeDestroy() {
+    this.embla?.off('pointerUp', this.onPointerUp)
+    this.embla?.off('pointerDown', this.onPointerDown)
+
     if (!this.$viewport.isMobile) {
       this.embla?.off('init', this.onScroll)
       this.embla?.off('scroll', this.onScroll)
       this.embla?.off('resize', this.onScroll)
       this.embla?.off('select', this.onSelect)
-      this.embla?.off('pointerUp', this.onPointerUp)
-      this.embla?.off('pointerDown', this.onPointerDown)
     }
 
     this.embla?.destroy()
@@ -135,9 +138,17 @@ export default {
       this.handleDisabledCursor()
     },
     onPointerDown() {
+      if (this.allowScroll) {
+        this.setAllowScroll(false)
+      }
+
       this.setCursorSliderHold(true)
     },
     onPointerUp() {
+      if (!this.allowScroll) {
+        this.setAllowScroll(true)
+      }
+
       this.setCursorSliderHold(false)
     },
     handleDisabledCursor() {
@@ -189,6 +200,7 @@ export default {
       setCursorState: 'setCursorState',
       setCursorSliderHold: 'setCursorSliderHold',
       setCursorSliderDisabled: 'setCursorSliderDisabled',
+      setAllowScroll: 'setAllowScroll',
     }),
   },
 }
@@ -205,8 +217,6 @@ export default {
 
   &__wrapper {
     overflow: hidden;
-    // padding-left: desktop-vw(40px);
-    // padding-right: desktop-vw(40px);
 
     &.hold {
       .app-element-slider__item__visual {

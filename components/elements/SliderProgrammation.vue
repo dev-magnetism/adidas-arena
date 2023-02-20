@@ -64,6 +64,7 @@ export default {
       cursorSliderHold: (state) => state.cursorSliderHold,
       cursorSliderLeftZone: (state) => state.cursorSliderLeftZone,
       programmationsContent: (state) => state.programmationsContent,
+      allowScroll: (state) => state.allowScroll,
     }),
     contentProgrammations() {
       return this.programmationsContent.filter((el) => el.inside_slider)
@@ -85,23 +86,25 @@ export default {
       },
     })
 
+    this.embla.on('pointerUp', this.onPointerUp)
+    this.embla.on('pointerDown', this.onPointerDown)
+
     if (!this.$viewport.isMobile) {
       this.embla.on('init', this.onScroll)
       this.embla.on('scroll', this.onScroll)
       this.embla.on('resize', this.onScroll)
       this.embla.on('select', this.onSelect)
-      this.embla.on('pointerUp', this.onPointerUp)
-      this.embla.on('pointerDown', this.onPointerDown)
     }
   },
   beforeDestroy() {
+    this.embla?.off('pointerUp', this.onPointerUp)
+    this.embla?.off('pointerDown', this.onPointerDown)
+
     if (!this.$viewport.isMobile) {
       this.embla?.off('init', this.onScroll)
       this.embla?.off('scroll', this.onScroll)
       this.embla?.off('resize', this.onScroll)
       this.embla?.off('select', this.onSelect)
-      this.embla?.off('pointerUp', this.onPointerUp)
-      this.embla?.off('pointerDown', this.onPointerDown)
     }
 
     this.embla?.destroy()
@@ -120,6 +123,7 @@ export default {
         this.embla.scrollNext()
       }
     },
+
     onScroll() {
       this.setParallax()
     },
@@ -127,9 +131,17 @@ export default {
       this.handleDisabledCursor()
     },
     onPointerDown() {
+      if (this.allowScroll) {
+        this.setAllowScroll(false)
+      }
+
       this.setCursorSliderHold(true)
     },
     onPointerUp() {
+      if (!this.allowScroll) {
+        this.setAllowScroll(true)
+      }
+
       this.setCursorSliderHold(false)
     },
     handleDisabledCursor() {
@@ -184,6 +196,7 @@ export default {
       setCursorState: 'setCursorState',
       setCursorSliderHold: 'setCursorSliderHold',
       setCursorSliderDisabled: 'setCursorSliderDisabled',
+      setAllowScroll: 'setAllowScroll',
     }),
   },
 }
@@ -207,14 +220,6 @@ export default {
 
   &__wrapper {
     // overflow: hidden;
-
-    &.hold {
-      .app-programmation-slider-card__visual__picture {
-        img {
-          // transform: scale(1.35);
-        }
-      }
-    }
   }
 
   &__inner {
