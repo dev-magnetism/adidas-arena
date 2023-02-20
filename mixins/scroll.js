@@ -63,15 +63,8 @@ export default {
       easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
       smoothTouch: true,
       touchMultiplier: 3,
+      //   smooth: true,
     })
-
-    // this.lenis = new Lenis({
-    //   duration: 1.2,
-    //   easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
-    //   direction: 'vertical',
-    //   gestureDirection: 'vertical',
-    //   smooth: true,
-    // })
 
     if (!this.allowScroll) this.lenis.stop()
 

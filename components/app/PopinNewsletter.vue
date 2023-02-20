@@ -1,15 +1,18 @@
 <template>
   <div
-    :class="{ hide: !popinNewsletterOpen }"
+    :class="{
+      hide:
+        !popinNewsletterOpen ||
+        setInLocalStorage ||
+        popinNewsletterClosedInSession,
+    }"
     class="app-popin-newsletter"
     @click.stop="() => {}"
   >
     <div class="app-popin-newsletter__wrapper">
-      <span
-        class="app-popin-newsletter__close"
-        @click="setPopinNewsletterOpen(false)"
-        >Fermer</span
-      >
+      <span class="app-popin-newsletter__close" @click="onClosePopin()">
+        Fermer
+      </span>
       <AtomsCornerPoints :size-points="8" />
 
       <ERichText :content="appContent.data.popin_newsletter_title" />
@@ -74,17 +77,24 @@ export default {
       accept: false,
       submited: false,
       timeInactivity: null,
-      setInLocalStorage: null,
       durationMaxInactivity: 15000,
     }
   },
 
   computed: {
+    setInLocalStorage() {
+      if (!process.client) return
+
+      return localStorage.getItem('popin-newsletter') || false
+    },
     ...mapState({
       appContent: (state) => state.appContent,
       popinNewsletterOpen: (state) => state.popinNewsletterOpen,
       allLoadedFake: (state) => state.allLoadedFake,
+      initialHeroDisplayed: (state) => state.initialHeroDisplayed,
       overlayContactOpen: (state) => state.overlayContactOpen,
+      popinNewsletterClosedInSession: (state) =>
+        state.popinNewsletterClosedInSession,
     }),
     validateForm() {
       /* eslint-disable-next-line */ const reg =
@@ -98,39 +108,45 @@ export default {
     $route() {
       this.setPopinNewsletterOpen(false)
     },
-    allLoadedFake(newVal) {
-      if (!newVal && this.setInLocalStorage) return
+    initialHeroDisplayed(newVal) {
+      if (
+        !newVal &&
+        (!this.setInLocalStorage || !this.popinNewsletterClosedInSession)
+      )
+        return
 
       this.initTimeline()
       this.initEvents()
     },
   },
-  created() {
-    if (process.client) {
-      this.setInLocalStorage = localStorage.getItem('popin-newsletter')
-    }
-  },
+
   mounted() {
-    if (this.allLoadedFake && !this.setInLocalStorage) {
+    if (
+      this.allLoadedFake &&
+      (!this.setInLocalStorage || !this.popinNewsletterClosedInSession)
+    ) {
+      console.log('here')
       this.initTimeline()
       this.initEvents()
     }
   },
   beforeDestroy() {
-    if (this.setInLocalStorage) return
-
     this.destroyEvents()
   },
   methods: {
-    initEvents() {
-      document.addEventListener(
-        'visibilitychange',
-        this.onBrowserChangeTab.bind(this)
-      )
+    onClosePopin() {
+      this.setPopinNewsletterOpen(false)
 
-      window.lenis.on('scroll', this.resetTimer.bind(this))
-      document.addEventListener('mousemove', this.resetTimer.bind(this))
-      document.addEventListener('keyup', this.onKeyUp.bind(this))
+      this.setPopinNewsletterClosedInSession(true)
+
+      this.destroyEvents()
+    },
+    initEvents() {
+      document.addEventListener('visibilitychange', this.onBrowserChangeTab)
+
+      window.lenis.on('scroll', this.resetTimer)
+      document.addEventListener('mousemove', this.resetTimer)
+      document.addEventListener('keyup', this.onKeyUp)
     },
     initTimeline() {
       this.tl = gsap.timeline({
@@ -154,12 +170,17 @@ export default {
       })
     },
     onBrowserChangeTab() {
-      if (document.hidden && !this.setInLocalStorage) {
-        this.setPopinNewsletterOpen(true)
-      }
+      if (!document.hidden) return
+
+      this.setPopinNewsletterOpen(true)
     },
     resetTimer() {
-      if (this.setInLocalStorage || this.popinNewsletterOpen) return
+      if (
+        this.popinNewsletterOpen ||
+        this.popinNewsletterClosedInSession ||
+        this.setInLocalStorage
+      )
+        return
 
       clearTimeout(this.timeInactivity)
 
@@ -169,35 +190,31 @@ export default {
       )
     },
     userIsInactive() {
-      if (this.popinNewsletterOpen || this.overlayContactOpen) return
+      if (
+        this.popinNewsletterOpen ||
+        this.overlayContactOpen ||
+        this.popinNewsletterClosedInSession ||
+        this.setInLocalStorage
+      )
+        return
 
-      this.setInLocalStorage = localStorage.getItem('popin-newsletter')
-
-      if (this.setInLocalStorage) {
-        this.destroyEvents()
-      } else {
-        this.setPopinNewsletterOpen(true)
-      }
+      this.setPopinNewsletterOpen(true)
     },
     onSubmit() {
-      if (this.setInLocalStorage) return
-
       this.submited = true
 
-      const endpoint = 'https://hooks.delight-data.com/v1/contacts'
-      const misc = { optin_nl: 1 }
+      // const endpoint = 'https://hooks.delight-data.com/v1/contacts'
+      // const misc = { optin_nl: 1 }
 
-      const xhr = new XMLHttpRequest()
-      xhr.open('POST', endpoint)
-      xhr.setRequestHeader('Content-Type', 'application/json')
-      xhr.setRequestHeader('x-api-key', this.$config.apiKeyDelight)
-      xhr.send(
-        JSON.stringify([{ listname: 'newsletter', email: this.email, misc }])
-      )
+      // const xhr = new XMLHttpRequest()
+      // xhr.open('POST', endpoint)
+      // xhr.setRequestHeader('Content-Type', 'application/json')
+      // xhr.setRequestHeader('x-api-key', this.$config.apiKeyDelight)
+      // xhr.send(
+      //   JSON.stringify([{ listname: 'newsletter', email: this.email, misc }])
+      // )
 
       localStorage.setItem('popin-newsletter', true)
-
-      this.setInLocalStorage = localStorage.getItem('popin-newsletter')
 
       this.destroyEvents()
 
@@ -211,31 +228,27 @@ export default {
       }
     },
     onMouseEnter() {
-      if (!this.validateForm && this.setInLocalStorage) return
+      if (!this.validateForm) return
 
       this.tl?.play()
     },
     onMouseLeave() {
-      if (!this.validateForm && this.setInLocalStorage) return
+      if (!this.validateForm) return
 
       this.tl?.reverse()
     },
     destroyEvents() {
-      if (this.setInLocalStorage) return
-
-      document.removeEventListener(
-        'visibilitychange',
-        this.onBrowserChangeTab.bind(this)
-      )
+      document.removeEventListener('visibilitychange', this.onBrowserChangeTab)
 
       this.tl?.kill()
 
-      window.lenis.off('scroll', this.resetTimer.bind(this))
-      document.addEventListener('mousemove', this.resetTimer.bind(this))
-      document.addEventListener('keyup', this.onKeyUp.bind(this))
+      window.lenis.off('scroll', this.resetTimer)
+      document.removeEventListener('mousemove', this.resetTimer)
+      document.removeEventListener('keyup', this.onKeyUp)
     },
     ...mapMutations({
       setPopinNewsletterOpen: 'setPopinNewsletterOpen',
+      setPopinNewsletterClosedInSession: 'setPopinNewsletterClosedInSession',
     }),
   },
 }

@@ -145,9 +145,13 @@ export default {
       this.initSplitText()
     },
     initialHeroDisplayed(newVal) {
-      if (!newVal || this.$viewport.isMobile) return
+      if (!newVal) return
 
-      this.appearHeroInit(0.1)
+      if (this.$viewport.isMobile) {
+        this.setAllowScroll(true)
+      } else {
+        this.appearHeroInit(0.1)
+      }
     },
     allLoadedFake() {
       this.resetView()
@@ -189,6 +193,8 @@ export default {
       this.initSplitText()
       this.appearHeroInit(0.75)
       this.resetView()
+    } else if (this.allLoadedFake && this.$viewport.isMobile) {
+      this.setAllowScroll(true)
     } else if (this.allLoadedFake) {
       this.resetView()
     }
@@ -890,7 +896,7 @@ export default {
     grid-column: 2 / span 7;
     align-self: center;
     z-index: 1;
-    max-width: 50vw;
+    max-width: 700px;
     position: relative;
     left: -5%;
 

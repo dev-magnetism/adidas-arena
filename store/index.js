@@ -35,6 +35,7 @@ export const state = () => ({
   allowScroll: false,
   initialHeroDisplayed: false,
   menuActive: false,
+  popinNewsletterClosedInSession: false,
   popinNewsletterOpen: false,
   overlayContactOpen: false,
   headerReduced: false,
@@ -58,6 +59,9 @@ export const mutations = {
   },
   setInteriorCurrentZoneHovered: (state, value) => {
     state.interiorCurrentZoneHovered = value
+  },
+  setPopinNewsletterClosedInSession: (state, value) => {
+    state.popinNewsletterClosedInSession = value
   },
   setPopinNewsletterOpen: (state, value) => {
     state.popinNewsletterOpen = value
