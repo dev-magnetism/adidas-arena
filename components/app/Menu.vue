@@ -231,7 +231,7 @@ export default {
 
     this.elTitleTargetFlip = this.elsMenuPrincipalTitleWrapper[0]
 
-    this.initLotties()
+    // this.initLotties()
 
     this.$viewport.events.on('resize', this.onResize)
     this.$nuxt.$on('menu:reset', this.onResetMenu)

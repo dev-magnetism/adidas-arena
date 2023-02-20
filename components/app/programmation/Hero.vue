@@ -249,8 +249,8 @@ export default {
       })
 
       gsap.to(this.$refs.visualBack, {
-        yPercent: -50,
-        rotate: 0,
+        yPercent: -40,
+        rotate: -2,
         scrollTrigger: {
           trigger: this.$el,
           scrub: 0.5,
