@@ -26,7 +26,7 @@
     "html-entities": "^2.3.3",
     "include-media": "^1.4.10",
     "jssoup": "^0.0.15",
-    "lottie-web": "^5.10.1",
+    "lottie-web": "^5.10.2",
     "nuxt": "^2.15.7",
     "nuxt-seo": "^1.6.1",
     "raw-loader": "^4.0.2",
