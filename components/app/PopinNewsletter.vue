@@ -77,7 +77,7 @@ export default {
       accept: false,
       submited: false,
       timeInactivity: null,
-      durationMaxInactivity: 1000,
+      durationMaxInactivity: 15000,
     }
   },
 
