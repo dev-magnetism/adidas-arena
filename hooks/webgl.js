@@ -74,7 +74,7 @@ class GL {
 
     this.camera.position.z = 500
 
-    if (!Viewport.isMobile) {
+    if (!Viewport.isMobile || process.env.NODE_ENV === 'development') {
       this.stats = new Stats()
 
       document.body.appendChild(this.stats.dom)

@@ -311,10 +311,10 @@ export default {
       })
     },
     onLinkEnter(target, index) {
-      console.log('onLinkEnter', target, index)
+      // console.log('onLinkEnter', target, index)
     },
     onLinkLeave(target, index) {
-      console.log('onLinkLeave', target, index)
+      // console.log('onLinkLeave', target, index)
     },
     onKeyDown(e) {
       if (this.keyDown) return

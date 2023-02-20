@@ -4,6 +4,7 @@
     :class="{
       'cursor-slider': cursorState === 'slider',
       'cursor-hover': cursorState === 'hover',
+      prod: devToolsHidden,
     }"
   >
     <div ref="layerBlue" class="app-transition-layer blue" />
@@ -36,14 +37,17 @@ export default {
     ...mapState({
       cursorState: (state) => state.cursorState,
     }),
+    devToolsHidden() {
+      return process.env.NODE_ENV !== 'development'
+    },
   },
   watch: {},
 
   mounted() {
     const gui = useGUI()
 
-    if (this.$viewport.isMobile) {
-      gui.hidden = false
+    if (this.$viewport.isMobile || process.env.NODE_ENV !== 'development') {
+      gui.hidden = true
     }
   },
 
@@ -62,6 +66,12 @@ export default {
 
   &-main {
     z-index: 1;
+  }
+
+  &.prod {
+    .app-renderer-info {
+      display: none;
+    }
   }
 
   &-transition-layer {

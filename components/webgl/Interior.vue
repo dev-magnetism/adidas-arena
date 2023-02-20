@@ -52,7 +52,7 @@ export default {
           emissiveIntensityActive: 0.7,
         },
       },
-      azimuth: { min: -1.6, max: 0.6 },
+      azimuth: { min: -1.6, max: this.$viewport.isMobile ? 1.6 : 0.6 },
       drag: {
         ease: 0.04,
         current: 0,
@@ -886,6 +886,7 @@ export default {
       this.arrow.add(arrow)
       this.arrow.add(edgeArrow)
       this.arrow.add(conditionalArrow)
+      this.arrow.basicMaterial = arrow.material
 
       this.tweenArrowTranslate = gsap.to(this.arrowPositionYoyo, {
         y: 2,
@@ -1522,6 +1523,7 @@ export default {
     unfocusZone(forceUnfocus = false) {
       this.zoneFocusEnabled = false
       this.currentZoneIntersect = null
+
       this.setInteriorCurrentZoneName(null)
       this.setInteriorCurrentZoneHovered(null)
       this.setCursorState('hide')
@@ -1590,6 +1592,17 @@ export default {
       const materials = this.buildGraph(this.arrow).materials
 
       this.tweenArrowTranslate?.play()
+
+      const invertZone = zone === 'public' ? 'vip' : 'public'
+
+      this.arrow.basicMaterial.color =
+        this.colors[invertZone].lambertMaterialColor.clone()
+
+      this.arrow.basicMaterial.emissive =
+        this.colors[invertZone].lambertMaterialEmissive.clone()
+
+      this.arrow.basicMaterial.emissiveIntensity =
+        this.colors[invertZone].emissiveIntensity
 
       gsap.to([materials], {
         opacity: 1,

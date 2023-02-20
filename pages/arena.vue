@@ -14,7 +14,6 @@ import { mapState } from 'vuex'
 
 import scroll from '@/mixins/scroll'
 import pageTransition from '@/mixins/page-transition'
-// import useWebGL from '~/hooks/webgl'
 
 export default {
   mixins: [scroll],
@@ -109,20 +108,9 @@ export default {
       }
     },
   },
-  mounted() {
-    // this.$nuxt.$on('app:scroll', this.onScrollApp)
-    // console.log(this.galerieTest)
-  },
-  beforeDestroy() {
-    // this.$nuxt.$off('app:scroll', this.onScrollApp)
-  },
-  methods: {
-    onScrollApp({ scroll, limit, velocity, direction }) {
-      // const { exterior, camera } = useWebGL()
-      // exterior.position.y = scroll / (camera.zoom - camera.zoom * 0.125)
-      // console.log(scroll, limit, camera.position, camera.rotation)
-    },
-  },
+  mounted() {},
+  beforeDestroy() {},
+  methods: {},
 }
 </script>
 
