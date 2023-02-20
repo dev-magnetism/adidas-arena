@@ -77,7 +77,7 @@ export default {
       accept: false,
       submited: false,
       timeInactivity: null,
-      durationMaxInactivity: 15000,
+      durationMaxInactivity: 1000,
     }
   },
 
@@ -109,11 +109,9 @@ export default {
       this.setPopinNewsletterOpen(false)
     },
     initialHeroDisplayed(newVal) {
-      if (
-        !newVal &&
-        (!this.setInLocalStorage || !this.popinNewsletterClosedInSession)
-      )
-        return
+      if (!newVal) return
+
+      if (this.setInLocalStorage || this.popinNewsletterClosedInSession) return
 
       this.initTimeline()
       this.initEvents()
@@ -121,11 +119,9 @@ export default {
   },
 
   mounted() {
-    if (
-      this.allLoadedFake &&
-      (!this.setInLocalStorage || !this.popinNewsletterClosedInSession)
-    ) {
-      console.log('here')
+    if (this.setInLocalStorage || this.popinNewsletterClosedInSession) return
+
+    if (this.allLoadedFake) {
       this.initTimeline()
       this.initEvents()
     }
@@ -142,6 +138,7 @@ export default {
       this.destroyEvents()
     },
     initEvents() {
+      console.log('initEvents')
       document.addEventListener('visibilitychange', this.onBrowserChangeTab)
 
       window.lenis.on('scroll', this.resetTimer)
@@ -203,16 +200,16 @@ export default {
     onSubmit() {
       this.submited = true
 
-      // const endpoint = 'https://hooks.delight-data.com/v1/contacts'
-      // const misc = { optin_nl: 1 }
+      const endpoint = 'https://hooks.delight-data.com/v1/contacts'
+      const misc = { optin_nl: 1 }
 
-      // const xhr = new XMLHttpRequest()
-      // xhr.open('POST', endpoint)
-      // xhr.setRequestHeader('Content-Type', 'application/json')
-      // xhr.setRequestHeader('x-api-key', this.$config.apiKeyDelight)
-      // xhr.send(
-      //   JSON.stringify([{ listname: 'newsletter', email: this.email, misc }])
-      // )
+      const xhr = new XMLHttpRequest()
+      xhr.open('POST', endpoint)
+      xhr.setRequestHeader('Content-Type', 'application/json')
+      xhr.setRequestHeader('x-api-key', this.$config.apiKeyDelight)
+      xhr.send(
+        JSON.stringify([{ listname: 'newsletter', email: this.email, misc }])
+      )
 
       localStorage.setItem('popin-newsletter', true)
 

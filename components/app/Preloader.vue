@@ -148,6 +148,9 @@ export default {
 
       Promise.all(observers)
         .then((fonts) => {
+          this.setFontsLoaded(true)
+          ScrollTrigger.refresh()
+
           if (this.$viewport.isFirefox && this.$refs.video.readyState > 3) {
             this.onVideoLoaded()
           } else {
@@ -156,9 +159,6 @@ export default {
               this.onVideoLoaded
             )
           }
-
-          this.setFontsLoaded(true)
-          ScrollTrigger.refresh()
         })
         .catch((err) => {
           console.warn('Some critical font are not available:', err)
