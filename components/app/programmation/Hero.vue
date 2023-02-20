@@ -14,49 +14,53 @@
         {{ contents.paragraph }}
       </TP2>
     </div>
-
     <div ref="mainCard" class="app-programmation-hero__main-card">
-      <AtomsCornerPoints :size-points="8" />
+      <EKinesis :speed="5">
+        <AtomsCornerPoints :size-points="8" />
 
-      <div class="app-programmation-hero__main-card__wrapper">
-        <nuxt-picture
-          provider="directus"
-          sizes="sm:100vw md:40vw"
-          :src="contentCard.visual"
-          :alt="`visual-${contentCard.name}`"
-        />
+        <div class="app-programmation-hero__main-card__wrapper">
+          <nuxt-picture
+            provider="directus"
+            sizes="sm:100vw md:40vw"
+            :src="contentCard.visual"
+            :alt="`visual-${contentCard.name}`"
+          />
 
-        <div class="app-programmation-hero__main-card__content">
-          <TH3 class="app-programmation-hero__main-card__name">
-            {{ contentCard.name }}
-            <span
-              v-if="contentCard.full"
-              class="app-programmation-hero__main-card__full"
-              >Complet</span
+          <div class="app-programmation-hero__main-card__content">
+            <TH3 class="app-programmation-hero__main-card__name">
+              {{ contentCard.name }}
+              <span
+                v-if="contentCard.full"
+                class="app-programmation-hero__main-card__full"
+                >Complet</span
+              >
+            </TH3>
+            <TH4 class="app-programmation-hero__main-card__date">
+              {{ contentCard.date }}
+            </TH4>
+            <TP2
+              weight="medium"
+              class="app-programmation-hero__main-card__from-price"
             >
-          </TH3>
-          <TH4 class="app-programmation-hero__main-card__date">
-            {{ contentCard.date }}
-          </TH4>
-          <TP2
-            weight="medium"
-            class="app-programmation-hero__main-card__from-price"
-          >
-            À partir de {{ contentCard.from_price }}€
-          </TP2>
+              À partir de {{ contentCard.from_price }}€
+            </TP2>
+          </div>
         </div>
-      </div>
-      <AtomsCTA
-        :href="contentCard.link"
-        class="app-programmation-hero__main-card__cta"
-      >
-        Liste d'attente
-      </AtomsCTA>
+        <AtomsCTA
+          :href="contentCard.link"
+          class="app-programmation-hero__main-card__cta"
+        >
+          {{ contentCard.full ? `Liste d'attente` : `Réserver` }}
+        </AtomsCTA>
+      </EKinesis>
     </div>
+
     <div
       ref="visualBack"
       class="app-programmation-hero__visual-back-transparent"
-    />
+    >
+      <EKinesis :speed="10" />
+    </div>
     <div class="app-programmation-hero__arrow-left">
       <ELottie
         v-if="!$viewport.isMobile"
@@ -216,7 +220,7 @@ export default {
             duration: 0.5,
             ease: 'power3.out',
           },
-          'visuals+=35%'
+          'visuals+=30%'
         )
         .fromTo(
           this.$refs.visualBack,
@@ -228,11 +232,31 @@ export default {
             duration: 0.55,
             ease: 'power3.out',
           },
-          'visuals+=35%'
+          'visuals+=30%'
         )
     },
     initScrollTrigger() {
       this.setAllowScroll(true)
+
+      gsap.to(this.$refs.mainCard, {
+        yPercent: -10,
+        rotate: 2,
+        scrollTrigger: {
+          trigger: this.$el,
+          scrub: 0.5,
+          start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
+        },
+      })
+
+      gsap.to(this.$refs.visualBack, {
+        yPercent: -50,
+        rotate: 0,
+        scrollTrigger: {
+          trigger: this.$el,
+          scrub: 0.5,
+          start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
+        },
+      })
     },
     initSplitText() {
       const title = this.$refs.title.$el.querySelectorAll('.H2')
@@ -333,13 +357,18 @@ export default {
     position: relative;
     grid-column: 8 / span 5;
     width: 100%;
-    background: var(--c-white);
     left: -5%;
     transform: rotate(3deg);
     z-index: 1;
     display: flex;
     flex-direction: column;
     transform-origin: left center;
+
+    .app-element-kinesis {
+      display: flex;
+      flex-direction: column;
+      background: var(--c-white);
+    }
 
     @include mobile {
       grid-row: 2;
@@ -427,20 +456,31 @@ export default {
       border-right: none;
 
       @include mobile {
-        padding: mobile-vw(10px) mobile-vw(5px) mobile-vw(10px) mobile-vw(25px);
+        padding: mobile-vw(10px) mobile-vw(5px) mobile-vw(10px) mobile-vw(15px);
+        min-width: 60%;
+      }
+
+      svg {
+        @include mobile {
+          // padding: mobile-vw(10px) mobile-vw(5px) mobile-vw(10px) mobile-vw(15px);
+        }
       }
     }
   }
   &__visual-back-transparent {
-    @include fake-transparent();
     grid-column: 7 / span 2;
     position: absolute;
-    aspect-ratio: 185 / 230;
     width: 100%;
+    height: auto;
     bottom: 5%;
     z-index: 0;
     transform: rotate(-5deg);
     transform-origin: right center;
+
+    .app-element-kinesis {
+      @include fake-transparent();
+      aspect-ratio: 185 / 230;
+    }
 
     @include mobile {
       grid-column: 1 / span 3;

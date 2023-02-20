@@ -138,7 +138,6 @@ export default {
       this.destroyEvents()
     },
     initEvents() {
-      console.log('initEvents')
       document.addEventListener('visibilitychange', this.onBrowserChangeTab)
 
       window.lenis.on('scroll', this.resetTimer)
@@ -235,11 +234,10 @@ export default {
       this.tl?.reverse()
     },
     destroyEvents() {
-      document.removeEventListener('visibilitychange', this.onBrowserChangeTab)
-
       this.tl?.kill()
 
       window.lenis.off('scroll', this.resetTimer)
+      document.removeEventListener('visibilitychange', this.onBrowserChangeTab)
       document.removeEventListener('mousemove', this.resetTimer)
       document.removeEventListener('keyup', this.onKeyUp)
     },
