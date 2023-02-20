@@ -1,57 +1,45 @@
 <template>
-  <div class="app-element-slider">
-    <div class="app-element-slider__heading grid-inner">
+  <div class="app-element-programmation-slider">
+    <div class="app-element-programmation-slider__heading grid-inner">
       <ERichText
         :split="true"
         :scrub="false"
         :overflow="true"
-        class="app-element-slider__heading__title"
-        :content="contents.title"
+        class="app-element-programmation-slider__heading__title"
+        :content="content.title"
       />
-      <EPartnersTotal
-        class="app-element-slider__heading__spaces"
-        :total="contents.items.length"
-        :text="contents.totalText"
-      />
+      <AtomsCTA
+        href="/programmation"
+        class="app-element-programmation-slider__cta"
+      >
+        {{ content.cta }}
+      </AtomsCTA>
     </div>
 
     <div
       ref="wrapper"
-      :class="{ cursorSliderHold }"
-      class="app-element-slider__wrapper"
+      :class="{ hold: cursorSliderHold }"
+      class="app-element-programmation-slider__wrapper"
       @mouseenter="setCursorState('slider')"
       @mouseleave="setCursorState('hide')"
       @click="onClickSlider"
     >
-      <div class="app-element-slider__inner">
-        <div
-          v-for="(item, index) in contents.items"
-          :key="index"
-          ref="items"
-          class="app-element-slider__item"
-        >
-          <div class="app-element-slider__item__wrapper-visual">
-            <nuxt-picture
-              provider="directus"
-              class="app-element-slider__item__visual"
-              :src="item.picture"
-              format="webp"
-              :alt="`slider-visual-${index}`"
-              sizes="sm:50vw md:85vw"
-            />
-          </div>
-
-          <div class="app-element-slider__item__content">
-            <TH4 class="app-element-slider__item__content__title">{{
-              item.title
-            }}</TH4>
-            <TP2 class="app-element-slider__item__content__text">
-              {{ item.paragraph }}
-            </TP2>
-          </div>
-        </div>
+      <div class="app-element-programmation-slider__inner">
+        <AppProgrammationSliderCard
+          v-for="(card, index) in contentProgrammations"
+          :key="'programmation slider' + index"
+          :content="card"
+          :theme="index % 3 === 0 ? 'grey' : index % 3 === 1 ? 'red' : 'blue'"
+          :rotate-negative="!(index % 2)"
+        />
       </div>
     </div>
+    <AtomsCTA
+      href="/programmation"
+      class="app-element-programmation-slider__cta-mobile"
+    >
+      {{ content.cta }}
+    </AtomsCTA>
   </div>
 </template>
 
@@ -61,21 +49,25 @@ import EmblaCarousel from 'embla-carousel'
 
 export default {
   props: {
-    contents: {
+    content: {
       type: Object,
       default: () => {},
     },
   },
   data() {
     return {
-      parallaxFactor: 5,
+      parallaxFactor: 10,
     }
   },
   computed: {
     ...mapState({
       cursorSliderHold: (state) => state.cursorSliderHold,
       cursorSliderLeftZone: (state) => state.cursorSliderLeftZone,
+      programmationsContent: (state) => state.programmationsContent,
     }),
+    contentProgrammations() {
+      return this.programmationsContent.filter((el) => el.inside_slider)
+    },
   },
   watch: {
     cursorSliderLeftZone() {
@@ -159,6 +151,7 @@ export default {
 
       return this.embla.scrollSnapList().map((scrollSnap, index) => {
         if (!this.embla.slidesInView().includes(index)) return 0
+
         let diffToTarget = scrollSnap - scrollProgress
 
         if (engine.options.loop) {
@@ -176,9 +169,11 @@ export default {
     },
     setParallax() {
       const slides = this.embla.slideNodes()
+
       const layers = slides.map((s) =>
-        s.querySelector('.app-element-slider__item__visual')
+        s.querySelector('.app-programmation-slider-card__visual__picture')
       )
+
       const parallaxTransforms = this.calculateParallaxTransforms()
 
       parallaxTransforms.forEach((transform, index) => {
@@ -195,25 +190,62 @@ export default {
 </script>
 
 <style lang="scss">
-.app-element-slider {
+.app-element-programmation-slider {
   width: 100%;
   position: relative;
+  margin-top: desktop-vw(130px);
+  margin-bottom: desktop-vw(80px);
+  display: flex;
+  flex-direction: column;
 
   @include mobile {
-    margin-bottom: mobile-vw(120px);
+    margin-top: mobile-vw(130px);
+    margin-bottom: mobile-vw(100px);
+    display: flex;
+    flex-direction: column;
   }
 
   &__wrapper {
-    overflow: hidden;
-    // padding-left: desktop-vw(40px);
-    // padding-right: desktop-vw(40px);
+    // overflow: hidden;
 
     &.hold {
-      .app-element-slider__item__visual {
+      .app-programmation-slider-card__visual__picture {
         img {
-          transform: scale(1.35);
+          // transform: scale(1.35);
         }
       }
+    }
+  }
+
+  &__inner {
+    display: flex;
+    column-gap: desktop-vw(60px);
+    flex-direction: row;
+    will-change: transform;
+
+    @include mobile {
+      column-gap: mobile-vw(30px);
+    }
+  }
+
+  &__cta.app-atoms-cta {
+    grid-column: 10 / span 3;
+    align-self: center;
+    width: 80%;
+    margin-left: auto;
+
+    @include mobile {
+      display: none;
+    }
+  }
+
+  &__cta-mobile.app-atoms-cta {
+    width: 65%;
+    margin-top: mobile-vw(85px);
+    align-self: center;
+
+    @include desktop {
+      display: none;
     }
   }
 
@@ -223,118 +255,20 @@ export default {
 
     @include mobile {
       row-gap: 0px;
+      margin-bottom: mobile-vw(40px);
     }
 
     &__title {
       grid-column: 1 / span 8;
 
+      .H2.medium {
+        @include font-adihausDIN-cn-bold();
+      }
+
       @include mobile {
         grid-column: 1 / span 6;
         grid-row: 1;
-        width: 85%;
-      }
-    }
-
-    &__spaces {
-      grid-column: 12 / span 1;
-      align-self: center;
-      position: absolute;
-
-      @include mobile {
-        grid-column: 1 / span 6;
-        position: relative;
-        grid-row: 2;
-      }
-    }
-  }
-
-  &__inner {
-    display: flex;
-    column-gap: desktop-vw(25px);
-    flex-direction: row;
-    will-change: transform;
-
-    @include mobile {
-      column-gap: mobile-vw(25px);
-    }
-  }
-
-  &__item {
-    flex: 0 0 45%;
-    display: flex;
-    flex-direction: column;
-
-    @include mobile {
-      flex: 0 0 77.5%;
-    }
-
-    &:first-child {
-      margin-left: var(--layout-margin);
-    }
-    &:last-child {
-      margin-right: var(--layout-margin);
-    }
-
-    &__content {
-      margin-top: desktop-vw(40px);
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-
-      @include mobile {
-        margin-top: mobile-vw(25px);
-        flex-direction: column;
-      }
-
-      &__title.H4 {
-        flex: 2;
-        margin-right: desktop-vw(40px);
-        font-size: desktop-vw(48px);
-        line-height: desktop-vw(48px);
-
-        @include mobile {
-          font-size: mobile-vw(40px);
-          line-height: mobile-vw(40px);
-          margin-right: 0px;
-          margin-bottom: mobile-vw(15px);
-        }
-      }
-      &__text.P2 {
-        flex: 3;
-        margin-right: desktop-vw(60px);
-        text-transform: uppercase;
-
-        @include mobile {
-          margin-right: mobile-vw(0px);
-          margin-left: mobile-vw(40px);
-        }
-      }
-    }
-
-    &__wrapper-visual {
-      aspect-ratio: 670 / 680;
-      display: block;
-      width: 100%;
-      height: auto;
-      position: relative;
-      overflow: hidden;
-      max-height: 85vh;
-    }
-
-    &__visual {
-      position: absolute;
-      top: 0;
-      left: 0;
-      display: block;
-      width: 100%;
-      height: 100%;
-      will-change: transform;
-      @include noise();
-
-      img {
-        transition: transform 0.95s var(--ease-out-quart);
-
-        transform: scale(1.45);
+        width: 100%;
       }
     }
   }

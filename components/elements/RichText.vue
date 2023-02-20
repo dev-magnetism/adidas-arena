@@ -56,12 +56,12 @@ export default {
         if (this.overflow) {
           this.splitting = new SplitText(child, {
             type: 'lines',
-            linesClass: 'H1__child line',
+            linesClass: 'line-child line',
           })
 
           this.splittingParent = new SplitText(child, {
             type: 'lines',
-            linesClass: 'H1__parent',
+            linesClass: 'line-parent',
           })
         } else {
           this.splitting = new SplitText(child, {
@@ -165,7 +165,7 @@ export default {
 
       text.name = `T${componentName}`
 
-      // delete text.attrs.class
+      text.attrs.class = 'wysiwyg-text'
       delete text.attrs.style
     })
 
@@ -173,6 +173,7 @@ export default {
       if (this.split) {
         const string = text.getText()
         const stringDecode = decode(string)
+
         const finalString = stringDecode.replace(/\S+/g, (a, b, c) => {
           return `<span class="bold">` + a + '</span>'
         })
@@ -180,7 +181,6 @@ export default {
         text.replaceWith(finalString)
       }
 
-      text.name = 'span'
       delete text.attrs.style
       delete text.attrs.class
 
@@ -188,7 +188,15 @@ export default {
     })
 
     strokeTexts.forEach((text) => {
-      text.name = `AtomsTextStroke`
+      const string = text.getText()
+      const stringDecode = decode(string)
+
+      const finalString = stringDecode.replace(/\S+/g, (a, b, c) => {
+        return `<AtomsTextStroke>` + a + '</AtomsTextStroke>'
+      })
+
+      text.replaceWith(finalString)
+
       delete text.attrs.style
       delete text.attrs.class
     })
@@ -209,14 +217,16 @@ export default {
 
 <style lang="scss">
 .app-element-rich-text {
-  .line {
+  .line-child {
     display: inline-block !important;
   }
-  .H1__parent {
+  .line-parent {
+    overflow: hidden;
     // display: inline-block !important;
   }
 
   strong,
+  em,
   span {
     display: inline-block !important;
   }

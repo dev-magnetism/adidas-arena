@@ -38,6 +38,8 @@ export default {
       done()
     },
     leave(el, done) {
+      this.$store.commit('setAllowScroll', false)
+
       const layerBlue = document.querySelector('.app-transition-layer.blue')
       const layerRed = document.querySelector('.app-transition-layer.red')
 

@@ -67,6 +67,7 @@
 
 <script>
 import { gsap } from 'gsap'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   props: {
@@ -75,38 +76,63 @@ export default {
       default: () => {},
     },
   },
+  computed: {
+    ...mapState({
+      initialHeroDisplayed: (state) => state.initialHeroDisplayed,
+      allLoadedFake: (state) => state.allLoadedFake,
+    }),
+  },
+  watch: {
+    initialHeroDisplayed(newVal) {
+      if (!newVal) return
+
+      this.initScrollTrigger()
+    },
+  },
   mounted() {
-    if (this.$viewport.isMobile) return
+    if (this.allLoadedFake) {
+      this.initScrollTrigger()
+    }
+  },
+  methods: {
+    initScrollTrigger() {
+      this.setAllowScroll(true)
 
-    gsap.fromTo(
-      this.$refs.bigVisual.$el,
-      {
-        rotate: 6,
-      },
-      {
-        rotate: 2,
-        scrollTrigger: {
-          trigger: this.$refs.bigVisual.$el,
-          scrub: 0.5,
-          end: 'bottom top',
-        },
-      }
-    )
+      if (!this.$viewport.isMobile) {
+        gsap.fromTo(
+          this.$refs.bigVisual.$el,
+          {
+            rotate: 6,
+          },
+          {
+            rotate: 2,
+            scrollTrigger: {
+              trigger: this.$refs.bigVisual.$el,
+              scrub: 0.5,
+              end: 'bottom top',
+            },
+          }
+        )
 
-    gsap.fromTo(
-      this.$refs.framedVisual.$el,
-      {
-        rotate: -6,
-      },
-      {
-        rotate: -2,
-        scrollTrigger: {
-          trigger: this.$refs.framedVisual.$el,
-          scrub: 0.5,
-          end: 'bottom top',
-        },
+        gsap.fromTo(
+          this.$refs.framedVisual.$el,
+          {
+            rotate: -6,
+          },
+          {
+            rotate: -2,
+            scrollTrigger: {
+              trigger: this.$refs.framedVisual.$el,
+              scrub: 0.5,
+              end: 'bottom top',
+            },
+          }
+        )
       }
-    )
+    },
+    ...mapMutations({
+      setAllowScroll: 'setAllowScroll',
+    }),
   },
 }
 </script>

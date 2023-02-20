@@ -101,8 +101,10 @@ export default {
 
   &__content {
     grid-column: 1 / span 5;
+    width: 105%;
 
     @include mobile {
+      width: 100%;
       grid-column: 1 / span 6;
     }
   }

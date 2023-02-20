@@ -19,7 +19,6 @@
       <AtomsCornerPoints :size-points="8" />
 
       <div class="app-programmation-hero__main-card__wrapper">
-        <div ref="layer" class="layer" />
         <nuxt-picture
           provider="directus"
           sizes="sm:100vw md:40vw"
@@ -58,13 +57,26 @@
       ref="visualBack"
       class="app-programmation-hero__visual-back-transparent"
     />
-    <div class="app-programmation-arrow-left" />
-    <div class="app-programmation-arrow-right" />
+    <div class="app-programmation-hero__arrow-left">
+      <ELottie
+        v-if="!$viewport.isMobile"
+        id="Fleche_2"
+        start="top center"
+        end="bottom center-=25%"
+      />
+    </div>
+    <div class="app-programmation-hero__arrow-right">
+      <ELottie
+        v-if="!$viewport.isMobile"
+        id="Fleche_2"
+        end="bottom center-=25%"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import { SplitText } from 'gsap/SplitText'
 import { gsap } from 'gsap'
 
@@ -89,9 +101,13 @@ export default {
   },
   watch: {
     initialHeroDisplayed(newVal) {
-      if (!newVal || this.$viewport.isMobile) return
+      if (!newVal) return
 
-      this.appearHero(0.25)
+      if (this.$viewport.isMobile) {
+        this.setAllowScroll(true)
+      } else {
+        this.appearHero(0.2)
+      }
     },
     fontsLoaded(newVal) {
       if (!newVal || this.$viewport.isMobile) return
@@ -102,7 +118,9 @@ export default {
   mounted() {
     if (this.allLoadedFake && !this.$viewport.isMobile) {
       this.initSplitText()
-      this.appearHero(0.85)
+      this.appearHero(0.95)
+    } else if (this.allLoadedFake && this.$viewport.isMobile) {
+      this.setAllowScroll(true)
     }
   },
   beforeDestroy() {
@@ -118,9 +136,10 @@ export default {
         .timeline({
           delay,
           onComplete: () => {
-            // this.initScrollTrigger()
+            this.initScrollTrigger()
           },
         })
+        .addLabel('texts')
         .fromTo(
           this.splittingChild.lines,
           {
@@ -128,22 +147,11 @@ export default {
           },
           {
             y: '0',
-            duration: 0.5,
-            stagger: 0.045,
-            ease: 'power1.inOut',
-          }
-        )
-        .fromTo(
-          this.$refs.layer,
-          {
-            scaleY: 1,
+            duration: 0.6,
+            stagger: 0.065,
+            ease: 'power3.out',
           },
-          {
-            scaleY: 0,
-            duration: 0.85,
-            ease: 'power2.inOut',
-          },
-          '<0%'
+          'texts'
         )
         .fromTo(
           this.$refs.paragraph.$el,
@@ -152,10 +160,10 @@ export default {
           },
           {
             y: '0',
-            duration: 0.5,
-            ease: 'power1.inOut',
+            duration: 0.6,
+            ease: 'power3.out',
           },
-          '<15%'
+          'texts+=15%'
         )
         .fromTo(
           this.$refs.paragraph.$el,
@@ -164,11 +172,67 @@ export default {
           },
           {
             opacity: 1,
-            duration: 0.35,
-            ease: 'power1.inOut',
+            duration: 0.85,
+            ease: 'power3.out',
           },
-          '<25%'
+          'texts+=15%'
         )
+        .addLabel('visuals', 'texts')
+        .fromTo(
+          this.$refs.mainCard,
+          {
+            y: '20%',
+            rotate: 8,
+          },
+          {
+            y: '0%',
+            rotate: 3,
+            duration: 0.5,
+            ease: 'power3.out',
+          },
+          'visuals'
+        )
+        .fromTo(
+          this.$refs.mainCard,
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+            duration: 0.55,
+            ease: 'power3.out',
+          },
+          'visuals+=5%'
+        )
+        .fromTo(
+          this.$refs.visualBack,
+          {
+            y: '20%',
+            rotate: -10,
+          },
+          {
+            y: '0%',
+            rotate: -5,
+            duration: 0.5,
+            ease: 'power3.out',
+          },
+          'visuals+=35%'
+        )
+        .fromTo(
+          this.$refs.visualBack,
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+            duration: 0.55,
+            ease: 'power3.out',
+          },
+          'visuals+=35%'
+        )
+    },
+    initScrollTrigger() {
+      this.setAllowScroll(true)
     },
     initSplitText() {
       const title = this.$refs.title.$el.querySelectorAll('.H2')
@@ -183,6 +247,9 @@ export default {
         linesClass: 'parent',
       })
     },
+    ...mapMutations({
+      setAllowScroll: 'setAllowScroll',
+    }),
   },
 }
 </script>
@@ -206,6 +273,10 @@ export default {
 
   &__title {
     width: 100%;
+
+    .H2.medium {
+      @include font-adihausDIN-cn-bold();
+    }
   }
 
   .child {
@@ -214,6 +285,37 @@ export default {
 
   .parent {
     overflow: hidden;
+  }
+
+  &__arrow-left,
+  &__arrow-right {
+    @include mobile {
+      display: none;
+    }
+  }
+
+  &__arrow-left {
+    position: absolute;
+    bottom: 30%;
+    width: desktop-vw(90px);
+    transform: scaleX(-1) rotate(20deg);
+    left: 15%;
+    aspect-ratio: 90 / 130;
+  }
+
+  &__arrow-right {
+    position: absolute;
+    bottom: 12.5%;
+    width: desktop-vw(90px);
+    transform: scaleX(1) rotate(20deg);
+    left: 30%;
+    aspect-ratio: 90 / 130;
+
+    svg {
+      path {
+        stroke: var(--c-red-adidas);
+      }
+    }
   }
 
   &__paragraph {
@@ -227,22 +329,6 @@ export default {
     }
   }
 
-  .layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--c-white);
-    z-index: 9999;
-    transform: scaleY(1);
-    transform-origin: center bottom;
-
-    @include mobile {
-      display: none;
-    }
-  }
-
   &__main-card {
     position: relative;
     grid-column: 8 / span 5;
@@ -253,6 +339,7 @@ export default {
     z-index: 1;
     display: flex;
     flex-direction: column;
+    transform-origin: left center;
 
     @include mobile {
       grid-row: 2;
@@ -353,6 +440,7 @@ export default {
     bottom: 5%;
     z-index: 0;
     transform: rotate(-5deg);
+    transform-origin: right center;
 
     @include mobile {
       grid-column: 1 / span 3;

@@ -1,6 +1,7 @@
 <template>
   <main class="app-home">
     <AppHomeHero :contents="contentHero" />
+    <ESliderProgrammation :content="contentSlider" />
     <AppHomePresentation :contents="contentPresentation" />
     <EMarqueeScroll>
       <TH1 weight="bold">
@@ -130,6 +131,12 @@ export default {
           src: this.content.data.hero_picture_bottom,
           alt: this.content.data.hero_picture_bottom_alt,
         },
+      }
+    },
+    contentSlider() {
+      return {
+        title: this.content.data.slider_programmation_title,
+        cta: this.content.data.slider_programmation_cta,
       }
     },
     contentMarquees() {

@@ -32,6 +32,7 @@ export const state = () => ({
   interiorTimelineFloorsInProgress: false,
 
   // UI
+  allowScroll: false,
   initialHeroDisplayed: false,
   menuActive: false,
   popinNewsletterOpen: false,
@@ -72,6 +73,9 @@ export const mutations = {
   },
   setHeaderHided: (state, value) => {
     state.headerHided = value
+  },
+  setAllowScroll: (state, value) => {
+    state.allowScroll = value
   },
   setInteriorCurrentZoneName: (state, value) => {
     state.interiorCurrentZoneName = value

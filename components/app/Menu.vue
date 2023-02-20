@@ -34,15 +34,39 @@
           />
         </transition-group>
       </div>
+
       <div class="app-menu__content">
         <span
           ref="contentBorderLeft"
           class="app-menu__border-left menu-border-left"
         />
+
         <div class="app-menu__title">
-          <TH1 ref="menuTitle">{{ menuName }} </TH1>
+          <TH1 ref="menuTitle" weight="bold">{{ menuName }} </TH1>
         </div>
-        <div class="app-menu__principal">
+
+        <div v-if="$viewport.isMobile" class="app-menu__static-links">
+          <div class="app-menu__link">
+            <span class="app-menu__link__border-top" />
+
+            <div class="app-menu__link__title-wrapper">
+              <TH2
+                weight="bold"
+                class="app-menu__link__title static-links-title"
+                @mouseenter.native="onLinkEnter('principal', index)"
+                @mouseleave.native="onLinkLeave('principal', index)"
+              >
+                <nuxt-link
+                  to="/programmation"
+                  @click.native="onClickLink('/programmation')"
+                  >Programmation</nuxt-link
+                >
+              </TH2>
+            </div>
+          </div>
+        </div>
+
+        <div class="app-menu__dynamics-links">
           <div
             v-for="(item, index) in menu"
             :key="index"
@@ -50,21 +74,26 @@
             class="app-menu__link"
           >
             <span class="app-menu__link__border-top" />
-            <div class="app-menu__link__title principal">
+
+            <div class="app-menu__link__title-wrapper principal">
               <TH2
                 v-if="!item.submenu_title"
-                class="menu-principal-title"
-                @mouseenter.native="onLinkSelected('principal', index)"
-                @mouseleave.native="onLinkUnselected('principal', index)"
+                weight="bold"
+                class="app-menu__link__title dynamic-links-title"
+                @mouseenter.native="onLinkEnter('principal', index)"
+                @mouseleave.native="onLinkLeave('principal', index)"
               >
-                <nuxt-link :to="item.url">{{ item.name }}</nuxt-link>
+                <nuxt-link :to="item.url" @click.native="onClickLink(item.url)">
+                  {{ item.name }}
+                </nuxt-link>
               </TH2>
               <TH2
                 v-if="item.submenu_title"
-                class="menu-principal-title"
+                class="app-menu__link__title"
+                weight="bold"
                 @click.native="onToggleSubmenu"
-                @mouseenter.native="onLinkSelected('principal', index)"
-                @mouseleave.native="onLinkUnselected('principal', index)"
+                @mouseenter.native="onLinkEnter('principal', index)"
+                @mouseleave.native="onLinkLeave('principal', index)"
               >
                 {{ item.name }}
               </TH2>
@@ -99,13 +128,18 @@
             ref="linkSubmenu"
             class="app-menu__link"
           >
-            <div class="app-menu__link__title">
+            <div class="app-menu__link__title-wrapper">
               <TH2
+                weight="medium"
                 class="menu-submenu-title"
-                @mouseenter.native="onLinkSelected('submenu', index)"
-                @mouseleave.native="onLinkUnselected('submenu', index)"
+                @mouseenter.native="onLinkEnter('principal', index)"
+                @mouseleave.native="onLinkLeave('principal', index)"
               >
-                <nuxt-link :to="item.url">{{ item.name }}</nuxt-link>
+                <nuxt-link
+                  :to="item.url"
+                  @click.native="onClickLink(item.url)"
+                  >{{ item.name }}</nuxt-link
+                >
               </TH2>
             </div>
           </div>
@@ -129,8 +163,8 @@ export default {
       burgerCloseActivated: false,
       indexLinkHovered: 0,
       indexImageVisible: 0,
-      lottiesMenuPrincipal: [],
-      lottiesMenuSubmenu: [],
+      lottiesMainLinks: [],
+      lottiesSubmenuLinks: [],
       keyDown: false,
     }
   },
@@ -143,7 +177,7 @@ export default {
     }),
     menu() {
       return this.menuContent.data.filter(
-        (el) => !el.submenu_element && !el.homepage
+        (el) => !el.submenu_element && !el.homepage && !el.programmation
       )
     },
     menuVisuals() {
@@ -169,10 +203,6 @@ export default {
         if (this.submenuActive) {
           this.initMainTimelineClosing()
         } else {
-          if (this.activeLinkLocation === 'principal') {
-            this.handleActiveLinkLottie('disappear')
-          }
-
           this.tlMain?.reverse()
         }
       }
@@ -183,11 +213,11 @@ export default {
     this.elsTopBorder = this.$el.querySelectorAll('.app-menu__link__border-top')
 
     this.elsMenuPrincipalTitleWrapper = this.$el.querySelectorAll(
-      '.app-menu__link__title.principal'
+      '.app-menu__link__title-wrapper.principal'
     )
 
     this.elsMenuPrincipalTitle = this.$el.querySelectorAll(
-      '.menu-principal-title'
+      '.app-menu__link__title'
     )
     this.elsMenuSubmenuTitle = this.$el.querySelectorAll('.menu-submenu-title')
 
@@ -202,10 +232,8 @@ export default {
     this.elTitleTargetFlip = this.elsMenuPrincipalTitleWrapper[0]
 
     this.initLotties()
-    this.getActiveLottie()
 
     this.$viewport.events.on('resize', this.onResize)
-
     this.$nuxt.$on('menu:reset', this.onResetMenu)
 
     window.addEventListener('keydown', this.onKeyDown)
@@ -222,29 +250,18 @@ export default {
   },
 
   methods: {
-    onKeyDown(e) {
-      if (this.keyDown) return
-
-      this.keyDown = true
-    },
-    onKeyUp(e) {
-      if (!this.keyDown) return
-
-      this.keyDown = false
-
-      if (e.key === 'Escape') {
-        this.onCloseBurger()
-      }
-    },
-    onResize() {
-      if (this.submenuActive)
-        Flip.fit(this.elTitleSubmenuWrapper, this.elTitleTargetFlip)
+    onClickLink(url) {
+      if (url === this.$route.fullPath) this.onCloseBurger()
     },
     initLotties() {
       const lottieCircle1 = require(`@/assets/lotties/Cercle_1.json`)
       const lottieCircle3 = require(`@/assets/lotties/Cercle_3.json`)
 
-      this.$refs.linkPrincipal.forEach((el, index) => {
+      const mainLinks = this.$el.querySelectorAll(
+        '.app-menu__link__title.dynamic-links-title,.app-menu__link__title.static-links-title'
+      )
+
+      mainLinks.forEach((el, index) => {
         if (this.menu[index].submenu) return
 
         const animationHover = lottie.loadAnimation({
@@ -261,7 +278,7 @@ export default {
           animationData: lottieCircle3,
         })
 
-        this.lottiesMenuPrincipal.push({
+        this.lottiesMainLinks.push({
           tweenEnter: null,
           tweenLeave: null,
           animation: { hover: animationHover, active: animationActive },
@@ -285,113 +302,36 @@ export default {
           animationData: lottieCircle3,
         })
 
-        this.lottiesMenuSubmenu.push({
+        this.lottiesSubmenuLinks.push({
           tweenEnter: null,
           tweenLeave: null,
           animation: { hover: animationHover, active: animationActive },
         })
       })
     },
-    onLinkSelected(target, index) {
-      if (target === 'principal') {
-        this.indexLinkHovered =
-          this.indexLinkHovered !== index ? index : this.indexLinkHovered
+    onLinkEnter(target, index) {
+      console.log('onLinkEnter', target, index)
+    },
+    onLinkLeave(target, index) {
+      console.log('onLinkLeave', target, index)
+    },
+    onKeyDown(e) {
+      if (this.keyDown) return
 
-        this.indexImageVisible = this.indexLinkHovered + 1
+      this.keyDown = true
+    },
+    onKeyUp(e) {
+      if (!this.keyDown) return
 
-        if (this.indexLinkHovered !== this.menu.length - 1) {
-          // this.appearLottieHovered(target, index)
-        }
-      } else {
-        // this.appearLottieHovered(target, index)
+      this.keyDown = false
+
+      if (e.key === 'Escape') {
+        this.onCloseBurger()
       }
     },
-    onLinkUnselected(target, index) {
-      if (target === 'principal') {
-        this.indexLinkHovered = index
-
-        this.indexImageVisible = this.indexLinkHovered + 1
-
-        if (this.indexLinkHovered !== this.menu.length - 1) {
-          this.disappearLottieHovered(target, index)
-        }
-      } else {
-        this.disappearLottieHovered(target, index)
-      }
-    },
-    appearLottieHovered(target, index) {
-      if (
-        (this.activeLinkIndex === index &&
-          target === this.activeLinkLocation) ||
-        this.$viewport.isMobile
-      )
-        return
-
-      const playhead = { frame: 0 }
-
-      let lottie
-
-      if (target === 'principal') {
-        this.lottiesMenuPrincipal[index].tweenLeave?.kill()
-        lottie = this.lottiesMenuPrincipal[index].animation.hover
-      } else {
-        this.lottiesMenuSubmenu[index].tweenLeave?.kill()
-        lottie = this.lottiesMenuSubmenu[index].animation.hover
-      }
-
-      const tween = gsap.to(playhead, {
-        duration: 1,
-        frame: lottie.totalFrames - 1,
-        ease: 'power2.inOut',
-        onUpdate: () => lottie.goToAndStop(playhead.frame, true),
-      })
-
-      if (target === 'principal') {
-        this.lottiesMenuPrincipal[index].tweenEnter = tween
-      } else {
-        this.lottiesMenuSubmenu[index].tweenEnter = tween
-      }
-    },
-    disappearLottieHovered(target, index) {
-      if (
-        (this.activeLinkIndex === index &&
-          target === this.activeLinkLocation) ||
-        this.$viewport.isMobile
-      )
-        return
-
-      let lottie
-
-      if (target === 'principal') {
-        this.lottiesMenuPrincipal[index].tweenEnter?.kill()
-        lottie = this.lottiesMenuPrincipal[index].animation.hover
-      } else {
-        this.lottiesMenuSubmenu[index].tweenEnter?.kill()
-        lottie = this.lottiesMenuSubmenu[index].animation.hover
-      }
-
-      const playhead = { frame: lottie.currentFrame }
-
-      const duration = gsap.utils.mapRange(
-        0,
-        lottie.totalFrames - 1,
-        0,
-        0.8,
-        playhead.frame
-      )
-
-      const tween = gsap.to(playhead, {
-        duration,
-        frame: 0,
-        ease: 'power1.inOut',
-        onUpdate: () => lottie.goToAndStop(playhead.frame, true),
-      })
-
-      if (target === 'principal') {
-        this.lottiesMenuPrincipal[index].tweenLeave = tween
-      } else {
-        this.lottiesMenuSubmenu[index].tweenLeave = tween
-      }
+    onResize() {
+      if (this.submenuActive)
+        Flip.fit(this.elTitleSubmenuWrapper, this.elTitleTargetFlip)
     },
     initMainTimeline() {
       this.tlMain?.kill()
@@ -501,11 +441,7 @@ export default {
             y: 0,
             duration: 0.75,
             ease: 'expo.out',
-            onStart: () => {
-              if (this.activeLinkLocation !== 'principal') return
-
-              this.handleActiveLinkLottie('appear')
-            },
+            onStart: () => {},
           },
           '<40%'
         )
@@ -518,11 +454,13 @@ export default {
         ...this.elsMenuSubmenuTitle,
       ].reverse()
 
-      const elsTopBorderReversed = [...this.elsTopBorder].reverse()
+      elsMenuSubmenuTitleReversed.push(
+        ...this.$el.querySelectorAll(
+          '.app-menu__link__title.static-links-title'
+        )
+      )
 
-      if (this.activeLinkLocation === 'submenu') {
-        this.handleActiveLinkLottie('disappear')
-      }
+      const elsTopBorderReversed = [...this.elsTopBorder].reverse()
 
       this.tlMainClose = gsap
         .timeline({
@@ -643,7 +581,6 @@ export default {
         })
         .to(
           this.$refs.layerBlue,
-
           {
             scaleY: 0,
             duration: 0.85,
@@ -660,22 +597,16 @@ export default {
       this.tlSubmenu?.kill()
       this.tlSubmenu?.clear()
 
-      const elsTitlePrincipalHidden = [...this.elsMenuPrincipalTitle].slice(
-        0,
-        -1
+      const dynamicsLinks = this.$el.querySelectorAll(
+        '.app-menu__link__title.dynamic-links-title'
       )
 
       this.tlSubmenu = gsap
         .timeline()
-        .to(elsTitlePrincipalHidden, {
+        .to(dynamicsLinks, {
           y: '110%',
           duration: 0.85,
           ease: 'power3.inOut',
-          onComplete: () => {
-            if (this.activeLinkLocation === 'submenu') {
-              this.handleActiveLinkLottie('appear')
-            }
-          },
         })
         .to(
           this.elsMenuSubmenuTitle,
@@ -684,46 +615,9 @@ export default {
             stagger: 0.1,
             duration: 0.9,
             ease: 'power3.inOut',
-            onReverseComplete: () => {
-              if (this.activeLinkLocation === 'principal') {
-                this.handleActiveLinkLottie('appear')
-              }
-            },
           },
           '<70%'
         )
-    },
-    handleActiveLinkLottie(state) {
-      const playhead = { frame: 0, targetFrame: 0 }
-      let duration
-
-      if (state === 'appear') {
-        playhead.frame = 0
-        playhead.targetFrame = this.activeLinkLottie.totalFrames - 1
-        duration = 1
-      } else {
-        playhead.frame = this.activeLinkLottie.currentFrame
-        playhead.targetFrame = 0
-
-        duration = gsap.utils.mapRange(
-          0,
-          this.activeLinkLottie.totalFrames - 1,
-          0,
-          0.8,
-          playhead.frame
-        )
-      }
-
-      this.activeLinkLottieTween?.kill()
-
-      const tween = gsap.to(playhead, {
-        duration,
-        frame: playhead.targetFrame,
-        ease: 'power2.inOut',
-        onUpdate: () => this.activeLinkLottie.goToAndStop(playhead.frame, true),
-      })
-
-      this.activeLinkLottieTween = tween
     },
     onToggleSubmenu() {
       this.submenuActive = !this.submenuActive
@@ -741,10 +635,6 @@ export default {
           delay: 0.4,
           ease: 'expo.inOut',
         })
-
-        if (this.activeLinkLocation === 'principal') {
-          this.handleActiveLinkLottie('disappear')
-        }
 
         this.initSubmenuTimeline()
       } else {
@@ -765,10 +655,6 @@ export default {
         })
 
         this.tlSubmenu?.reverse()
-
-        if (this.activeLinkLocation === 'submenu') {
-          this.handleActiveLinkLottie('disappear')
-        }
       }
     },
     onCloseBurger() {
@@ -792,10 +678,6 @@ export default {
       this.tlSubmenu?.pause(0)
       this.tlSubmenu?.clear()
 
-      this.activeLinkLottieTween?.kill()
-      this.activeLinkLottie?.goToAndStop(0, true)
-      this.getActiveLottie()
-
       const elTitleSubmenuSave =
         this.$refs.linkPrincipal[this.$refs.linkPrincipal.length - 1]
 
@@ -816,42 +698,6 @@ export default {
       gsap.set(this.$el, {
         opacity: 0,
       })
-    },
-    getActiveLottie() {
-      if (this.$route.path === '/' || this.$route.fullPath === '/') {
-        this.activeLinkIsIndex = true
-        this.activeLinkLocation = null
-        this.activeLinkIndex = null
-        this.activeLinkLottie = null
-        this.indexLinkHovered = 0
-        this.indexImageVisible = 0
-      } else {
-        this.activeLinkIsIndex = false
-
-        const indexMenu = this.menu
-          .filter((item) => !item.submenu || item.url)
-          .findIndex((item) => item.url === this.$route.path)
-
-        const indexSubmenu = this.submenu
-          .filter((item) => !item.submenu || item.url)
-          .findIndex((item) => item.url === this.$route.path)
-
-        if (indexMenu !== -1) {
-          this.activeLinkLocation = 'principal'
-          this.activeLinkIndex = indexMenu
-          this.activeLinkLottie =
-            this.lottiesMenuPrincipal[indexMenu].animation.active
-          this.indexLinkHovered = this.activeLinkIndex
-          this.indexImageVisible = this.activeLinkIndex + 1
-        } else if (indexSubmenu !== -1) {
-          this.activeLinkLocation = 'submenu'
-          this.activeLinkIndex = indexSubmenu
-          this.activeLinkLottie =
-            this.lottiesMenuSubmenu[indexSubmenu].animation.active
-          this.indexLinkHovered = this.menu.length - 1
-          this.indexImageVisible = this.menu.length - 1 + 1
-        }
-      }
     },
     ...mapMutations({
       setMenuActive: 'setMenuActive',
@@ -1022,21 +868,6 @@ export default {
     }
   }
 
-  &__border-left {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 1px;
-    left: 0px;
-    background: var(--c-black);
-    transform: translate(50%, 0%) scaleY(0);
-    transform-origin: center top;
-
-    @include mobile {
-      display: none;
-    }
-  }
-
   &__title {
     overflow: hidden;
     display: inline-block;
@@ -1054,13 +885,34 @@ export default {
     }
   }
 
-  &__principal,
+  &__border-left {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 1px;
+    left: 0px;
+    background: var(--c-black);
+    transform: translate(50%, 0%) scaleY(0);
+    transform-origin: center top;
+
+    @include mobile {
+      display: none;
+    }
+  }
+
+  &__static-links {
+    @include desktop {
+      display: none;
+    }
+  }
+
+  &__dynamics-links,
   &__submenu {
     display: flex;
     flex-direction: column;
   }
 
-  &__principal {
+  &__dynamics-links {
     svg:nth-of-type(1) {
       position: absolute;
       width: auto !important;
@@ -1121,13 +973,14 @@ export default {
       margin: mobile-vh(25px) 0px mobile-vh(25px) 0px;
     }
 
-    &__title {
+    &__title-wrapper {
       display: block;
       overflow: hidden;
       display: flex;
       width: 100% !important;
 
-      .H2.medium {
+      .H2.medium,
+      .H2.bold {
         transform: translateY(110%);
         font-size: desktop-vw(72px);
         line-height: desktop-vw(78px);

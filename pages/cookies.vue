@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+
 import scroll from '@/mixins/scroll'
 import pageTransition from '@/mixins/page-transition'
 
@@ -50,13 +52,31 @@ export default {
       },
     })
   },
+  computed: {
+    ...mapState({
+      allLoadedFake: (state) => state.allLoadedFake,
+      initialHeroDisplayed: (state) => state.initialHeroDisplayed,
+    }),
+  },
+  watch: {
+    initialHeroDisplayed(newVal) {
+      if (!newVal) return
+
+      this.setAllowScroll(true)
+    },
+  },
   mounted() {
-    this.lenis.start()
+    if (this.allLoadedFake) {
+      this.setAllowScroll(true)
+    }
   },
   methods: {
     onBack() {
       this.$router.push({ path: '/' })
     },
+    ...mapMutations({
+      setAllowScroll: 'setAllowScroll',
+    }),
   },
 }
 </script>

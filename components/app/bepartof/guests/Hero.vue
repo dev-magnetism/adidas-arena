@@ -22,16 +22,21 @@ export default {
       interiorVisible: (state) => state.interiorVisible,
       allLoadedActual: (state) => state.allLoadedActual,
       allLoadedFake: (state) => state.allLoadedFake,
+      initialHeroDisplayed: (state) => state.initialHeroDisplayed,
     }),
   },
   watch: {
     allLoadedFake() {
       this.initInteriorView(3000)
     },
+    initialHeroDisplayed() {
+      this.setAllowScroll(true)
+    },
   },
   mounted() {
     if (this.allLoadedFake) {
       this.initInteriorView(900)
+      this.setAllowScroll(true)
     }
 
     this.scrollTrigger = ScrollTrigger.create({
@@ -102,6 +107,7 @@ export default {
       setInteriorVisible: 'setInteriorVisible',
       setExteriorFullwidth: 'setExteriorFullwidth',
       setInteriorIndexFloor: 'setInteriorIndexFloor',
+      setAllowScroll: 'setAllowScroll',
     }),
   },
 }

@@ -48,7 +48,7 @@ export default {
     },
     scrub: {
       type: Number,
-      default: 0.5,
+      default: 1,
       require: false,
     },
     duration: {

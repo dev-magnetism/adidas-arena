@@ -22,16 +22,21 @@ export default {
       interiorVisible: (state) => state.interiorVisible,
       allLoadedFake: (state) => state.allLoadedFake,
       interiorIndexFloor: (state) => state.interiorIndexFloor,
+      initialHeroDisplayed: (state) => state.initialHeroDisplayed,
     }),
   },
   watch: {
     allLoadedFake() {
       this.initInteriorView()
     },
+    initialHeroDisplayed() {
+      this.setAllowScroll(true)
+    },
   },
   mounted() {
     if (this.allLoadedFake) {
       this.initInteriorView()
+      this.setAllowScroll(true)
     }
 
     this.scrollTrigger = ScrollTrigger.create({
@@ -101,6 +106,7 @@ export default {
     ...mapMutations({
       setInteriorVisible: 'setInteriorVisible',
       setInteriorIndexFloor: 'setInteriorIndexFloor',
+      setAllowScroll: 'setAllowScroll',
     }),
   },
 }

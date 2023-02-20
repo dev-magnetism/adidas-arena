@@ -69,6 +69,7 @@
 
 <script>
 import { gsap } from 'gsap'
+import { mapMutations, mapState } from 'vuex'
 
 export default {
   props: {
@@ -77,52 +78,77 @@ export default {
       default: () => {},
     },
   },
+  computed: {
+    ...mapState({
+      interiorVisible: (state) => state.interiorVisible,
+      allLoadedActual: (state) => state.allLoadedActual,
+      allLoadedFake: (state) => state.allLoadedFake,
+      initialHeroDisplayed: (state) => state.initialHeroDisplayed,
+    }),
+  },
+  watch: {
+    initialHeroDisplayed() {
+      this.setAllowScroll(true)
+    },
+  },
   mounted() {
-    if (this.$viewport.isMobile) return
+    this.initScrollTrigger()
 
-    gsap.fromTo(
-      this.$refs.visualBigger,
-      {
-        rotate: -6,
-      },
-      {
-        rotate: -2,
-        scrollTrigger: {
-          trigger: this.$refs.visualBigger,
-          scrub: 0.5,
-          end: 'bottom top',
-        },
-      }
-    )
+    if (this.allLoadedFake) {
+      this.setAllowScroll(true)
+    }
+  },
+  methods: {
+    initScrollTrigger() {
+      if (this.$viewport.isMobile) return
 
-    gsap.fromTo(
-      this.$refs.framed.$el,
-      {
-        rotate: 8,
-      },
-      {
-        rotate: 4,
-        scrollTrigger: {
-          trigger: this.$refs.framed.$el,
-          scrub: 0.5,
-          end: 'bottom top',
+      gsap.fromTo(
+        this.$refs.visualBigger,
+        {
+          rotate: -6,
         },
-      }
-    )
-    gsap.fromTo(
-      this.$refs.visualTransparent.$el,
-      {
-        rotate: -9,
-      },
-      {
-        rotate: -4,
-        scrollTrigger: {
-          trigger: this.$refs.visualTransparent.$el,
-          scrub: 0.5,
-          end: 'bottom top',
+        {
+          rotate: -2,
+          scrollTrigger: {
+            trigger: this.$refs.visualBigger,
+            scrub: 0.5,
+            end: 'bottom top',
+          },
+        }
+      )
+
+      gsap.fromTo(
+        this.$refs.framed.$el,
+        {
+          rotate: 8,
         },
-      }
-    )
+        {
+          rotate: 4,
+          scrollTrigger: {
+            trigger: this.$refs.framed.$el,
+            scrub: 0.5,
+            end: 'bottom top',
+          },
+        }
+      )
+      gsap.fromTo(
+        this.$refs.visualTransparent.$el,
+        {
+          rotate: -9,
+        },
+        {
+          rotate: -4,
+          scrollTrigger: {
+            trigger: this.$refs.visualTransparent.$el,
+            scrub: 0.5,
+            end: 'bottom top',
+          },
+        }
+      )
+    },
+    ...mapMutations({
+      setAllowScroll: 'setAllowScroll',
+    }),
   },
 }
 </script>

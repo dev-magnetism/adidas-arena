@@ -12,44 +12,46 @@ export default {
       menuActive: (state) => state.menuActive,
       allLoadedFake: (state) => state.allLoadedFake,
       preloaderHidden: (state) => state.preloaderHidden,
-      initialHeroDisplayed: (state) => state.initialHeroDisplayed,
       overlayContactOpen: (state) => state.overlayContactOpen,
       popinNewsletterOpen: (state) => state.popinNewsletterOpen,
+      allowScroll: (state) => state.allowScroll,
     }),
   },
   watch: {
-    menuActive(payload) {
+    menuActive(newVal) {
       if (!this.lenis) return
 
-      if (payload) {
+      if (newVal) {
         this.lenis.stop()
       } else {
         this.lenis.start()
       }
     },
-    popinNewsletterOpen(payload) {
+    popinNewsletterOpen(newVal) {
       if (!this.lenis) return
 
-      if (payload) {
+      if (newVal) {
         this.lenis.stop()
       } else {
         this.lenis.start()
       }
     },
-    overlayContactOpen(payload) {
+    overlayContactOpen(newVal) {
       if (!this.lenis) return
 
-      if (payload) {
+      if (newVal) {
         this.lenis.stop()
       } else {
         this.lenis.start()
       }
     },
-    preloaderHidden(payload) {
+    allowScroll(newVal) {
       if (!this.lenis) return
 
-      if (payload) {
+      if (newVal) {
         this.lenis.start()
+      } else {
+        this.lenis.stop()
       }
     },
   },
@@ -71,7 +73,7 @@ export default {
     //   smooth: true,
     // })
 
-    if (!this.allLoadedFake) this.lenis.stop()
+    if (!this.allowScroll) this.lenis.stop()
 
     this.lenis.on('scroll', this.onScrollLenis)
 

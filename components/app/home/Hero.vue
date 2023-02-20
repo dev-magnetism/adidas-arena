@@ -139,13 +139,13 @@ export default {
     }),
   },
   watch: {
-    fontsLoaded(payload) {
-      if (!payload || this.$viewport.isMobile) return
+    fontsLoaded(newVal) {
+      if (!newVal || this.$viewport.isMobile) return
 
       this.initSplitText()
     },
-    initialHeroDisplayed(payload) {
-      if (!payload || this.$viewport.isMobile) return
+    initialHeroDisplayed(newVal) {
+      if (!newVal || this.$viewport.isMobile) return
 
       this.appearHeroInit(0.1)
     },
@@ -153,10 +153,10 @@ export default {
       this.resetView()
       this.onResizePreviewExterior()
     },
-    viewExteriorOpen(payload) {
+    viewExteriorOpen(newVal) {
       const { exterior } = useWebGL()
 
-      if (payload) {
+      if (newVal) {
         gsap.to(exterior.position, {
           x: 0,
           z: 0,
@@ -363,7 +363,7 @@ export default {
     scrollHero() {
       if (!window.lenis) return
 
-      window.lenis.scrollTo('.app-home-presentation', {
+      window.lenis.scrollTo('.app-element-programmation-slider', {
         duration: 1.2,
       })
     },
@@ -462,7 +462,7 @@ export default {
     initSplitText() {
       const titleH1 = this.$refs.title.$el.querySelector('.H1')
 
-      this.split = this.nestedLinesSplit(titleH1, {
+      this.split = new SplitText(titleH1, {
         type: 'lines',
         linesClass: 'lineChild line',
       })
@@ -535,6 +535,8 @@ export default {
       )
     },
     initScrollTrigger() {
+      this.setAllowScroll(true)
+
       this.scrollTrigger = ScrollTrigger.create({
         trigger: this.$el,
         start: 'top bottom',
@@ -639,6 +641,7 @@ export default {
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',
       setExteriorFullwidth: 'setExteriorFullwidth',
+      setAllowScroll: 'setAllowScroll',
     }),
   },
 }
@@ -899,10 +902,6 @@ export default {
 
     &.hide {
       pointer-events: none;
-    }
-
-    .app-atoms-stroke-text {
-      display: block;
     }
 
     .lineParent {

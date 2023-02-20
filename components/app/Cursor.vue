@@ -119,7 +119,7 @@ export default {
   }
 
   &.slider-disabled {
-    opacity: 0.75;
+    opacity: 0.35;
 
     svg {
       opacity: 0.5;
@@ -135,6 +135,8 @@ export default {
     will-change: transform;
     width: desktop-vw(120px);
     height: desktop-vw(120px);
+    max-width: 120px;
+    max-height: 120px;
     background: var(--c-red-adidas);
     border-radius: 50%;
     transform: translate(-50%, -50%) scale(0);
