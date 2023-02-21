@@ -47,7 +47,7 @@ void main() {
 // strength = step(0.8, strength);
 	
   
-	vec4 color = texture2D(uMap, zoomedUv);
+	// vec4 color = texture2D(uMap, zoomedUv);
 	// vec4 test = vec4s(strength, strength, strength, 1.);
 
 
@@ -61,11 +61,11 @@ void main() {
 
 	// color.rgb = vec3(testttt);
 
-		gl_FragColor = color;
+		// gl_FragColor = color;
 
 
 	// gl_FragColor = mix(color,cadre, cadre.a);
-	// gl_FragColor = vec4(.2, .84, 1., 1.);
+	gl_FragColor = vec4(.2, .84, 1., 1.);
 	
     gl_FragColor.a *= uOpacity;
 }
