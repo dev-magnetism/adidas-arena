@@ -1,4 +1,4 @@
-import Stats from 'stats.js'
+// import Stats from 'stats.js'
 import Raf from '~/plugins/raf'
 import Viewport from '~/plugins/viewport'
 // import Composer from '~/assets/webgl/composer-three'
