@@ -47,7 +47,7 @@
           <TH1 ref="menuTitle" weight="bold">{{ menuName }} </TH1>
         </div>
 
-        <div v-if="$viewport.isMobile" class="app-menu__static-links">
+        <div class="app-menu__static-links">
           <div class="app-menu__link">
             <span class="app-menu__link__border-top" />
 
@@ -61,8 +61,9 @@
                 <nuxt-link
                   to="/programmation"
                   @click.native="onClickLink('/programmation')"
-                  >Programmation</nuxt-link
                 >
+                  Programmation
+                </nuxt-link>
               </TH2>
             </div>
           </div>

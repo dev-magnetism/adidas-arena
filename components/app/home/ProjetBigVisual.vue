@@ -1,7 +1,6 @@
 <template>
   <div class="app-home-projet__big-visual">
     <nuxt-picture
-      v-if="!$viewport.isMobile"
       class="app-home-projet__big-visual__left-top projet-visual"
       :src="$parent.contents.projetPicture4"
       provider="directus"
@@ -11,7 +10,6 @@
       loading="lazy"
     />
     <nuxt-picture
-      v-if="!$viewport.isMobile"
       class="app-home-projet__big-visual__left-top-upper projet-visual"
       :src="$parent.contents.projetPicture3"
       provider="directus"

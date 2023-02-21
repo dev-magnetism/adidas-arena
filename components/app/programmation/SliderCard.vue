@@ -56,7 +56,10 @@
         <SvgCtaUnion ref="arrow" :color="ctaColor" />
       </a>
     </div>
-    <span v-if="content.full" class="app-programmation-slider-card__full">
+    <span
+      :class="{ full: content.full }"
+      class="app-programmation-slider-card__full"
+    >
       <TP2 weight="bold" :color="ctaColor">Complet</TP2>
     </span>
   </div>
@@ -215,10 +218,14 @@ export default {
     right: 0;
     background: var(--c-grey);
     border: 1px solid var(--c-black);
-    display: block;
     border-top: none;
     border-right: none;
     padding: desktop-vw(5px) desktop-vw(8px);
+    display: none;
+
+    &.full {
+      display: block;
+    }
 
     @include mobile {
       padding: mobile-vw(5px) mobile-vw(8px);

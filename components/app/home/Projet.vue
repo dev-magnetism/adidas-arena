@@ -17,7 +17,6 @@
             <AppHomeProjetPlan ref="plan" />
 
             <EFramedPicture
-              v-if="!$viewport.isMobile"
               :fake-transparent="true"
               color="white"
               class="app-home-projet__framed-picture projet-visual"
@@ -34,7 +33,6 @@
             </EFramedPicture>
 
             <nuxt-picture
-              v-if="!$viewport.isMobile"
               class="app-home-projet__visual__top-upper projet-visual"
               :src="contents.projetPicture1"
               provider="directus"
@@ -48,11 +46,7 @@
               contents.bigTitle
             }}</TH2>
           </div>
-          <div
-            v-if="!$viewport.isMobile"
-            ref="fakeVisual"
-            class="app-home-projet__fake-visual"
-          ></div>
+          <div ref="fakeVisual" class="app-home-projet__fake-visual"></div>
           <div ref="lottieCircle" class="app-home-projet__circle" />
           <div ref="lottieCrossCircle" class="app-home-projet__cross-circle" />
           <div ref="lottieValidCircle" class="app-home-projet__valid-circle" />
@@ -79,7 +73,6 @@
           </AtomsTitleTag>
 
           <AtomsTitleTag
-            v-if="!$viewport.isMobile"
             class="app-home-projet__tag-top-upper app-projet-tag-4"
             bg="white"
             color="black"
@@ -101,7 +94,6 @@
             {{ contents.projetTag4 }}
           </AtomsTitleTag>
           <AtomsTitleTag
-            v-if="!$viewport.isMobile"
             bg="white"
             color="black"
             class="app-home-projet__tag-bottom app-projet-tag-1"
