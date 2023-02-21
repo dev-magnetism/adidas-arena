@@ -25,6 +25,7 @@
           format="webp"
           alt="alt"
           sizes="sm:50vw md:35vw"
+          loading="lazy"
         />
       </div>
     </div>

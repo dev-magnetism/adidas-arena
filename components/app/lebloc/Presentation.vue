@@ -17,6 +17,7 @@
           :alt="contents.picture.alt"
           class="picture-absolute"
           sizes="sm:35vw md:75vw"
+          loading="lazy"
         />
       </EKinesis>
     </EParallax>
@@ -32,6 +33,7 @@
               :alt="contents.pictureFramed.alt"
               format="webp"
               sizes="sm:35vw md:70vw"
+              loading="lazy"
             />
           </EKinesis>
         </EFramedPicture>

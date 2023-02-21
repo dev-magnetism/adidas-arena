@@ -8,6 +8,7 @@
       format="webp"
       :alt="contents.alt"
       sizes="sm:100vw md:100vw"
+      loading="lazy"
     />
   </div>
 </template>

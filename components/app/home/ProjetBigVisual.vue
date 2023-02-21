@@ -8,6 +8,7 @@
       format="webp"
       alt="placeholder"
       sizes="sm:35vw md:15vw"
+      loading="lazy"
     />
     <nuxt-picture
       v-if="!$viewport.isMobile"
@@ -17,6 +18,7 @@
       format="webp"
       alt="placeholder"
       sizes="sm:35vw md:15vw"
+      loading="lazy"
     />
 
     <nuxt-picture
@@ -26,6 +28,7 @@
       format="webp"
       alt="placeholder"
       sizes="sm:50vw md:35vw"
+      loading="lazy"
     />
   </div>
 </template>

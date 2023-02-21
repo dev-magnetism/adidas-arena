@@ -13,6 +13,8 @@
         :src="logo.logo_white"
         :alt="logo.logo_alt"
         format="webp"
+        loading="lazy"
+        sizes="sm:20vw md:10vw"
       />
     </div>
   </div>

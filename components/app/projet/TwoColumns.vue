@@ -84,6 +84,7 @@
               format="webp"
               :alt="contents.secondRow.pictureAlt"
               sizes="sm:40vw md:35vw"
+              loading="lazy"
             />
           </EKinesis>
         </EParallax>

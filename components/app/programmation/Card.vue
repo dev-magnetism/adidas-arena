@@ -8,6 +8,7 @@
         sizes="sm:100vw md:40vw"
         :src="content.visual"
         :alt="`visual-${content.name}`"
+        loading="lazy"
       />
     </div>
 

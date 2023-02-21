@@ -12,6 +12,7 @@
       :src="content.logo"
       :alt="content.logo_alt"
       provider="directus"
+      loading="lazy"
     />
     <SvgYou v-if="transparent" class="app-element-grid-logos-bloc__you" />
 
@@ -51,6 +52,7 @@
       :src="content.logo"
       :alt="content.logo_alt"
       provider="directus"
+      loading="lazy"
     />
     <SvgYou v-if="transparent" class="app-element-grid-logos-bloc__you" />
 

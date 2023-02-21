@@ -32,6 +32,7 @@
             :src="item.image"
             provider="directus"
             sizes="md:100vw"
+            loading="lazy"
           />
         </transition-group>
       </div>

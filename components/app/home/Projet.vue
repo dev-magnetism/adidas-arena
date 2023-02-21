@@ -29,6 +29,7 @@
                 :src="contents.projetPicture2"
                 provider="directus"
                 sizes="sm:35vw md:20vw"
+                loading="lazy"
               />
             </EFramedPicture>
 
@@ -40,6 +41,7 @@
               format="webp"
               alt="alt"
               sizes="sm:35vw md:20vw"
+              loading="lazy"
             />
 
             <TH2 ref="title" weight="bold" class="app-home-projet__title">{{

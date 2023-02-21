@@ -20,6 +20,7 @@
           :alt="contents.pictureBigVisualAlt"
           format="webp"
           sizes="sm:50vw md:40vw"
+          loading="lazy"
         />
       </EKinesis>
     </EParallax>
@@ -38,6 +39,7 @@
               :alt="contents.pictureFramedAlt"
               format="webp"
               sizes="sm:50vw md:40vw"
+              loading="lazy"
             />
           </EKinesis>
         </EFramedPicture>
