@@ -30,6 +30,7 @@ class GL {
       precision: 'highp',
       alpha: true,
     })
+
     this.renderer.localClippingEnabled = true
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
@@ -75,11 +76,9 @@ class GL {
     this.camera.position.z = 500
 
     if (process.env.NODE_ENV === 'development') {
-      if (!Viewport.isMobile) {
-        this.stats = new Stats()
+      this.stats = new Stats()
 
-        document.body.appendChild(this.stats.dom)
-      }
+      document.body.appendChild(this.stats.dom)
     }
 
     this.raycaster = new THREE.Raycaster()
