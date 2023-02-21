@@ -6,13 +6,19 @@
         class="app-programmation-hero__title"
         :content="contents.title"
       />
-      <TP2
+
+      <ERichText
         ref="paragraph"
-        weight="bold"
         class="app-programmation-hero__paragraph"
-      >
-        {{ contents.paragraph }}
-      </TP2>
+        :content="contents.paragraph"
+      />
+
+      <div class="app-programmation-hero__arrow-left">
+        <ELottie id="Fleche_2" start="top center" end="bottom center-=25%" />
+      </div>
+      <div class="app-programmation-hero__arrow-right">
+        <ELottie id="Fleche_2" start="top center" end="bottom center-=25%" />
+      </div>
     </div>
     <div ref="mainCard" class="app-programmation-hero__main-card">
       <EKinesis :speed="5">
@@ -60,12 +66,6 @@
       class="app-programmation-hero__visual-back-transparent"
     >
       <EKinesis :speed="10" />
-    </div>
-    <div class="app-programmation-hero__arrow-left">
-      <ELottie id="Fleche_2" start="top center" end="bottom center-=25%" />
-    </div>
-    <div class="app-programmation-hero__arrow-right">
-      <ELottie id="Fleche_2" start="top center" end="bottom center-=25%" />
     </div>
   </div>
 </template>
@@ -280,6 +280,9 @@ export default {
 
   &__texts {
     grid-column: 2 / span 5;
+    display: inline-flex;
+    flex-direction: column;
+    position: relative;
 
     @include mobile {
       grid-column: 1 / span 6;
@@ -311,19 +314,19 @@ export default {
 
   &__arrow-left {
     position: absolute;
-    bottom: 30%;
+    top: calc(100% + 25%);
     width: desktop-vw(90px);
     transform: scaleX(-1) rotate(20deg);
-    left: 15%;
+    left: 10%;
     aspect-ratio: 90 / 130;
   }
 
   &__arrow-right {
     position: absolute;
-    bottom: 12.5%;
+    top: calc(100% + 50%);
     width: desktop-vw(90px);
     transform: scaleX(1) rotate(20deg);
-    left: 30%;
+    left: 40%;
     aspect-ratio: 90 / 130;
 
     svg {
@@ -337,6 +340,12 @@ export default {
     width: 85%;
     text-transform: uppercase;
     margin-top: desktop-vw(25px);
+
+    p {
+      @include p2();
+      @include font-adihausDIN-bold();
+      color: var(--c-black);
+    }
 
     @include mobile {
       width: 75%;

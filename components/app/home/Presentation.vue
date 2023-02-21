@@ -56,9 +56,10 @@
           <video
             ref="video"
             class="app-home-presentation__visual-smaller picture-absolute"
+            autoplay
             loop
             muted
-            autoplay
+            playsinline
           >
             <source
               :src="`${$img.options.providers.directus.defaults.baseURL}assets/${contents.pictureBorder}.mp4`"

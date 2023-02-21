@@ -92,6 +92,7 @@ export default {
     },
     modelCloudLoaded() {
       this.initClouds()
+      // this.initCloudsNew()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -113,6 +114,7 @@ export default {
     if (this.allLoadedActual) {
       this.initExterior()
       this.initClouds()
+      // this.initCloudsNew()
       this.initGUI()
       this.resetView()
     }
@@ -141,20 +143,23 @@ export default {
     const { exterior } = useWebGL()
 
     exterior.traverse((item) => {
-      if (item instanceof THREE.Mesh || item instanceof THREE.Line) {
+      if (
+        (item instanceof THREE.Mesh || item instanceof THREE.Line) &&
+        !item.isGroup
+      ) {
         item.geometry?.dispose()
 
         exterior.remove(item)
       }
     })
 
-    exterior.remove(this.hitbox)
     exterior.remove(this.floor)
     exterior.remove(this.cars)
     exterior.remove(this.trams)
     // exterior.remove(this.cloudsBasic)
     // exterior.remove(this.cloudsEdge)
     exterior.remove(this.clouds)
+    this.adidasArena.remove(this.hitbox)
     exterior.remove(this.adidasArena)
     exterior.remove(this.arrow)
     exterior.remove(this.logoArena)
@@ -270,12 +275,12 @@ export default {
       //   // this.cloudsBasic.instanceMatrix.needsUpdate = true
       // })
 
-      this.clouds?.children?.forEach((cloud) => {
-        const z = cloud.direction
-          ? cloud.position.z - cloud.coefParallax * this.cloudsParams.speed
-          : cloud.position.z + cloud.coefParallax * this.cloudsParams.speed
-        cloud.position.z = gsap.utils.wrap(100, -100, z)
-      })
+      // this.clouds?.children?.forEach((cloud) => {
+      //   const z = cloud.direction
+      //     ? cloud.position.z - cloud.coefParallax * this.cloudsParams.speed
+      //     : cloud.position.z + cloud.coefParallax * this.cloudsParams.speed
+      //   cloud.position.z = gsap.utils.wrap(100, -100, z)
+      // })
 
       this.timeCars += deltaTime * this.speedCars
       const progressCars = this.timeCars % 1
@@ -346,7 +351,6 @@ export default {
       this.initTrams()
       this.initArrow()
     },
-
     onClickArena() {
       // if (!this.exteriorFullwidth || !this.exteriorVisible) return
       // console.log('clickedd', this.exteriorFullwidth)
@@ -472,7 +476,7 @@ export default {
       this.planesGroup = this.gltfExterior.getObjectByName('Plane')
 
       const cloud = this.mergeObject(this.gltfCloud)
-      const edgeCloud = this.edgeObject(cloud)
+      // const edgeCloud = this.edgeObject(cloud)
       // const conditionalCloud = this.conditionalObject(cloud)
 
       this.cloudsBasic = new THREE.InstancedMesh(
@@ -480,16 +484,10 @@ export default {
         this.modelMaterial,
         this.planesGroup.children.length - 1
       )
-      this.cloudsBasic.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
-      exterior.add(this.cloudsBasic)
 
-      this.cloudsEdge = new THREE.InstancedMesh(
-        edgeCloud.geometry,
-        this.lineMaterial,
-        this.planesGroup.children.length - 1
-      )
-      this.cloudsEdge.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
-      exterior.add(this.cloudsEdge)
+      this.cloudsBasic.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
+
+      exterior.add(this.cloudsBasic)
 
       this.planesGroup.children.forEach((plane, index) => {
         const randomParallax = this.genRand(1, 10, 2)
@@ -501,11 +499,6 @@ export default {
         this.dummy.updateMatrix()
 
         this.cloudsBasic.setMatrixAt(index, this.dummy.matrix)
-
-        this.dummy.position = plane.position.clone()
-        this.dummy.updateMatrix()
-
-        this.cloudsEdge.setMatrixAt(index, this.dummy.matrix)
       })
     },
     resetView() {
@@ -536,19 +529,18 @@ export default {
         1
       )
       this.directionalLight.castShadow = true
-      this.directionalLight.position.set(-100, 150, 300)
+      this.directionalLight.position.set(-30, 50, 100)
 
-      this.directionalLight.shadow.mapSize.width = 1024 // 4096
-      this.directionalLight.shadow.mapSize.height = 1024 // 4096
-      this.directionalLight.shadow.bias = -0.001
+      this.directionalLight.shadow.mapSize.width = 2048 // 4096
+      this.directionalLight.shadow.mapSize.height = 2048 // 4096
 
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
 
-      this.directionalLight.shadow.camera.left = -50
-      this.directionalLight.shadow.camera.right = 50
-      this.directionalLight.shadow.camera.top = 50
-      this.directionalLight.shadow.camera.bottom = -50
+      this.directionalLight.shadow.camera.left = -100
+      this.directionalLight.shadow.camera.right = 100
+      this.directionalLight.shadow.camera.top = 100
+      this.directionalLight.shadow.camera.bottom = -100
 
       exterior.add(this.directionalLight)
     },

@@ -21,7 +21,7 @@
       <div class="app-home-projet__plan__body__visual-wrapper">
         <nuxt-picture
           class="app-home-projet__plan__body__visual"
-          src="imgs/projet/plan.png"
+          src="imgs/projet/plan.webp"
           format="webp"
           alt="alt"
           sizes="sm:50vw md:35vw"
