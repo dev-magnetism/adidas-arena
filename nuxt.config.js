@@ -101,11 +101,7 @@ export default {
     scss: ['~assets/scss/main.scss'],
   },
 
-  buildModules: [
-    '@nuxtjs/eslint-module',
-    '@nuxtjs/style-resources',
-    '@nuxt/image',
-  ],
+  buildModules: ['@nuxtjs/style-resources', '@nuxt/image'],
 
   image: {
     screens: {
@@ -137,6 +133,7 @@ export default {
       },
     ],
     'cookie-universal-nuxt',
+    '@nuxtjs/eslint-module',
     'nuxt-seo',
     '@nuxtjs/gtm',
     'nuxt-compress',
