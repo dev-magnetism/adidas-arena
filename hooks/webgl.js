@@ -75,6 +75,8 @@ class GL {
 
     this.camera.position.z = 500
 
+    console.log(process.env.NODE_ENV)
+
     if (process.env.NODE_ENV === 'development') {
       this.stats = new Stats()
 
