@@ -25,11 +25,13 @@
           >
             {{ zone?.name }}
           </TH3>
-          <TP2
-            weight="bold"
-            class="app-element-interior-zone-informations__zone-selected__text"
-            v-html="zone?.description"
-          />
+          <client-only>
+            <TP2
+              weight="bold"
+              class="app-element-interior-zone-informations__zone-selected__text"
+              v-html="zone?.description"
+            />
+          </client-only>
           <AtomsLink
             v-if="zone.cta_text && zone.cta_href"
             :href="zone.cta_href"
@@ -99,11 +101,13 @@
           >
             {{ zone?.name }}
           </TH3>
-          <TP2
-            weight="bold"
-            class="app-element-interior-zone-informations__zone-selected-mobile__overlay__text"
-            v-html="zone?.description"
-          />
+          <client-only>
+            <TP2
+              weight="bold"
+              class="app-element-interior-zone-informations__zone-selected-mobile__overlay__text"
+              v-html="zone?.description"
+            />
+          </client-only>
           <AtomsLink
             v-if="zone.cta_text && zone.cta_href"
             :href="zone.cta_href"

@@ -175,8 +175,6 @@ export default {
         onComplete: () => {
           if (!this.allLoadedActual) return
 
-          console.log('here loadint finish')
-
           this.setAllLoadedFake(true)
           this.hidePreloader()
         },

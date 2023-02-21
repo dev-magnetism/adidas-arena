@@ -25,8 +25,6 @@ class LoaderManager {
 
         const index = i + 1
 
-        console.log('loadddd progress', index)
-
         this.progressLoad.original = index
         this.progressLoad.normalized = index / this.nbModels
         this.progressLoad.percentage = (100 * index) / this.nbModels

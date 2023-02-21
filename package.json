@@ -25,7 +25,6 @@
     "glslify-loader": "^2.0.0",
     "gsap": "npm:@gsap/shockingly@^3.11.4",
     "html-entities": "^2.3.3",
-    "include-media": "^1.4.10",
     "jssoup": "^0.0.15",
     "lottie-web": "^5.10.2",
     "nuxt": "^2.15.7",
