@@ -46,9 +46,14 @@ export default {
   mounted() {
     const gui = useGUI()
 
-    if (this.$viewport.isMobile || process.env.NODE_ENV !== 'development') {
+    console.log(process.env.NODE_ENV)
+
+    if (this.$viewport.isMobile) {
       gui.hidden = true
     }
+    // if (this.$viewport.isMobile || process.env.NODE_ENV !== 'development') {
+    //   gui.hidden = true
+    // }
   },
 
   beforeDestroy() {},
@@ -68,11 +73,11 @@ export default {
     z-index: 1;
   }
 
-  &.prod {
-    .app-renderer-info {
-      display: none;
-    }
-  }
+  // &.prod {
+  //   .app-renderer-info {
+  //     display: none;
+  //   }
+  // }
 
   &-transition-layer {
     position: fixed;

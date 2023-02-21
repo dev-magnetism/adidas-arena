@@ -19,7 +19,7 @@ export default {
   },
 
   mounted() {
-    if (process.env.NODE_ENV !== 'development') return
+    // if (process.env.NODE_ENV !== 'development') return
 
     const { renderer } = useWebGL()
     this.rendererInfo = renderer.info
