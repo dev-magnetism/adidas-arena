@@ -44,8 +44,10 @@
         class="app-programmation-card__cta"
         :href="content.link"
         target="_blank"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave"
       >
-        <SvgCtaUnion :color="ctaColor" />
+        <SvgCtaUnion ref="arrow" :color="ctaColor" />
       </a>
     </div>
     <span v-if="content.full" class="app-programmation-card__full">
@@ -55,6 +57,7 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default {
@@ -105,9 +108,45 @@ export default {
         this.visible = true
       },
     })
+
+    this.initTimelineArrow()
   },
   beforeDestroy() {
     this.scrollTrigger?.kill()
+    this.tlArrow?.kill()
+  },
+  methods: {
+    onMouseEnter() {
+      if (this.$viewport.isMobile) return
+
+      this.tlArrow?.play()
+    },
+    onMouseLeave() {
+      if (this.$viewport.isMobile) return
+
+      this.tlArrow?.reverse()
+    },
+    initTimelineArrow() {
+      if (this.$viewport.isMobile) return
+
+      this.tlArrow = gsap.timeline({ paused: true })
+
+      this.tlArrow.to(this.$refs.arrow.$el, {
+        x: `${this.$viewport.width * 0.048611111111}px`, // width cta
+        duration: 0.5,
+        ease: 'power3.inOut',
+      })
+
+      this.tlArrow.set(this.$refs.arrow.$el, {
+        x: `${this.$viewport.width * -0.048611111111}px`, // width cta
+      })
+
+      this.tlArrow.to(this.$refs.arrow.$el, {
+        x: 0,
+        duration: 0.25,
+        ease: 'power3.out',
+      })
+    },
   },
 }
 </script>
@@ -213,6 +252,7 @@ export default {
     @include mobile {
       padding: 0px;
       margin-top: mobile-vw(15px);
+      border-top: 0px solid var(--c-black);
     }
   }
 
@@ -262,6 +302,7 @@ export default {
     border: 1px solid var(--c-black);
     border-right: none;
     border-bottom: none;
+    overflow: hidden;
 
     @include mobile {
       height: mobile-vw(50px);

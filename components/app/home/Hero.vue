@@ -150,6 +150,8 @@ export default {
 
       if (this.$viewport.isMobile) {
         this.setAllowScroll(true)
+        this.resetView()
+        this.onResizePreviewExterior()
       } else {
         this.appearHeroInit(0.1)
       }

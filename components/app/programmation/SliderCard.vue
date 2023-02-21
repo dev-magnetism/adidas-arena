@@ -50,10 +50,10 @@
         :href="content.link"
         target="_blank"
         @click.stop="() => {}"
-        @mouseenter="setCursorState('hide')"
-        @mouseleave="setCursorState('slider')"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave"
       >
-        <SvgCtaUnion :color="ctaColor" />
+        <SvgCtaUnion ref="arrow" :color="ctaColor" />
       </a>
     </div>
     <span v-if="content.full" class="app-programmation-slider-card__full">
@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
 import { mapMutations } from 'vuex'
 
 export default {
@@ -111,9 +112,50 @@ export default {
       return this.theme === 'blue' || this.theme === 'red'
     },
   },
-  mounted() {},
-  beforeDestroy() {},
+  mounted() {
+    if (this.$viewport.isMobile) return
+
+    this.initTimelineArrow()
+  },
+  beforeDestroy() {
+    this.tlArrow?.kill()
+  },
   methods: {
+    onMouseEnter() {
+      if (this.$viewport.isMobile) return
+
+      this.setCursorState('hide')
+
+      this.tlArrow?.play()
+    },
+    onMouseLeave() {
+      if (this.$viewport.isMobile) return
+
+      this.setCursorState('slider')
+
+      this.tlArrow?.reverse()
+    },
+    initTimelineArrow() {
+      if (this.$viewport.isMobile) return
+
+      this.tlArrow = gsap.timeline({ paused: true })
+
+      this.tlArrow.to(this.$refs.arrow.$el, {
+        x: `${this.$viewport.width * 0.048611111111}px`, // width cta
+        duration: 0.5,
+        ease: 'power3.inOut',
+      })
+
+      this.tlArrow.set(this.$refs.arrow.$el, {
+        x: `${this.$viewport.width * -0.048611111111}px`, // width cta
+      })
+
+      this.tlArrow.to(this.$refs.arrow.$el, {
+        x: 0,
+        duration: 0.25,
+        ease: 'power3.out',
+      })
+    },
     genRand(min, max, decimalPlaces) {
       const rand = Math.random() * (max - min) + min
       const power = Math.pow(10, decimalPlaces)
@@ -277,6 +319,7 @@ export default {
     border: 1px solid var(--c-black);
     border-right: none;
     border-bottom: none;
+    overflow: hidden;
 
     @include mobile {
       height: mobile-vw(50px);

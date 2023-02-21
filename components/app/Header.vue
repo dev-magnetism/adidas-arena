@@ -20,7 +20,9 @@
       class="app-header__programmation"
       to="/programmation"
     >
-      <TP1 weight="bold"> {{ programmationName }} </TP1>
+      <TP1 weight="bold" :color="headerWhite ? 'grey' : 'black'">
+        {{ programmationName }}
+      </TP1>
     </nuxt-link>
 
     <div
@@ -28,7 +30,11 @@
       class="app-header__burger"
       @click="onClickBurger"
     >
-      <TP1 weight="bold" class="app-header__burger__menu">
+      <TP1
+        weight="bold"
+        class="app-header__burger__menu"
+        :color="headerWhite ? 'grey' : 'black'"
+      >
         {{ menuName }}
       </TP1>
       <div class="app-header__burger__icon" />
@@ -116,6 +122,7 @@ export default {
       font-size: 16px;
       line-height: 16px;
       text-transform: uppercase;
+      transition: color 0.4s var(--ease-out-cubic);
     }
   }
 
@@ -156,11 +163,8 @@ export default {
     }
 
     &.white {
-      .app-header__menu.P1 {
-        color: var(--c-grey) !important;
-      }
-      .app-header__burger::after,
-      .app-header__burger::before {
+      .app-header__burger__icon::after,
+      .app-header__burger__icon::before {
         background-color: var(--c-grey);
       }
     }
