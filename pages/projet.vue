@@ -4,7 +4,6 @@
       <AppProjetIntroduction :contents="contentIntroduction" />
       <!-- <AppGallery :contents="contentGallery" /> -->
       <AppProjetCatchPhrase :contents="contentCatchphrase" />
-      <!-- <AppProjetGallery :contents="contentGallery" /> -->
       <ESlider :contents="contentSlider" />
       <!-- <AppProjetWorkProgress :contents="contentWorkProgress" /> -->
       <AppProjetPlan :contents="contentPlan" />

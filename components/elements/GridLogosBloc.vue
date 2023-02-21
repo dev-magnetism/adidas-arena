@@ -5,15 +5,6 @@
     class="app-element-grid-logos-bloc"
   >
     <AtomsCornerPoints :size-points="6" position="1,2,3,4" />
-    <nuxt-img
-      v-if="!transparent"
-      ref="img"
-      format="webp"
-      :src="content.logo"
-      :alt="content.logo_alt"
-      provider="directus"
-      loading="lazy"
-    />
     <SvgYou v-if="transparent" class="app-element-grid-logos-bloc__you" />
 
     <span
@@ -53,6 +44,7 @@
       :alt="content.logo_alt"
       provider="directus"
       loading="lazy"
+      sizes="sm:35vw md:20vw"
     />
     <SvgYou v-if="transparent" class="app-element-grid-logos-bloc__you" />
 

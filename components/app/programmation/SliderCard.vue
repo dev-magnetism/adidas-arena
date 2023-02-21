@@ -9,7 +9,7 @@
         <nuxt-picture
           class="app-programmation-slider-card__visual__picture"
           provider="directus"
-          sizes="sm:100vw md:30vw"
+          sizes="sm:100vw md:25vw"
           :src="content.visual"
           :alt="`visual-${content.name}`"
         />
