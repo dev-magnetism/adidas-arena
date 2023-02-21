@@ -19,10 +19,10 @@ export default {
   },
 
   mounted() {
-    // if (process.env.NODE_ENV !== 'development') return
-
-    const { renderer } = useWebGL()
-    this.rendererInfo = renderer.info
+    if (process.env.NODE_ENV === 'development') {
+      const { renderer } = useWebGL()
+      this.rendererInfo = renderer.info
+    }
   },
 }
 </script>

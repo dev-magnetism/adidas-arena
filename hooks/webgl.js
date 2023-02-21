@@ -75,13 +75,13 @@ class GL {
 
     this.camera.position.z = 500
 
-    // if (process.env.NODE_ENV === 'development') {
-    // if (!Viewport.isMobile) {
-    this.stats = new Stats()
+    if (process.env.NODE_ENV === 'development') {
+      if (!Viewport.isMobile) {
+        this.stats = new Stats()
 
-    document.body.appendChild(this.stats.dom)
-    // }
-    // }
+        document.body.appendChild(this.stats.dom)
+      }
+    }
 
     this.raycaster = new THREE.Raycaster()
 
