@@ -31,8 +31,8 @@
           color="white"
           >{{ contents.basilique }}</AtomsTitleTag
         >
-        <SvgPlan v-if="!$viewport.isMobile" ref="svg" />
-        <SvgPlanMobile v-if="$viewport.isMobile" ref="svgMobile" />
+        <SvgPlan ref="svg" class="app-projet-plan__svg" />
+        <SvgPlanMobile ref="svgMobile" class="app-projet-plan__svg-mobile" />
         <div ref="circle" class="app-projet-plan__visual__circle-01" />
         <div
           ref="littleArrow2"
@@ -371,6 +371,18 @@ export default {
     @include mobile {
       height: 100%;
       position: relative;
+    }
+  }
+
+  &__svg {
+    @include mobile {
+      display: none;
+    }
+  }
+
+  &__svg-mobile {
+    @include desktop {
+      display: none;
     }
   }
 

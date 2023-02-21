@@ -48,7 +48,6 @@
       </EKinesis>
     </EParallax>
     <ELottie
-      v-if="!$viewport.isMobile"
       id="Fleche_2"
       start="top bottom-=15%"
       class="app-arena-paris-basket-club__lottie-arrow"
@@ -142,6 +141,10 @@ export default {
     transform: rotate(45deg);
     aspect-ratio: 12 / 48;
     height: auto !important;
+
+    @include mobile {
+      display: none;
+    }
   }
 
   &__visual-transparent.app-element-kinesis {

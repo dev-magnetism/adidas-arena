@@ -149,8 +149,6 @@
         </TP2>
       </AtomsLink>
     </div>
-    <!-- <SvgFooterBrush v-if="!$viewport.isMobile" class="app-footer__brush" />
-    <SvgFooterBrushMobile v-else class="app-footer__brush-mobile" /> -->
   </div>
 </template>
 

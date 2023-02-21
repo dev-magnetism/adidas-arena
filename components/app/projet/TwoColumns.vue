@@ -1,10 +1,7 @@
 <template>
   <div class="app-projet-two-columns grid-inner">
     <div class="app-projet-two-columns__f-r grid">
-      <div
-        v-if="!$viewport.isMobile"
-        class="app-projet-two-columns__f-r__visuals"
-      >
+      <div class="app-projet-two-columns__f-r__visuals">
         <div class="app-projet-two-columns__f-r__fake-transparent">
           <EKinesis :speed="15">
             <EParallax :speed="0.5" />
@@ -52,7 +49,6 @@
         />
       </div>
       <ELottie
-        v-if="!$viewport.isMobile"
         id="Petite_Fleche_02"
         class="app-projet-two-columns__f-r__lottie-arrow"
       />
@@ -72,10 +68,7 @@
         />
       </div>
 
-      <div
-        v-if="!$viewport.isMobile"
-        class="app-projet-two-columns__s-r__visuals"
-      >
+      <div class="app-projet-two-columns__s-r__visuals">
         <EParallax :speed="0.75" class="app-projet-two-columns__s-r__visual">
           <EKinesis :speed="15">
             <nuxt-picture

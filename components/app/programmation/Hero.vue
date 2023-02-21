@@ -62,19 +62,10 @@
       <EKinesis :speed="10" />
     </div>
     <div class="app-programmation-hero__arrow-left">
-      <ELottie
-        v-if="!$viewport.isMobile"
-        id="Fleche_2"
-        start="top center"
-        end="bottom center-=25%"
-      />
+      <ELottie id="Fleche_2" start="top center" end="bottom center-=25%" />
     </div>
     <div class="app-programmation-hero__arrow-right">
-      <ELottie
-        v-if="!$viewport.isMobile"
-        id="Fleche_2"
-        end="bottom center-=25%"
-      />
+      <ELottie id="Fleche_2" start="top center" end="bottom center-=25%" />
     </div>
   </div>
 </template>
