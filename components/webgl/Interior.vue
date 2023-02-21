@@ -1521,6 +1521,7 @@ export default {
       })
     },
     unfocusZone(forceUnfocus = false) {
+      const saveZoneName = this.interiorCurrentZoneName
       this.zoneFocusEnabled = false
       this.currentZoneIntersect = null
 
@@ -1571,7 +1572,11 @@ export default {
       })
 
       if (!forceUnfocus) {
-        this.inactiveZones.forEach((object) => {
+        const test = this.currentFloor.specialObjects.filter(
+          (object) => object.name !== saveZoneName
+        )
+
+        test.forEach((object) => {
           this.handlerColorsZonesInactives(object, true)
         })
       }
