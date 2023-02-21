@@ -20,15 +20,21 @@ class LoaderManager {
     this.nbModels = files.length
 
     for (const [i, file] of files.entries()) {
-      this.models[file.id] = await this.gltfLoader.loadAsync(file.path)
+      try {
+        this.models[file.id] = await this.gltfLoader.loadAsync(file.path)
 
-      const index = i + 1
+        const index = i + 1
 
-      this.progressLoad.original = index
-      this.progressLoad.normalized = index / this.nbModels
-      this.progressLoad.percentage = (100 * index) / this.nbModels
+        console.log('loadddd progress', index)
 
-      cbUpdate(this.progressLoad, file.id)
+        this.progressLoad.original = index
+        this.progressLoad.normalized = index / this.nbModels
+        this.progressLoad.percentage = (100 * index) / this.nbModels
+
+        cbUpdate(this.progressLoad, file.id)
+      } catch (error) {
+        console.error('Error loading model:', error)
+      }
     }
 
     this.modelsLoaded = true

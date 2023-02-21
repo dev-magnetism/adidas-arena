@@ -61,7 +61,7 @@
             autoplay
           >
             <source
-              :src="`${$img.options.providers.directus.defaults.baseURL}assets/${contents.pictureBorder}`"
+              :src="`${$img.options.providers.directus.defaults.baseURL}assets/${contents.pictureBorder}.mp4`"
               type="video/mp4"
             />
           </video>
