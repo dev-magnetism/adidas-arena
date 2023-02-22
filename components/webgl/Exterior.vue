@@ -91,8 +91,8 @@ export default {
       this.initExterior()
     },
     modelCloudLoaded() {
-      // this.initClouds()
-      this.initCloudsNew()
+      this.initClouds()
+      // this.initCloudsNew()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -113,8 +113,8 @@ export default {
 
     if (this.allLoadedActual) {
       this.initExterior()
-      // this.initClouds()
-      this.initCloudsNew()
+      this.initClouds()
+      // this.initCloudsNew()
       this.initGUI()
       this.resetView()
     }
@@ -154,11 +154,11 @@ export default {
     })
 
     exterior.remove(this.floor)
-    // exterior.remove(this.cars)
+    exterior.remove(this.cars)
     exterior.remove(this.trams)
-    exterior.remove(this.cloudsBasic)
+    // exterior.remove(this.cloudsBasic)
     // exterior.remove(this.cloudsEdge)
-    // exterior.remove(this.clouds)
+    exterior.remove(this.clouds)
     this.adidasArena.remove(this.hitbox)
     exterior.remove(this.adidasArena)
     exterior.remove(this.arrow)
@@ -275,12 +275,12 @@ export default {
       //   // this.cloudsBasic.instanceMatrix.needsUpdate = true
       // })
 
-      // this.clouds?.children?.forEach((cloud) => {
-      //   const z = cloud.direction
-      //     ? cloud.position.z - cloud.coefParallax * this.cloudsParams.speed
-      //     : cloud.position.z + cloud.coefParallax * this.cloudsParams.speed
-      //   cloud.position.z = gsap.utils.wrap(100, -100, z)
-      // })
+      this.clouds?.children?.forEach((cloud) => {
+        const z = cloud.direction
+          ? cloud.position.z - cloud.coefParallax * this.cloudsParams.speed
+          : cloud.position.z + cloud.coefParallax * this.cloudsParams.speed
+        cloud.position.z = gsap.utils.wrap(100, -100, z)
+      })
 
       this.timeCars += deltaTime * this.speedCars
       const progressCars = this.timeCars % 1
@@ -347,7 +347,7 @@ export default {
       this.initFloor()
       this.initAdidasArena()
       this.initLogoArena()
-      // this.initCars()
+      this.initCars()
       this.initTrams()
       this.initArrow()
     },

@@ -22,6 +22,7 @@
           {{ content.type }}
         </TP2>
         <TP2
+          v-if="content.date"
           class="date"
           weight="medium"
           :color="whitedTexts ? 'white' : 'black'"
@@ -34,6 +35,7 @@
       </TH2>
 
       <TP2
+        v-if="content.from_price"
         class="app-programmation-card__from-price"
         weight="medium"
         :color="whitedTexts ? 'white' : 'black'"

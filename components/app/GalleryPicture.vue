@@ -76,12 +76,6 @@ export default {
       this.initMesh()
     },
     focusPicture() {
-      this.$parent.pictureIsSelected = true
-      this.$parent.pictureSelected = this
-      this.$parent.pictureIndexSelected = this.index
-
-      window.lenis.stop()
-
       const ratio = this.mesh.scale.x / this.mesh.scale.y
 
       const finalHeight = this.$viewport.height * 0.8
@@ -94,9 +88,14 @@ export default {
         ease: 'power4.out',
       })
 
+      console.log(
+        this.mesh.position.y,
+        window.lenis.scroll + this.$viewport.height / 2
+      )
+
       gsap.to(this.mesh._uOffset, {
         x: -this.mesh.position.x,
-        y: -window.lenis.scroll - this.mesh.position.y,
+        y: 0,
         duration: 0.9,
         ease: 'power4.out',
       })
@@ -197,7 +196,10 @@ export default {
       })
 
       this.mesh = new THREE.Mesh(this.geometry, this.material)
+      this.mesh.idComponent = this.index
       this.mesh._uOffset = new THREE.Vector3(0, 0, 0)
+
+      this.createBorder()
 
       const { gallery } = useWebGL()
 
@@ -207,32 +209,36 @@ export default {
 
       this.parallaxCoef = this.mesh.scale.x * 0.001 + this.mesh.scale.y * 0.001
     },
-    onClickPicture(e) {
-      if (this.$parent.onDrag) return
-
-      console.log('click onClickPicture')
-
-      setTimeout(() => {
-        if (!this.open && !this.$parent.pictureIsSelected) {
-          this.open = true
-        }
-
-        e.stopPropagation()
-      }, 100)
+    createBorder() {
+      // this.borderGroup = new THREE.Group()
+      // this.mesh.add(this.borderGroup)
+      // const geometry = new THREE.PlaneGeometry(1, 1)
+      // const material = new THREE.MeshBasicMaterial({
+      //   color: 0xffff00,
+      //   side: THREE.DoubleSide,
+      // })
+      // // Top Left Square
+      // const childScaleX = 1.0 / this.mesh.scale.x // <- this will negate the parent's scaling
+      // const childScaleY = 1.0 / this.mesh.scale.y // <- this will negate the parent's scaling
+      // const plane = new THREE.Mesh(geometry, material)
+      // plane.scale.set(childScaleX, childScaleY, 1)
+      // plane.position.set(this.mesh.scale.x / -2, this.mesh.scale.x / 2, 1)
+      // this.borderGroup.add(plane)
     },
+
     update({ scroll, velocity, xMin, xMax }) {
       if (!this.mesh) return
 
       const x = gsap.utils.wrap(
         xMin.picture.boundingRect.xThree - xMin.picture.boundingRect.width, // left
         xMax.picture.boundingRect.xThree + xMax.picture.boundingRect.width, // right
-        scroll.current + this.mesh.initialPosition.x
+        scroll.current + this.mesh?.initialPosition?.x
       )
 
       const position = new THREE.Vector3(
         x,
-        this.mesh.initialPosition?.y + window.lenis.scroll,
-        this.mesh.position?.z
+        this.mesh?.initialPosition?.y + window.lenis.scroll,
+        this.mesh?.position?.z
       )
 
       this.mesh.position.copy(position).add(this.mesh._uOffset)

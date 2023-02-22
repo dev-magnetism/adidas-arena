@@ -1,5 +1,5 @@
 <template>
-  <div class="app-arena-gallery">
+  <div @click="onSelectImage" class="app-arena-gallery">
     <TH2 weight="bold" class="app-arena-gallery__title">Galerie</TH2>
     <div ref="grid" class="app-arena-gallery__pictures">
       <AppGalleryPicture
@@ -10,14 +10,6 @@
         :src="item.picture"
         :alt="item.picture_alt"
       />
-      <!-- <AppGalleryPicture
-        v-for="i in 20"
-        :key="i"
-        ref="pictures"
-        :index="i"
-        :src="contents.items[0].picture"
-        :alt="'test'"
-      /> -->
     </div>
   </div>
 </template>
@@ -50,6 +42,8 @@ export default {
       directionDrag: 'x',
       leftmostImage: null,
       rightmostImage: null,
+      currentIntersect: null,
+      // imageFocused: false
     }
   },
   mounted() {
@@ -155,18 +149,50 @@ export default {
 
       this.scroll.target += delta
     },
+    onSelectImage() {
+      if (this.currentIntersect) {
+        const idPicture = this.currentIntersect.object.idComponent
+        const picture = this.$refs.pictures[idPicture]
 
+        console.log('click', picture)
+
+        picture.open = !picture.open
+      }
+    },
+    onMouseLeave(obj) {
+      // console.log('leave', obj)
+    },
+    onMouseEnter(obj) {
+      // console.log('enter', obj)
+    },
     onFrame() {
       if (!this.leftmostImage && !this.rightmostImage) return
 
-      // const { scissors } = useWebGL()
+      const { raycaster, gallery } = useWebGL()
 
-      // console.log(
-      //   scissors.current.y,
-      //   scissors.current.x,
-      //   scissors.current.width,
-      //   scissors.current.height
-      // )
+      const intersects = raycaster.intersectObject(gallery)
+
+      if (intersects.length) {
+        if (
+          !this.currentIntersect ||
+          intersects[0].object.idComponent !==
+            this.currentIntersect?.object?.idComponent
+        ) {
+          if (this.currentIntersect) {
+            this.onMouseLeave(this.currentIntersect.object)
+          }
+
+          this.onMouseEnter(intersects[0].object)
+        }
+
+        this.currentIntersect = intersects[0]
+      } else {
+        if (this.currentIntersect) {
+          this.onMouseLeave(this.currentIntersect.object)
+        }
+
+        this.currentIntersect = null
+      }
 
       // if (this.directionDrag === 'x') this.scroll.target += this.scroll.autoSpeed
       // else this.scroll.target -= this.scroll.autoSpeed
@@ -247,6 +273,7 @@ export default {
     grid-template-columns: repeat(36, minmax(0, 1fr));
     grid-gap: var(--layout-columns-gap);
     display: grid;
+    pointer-events: none;
   }
 
   &__title.H2 {

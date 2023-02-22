@@ -2,7 +2,7 @@
   <main class="app-projet">
     <div class="app-projet__wrapper">
       <AppProjetIntroduction :contents="contentIntroduction" />
-      <AppGallery :contents="contentGallery" />
+      <!-- <AppGallery :contents="contentGallery" /> -->
       <AppProjetCatchPhrase :contents="contentCatchphrase" />
       <ESlider :contents="contentSlider" />
       <!-- <AppProjetWorkProgress :contents="contentWorkProgress" /> -->
