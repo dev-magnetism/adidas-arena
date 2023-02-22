@@ -529,6 +529,7 @@ export default {
         1
       )
       this.directionalLight.castShadow = true
+
       // this.directionalLight.position.set(-30, 50, 100) // near
       this.directionalLight.position.set(-100, 150, 300) // far
 

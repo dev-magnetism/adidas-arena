@@ -195,7 +195,7 @@ export default {
     interior.remove(this.footField)
     interior.remove(this.musicScene)
     interior.remove(this.terrain)
-    interior.remove(this.arrow)
+    if (!this.$viewport.isMobile) interior.remove(this.arrow)
 
     interior.remove(this.zeroFloor)
     interior.remove(this.firstFloor)
@@ -834,6 +834,7 @@ export default {
       this.initSecondFloor()
       this.initThirdFloor()
       this.initFourthFloor()
+
       if (!this.$viewport.isMobile) this.initArrow()
 
       this.initGUI()
@@ -885,7 +886,7 @@ export default {
 
       this.arrow.add(arrow)
       this.arrow.add(edgeArrow)
-      this.arrow.add(conditionalArrow)
+      // this.arrow.add(conditionalArrow)
       this.arrow.basicMaterial = arrow.material
 
       this.tweenArrowTranslate = gsap.to(this.arrowPositionYoyo, {
@@ -895,6 +896,8 @@ export default {
         duration: 0.3,
         paused: true,
       })
+
+      this.tweenArrowScale?.kill()
 
       this.arrow.scale.set(0, 0, 0)
     },
@@ -911,17 +914,28 @@ export default {
       this.directionalLight.castShadow = true
       this.directionalLight.position.set(-100, 150, 300)
 
-      this.directionalLight.shadow.mapSize.width = 1024 // 4096
-      this.directionalLight.shadow.mapSize.height = 1024 // 4096
-      this.directionalLight.shadow.bias = -0.001
+      this.directionalLight.shadow.mapSize.width = this.$viewport.isMobile
+        ? 1024
+        : window.devicePixelRatio !== 2
+        ? 2048
+        : 1024
 
+      this.directionalLight.shadow.mapSize.height = this.$viewport.isMobile
+        ? 1024
+        : window.devicePixelRatio !== 2
+        ? 2048
+        : 1024
+
+      this.directionalLight.shadow.bias = -0.001
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
 
-      this.directionalLight.shadow.camera.left = -65
-      this.directionalLight.shadow.camera.right = 65
-      this.directionalLight.shadow.camera.top = 65
-      this.directionalLight.shadow.camera.bottom = -65
+      const size = this.$viewport.isMobile ? 50 : 100
+
+      this.directionalLight.shadow.camera.left = size * -1
+      this.directionalLight.shadow.camera.right = size * 1
+      this.directionalLight.shadow.camera.top = size * 1
+      this.directionalLight.shadow.camera.bottom = size * -1
 
       interior.add(this.directionalLight)
     },
@@ -1277,11 +1291,11 @@ export default {
 
       const terrain = this.mergeObject(terrainGroup)
       const edgeTerrain = this.edgeObject(terrain)
-      const conditionalTerrain = this.conditionalObject(terrain)
+      // const conditionalTerrain = this.conditionalObject(terrain)
 
       this.terrain.add(terrain)
       this.terrain.add(edgeTerrain)
-      this.terrain.add(conditionalTerrain)
+      // this.terrain.add(conditionalTerrain)
 
       const { min, max } = new THREE.Box3().setFromObject(this.terrain)
 
@@ -1310,12 +1324,12 @@ export default {
       floor.receiveShadow = false
 
       const edgeFloor = this.edgeObject(floor)
-      const conditionalFloor = this.conditionalObject(floor)
+      // const conditionalFloor = this.conditionalObject(floor)
 
       // this.floor.add(floor)
       this.floor.add(shadowFloor)
       this.floor.add(edgeFloor)
-      this.floor.add(conditionalFloor)
+      // this.floor.add(conditionalFloor)
     },
     initZeroFloor() {
       const { interior } = useWebGL()
@@ -1444,7 +1458,8 @@ export default {
           duration: 0.5,
         })
 
-        gsap.to(this.arrow.scale, {
+        this.tweenArrowScale?.kill()
+        this.tweenArrowScale = gsap.to(this.arrow.scale, {
           x: 0,
           y: 0,
           z: 0,
@@ -1614,7 +1629,8 @@ export default {
         ...params,
       })
 
-      gsap.to(this.arrow.scale, {
+      this.tweenArrowScale?.kill()
+      this.tweenArrowScale = gsap.to(this.arrow.scale, {
         x: 1,
         y: 1,
         z: 1,
@@ -1662,7 +1678,8 @@ export default {
         duration: 0.2,
       })
 
-      gsap.to(this.arrow.scale, {
+      this.tweenArrowScale?.kill()
+      this.tweenArrowScale = gsap.to(this.arrow.scale, {
         x: 0,
         y: 0,
         z: 0,
@@ -1797,10 +1814,18 @@ export default {
 
       const { basicObject, specialObjects } = this.parseFloor(object)
 
-      const { normalObject, edgeObject, conditionalObject } =
-        this.buildMergedObjects(basicObject, clippingPlane, group.materials)
+      // const { normalObject, edgeObject, conditionalObject } =
+      //   this.buildMergedObjects(basicObject, clippingPlane, group.materials)
 
-      group.add(normalObject, edgeObject, conditionalObject)
+      // group.add(normalObject, edgeObject, conditionalObject)
+
+      const { normalObject, edgeObject } = this.buildMergedObjects(
+        basicObject,
+        clippingPlane,
+        group.materials
+      )
+
+      group.add(normalObject, edgeObject)
 
       group.position.y += indexFloor * 0.05
       group.initialPosition = group.position.clone()
