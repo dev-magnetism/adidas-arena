@@ -38,6 +38,7 @@
           :class="{ valid: validateForm }"
           class="app-popin-newsletter__form__submit"
           type="submit"
+          aria-label="popin-newsletter-submit"
           @mouseenter="onMouseEnter"
           @mouseleave="onMouseLeave"
         >

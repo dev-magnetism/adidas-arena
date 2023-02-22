@@ -27,6 +27,7 @@
           :class="{ valid: validateForm }"
           class="app-footer__newsletter__submit"
           type="submit"
+          aria-label="footer-newsletter-submit"
           @mouseenter="onMouseEnter"
           @mouseleave="onMouseLeave"
         >

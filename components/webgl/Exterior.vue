@@ -529,12 +529,20 @@ export default {
         1
       )
       this.directionalLight.castShadow = true
-      this.directionalLight.position.set(-30, 50, 100)
+      // this.directionalLight.position.set(-30, 50, 100) // near
+      this.directionalLight.position.set(-100, 150, 300) // far
 
-      this.directionalLight.shadow.mapSize.width =
-        window.devicePixelRatio !== 2 ? 2048 : 1024 // 4096
-      this.directionalLight.shadow.mapSize.height =
-        window.devicePixelRatio !== 2 ? 2048 : 1024 // 4096
+      this.directionalLight.shadow.mapSize.width = this.$viewport.isMobile
+        ? 1024
+        : window.devicePixelRatio !== 2
+        ? 2048
+        : 1024
+
+      this.directionalLight.shadow.mapSize.height = this.$viewport.isMobile
+        ? 1024
+        : window.devicePixelRatio !== 2
+        ? 2048
+        : 1024
 
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000

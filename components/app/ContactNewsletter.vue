@@ -26,6 +26,7 @@
           :class="{ valid: validateForm }"
           class="app-contact-actus__form__submit"
           type="submit"
+          aria-label="contact-newsletter-submit"
           @mouseenter="onMouseEnter"
           @mouseleave="onMouseLeave"
         >
