@@ -151,10 +151,10 @@ export default {
         .fromTo(
           this.$refs.paragraph.$el,
           {
-            y: '-200%',
+            y: -30,
           },
           {
-            y: '0',
+            y: 0,
             duration: 0.6,
             ease: 'power3.out',
           },

@@ -13,6 +13,7 @@ export default {
       // if (this.$route.name.includes('arena')) {
       //   this.$nuxt.$emit('reset:exterior')
       // }
+
       if (this.$route.name.includes('arena')) {
         this.$nuxt.$emit('reset:interior')
       }

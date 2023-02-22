@@ -41,22 +41,10 @@ export default {
   data() {
     return {
       open: false,
-      offsetX: null,
     }
   },
   computed: {},
   watch: {
-    '$parent.indexPictureSelected'(newVal, oldVal) {
-      if (newVal === this.index || oldVal === this.index) return
-
-      if (newVal !== null) {
-        // disappear
-        // console.log('disappear', newVal, this.index)
-      } else {
-        // console.log('appear', newVal, this.index)
-        // appear
-      }
-    },
     open(newVal) {
       if (newVal) {
         this.focusPicture()
@@ -65,9 +53,7 @@ export default {
       }
     },
   },
-  mounted() {
-    this.offsetX = this.$viewport.width * 1.5 // 300vw en CSS
-  },
+  mounted() {},
 
   beforeDestroy() {
     const { gallery } = useWebGL()
@@ -89,16 +75,6 @@ export default {
 
       this.initMesh()
     },
-
-    // onClickDocument(e) {
-    //   if (!this.open) return
-
-    //   setTimeout(() => {
-    //     this.open = false
-
-    //     e.stopPropagation()
-    //   }, 100)
-    // },
     focusPicture() {
       this.$parent.pictureIsSelected = true
       this.$parent.pictureSelected = this
@@ -244,22 +220,21 @@ export default {
         e.stopPropagation()
       }, 100)
     },
-    update({ scroll, velocity }) {
+    update({ scroll, velocity, xMin, xMax }) {
       if (!this.mesh) return
 
       const x = gsap.utils.wrap(
-        -this.$viewport.width / 2, // left
-        this.$viewport.width / 2, // right
+        xMin.picture.boundingRect.xThree - xMin.picture.boundingRect.width, // left
+        xMax.picture.boundingRect.xThree + xMax.picture.boundingRect.width, // right
         scroll.current + this.mesh.initialPosition.x
       )
 
       const position = new THREE.Vector3(
         x,
-        this.mesh.position?.y,
+        this.mesh.initialPosition?.y + window.lenis.scroll,
         this.mesh.position?.z
       )
 
-      // this.mesh.material.uniforms.uVelocity.value = velocity
       this.mesh.position.copy(position).add(this.mesh._uOffset)
     },
     loadTexture(src) {
@@ -286,6 +261,21 @@ export default {
 .app-arena-gallery-picture {
   position: absolute;
   pointer-events: none;
+
+  picture {
+    width: 100%;
+    height: 100%;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+
+    img {
+      opacity: 0;
+      visibility: hidden;
+      @include draggable-false();
+    }
+  }
 
   &:nth-of-type(1) {
     aspect-ratio: 215/260;
@@ -447,21 +437,6 @@ export default {
     grid-column: 32 / span 4;
     bottom: desktop-vw(100px);
     left: desktop-vw(-60px);
-  }
-
-  picture {
-    width: 100%;
-    height: 100%;
-    display: block;
-    // visibility: hidden;
-    opacity: 0.5;
-    pointer-events: none;
-
-    img {
-      // opacity: 0;
-      // visibility: hidden;
-      @include draggable-false();
-    }
   }
 }
 </style>

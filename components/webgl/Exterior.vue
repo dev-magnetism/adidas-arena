@@ -91,8 +91,8 @@ export default {
       this.initExterior()
     },
     modelCloudLoaded() {
-      this.initClouds()
-      // this.initCloudsNew()
+      // this.initClouds()
+      this.initCloudsNew()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -113,8 +113,8 @@ export default {
 
     if (this.allLoadedActual) {
       this.initExterior()
-      this.initClouds()
-      // this.initCloudsNew()
+      // this.initClouds()
+      this.initCloudsNew()
       this.initGUI()
       this.resetView()
     }
@@ -154,11 +154,11 @@ export default {
     })
 
     exterior.remove(this.floor)
-    exterior.remove(this.cars)
+    // exterior.remove(this.cars)
     exterior.remove(this.trams)
-    // exterior.remove(this.cloudsBasic)
+    exterior.remove(this.cloudsBasic)
     // exterior.remove(this.cloudsEdge)
-    exterior.remove(this.clouds)
+    // exterior.remove(this.clouds)
     this.adidasArena.remove(this.hitbox)
     exterior.remove(this.adidasArena)
     exterior.remove(this.arrow)
@@ -347,7 +347,7 @@ export default {
       this.initFloor()
       this.initAdidasArena()
       this.initLogoArena()
-      this.initCars()
+      // this.initCars()
       this.initTrams()
       this.initArrow()
     },
@@ -531,16 +531,20 @@ export default {
       this.directionalLight.castShadow = true
       this.directionalLight.position.set(-30, 50, 100)
 
-      this.directionalLight.shadow.mapSize.width = 2048 // 4096
-      this.directionalLight.shadow.mapSize.height = 2048 // 4096
+      this.directionalLight.shadow.mapSize.width =
+        window.devicePixelRatio !== 2 ? 2048 : 1024 // 4096
+      this.directionalLight.shadow.mapSize.height =
+        window.devicePixelRatio !== 2 ? 2048 : 1024 // 4096
 
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
 
-      this.directionalLight.shadow.camera.left = -100
-      this.directionalLight.shadow.camera.right = 100
-      this.directionalLight.shadow.camera.top = 100
-      this.directionalLight.shadow.camera.bottom = -100
+      const size = this.$viewport.isMobile ? 50 : 100
+
+      this.directionalLight.shadow.camera.left = size * -1
+      this.directionalLight.shadow.camera.right = size * 1
+      this.directionalLight.shadow.camera.top = size * 1
+      this.directionalLight.shadow.camera.bottom = size * -1
 
       exterior.add(this.directionalLight)
     },

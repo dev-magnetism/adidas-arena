@@ -1,22 +1,31 @@
 <template>
   <div class="app-arena-gallery">
     <TH2 weight="bold" class="app-arena-gallery__title">Galerie</TH2>
-    <div class="app-arena-gallery__pictures">
+    <div ref="grid" class="app-arena-gallery__pictures">
       <AppGalleryPicture
         v-for="(item, index) in contents.items"
         :key="index"
         ref="pictures"
         :index="index"
         :src="item.picture"
-        format="webp"
         :alt="item.picture_alt"
       />
+      <!-- <AppGalleryPicture
+        v-for="i in 20"
+        :key="i"
+        ref="pictures"
+        :index="i"
+        :src="contents.items[0].picture"
+        :alt="'test'"
+      /> -->
     </div>
   </div>
 </template>
 
 <script>
 import { Observer } from 'gsap/Observer'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { mapMutations } from 'vuex'
 
 import useWebGL from '~/hooks/webgl'
 import useGUI from '~/hooks/gui'
@@ -32,114 +41,135 @@ export default {
     return {
       scroll: {
         ease: 0.04,
-        // ease: 1,
         current: 0,
         target: 0,
         last: 0,
-        speed: 0.8,
-        // wheelSpeed: 1,
-        wheelSpeed: 4,
+        autoSpeed: 0.8,
+        speed: 4,
       },
-      pictureIsSelected: false,
-      pictureSelected: null,
-      pictureIndexSelected: null,
-      onDrag: false,
       directionDrag: 'x',
+      leftmostImage: null,
+      rightmostImage: null,
     }
   },
   mounted() {
     this.observer = Observer.create({
+      axis: 'x',
       target: this.$el,
       type: 'touch,pointer',
       onDrag: this.onScrollObserver,
-      onDragStart: () => {
-        this.onDrag = true
-      },
-      dragMinimum: 5,
-      tolerance: 5,
       onStopDelay: 0.25,
-      onStop: () => {
-        this.onDrag = false
+      onDragStart: (e) => {
+        if (e.axis === 'x') this.setAllowScroll(false)
       },
+      onDragEnd: (e) => {
+        if (e.axis === 'x') this.setAllowScroll(true)
+      },
+      dragMinimum: 10,
+      lockAxis: true,
+      tolerance: 5,
     })
 
-    this.initTest()
+    this.scrollTrigger = ScrollTrigger.create({
+      trigger: this.$el,
+      start: 'top bottom',
+      end: 'bottom top',
+      markers: true,
+      onToggle: this.onToggle,
+    })
+
+    this.onResize()
 
     this.$raf.add(`arena-gallery`, this.onFrame)
 
-    this.$nuxt.$on('app:scroll', this.onScrollApp)
+    this.$viewport.events.on('resize', this.onResize)
 
     // this.initGUI()
   },
 
   beforeDestroy() {
     this.observer?.kill()
+    this.scrollTrigger?.kill()
 
-    const { gallery } = useWebGL()
-
-    gallery.position.y = 0
+    this.$viewport.events.off('resize', this.onResize)
 
     this.$raf.remove(`arena-gallery`, this.onFrame)
-
-    this.$nuxt.$off('app:scroll', this.onScrollApp)
 
     this.gui?.dispose()
   },
   methods: {
-    initTest() {
-      this.resizeObserver = new ResizeObserver((entries) => {
-        // this.calculateGridMinMaxX()
+    onResize() {
+      this.calcEndsGrid()
+
+      const { scissors, renderer, camera } = useWebGL()
+
+      scissors.current = { ...scissors.fullscreen }
+
+      renderer.setScissor(
+        scissors.current.x,
+        scissors.current.y,
+        scissors.current.width,
+        scissors.current.height
+      )
+
+      camera.position.set(0, 0, 500)
+      camera.rotation.set(0, 0, 0)
+      camera.zoom = 1
+
+      camera.updateProjectionMatrix()
+    },
+    onToggle(self) {
+      if (self.isActive) {
+        this.onResize()
+      }
+      console.log('toggle', self.isActive)
+    },
+    calcEndsGrid() {
+      const gridOffset = this.$refs.grid.getBoundingClientRect().left
+
+      this.$refs.pictures.forEach((picture) => {
+        const rect = picture.$el.getBoundingClientRect()
+
+        const position = rect.left - gridOffset
+
+        if (!this.leftmostImage || position < this.leftmostImage.position) {
+          this.leftmostImage = { picture, position }
+        }
+
+        if (
+          !this.rightmostImage ||
+          rect.right - gridOffset > this.rightmostImage.position
+        ) {
+          this.rightmostImage = { picture, position: rect.right - gridOffset }
+        }
       })
-      console.log(this.$refs.pictures)
-      //     this.$refs.pictures.forEach(item => {
-      //   this.resizeObserver.observe(this.$refs.gridItem[item.id - 1])
-      // })
     },
-    onTest(index) {
-      console.log('here', index)
-      const test = Math.min(
-        ...this.$refs.pictures.map(
-          (el) => el.boundingRect.xThree - el.boundingRect.width / 2
-        )
-      )
-      console.log(test)
-
-      const testbis = Math.max(
-        ...this.$refs.pictures.map(
-          (el) => el.boundingRect.xThree + el.boundingRect.width / 2
-        )
-      )
-      console.log(testbis)
-    },
-    onScrollApp({ scroll, limit, velocity, direction, progress }) {
-      const { gallery } = useWebGL()
-
-      gallery.position.y = scroll
-    },
-
     onScrollObserver(self) {
-      if (this.pictureIsSelected) return
-
       if (Math.sign(self.deltaX) === 1) {
         this.directionDrag = 'x'
       } else {
         this.directionDrag = '-x'
       }
 
-      const delta = self.isDragging
-        ? self.deltaX * this.scroll.wheelSpeed
-        : self.deltaY
+      const delta = self.deltaX * this.scroll.speed
 
-      this.scroll.target += delta * 0.5
+      this.scroll.target += delta
     },
 
-    onFrame({ deltaTime }) {
-      // if (!this.pictureIsSelected) {
-      // if (this.directionDrag === 'x') this.scroll.target += this.scroll.speed
-      // else this.scroll.target -= this.scroll.speed
-      // } else {
-      // this.scroll.target = this.scroll.last
-      // }
+    onFrame() {
+      if (!this.leftmostImage && !this.rightmostImage) return
+
+      // const { scissors } = useWebGL()
+
+      // console.log(
+      //   scissors.current.y,
+      //   scissors.current.x,
+      //   scissors.current.width,
+      //   scissors.current.height
+      // )
+
+      // if (this.directionDrag === 'x') this.scroll.target += this.scroll.autoSpeed
+      // else this.scroll.target -= this.scroll.autoSpeed
 
       this.scroll.current = this.lerp(
         this.scroll.current,
@@ -147,16 +177,13 @@ export default {
         this.scroll.ease
       )
 
-      if (this.scroll.current > this.scroll.last) {
-        this.direction = 'down'
-        this.speed = this.speed * 1
-      } else if (this.scroll.current < this.scroll.last) {
-        this.direction = 'up'
-        this.speed = this.speed * -1
-      }
-
       this.$refs.pictures?.forEach((layer) => {
-        layer.update({ scroll: this.scroll, velocity: this.observer.velocityX })
+        layer.update({
+          scroll: this.scroll,
+          velocity: this.observer.velocityX,
+          xMin: this.leftmostImage,
+          xMax: this.rightmostImage,
+        })
       })
 
       this.scroll.last = this.scroll.current
@@ -167,14 +194,14 @@ export default {
 
       this.gui = gui.addFolder({ title: `Gallery` })
 
-      this.gui.addInput(this.scroll, 'speed', {
+      this.gui.addInput(this.scroll, 'autoSpeed', {
         min: 0.1,
         max: 20,
         step: 0.1,
         label: 'Auto-scroll speed',
       })
 
-      this.gui.addInput(this.scroll, 'wheelSpeed', {
+      this.gui.addInput(this.scroll, 'speed', {
         min: 1,
         max: 20,
         step: 0.1,
@@ -188,7 +215,9 @@ export default {
         label: 'Drag ease',
       })
     },
-
+    ...mapMutations({
+      setAllowScroll: 'setAllowScroll',
+    }),
     lerp(p1, p2, t) {
       return p1 + (p2 - p1) * t
     },
