@@ -60,7 +60,7 @@
               >
                 <nuxt-link
                   to="/programmation"
-                  @click.native="onClickLink($event, !$viewport.isMobile)"
+                  @click.native="onClickLink($event, $viewport.isDesktop)"
                 >
                   Programmation
                 </nuxt-link>
