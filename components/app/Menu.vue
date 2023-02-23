@@ -60,7 +60,7 @@
               >
                 <nuxt-link
                   to="/programmation"
-                  @click.native="onClickLink('/programmation')"
+                  @click.native="onClickLink($event, !$viewport.isMobile)"
                 >
                   Programmation
                 </nuxt-link>
@@ -86,7 +86,7 @@
                 @mouseenter.native="onLinkEnter('principal', index)"
                 @mouseleave.native="onLinkLeave('principal', index)"
               >
-                <nuxt-link :to="item.url" @click.native="onClickLink(item.url)">
+                <nuxt-link :to="item.url" @click.native="onClickLink($event)">
                   {{ item.name }}
                 </nuxt-link>
               </TH2>
@@ -138,11 +138,9 @@
                 @mouseenter.native="onLinkEnter('principal', index)"
                 @mouseleave.native="onLinkLeave('principal', index)"
               >
-                <nuxt-link
-                  :to="item.url"
-                  @click.native="onClickLink(item.url)"
-                  >{{ item.name }}</nuxt-link
-                >
+                <nuxt-link :to="item.url" @click.native="onClickLink($event)">{{
+                  item.name
+                }}</nuxt-link>
               </TH2>
             </div>
           </div>
@@ -253,9 +251,12 @@ export default {
   },
 
   methods: {
-    onClickLink(url) {
-      console.log(url, this.$route, this.$route.fullPath)
-      if (url === this.$route.fullPath) this.onCloseBurger()
+    onClickLink(e, disabledOnDesktop = false) {
+      const sameRoute =
+        e.target.classList.contains('nuxt-link-exact-active') ||
+        e.target.classList.contains('nuxt-link-active')
+
+      if (sameRoute && !disabledOnDesktop) this.onCloseBurger()
     },
     initLotties() {
       const lottieCircle1 = require(`@/assets/lotties/Cercle_1.json`)
