@@ -252,11 +252,11 @@ export default {
 
   methods: {
     onClickLink(e, disabledOnDesktop = false) {
-      const sameRoute =
-        e.target.classList.contains('nuxt-link-exact-active') ||
-        e.target.classList.contains('nuxt-link-active')
+      if (disabledOnDesktop) return
 
-      if (sameRoute && !disabledOnDesktop) this.onCloseBurger()
+      const sameRoute = e.target.classList.contains('nuxt-link-exact-active')
+
+      if (sameRoute) this.onCloseBurger()
     },
     initLotties() {
       const lottieCircle1 = require(`@/assets/lotties/Cercle_1.json`)
