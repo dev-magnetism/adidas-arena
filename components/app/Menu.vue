@@ -60,7 +60,7 @@
               >
                 <nuxt-link
                   to="/programmation"
-                  @click.native="onClickLink($event, $viewport.isDesktop)"
+                  @click.native="onClickLink($event)"
                 >
                   Programmation
                 </nuxt-link>
@@ -251,9 +251,7 @@ export default {
   },
 
   methods: {
-    onClickLink(e, disabledOnDesktop = false) {
-      if (disabledOnDesktop) return
-
+    onClickLink(e) {
       const sameRoute = e.target.classList.contains('nuxt-link-exact-active')
 
       if (sameRoute) this.onCloseBurger()
