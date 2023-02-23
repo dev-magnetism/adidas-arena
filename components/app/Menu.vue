@@ -254,6 +254,7 @@ export default {
 
   methods: {
     onClickLink(url) {
+      console.log(url, this.$route, this.$route.fullPath)
       if (url === this.$route.fullPath) this.onCloseBurger()
     },
     initLotties() {
