@@ -942,7 +942,7 @@ export default {
     initGUI() {
       const gui = useGUI()
 
-      this.gui = gui.addFolder({ title: `Interior` })
+      this.gui = gui.addFolder({ title: `Interior`, expanded: false })
 
       const { interior } = useWebGL()
 

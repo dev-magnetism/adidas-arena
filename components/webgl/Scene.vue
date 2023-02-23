@@ -1,8 +1,5 @@
 <template>
-  <div
-    :class="{ front: exteriorArenaHovered && exteriorVisible }"
-    class="app-webgl-scene"
-  >
+  <div class="app-webgl-scene">
     <WebglExterior />
     <WebglInterior />
   </div>
@@ -44,6 +41,7 @@ export default {
   left: 0;
   top: 0;
   z-index: 0;
+  pointer-events: none;
 
   // &.front {
   //   z-index: 2;

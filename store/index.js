@@ -33,6 +33,7 @@ export const state = () => ({
 
   // UI
   allowScroll: false,
+  webglInFront: false,
   initialHeroDisplayed: false,
   menuActive: false,
   popinNewsletterClosedInSession: false,
@@ -56,6 +57,9 @@ export const getters = {
 export const mutations = {
   setFontsLoaded: (state, value) => {
     state.fontsLoaded = value
+  },
+  setWebglInFront: (state, value) => {
+    state.webglInFront = value
   },
   setInteriorCurrentZoneHovered: (state, value) => {
     state.interiorCurrentZoneHovered = value

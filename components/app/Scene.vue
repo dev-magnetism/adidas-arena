@@ -43,14 +43,14 @@ export default {
   // z-index: 99999999;
 
   &--front {
-    z-index: 9;
+    z-index: 2;
   }
 
   canvas {
     height: 100%;
     width: 100%;
-    // touch-action: none;
-    // user-select: none;
+    touch-action: none;
+    user-select: none;
   }
 }
 </style>

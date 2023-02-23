@@ -1,14 +1,18 @@
 <template>
   <div class="app-arena-gallery-picture">
     <nuxt-picture
+      v-if="!content.isVideo"
       ref="picture"
       provider="directus"
       class="picture-absolute"
-      :src="src"
+      :src="content.picture"
       format="webp"
-      :alt="alt"
+      :alt="content.alt"
+      loading="lazy"
+      sizes="sm:50vw md:70vw"
       @load="onLoad"
     />
+    <div v-else class="picture-absolute" />
   </div>
 </template>
 
@@ -29,13 +33,9 @@ export default {
       require: true,
       default: 0,
     },
-    src: {
-      type: String,
-      default: 'null',
-    },
-    alt: {
-      type: String,
-      default: 'alt',
+    content: {
+      type: Object,
+      default: () => {},
     },
   },
   data() {
@@ -53,7 +53,9 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() {
+    if (this.content.isVideo) this.initTexture()
+  },
 
   beforeDestroy() {
     const { gallery } = useWebGL()
@@ -71,7 +73,13 @@ export default {
       this.initTexture()
     },
     async initTexture() {
-      this.texture = await this.loadTexture(this.currentSrc)
+      if (this.content.isVideo) {
+        this.texture = await this.loadTextureVideo(this.content.video)
+      } else {
+        this.texture = await this.loadTexture(this.currentSrc)
+      }
+
+      this.texture.wrapS = this.texture.wrapT = THREE.RepeatWrapping
 
       this.initMesh()
     },
@@ -88,14 +96,9 @@ export default {
         ease: 'power4.out',
       })
 
-      console.log(
-        this.mesh.position.y,
-        window.lenis.scroll + this.$viewport.height / 2
-      )
-
       gsap.to(this.mesh._uOffset, {
         x: -this.mesh.position.x,
-        y: 0,
+        y: -this.mesh.position.y,
         duration: 0.9,
         ease: 'power4.out',
       })
@@ -225,14 +228,15 @@ export default {
       // plane.position.set(this.mesh.scale.x / -2, this.mesh.scale.x / 2, 1)
       // this.borderGroup.add(plane)
     },
-
     update({ scroll, velocity, xMin, xMax }) {
       if (!this.mesh) return
+
+      if (this.content.isVideo) this.texture.update()
 
       const x = gsap.utils.wrap(
         xMin.picture.boundingRect.xThree - xMin.picture.boundingRect.width, // left
         xMax.picture.boundingRect.xThree + xMax.picture.boundingRect.width, // right
-        scroll.current + this.mesh?.initialPosition?.x
+        scroll.current * this.parallaxCoef + this.mesh?.initialPosition?.x
       )
 
       const position = new THREE.Vector3(
@@ -257,6 +261,38 @@ export default {
             console.error('An error happened.', err)
           }
         )
+      })
+    },
+    loadTextureVideo(src) {
+      return new Promise((resolve) => {
+        const video = document.createElement('video')
+
+        const srcConcat = `${this.$img.options.providers.directus.defaults.baseURL}assets/${src}`
+
+        video.src = srcConcat
+        video.crossOrigin = 'anonymous'
+        video.muted = true
+        video.playsInline = true
+        video.loop = true
+        video.autoplay = true
+
+        if (this.$viewport.isFirefox && this.$refs.video.readyState > 3) {
+          this.texture = new THREE.VideoTexture(video)
+          this.texture.image.pause()
+          this.texture.image.currentTime = 0
+          this.texture.needsUpdate = true
+
+          resolve(this.texture)
+        } else {
+          video.onloadeddata = () => {
+            this.texture = new THREE.VideoTexture(video)
+            this.texture.image.pause()
+            this.texture.image.currentTime = 0
+            this.texture.needsUpdate = true
+
+            resolve(this.texture)
+          }
+        }
       })
     },
   },
@@ -299,10 +335,8 @@ export default {
   &:nth-of-type(3) {
     aspect-ratio: 410/270;
     left: desktop-vw(50px);
-    top: desktop-vw(500px);
-    // top: desktop-vw(185px);
-    grid-column: 16 / span 3;
-    // grid-column: 22 / span 3;
+    top: desktop-vw(185px);
+    grid-column: 22 / span 3;
     width: 100%;
   }
   &:nth-of-type(4) {
@@ -435,13 +469,13 @@ export default {
     width: 100%;
     aspect-ratio: 210/275;
     grid-column: 28 / span 2;
-    bottom: desktop-vw(265px);
+    bottom: desktop-vw(100px);
   }
   &:nth-of-type(25) {
     width: 100%;
     aspect-ratio: 475/315;
     grid-column: 32 / span 4;
-    bottom: desktop-vw(100px);
+    bottom: desktop-vw(50px);
     left: desktop-vw(-60px);
   }
 }

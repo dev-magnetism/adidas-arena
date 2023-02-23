@@ -83,7 +83,7 @@ export default {
       )
     },
     onFrame() {
-      if (!window.lenis && !this.interiorVisible) return
+      if (!window.lenis || !this.interiorVisible) return
 
       const { interior, camera, scissors, renderer } = useWebGL()
 

@@ -87,7 +87,7 @@ export default {
   transition: transform 0.65s var(--ease-out-cubic),
     opacity 0.35s 0.4s var(--ease-in-out-cubic);
   will-change: transform;
-  z-index: 2;
+  z-index: 3;
   height: 40px;
 
   @include mobile {
@@ -95,7 +95,7 @@ export default {
   }
 
   &.reduced {
-    transform: translate(0%, -40px);
+    transform: translate(0%, calc(-#{desktop-vw(10px)} - 40px));
 
     @include mobile {
       transform: translate(0%, 0%);

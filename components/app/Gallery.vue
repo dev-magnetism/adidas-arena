@@ -7,8 +7,7 @@
         :key="index"
         ref="pictures"
         :index="index"
-        :src="item.picture"
-        :alt="item.picture_alt"
+        :content="item"
       />
     </div>
   </div>
@@ -43,7 +42,10 @@ export default {
       leftmostImage: null,
       rightmostImage: null,
       currentIntersect: null,
-      // imageFocused: false
+      imageSelected: false,
+      lastImageSelectedId: null,
+      onDragProgress: false,
+      galleryVisible: false,
     }
   },
   mounted() {
@@ -53,7 +55,12 @@ export default {
       type: 'touch,pointer',
       onDrag: this.onScrollObserver,
       onStopDelay: 0.25,
+      onStop: () => {
+        this.onDragProgress = false
+      },
       onDragStart: (e) => {
+        this.onDragProgress = true
+
         if (e.axis === 'x') this.setAllowScroll(false)
       },
       onDragEnd: (e) => {
@@ -66,19 +73,17 @@ export default {
 
     this.scrollTrigger = ScrollTrigger.create({
       trigger: this.$el,
-      start: 'top bottom',
-      end: 'bottom top',
+      start: 'top-=25% bottom',
+      end: 'bottom+=25% top',
       markers: true,
       onToggle: this.onToggle,
     })
-
-    this.onResize()
 
     this.$raf.add(`arena-gallery`, this.onFrame)
 
     this.$viewport.events.on('resize', this.onResize)
 
-    // this.initGUI()
+    this.initGUI()
   },
 
   beforeDestroy() {
@@ -93,6 +98,8 @@ export default {
   },
   methods: {
     onResize() {
+      if (!this.galleryVisible) return
+
       this.calcEndsGrid()
 
       const { scissors, renderer, camera } = useWebGL()
@@ -113,10 +120,20 @@ export default {
       camera.updateProjectionMatrix()
     },
     onToggle(self) {
+      this.galleryVisible = self.isActive
+      this.setWebglInFront(self.isActive)
+
+      this.$refs.pictures.forEach((picture) => {
+        if (!picture.texture?.isVideoTexture || !picture.content.isVideo) return
+
+        self.isActive
+          ? picture.texture?.image?.play()
+          : picture.texture?.image?.pause()
+      })
+
       if (self.isActive) {
         this.onResize()
       }
-      console.log('toggle', self.isActive)
     },
     calcEndsGrid() {
       const gridOffset = this.$refs.grid.getBoundingClientRect().left
@@ -139,6 +156,8 @@ export default {
       })
     },
     onScrollObserver(self) {
+      if (this.imageSelected) return
+
       if (Math.sign(self.deltaX) === 1) {
         this.directionDrag = 'x'
       } else {
@@ -150,13 +169,26 @@ export default {
       this.scroll.target += delta
     },
     onSelectImage() {
-      if (this.currentIntersect) {
+      if (this.onDragProgress) return
+
+      if (this.currentIntersect && !this.imageSelected) {
         const idPicture = this.currentIntersect.object.idComponent
         const picture = this.$refs.pictures[idPicture]
 
-        console.log('click', picture)
+        picture.open = true
+        this.lastImageSelectedId = idPicture
+        this.imageSelected = true
+        this.setAllowScroll(false)
+      } else if (
+        (!this.currentIntersect && this.imageSelected) ||
+        (this.currentIntersect && this.imageSelected)
+      ) {
+        const picture = this.$refs.pictures[this.lastImageSelectedId]
 
-        picture.open = !picture.open
+        picture.open = false
+        this.imageSelected = false
+        this.lastImageSelectedId = null
+        this.setAllowScroll(true)
       }
     },
     onMouseLeave(obj) {
@@ -166,7 +198,8 @@ export default {
       // console.log('enter', obj)
     },
     onFrame() {
-      if (!this.leftmostImage && !this.rightmostImage) return
+      if ((!this.leftmostImage && !this.rightmostImage) || !this.galleryVisible)
+        return
 
       const { raycaster, gallery } = useWebGL()
 
@@ -174,9 +207,10 @@ export default {
 
       if (intersects.length) {
         if (
-          !this.currentIntersect ||
-          intersects[0].object.idComponent !==
-            this.currentIntersect?.object?.idComponent
+          (!this.currentIntersect ||
+            intersects[0].object.idComponent !==
+              this.currentIntersect?.object?.idComponent) &&
+          !this.imageSelected
         ) {
           if (this.currentIntersect) {
             this.onMouseLeave(this.currentIntersect.object)
@@ -194,8 +228,15 @@ export default {
         this.currentIntersect = null
       }
 
-      // if (this.directionDrag === 'x') this.scroll.target += this.scroll.autoSpeed
-      // else this.scroll.target -= this.scroll.autoSpeed
+      if (this.imageSelected) {
+        this.scroll.target = this.scroll.last
+      }
+
+      if (this.directionDrag === 'x' && !this.imageSelected) {
+        this.scroll.target += this.scroll.autoSpeed
+      } else if (this.directionDrag === '-x' && !this.imageSelected) {
+        this.scroll.target -= this.scroll.autoSpeed
+      }
 
       this.scroll.current = this.lerp(
         this.scroll.current,
@@ -243,6 +284,7 @@ export default {
     },
     ...mapMutations({
       setAllowScroll: 'setAllowScroll',
+      setWebglInFront: 'setWebglInFront',
     }),
     lerp(p1, p2, t) {
       return p1 + (p2 - p1) * t
@@ -254,7 +296,6 @@ export default {
 <style lang="scss">
 .app-arena-gallery {
   width: 100%;
-
   height: desktop-vw(1440px);
   display: flex;
   align-items: center;

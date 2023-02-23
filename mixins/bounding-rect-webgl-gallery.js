@@ -68,10 +68,17 @@ export default {
         this.boundingRect.height
       )
 
-      this.mesh.material.uniforms.uRatio.value = new THREE.Vector2(
-        this.texture.image.naturalWidth,
-        this.texture.image.naturalHeight
-      )
+      if (this.texture.isVideoTexture) {
+        this.mesh.material.uniforms.uRatio.value = new THREE.Vector2(
+          this.texture.image.videoWidth,
+          this.texture.image.videoHeight
+        )
+      } else {
+        this.mesh.material.uniforms.uRatio.value = new THREE.Vector2(
+          this.texture.image.naturalWidth,
+          this.texture.image.naturalHeight
+        )
+      }
 
       this.boundingRect.xThree =
         -this.$viewport.width / 2 +

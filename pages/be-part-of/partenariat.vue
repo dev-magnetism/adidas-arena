@@ -1,6 +1,5 @@
 <template>
   <main class="page-be-part-of-partenaire">
-    <!-- <AppGallery :contents="contentGallerie" /> -->
     <AppBepartofPartenaireIntroduction :contents="contentIntroduction" />
     <AppBepartofPartenairePartenaires :contents="contentPartners" />
     <AppContactQuestion :contents="contentContactQuestion" />
@@ -27,10 +26,6 @@ export default {
       limit: -1,
     })
 
-    const gallerie = await $directus.items('Gallerie').readByQuery({
-      limit: -1,
-    })
-
     const galerieTest = await $directus
       .items('Galerie_partenaire')
       .readByQuery({
@@ -39,7 +34,6 @@ export default {
 
     return {
       content,
-      gallerie,
       galerieTest,
     }
   },
@@ -62,11 +56,7 @@ export default {
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
     }),
-    contentGallerie() {
-      return {
-        items: this.gallerie.data,
-      }
-    },
+
     contentPartners() {
       return {
         title: this.content.data.partenaires_title,
