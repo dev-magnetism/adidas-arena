@@ -2,10 +2,12 @@
   <div class="app-be-part-of-partenaire-introduction grid-inner">
     <div class="app-be-part-of-partenaire-introduction__f-row__content">
       <ERichText
+        ref="title"
         class="app-be-part-of-partenaire-introduction__f-row__content__title"
         :content="contents.title"
       />
       <TP2
+        ref="paragraph"
         class="app-be-part-of-partenaire-introduction__f-row__content__text"
         weight="bold"
       >
@@ -13,9 +15,8 @@
       </TP2>
     </div>
 
-    <EParallax
+    <div
       ref="bigVisual"
-      :speed="0.45"
       class="app-be-part-of-partenaire-introduction__f-row__visual"
     >
       <EKinesis :speed="5">
@@ -28,16 +29,15 @@
           sizes="sm:35vw md:75vw"
         />
       </EKinesis>
-    </EParallax>
+    </div>
 
-    <EParallax
+    <div
       ref="framedVisual"
       class="app-be-part-of-partenaire-introduction__s-row__visual"
-      :speed="0.55"
     >
-      <EKinesis :speed="7.5">
+      <EKinesis :speed="10">
         <EFramedPicture class="" color="red-adidas">
-          <EKinesis :speed="-3.5">
+          <EKinesis :speed="-2">
             <nuxt-picture
               provider="directus"
               :src="contents.pictureFramed.src"
@@ -48,7 +48,7 @@
           </EKinesis>
         </EFramedPicture>
       </EKinesis>
-    </EParallax>
+    </div>
 
     <div class="app-be-part-of-partenaire-introduction__s-row__content">
       <TH4
@@ -67,7 +67,8 @@
 
 <script>
 import { gsap } from 'gsap'
-import { mapState, mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
+import { SplitText } from 'gsap/SplitText'
 
 export default {
   props: {
@@ -78,57 +79,174 @@ export default {
   },
   computed: {
     ...mapState({
-      initialHeroDisplayed: (state) => state.initialHeroDisplayed,
       allLoadedFake: (state) => state.allLoadedFake,
+      initialHeroDisplayed: (state) => state.initialHeroDisplayed,
+      fontsLoaded: (state) => state.fontsLoaded,
     }),
   },
   watch: {
     initialHeroDisplayed(newVal) {
       if (!newVal) return
 
-      this.initScrollTrigger()
+      if (this.$viewport.isMobile) {
+        this.setAllowScroll(true)
+      } else {
+        this.appearHero(0.2)
+      }
+    },
+    fontsLoaded(newVal) {
+      if (!newVal || this.$viewport.isMobile) return
+
+      this.initSplitText()
     },
   },
   mounted() {
-    if (this.allLoadedFake) {
-      this.initScrollTrigger()
+    if (this.allLoadedFake && !this.$viewport.isMobile) {
+      this.initSplitText()
+      this.appearHero(0.85)
+    } else if (this.allLoadedFake && this.$viewport.isMobile) {
+      this.setAllowScroll(true)
     }
   },
   methods: {
+    initSplitText() {
+      const title = this.$refs.title.$el.querySelectorAll('.H2')
+
+      this.splittingChild = new SplitText(title, {
+        type: 'lines',
+        linesClass: 'line-child',
+      })
+
+      this.splittingParent = new SplitText(title, {
+        type: 'lines',
+        linesClass: 'line-parent',
+      })
+    },
+    appearHero(delay = 0) {
+      this.tlAppear?.clear()
+      this.tlAppear?.kill()
+
+      this.tlAppear = gsap
+        .timeline({
+          delay,
+          onComplete: () => {
+            this.initScrollTrigger()
+          },
+        })
+        .addLabel('texts')
+        .fromTo(
+          this.splittingChild.lines,
+          {
+            y: '-120%',
+          },
+          {
+            y: '0',
+            duration: 0.6,
+            stagger: 0.085,
+            ease: 'power3.out',
+          },
+          'texts'
+        )
+        .fromTo(
+          this.$refs.paragraph.$el,
+          {
+            y: -30,
+          },
+          {
+            y: 0,
+            duration: 0.6,
+            ease: 'power3.out',
+          },
+          'texts+=15%'
+        )
+        .fromTo(
+          this.$refs.paragraph.$el,
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+            duration: 0.85,
+            ease: 'power3.out',
+          },
+          'texts+=15%'
+        )
+        .addLabel('visuals', 'texts')
+        .fromTo(
+          this.$refs.bigVisual,
+          {
+            y: '40%',
+            rotate: 8,
+          },
+          {
+            y: '0%',
+            rotate: 3,
+            duration: 0.5,
+            ease: 'power3.out',
+          },
+          'visuals'
+        )
+        .fromTo(
+          this.$refs.bigVisual,
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+            duration: 0.55,
+            ease: 'power3.out',
+          },
+          'visuals+=5%'
+        )
+        .fromTo(
+          this.$refs.framedVisual,
+          {
+            y: '30%',
+            rotate: -8,
+          },
+          {
+            y: '0%',
+            rotate: -4,
+            duration: 0.5,
+            ease: 'power3.out',
+          },
+          'visuals+=50%'
+        )
+        .fromTo(
+          this.$refs.framedVisual,
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+            duration: 0.55,
+            ease: 'power3.out',
+          },
+          'visuals+=50%'
+        )
+    },
     initScrollTrigger() {
       this.setAllowScroll(true)
 
-      if (!this.$viewport.isMobile) {
-        gsap.fromTo(
-          this.$refs.bigVisual.$el,
-          {
-            rotate: 6,
-          },
-          {
-            rotate: 2,
-            scrollTrigger: {
-              trigger: this.$refs.bigVisual.$el,
-              scrub: 0.5,
-              end: 'bottom top',
-            },
-          }
-        )
+      gsap.to(this.$refs.bigVisual, {
+        yPercent: -20,
+        rotate: 0,
+        scrollTrigger: {
+          trigger: this.$el,
+          scrub: 0.5,
+          start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
+        },
+      })
 
-        gsap.fromTo(
-          this.$refs.framedVisual.$el,
-          {
-            rotate: -6,
-          },
-          {
-            rotate: -2,
-            scrollTrigger: {
-              trigger: this.$refs.framedVisual.$el,
-              scrub: 0.5,
-              end: 'bottom top',
-            },
-          }
-        )
-      }
+      gsap.to(this.$refs.framedVisual, {
+        yPercent: -25,
+        rotate: 0,
+        scrollTrigger: {
+          trigger: this.$el,
+          scrub: 0.5,
+          start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
+        },
+      })
     },
     ...mapMutations({
       setAllowScroll: 'setAllowScroll',
@@ -177,7 +295,7 @@ export default {
         width: 62%;
       }
     }
-    &__visual.app-parallax {
+    &__visual {
       grid-column: 7 / span 6;
       grid-row: 1;
       transform: rotate(3deg);
@@ -234,7 +352,7 @@ export default {
       }
     }
 
-    &__visual.app-parallax {
+    &__visual {
       grid-column: 2 / span 5;
       grid-row: 2;
       aspect-ratio: 545/670;
