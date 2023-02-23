@@ -21,7 +21,7 @@ export default {
 <style lang="scss">
 .app-projet__catch-phrase {
   position: relative;
-  margin-top: desktop-vw(30px);
+  margin-top: desktop-vw(100px);
   margin-bottom: desktop-vw(250px);
 
   @include mobile {

@@ -548,7 +548,7 @@ export default {
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
 
-      const size = this.$viewport.isMobile ? 50 : 100
+      const size = this.$viewport.isMobile ? 50 : 85
 
       this.directionalLight.shadow.camera.left = size * -1
       this.directionalLight.shadow.camera.right = size * 1

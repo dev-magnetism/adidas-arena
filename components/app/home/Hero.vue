@@ -601,7 +601,7 @@ export default {
     onClickScrollIndicator() {
       if (!window.lenis) return
 
-      window.lenis.scrollTo('.app-home-presentation', {
+      window.lenis.scrollTo('.app-element-programmation-slider', {
         duration: 1.2,
       })
     },

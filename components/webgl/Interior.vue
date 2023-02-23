@@ -917,13 +917,13 @@ export default {
       this.directionalLight.shadow.mapSize.width = this.$viewport.isMobile
         ? 1024
         : window.devicePixelRatio !== 2
-        ? 2048
+        ? 1024
         : 1024
 
       this.directionalLight.shadow.mapSize.height = this.$viewport.isMobile
         ? 1024
         : window.devicePixelRatio !== 2
-        ? 2048
+        ? 1024
         : 1024
 
       this.directionalLight.shadow.bias = -0.001

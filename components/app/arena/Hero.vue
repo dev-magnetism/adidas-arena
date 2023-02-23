@@ -2,6 +2,7 @@
   <div :data-allow-drag="true" class="app-arena-hero">
     <div :data-allow-drag="true" class="app-arena-hero__wrapper">
       <AtomsCornerPoints :size-points="12" />
+      <EHeroInstructions />
       <EInteriorZoneInformations />
       <EInteriorInteractions />
       <EInteriorFloorSelectorMobile />

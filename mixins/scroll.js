@@ -66,6 +66,8 @@ export default {
       //   smooth: true,
     })
 
+    this.lenis.scrollTo(0, { immediate: true })
+
     if (!this.allowScroll) this.lenis.stop()
 
     this.lenis.on('scroll', this.onScrollLenis)
