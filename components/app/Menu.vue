@@ -252,9 +252,8 @@ export default {
 
   methods: {
     onClickLink(e) {
-      const sameRoute = e.target.classList.contains('nuxt-link-exact-active')
-
-      if (sameRoute) this.onCloseBurger()
+      // const sameRoute = e.target.classList.contains('nuxt-link-exact-active')
+      // if (sameRoute) this.onCloseBurger()
     },
     initLotties() {
       const lottieCircle1 = require(`@/assets/lotties/Cercle_1.json`)
