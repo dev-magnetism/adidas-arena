@@ -34,7 +34,7 @@ import {
   BoxGeometry,
   EdgesGeometry,
   LineSegments,
-} from 'three'
+} from 'three/build/three.module.js'
 
 import useWebGL from '~/hooks/webgl'
 import useGUI from '~/hooks/gui'

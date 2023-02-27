@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { Color } from 'three'
+import { Color } from 'three/build/three.module.js'
 
 export const ConditionalEdgesShader = {
   clipping: true,

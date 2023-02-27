@@ -29,7 +29,7 @@ import {
   MeshBasicMaterial,
   TextureLoader,
   VideoTexture,
-} from 'three'
+} from 'three/build/three.module.js'
 
 import boundingRect from '@/mixins/bounding-rect-webgl-gallery'
 import useWebGL from '~/hooks/webgl'
@@ -107,6 +107,8 @@ export default {
       this.initMesh()
     },
     hidePicture() {
+      if (this.content.isVideo) this.texture.image.pause()
+
       gsap.to(this.material.uniforms.uOpacity, {
         value: 0.5,
         ease: 'power1.inOut',
@@ -114,6 +116,8 @@ export default {
       })
     },
     appearPicture() {
+      if (this.content.isVideo) this.texture.image.play()
+
       gsap.to(this.material.uniforms.uOpacity, {
         value: 1,
         ease: 'power1.inOut',

@@ -42,7 +42,7 @@ export default {
         target: 0,
         last: 0,
         autoSpeed: 0.8,
-        speed: 4,
+        speed: this.$viewport.isMobile ? 8 : 4,
       },
       directionDrag: 'x',
       leftmostImage: null,
@@ -388,6 +388,11 @@ export default {
   position: relative;
   margin-bottom: desktop-vw(100px);
 
+  @include mobile {
+    height: mobile-vw(375px);
+    margin-bottom: mobile-vw(100px);
+  }
+
   &.image-selected {
     .app-arena-gallery__title.H2 {
       opacity: 0;
@@ -417,6 +422,11 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     transition: opacity 0.2s var(--ease-in-out-cubic);
+
+    @include mobile {
+      font-size: mobile-vw(88px);
+      line-height: mobile-vw(128px);
+    }
   }
 }
 </style>

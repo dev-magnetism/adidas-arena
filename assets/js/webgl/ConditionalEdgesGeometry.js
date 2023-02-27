@@ -1,6 +1,11 @@
 /* eslint-disable */
 
-import { Vector3, Triangle, BufferGeometry, BufferAttribute } from 'three'
+import {
+  Vector3,
+  Triangle,
+  BufferGeometry,
+  BufferAttribute,
+} from 'three/build/three.module.js'
 
 const vec0 = new Vector3()
 const vec1 = new Vector3()

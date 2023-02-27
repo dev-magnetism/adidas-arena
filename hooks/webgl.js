@@ -6,7 +6,7 @@ import {
   OrthographicCamera,
   PCFSoftShadowMap,
   Scene,
-} from 'three'
+} from 'three/build/three.module.js'
 
 import Stats from 'stats.js'
 import Raf from '~/plugins/raf'

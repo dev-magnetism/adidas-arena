@@ -30,7 +30,7 @@ import {
   AmbientLight,
   DirectionalLight,
   ShadowMaterial,
-} from 'three'
+} from 'three/build/three.module.js'
 
 import useWebGL from '~/hooks/webgl'
 import useGUI from '~/hooks/gui'
@@ -929,16 +929,16 @@ export default {
       this.directionalLight.shadow.mapSize.width = this.$viewport.isMobile
         ? 1024
         : window.devicePixelRatio !== 2
-        ? 1024
+        ? 2048
         : 1024
 
       this.directionalLight.shadow.mapSize.height = this.$viewport.isMobile
         ? 1024
         : window.devicePixelRatio !== 2
-        ? 1024
+        ? 2048
         : 1024
 
-      this.directionalLight.shadow.bias = -0.001
+      // this.directionalLight.shadow.bias = -0.001
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
 
