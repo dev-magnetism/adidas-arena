@@ -1,5 +1,6 @@
 <template>
   <div
+    :class="{ 'image-selected': imageSelected }"
     class="app-arena-gallery"
     @mouseenter="onMouseEnterGallery"
     @mouseleave="onMouseLeaveGallery"
@@ -390,6 +391,12 @@ export default {
   position: relative;
   margin-bottom: desktop-vw(100px);
 
+  &.image-selected {
+    .app-arena-gallery__title.H2 {
+      opacity: 0;
+    }
+  }
+
   &__pictures {
     width: 300vw;
     position: absolute;
@@ -412,6 +419,7 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    transition: opacity 0.2s var(--ease-in-out-cubic);
   }
 }
 </style>
