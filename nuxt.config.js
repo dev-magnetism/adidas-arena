@@ -186,11 +186,14 @@ export default {
   loading: false,
 
   build: {
-    analyze: true,
+    // analyze: true,
     extractCSS: {
       ignoreOrder: false,
     },
     transpile: ['three', 'gsap'],
+    babel: {
+      plugins: [['@babel/plugin-transform-modules-commonjs', { loose: true }]],
+    },
     extend(config, ctx) {
       config.resolve.alias.vue = 'vue/dist/vue.common'
       config.module.rules.push({

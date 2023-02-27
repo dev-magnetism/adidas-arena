@@ -108,7 +108,7 @@ export default {
     },
     hidePicture() {
       gsap.to(this.material.uniforms.uOpacity, {
-        value: 0,
+        value: 0.5,
         ease: 'power1.inOut',
         duration: 0.25,
       })

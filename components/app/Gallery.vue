@@ -108,8 +108,7 @@ export default {
       trigger: this.$el,
       start: 'top-=25% bottom',
       end: 'bottom+=25% top',
-      markers: true,
-      onToggle: this.onToggle,
+      onToggle: (self) => this.onToggle(self),
     })
 
     if (this.scrollTrigger.isActive && this.allLoadedFake) {
@@ -168,8 +167,6 @@ export default {
       camera.updateProjectionMatrix()
     },
     onToggle(self) {
-      // console.log('onToggle Gallery', self.isActive)
-
       this.galleryVisible = self.isActive
       this.setWebglInFront(self.isActive)
 
