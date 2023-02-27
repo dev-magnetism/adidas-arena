@@ -18,7 +18,6 @@ import {
   Matrix4,
   Object3D,
   Mesh,
-  Line,
   Vector3,
   MeshLambertMaterial,
   MeshBasicMaterial,
@@ -34,6 +33,8 @@ import {
   BoxGeometry,
   EdgesGeometry,
   LineSegments,
+  InstancedBufferGeometry,
+  InstancedBufferAttribute,
 } from 'three/build/three.module.js'
 
 import useWebGL from '~/hooks/webgl'
@@ -114,8 +115,7 @@ export default {
       this.initExterior()
     },
     modelCloudLoaded() {
-      this.initClouds()
-      // this.initCloudsNew()
+      this.initCloudsNew()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -136,8 +136,7 @@ export default {
 
     if (this.allLoadedActual) {
       this.initExterior()
-      this.initClouds()
-      // this.initCloudsNew()
+      this.initCloudsNew()
       this.initGUI()
       this.resetView()
     }
@@ -165,20 +164,15 @@ export default {
   beforeDestroy() {
     const { exterior } = useWebGL()
 
-    exterior.traverse((item) => {
-      if ((item instanceof Mesh || item instanceof Line) && !item.isGroup) {
-        item.geometry?.dispose()
-
-        exterior.remove(item)
-      }
+    exterior.traverse((item, index) => {
+      item.geometry?.dispose()
     })
 
     exterior.remove(this.floor)
     exterior.remove(this.cars)
     exterior.remove(this.trams)
-    // exterior.remove(this.cloudsBasic)
-    // exterior.remove(this.cloudsEdge)
-    exterior.remove(this.clouds)
+    exterior.remove(this.instanceBasicClouds)
+    exterior.remove(this.cloudsEdges)
     this.adidasArena.remove(this.hitbox)
     exterior.remove(this.adidasArena)
     exterior.remove(this.arrow)
@@ -193,6 +187,7 @@ export default {
     this.lineMaterial?.dispose()
     this.logoMaterial?.dispose()
     this.arrowMaterial?.dispose()
+    this.cloudEdgesMaterial?.dispose()
 
     // LIGHTS
     this.ambientLight.dispose()
@@ -277,29 +272,32 @@ export default {
         }
       }
 
-      // this.planesGroup?.children?.forEach((plane, index) => {
-      //   // this.cloudsBasic.getMatrixAt(index, this.matrix)
-      //   // this.matrix.decompose(
-      //   //   this.dummy.position,
-      //   //   this.dummy.quaternion,
-      //   //   this.dummy.scale
-      //   // )
-      //   // const positionZ = this.directionClouds[index]
-      //   //   ? this.dummy.position.z -
-      //   //     this.speedClouds[index] * this.cloudsParams.speed
-      //   //   : this.dummy.position.z +
-      //   //     this.speedClouds[index] * this.cloudsParams.speed
-      //   // this.dummy.position.z = gsap.utils.wrap(100, -100, positionZ)
-      //   // this.dummy.updateMatrix()
-      //   // this.cloudsBasic.setMatrixAt(index, this.dummy.matrix)
-      //   // this.cloudsBasic.instanceMatrix.needsUpdate = true
-      // })
+      this.planesGroup?.children?.forEach((plane, index) => {
+        this.instanceBasicClouds.getMatrixAt(index, this.matrix)
 
-      this.clouds?.children?.forEach((cloud) => {
-        const z = cloud.direction
-          ? cloud.position.z - cloud.coefParallax * this.cloudsParams.speed
-          : cloud.position.z + cloud.coefParallax * this.cloudsParams.speed
-        cloud.position.z = gsap.utils.wrap(100, -100, z)
+        this.matrix.decompose(
+          this.dummy.position,
+          this.dummy.quaternion,
+          this.dummy.scale
+        )
+
+        const positionZ = this.directionClouds[index]
+          ? this.dummy.position.z -
+            this.speedClouds[index] * this.cloudsParams.speed
+          : this.dummy.position.z +
+            this.speedClouds[index] * this.cloudsParams.speed
+
+        this.dummy.position.z = gsap.utils.wrap(100, -100, positionZ)
+        this.dummy.updateMatrix()
+
+        this.instanceBasicClouds.setMatrixAt(index, this.dummy.matrix)
+        this.instanceBasicClouds.instanceMatrix.needsUpdate = true
+
+        this.cloudEdgesInstanceMatrix.set(
+          this.dummy.matrix.elements,
+          index * 16
+        )
+        this.cloudEdgesInstanceMatrix.needsUpdate = true
       })
 
       this.timeCars += deltaTime * this.speedCars
@@ -457,36 +455,33 @@ export default {
         linewidth: 1,
       })
       this.lineMaterial.fog = false
-    },
-    initClouds() {
-      const { exterior } = useWebGL()
-      this.clouds = new Group()
-      this.clouds.name = 'clouds'
-      exterior.add(this.clouds)
 
-      this.gltfCloud = loaderManager.getModel('cloud').scene
-
-      const cloud = this.mergeObject(this.gltfCloud)
-      const edgeCloud = this.edgeObject(cloud)
-      const conditionalCloud = this.conditionalObject(cloud)
-
-      this.cloud = new Group()
-      this.cloud.name = 'cloud'
-      this.cloud.add(cloud)
-      this.cloud.add(edgeCloud)
-      this.cloud.add(conditionalCloud)
-
-      const planesGroup = this.gltfExterior.getObjectByName('Plane')
-
-      planesGroup.traverse((plane) => {
-        const object = this.cloud.clone()
-        object.coefParallax = this.genRand(1, 10, 2)
-        object.direction = Math.random() < 0.5
-        object.position.copy(plane.position)
-        object.initialPosition = object.position
-        this.clouds.add(object)
+      this.cloudEdgesMaterial = new ShaderMaterial({
+        uniforms: {
+          color: { value: this.colors.outlineColor },
+        },
+        vertexShader: `
+    precision highp float;
+    attribute mat4 instanceMatrix;
+    varying vec3 vNormal;
+    void main() {
+      mat4 matrix = instanceMatrix;
+      vec4 mvPosition = modelViewMatrix * matrix * vec4(position, 1.0);
+      gl_Position = projectionMatrix * mvPosition;
+      vNormal = normal;
+    }
+  `,
+        fragmentShader: `
+    precision highp float;
+    uniform vec3 color;
+    varying vec3 vNormal;
+    void main() {
+      gl_FragColor = vec4(color, 1.0);
+    }
+  `,
       })
     },
+
     initCloudsNew() {
       const { exterior } = useWebGL()
 
@@ -494,18 +489,39 @@ export default {
       this.planesGroup = this.gltfExterior.getObjectByName('Plane')
 
       const cloud = this.mergeObject(this.gltfCloud)
-      // const edgeCloud = this.edgeObject(cloud)
-      // const conditionalCloud = this.conditionalObject(cloud)
 
-      this.cloudsBasic = new InstancedMesh(
+      this.instanceBasicClouds = new InstancedMesh(
         cloud.geometry,
         this.modelMaterial,
         this.planesGroup.children.length - 1
       )
 
-      this.cloudsBasic.instanceMatrix.setUsage(DynamicDrawUsage)
+      this.instanceBasicClouds.instanceMatrix.setUsage(DynamicDrawUsage)
 
-      exterior.add(this.cloudsBasic)
+      exterior.add(this.instanceBasicClouds)
+
+      const cloudEdgesGeometry = new EdgesGeometry(cloud.geometry)
+      const cloudEdgesPositions = cloudEdgesGeometry.attributes.position.clone()
+
+      this.instanceEdgeClouds = new InstancedBufferGeometry()
+
+      this.instanceEdgeClouds.setAttribute('position', cloudEdgesPositions)
+
+      this.cloudEdgesInstanceMatrix = new InstancedBufferAttribute(
+        new Float32Array(this.planesGroup.children.length * 16),
+        16,
+        1
+      )
+      this.instanceEdgeClouds.setAttribute(
+        'instanceMatrix',
+        this.cloudEdgesInstanceMatrix
+      )
+
+      this.cloudsEdges = new LineSegments(
+        this.instanceEdgeClouds,
+        this.cloudEdgesMaterial
+      )
+      exterior.add(this.cloudsEdges)
 
       this.planesGroup.children.forEach((plane, index) => {
         const randomParallax = this.genRand(1, 10, 2)
@@ -516,7 +532,11 @@ export default {
         this.dummy.position = plane.position.clone()
         this.dummy.updateMatrix()
 
-        this.cloudsBasic.setMatrixAt(index, this.dummy.matrix)
+        this.instanceBasicClouds.setMatrixAt(index, this.dummy.matrix)
+        this.cloudEdgesInstanceMatrix.set(
+          this.dummy.matrix.elements,
+          index * 16
+        )
       })
     },
     resetView() {
@@ -579,6 +599,7 @@ export default {
       const { exterior } = useWebGL()
 
       this.logoArena = new Group()
+      this.logoArena.name = 'logoArena'
 
       exterior.add(this.logoArena)
 
@@ -592,6 +613,7 @@ export default {
       const { exterior } = useWebGL()
 
       this.arrow = new Group()
+      this.arrow.name = 'arrow'
 
       exterior.add(this.arrow)
 
@@ -660,6 +682,7 @@ export default {
       const { exterior } = useWebGL()
 
       this.cars = new Group()
+      this.cars.name = 'cars'
       exterior.add(this.cars)
 
       const carsGroup = this.gltfExterior.getObjectByName('Cars')
