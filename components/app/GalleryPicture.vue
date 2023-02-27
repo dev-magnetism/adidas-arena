@@ -112,7 +112,6 @@ export default {
         ease: 'power1.inOut',
         duration: 0.25,
       })
-      console.log('hidePicture')
     },
     appearPicture() {
       gsap.to(this.material.uniforms.uOpacity, {
@@ -120,7 +119,6 @@ export default {
         ease: 'power1.inOut',
         duration: 0.25,
       })
-      console.log('appearPicture')
     },
     focusPicture() {
       this.setCursorState('hide')
