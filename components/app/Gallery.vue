@@ -226,6 +226,14 @@ export default {
         this.lastImageSelectedId = idPicture
         this.imageSelected = true
 
+        const imagesNotSelected = this.$refs.pictures.filter(
+          (picture, index) => index !== idPicture
+        )
+
+        imagesNotSelected.forEach((picture) => {
+          picture.hidePicture()
+        })
+
         this.setAllowScroll(false)
       } else if (
         (!this.currentIntersect && this.imageSelected) ||
@@ -233,6 +241,14 @@ export default {
       ) {
         const picture = this.$refs.pictures[this.lastImageSelectedId]
         picture.open = false
+
+        const imagesNotSelected = this.$refs.pictures.filter(
+          (picture, index) => index !== this.lastImageSelectedId
+        )
+
+        imagesNotSelected.forEach((picture) => {
+          picture.appearPicture()
+        })
 
         this.imageSelected = false
         this.lastImageSelectedId = null

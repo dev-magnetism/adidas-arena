@@ -106,6 +106,22 @@ export default {
 
       this.initMesh()
     },
+    hidePicture() {
+      gsap.to(this.material.uniforms.uOpacity, {
+        value: 0,
+        ease: 'power1.inOut',
+        duration: 0.25,
+      })
+      console.log('hidePicture')
+    },
+    appearPicture() {
+      gsap.to(this.material.uniforms.uOpacity, {
+        value: 1,
+        ease: 'power1.inOut',
+        duration: 0.25,
+      })
+      console.log('appearPicture')
+    },
     focusPicture() {
       this.setCursorState('hide')
 
@@ -132,7 +148,7 @@ export default {
       this.tlFocusPicture?.kill()
 
       this.tlFocusPicture = gsap
-        .timeline({})
+        .timeline({ delay: 0.1 })
         .addLabel('appear')
         .to(
           this.mesh.scale,
