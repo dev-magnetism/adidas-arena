@@ -24,6 +24,7 @@ export default {
       cursorSliderHold: (state) => state.cursorSliderHold,
       cursorSliderLeftZone: (state) => state.cursorSliderLeftZone,
       cursorSliderDisabled: (state) => state.cursorSliderDisabled,
+      cursorMinimize: (state) => state.cursorMinimize,
     }),
     classes() {
       return {
@@ -31,6 +32,7 @@ export default {
         'slider-hold': this.cursorSliderHold && this.cursorState === 'slider',
         'is-left': this.cursorSliderLeftZone,
         'slider-disabled': this.cursorSliderDisabled,
+        'cursor-minimize': this.cursorMinimize && this.cursorState === 'slider',
       }
     },
   },
@@ -92,6 +94,16 @@ export default {
 
   @include mobile {
     display: none;
+  }
+
+  &.cursor-minimize {
+    svg {
+      transform: scale(0, 0) !important;
+    }
+
+    .app-cursor__inner {
+      transform: translate(-50%, -50%) scale(0.35);
+    }
   }
 
   &.is-left {

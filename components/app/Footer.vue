@@ -1,5 +1,5 @@
 <template>
-  <div class="app-footer grid-inner">
+  <div class="app-footer grid-inner" @mouseenter="onMouseEnterEl">
     <div class="app-footer__principal">
       <TH2 weight="bold" color="grey" class="app-footer__newsletter-title">
         {{ contents.data.footer_title }}
@@ -222,6 +222,10 @@ export default {
     this.scrollTrigger?.kill()
   },
   methods: {
+    onMouseEnterEl() {
+      this.setCursorState('hide')
+      this.setAppCursor('initial')
+    },
     onSubmit() {
       this.submited = true
 
@@ -251,6 +255,8 @@ export default {
     },
     ...mapMutations({
       setHeaderWhite: 'setHeaderWhite',
+      setCursorState: 'setCursorState',
+      setAppCursor: 'setAppCursor',
     }),
   },
 }

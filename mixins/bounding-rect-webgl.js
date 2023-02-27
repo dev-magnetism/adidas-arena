@@ -1,3 +1,5 @@
+import { Vector2 } from 'three'
+
 export default {
   data() {
     return {
@@ -53,12 +55,12 @@ export default {
 
       this.mesh.initialScale = this.mesh.scale.clone()
 
-      this.mesh.material.uniforms.uResolutionEl.value = new THREE.Vector2(
+      this.mesh.material.uniforms.uResolutionEl.value = new Vector2(
         this.boundingRect.width,
         this.boundingRect.height
       )
 
-      this.mesh.material.uniforms.uRatio.value = new THREE.Vector2(
+      this.mesh.material.uniforms.uRatio.value = new Vector2(
         this.texture.image.naturalWidth,
         this.texture.image.naturalHeight
       )

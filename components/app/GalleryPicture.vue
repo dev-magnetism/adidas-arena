@@ -8,8 +8,7 @@
       :src="content.picture"
       format="webp"
       :alt="content.alt"
-      loading="lazy"
-      sizes="sm:50vw md:70vw"
+      sizes="sm:50vw md:100vw"
       @load="onLoad"
     />
     <div v-else class="picture-absolute" />
@@ -17,7 +16,20 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import { gsap } from 'gsap'
+import {
+  RepeatWrapping,
+  PlaneGeometry,
+  ShaderMaterial,
+  Vector2,
+  FrontSide,
+  Mesh,
+  Vector3,
+  MeshBasicMaterial,
+  TextureLoader,
+  VideoTexture,
+} from 'three'
 
 import boundingRect from '@/mixins/bounding-rect-webgl-gallery'
 import useWebGL from '~/hooks/webgl'
@@ -41,9 +53,12 @@ export default {
   data() {
     return {
       open: false,
+      corners: [],
+      outlineSize: 0.3,
+      cornerSizeInitial: 2,
+      cornerSize: 8,
     }
   },
-  computed: {},
   watch: {
     open(newVal) {
       if (newVal) {
@@ -63,6 +78,14 @@ export default {
     this.mesh?.geometry.dispose()
     this.mesh?.material.dispose()
 
+    this.mesh.children.forEach((el) => {
+      el.geometry.dispose()
+
+      this.mesh.remove(el)
+    })
+
+    this.materialBorder?.dispose()
+
     gallery.remove(this.mesh)
   },
 
@@ -79,94 +102,185 @@ export default {
         this.texture = await this.loadTexture(this.currentSrc)
       }
 
-      this.texture.wrapS = this.texture.wrapT = THREE.RepeatWrapping
+      this.texture.wrapS = this.texture.wrapT = RepeatWrapping
 
       this.initMesh()
     },
     focusPicture() {
+      this.setCursorState('hide')
+
+      this.corners.forEach((el) => {
+        el.visible = true
+      })
+
       const ratio = this.mesh.scale.x / this.mesh.scale.y
 
-      const finalHeight = this.$viewport.height * 0.8
+      const windowHeight = this.$viewport.height * 0.8
+      const windowWidth = this.$viewport.width * 0.9
 
-      const width = finalHeight * ratio
+      let finalWidth = windowHeight * ratio
 
-      gsap.to(this.mesh.position, {
-        z: 0,
-        duration: 0.9,
-        ease: 'power4.out',
-      })
+      let height
 
-      gsap.to(this.mesh._uOffset, {
-        x: -this.mesh.position.x,
-        y: -this.mesh.position.y,
-        duration: 0.9,
-        ease: 'power4.out',
-      })
+      if (finalWidth > windowWidth) {
+        finalWidth = windowWidth
+        height = finalWidth / ratio
+      } else {
+        height = windowHeight
+      }
 
-      gsap.to(this.mesh.scale, {
-        x: width,
-        y: finalHeight,
-        duration: 0.75,
-        ease: 'power3.out',
-      })
+      this.tlFocusPicture?.kill()
 
-      gsap.to(this.mesh.material.uniforms.uResolutionEl.value, {
-        x: width,
-        y: finalHeight,
-        duration: 0.75,
-        ease: 'power3.out',
-      })
+      this.tlFocusPicture = gsap
+        .timeline({})
+        .addLabel('appear')
+        .to(
+          this.mesh.scale,
+          {
+            x: finalWidth,
+            y: height,
+            duration: 0.75,
+            ease: 'power3.out',
+            onUpdate: () => {
+              this.corners.forEach((el) => {
+                el.scale.set(this.cornerSize, this.cornerSize, 1)
+                el.scale.divide(this.mesh.scale)
+              })
+            },
+          },
+          'appear'
+        )
+        .to(
+          this.mesh.position,
+          {
+            z: 0,
+            duration: 0.9,
+            ease: 'power4.out',
+          },
+          'appear'
+        )
+        .to(
+          this.mesh._uOffset,
+          {
+            x: -this.mesh.position.x,
+            y: -this.mesh.position.y,
+            duration: 0.9,
+            ease: 'power4.out',
+          },
+          'appear'
+        )
+        .to(
+          this.materialBorder,
+          {
+            opacity: 1,
+            duration: 0.75,
+            ease: 'power3.out',
+          },
+          'appear'
+        )
+        .to(
+          this.mesh.material.uniforms.uResolutionEl.value,
+          {
+            x: finalWidth,
+            y: height,
+            duration: 0.75,
+            ease: 'power3.out',
+          },
+          'appear'
+        )
 
-      gsap.to(this.mesh.material.uniforms.uZoom, {
-        value: 1,
-        duration: 0.65,
-        ease: 'power2.out',
-      })
+        .to(
+          this.mesh.material.uniforms.uZoom,
+          {
+            value: 1,
+            duration: 0.65,
+            ease: 'power2.out',
+          },
+          'appear'
+        )
     },
     unFocusPicture() {
-      window.lenis.start()
+      this.setCursorState('slider')
 
-      gsap.to(this.mesh._uOffset, {
-        x: 0,
-        y: 0,
-        duration: 0.9,
-        ease: 'power4.out',
-      })
+      this.tlFocusPicture?.kill()
 
-      gsap.to(this.mesh.position, {
-        z: this.mesh.initialPosition.z,
-        duration: 0.9,
-        ease: 'power4.out',
-      })
+      this.tlFocusPicture = gsap
+        .timeline({})
+        .addLabel('disappear')
+        .to(
+          this.mesh._uOffset,
+          {
+            x: 0,
+            y: 0,
+            duration: 0.9,
+            ease: 'power4.out',
+          },
+          'disappear'
+        )
 
-      gsap.to(this.mesh.scale, {
-        x: this.mesh.initialScale.x,
-        y: this.mesh.initialScale.y,
-        duration: 0.75,
-        ease: 'power3.out',
-      })
-
-      gsap.to(this.mesh.material.uniforms.uZoom, {
-        value: 0.8,
-        duration: 0.65,
-        ease: 'power2.out',
-      })
-
-      gsap.to(this.mesh.material.uniforms.uResolutionEl.value, {
-        x: this.mesh.initialScale.x,
-        y: this.mesh.initialScale.y,
-        duration: 0.75,
-        ease: 'power3.out',
-      })
-
-      this.$parent.pictureIsSelected = false
-      this.$parent.pictureSelected = null
-      this.$parent.indexPictureSelected = null
+        .to(
+          this.mesh.position,
+          {
+            z: this.mesh.initialPosition.z,
+            duration: 0.9,
+            ease: 'power4.out',
+          },
+          'disappear'
+        )
+        .to(
+          this.mesh.scale,
+          {
+            x: this.mesh.initialScale.x,
+            y: this.mesh.initialScale.y,
+            duration: 0.75,
+            ease: 'power3.out',
+            onUpdate: () => {
+              this.corners.forEach((el) => {
+                el.scale.set(2, 2, 1)
+                el.scale.divide(this.mesh.scale)
+              })
+            },
+          },
+          'disappear'
+        )
+        .to(
+          this.materialBorder,
+          {
+            opacity: 0,
+            duration: 0.75,
+            ease: 'power3.out',
+            onComplete: () => {
+              this.corners.forEach((el) => {
+                el.visible = false
+              })
+            },
+          },
+          'disappear'
+        )
+        .to(
+          this.mesh.material.uniforms.uZoom,
+          {
+            value: 0.8,
+            duration: 0.65,
+            ease: 'power2.out',
+          },
+          'disappear'
+        )
+        .to(
+          this.mesh.material.uniforms.uResolutionEl.value,
+          {
+            x: this.mesh.initialScale.x,
+            y: this.mesh.initialScale.y,
+            duration: 0.75,
+            ease: 'power3.out',
+          },
+          'disappear'
+        )
     },
     initMesh() {
-      this.geometry = new THREE.PlaneGeometry(1, 1, 1)
+      this.geometry = new PlaneGeometry(1, 1, 1)
 
-      this.material = new THREE.ShaderMaterial({
+      this.material = new ShaderMaterial({
         uniforms: {
           uOpacity: {
             value: 1,
@@ -175,7 +289,7 @@ export default {
             value: this.texture,
           },
           uRatio: {
-            value: new THREE.Vector2(0, 0),
+            value: new Vector2(0, 0),
           },
           uZoom: {
             value: 0.8,
@@ -184,25 +298,18 @@ export default {
             value: 1,
           },
           uResolutionEl: {
-            value: new THREE.Vector2(
-              this.$viewport.width,
-              this.$viewport.height
-            ),
+            value: new Vector2(this.$viewport.width, this.$viewport.height),
           },
         },
         vertexShader,
         fragmentShader,
         transparent: true,
-        side: THREE.FrontSide,
-        depthTest: false,
-        depthWrite: false,
+        side: FrontSide,
       })
 
-      this.mesh = new THREE.Mesh(this.geometry, this.material)
+      this.mesh = new Mesh(this.geometry, this.material)
       this.mesh.idComponent = this.index
-      this.mesh._uOffset = new THREE.Vector3(0, 0, 0)
-
-      this.createBorder()
+      this.mesh._uOffset = new Vector3(0, 0, 0)
 
       const { gallery } = useWebGL()
 
@@ -210,23 +317,62 @@ export default {
 
       this.onResize()
 
+      this.createBorder()
+
       this.parallaxCoef = this.mesh.scale.x * 0.001 + this.mesh.scale.y * 0.001
     },
     createBorder() {
-      // this.borderGroup = new THREE.Group()
-      // this.mesh.add(this.borderGroup)
-      // const geometry = new THREE.PlaneGeometry(1, 1)
-      // const material = new THREE.MeshBasicMaterial({
-      //   color: 0xffff00,
-      //   side: THREE.DoubleSide,
-      // })
-      // // Top Left Square
-      // const childScaleX = 1.0 / this.mesh.scale.x // <- this will negate the parent's scaling
-      // const childScaleY = 1.0 / this.mesh.scale.y // <- this will negate the parent's scaling
-      // const plane = new THREE.Mesh(geometry, material)
-      // plane.scale.set(childScaleX, childScaleY, 1)
-      // plane.position.set(this.mesh.scale.x / -2, this.mesh.scale.x / 2, 1)
-      // this.borderGroup.add(plane)
+      const geometry = new PlaneGeometry(1, 1)
+
+      this.materialBorder = new MeshBasicMaterial({
+        color: 0x181818,
+        transparent: true,
+        opacity: 0,
+      })
+
+      const point = new Mesh(geometry, this.materialBorder)
+      point.visible = false
+
+      point.scale.set(this.cornerSizeInitial, this.cornerSizeInitial, 1)
+      point.scale.divide(this.mesh.scale)
+
+      const pointBottomLeft = point.clone()
+      pointBottomLeft.position.set(-0.5, -0.5, 1)
+
+      const pointTopLeft = point.clone()
+      pointTopLeft.position.set(-0.5, 0.5, 1)
+
+      const pointTopRight = point.clone()
+      pointTopRight.position.set(0.5, 0.5, 1)
+
+      const pointBottomRight = point.clone()
+      pointBottomRight.position.set(0.5, -0.5, 1)
+
+      this.corners.push(
+        pointBottomLeft,
+        pointTopLeft,
+        pointTopRight,
+        pointBottomRight
+      )
+
+      this.outline = new Mesh(geometry, this.materialBorder)
+
+      this.outline.scale.set(
+        this.mesh.scale.x + this.outlineSize,
+        this.mesh.scale.y + this.outlineSize,
+        1
+      )
+      this.outline.scale.divide(this.mesh.scale)
+
+      this.outline.position.z = -1
+
+      this.mesh.add(
+        pointBottomLeft,
+        pointTopLeft,
+        pointTopRight,
+        pointBottomRight,
+        this.outline
+      )
     },
     update({ scroll, velocity, xMin, xMax }) {
       if (!this.mesh) return
@@ -234,12 +380,14 @@ export default {
       if (this.content.isVideo) this.texture.update()
 
       const x = gsap.utils.wrap(
-        xMin.picture.boundingRect.xThree - xMin.picture.boundingRect.width, // left
-        xMax.picture.boundingRect.xThree + xMax.picture.boundingRect.width, // right
+        Math.min(this.$viewport.width / -2, xMin.picture.boundingRect.xThree) -
+          xMin.picture.boundingRect.width, // left
+        Math.max(this.$viewport.width / 2, xMax.picture.boundingRect.xThree) +
+          xMax.picture.boundingRect.width, // right
         scroll.current * this.parallaxCoef + this.mesh?.initialPosition?.x
       )
 
-      const position = new THREE.Vector3(
+      const position = new Vector3(
         x,
         this.mesh?.initialPosition?.y + window.lenis.scroll,
         this.mesh?.position?.z
@@ -248,7 +396,7 @@ export default {
       this.mesh.position.copy(position).add(this.mesh._uOffset)
     },
     loadTexture(src) {
-      const loader = new THREE.TextureLoader()
+      const loader = new TextureLoader()
 
       return new Promise((resolve, reject) => {
         loader.load(
@@ -263,6 +411,9 @@ export default {
         )
       })
     },
+    ...mapMutations({
+      setCursorState: 'setCursorState',
+    }),
     loadTextureVideo(src) {
       return new Promise((resolve) => {
         const video = document.createElement('video')
@@ -277,7 +428,7 @@ export default {
         video.autoplay = true
 
         if (this.$viewport.isFirefox && this.$refs.video.readyState > 3) {
-          this.texture = new THREE.VideoTexture(video)
+          this.texture = new VideoTexture(video)
           this.texture.image.pause()
           this.texture.image.currentTime = 0
           this.texture.needsUpdate = true
@@ -285,7 +436,7 @@ export default {
           resolve(this.texture)
         } else {
           video.onloadeddata = () => {
-            this.texture = new THREE.VideoTexture(video)
+            this.texture = new VideoTexture(video)
             this.texture.image.pause()
             this.texture.image.currentTime = 0
             this.texture.needsUpdate = true

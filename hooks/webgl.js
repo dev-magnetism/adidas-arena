@@ -1,3 +1,13 @@
+import {
+  Vector2,
+  Raycaster,
+  Group,
+  WebGLRenderer,
+  OrthographicCamera,
+  PCFSoftShadowMap,
+  Scene,
+} from 'three'
+
 import Stats from 'stats.js'
 import Raf from '~/plugins/raf'
 import Viewport from '~/plugins/viewport'
@@ -8,22 +18,22 @@ let gl
 
 class GL {
   constructor() {
-    this.scene = new THREE.Scene()
+    this.scene = new Scene()
 
-    this.exterior = new THREE.Group()
+    this.exterior = new Group()
     this.exterior.name = 'exterior'
     this.exterior.drag = null
     this.scene.add(this.exterior)
 
-    this.interior = new THREE.Group()
+    this.interior = new Group()
     this.interior.name = 'interior'
     this.scene.add(this.interior)
 
-    this.gallery = new THREE.Group()
+    this.gallery = new Group()
     this.gallery.name = 'gallery'
     this.scene.add(this.gallery)
 
-    this.renderer = new THREE.WebGLRenderer({
+    this.renderer = new WebGLRenderer({
       powerPreference: 'high-performance',
       antialias: window.devicePixelRatio !== 2,
       stencil: true,
@@ -49,18 +59,18 @@ class GL {
 
     this.renderer.setScissorTest(true)
 
-    this.renderer.physicallyCorrectLights = true
+    this.renderer.useLegacyLights = false
     this.renderer.shadowMap.enabled = true
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
-    // THREE.BasicShadowMap (Very performant but lousy quality)
-    // THREE.PCFShadowMap (default) (Less performant but smoother edges)
-    // THREE.PCFSoftShadowMap (best) (Less performant but even softer edges)
-    // THREE.VSMShadowMap (Less performant, more constraints, can have unexpected results)
+    this.renderer.shadowMap.type = PCFSoftShadowMap
+    // BasicShadowMap (Very performant but lousy quality)
+    // PCFShadowMap (default) (Less performant but smoother edges)
+    // PCFSoftShadowMap (best) (Less performant but even softer edges)
+    // VSMShadowMap (Less performant, more constraints, can have unexpected results)
 
-    // this.renderer.outputEncoding = THREE.sRGBEncoding
-    // this.renderer.toneMapping = THREE.LinearToneMapping
+    // this.renderer.outputEncoding = sRGBEncoding
+    // this.renderer.toneMapping = LinearToneMapping
 
-    this.camera = new THREE.OrthographicCamera(
+    this.camera = new OrthographicCamera(
       Viewport.width / -2,
       Viewport.width / 2,
       Viewport.height / 2,
@@ -83,9 +93,9 @@ class GL {
       }
     }
 
-    this.raycaster = new THREE.Raycaster()
+    this.raycaster = new Raycaster()
 
-    this.mouse = new THREE.Vector2()
+    this.mouse = new Vector2()
 
     window.addEventListener('mousemove', this.onMouseMove.bind(this))
 
@@ -152,7 +162,7 @@ class GL {
 
     this.gui.addSeparator()
 
-    this.gui.addInput(this.renderer, 'physicallyCorrectLights')
+    this.gui.addInput(this.renderer, 'useLegacyLights')
   }
 
   onWindowResize() {

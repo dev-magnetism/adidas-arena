@@ -1,9 +1,8 @@
 <template>
   <div
     class="app"
-    :class="{
-      'cursor-slider': cursorState === 'slider',
-      'cursor-hover': cursorState === 'hover',
+    :style="{
+      cursor: `${appCursor} !important`,
       prod: devToolsHidden,
     }"
   >
@@ -36,6 +35,7 @@ export default {
   computed: {
     ...mapState({
       cursorState: (state) => state.cursorState,
+      appCursor: (state) => state.appCursor,
     }),
     devToolsHidden() {
       return process.env.NODE_ENV !== 'development'

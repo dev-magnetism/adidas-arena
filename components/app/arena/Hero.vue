@@ -2,7 +2,7 @@
   <div :data-allow-drag="true" class="app-arena-hero">
     <div :data-allow-drag="true" class="app-arena-hero__wrapper">
       <AtomsCornerPoints :size-points="12" />
-      <EHeroInstructions />
+      <!-- <EHeroInstructions /> -->
       <EInteriorZoneInformations />
       <EInteriorInteractions />
       <EInteriorFloorSelectorMobile />
@@ -18,6 +18,12 @@ import { mapState, mapMutations } from 'vuex'
 import useWebGL from '~/hooks/webgl'
 
 export default {
+  data() {
+    return {
+      alreadyAppearedOnce: false,
+      interiorInitialState: { id: 4, immediate: true },
+    }
+  },
   computed: {
     ...mapState({
       interiorVisible: (state) => state.interiorVisible,
@@ -27,25 +33,30 @@ export default {
     }),
   },
   watch: {
-    allLoadedFake() {
+    allLoadedFake(newVal) {
+      if (!newVal) return
+
       this.initInteriorView()
+      this.onToggle(this.scrollTrigger)
     },
-    initialHeroDisplayed() {
+    initialHeroDisplayed(newVal) {
+      if (!newVal) return
+
       this.setAllowScroll(true)
     },
   },
   mounted() {
-    if (this.allLoadedFake) {
-      this.initInteriorView()
-      this.setAllowScroll(true)
-    }
-
     this.scrollTrigger = ScrollTrigger.create({
       trigger: this.$el,
       start: 'top bottom',
       end: 'bottom+=25% top',
-      onToggle: (self) => this.setInteriorVisible(self.isActive),
+      onToggle: (self) => this.onToggle(self),
     })
+
+    if (this.allLoadedFake) {
+      this.setAllowScroll(true)
+      this.initInteriorView()
+    }
 
     this.$viewport.events.on('resize', this.onResize)
     this.$raf.add(`arena-hero`, this.onFrame)
@@ -57,6 +68,29 @@ export default {
     this.$raf.remove(`arena-hero`, this.onFrame)
   },
   methods: {
+    onToggle(self) {
+      if (!this.allLoadedFake) return
+
+      this.setInteriorVisible(self.isActive)
+
+      if (self.isActive) {
+        this.onResize()
+
+        const state =
+          this.interiorInitialState === this.interiorIndexFloor ||
+          !this.alreadyAppearedOnce
+            ? this.interiorInitialState
+            : this.interiorIndexFloor
+
+        this.setInteriorIndexFloor({
+          id: state.id,
+          focus: state.focus === null || !state.focus ? null : state.focus,
+          immediate: true,
+        })
+
+        this.alreadyAppearedOnce = true
+      }
+    },
     scrollHero() {
       if (!window.lenis) return
 
@@ -66,12 +100,10 @@ export default {
     },
     initInteriorView() {
       this.$nuxt.$emit('reset:interior')
-
-      this.setInteriorIndexFloor({ id: 4, immediate: true })
-
-      this.onResize()
     },
     onResize() {
+      if (!this.interiorVisible && !this.scrollTrigger.isActive) return
+
       const { scissors, renderer } = useWebGL()
 
       scissors.current = { ...scissors.hero }

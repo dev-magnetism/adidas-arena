@@ -194,7 +194,6 @@ export default {
     transpile: ['three', 'gsap'],
     extend(config, ctx) {
       config.resolve.alias.vue = 'vue/dist/vue.common'
-      config.plugins.push(new webpack.ProvidePlugin({ THREE: 'three' }))
       config.module.rules.push({
         test: /\.(glsl|vs|fs)$/,
         use: [{ loader: 'raw-loader' }, { loader: 'glslify-loader' }],

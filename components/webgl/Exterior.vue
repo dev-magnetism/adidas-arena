@@ -13,6 +13,29 @@ import {
   mergeVertices,
 } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 
+import {
+  Color,
+  Matrix4,
+  Object3D,
+  Mesh,
+  Line,
+  Vector3,
+  MeshLambertMaterial,
+  MeshBasicMaterial,
+  ShadowMaterial,
+  ShaderMaterial,
+  LineBasicMaterial,
+  Group,
+  InstancedMesh,
+  DynamicDrawUsage,
+  AmbientLight,
+  DirectionalLight,
+  Box3,
+  BoxGeometry,
+  EdgesGeometry,
+  LineSegments,
+} from 'three'
+
 import useWebGL from '~/hooks/webgl'
 import useGUI from '~/hooks/gui'
 
@@ -25,15 +48,15 @@ export default {
   data() {
     return {
       colors: {
-        ambientLightColor: new THREE.Color(0xf1e7d9),
-        directionalLightColor: new THREE.Color(0xffffff),
-        lambertMaterialColor: new THREE.Color(0xd8d8d8),
-        lambertMaterialEmissive: new THREE.Color(0xefefef),
+        ambientLightColor: new Color(0xf1e7d9),
+        directionalLightColor: new Color(0xffffff),
+        lambertMaterialColor: new Color(0xd8d8d8),
+        lambertMaterialEmissive: new Color(0xefefef),
         emissiveIntensity: 0.75,
-        outlineColor: new THREE.Color(0x161616),
-        shadowColor: new THREE.Color(0xede5db),
-        arrowColor: new THREE.Color(0xe2540f),
-        logoColor: new THREE.Color(0x161616),
+        outlineColor: new Color(0x161616),
+        shadowColor: new Color(0xede5db),
+        arrowColor: new Color(0xe2540f),
+        logoColor: new Color(0x161616),
       },
       azimuth: { min: -1.5, max: 0.9 },
       cloudsParams: {
@@ -72,8 +95,8 @@ export default {
       currentIntersect: null,
       speedClouds: [],
       directionClouds: [],
-      matrix: new THREE.Matrix4(),
-      dummy: new THREE.Object3D(),
+      matrix: new Matrix4(),
+      dummy: new Object3D(),
     }
   },
   computed: {
@@ -143,10 +166,7 @@ export default {
     const { exterior } = useWebGL()
 
     exterior.traverse((item) => {
-      if (
-        (item instanceof THREE.Mesh || item instanceof THREE.Line) &&
-        !item.isGroup
-      ) {
+      if ((item instanceof Mesh || item instanceof Line) && !item.isGroup) {
         item.geometry?.dispose()
 
         exterior.remove(item)
@@ -206,14 +226,14 @@ export default {
       const x = this.homeCustomPosition.x * this.$viewport.width
       const z = this.homeCustomPosition.z * this.$viewport.width
 
-      exterior.homeCustomPosition = new THREE.Vector3(x, 0, z)
+      exterior.homeCustomPosition = new Vector3(x, 0, z)
 
       if (!this.exteriorFullwidth && !this.$viewport.isMobile) {
         exterior.position.copy(exterior.homeCustomPosition)
       } else if (this.exteriorFullwidth && !this.$viewport.isMobile) {
-        exterior.position.copy(new THREE.Vector3(0, 0, 0))
+        exterior.position.copy(new Vector3(0, 0, 0))
       } else {
-        exterior.position.copy(new THREE.Vector3(0, 0, 0))
+        exterior.position.copy(new Vector3(0, 0, 0))
       }
     },
     onDrag(e) {
@@ -404,37 +424,35 @@ export default {
       exterior.initialCamera = { ...this.camera }
     },
     initMaterials() {
-      this.modelMaterial = new THREE.MeshLambertMaterial({
+      this.modelMaterial = new MeshLambertMaterial({
         color: this.colors.lambertMaterialColor,
         emissive: this.colors.lambertMaterialEmissive,
         emissiveIntensity: this.colors.emissiveIntensity,
       })
 
-      this.logoMaterial = new THREE.MeshBasicMaterial({
+      this.logoMaterial = new MeshBasicMaterial({
         color: this.colors.logoColor,
       })
 
-      this.arrowMaterial = new THREE.MeshLambertMaterial({
+      this.arrowMaterial = new MeshLambertMaterial({
         color: this.colors.arrowColor,
         emissive: this.colors.arrowColor,
         emissiveIntensity: this.colors.emissiveIntensity,
       })
 
-      this.shadowMaterial = new THREE.ShadowMaterial({
+      this.shadowMaterial = new ShadowMaterial({
         color: this.colors.shadowColor,
         transparent: true,
         opacity: 0.75,
       })
 
-      this.conditionalMaterial = new THREE.ShaderMaterial(
-        ConditionalEdgesShader
-      )
+      this.conditionalMaterial = new ShaderMaterial(ConditionalEdgesShader)
       this.conditionalMaterial.clipping = false
       this.conditionalMaterial.uniforms.diffuse.value.set(
         this.colors.outlineColor
       )
 
-      this.lineMaterial = new THREE.LineBasicMaterial({
+      this.lineMaterial = new LineBasicMaterial({
         color: this.colors.outlineColor,
         linewidth: 1,
       })
@@ -442,7 +460,7 @@ export default {
     },
     initClouds() {
       const { exterior } = useWebGL()
-      this.clouds = new THREE.Group()
+      this.clouds = new Group()
       this.clouds.name = 'clouds'
       exterior.add(this.clouds)
 
@@ -452,7 +470,7 @@ export default {
       const edgeCloud = this.edgeObject(cloud)
       const conditionalCloud = this.conditionalObject(cloud)
 
-      this.cloud = new THREE.Group()
+      this.cloud = new Group()
       this.cloud.name = 'cloud'
       this.cloud.add(cloud)
       this.cloud.add(edgeCloud)
@@ -479,13 +497,13 @@ export default {
       // const edgeCloud = this.edgeObject(cloud)
       // const conditionalCloud = this.conditionalObject(cloud)
 
-      this.cloudsBasic = new THREE.InstancedMesh(
+      this.cloudsBasic = new InstancedMesh(
         cloud.geometry,
         this.modelMaterial,
         this.planesGroup.children.length - 1
       )
 
-      this.cloudsBasic.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
+      this.cloudsBasic.instanceMatrix.setUsage(DynamicDrawUsage)
 
       exterior.add(this.cloudsBasic)
 
@@ -521,10 +539,10 @@ export default {
     initLights() {
       const { exterior } = useWebGL()
 
-      this.ambientLight = new THREE.AmbientLight(this.colors.ambientLightColor)
+      this.ambientLight = new AmbientLight(this.colors.ambientLightColor)
       exterior.add(this.ambientLight)
 
-      this.directionalLight = new THREE.DirectionalLight(
+      this.directionalLight = new DirectionalLight(
         this.colors.directionalLightColor,
         1
       )
@@ -560,7 +578,7 @@ export default {
     initLogoArena() {
       const { exterior } = useWebGL()
 
-      this.logoArena = new THREE.Group()
+      this.logoArena = new Group()
 
       exterior.add(this.logoArena)
 
@@ -573,7 +591,7 @@ export default {
     initArrow() {
       const { exterior } = useWebGL()
 
-      this.arrow = new THREE.Group()
+      this.arrow = new Group()
 
       exterior.add(this.arrow)
 
@@ -600,7 +618,7 @@ export default {
     initTrams() {
       const { exterior } = useWebGL()
 
-      this.trams = new THREE.Group()
+      this.trams = new Group()
       this.trams.name = 'trams'
 
       const tramRight = this.gltfExterior.getObjectByName('Tram_001')
@@ -612,7 +630,7 @@ export default {
       exterior.add(this.trams)
     },
     initTram(object) {
-      const tramGroup = new THREE.Group()
+      const tramGroup = new Group()
       tramGroup.name = 'tram'
 
       const tramObject = object.children.find((obj) =>
@@ -641,7 +659,7 @@ export default {
     initCars() {
       const { exterior } = useWebGL()
 
-      this.cars = new THREE.Group()
+      this.cars = new Group()
       exterior.add(this.cars)
 
       const carsGroup = this.gltfExterior.getObjectByName('Cars')
@@ -656,7 +674,7 @@ export default {
       return ((input - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin
     },
     initCar(object) {
-      const carGroup = new THREE.Group()
+      const carGroup = new Group()
       carGroup.name = 'car'
 
       const carObject = object.children.find((obj) => obj.type === 'Object3D')
@@ -685,11 +703,11 @@ export default {
     initStaticObjects() {
       const { exterior } = useWebGL()
 
-      this.staticObjects = new THREE.Group()
+      this.staticObjects = new Group()
       this.staticObjects.name = 'staticObjects'
       exterior.add(this.staticObjects)
 
-      const group = new THREE.Group()
+      const group = new Group()
 
       const buildings = this.gltfExterior.getObjectByName('Buildings')
       group.add(buildings.clone())
@@ -712,12 +730,12 @@ export default {
     initStaticObjectsConditionalRender() {
       const { exterior } = useWebGL()
 
-      this.staticObjectsConditionalRender = new THREE.Group()
+      this.staticObjectsConditionalRender = new Group()
       this.staticObjectsConditionalRender.name =
         'staticObjectsConditionalRender'
       exterior.add(this.staticObjectsConditionalRender)
 
-      const group = new THREE.Group()
+      const group = new Group()
 
       const lamps = this.gltfExterior.getObjectByName('Lamps')
       group.add(lamps.clone())
@@ -739,7 +757,7 @@ export default {
     initFloor() {
       const { exterior } = useWebGL()
 
-      this.floor = new THREE.Group()
+      this.floor = new Group()
       this.floor.name = 'floor'
       this.floor.position.y = -0.025
       exterior.add(this.floor)
@@ -761,7 +779,7 @@ export default {
     initAdidasArena() {
       const { exterior } = useWebGL()
 
-      this.adidasArena = new THREE.Group()
+      this.adidasArena = new Group()
       this.adidasArena.name = 'AdidasArena'
       this.adidasArena.position.y = 0.01
 
@@ -777,12 +795,12 @@ export default {
       this.adidasArena.add(edgeAdidasArena)
       this.adidasArena.add(conditionalAdidasArena)
 
-      const bounding = new THREE.Box3().setFromObject(adidasArenaGroup)
+      const bounding = new Box3().setFromObject(adidasArenaGroup)
 
-      const geometry = new THREE.BoxGeometry(1, 1, 1)
+      const geometry = new BoxGeometry(1, 1, 1)
 
-      const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
-      this.hitbox = new THREE.Mesh(geometry, material)
+      const material = new MeshBasicMaterial({ color: 0xff0000 })
+      this.hitbox = new Mesh(geometry, material)
       this.hitbox.visible = false
 
       const widthBox = Math.abs(bounding.min.x - bounding.max.x)
@@ -799,10 +817,10 @@ export default {
     edgeObject(object) {
       const mergedGeom = object.geometry
 
-      const lineGeom = new THREE.EdgesGeometry(mergedGeom, this.thresholdAngle)
+      const lineGeom = new EdgesGeometry(mergedGeom, this.thresholdAngle)
       const material = this.lineMaterial
 
-      const line = new THREE.LineSegments(lineGeom, material)
+      const line = new LineSegments(lineGeom, material)
       line.position.copy(object.position)
       line.scale.copy(object.scale)
       line.rotation.copy(object.rotation)
@@ -822,7 +840,7 @@ export default {
       const lineGeom = new ConditionalEdgesGeometry(mergeVertices(mergedGeom))
       const material = this.conditionalMaterial
 
-      const mesh = new THREE.LineSegments(lineGeom, material)
+      const mesh = new LineSegments(lineGeom, material)
       mesh.position.copy(object.position)
       mesh.scale.copy(object.scale)
       mesh.rotation.copy(object.rotation)
@@ -856,7 +874,7 @@ export default {
       const mergedGeometries = mergeBufferGeometries(geometry, false)
       const mergedGeometry = mergeVertices(mergedGeometries)
 
-      const mesh = new THREE.Mesh(mergedGeometry)
+      const mesh = new Mesh(mergedGeometry)
 
       mesh.castShadow = true
       mesh.receiveShadow = true

@@ -42,6 +42,7 @@ export const state = () => ({
   headerReduced: false,
   headerWhite: false,
   headerHided: false,
+  appCursor: 'initial',
   cursorState: 'hide',
   cursorSliderHold: false,
   cursorSliderLeftZone: false,
@@ -57,6 +58,9 @@ export const getters = {
 export const mutations = {
   setFontsLoaded: (state, value) => {
     state.fontsLoaded = value
+  },
+  setAppCursor: (state, value) => {
+    state.appCursor = value
   },
   setWebglInFront: (state, value) => {
     state.webglInFront = value

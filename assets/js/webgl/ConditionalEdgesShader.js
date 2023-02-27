@@ -1,10 +1,12 @@
 /* eslint-disable */
 
+import { Color } from 'three'
+
 export const ConditionalEdgesShader = {
   clipping: true,
   uniforms: {
     diffuse: {
-      value: new THREE.Color(),
+      value: new Color(),
     },
     opacity: {
       value: 1.0,

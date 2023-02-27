@@ -12,7 +12,25 @@ import {
   mergeBufferGeometries,
   mergeVertices,
 } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
-// import { MeshLineMaterial } from 'meshline'
+
+import {
+  Color,
+  Vector3,
+  Mesh,
+  Line,
+  MeshLambertMaterial,
+  LineBasicMaterial,
+  ShaderMaterial,
+  Group,
+  DoubleSide,
+  Box3,
+  Plane,
+  EdgesGeometry,
+  LineSegments,
+  AmbientLight,
+  DirectionalLight,
+  ShadowMaterial,
+} from 'three'
 
 import useWebGL from '~/hooks/webgl'
 import useGUI from '~/hooks/gui'
@@ -26,29 +44,29 @@ export default {
   data() {
     return {
       colors: {
-        shadowColor: new THREE.Color(0xede5db),
-        arrowColor: new THREE.Color(0xff4a48),
-        ambientLightColor: new THREE.Color(0xf2f2f2),
-        directionalLightColor: new THREE.Color(0xffffff),
-        lambertMaterialColor: new THREE.Color(0xd8d8d8),
-        lambertMaterialEmissive: new THREE.Color(0xefefef),
+        shadowColor: new Color(0xede5db),
+        arrowColor: new Color(0xff4a48),
+        ambientLightColor: new Color(0xf2f2f2),
+        directionalLightColor: new Color(0xffffff),
+        lambertMaterialColor: new Color(0xd8d8d8),
+        lambertMaterialEmissive: new Color(0xefefef),
         emissiveIntensity: 0.75,
-        outlineColor: new THREE.Color(0x000000),
-        outlineHiddenColor: new THREE.Color(0x808080),
+        outlineColor: new Color(0x000000),
+        outlineHiddenColor: new Color(0x808080),
         public: {
-          lambertMaterialColor: new THREE.Color(0x3070ff),
-          lambertMaterialEmissive: new THREE.Color(0x285bd1),
+          lambertMaterialColor: new Color(0x3070ff),
+          lambertMaterialEmissive: new Color(0x285bd1),
           emissiveIntensity: 0.6,
-          lambertMaterialColorActive: new THREE.Color(0x0000ff),
-          lambertMaterialEmissiveActive: new THREE.Color(0x0202d6),
+          lambertMaterialColorActive: new Color(0x0000ff),
+          lambertMaterialEmissiveActive: new Color(0x0202d6),
           emissiveIntensityActive: 0.5,
         },
         vip: {
-          lambertMaterialColor: new THREE.Color(0xf46b2b),
-          lambertMaterialEmissive: new THREE.Color(0xe2723d),
+          lambertMaterialColor: new Color(0xf46b2b),
+          lambertMaterialEmissive: new Color(0xe2723d),
           emissiveIntensity: 0.6,
-          lambertMaterialColorActive: new THREE.Color(0xe2520f),
-          lambertMaterialEmissiveActive: new THREE.Color(0xdb500f),
+          lambertMaterialColorActive: new Color(0xe2520f),
+          lambertMaterialEmissiveActive: new Color(0xdb500f),
           emissiveIntensityActive: 0.7,
         },
       },
@@ -77,7 +95,7 @@ export default {
       currentZoneIntersect: null,
       zoneFocusEnabled: false,
       dragInProgress: false,
-      arrowPositionYoyo: new THREE.Vector3(),
+      arrowPositionYoyo: new Vector3(),
     }
   },
   computed: {
@@ -184,7 +202,7 @@ export default {
     })
 
     interior.traverse((item) => {
-      if (item instanceof THREE.Mesh || item instanceof THREE.Line) {
+      if (item instanceof Mesh || item instanceof Line) {
         item.geometry?.dispose()
 
         interior.remove(item)
@@ -298,14 +316,11 @@ export default {
       this.currentZoneIntersect = null
       this.setInteriorCurrentZoneName(null)
 
-      this.drag.target = 0
-
       const { camera } = useWebGL()
 
       camera.zoom = this.$viewport.isMobile
         ? this.currentFloor.content.camera_zoom_mobile
         : this.currentFloor.content.camera_zoom || this.zoom.current
-      camera.updateProjectionMatrix()
 
       this.floors.forEach((floor, index) => {
         const visible = index <= this.interiorIndexFloor.id
@@ -337,6 +352,11 @@ export default {
         )
 
         this.focusZoneImmediate(zoneSelected[0], zonesNotSelected)
+      } else {
+        camera.position.copy(this.cameraBase.position)
+        camera.rotation.copy(this.cameraBase.rotation)
+
+        camera.updateProjectionMatrix()
       }
     },
     handleAnimatedTransition(oldVal) {
@@ -436,7 +456,7 @@ export default {
         const emissive = this.colors.lambertMaterialEmissive.clone()
 
         zone.materials.forEach((material) => {
-          if (material instanceof THREE.MeshLambertMaterial) {
+          if (material instanceof MeshLambertMaterial) {
             const paramsLeave = {
               ease: 'power1.out',
               duration: 0.35,
@@ -491,7 +511,7 @@ export default {
         const outlineColor = this.colors.outlineColor.clone()
 
         lineMaterials.forEach((material) => {
-          if (material instanceof THREE.LineBasicMaterial) {
+          if (material instanceof LineBasicMaterial) {
             this.tlFloors.to(
               material.color,
               {
@@ -502,7 +522,7 @@ export default {
               },
               `enter-${floor.name}`
             )
-          } else if (material instanceof THREE.ShaderMaterial) {
+          } else if (material instanceof ShaderMaterial) {
             this.tlFloors.to(
               material.uniforms.diffuse.value,
               {
@@ -524,7 +544,7 @@ export default {
           const emissive = this.colors[typeZone].lambertMaterialEmissive.clone()
 
           zone.materials.forEach((material) => {
-            if (material instanceof THREE.MeshLambertMaterial) {
+            if (material instanceof MeshLambertMaterial) {
               this.tlFloors.to(
                 material.color,
                 {
@@ -624,7 +644,7 @@ export default {
       })
 
       lineMaterials.forEach((material) => {
-        if (material instanceof THREE.LineBasicMaterial) {
+        if (material instanceof LineBasicMaterial) {
           this.tlFloors.to(
             material.color,
             {
@@ -635,7 +655,7 @@ export default {
             },
             `leave-${floor.name}`
           )
-        } else if (material instanceof THREE.ShaderMaterial) {
+        } else if (material instanceof ShaderMaterial) {
           this.tlFloors.to(
             material.uniforms.diffuse.value,
             {
@@ -651,13 +671,13 @@ export default {
 
       // APPEAR NEW FLOOR
       graphFloor.materials.forEach((material) => {
-        if (material instanceof THREE.MeshLambertMaterial) {
+        if (material instanceof MeshLambertMaterial) {
           material.color = this.colors.lambertMaterialColor.clone()
           material.emissive = this.colors.lambertMaterialEmissive.clone()
           material.emissiveIntensity = this.colors.emissiveIntensity
-        } else if (material instanceof THREE.ShaderMaterial) {
+        } else if (material instanceof ShaderMaterial) {
           material.uniforms.diffuse.value.set(this.colors.outlineColor.clone())
-        } else if (material instanceof THREE.LineBasicMaterial) {
+        } else if (material instanceof LineBasicMaterial) {
           material.color = this.colors.outlineColor.clone()
         }
       })
@@ -690,7 +710,7 @@ export default {
           const emissive = this.colors[typeZone].lambertMaterialEmissive.clone()
 
           zone.materials.forEach((material) => {
-            if (material instanceof THREE.MeshLambertMaterial) {
+            if (material instanceof MeshLambertMaterial) {
               this.tlFloors.to(
                 material.color,
                 {
@@ -764,7 +784,7 @@ export default {
 
       zonesNotSelected.forEach((zone) => {
         zone.materials.forEach((material) => {
-          if (material instanceof THREE.MeshLambertMaterial) {
+          if (material instanceof MeshLambertMaterial) {
             material.color = this.colors.lambertMaterialColor.clone()
 
             material.emissive = this.colors.lambertMaterialEmissive.clone()
@@ -779,16 +799,16 @@ export default {
         zone.materials.forEach((material) => {
           const zoneType = zone.publicAccess ? 'public' : 'vip'
 
-          if (material instanceof THREE.MeshLambertMaterial) {
+          if (material instanceof MeshLambertMaterial) {
             material.color = this.colors[zoneType].lambertMaterialColor.clone()
             material.emissive =
               this.colors[zoneType].lambertMaterialEmissive.clone()
             material.emissiveIntensity = this.colors[zoneType].emissiveIntensity
-          } else if (material instanceof THREE.ShaderMaterial) {
+          } else if (material instanceof ShaderMaterial) {
             material.uniforms.diffuse.value.set(
               this.colors.outlineColor.clone()
             )
-          } else if (material instanceof THREE.LineBasicMaterial) {
+          } else if (material instanceof LineBasicMaterial) {
             material.color = this.colors.outlineColor.clone()
           }
         })
@@ -798,17 +818,17 @@ export default {
       const graphFloor = this.buildGraph(floor)
 
       graphFloor.materials.forEach((material) => {
-        if (material instanceof THREE.MeshLambertMaterial) {
+        if (material instanceof MeshLambertMaterial) {
           material.color = this.colors.lambertMaterialColor.clone()
 
           material.emissive = this.colors.lambertMaterialEmissive.clone()
 
           material.emissiveIntensity = this.colors.emissiveIntensity
-        } else if (material instanceof THREE.ShaderMaterial) {
+        } else if (material instanceof ShaderMaterial) {
           material.uniforms.diffuse.value.set(
             this.colors.outlineHiddenColor.clone()
           )
-        } else if (material instanceof THREE.LineBasicMaterial) {
+        } else if (material instanceof LineBasicMaterial) {
           material.color = this.colors.outlineHiddenColor.clone()
         }
       })
@@ -848,19 +868,11 @@ export default {
       }
 
       interior.floors = this.floors
-
-      // this.setInteriorIndexFloor({
-      //   id: 2,
-      //   focus: 'PUBLIC_Cantine',
-      //   immediate: true,
-      // })
-
-      // this.handleImmediateTransition()
     },
     initArrow() {
       const { interior } = useWebGL()
 
-      this.arrow = new THREE.Group()
+      this.arrow = new Group()
       this.arrow.name = 'arrow'
       interior.add(this.arrow)
 
@@ -871,7 +883,7 @@ export default {
       const arrow = this.mergeObject(arrowGroup)
 
       arrow.material = this.arrowMaterial
-      arrow.material.side = THREE.DoubleSide
+      arrow.material.side = DoubleSide
       arrow.material.flatShading = true
       arrow.castShadow = true
       arrow.receiveShadow = true
@@ -904,10 +916,10 @@ export default {
     initLights() {
       const { interior } = useWebGL()
 
-      this.ambientLight = new THREE.AmbientLight(this.colors.ambientLightColor)
+      this.ambientLight = new AmbientLight(this.colors.ambientLightColor)
       interior.add(this.ambientLight)
 
-      this.directionalLight = new THREE.DirectionalLight(
+      this.directionalLight = new DirectionalLight(
         this.colors.directionalLightColor,
         1
       )
@@ -1160,26 +1172,12 @@ export default {
       interior.initialCamera = { ...this.cameraBase }
     },
     resetView() {
-      this.setInteriorVisible(true)
-
-      const { interior, camera } = useWebGL()
-
       this.drag.current = 0
       this.drag.target = 0
       this.drag.last = 0
-
-      camera.position.copy(interior.initialCamera.position)
-      camera.rotation.copy(interior.initialCamera.rotation)
-
-      this.zoom.initial = this.$viewport.isMobile ? 10 : this.zoom.initial
-      this.zoom.current = this.$viewport.isMobile ? 10 : this.zoom.current
-
-      camera.zoom = this.zoom.initial
-
-      camera.updateProjectionMatrix()
     },
     initMaterials() {
-      this.shadowMaterial = new THREE.ShadowMaterial({
+      this.shadowMaterial = new ShadowMaterial({
         color: this.colors.shadowColor,
         opacity: 0.75,
       })
@@ -1190,48 +1188,46 @@ export default {
         polygonOffsetUnits: this.polygonOffsetUnits,
       }
 
-      this.basicMaterial = new THREE.MeshLambertMaterial({
+      this.basicMaterial = new MeshLambertMaterial({
         color: this.colors.lambertMaterialColor,
         emissive: this.colors.lambertMaterialEmissive,
         emissiveIntensity: this.colors.emissiveIntensity,
         ...polygonsParams,
       })
       this.basicMaterial.name = 'basicMaterial'
-      this.basicMaterial.side = THREE.DoubleSide
+      this.basicMaterial.side = DoubleSide
 
-      this.conditionalMaterial = new THREE.ShaderMaterial(
-        ConditionalEdgesShader
-      )
+      this.conditionalMaterial = new ShaderMaterial(ConditionalEdgesShader)
       this.conditionalMaterial.uniforms.diffuse.value.set(
         this.colors.outlineColor
       )
       this.conditionalMaterial.name = 'conditionalMaterial'
 
-      this.lineMaterial = new THREE.LineBasicMaterial({
+      this.lineMaterial = new LineBasicMaterial({
         color: this.colors.outlineColor,
         linewidth: 2,
       })
       this.lineMaterial.name = 'lineMaterial'
 
-      this.publicMaterial = new THREE.MeshLambertMaterial({
+      this.publicMaterial = new MeshLambertMaterial({
         color: this.colors.public.lambertMaterialColor,
         emissive: this.colors.public.lambertMaterialEmissive,
         emissiveIntensity: this.colors.public.emissiveIntensity,
         ...polygonsParams,
       })
       this.publicMaterial.name = 'publicMaterial'
-      this.publicMaterial.side = THREE.DoubleSide
+      this.publicMaterial.side = DoubleSide
 
-      this.vipMaterial = new THREE.MeshLambertMaterial({
+      this.vipMaterial = new MeshLambertMaterial({
         color: this.colors.vip.lambertMaterialColor,
         emissive: this.colors.vip.lambertMaterialEmissive,
         emissiveIntensity: this.colors.vip.emissiveIntensity,
         ...polygonsParams,
       })
       this.vipMaterial.name = 'vipMaterial'
-      this.vipMaterial.side = THREE.DoubleSide
+      this.vipMaterial.side = DoubleSide
 
-      this.arrowMaterial = new THREE.MeshLambertMaterial({
+      this.arrowMaterial = new MeshLambertMaterial({
         color: this.colors.arrowColor,
         emissive: this.colors.arrowColor,
         emissiveIntensity: this.colors.emissiveIntensity,
@@ -1242,7 +1238,7 @@ export default {
     initFootField() {
       const { interior } = useWebGL()
 
-      this.footField = new THREE.Group()
+      this.footField = new Group()
       this.footField.name = 'footField'
       interior.add(this.footField)
 
@@ -1259,7 +1255,7 @@ export default {
     initMusicScene() {
       const { interior } = useWebGL()
 
-      this.musicScene = new THREE.Group()
+      this.musicScene = new Group()
       this.musicScene.name = 'musicScene'
       interior.add(this.musicScene)
 
@@ -1273,7 +1269,7 @@ export default {
       this.musicScene.add(edgeMusicScene)
       this.musicScene.add(conditionalMusicScene)
 
-      const { min, max } = new THREE.Box3().setFromObject(this.musicScene)
+      const { min, max } = new Box3().setFromObject(this.musicScene)
 
       this.musicScene.initialPosition = this.musicScene.position.clone()
 
@@ -1283,7 +1279,7 @@ export default {
     initTerrain() {
       const { interior } = useWebGL()
 
-      this.terrain = new THREE.Group()
+      this.terrain = new Group()
       this.terrain.name = 'terrain'
       interior.add(this.terrain)
 
@@ -1297,7 +1293,7 @@ export default {
       this.terrain.add(edgeTerrain)
       // this.terrain.add(conditionalTerrain)
 
-      const { min, max } = new THREE.Box3().setFromObject(this.terrain)
+      const { min, max } = new Box3().setFromObject(this.terrain)
 
       this.terrain.initialPosition = this.terrain.position.clone()
 
@@ -1307,7 +1303,7 @@ export default {
     initFloor() {
       const { interior } = useWebGL()
 
-      this.floor = new THREE.Group()
+      this.floor = new Group()
       this.floor.name = 'floor'
       this.floor.position.y -= 0.1
       interior.add(this.floor)
@@ -1511,7 +1507,7 @@ export default {
         : this.colors.lambertMaterialEmissive
 
       zone.materials.forEach((material) => {
-        if (material instanceof THREE.MeshLambertMaterial) {
+        if (material instanceof MeshLambertMaterial) {
           gsap.to(material.color, {
             r: color.r,
             g: color.g,
@@ -1599,7 +1595,7 @@ export default {
     onMouseEnterZone(object) {
       if (this.$viewport.isMobile) return
 
-      this.setCursorState('hover')
+      this.setAppCursor('pointer')
       this.setInteriorCurrentZoneHovered(object.parent.name)
 
       const zone = object.parent.publicAccess ? 'public' : 'vip'
@@ -1657,7 +1653,7 @@ export default {
     onMouseLeaveZone(object) {
       if (this.$viewport.isMobile) return
 
-      this.setCursorState('hide')
+      this.setAppCursor('initial')
 
       this.setInteriorCurrentZoneHovered(null)
 
@@ -1796,7 +1792,7 @@ export default {
     buildArenaFloor(initialObject, indexFloor, isGroundFloor = false) {
       const arene = this.model.getObjectByName('Arene')
 
-      const group = new THREE.Group()
+      const group = new Group()
       group.position.copy(arene.position)
       group.updateMatrixWorld()
       group.name = `floor-${indexFloor}`
@@ -1808,7 +1804,7 @@ export default {
       group.materials = this.initFloorMaterials()
       group.isGroundFloor = isGroundFloor
 
-      const clippingPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0)
+      const clippingPlane = new Plane(new Vector3(0, 1, 0), 0)
 
       const object = initialObject.clone()
 
@@ -1830,7 +1826,7 @@ export default {
       group.position.y += indexFloor * 0.05
       group.initialPosition = group.position.clone()
 
-      const { min, max } = new THREE.Box3().setFromObject(group)
+      const { min, max } = new Box3().setFromObject(group)
 
       const height = max.y - min.y
 
@@ -1843,7 +1839,7 @@ export default {
         obj.isBasicObject = false
         obj.publicAccess = !obj.name.includes('VIP')
 
-        const part = new THREE.Group()
+        const part = new Group()
         part.name = obj.name
         part.isBasicObject = obj.isBasicObject
         part.publicAccess = obj.publicAccess
@@ -1872,7 +1868,7 @@ export default {
         part.add(normalObject, edgeObject, conditionalObject)
         part.position.y += 0.05
 
-        const bounding = new THREE.Box3().setFromObject(part)
+        const bounding = new Box3().setFromObject(part)
 
         part.min = bounding.min
         part.max = bounding.max
@@ -1892,7 +1888,7 @@ export default {
     },
 
     parseFloor(object) {
-      const basicObject = new THREE.Group()
+      const basicObject = new Group()
       basicObject.isBasicObject = true
 
       const { fail: objectsWithoutBoole, pass: booleGroup } = this.partition(
@@ -1925,7 +1921,7 @@ export default {
         hitbox.visible = false
         object.remove(originalHitbox)
 
-        const objWorldPosition = object.getWorldPosition(new THREE.Vector3())
+        const objWorldPosition = object.getWorldPosition(new Vector3())
         hitbox.position.add(objWorldPosition)
       }
 
@@ -2001,7 +1997,7 @@ export default {
       const mergedGeometries = mergeBufferGeometries(geometry, false)
       const mergedGeometry = mergeVertices(mergedGeometries)
 
-      const mesh = new THREE.Mesh(mergedGeometry)
+      const mesh = new Mesh(mergedGeometry)
       mesh.updateMatrixWorld()
       mesh.castShadow = true
       mesh.receiveShadow = true
@@ -2016,11 +2012,11 @@ export default {
     edgeObject(object) {
       const mergedGeom = object.geometry.clone()
 
-      const lineGeom = new THREE.EdgesGeometry(mergedGeom, this.thresholdAngle)
+      const lineGeom = new EdgesGeometry(mergedGeom, this.thresholdAngle)
 
       const material = this.lineMaterial
 
-      const line = new THREE.LineSegments(lineGeom, material)
+      const line = new LineSegments(lineGeom, material)
       line.castShadow = false
       line.receiveShadow = false
       line.position.copy(object.position)
@@ -2043,7 +2039,7 @@ export default {
 
       const material = this.conditionalMaterial
 
-      const mesh = new THREE.LineSegments(lineGeom, material)
+      const mesh = new LineSegments(lineGeom, material)
       mesh.castShadow = false
       mesh.receiveShadow = false
       mesh.position.copy(object.position)
@@ -2070,6 +2066,7 @@ export default {
       setInteriorIndexFloor: 'setInteriorIndexFloor',
       setInteriorVisible: 'setInteriorVisible',
       setCursorState: 'setCursorState',
+      setAppCursor: 'setAppCursor',
       setInteriorCurrentZoneName: 'setInteriorCurrentZoneName',
       setInteriorCurrentZoneHovered: 'setInteriorCurrentZoneHovered',
       setHeaderHided: 'setHeaderHided',

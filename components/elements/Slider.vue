@@ -200,7 +200,6 @@ export default {
     ...mapMutations({
       setCursorState: 'setCursorState',
       setCursorSliderHold: 'setCursorSliderHold',
-      setCursorSliderDisabled: 'setCursorSliderDisabled',
       setAllowScroll: 'setAllowScroll',
     }),
   },

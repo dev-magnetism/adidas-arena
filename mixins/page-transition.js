@@ -40,6 +40,7 @@ export default {
     },
     leave(el, done) {
       this.$store.commit('setAllowScroll', false)
+      this.$store.commit('setWebglInFront', false)
 
       const layerBlue = document.querySelector('.app-transition-layer.blue')
       const layerRed = document.querySelector('.app-transition-layer.red')

@@ -1,17 +1,19 @@
 /* eslint-disable */
 
-const vec0 = new THREE.Vector3()
-const vec1 = new THREE.Vector3()
-const vec2 = new THREE.Vector3()
-const vec3 = new THREE.Vector3()
-const vec4 = new THREE.Vector3()
+import { Vector3, Triangle, BufferGeometry, BufferAttribute } from 'three'
 
-const triangle0 = new THREE.Triangle()
-const triangle1 = new THREE.Triangle()
-const normal0 = new THREE.Vector3()
-const normal1 = new THREE.Vector3()
+const vec0 = new Vector3()
+const vec1 = new Vector3()
+const vec2 = new Vector3()
+const vec3 = new Vector3()
+const vec4 = new Vector3()
 
-export class ConditionalEdgesGeometry extends THREE.BufferGeometry {
+const triangle0 = new Triangle()
+const triangle1 = new Triangle()
+const normal0 = new Vector3()
+const normal1 = new Vector3()
+
+export class ConditionalEdgesGeometry extends BufferGeometry {
   constructor(geometry) {
     super()
 
@@ -23,7 +25,7 @@ export class ConditionalEdgesGeometry extends THREE.BufferGeometry {
       index = geometry.index
     } else {
       const arr = new Array(position.count / 3).fill().map((_, i) => i)
-      index = new THREE.BufferAttribute(new Uint32Array(arr), 1, false)
+      index = new BufferAttribute(new Uint32Array(arr), 1, false)
     }
 
     for (let i = 0, l = index.count; i < l; i += 3) {
@@ -105,19 +107,19 @@ export class ConditionalEdgesGeometry extends THREE.BufferGeometry {
 
     this.setAttribute(
       'position',
-      new THREE.BufferAttribute(new Float32Array(edgePositions), 3, false)
+      new BufferAttribute(new Float32Array(edgePositions), 3, false)
     )
     this.setAttribute(
       'direction',
-      new THREE.BufferAttribute(new Float32Array(edgeDirections), 3, false)
+      new BufferAttribute(new Float32Array(edgeDirections), 3, false)
     )
     this.setAttribute(
       'control0',
-      new THREE.BufferAttribute(new Float32Array(edgeControl0), 3, false)
+      new BufferAttribute(new Float32Array(edgeControl0), 3, false)
     )
     this.setAttribute(
       'control1',
-      new THREE.BufferAttribute(new Float32Array(edgeControl1), 3, false)
+      new BufferAttribute(new Float32Array(edgeControl1), 3, false)
     )
   }
 }

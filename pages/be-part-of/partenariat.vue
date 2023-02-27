@@ -4,6 +4,7 @@
     <AppBepartofPartenairePartenaires :contents="contentPartners" />
     <AppContactQuestion :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
+    <AppGallery :contents="contentGallery" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
@@ -26,15 +27,13 @@ export default {
       limit: -1,
     })
 
-    const galerieTest = await $directus
-      .items('Galerie_partenaire')
-      .readByQuery({
-        limit: -1,
-      })
+    const galerie = await $directus.items('Galerie_partenaire').readByQuery({
+      limit: -1,
+    })
 
     return {
       content,
-      galerieTest,
+      galerie,
     }
   },
   head({ $seo }) {
@@ -56,7 +55,11 @@ export default {
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
     }),
-
+    contentGallery() {
+      return {
+        items: this.galerie.data,
+      }
+    },
     contentPartners() {
       return {
         title: this.content.data.partenaires_title,

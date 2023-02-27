@@ -1,5 +1,10 @@
 <template>
-  <div @click="onSelectImage" class="app-arena-gallery">
+  <div
+    class="app-arena-gallery"
+    @mouseenter="onMouseEnterGallery"
+    @mouseleave="onMouseLeaveGallery"
+    @click="onSelectImage($event)"
+  >
     <TH2 weight="bold" class="app-arena-gallery__title">Galerie</TH2>
     <div ref="grid" class="app-arena-gallery__pictures">
       <AppGalleryPicture
@@ -16,7 +21,7 @@
 <script>
 import { Observer } from 'gsap/Observer'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 
 import useWebGL from '~/hooks/webgl'
 import useGUI from '~/hooks/gui'
@@ -48,6 +53,18 @@ export default {
       galleryVisible: false,
     }
   },
+  computed: {
+    ...mapState({
+      allLoadedFake: (state) => state.allLoadedFake,
+    }),
+  },
+  watch: {
+    allLoadedFake(newVal) {
+      if (!newVal) return
+
+      this.onToggle(this.scrollTrigger)
+    },
+  },
   mounted() {
     this.observer = Observer.create({
       axis: 'x',
@@ -61,10 +78,25 @@ export default {
       onDragStart: (e) => {
         this.onDragProgress = true
 
-        if (e.axis === 'x') this.setAllowScroll(false)
+        if (e.axis === 'x') {
+          this.setAllowScroll(false)
+        }
+      },
+      onPress: () => {
+        if (this.$viewport.isMobile) return
+
+        this.setCursorSliderHold(true)
+      },
+      onRelease: () => {
+        if (this.$viewport.isMobile) return
+
+        this.setCursorSliderHold(false)
       },
       onDragEnd: (e) => {
-        if (e.axis === 'x') this.setAllowScroll(true)
+        if (e.axis === 'x') {
+          if (!this.$viewport.isMobile) this.setCursorSliderHold(false)
+          this.setAllowScroll(true)
+        }
       },
       dragMinimum: 10,
       lockAxis: true,
@@ -78,6 +110,10 @@ export default {
       markers: true,
       onToggle: this.onToggle,
     })
+
+    if (this.scrollTrigger.isActive && this.allLoadedFake) {
+      this.onToggle(this.scrollTrigger)
+    }
 
     this.$raf.add(`arena-gallery`, this.onFrame)
 
@@ -97,8 +133,19 @@ export default {
     this.gui?.dispose()
   },
   methods: {
+    onMouseEnterGallery() {
+      if (this.imageSelected) return
+
+      this.setCursorSliderDisabled(false)
+      this.setCursorState('slider')
+      this.setAppCursor('none')
+    },
+    onMouseLeaveGallery() {
+      this.setCursorState('hide')
+      this.setAppCursor('initial')
+    },
     onResize() {
-      if (!this.galleryVisible) return
+      if (!this.galleryVisible && !this.scrollTrigger.isActive) return
 
       this.calcEndsGrid()
 
@@ -120,6 +167,8 @@ export default {
       camera.updateProjectionMatrix()
     },
     onToggle(self) {
+      // console.log('onToggle Gallery', self.isActive)
+
       this.galleryVisible = self.isActive
       this.setWebglInFront(self.isActive)
 
@@ -131,9 +180,7 @@ export default {
           : picture.texture?.image?.pause()
       })
 
-      if (self.isActive) {
-        this.onResize()
-      }
+      this.onResize()
     },
     calcEndsGrid() {
       const gridOffset = this.$refs.grid.getBoundingClientRect().left
@@ -168,34 +215,54 @@ export default {
 
       this.scroll.target += delta
     },
-    onSelectImage() {
+    onSelectImage(e) {
       if (this.onDragProgress) return
 
       if (this.currentIntersect && !this.imageSelected) {
         const idPicture = this.currentIntersect.object.idComponent
         const picture = this.$refs.pictures[idPicture]
-
         picture.open = true
+
         this.lastImageSelectedId = idPicture
         this.imageSelected = true
+
         this.setAllowScroll(false)
       } else if (
         (!this.currentIntersect && this.imageSelected) ||
         (this.currentIntersect && this.imageSelected)
       ) {
         const picture = this.$refs.pictures[this.lastImageSelectedId]
-
         picture.open = false
+
         this.imageSelected = false
         this.lastImageSelectedId = null
+
         this.setAllowScroll(true)
+      } else if (
+        !this.currentIntersect &&
+        !this.imageSelected &&
+        !this.$viewport.isMobile
+      ) {
+        const isLeft = e.clientX < this.$viewport.width / 2
+
+        if (isLeft) {
+          this.scroll.target -= 500
+          this.directionDrag = '-x'
+        } else {
+          this.scroll.target += 500
+          this.directionDrag = 'x'
+        }
       }
     },
-    onMouseLeave(obj) {
-      // console.log('leave', obj)
+    onMouseLeave() {
+      if (this.imageSelected) return
+
+      this.setAppCursor('none')
+      this.setCursorState('slider')
     },
-    onMouseEnter(obj) {
-      // console.log('enter', obj)
+    onMouseEnter() {
+      this.setCursorState('hide')
+      this.setAppCursor('pointer')
     },
     onFrame() {
       if ((!this.leftmostImage && !this.rightmostImage) || !this.galleryVisible)
@@ -285,6 +352,10 @@ export default {
     ...mapMutations({
       setAllowScroll: 'setAllowScroll',
       setWebglInFront: 'setWebglInFront',
+      setCursorState: 'setCursorState',
+      setCursorSliderHold: 'setCursorSliderHold',
+      setCursorSliderDisabled: 'setCursorSliderDisabled',
+      setAppCursor: 'setAppCursor',
     }),
     lerp(p1, p2, t) {
       return p1 + (p2 - p1) * t
@@ -301,8 +372,7 @@ export default {
   align-items: center;
   justify-content: center;
   position: relative;
-  overflow: hidden;
-  // padding-bottom: desktop-vw(300px);
+  margin-bottom: desktop-vw(100px);
 
   &__pictures {
     width: 300vw;
