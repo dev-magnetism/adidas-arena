@@ -27,13 +27,13 @@ export default {
       limit: -1,
     })
 
-    const galerie = await $directus.items('Galerie_partenaire').readByQuery({
-      limit: -1,
-    })
+    // const galerie = await $directus.items('Galerie_partenaire').readByQuery({
+    //   limit: -1,
+    // })
 
     return {
       content,
-      galerie,
+      // galerie,
     }
   },
   head({ $seo }) {
@@ -55,11 +55,11 @@ export default {
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
     }),
-    contentGallery() {
-      return {
-        items: this.galerie.data,
-      }
-    },
+    // contentGallery() {
+    //   return {
+    //     items: this.galerie.data,
+    //   }
+    // },
     contentPartners() {
       return {
         title: this.content.data.partenaires_title,
