@@ -4,7 +4,7 @@
     <AppBepartofPartenairePartenaires :contents="contentPartners" />
     <AppContactQuestion :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
-    <AppGallery :contents="contentGallery" />
+    <!-- <AppGallery :contents="contentGallery" /> -->
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>

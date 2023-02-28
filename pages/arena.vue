@@ -4,7 +4,7 @@
     <AppArenaParisBasketClub :contents="contentParisBasketClub" />
     <EFullwidth :contents="contentFullwidth" />
     <AppArenaPartners :contents="contentPartners" />
-    <AppGallery :contents="contentGallery" />
+    <!-- <AppGallery :contents="contentGallery" /> -->
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
