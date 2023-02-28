@@ -44,6 +44,7 @@ import loaderManager from '~/assets/js/loaderManager'
 
 import { ConditionalEdgesGeometry } from '~/assets/js/webgl/ConditionalEdgesGeometry'
 import { ConditionalEdgesShader } from '~/assets/js/webgl/ConditionalEdgesShader'
+// import { ConditionalEdgesShaderInstance } from '~/assets/js/webgl/ConditionalEdgesShaderInstance'
 
 export default {
   data() {
@@ -115,7 +116,7 @@ export default {
       this.initExterior()
     },
     modelCloudLoaded() {
-      this.initCloudsNew()
+      this.initClouds()
     },
     allLoadedActual(payload) {
       if (payload) this.initGUI()
@@ -136,7 +137,7 @@ export default {
 
     if (this.allLoadedActual) {
       this.initExterior()
-      this.initCloudsNew()
+      this.initClouds()
       this.initGUI()
       this.resetView()
     }
@@ -480,9 +481,13 @@ export default {
     }
   `,
       })
+
+      this.cloudEdgesMaterial.polygonOffset = true
+      this.cloudEdgesMaterial.polygonOffsetFactor = 1
+      this.cloudEdgesMaterial.polygonOffsetUnits = 1
     },
 
-    initCloudsNew() {
+    initClouds() {
       const { exterior } = useWebGL()
 
       this.gltfCloud = loaderManager.getModel('cloud').scene
@@ -495,12 +500,14 @@ export default {
         this.modelMaterial,
         this.planesGroup.children.length - 1
       )
+      this.instanceBasicClouds.castShadow = true
 
       this.instanceBasicClouds.instanceMatrix.setUsage(DynamicDrawUsage)
 
       exterior.add(this.instanceBasicClouds)
 
       const cloudEdgesGeometry = new EdgesGeometry(cloud.geometry)
+
       const cloudEdgesPositions = cloudEdgesGeometry.attributes.position.clone()
 
       this.instanceEdgeClouds = new InstancedBufferGeometry()
