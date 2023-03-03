@@ -26,7 +26,7 @@ export default {
     apiKeyDelight: process.env.API_KEY_DELIGHT || 'MMcR9vQkDKfuug',
   },
 
-  css: ['~/assets/scss/global.scss'],
+  css: ['~assets/scss/global.scss'],
 
   plugins: [
     { src: '~/plugins/gsap.js', mode: 'client' },
@@ -195,9 +195,9 @@ export default {
     // extractCSS: {
     //   ignoreOrder: false,
     // },
-    // loaders: {
-    //   scss: { sourceMap: false },
-    // },
+    loaders: {
+      scss: { sourceMap: false },
+    },
     transpile: ['three', 'gsap'],
     extend(config, ctx) {
       config.resolve.alias.vue = 'vue/dist/vue.common'
