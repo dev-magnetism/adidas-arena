@@ -35,6 +35,7 @@
         :class="{ hide: exteriorFullwidth }"
         class="app-home-hero__title"
         :content="contents.title"
+        tag="H2"
       />
 
       <div

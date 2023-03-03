@@ -22,6 +22,7 @@
           class="type"
           weight="bold"
           :color="whitedTexts ? 'white' : 'black'"
+          tag="h3"
         >
           {{ content.type }}
         </TP2>

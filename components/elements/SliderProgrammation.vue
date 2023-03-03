@@ -7,6 +7,7 @@
         :overflow="true"
         class="app-element-programmation-slider__heading__title"
         :content="content.title"
+        tag="h3"
       />
       <AtomsCTA
         href="/programmation"

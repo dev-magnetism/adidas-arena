@@ -15,6 +15,7 @@
     "@directus/sdk": "^10.3.1",
     "@nuxtjs/eslint-module": "^3.1.0",
     "@nuxtjs/gtm": "^2.4.0",
+    "@nuxtjs/robots": "^2.5.0",
     "@nuxtjs/sitemap": "^2.4.0",
     "@nuxtjs/style-resources": "^1.2.1",
     "@studio-freight/lenis": "^0.2.28",

@@ -7,6 +7,7 @@
         :overflow="true"
         class="app-home-partners__title"
         :content="contents.title"
+        tag="h3"
       />
 
       <TP2

@@ -13,6 +13,10 @@ export default {
       },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
+      {
+        name: 'google-site-verification',
+        content: 'sCUfvG-_I5Fmsll2gdkBf35SJrj3BEnNWilC4NsuG1Q',
+      },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
@@ -134,6 +138,7 @@ export default {
     '@nuxtjs/eslint-module',
     'nuxt-seo',
     '@nuxtjs/gtm',
+    '@nuxtjs/robots',
     'nuxt-compress',
     '@nuxtjs/sitemap',
   ],
@@ -187,8 +192,11 @@ export default {
 
   build: {
     // analyze: true,
-    extractCSS: {
-      ignoreOrder: false,
+    // extractCSS: {
+    //   ignoreOrder: false,
+    // },
+    loaders: {
+      scss: { sourceMap: false },
     },
     transpile: ['three', 'gsap'],
     extend(config, ctx) {

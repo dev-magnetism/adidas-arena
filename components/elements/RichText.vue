@@ -27,6 +27,10 @@ export default {
       default: false,
       require: true,
     },
+    tag: {
+      type: String,
+      default: '',
+    },
   },
   computed: {
     ...mapState({
@@ -164,6 +168,8 @@ export default {
         .replace(/ /g, '')
 
       text.name = `T${componentName}`
+
+      text.attrs.tag = this.tag || componentName
 
       text.attrs.class = 'wysiwyg-text'
       delete text.attrs.style

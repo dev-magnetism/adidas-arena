@@ -12,6 +12,7 @@
       class="app-header__logo"
       to="/"
     >
+      <h1>Adidas Arena</h1>
       <SvgArenaLogo />
     </nuxt-link>
 
@@ -129,6 +130,12 @@ export default {
   &__logo {
     z-index: 2;
     transform: translateX(-50%);
+
+    h1 {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0;
+    }
 
     &.white {
       svg g {

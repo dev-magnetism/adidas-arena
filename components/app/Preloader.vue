@@ -78,7 +78,7 @@ export default {
     hidePreloader() {
       this.tlHidePreloader = gsap
         .timeline({
-          delay: 1,
+          delay: .85,
           onComplete: () => {
             this.setPreloaderHidden(true)
             this.tlLoading?.clear()
@@ -196,7 +196,7 @@ export default {
     onProgressLoader({ normalized, percentage }, id) {
       this.tlLoading.set(this, {
         progressUI: Math.round(percentage),
-        delay: this.genRand(0.25, 1, 2),
+        delay: this.genRand(0.25, .7, 2),
       })
 
       if (id === 'exterior') {
