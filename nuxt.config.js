@@ -196,7 +196,7 @@ export default {
     //   ignoreOrder: false,
     // },
     loaders: {
-      scss: { sourceMap: false },
+      scss: { sourceMap: !(process.env.NODE_ENV === 'development') },
     },
     transpile: ['three', 'gsap'],
     extend(config, ctx) {
