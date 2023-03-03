@@ -1,5 +1,3 @@
-import webpack from 'webpack'
-
 export default {
   target: 'static',
   head: {
@@ -13,8 +11,11 @@ export default {
         content:
           'width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no',
       },
-      { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
+      {
+        name: 'google-site-verification',
+        content: 'sCUfvG-_I5Fmsll2gdkBf35SJrj3BEnNWilC4NsuG1Q',
+      },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
@@ -134,6 +135,7 @@ export default {
     ],
     'cookie-universal-nuxt',
     '@nuxtjs/eslint-module',
+    '@nuxtjs/robots',
     'nuxt-seo',
     '@nuxtjs/gtm',
     'nuxt-compress',
@@ -188,13 +190,10 @@ export default {
   loading: false,
 
   build: {
-    extractCSS: {
-      ignoreOrder: false,
-    },
+    extractCSS: true,
     transpile: ['three', 'gsap'],
     extend(config, ctx) {
       config.resolve.alias.vue = 'vue/dist/vue.common'
-      config.plugins.push(new webpack.ProvidePlugin({ THREE: 'three' }))
       config.module.rules.push({
         test: /\.(glsl|vs|fs)$/,
         use: [{ loader: 'raw-loader' }, { loader: 'glslify-loader' }],

@@ -28,7 +28,7 @@
         :class="{ hide: !viewExteriorOpen || !DOMVisible }"
         @click.native="onVisit()"
       >
-        Retourfdsfsdf
+        Retour
       </AtomsCTABack>
       <ERichText
         ref="title"

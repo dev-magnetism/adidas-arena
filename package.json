@@ -14,6 +14,7 @@
     "@directus/sdk": "^10.3.1",
     "@nuxtjs/eslint-module": "^3.1.0",
     "@nuxtjs/gtm": "^2.4.0",
+    "@nuxtjs/robots": "^2.5.0",
     "@nuxtjs/sitemap": "^2.4.0",
     "@nuxtjs/style-resources": "^1.2.1",
     "@studio-freight/lenis": "^0.2.28",
@@ -27,12 +28,12 @@
     "html-entities": "^2.3.3",
     "jssoup": "^0.0.15",
     "lottie-web": "^5.10.2",
-    "nuxt": "2.15.7",
+    "nuxt": "2.15.8",
     "nuxt-seo": "^1.6.1",
     "raw-loader": "^4.0.2",
     "stats.js": "^0.17.0",
-    "three": "^0.148.0",
-    "tweakpane": "^3.1.1",
+    "three": "^0.150.1",
+    "tweakpane": "^3.1.6",
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
