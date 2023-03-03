@@ -1,6 +1,7 @@
 <template>
   <div class="app-programmation-hero grid-inner">
     <div class="app-programmation-hero__texts">
+      dfdsqdfdsfdsfdsfsdfdsfsdfsdfdfdsfsdfdfdsf
       <ERichText
         ref="title"
         class="app-programmation-hero__title"
