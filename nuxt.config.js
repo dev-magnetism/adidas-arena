@@ -195,9 +195,9 @@ export default {
     // extractCSS: {
     //   ignoreOrder: false,
     // },
-    loaders: {
-      scss: { sourceMap: false },
-    },
+    // loaders: {
+    //   scss: { sourceMap: false },
+    // },
     transpile: ['three', 'gsap'],
     extend(config, ctx) {
       config.resolve.alias.vue = 'vue/dist/vue.common'
