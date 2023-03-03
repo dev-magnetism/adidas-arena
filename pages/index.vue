@@ -4,12 +4,12 @@
     <ESliderProgrammation :content="contentSlider" />
     <AppHomePresentation :contents="contentPresentation" />
     <EMarqueeScroll>
-      <TH1 weight="bold">
+      <TH1 tag="p" weight="bold">
         {{ contentMarquees.firstRow }}
       </TH1>
     </EMarqueeScroll>
     <EMarqueeScroll :inverted="true">
-      <TH1 weight="bold">
+      <TH1 tag="p" weight="bold">
         {{ contentMarquees.secondRow }}
       </TH1>
     </EMarqueeScroll>

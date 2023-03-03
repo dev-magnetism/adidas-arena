@@ -5,11 +5,14 @@
         v-for="(char, index) in totalFinal"
         :key="index"
         ref="numbers"
+        tag="p"
         weight="bold"
         >{{ char }}</TH1
       >
     </div>
-    <TH2 ref="text" class="app-element-partners-total__text">{{ text }}</TH2>
+    <TH2 ref="text" tag="p" class="app-element-partners-total__text">{{
+      text
+    }}</TH2>
   </div>
 </template>
 

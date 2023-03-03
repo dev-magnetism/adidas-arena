@@ -1,7 +1,12 @@
 <template>
   <div class="app-footer grid-inner" @mouseenter="onMouseEnterEl">
     <div class="app-footer__principal">
-      <TH2 weight="bold" color="grey" class="app-footer__newsletter-title">
+      <TH2
+        tag="p"
+        weight="bold"
+        color="grey"
+        class="app-footer__newsletter-title"
+      >
         {{ contents.data.footer_title }}
       </TH2>
       <form
@@ -10,10 +15,10 @@
         @submit.prevent="onSubmit"
       >
         <div class="app-footer__newsletter__successful">
-          <TH2 weight="bold" color="red-adidas">
+          <TH2 tag="p" weight="bold" color="red-adidas">
             {{ appContent.data.newsletter_big_text }}
           </TH2>
-          <TH4 color="white">{{ appContent.data.newsletter_text }}</TH4>
+          <TH4 tag="p" color="white">{{ appContent.data.newsletter_text }}</TH4>
         </div>
         <input
           v-model="email"
@@ -117,7 +122,12 @@
       </div>
     </div>
     <div class="app-footer__partners">
-      <TH2 weight="bold" color="grey" class="app-footer__partners-title">
+      <TH2
+        tag="p"
+        weight="bold"
+        color="grey"
+        class="app-footer__partners-title"
+      >
         NOS PARTENAIRES
       </TH2>
       <EGridLogosFooter :contents="logos" />

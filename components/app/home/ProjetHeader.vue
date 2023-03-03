@@ -6,6 +6,7 @@
           contentLeft[0].surtitle
         }}</TP1>
         <TH2
+          tag="p"
           weight="bold"
           class="app-home-projet__header__info__content info-text-2"
         >
@@ -18,6 +19,7 @@
           contentLeft[1].surtitle
         }}</TP1>
         <TH2
+          tag="p"
           weight="bold"
           class="app-home-projet__header__info__content info-text-4"
         >
@@ -31,7 +33,10 @@
       <TP1 class="app-home-projet__header__description__title info-text-5">
         {{ contentRight.surtitle }}
       </TP1>
-      <TH3 class="app-home-projet__header__description__content info-text-6">
+      <TH3
+        tag="p"
+        class="app-home-projet__header__description__content info-text-6"
+      >
         {{ contentRight.title }}
       </TH3>
     </div>

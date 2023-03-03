@@ -44,7 +44,7 @@
         />
 
         <div class="app-menu__title">
-          <TH1 ref="menuTitle" weight="bold">{{ menuName }} </TH1>
+          <TH1 ref="menuTitle" tag="p" weight="bold">{{ menuName }} </TH1>
         </div>
 
         <div class="app-menu__static-links">
@@ -54,6 +54,7 @@
             <div class="app-menu__link__title-wrapper">
               <TH2
                 weight="bold"
+                tag="p"
                 class="app-menu__link__title static-links-title"
                 @mouseenter.native="onLinkEnter('principal', index)"
                 @mouseleave.native="onLinkLeave('principal', index)"
@@ -82,6 +83,7 @@
               <TH2
                 v-if="!item.submenu_title"
                 weight="bold"
+                tag="p"
                 class="app-menu__link__title dynamic-links-title"
                 @mouseenter.native="onLinkEnter('principal', index)"
                 @mouseleave.native="onLinkLeave('principal', index)"
@@ -94,6 +96,7 @@
                 v-if="item.submenu_title"
                 class="app-menu__link__title"
                 weight="bold"
+                tag="p"
                 @click.native="onToggleSubmenu"
                 @mouseenter.native="onLinkEnter('principal', index)"
                 @mouseleave.native="onLinkLeave('principal', index)"
@@ -135,6 +138,7 @@
               <TH2
                 weight="medium"
                 class="menu-submenu-title"
+                tag="p"
                 @mouseenter.native="onLinkEnter('principal', index)"
                 @mouseleave.native="onLinkLeave('principal', index)"
               >
