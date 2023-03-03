@@ -26,7 +26,7 @@ export default {
     apiKeyDelight: process.env.API_KEY_DELIGHT || 'MMcR9vQkDKfuug',
   },
 
-  css: ['~assets/scss/global.scss'],
+  css: ['~/assets/scss/global.scss'],
 
   plugins: [
     { src: '~/plugins/gsap.js', mode: 'client' },
