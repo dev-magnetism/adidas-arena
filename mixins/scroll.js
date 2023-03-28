@@ -56,8 +56,6 @@ export default {
     },
   },
   mounted() {
-    window.scrollTo(0, 0)
-
     this.lenis = new Lenis({
       duration: 1.2,
       easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
@@ -67,6 +65,8 @@ export default {
     })
 
     this.lenis.scrollTo(0, { immediate: true })
+
+    window.scrollTo(0, 0)
 
     if (!this.allowScroll) this.lenis.stop()
 
