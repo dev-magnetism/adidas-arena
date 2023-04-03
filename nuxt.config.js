@@ -25,6 +25,8 @@ export default {
     apiKeyDelight: process.env.API_KEY_DELIGHT || 'MMcR9vQkDKfuug',
   },
 
+  telemetry: false,
+
   css: ['~assets/scss/global.scss'],
 
   plugins: [

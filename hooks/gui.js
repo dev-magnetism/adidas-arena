@@ -5,7 +5,7 @@ let gui
 
 const useGUI = () => {
   if (!gui) {
-    gui = new Pane({ title: 'GUI', container: document.body })
+    gui = new Pane({ title: 'GUI', container: document.body, expanded: false })
     gui.registerPlugin(EssentialsPlugin)
 
     if (process.env.NODE_ENV !== 'development') {

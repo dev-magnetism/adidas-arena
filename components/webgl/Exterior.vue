@@ -9,7 +9,7 @@ import { Observer } from 'gsap/Observer'
 import { mapState, mapMutations } from 'vuex'
 
 import {
-  mergeBufferGeometries,
+  mergeGeometries,
   mergeVertices,
 } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 
@@ -35,7 +35,7 @@ import {
   LineSegments,
   InstancedBufferGeometry,
   InstancedBufferAttribute,
-} from 'three/build/three.module.js'
+} from 'three'
 
 import useWebGL from '~/hooks/webgl'
 import useGUI from '~/hooks/gui'
@@ -424,22 +424,26 @@ export default {
     },
     initMaterials() {
       this.modelMaterial = new MeshLambertMaterial({
+        precision: 'lowp',
         color: this.colors.lambertMaterialColor,
         emissive: this.colors.lambertMaterialEmissive,
         emissiveIntensity: this.colors.emissiveIntensity,
       })
 
       this.logoMaterial = new MeshBasicMaterial({
+        precision: 'lowp',
         color: this.colors.logoColor,
       })
 
       this.arrowMaterial = new MeshLambertMaterial({
+        precision: 'lowp',
         color: this.colors.arrowColor,
         emissive: this.colors.arrowColor,
         emissiveIntensity: this.colors.emissiveIntensity,
       })
 
       this.shadowMaterial = new ShadowMaterial({
+        precision: 'lowp',
         color: this.colors.shadowColor,
         transparent: true,
         opacity: 0.75,
@@ -452,12 +456,13 @@ export default {
       )
 
       this.lineMaterial = new LineBasicMaterial({
+        precision: 'lowp',
         color: this.colors.outlineColor,
         linewidth: 1,
       })
-      this.lineMaterial.fog = false
 
       this.cloudEdgesMaterial = new ShaderMaterial({
+        precision: 'lowp',
         uniforms: {
           color: { value: this.colors.outlineColor },
         },
@@ -901,7 +906,7 @@ export default {
         }
       })
 
-      const mergedGeometries = mergeBufferGeometries(geometry, false)
+      const mergedGeometries = mergeGeometries(geometry, false)
       const mergedGeometry = mergeVertices(mergedGeometries)
 
       const mesh = new Mesh(mergedGeometry)
@@ -993,6 +998,32 @@ export default {
         })
         .on('change', (e) => {
           this.directionalLight.shadow.camera.far = e.value
+
+          this.directionalLight.shadow.camera.updateProjectionMatrix()
+        })
+
+      this.guiDirectionalLight
+        .addInput(this.directionalLight.shadow, 'bias', {
+          min: 0,
+          max: 2,
+          step: 0.0001,
+          label: 'Bias Shadow Camera',
+        })
+        .on('change', (e) => {
+          this.directionalLight.shadow.camera.bias = e.value
+
+          this.directionalLight.shadow.camera.updateProjectionMatrix()
+        })
+
+      this.guiDirectionalLight
+        .addInput(this.directionalLight.shadow, 'normalBias', {
+          min: 0,
+          max: 2,
+          step: 0.0001,
+          label: 'Normal Bias Shadow Camera',
+        })
+        .on('change', (e) => {
+          this.directionalLight.shadow.camera.normalBias = e.value
 
           this.directionalLight.shadow.camera.updateProjectionMatrix()
         })

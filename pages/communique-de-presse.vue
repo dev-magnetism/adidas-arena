@@ -10,13 +10,14 @@
         alt="communique-de-presse-picture-alt"
       />
 
-      <TH2 class="app-communique-de-presse__title">{{
-        content.data.title
-      }}</TH2>
-      <TP2 weight="bold" class="app-communique-de-presse__subtitle">{{
-        content.data.subtitle
-      }}</TP2>
+      <TH2 class="app-communique-de-presse__title">
+        {{ content.data.title }}
+      </TH2>
+      <TP2 weight="bold" class="app-communique-de-presse__subtitle">
+        {{ content.data.subtitle }}
+      </TP2>
       <TP2
+        tag="div"
         weight="medium"
         class="app-communique-de-presse__content"
         v-html="content.data.content"

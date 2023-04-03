@@ -3,6 +3,9 @@
     <ERichText
       class="app-be-part-of-partenaire-partenaires__title"
       :content="contents.title"
+      :split="true"
+      :scrub="false"
+      :overflow="true"
     />
 
     <AppBepartofPartenairePartenairesLogos

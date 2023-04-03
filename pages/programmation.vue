@@ -1,6 +1,7 @@
 <template>
   <main class="app-programmation">
     <AppProgrammationHero :contents="contentHero" />
+
     <div class="app-programmation-grid grid-inner">
       <AppProgrammationCard
         v-for="(event, index) in programmationsContent"
@@ -8,6 +9,7 @@
         :content="event"
       />
     </div>
+
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>

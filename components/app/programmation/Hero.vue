@@ -292,6 +292,11 @@ export default {
   &__title {
     width: 100%;
 
+    .app-atoms-stroke-text {
+      -webkit-text-stroke: 1px var(--c-black);
+      -webkit-text-fill-color: transparent;
+    }
+
     .H2.medium {
       @include font-adihausDIN-cn-bold();
     }
@@ -341,8 +346,7 @@ export default {
     text-transform: uppercase;
     margin-top: desktop-vw(25px);
 
-    p {
-      @include p2();
+    p.P2 {
       @include font-adihausDIN-bold();
       color: var(--c-black);
     }

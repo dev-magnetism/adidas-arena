@@ -19,11 +19,22 @@
 
 html {
   -webkit-overflow-scrolling: touch;
-  scroll-behavior: initial;
   overflow: overlay;
 
-  &.lenis-stopped {
+  &.lenis.lenis-stopped {
     overflow: hidden;
+  }
+
+  &.lenis.lenis-smooth {
+    scroll-behavior: auto;
+  }
+
+  &.lenis {
+    height: auto;
+  }
+
+  &.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
   }
 }
 

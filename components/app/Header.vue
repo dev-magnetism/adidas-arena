@@ -19,10 +19,10 @@
     <nuxt-link
       :class="{ reduced: headerReduced, white: headerWhite }"
       class="app-header__programmation"
-      to="/programmation"
+      :to="menuProgrammation.url"
     >
       <TP1 weight="bold" :color="headerWhite ? 'grey' : 'black'">
-        {{ programmationName }}
+        {{ menuProgrammation.name }}
       </TP1>
     </nuxt-link>
 
@@ -49,6 +49,7 @@ import { mapMutations, mapState } from 'vuex'
 export default {
   computed: {
     ...mapState({
+      menuContent: (state) => state.menuContent,
       menuActive: (state) => state.menuActive,
       appContent: (state) => state.appContent,
       headerReduced: (state) => state.headerReduced,
@@ -59,8 +60,9 @@ export default {
     menuName() {
       return this.appContent.data.menu_name
     },
-    programmationName() {
-      return this.appContent.data.menu_programmation
+
+    menuProgrammation() {
+      return this.menuContent.data.find((el) => el.programmation)
     },
     headerNameMobile() {
       return this.appContent.data.header_name_mobile

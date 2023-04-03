@@ -5,13 +5,31 @@ import {
   WebGLRenderer,
   OrthographicCamera,
   PCFSoftShadowMap,
+  BasicShadowMap,
+  PCFShadowMap,
+  VSMShadowMap,
   Scene,
-} from 'three/build/three.module.js'
+  NoToneMapping,
+  LinearToneMapping,
+  ReinhardToneMapping,
+  CineonToneMapping,
+  ACESFilmicToneMapping,
+  LinearEncoding,
+  sRGBEncoding,
+  WebGLRenderTarget,
+  // ColorManagement,
+} from 'three'
+
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
 
 import Stats from 'stats.js'
+
+import { LayerShader } from '~/assets/webgl/layerShader'
+
 import Raf from '~/plugins/raf'
 import Viewport from '~/plugins/viewport'
-// import Composer from '~/assets/webgl/composer-three'
 import useGUI from '~/hooks/gui'
 
 let gl
@@ -33,16 +51,7 @@ class GL {
     this.gallery.name = 'gallery'
     this.scene.add(this.gallery)
 
-    this.renderer = new WebGLRenderer({
-      powerPreference: 'high-performance',
-      antialias: window.devicePixelRatio !== 2,
-      stencil: true,
-      precision: 'highp',
-      alpha: true,
-    })
-
-    this.renderer.localClippingEnabled = true
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    // ColorManagement.enabled = true
 
     this.scissors = {
       current: {
@@ -57,19 +66,6 @@ class GL {
 
     this.calculateScissors()
 
-    this.renderer.setScissorTest(true)
-
-    this.renderer.useLegacyLights = false
-    this.renderer.shadowMap.enabled = true
-    this.renderer.shadowMap.type = PCFSoftShadowMap
-    // BasicShadowMap (Very performant but lousy quality)
-    // PCFShadowMap (default) (Less performant but smoother edges)
-    // PCFSoftShadowMap (best) (Less performant but even softer edges)
-    // VSMShadowMap (Less performant, more constraints, can have unexpected results)
-
-    // this.renderer.outputEncoding = sRGBEncoding
-    // this.renderer.toneMapping = LinearToneMapping
-
     this.camera = new OrthographicCamera(
       Viewport.width / -2,
       Viewport.width / 2,
@@ -77,13 +73,83 @@ class GL {
       Viewport.height / -2,
       1,
       1000
-      // -100000,
-      // 100000
     )
-
     this.camera.lookAt(0, 0, 0)
-
     this.camera.position.z = 500
+
+    this.dpr = Math.min(window.devicePixelRatio, 2)
+
+    this.renderer = new WebGLRenderer({
+      precision: 'highp',
+      powerPreference: 'high-performance',
+      antialias: this.dpr < 2,
+      stencil: false,
+      alpha: true,
+    })
+
+    this.isWebgl2 = this.renderer.capabilities.isWebGL2
+    this.maxSamples = this.renderer.capabilities.maxSamples
+
+    this.renderer.localClippingEnabled = true
+    this.renderer.shadowMap.enabled = true
+    this.renderer.shadowMap.type = PCFSoftShadowMap
+    // BasicShadowMap (Very performant but lousy quality)
+    // PCFShadowMap (default) (Less performant but smoother edges)
+    // PCFSoftShadowMap (best) (Less performant but even softer edges)
+    // VSMShadowMap (Less performant, more constraints, can have unexpected results)
+
+    this.renderer.useLegacyLights = false
+    // this.renderer.outputEncoding = sRGBEncoding
+    // this.renderer.toneMapping = LinearToneMapping
+    this.renderer.setPixelRatio(this.dpr)
+    this.renderer.setScissorTest(true)
+
+    this.renderTarget = new WebGLRenderTarget(800, 600, {
+      // samples: this.dpr < 2 ? this.maxSamples : 0,
+      samples: this.dpr < 2 ? 6 : 0, //
+    })
+
+    this.composer = new EffectComposer(this.renderer, this.renderTarget)
+    this.composer.setPixelRatio(this.dpr)
+
+    this.renderPass = new RenderPass(this.scene, this.camera)
+    this.composer.addPass(this.renderPass)
+
+    this.layerPass = new ShaderPass(LayerShader)
+    this.composer.addPass(this.layerPass)
+
+    // /!\ POST PROCESSING FROM PMDRS /!\
+    // /!\ POST PROCESSING FROM PMDRS /!\
+
+    // this.composer = new EffectComposer(this.renderer, {
+    //   frameBufferType: HalfFloatType,
+    //   multisampling:
+    //     this.isWebgl2 && this.dpr < 2
+    //       ? this.maxSamples
+    //       : 0,
+    // })
+    // this.renderPass = new RenderPass(this.scene, this.camera)
+    // this.composer.addPass(this.renderPass)
+
+    // if (!this.isWebgl2 && this.dpr < 2) {
+    //   this.SMAAEffect = new SMAAEffect({
+    //     blendFunction: BlendFunction.NORMAL,
+    //     preset: SMAAPreset.MEDIUM,
+    //     edgeDetectionMode: EdgeDetectionMode.COLOR,
+    //     predicationMode: PredicationMode.DEPTH,
+    //   })
+
+    //   const edgeDetectionMaterial = this.SMAAEffect.edgeDetectionMaterial
+    //   edgeDetectionMaterial.edgeDetectionThreshold = 0.02
+    //   edgeDetectionMaterial.predicationThreshold = 0.002
+    //   edgeDetectionMaterial.predicationScale = 1
+
+    //   this.SMAAPass = new EffectPass(this.camera, this.SMAAEffect)
+    //   this.composer.addPass(this.SMAAPass)
+    // }
+
+    // /!\ POST PROCESSING FROM PMDRS /!\
+    // /!\ POST PROCESSING FROM PMDRS /!\
 
     if (process.env.NODE_ENV === 'development') {
       if (!Viewport.isMobile) {
@@ -162,7 +228,66 @@ class GL {
 
     this.gui.addSeparator()
 
+    this.gui
+      .addInput(this.renderer, 'outputEncoding', {
+        options: {
+          LinearEncoding,
+          sRGBEncoding,
+        },
+      })
+      .on('change', (e) => {
+        this.renderer.outputEncoding = e.value
+      })
+
+    this.gui
+      .addInput(this.renderer, 'toneMapping', {
+        options: {
+          NoToneMapping,
+          LinearToneMapping,
+          ReinhardToneMapping,
+          CineonToneMapping,
+          ACESFilmicToneMapping,
+        },
+      })
+      .on('change', (e) => {
+        this.renderer.toneMapping = e.value
+      })
+
+    this.gui
+      .addInput(this.renderer, 'toneMappingExposure', {
+        min: 0,
+        max: 10,
+        step: 0.001,
+      })
+      .on('change', (e) => {
+        this.renderer.toneMappingExposure = e.value
+      })
+
+    this.gui.addSeparator()
+
+    this.gui
+      .addInput(this.renderer.shadowMap, 'type', {
+        options: {
+          PCFSoftShadowMap,
+          BasicShadowMap,
+          PCFShadowMap,
+          VSMShadowMap,
+        },
+        label: 'Shadow Type',
+      })
+      .on('change', (e) => {
+        this.renderer.shadowMap.type = e.value
+      })
+
     this.gui.addInput(this.renderer, 'useLegacyLights')
+
+    this.gui.addSeparator()
+
+    this.gui.addInput(this.layerPass.material.uniforms.uOpacity, 'value', {
+      min: 0,
+      max: 1,
+      label: 'Layer Opacity',
+    })
   }
 
   onWindowResize() {
@@ -180,6 +305,7 @@ class GL {
     this.camera.updateProjectionMatrix()
 
     this.renderer.setSize(Viewport.width, Viewport.height)
+    this.composer.setSize(Viewport.width, Viewport.height)
   }
 
   update({ deltaTime }) {
@@ -187,7 +313,8 @@ class GL {
 
     this.raycaster?.setFromCamera(this.mouse, this.camera)
 
-    this.renderer?.render(this.scene, this.camera)
+    // this.renderer?.render(this.scene, this.camera)
+    this.composer?.render()
 
     this.stats?.end()
   }

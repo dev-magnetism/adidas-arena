@@ -9,7 +9,7 @@ import { Observer } from 'gsap/Observer'
 import { mapState, mapMutations } from 'vuex'
 
 import {
-  mergeBufferGeometries,
+  mergeGeometries,
   mergeVertices,
 } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 
@@ -30,7 +30,7 @@ import {
   AmbientLight,
   DirectionalLight,
   ShadowMaterial,
-} from 'three/build/three.module.js'
+} from 'three'
 
 import useWebGL from '~/hooks/webgl'
 import useGUI from '~/hooks/gui'
@@ -1178,6 +1178,7 @@ export default {
     },
     initMaterials() {
       this.shadowMaterial = new ShadowMaterial({
+        precision: 'lowp',
         color: this.colors.shadowColor,
         opacity: 0.75,
       })
@@ -1189,6 +1190,7 @@ export default {
       }
 
       this.basicMaterial = new MeshLambertMaterial({
+        precision: 'lowp',
         color: this.colors.lambertMaterialColor,
         emissive: this.colors.lambertMaterialEmissive,
         emissiveIntensity: this.colors.emissiveIntensity,
@@ -1204,12 +1206,15 @@ export default {
       this.conditionalMaterial.name = 'conditionalMaterial'
 
       this.lineMaterial = new LineBasicMaterial({
+        precision: 'lowp',
+
         color: this.colors.outlineColor,
         linewidth: 2,
       })
       this.lineMaterial.name = 'lineMaterial'
 
       this.publicMaterial = new MeshLambertMaterial({
+        precision: 'lowp',
         color: this.colors.public.lambertMaterialColor,
         emissive: this.colors.public.lambertMaterialEmissive,
         emissiveIntensity: this.colors.public.emissiveIntensity,
@@ -1219,6 +1224,7 @@ export default {
       this.publicMaterial.side = DoubleSide
 
       this.vipMaterial = new MeshLambertMaterial({
+        precision: 'lowp',
         color: this.colors.vip.lambertMaterialColor,
         emissive: this.colors.vip.lambertMaterialEmissive,
         emissiveIntensity: this.colors.vip.emissiveIntensity,
@@ -1228,6 +1234,7 @@ export default {
       this.vipMaterial.side = DoubleSide
 
       this.arrowMaterial = new MeshLambertMaterial({
+        precision: 'lowp',
         color: this.colors.arrowColor,
         emissive: this.colors.arrowColor,
         emissiveIntensity: this.colors.emissiveIntensity,
@@ -1994,7 +2001,7 @@ export default {
         }
       })
 
-      const mergedGeometries = mergeBufferGeometries(geometry, false)
+      const mergedGeometries = mergeGeometries(geometry, false)
       const mergedGeometry = mergeVertices(mergedGeometries)
 
       const mesh = new Mesh(mergedGeometry)

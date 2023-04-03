@@ -1,4 +1,4 @@
-import { Vector2 } from 'three/build/three.module.js'
+import { Vector2 } from 'three'
 
 export default {
   data() {

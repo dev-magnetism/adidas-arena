@@ -1,10 +1,10 @@
 <template>
-  <div v-if="rendererInfo" class="app-renderer-info">
-    <div>calls: {{ rendererInfo.render.calls }}</div>
-    <div>triangles: {{ rendererInfo.render.triangles }}</div>
-    <div>geometries: {{ rendererInfo.memory.geometries }}</div>
-    <div>textures: {{ rendererInfo.memory.textures }}</div>
-    <div>programs: {{ rendererInfo.programs.length }}</div>
+  <div class="app-renderer-info">
+    <div>calls: {{ rendererInfo?.render.calls }}</div>
+    <div>triangles: {{ rendererInfo?.render.triangles }}</div>
+    <div>geometries: {{ rendererInfo?.memory.geometries }}</div>
+    <div>textures: {{ rendererInfo?.memory.textures }}</div>
+    <div>programs: {{ rendererInfo?.programs.length }}</div>
   </div>
 </template>
 

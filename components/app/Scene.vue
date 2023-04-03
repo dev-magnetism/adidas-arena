@@ -16,7 +16,6 @@ export default {
   created() {},
   mounted() {
     const { renderer } = useWebGL()
-
     this.$el.appendChild(renderer.domElement)
   },
   beforeDestroy() {

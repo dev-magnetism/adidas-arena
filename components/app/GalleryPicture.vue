@@ -29,7 +29,7 @@ import {
   MeshBasicMaterial,
   TextureLoader,
   VideoTexture,
-} from 'three/build/three.module.js'
+} from 'three'
 
 import boundingRect from '@/mixins/bounding-rect-webgl-gallery'
 import useWebGL from '~/hooks/webgl'

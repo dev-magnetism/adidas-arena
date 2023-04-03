@@ -102,6 +102,11 @@ export default {
         @include font-adihausDIN-cn-bold();
         position: relative;
 
+        .app-atoms-stroke-text {
+          -webkit-text-stroke: 1px var(--c-black);
+          -webkit-text-fill-color: transparent;
+        }
+
         @include mobile {
           font-size: mobile-vw(70px);
           line-height: mobile-vw(62px);

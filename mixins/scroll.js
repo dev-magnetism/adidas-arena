@@ -97,7 +97,12 @@ export default {
         }
       }
 
-      this.$nuxt.$emit('app:scroll', { ...args })
+      this.$nuxt.$emit('app:scroll', {
+        scroll: args.scroll,
+        progress: args.progress,
+        limit: args.limit,
+        velocity: args.velocity,
+      })
     },
     onFrame({ time, deltaTime }) {
       this.lenis.raf(time * 1000)

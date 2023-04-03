@@ -348,7 +348,8 @@ export default {
       color: var(--c-grey) !important;
 
       .app-atoms-stroke-text {
-        -webkit-text-stroke: 1px var(--c-grey) !important;
+        -webkit-text-stroke: 1px var(--c-grey);
+        -webkit-text-fill-color: transparent;
       }
     }
   }

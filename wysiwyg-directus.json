@@ -1,23 +1,130 @@
 [
   {
     "title": "H1",
-    "block": "div",
+    "block": "h1",
     "classes": "H1 wysiwyg-text",
     "styles": {
-      "color": "#FFFFFF",
-      "font-size": "35px"
+      "font-size": "40px"
     }
   },
-
   {
-    "title": "Lottie arrow",
+    "title": "H2",
+    "block": "h2",
+    "classes": "H2 wysiwyg-text",
+    "styles": {
+      "font-size": "34px"
+    }
+  },
+  {
+    "title": "H3",
+    "block": "h3",
+    "classes": "H3 wysiwyg-text",
+    "styles": {
+      "font-size": "28px"
+    }
+  },
+  {
+    "title": "H4",
+    "block": "h4",
+    "classes": "H4 wysiwyg-text",
+    "styles": {
+      "font-size": "22px"
+    }
+  },
+  {
+    "title": "P1",
+    "block": "p",
+    "classes": "P1 wysiwyg-text",
+    "styles": {
+      "font-size": "16px"
+    }
+  },
+  {
+    "title": "P2",
+    "block": "p",
+    "classes": "P2 wysiwyg-text",
+    "styles": {
+      "font-size": "14px"
+    }
+  },
+  {
+    "title": "Stroke",
+    "inline": "span",
+    "classes": "app-atoms-stroke-text wysiwyg-stroke",
+    "styles": {
+      "color": "red"
+    }
+  },
+  {
+    "title": "Lotties",
+    "styles": {
+      "color": "black"
+    }
+  },
+  {
+    "title": "Lottie Circle 1",
+    "inline": "span",
+    "classes": "lottie-word",
+    "styles": {
+      "color": "blue"
+    },
+    "attributes": {
+      "id": "Cercle_1"
+    }
+  },
+  {
+    "title": "Lottie Cercle 2",
     "inline": "span",
     "classes": "lottie-word",
     "styles": {
       "color": "#FF5733"
     },
     "attributes": {
-      "id": "Cercle_1"
+      "id": "Cercle_2"
+    }
+  },
+  {
+    "title": "Lottie Cercle 3",
+    "inline": "span",
+    "classes": "lottie-word",
+    "styles": {
+      "color": "#FF5733"
+    },
+    "attributes": {
+      "id": "Cercle_3"
+    }
+  },
+  {
+    "title": "Lottie Croix 1",
+    "inline": "span",
+    "classes": "lottie-word",
+    "styles": {
+      "color": "#5733ff"
+    },
+    "attributes": {
+      "id": "Croix_01"
+    }
+  },
+  {
+    "title": "Lottie Trait 1",
+    "inline": "span",
+    "classes": "lottie-word",
+    "styles": {
+      "color": "#AB5733"
+    },
+    "attributes": {
+      "id": "Trait_1"
+    }
+  },
+  {
+    "title": "Lottie Trait 2",
+    "inline": "span",
+    "classes": "lottie-word",
+    "styles": {
+      "color": "#9e5141"
+    },
+    "attributes": {
+      "id": "Trait_2"
     }
   }
 ]

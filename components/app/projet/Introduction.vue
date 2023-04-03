@@ -295,7 +295,7 @@ export default {
       }
 
       &:first-child {
-        margin-top: desktop-vw(15px);
+        margin-top: desktop-vw(30px);
 
         @include mobile {
           margin-top: mobile-vw(20px);
