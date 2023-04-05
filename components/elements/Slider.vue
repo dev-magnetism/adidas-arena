@@ -7,6 +7,7 @@
         :overflow="true"
         class="app-element-slider__heading__title"
         :content="contents.title"
+        tag="h2"
       />
       <EPartnersTotal
         class="app-element-slider__heading__spaces"
@@ -43,7 +44,7 @@
           </div>
 
           <div class="app-element-slider__item__content">
-            <TH4 class="app-element-slider__item__content__title">{{
+            <TH4 tag="h3" class="app-element-slider__item__content__title">{{
               item.title
             }}</TH4>
             <TP2 class="app-element-slider__item__content__text">

@@ -34,11 +34,11 @@ export default {
     left: 0;
     right: initial;
     bottom: 0;
+  }
 
-    &.hide {
-      opacity: 0;
-      pointer-events: none;
-    }
+  &.hide {
+    opacity: 0;
+    pointer-events: none;
   }
 }
 </style>

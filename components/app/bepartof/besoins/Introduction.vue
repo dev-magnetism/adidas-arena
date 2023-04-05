@@ -5,6 +5,7 @@
         ref="title"
         class="app-be-part-of-besoins-introduction__f-row__content__title"
         :content="contents.title"
+        tag="h1"
       />
 
       <TP2
@@ -63,7 +64,10 @@
     </div>
 
     <div class="app-be-part-of-besoins-introduction__s-row__content">
-      <TH4 class="app-be-part-of-besoins-introduction__s-row__content__title">
+      <TH4
+        tag="h2"
+        class="app-be-part-of-besoins-introduction__s-row__content__title"
+      >
         {{ contents.secondTitle }}
       </TH4>
       <TP2

@@ -26,8 +26,11 @@ export default {
     }),
   },
   watch: {
-    allLoadedFake() {
-      this.initInteriorView(3000)
+    allLoadedFake(newVal) {
+      if (!newVal) return
+
+      this.initInteriorView(2650)
+      this.onToggle(this.scrollTrigger)
     },
     initialHeroDisplayed() {
       this.setAllowScroll(true)
@@ -43,19 +46,22 @@ export default {
       trigger: this.$el,
       start: 'top bottom',
       end: 'bottom+=25% top',
-      onToggle: (self) => this.setInteriorVisible(self.isActive),
+      onToggle: (self) => this.onToggle(self),
     })
 
-    this.$viewport.events.on('resize', this.onResize)
     this.$raf.add(`le-bloc-hero`, this.onFrame)
   },
   beforeDestroy() {
     this.scrollTrigger?.kill()
 
-    this.$viewport.events.off('resize', this.onResize)
     this.$raf.remove(`le-bloc-hero`, this.onFrame)
   },
   methods: {
+    onToggle(self) {
+      if (!this.allLoadedFake) return
+
+      this.setInteriorVisible(self.isActive)
+    },
     scrollHero() {
       if (!window.lenis) return
 
@@ -71,28 +77,21 @@ export default {
       setTimeout(() => {
         this.setInteriorIndexFloor({ id: 4, immediate: false })
       }, delay)
-
-      this.onResize()
-    },
-    onResize() {
-      const { scissors, renderer } = useWebGL()
-
-      scissors.current = { ...scissors.hero }
-
-      renderer.setScissor(
-        scissors.current.x,
-        scissors.current.y,
-        scissors.current.width,
-        scissors.current.height
-      )
     },
     onFrame() {
-      if (!window.lenis || !this.interiorVisible) return
+      if (
+        !window.lenis ||
+        !this.interiorVisible ||
+        !this.scrollTrigger.isActive
+      )
+        return
 
       const { interior, camera, scissors, renderer } = useWebGL()
 
       interior.position.y =
         window.lenis.scroll / (camera.zoom - camera.zoom * 0.125)
+
+      scissors.current = { ...scissors.hero }
 
       scissors.current.y = window.lenis.scroll + scissors.hero?.y
 

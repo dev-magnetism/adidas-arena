@@ -61,6 +61,7 @@
         <ERichText
           class="app-projet-two-columns__s-r__content__title"
           :content="contents.secondRow.title"
+          tag="h3"
         />
         <ERichText
           class="app-projet-two-columns__s-r__content__paragraph"

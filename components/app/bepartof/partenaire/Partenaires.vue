@@ -6,6 +6,7 @@
       :split="true"
       :scrub="false"
       :overflow="true"
+      tag="h2"
     />
 
     <AppBepartofPartenairePartenairesLogos

@@ -18,6 +18,7 @@
           class="type"
           weight="bold"
           :color="whitedTexts ? 'white' : 'black'"
+          tag="h3"
         >
           {{ content.type }}
         </TP2>
@@ -26,11 +27,12 @@
           class="date"
           weight="medium"
           :color="whitedTexts ? 'white' : 'black'"
+          tag="h3"
         >
           {{ content.date }}
         </TP2>
       </div>
-      <TH2 :color="whitedTexts ? 'white' : 'black'" weight="bold">
+      <TH2 :color="whitedTexts ? 'white' : 'black'" weight="bold" tag="h2">
         {{ content.name }}
       </TH2>
 

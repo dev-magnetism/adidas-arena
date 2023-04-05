@@ -5,6 +5,7 @@
         ref="title"
         class="app-programmation-hero__title"
         :content="contents.title"
+        tag="h1"
       />
 
       <ERichText

@@ -22,7 +22,10 @@
     </div>
     <div class="app-home-hero__inner grid">
       <EEnterArena
-        :class="{ hide: !exteriorArenaHovered || !exteriorFullwidth }"
+        :class="{
+          hide: !exteriorArenaHovered || !exteriorFullwidth || !DOMVisible,
+        }"
+        @onEnterArena="onEnterArena"
       />
       <AtomsCTABack
         :class="{ hide: !viewExteriorOpen || !DOMVisible }"
@@ -113,6 +116,7 @@ import { Flip } from 'gsap/Flip'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
 import { mapState, mapMutations } from 'vuex'
+// import { MathUtils } from 'three'
 
 import useWebGL from '~/hooks/webgl'
 
@@ -230,9 +234,16 @@ export default {
 
     this.$raf.remove(`home-hero`, this.onFrame)
 
-    window.addEventListener('keyup', this.onKeyUp)
+    this.tlTest?.kill()
+
+    window.removeEventListener('keyup', this.onKeyUp)
   },
   methods: {
+    onEnterArena() {
+      this.DOMVisible = false
+
+      this.$router.push({ name: 'arena', params: { enterArena: true } })
+    },
     onKeyUp(e) {
       if (e.key === 'Escape' && this.viewExteriorOpen && this.exteriorVisible) {
         this.onVisit()

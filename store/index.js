@@ -41,7 +41,7 @@ export const state = () => ({
   overlayContactOpen: false,
   headerReduced: false,
   headerWhite: false,
-  headerHided: false,
+  headerHide: false,
   appCursor: 'initial',
   cursorState: 'hide',
   cursorSliderHold: false,
@@ -83,8 +83,8 @@ export const mutations = {
   setInteriorTimelineFloorsInProgress: (state, value) => {
     state.interiorTimelineFloorsInProgress = value
   },
-  setHeaderHided: (state, value) => {
-    state.headerHided = value
+  setHeaderHide: (state, value) => {
+    state.headerHide = value
   },
   setAllowScroll: (state, value) => {
     state.allowScroll = value

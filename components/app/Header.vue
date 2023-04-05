@@ -2,7 +2,7 @@
   <div
     :class="{
       reduced: headerReduced,
-      hide: headerHided || overlayContactOpen,
+      hide: headerHide || overlayContactOpen,
     }"
     class="app-header"
     @click.stop="() => {}"
@@ -54,8 +54,10 @@ export default {
       appContent: (state) => state.appContent,
       headerReduced: (state) => state.headerReduced,
       headerWhite: (state) => state.headerWhite,
-      headerHided: (state) => state.headerHided,
+      headerHide: (state) => state.headerHide,
       overlayContactOpen: (state) => state.overlayContactOpen,
+      interiorVisible: (state) => state.interiorVisible,
+      exteriorVisible: (state) => state.exteriorVisible,
     }),
     menuName() {
       return this.appContent.data.menu_name

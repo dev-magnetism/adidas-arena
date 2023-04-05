@@ -21,6 +21,7 @@
           <SvgCloseZoneInformation @click.native="onCloseInformationZone()" />
           <AtomsCornerPoints :size-points="8" />
           <TH3
+            tag="h1"
             class="app-element-interior-zone-informations__zone-selected__title"
           >
             {{ zone?.name }}
@@ -170,7 +171,7 @@ export default {
   },
   watch: {
     informationsMobileOpen(newVal) {
-      if (newVal) this.setHeaderHided(newVal)
+      if (newVal) this.setHeaderHide(newVal)
     },
   },
 
@@ -186,7 +187,7 @@ export default {
       }
     },
     ...mapMutations({
-      setHeaderHided: 'setHeaderHided',
+      setHeaderHide: 'setHeaderHide',
     }),
   },
 }
@@ -194,6 +195,12 @@ export default {
 
 <style lang="scss">
 .app-element-interior-zone-informations {
+  transition: opacity 0.35s var(--ease-in-out-cubic);
+  &.hide {
+    opacity: 0;
+    pointer-events: none;
+  }
+
   &__close {
     position: absolute;
     background: var(--c-black);

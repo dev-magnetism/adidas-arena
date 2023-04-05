@@ -2,46 +2,55 @@
   <div :style="styles" class="app-menu-link">
     <span v-if="!content.submenu_element" class="app-menu-link__border-top" />
 
-    <div class="app-menu-link__title-wrapper">
-      <TH2
-        v-if="!content.submenu_title"
-        weight="bold"
-        tag="p"
-        class="app-menu-link__title"
-        @mouseenter.native="onLinkHover"
-        @mouseleave.native="onLinkLeave"
-      >
-        <nuxt-link :to="content.url">
+    <div
+      ref="wrapper"
+      :class="{ 'submenu-title': content.submenu_title }"
+      class="app-menu-link__wrapper"
+    >
+      <div class="app-menu-link__title-wrapper">
+        <TH2
+          v-if="!content.submenu_title"
+          weight="bold"
+          tag="p"
+          class="app-menu-link__title"
+          @mouseenter.native="onLinkHover"
+          @mouseleave.native="onLinkLeave"
+        >
+          <nuxt-link :to="content.url">
+            {{ content.name }}
+          </nuxt-link>
+        </TH2>
+        <TH2
+          v-else-if="content.submenu_title"
+          class="app-menu-link__title"
+          weight="bold"
+          tag="p"
+          @mouseenter.native="$emit('onHoverLink', null)"
+          @click.native="onToggleSubmenu"
+        >
           {{ content.name }}
-        </nuxt-link>
-      </TH2>
-      <TH2
-        v-else-if="content.submenu_title"
-        class="app-menu-link__title"
-        weight="bold"
-        tag="p"
-        @mouseenter.native="$emit('onHoverLink', null)"
-        @click.native="onToggleSubmenu"
-      >
-        {{ content.name }}
 
-        <span ref="buttonSubmenu" class="app-menu-link__button-submenu">
-          <span ref="submenuCross" class="app-menu-link__button-submenu__inner">
-            <span class="app-menu-link__button-submenu__line horizontally" />
-            <span class="app-menu-link__button-submenu__line vertically" />
+          <span ref="buttonSubmenu" class="app-menu-link__button-submenu">
+            <span
+              ref="submenuCross"
+              class="app-menu-link__button-submenu__inner"
+            >
+              <span class="app-menu-link__button-submenu__line horizontally" />
+              <span class="app-menu-link__button-submenu__line vertically" />
+            </span>
           </span>
-        </span>
-      </TH2>
-      <TH2
-        v-else-if="content.programmation"
-        class="app-menu-link__title"
-        weight="bold"
-        tag="p"
-      >
-        <nuxt-link :to="content.url">
-          {{ content.name }}
-        </nuxt-link>
-      </TH2>
+        </TH2>
+        <TH2
+          v-else-if="content.programmation"
+          class="app-menu-link__title"
+          weight="bold"
+          tag="p"
+        >
+          <nuxt-link :to="content.url">
+            {{ content.name }}
+          </nuxt-link>
+        </TH2>
+      </div>
     </div>
   </div>
 </template>
@@ -52,7 +61,7 @@ import { mapState } from 'vuex'
 
 import lottie from 'lottie-web'
 
-const lottieCircle1 = require(`@/assets/lotties/Cercle_1.json`)
+const GribouillisRouge = require(`@/assets/lotties/Gribouillis_Rouge.json`)
 const lottieCircle3 = require(`@/assets/lotties/Cercle_3.json`)
 
 export default {
@@ -85,7 +94,12 @@ export default {
   },
   watch: {
     menuActive(newVal) {
-      if (!newVal && !this.content.programmation && !this.$viewport.isMobile) {
+      if (
+        !newVal &&
+        !this.content.programmation &&
+        !this.$viewport.isMobile &&
+        !this.content.submenu_title
+      ) {
         this.submenuActive = false
 
         const tweenParams = {
@@ -202,17 +216,25 @@ export default {
       }
     },
     initLotties() {
-      if (this.$viewport.isMobile || this.content.programmation) return
+      if (
+        this.$viewport.isMobile ||
+        this.content.programmation ||
+        this.content.submenu_title
+      )
+        return
 
       this.lottieHover = lottie.loadAnimation({
-        container: this.$el,
+        container: this.$refs.wrapper,
         loop: false,
         autoplay: false,
-        animationData: lottieCircle1,
+        animationData: GribouillisRouge,
+        rendererSettings: {
+          preserveAspectRatio: 'none',
+        },
       })
 
       this.lottieActive = lottie.loadAnimation({
-        container: this.$el,
+        container: this.$refs.wrapper,
         loop: false,
         autoplay: false,
         animationData: lottieCircle3,
@@ -221,7 +243,7 @@ export default {
     calculateNewStyles(word) {
       const baseHeight = 100 // 100% is the default height
       const baseChars = this.content.submenu_element ? 10 : 6 // default number of characters
-      const chars = word.replace(/ /g, '').length // get the length of the word
+      const chars = word.replace(/ /g, '').length - 1 // get the length of the word
 
       const factorHeight = this.content.submenu_element ? 2 : 1.65
       const factorTranslate = this.content.submenu_element ? -12.5 : -20
@@ -251,19 +273,46 @@ export default {
 
   svg {
     position: absolute;
-    width: auto !important;
-    height: var(--height) !important;
-    transform: translate(var(--transform), -50%) !important;
-    top: 50%;
     left: 0;
     pointer-events: none;
+
+    &:first-of-type {
+      width: 100% !important;
+      height: 50% !important;
+      top: 80%;
+    }
+    &:last-of-type {
+      width: auto !important;
+      height: var(--height) !important;
+      transform: translate(var(--transform), -50%) !important;
+      top: 50%;
+
+      path {
+        stroke: rgb(0, 0, 255);
+      }
+    }
+  }
+
+  &__wrapper {
+    display: flex;
+    position: relative;
+    width: auto;
+
+    &.submenu-title {
+      width: 100%;
+
+      .app-menu-link__title-wrapper {
+        padding-right: 0px;
+      }
+    }
   }
 
   &__title-wrapper {
-    display: block;
     overflow: hidden;
     display: flex;
-    width: 100% !important;
+    position: relative;
+    width: 100%;
+    padding-right: 5px;
 
     .H2.medium,
     .H2.bold {

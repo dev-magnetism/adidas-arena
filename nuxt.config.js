@@ -144,6 +144,12 @@ export default {
     '@nuxtjs/sitemap',
   ],
 
+  robots: {
+    Sitemap: process.env.BASE_URL
+      ? `${process.env.BASE_URL}sitemap.xml`
+      : `https://www.adidasarena.com/sitemap.xml`,
+  },
+
   sitemap: {
     hostname: process.env.BASE_URL || 'https://www.adidasarena.com/',
     path: '/sitemap.xml',

@@ -3,7 +3,6 @@ import { mapState } from 'vuex'
 import JSSoup from 'jssoup'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
-// import { decode } from 'html-entities'
 
 export default {
   props: {

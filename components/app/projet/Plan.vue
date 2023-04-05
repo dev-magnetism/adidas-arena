@@ -5,6 +5,7 @@
         <ERichText
           class="app-projet-plan__content__title"
           :content="contents.title"
+          tag="h2"
         />
 
         <TP1 weight="bold" class="app-projet-plan__content__subtitle"

@@ -34,6 +34,7 @@
         :overflow="true"
         class="app-be-part-of-besoins-arena__title"
         :content="contents.title"
+        tag="h2"
       />
       <div class="app-be-part-of-besoins-arena__controller">
         <div class="app-be-part-of-besoins-arena__controller__f-r">

@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="{ activated: exteriorFullwidth }"
+    :class="{ activated: exteriorFullwidth && exteriorVisible }"
     class="app-element-enter-arena"
   >
     <div class="app-element-enter-arena__title">
@@ -8,7 +8,12 @@
       <p>L’ARENA</p>
       <!-- <p>{{ content.title }}</p> -->
     </div>
-    <AtomsCTA ref="cta" href="/arena" class="app-element-enter-arena__cta">
+    <AtomsCTA
+      ref="cta"
+      button
+      class="app-element-enter-arena__cta"
+      @click.native="$emit('onEnterArena')"
+    >
       <!-- {{ content.cta }} -->
       Découvrir le lieu
     </AtomsCTA>
@@ -28,6 +33,7 @@ export default {
   computed: {
     ...mapState({
       exteriorFullwidth: (state) => state.exteriorFullwidth,
+      exteriorVisible: (state) => state.exteriorVisible,
     }),
   },
 }
@@ -45,6 +51,10 @@ export default {
   z-index: 1;
   pointer-events: none;
   max-width: 450px;
+
+  @include mobile {
+    display: none;
+  }
 
   &.hide {
     .app-element-enter-arena__cta,

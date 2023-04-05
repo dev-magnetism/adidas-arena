@@ -931,6 +931,30 @@ export default {
         expanded: false,
       })
 
+      const { camera } = useWebGL()
+
+      this.gui
+        .addInput(camera, 'position', {
+          x: { step: 1, max: 1000, min: -1000 },
+          y: { step: 1, max: 1000, min: -1000 },
+          z: { step: 1, max: 1000, min: -1000 },
+          label: 'Camera Position',
+        })
+        .on('change', () => {
+          camera.updateProjectionMatrix()
+        })
+
+      this.gui
+        .addInput(camera, 'rotation', {
+          x: { step: 0.001, max: Math.PI * 1, min: Math.PI * -1 },
+          y: { step: 0.001, max: Math.PI * 1, min: Math.PI * -1 },
+          z: { step: 0.001, max: Math.PI * 1, min: Math.PI * -1 },
+          label: 'Camera Rotation',
+        })
+        .on('change', () => {
+          camera.updateProjectionMatrix()
+        })
+
       this.guiAmbientLight = this.gui.addFolder({
         title: `Ambient Light`,
         expanded: false,
@@ -1105,7 +1129,7 @@ export default {
         label: 'Delay Repeat Trams',
       })
 
-      this.guiColors = this.gui.addFolder({ title: `Colors`, expanded: true })
+      this.guiColors = this.gui.addFolder({ title: `Colors`, expanded: false })
 
       this.guiColors
         .addInput(this.colors, 'outlineColor', {

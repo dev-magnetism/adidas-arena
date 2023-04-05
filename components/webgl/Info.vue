@@ -1,14 +1,18 @@
 <template>
-  <div class="app-renderer-info">
-    <div>calls: {{ rendererInfo?.render.calls }}</div>
-    <div>triangles: {{ rendererInfo?.render.triangles }}</div>
-    <div>geometries: {{ rendererInfo?.memory.geometries }}</div>
-    <div>textures: {{ rendererInfo?.memory.textures }}</div>
-    <div>programs: {{ rendererInfo?.programs.length }}</div>
+  <div v-if="rendererInfo" class="app-renderer-info">
+    <div>calls: {{ rendererInfo.render.calls }}</div>
+    <div>triangles: {{ rendererInfo.render.triangles }}</div>
+    <div>geometries: {{ rendererInfo.memory.geometries }}</div>
+    <div>textures: {{ rendererInfo.memory.textures }}</div>
+    <div>programs: {{ rendererInfo.programs.length }}</div>
+    <div>interior visible: {{ interiorVisible }}</div>
+    <div>exterior visible: {{ exteriorVisible }}</div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import useWebGL from '~/hooks/webgl'
 
 export default {
@@ -17,7 +21,12 @@ export default {
       rendererInfo: null,
     }
   },
-
+  computed: {
+    ...mapState({
+      interiorVisible: (state) => state.interiorVisible,
+      exteriorVisible: (state) => state.exteriorVisible,
+    }),
+  },
   mounted() {
     if (process.env.NODE_ENV === 'development') {
       const { renderer } = useWebGL()

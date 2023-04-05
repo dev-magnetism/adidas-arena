@@ -3,6 +3,7 @@
     <ERichText
       class="app-be-part-of-guests-presentation__title"
       :content="contents.title"
+      tag="h1"
     />
     <EParallax
       ref="bigVisual"

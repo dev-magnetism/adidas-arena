@@ -5,6 +5,7 @@
         ref="title"
         class="app-be-part-of-partenaire-introduction__f-row__content__title"
         :content="contents.title"
+        tag="h1"
       />
       <TP2
         ref="paragraph"

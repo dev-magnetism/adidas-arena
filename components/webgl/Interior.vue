@@ -753,7 +753,7 @@ export default {
 
       this.drag.enabled = false
 
-      if (this.$viewport.isMobile) this.setHeaderHided(true)
+      if (this.$viewport.isMobile) this.setHeaderHide(true)
 
       const { camera } = useWebGL()
 
@@ -956,14 +956,36 @@ export default {
 
       this.gui = gui.addFolder({ title: `Interior`, expanded: false })
 
-      const { interior } = useWebGL()
+      const { interior, camera } = useWebGL()
 
       this.gui.addInput(interior, 'position', {
         x: { step: 1, max: 1000, min: -1000 },
         y: { step: 1, max: 1000, min: -1000 },
         z: { step: 1, max: 1000, min: -1000 },
-        label: 'Position',
+        label: 'Interior Position',
       })
+
+      this.gui
+        .addInput(camera, 'position', {
+          x: { step: 1, max: 1000, min: -1000 },
+          y: { step: 1, max: 1000, min: -1000 },
+          z: { step: 1, max: 1000, min: -1000 },
+          label: 'Camera Position',
+        })
+        .on('change', () => {
+          camera.updateProjectionMatrix()
+        })
+
+      this.gui
+        .addInput(camera, 'rotation', {
+          x: { step: 0.001, max: Math.PI * 1, min: Math.PI * -1 },
+          y: { step: 0.001, max: Math.PI * 1, min: Math.PI * -1 },
+          z: { step: 0.001, max: Math.PI * 1, min: Math.PI * -1 },
+          label: 'Camera Rotation',
+        })
+        .on('change', () => {
+          camera.updateProjectionMatrix()
+        })
 
       this.guiDirectionalLight = this.gui.addFolder({
         title: `Directional Light`,
@@ -1431,7 +1453,7 @@ export default {
       this.zoneFocusEnabled = true
       this.setInteriorCurrentZoneName(zone.name)
 
-      if (this.$viewport.isMobile) this.setHeaderHided(true)
+      if (this.$viewport.isMobile) this.setHeaderHide(true)
 
       const { camera } = useWebGL()
 
@@ -1547,7 +1569,7 @@ export default {
       this.setInteriorCurrentZoneHovered(null)
       this.setCursorState('hide')
 
-      if (this.$viewport.isMobile) this.setHeaderHided(false)
+      if (this.$viewport.isMobile) this.setHeaderHide(false)
 
       const { camera } = useWebGL()
 
@@ -2076,7 +2098,7 @@ export default {
       setAppCursor: 'setAppCursor',
       setInteriorCurrentZoneName: 'setInteriorCurrentZoneName',
       setInteriorCurrentZoneHovered: 'setInteriorCurrentZoneHovered',
-      setHeaderHided: 'setHeaderHided',
+      setHeaderHide: 'setHeaderHide',
       setAllowScroll: 'setAllowScroll',
       setInteriorTimelineFloorsInProgress:
         'setInteriorTimelineFloorsInProgress',

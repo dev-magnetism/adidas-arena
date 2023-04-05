@@ -1,17 +1,24 @@
 <template>
   <div :data-allow-drag="true" class="app-arena-hero">
-    <div :data-allow-drag="true" class="app-arena-hero__wrapper">
+    <div :data-allow-drag="true" class="app-arena-hero__wrapper grid">
+      <EEnterArena
+        :class="{
+          hide: !exteriorVisible || !exteriorArenaHovered || !exteriorFullwidth,
+        }"
+        @onEnterArena="onEnterArena"
+      />
       <AtomsCornerPoints :size-points="12" />
       <!-- <EHeroInstructions /> -->
-      <EInteriorZoneInformations />
-      <EInteriorInteractions />
-      <EInteriorFloorSelectorMobile />
+      <EInteriorZoneInformations :class="{ hide: exteriorVisible }" />
+      <EInteriorInteractions :class="{ hide: exteriorVisible }" />
+      <EInteriorFloorSelectorMobile :class="{ hide: exteriorVisible }" />
       <EScrollIndicator @click.native="scrollHero()" />
     </div>
   </div>
 </template>
 
 <script>
+import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { mapState, mapMutations } from 'vuex'
 
@@ -21,22 +28,31 @@ export default {
   data() {
     return {
       alreadyAppearedOnce: false,
+      transitionedToInterior: false,
       interiorInitialState: { id: 4, immediate: true },
     }
   },
   computed: {
     ...mapState({
       interiorVisible: (state) => state.interiorVisible,
+      exteriorVisible: (state) => state.exteriorVisible,
       allLoadedFake: (state) => state.allLoadedFake,
       interiorIndexFloor: (state) => state.interiorIndexFloor,
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,
+      exteriorArenaHovered: (state) => state.exteriorArenaHovered,
+      exteriorFullwidth: (state) => state.exteriorFullwidth,
     }),
   },
   watch: {
     allLoadedFake(newVal) {
       if (!newVal) return
 
-      this.initInteriorView()
+      if (this.$viewport.isMobile) {
+        this.initInteriorView()
+      } else {
+        this.initExteriorView()
+      }
+
       this.onToggle(this.scrollTrigger)
     },
     initialHeroDisplayed(newVal) {
@@ -55,40 +71,174 @@ export default {
 
     if (this.allLoadedFake) {
       this.setAllowScroll(true)
-      this.initInteriorView()
+
+      if (this.$route.params.enterArena || this.$viewport.isMobile) {
+        this.initInteriorView()
+      } else {
+        this.initExteriorView()
+      }
     }
 
-    this.$viewport.events.on('resize', this.onResize)
     this.$raf.add(`arena-hero`, this.onFrame)
   },
   beforeDestroy() {
     this.scrollTrigger?.kill()
 
-    this.$viewport.events.off('resize', this.onResize)
     this.$raf.remove(`arena-hero`, this.onFrame)
   },
   methods: {
+    appearInterior() {
+      const { layerPass, camera } = useWebGL()
+
+      this.initInteriorView()
+      this.onToggle(this.scrollTrigger)
+      this.setExteriorVisible(false)
+      this.setExteriorFullwidth(false)
+
+      gsap
+        .timeline({
+          onComplete: () => {
+            this.setAllowScroll(true)
+          },
+        })
+        .addLabel('step-0')
+        .fromTo(
+          camera,
+          { zoom: 25 },
+          {
+            zoom: this.$viewport.isMobile ? 8 : 12,
+            duration: 1.25,
+            ease: 'power2.inOut',
+            onUpdate: () => {
+              camera.updateProjectionMatrix()
+            },
+          },
+          'step-0'
+        )
+
+        .addLabel('step-1', '<10%')
+        .fromTo(
+          this.$el,
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+            duration: 0.75,
+            ease: 'power3.inOut',
+          },
+          'step-1'
+        )
+        .fromTo(
+          layerPass.material.uniforms.uOpacity,
+          {
+            value: 1,
+          },
+          {
+            value: 0,
+            duration: 0.75,
+            ease: 'power3.inOut',
+          },
+          'step-1'
+        )
+    },
+    disappearExterior() {
+      const { layerPass, camera } = useWebGL()
+
+      const params = {
+        duration: 1.65,
+        ease: 'power3.inOut',
+      }
+
+      gsap
+        .timeline({
+          delay: 0.35,
+          onComplete: () => {
+            this.appearInterior()
+          },
+        })
+        .addLabel('step-0')
+        .fromTo(
+          this.$el,
+          {
+            opacity: 1,
+          },
+          {
+            opacity: 0,
+            duration: 1,
+            ease: 'power3.inOut',
+          },
+          'step-0'
+        )
+        .to(
+          camera.position,
+          {
+            y: 122,
+            ...params,
+          },
+          'step-0'
+        )
+        .to(
+          camera,
+          {
+            zoom: 35,
+            ...params,
+            onUpdate: () => {
+              camera.updateProjectionMatrix()
+            },
+          },
+          'step-0'
+        )
+        .addLabel('step-1', '<25%')
+        .fromTo(
+          layerPass.material.uniforms.uOpacity,
+          {
+            value: 0,
+          },
+          {
+            value: 1,
+            duration: 0.75,
+            ease: 'power3.inOut',
+          },
+          'step-1'
+        )
+    },
+    onEnterArena() {
+      this.transitionedToInterior = true
+      this.setAllowScroll(false)
+      this.disappearExterior()
+    },
     onToggle(self) {
       if (!this.allLoadedFake) return
 
-      this.setInteriorVisible(self.isActive)
+      if (
+        this.$route.params.enterArena ||
+        this.transitionedToInterior ||
+        this.$viewport.isMobile
+      ) {
+        this.setInteriorVisible(self.isActive)
 
-      if (self.isActive) {
-        this.onResize()
+        if (self.isActive) {
+          const state =
+            this.interiorInitialState === this.interiorIndexFloor ||
+            !this.alreadyAppearedOnce
+              ? this.interiorInitialState
+              : this.interiorIndexFloor
 
-        const state =
-          this.interiorInitialState === this.interiorIndexFloor ||
-          !this.alreadyAppearedOnce
-            ? this.interiorInitialState
-            : this.interiorIndexFloor
+          this.setInteriorIndexFloor({
+            id: state.id,
+            focus: state.focus === null || !state.focus ? null : state.focus,
+            immediate: true,
+          })
 
-        this.setInteriorIndexFloor({
-          id: state.id,
-          focus: state.focus === null || !state.focus ? null : state.focus,
-          immediate: true,
-        })
+          this.alreadyAppearedOnce = true
+        }
+      } else {
+        this.setExteriorFullwidth(self.isActive)
 
-        this.alreadyAppearedOnce = true
+        if (self.isActive) {
+          this.initExteriorView()
+        }
       }
     },
     scrollHero() {
@@ -101,27 +251,33 @@ export default {
     initInteriorView() {
       this.$nuxt.$emit('reset:interior')
     },
-    onResize() {
-      if (!this.interiorVisible && !this.scrollTrigger.isActive) return
+    initExteriorView() {
+      const { exterior } = useWebGL()
+      exterior.drag.enabled = true
 
-      const { scissors, renderer } = useWebGL()
-
-      scissors.current = { ...scissors.hero }
-
-      renderer.setScissor(
-        scissors.current.x,
-        scissors.current.y,
-        scissors.current.width,
-        scissors.current.height
-      )
+      this.$nuxt.$emit('reset:exterior')
     },
     onFrame() {
-      if (!window.lenis || !this.interiorVisible) return
+      if (
+        !window.lenis &&
+        (!this.interiorVisible || !this.exteriorVisible) &&
+        !this.scrollTrigger.isActive
+      )
+        return
 
-      const { interior, camera, scissors, renderer } = useWebGL()
+      const { interior, exterior, camera, scissors, renderer } = useWebGL()
 
-      interior.position.y =
-        window.lenis.scroll / (camera.zoom - camera.zoom * 0.125)
+      if (this.interiorVisible) {
+        interior.position.y =
+          window.lenis.scroll / (camera.zoom - camera.zoom * 0.125)
+      }
+
+      if (this.exteriorVisible) {
+        exterior.position.y =
+          window.lenis.scroll / (camera.zoom - camera.zoom * 0.125)
+      }
+
+      scissors.current = { ...scissors.hero }
 
       scissors.current.y = window.lenis.scroll + scissors.hero?.y
 
@@ -133,6 +289,8 @@ export default {
       )
     },
     ...mapMutations({
+      setExteriorVisible: 'setExteriorVisible',
+      setExteriorFullwidth: 'setExteriorFullwidth',
       setInteriorVisible: 'setInteriorVisible',
       setInteriorIndexFloor: 'setInteriorIndexFloor',
       setAllowScroll: 'setAllowScroll',

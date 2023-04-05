@@ -20,7 +20,9 @@ export default {
   transition(to, from) {
     if (!to || !from) return
 
-    return pageTransition.basic
+    return to.name === 'arena' && to.params.enterArena
+      ? pageTransition.fromIndexToArena
+      : pageTransition.basic
   },
   async asyncData({ $directus }) {
     const content = await $directus.items('Arena_page').readByQuery({
