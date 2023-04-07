@@ -3,12 +3,13 @@
     <div :data-allow-drag="true" class="app-arena-hero__wrapper grid">
       <EEnterArena
         :class="{
-          hide: !exteriorVisible || !exteriorArenaHovered || !exteriorFullwidth,
+          hide:
+            !exteriorVisible || !exteriorArenaHovered || !exteriorFullscreen,
         }"
         @onEnterArena="onEnterArena"
       />
       <AtomsCornerPoints :size-points="12" />
-      <!-- <EHeroInstructions /> -->
+      <EHeroInstructions :class="{ hide: !instructionsWebglVisible }" />
       <EInteriorZoneInformations :class="{ hide: exteriorVisible }" />
       <EInteriorInteractions :class="{ hide: exteriorVisible }" />
       <EInteriorFloorSelectorMobile :class="{ hide: exteriorVisible }" />
@@ -40,7 +41,8 @@ export default {
       interiorIndexFloor: (state) => state.interiorIndexFloor,
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,
       exteriorArenaHovered: (state) => state.exteriorArenaHovered,
-      exteriorFullwidth: (state) => state.exteriorFullwidth,
+      exteriorFullscreen: (state) => state.exteriorFullscreen,
+      instructionsWebglVisible: (state) => state.instructionsWebglVisible,
     }),
   },
   watch: {
@@ -93,7 +95,7 @@ export default {
       this.initInteriorView()
       this.onToggle(this.scrollTrigger)
       this.setExteriorVisible(false)
-      this.setExteriorFullwidth(false)
+      this.setExteriorFullscreen(false)
 
       gsap
         .timeline({
@@ -235,7 +237,7 @@ export default {
           this.alreadyAppearedOnce = true
         }
       } else {
-        this.setExteriorFullwidth(self.isActive)
+        this.setExteriorFullscreen(self.isActive)
 
         if (self.isActive) {
           this.initExteriorView()
@@ -291,7 +293,7 @@ export default {
     },
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',
-      setExteriorFullwidth: 'setExteriorFullwidth',
+      setExteriorFullscreen: 'setExteriorFullscreen',
       setInteriorVisible: 'setInteriorVisible',
       setInteriorIndexFloor: 'setInteriorIndexFloor',
       setAllowScroll: 'setAllowScroll',

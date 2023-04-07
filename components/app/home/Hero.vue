@@ -21,9 +21,10 @@
       />
     </div>
     <div class="app-home-hero__inner grid">
+      <EHeroInstructions />
       <EEnterArena
         :class="{
-          hide: !exteriorArenaHovered || !exteriorFullwidth || !DOMVisible,
+          hide: !exteriorArenaHovered || !exteriorFullscreen || !DOMVisible,
         }"
         @onEnterArena="onEnterArena"
       />
@@ -36,7 +37,7 @@
 
       <ERichText
         ref="title"
-        :class="{ hide: exteriorFullwidth }"
+        :class="{ hide: exteriorFullscreen }"
         class="app-home-hero__title"
         :content="contents.title"
         tag="H2"
@@ -131,7 +132,7 @@ export default {
     return {
       viewExteriorOpen: false,
       DOMVisible: false,
-      scissorsResizeInProgress: false,
+      hideInstructions: true,
     }
   },
   computed: {
@@ -141,11 +142,15 @@ export default {
       allLoadedFake: (state) => state.allLoadedFake,
       allLoadedActual: (state) => state.allLoadedActual,
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,
-      exteriorFullwidth: (state) => state.exteriorFullwidth,
+      exteriorFullscreen: (state) => state.exteriorFullscreen,
       exteriorArenaHovered: (state) => state.exteriorArenaHovered,
+      instructionsWebglVisible: (state) => state.instructionsWebglVisible,
     }),
   },
   watch: {
+    // exteriorFullscreen(newVal) {
+    //   this.hideInstructions = false
+    // },
     fontsLoaded(newVal) {
       if (!newVal || this.$viewport.isMobile) return
 
@@ -251,7 +256,7 @@ export default {
       }
     },
     resetView() {
-      this.setExteriorFullwidth(false)
+      this.setExteriorFullscreen(false)
 
       const { exterior } = useWebGL()
 
@@ -497,7 +502,7 @@ export default {
         this.$router.push({ path: '/arena' })
       } else {
         this.viewExteriorOpen = !this.viewExteriorOpen
-        this.setExteriorFullwidth(!this.exteriorFullwidth)
+        this.setExteriorFullscreen(!this.exteriorFullscreen)
 
         exterior.drag.enabled = this.viewExteriorOpen
 
@@ -663,7 +668,7 @@ export default {
     },
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',
-      setExteriorFullwidth: 'setExteriorFullwidth',
+      setExteriorFullscreen: 'setExteriorFullscreen',
       setAllowScroll: 'setAllowScroll',
       setAppCursor: 'setAppCursor',
     }),

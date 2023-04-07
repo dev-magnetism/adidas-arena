@@ -17,6 +17,7 @@
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
+  z-index: 2;
 
   @include mobile {
     padding: mobile-vw(20px) mobile-vw(20px);

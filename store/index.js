@@ -20,8 +20,8 @@ export const state = () => ({
 
   // Exterior scene
   exteriorVisible: true,
+  exteriorFullscreen: false,
   exteriorArenaHovered: false,
-  exteriorFullwidth: false,
 
   // Interior scene
   interiorVisible: true,
@@ -47,7 +47,7 @@ export const state = () => ({
   cursorSliderHold: false,
   cursorSliderLeftZone: false,
   cursorSliderDisabled: false,
-  instructionsWebgl: true,
+  instructionsWebglVisible: true,
 })
 
 export const getters = {
@@ -60,8 +60,8 @@ export const mutations = {
   setFontsLoaded: (state, value) => {
     state.fontsLoaded = value
   },
-  setInstructionsWebgl: (state, value) => {
-    state.instructionsWebgl = value
+  setInstructionsWebglVisible: (state, value) => {
+    state.instructionsWebglVisible = value
   },
   setAppCursor: (state, value) => {
     state.appCursor = value
@@ -111,8 +111,8 @@ export const mutations = {
   setCursorSliderLeftZone: (state, value) => {
     state.cursorSliderLeftZone = value
   },
-  setExteriorFullwidth: (state, value) => {
-    state.exteriorFullwidth = value
+  setExteriorFullscreen: (state, value) => {
+    state.exteriorFullscreen = value
   },
   setInteriorIndexFloor: (state, value) => {
     state.interiorIndexFloor = value

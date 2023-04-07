@@ -67,28 +67,8 @@ export default {
             onComplete: () => {
               this.$store.commit('setHeaderWhite', false)
               this.$store.commit('setHeaderReduced', false)
-
-              if (
-                this.$route.name.includes('projet') ||
-                this.$route.name.includes('be-part-of-partenariat') ||
-                this.$route.name.includes('be-part-of-besoins') ||
-                this.$route.name.includes('programmation')
-              ) {
-                this.$store.commit('setExteriorVisible', false)
-                this.$store.commit('setInteriorVisible', false)
-              }
-
-              if (
-                this.$route.name.includes('le-bloc') ||
-                this.$route.name.includes('be-part-of-guests') ||
-                this.$route.name.includes('arena')
-              ) {
-                this.$store.commit('setExteriorVisible', false)
-              }
-
-              if (this.$route.name.includes('index')) {
-                this.$store.commit('setInteriorVisible', false)
-              }
+              this.$store.commit('setExteriorVisible', false)
+              this.$store.commit('setInteriorVisible', false)
 
               this.$nuxt.$emit('menu:reset')
 

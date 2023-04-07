@@ -78,7 +78,7 @@ export default {
     hidePreloader() {
       this.tlHidePreloader = gsap
         .timeline({
-          delay: .85,
+          delay: 0.85,
           onComplete: () => {
             this.setPreloaderHidden(true)
             this.tlLoading?.clear()
@@ -196,7 +196,7 @@ export default {
     onProgressLoader({ normalized, percentage }, id) {
       this.tlLoading.set(this, {
         progressUI: Math.round(percentage),
-        delay: this.genRand(0.25, .7, 2),
+        delay: this.genRand(0.25, 0.7, 2),
       })
 
       if (id === 'exterior') {
@@ -273,7 +273,7 @@ export default {
     height: auto;
     max-height: 75%;
     width: 25%;
-    aspect-ratio: 350 / 620;
+    aspect-ratio: 1080/1920;
     opacity: 1;
     pointer-events: none;
     mix-blend-mode: darken;
@@ -281,6 +281,7 @@ export default {
 
     @include mobile {
       width: 85%;
+      aspect-ratio: 540/960;
     }
   }
 

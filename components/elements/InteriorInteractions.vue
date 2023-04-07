@@ -29,6 +29,7 @@ export default {
   display: flex;
   flex-direction: column;
   transition: opacity 0.35s var(--ease-in-out-cubic);
+  z-index: 0;
 
   @include mobile {
     left: 0;

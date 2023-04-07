@@ -31,7 +31,7 @@ export default {
 
   computed: {
     ...mapState({
-      exteriorFullwidth: (state) => state.exteriorFullwidth,
+      exteriorFullscreen: (state) => state.exteriorFullscreen,
       interiorIndexFloor: (state) => state.interiorIndexFloor,
       interiorCurrentZoneName: (state) => state.interiorCurrentZoneName,
       interiorTimelineFloorsInProgress: (state) =>

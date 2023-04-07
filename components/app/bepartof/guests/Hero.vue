@@ -4,6 +4,11 @@
       <AtomsCornerPoints :size-points="12" />
       <EInteriorZoneInformations />
       <EInteriorInteractions />
+      <EHeroInstructions
+        :class="{
+          hide: hideInstructions || !instructionsWebglVisible,
+        }"
+      />
       <EInteriorFloorSelectorMobile />
       <EScrollIndicator @click.native="scrollHero()" />
     </div>
@@ -17,23 +22,37 @@ import { mapState, mapMutations } from 'vuex'
 import useWebGL from '~/hooks/webgl'
 
 export default {
+  data() {
+    return {
+      hideInstructions: true,
+    }
+  },
   computed: {
     ...mapState({
       interiorVisible: (state) => state.interiorVisible,
       allLoadedActual: (state) => state.allLoadedActual,
       allLoadedFake: (state) => state.allLoadedFake,
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,
+      instructionsWebglVisible: (state) => state.instructionsWebglVisible,
+      interiorTimelineFloorsInProgress: (state) =>
+        state.interiorTimelineFloorsInProgress,
     }),
   },
+
   watch: {
     allLoadedFake(newVal) {
       if (!newVal) return
 
-      this.initInteriorView(2650)
+      this.initInteriorView(2200)
       this.onToggle(this.scrollTrigger)
     },
     initialHeroDisplayed() {
       this.setAllowScroll(true)
+    },
+    interiorTimelineFloorsInProgress(newVal) {
+      if (!newVal && this.instructionsWebglVisible) {
+        this.hideInstructions = false
+      }
     },
   },
   mounted() {
@@ -104,7 +123,7 @@ export default {
     },
     ...mapMutations({
       setInteriorVisible: 'setInteriorVisible',
-      setExteriorFullwidth: 'setExteriorFullwidth',
+      setExteriorFullscreen: 'setExteriorFullscreen',
       setInteriorIndexFloor: 'setInteriorIndexFloor',
       setAllowScroll: 'setAllowScroll',
     }),

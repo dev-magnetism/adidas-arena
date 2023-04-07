@@ -108,8 +108,9 @@ export default {
       allLoadedActual: (state) => state.allLoadedActual,
       exteriorVisible: (state) => state.exteriorVisible,
       exteriorArenaHovered: (state) => state.exteriorArenaHovered,
-      exteriorFullwidth: (state) => state.exteriorFullwidth,
+      exteriorFullscreen: (state) => state.exteriorFullscreen,
       menuActive: (state) => state.menuActive,
+      instructionsWebglVisible: (state) => state.instructionsWebglVisible,
     }),
   },
   watch: {
@@ -146,10 +147,13 @@ export default {
     this.observer = Observer.create({
       axis: 'x',
       target: this.$nuxt.$el,
-      type: 'touch,pointer,wheel',
+      type: 'touch,pointer',
       onDrag: this.onDrag,
+
       onDragStart: (e) => {
-        if (e.axis === 'x') this.setAllowScroll(false)
+        if (e.axis === 'x') {
+          this.setAllowScroll(false)
+        }
       },
       onDragEnd: (e) => {
         if (e.axis === 'x') this.setAllowScroll(true)
@@ -225,9 +229,9 @@ export default {
 
       exterior.homeCustomPosition = new Vector3(x, 0, z)
 
-      if (!this.exteriorFullwidth && !this.$viewport.isMobile) {
+      if (!this.exteriorFullscreen && !this.$viewport.isMobile) {
         exterior.position.copy(exterior.homeCustomPosition)
-      } else if (this.exteriorFullwidth && !this.$viewport.isMobile) {
+      } else if (this.exteriorFullscreen && !this.$viewport.isMobile) {
         exterior.position.copy(new Vector3(0, 0, 0))
       } else {
         exterior.position.copy(new Vector3(0, 0, 0))
@@ -255,8 +259,9 @@ export default {
 
       if (
         this.adidasArena?.basicObjectRaycast &&
-        this.exteriorFullwidth &&
-        !this.$viewport.isMobile
+        this.exteriorFullscreen &&
+        !this.$viewport.isMobile &&
+        !this.instructionsWebglVisible
       ) {
         const intersects = raycaster.intersectObject(
           this.adidasArena.basicObjectRaycast,
@@ -376,7 +381,7 @@ export default {
       this.initArrow()
     },
     onMouseEnterArena() {
-      if (!this.exteriorFullwidth || !this.exteriorVisible || this.menuActive)
+      if (!this.exteriorFullscreen || !this.exteriorVisible || this.menuActive)
         return
 
       this.setAppCursor('pointer')
@@ -385,7 +390,7 @@ export default {
       this.setExteriorArenaHovered(true)
     },
     onMouseLeaveArena() {
-      if (!this.exteriorFullwidth || !this.exteriorVisible || this.menuActive)
+      if (!this.exteriorFullscreen || !this.exteriorVisible || this.menuActive)
         return
 
       this.setAppCursor('initial')
@@ -1180,6 +1185,7 @@ export default {
       setCursorState: 'setCursorState',
       setAppCursor: 'setAppCursor',
       setAllowScroll: 'setAllowScroll',
+      setInstructionsWebglVisible: 'setInstructionsWebglVisible',
     }),
     lerp(p1, p2, t) {
       return p1 + (p2 - p1) * t

@@ -118,6 +118,9 @@ class GL {
     this.layerPass = new ShaderPass(LayerShader)
     this.composer.addPass(this.layerPass)
 
+    this.layerPass = new ShaderPass(LayerShader)
+    this.composer.addPass(this.layerPass)
+
     // /!\ POST PROCESSING FROM PMDRS /!\
     // /!\ POST PROCESSING FROM PMDRS /!\
 

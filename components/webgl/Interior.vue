@@ -107,6 +107,7 @@ export default {
       interiorMusicScene: (state) => state.interiorMusicScene,
       menuActive: (state) => state.menuActive,
       interiorContent: (state) => state.interiorContent,
+      instructionsWebglVisible: (state) => state.instructionsWebglVisible,
       interiorCurrentZoneName: (state) => state.interiorCurrentZoneName,
       interiorTimelineFloorsInProgress: (state) =>
         state.interiorTimelineFloorsInProgress,
@@ -166,11 +167,14 @@ export default {
     this.observer = Observer.create({
       axis: 'x',
       target: this.$nuxt.$el,
-      type: 'touch,pointer,wheel',
+      type: 'touch,pointer',
       onDrag: this.onDrag,
       onStop: this.onStopDrag,
+
       onDragStart: (e) => {
-        if (e.axis === 'x') this.setAllowScroll(false)
+        if (e.axis === 'x') {
+          this.setAllowScroll(false)
+        }
       },
       onDragEnd: (e) => {
         if (e.axis === 'x') this.setAllowScroll(true)
@@ -364,13 +368,14 @@ export default {
       this.tlFloors?.clear()
       this.tlFloors?.kill()
       this.tweenCamera?.kill()
+      this.setInteriorTimelineFloorsInProgress(true)
 
       if (this.interiorCurrentZoneName) this.unfocusZone(true)
 
       this.tlFloors = gsap.timeline({
-        onStart: () => {
-          this.setInteriorTimelineFloorsInProgress(true)
-        },
+        // onStart: () => {
+        //   this.setInteriorTimelineFloorsInProgress(true)
+        // },
         onComplete: () => {
           this.setInteriorTimelineFloorsInProgress(false)
         },
@@ -1740,7 +1745,8 @@ export default {
         this.currentFloor.basicObjectRaycast &&
         !this.zoneFocusEnabled &&
         !this.dragInProgress &&
-        !this.interiorTimelineFloorsInProgress
+        !this.interiorTimelineFloorsInProgress &&
+        !this.instructionsWebglVisible
       ) {
         const intersects = raycaster.intersectObjects(
           this.currentFloor?.basicObjectRaycast,
@@ -2101,6 +2107,7 @@ export default {
       setInteriorCurrentZoneHovered: 'setInteriorCurrentZoneHovered',
       setHeaderHide: 'setHeaderHide',
       setAllowScroll: 'setAllowScroll',
+      setInstructionsWebglVisible: 'setInstructionsWebglVisible',
       setInteriorTimelineFloorsInProgress:
         'setInteriorTimelineFloorsInProgress',
     }),

@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="{ activated: exteriorFullwidth && exteriorVisible }"
+    :class="{ activated: exteriorFullscreen && exteriorVisible }"
     class="app-element-enter-arena"
   >
     <div class="app-element-enter-arena__title">
@@ -24,7 +24,7 @@ import { mapState } from 'vuex'
 export default {
   computed: {
     ...mapState({
-      exteriorFullwidth: (state) => state.exteriorFullwidth,
+      exteriorFullscreen: (state) => state.exteriorFullscreen,
       exteriorVisible: (state) => state.exteriorVisible,
       appContent: (state) => state.appContent,
     }),
@@ -71,6 +71,10 @@ export default {
     .app-element-enter-arena__cta {
       transition-delay: 0s;
     }
+  }
+
+  p {
+    user-select: none;
   }
 
   &__title {
