@@ -206,6 +206,7 @@ export default {
     onEnterArena() {
       this.transitionedToInterior = true
       this.setAllowScroll(false)
+      this.setAppCursor('initial')
       this.disappearExterior()
     },
     onToggle(self) {
@@ -294,6 +295,7 @@ export default {
       setInteriorVisible: 'setInteriorVisible',
       setInteriorIndexFloor: 'setInteriorIndexFloor',
       setAllowScroll: 'setAllowScroll',
+      setAppCursor: 'setAppCursor',
     }),
   },
 }

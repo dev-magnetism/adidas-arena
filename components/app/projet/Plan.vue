@@ -87,6 +87,13 @@ export default {
     }
   },
   beforeDestroy() {
+    this.animationCircle?.destroy()
+    this.animationCross?.destroy()
+    this.animationCrossCircle?.destroy()
+    this.animationLittleArrow1?.destroy()
+    this.animationLittleArrow2?.destroy()
+    this.animationLittleArrow3?.destroy()
+
     this.tl?.kill()
   },
   methods: {

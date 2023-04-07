@@ -105,6 +105,7 @@ export default {
       interiorVisible: (state) => state.interiorVisible,
       interiorIndexFloor: (state) => state.interiorIndexFloor,
       interiorMusicScene: (state) => state.interiorMusicScene,
+      menuActive: (state) => state.menuActive,
       interiorContent: (state) => state.interiorContent,
       interiorCurrentZoneName: (state) => state.interiorCurrentZoneName,
       interiorTimelineFloorsInProgress: (state) =>
@@ -1622,7 +1623,7 @@ export default {
       }
     },
     onMouseEnterZone(object) {
-      if (this.$viewport.isMobile) return
+      if (this.$viewport.isMobile || this.menuActive) return
 
       this.setAppCursor('pointer')
       this.setInteriorCurrentZoneHovered(object.parent.name)
@@ -1680,7 +1681,7 @@ export default {
       })
     },
     onMouseLeaveZone(object) {
-      if (this.$viewport.isMobile) return
+      if (this.$viewport.isMobile || this.menuActive) return
 
       this.setAppCursor('initial')
 

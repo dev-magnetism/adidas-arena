@@ -119,10 +119,6 @@ export default {
         coordinate: this.content.data.hero_coordinate,
         visit: this.content.data.hero_visit,
         scroll: this.content.data.hero_scroll,
-        enter: {
-          title: this.content.data.hero_enter_title,
-          cta: this.content.data.hero_enter_cta,
-        },
         pictureTop: {
           src: this.content.data.hero_picture_top,
           alt: this.content.data.hero_picture_top_alt,

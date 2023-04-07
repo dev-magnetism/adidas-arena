@@ -109,6 +109,7 @@ export default {
       exteriorVisible: (state) => state.exteriorVisible,
       exteriorArenaHovered: (state) => state.exteriorArenaHovered,
       exteriorFullwidth: (state) => state.exteriorFullwidth,
+      menuActive: (state) => state.menuActive,
     }),
   },
   watch: {
@@ -252,7 +253,11 @@ export default {
 
       const { exterior, raycaster } = useWebGL()
 
-      if (this.adidasArena?.basicObjectRaycast && this.exteriorFullwidth) {
+      if (
+        this.adidasArena?.basicObjectRaycast &&
+        this.exteriorFullwidth &&
+        !this.$viewport.isMobile
+      ) {
         const intersects = raycaster.intersectObject(
           this.adidasArena.basicObjectRaycast,
           false
@@ -370,45 +375,20 @@ export default {
       this.initTrams()
       this.initArrow()
     },
-    onClickArena() {
-      // if (!this.exteriorFullwidth || !this.exteriorVisible) return
-      // console.log('clickedd', this.exteriorFullwidth)
-      // const { camera } = useWebGL()
-      // const params = {
-      //   duration: 1,
-      //   ease: 'power2.inOut',
-      // }
-      // gsap.to(camera.position, {
-      //   y: 78,
-      //   ...params,
-      // })
-      // gsap.to(camera.rotation, {
-      //   x: THREE.MathUtils.degToRad(-158.06),
-      //   y: THREE.MathUtils.degToRad(36.86),
-      //   z: THREE.MathUtils.degToRad(166.84),
-      //   ...params,
-      // })
-      // gsap.to(camera, {
-      //   zoom: 28,
-      //   ...params,
-      //   onUpdate: () => {
-      //     camera.updateProjectionMatrix()
-      //   },
-      // })
-      // console.log('click')
-    },
     onMouseEnterArena() {
-      if (!this.exteriorFullwidth || !this.exteriorVisible) return
+      if (!this.exteriorFullwidth || !this.exteriorVisible || this.menuActive)
+        return
 
-      this.setCursorState('hover')
+      this.setAppCursor('pointer')
 
       this.tweenArrowTranslate?.timeScale(2.5)
       this.setExteriorArenaHovered(true)
     },
     onMouseLeaveArena() {
-      if (!this.exteriorFullwidth || !this.exteriorVisible) return
+      if (!this.exteriorFullwidth || !this.exteriorVisible || this.menuActive)
+        return
 
-      this.setCursorState('hide')
+      this.setAppCursor('initial')
 
       this.tweenArrowTranslate?.timeScale(1)
       this.setExteriorArenaHovered(false)
@@ -1198,6 +1178,7 @@ export default {
       setExteriorArenaHovered: 'setExteriorArenaHovered',
       setExteriorVisible: 'setExteriorVisible',
       setCursorState: 'setCursorState',
+      setAppCursor: 'setAppCursor',
       setAllowScroll: 'setAllowScroll',
     }),
     lerp(p1, p2, t) {

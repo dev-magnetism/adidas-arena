@@ -15,6 +15,7 @@
           class="app-menu-link__title"
           @mouseenter.native="onLinkHover"
           @mouseleave.native="onLinkLeave"
+          @click.native="onClickLink(content.url)"
         >
           <nuxt-link :to="content.url">
             {{ content.name }}
@@ -45,6 +46,7 @@
           class="app-menu-link__title"
           weight="bold"
           tag="p"
+          @click.native="onClickLink(content.url)"
         >
           <nuxt-link :to="content.url">
             {{ content.name }}
@@ -112,7 +114,7 @@ export default {
 
           this.tweenHover?.kill()
 
-          gsap.to(playhead, {
+          this.tweenHover = gsap.to(playhead, {
             ...tweenParams,
             frame: 0,
             onUpdate: () => this.lottieHover.goToAndStop(playhead.frame, true),
@@ -122,19 +124,32 @@ export default {
         if (this.lottieActive.currentFrame !== 0) {
           const playhead = { frame: this.lottieActive.totalFrames - 1 }
 
-          gsap.to(playhead, {
+          this.tweenActive?.kill()
+
+          this.tweenActive = gsap.to(playhead, {
             ...tweenParams,
             frame: 0,
             onUpdate: () => this.lottieActive.goToAndStop(playhead.frame, true),
           })
         }
       }
+
+      if (!newVal) {
+        this.submenuActive = false
+      }
     },
   },
   mounted() {
     this.initLotties()
   },
+  beforeDestroy() {
+    this.lottieHover?.kill()
+    this.lottieActive?.kill()
+  },
   methods: {
+    onClickLink(url) {
+      if (url === this.$route.path) this.$emit('onClickActiveLink')
+    },
     appearActiveLottie(delay = 0) {
       if (!this.linkActive || this.$viewport.isMobile) return
 
@@ -143,7 +158,9 @@ export default {
         targetFrame: this.lottieActive.totalFrames - 1,
       }
 
-      gsap.to(playhead, {
+      this.tweenActive?.kill()
+
+      this.tweenActive = gsap.to(playhead, {
         duration: 0.75,
         frame: playhead.targetFrame,
         ease: 'power2.inOut',
@@ -159,7 +176,9 @@ export default {
         targetFrame: 0,
       }
 
-      gsap.to(playhead, {
+      this.tweenActive?.kill()
+
+      this.tweenActive = gsap.to(playhead, {
         duration: 0.75,
         delay,
         frame: playhead.targetFrame,
@@ -173,19 +192,27 @@ export default {
       this.$emit('onToggleSubmenu', this.submenuActive)
 
       if (this.submenuActive) {
-        gsap.to(this.$refs.submenuCross, {
-          rotation: 405,
-          duration: 0.95,
-          delay: 0.4,
-          ease: 'expo.inOut',
-        })
+        gsap.fromTo(
+          this.$refs.submenuCross,
+          { rotation: 0 },
+          {
+            rotation: 405,
+            duration: 0.95,
+            delay: 0.4,
+            ease: 'expo.inOut',
+          }
+        )
       } else {
-        gsap.to(this.$refs.submenuCross, {
-          rotation: 0,
-          duration: 0.9,
-          delay: 0.5,
-          ease: 'expo.inOut',
-        })
+        gsap.fromTo(
+          this.$refs.submenuCross,
+          { rotation: 405 },
+          {
+            rotation: 0,
+            duration: 0.9,
+            delay: 0.5,
+            ease: 'expo.inOut',
+          }
+        )
       }
     },
     onLinkHover() {

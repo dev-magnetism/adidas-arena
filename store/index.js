@@ -47,6 +47,7 @@ export const state = () => ({
   cursorSliderHold: false,
   cursorSliderLeftZone: false,
   cursorSliderDisabled: false,
+  instructionsWebgl: true,
 })
 
 export const getters = {
@@ -58,6 +59,9 @@ export const getters = {
 export const mutations = {
   setFontsLoaded: (state, value) => {
     state.fontsLoaded = value
+  },
+  setInstructionsWebgl: (state, value) => {
+    state.instructionsWebgl = value
   },
   setAppCursor: (state, value) => {
     state.appCursor = value

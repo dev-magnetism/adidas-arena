@@ -5,8 +5,7 @@
   >
     <div class="app-element-enter-arena__title">
       <AtomsCornerPoints :size-points="8" />
-      <p>L’ARENA</p>
-      <!-- <p>{{ content.title }}</p> -->
+      <p>{{ appContent.data.enter_arena_title }}</p>
     </div>
     <AtomsCTA
       ref="cta"
@@ -14,8 +13,7 @@
       class="app-element-enter-arena__cta"
       @click.native="$emit('onEnterArena')"
     >
-      <!-- {{ content.cta }} -->
-      Découvrir le lieu
+      <p>{{ appContent.data.enter_arena_cta }}</p>
     </AtomsCTA>
   </div>
 </template>
@@ -24,16 +22,11 @@
 import { mapState } from 'vuex'
 
 export default {
-  // props: {
-  //   content: {
-  //     type: Object,
-  //     default: () => {},
-  //   },
-  // },
   computed: {
     ...mapState({
       exteriorFullwidth: (state) => state.exteriorFullwidth,
       exteriorVisible: (state) => state.exteriorVisible,
+      appContent: (state) => state.appContent,
     }),
   },
 }

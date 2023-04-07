@@ -144,6 +144,14 @@ export default {
   },
   beforeDestroy() {
     this.tl?.kill()
+
+    this.animationCrossCircle?.destroy()
+    this.animationArrow?.destroy()
+    this.animationArrowBlue?.destroy()
+    this.animationCircle?.destroy()
+    this.animationCross?.destroy()
+    this.animationLittleArrow?.destroy()
+    this.animationValidCircle?.destroy()
   },
   methods: {
     initSplitText() {

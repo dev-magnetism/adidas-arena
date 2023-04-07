@@ -48,7 +48,11 @@
         </div>
 
         <div class="app-menu__mobile-links">
-          <AppMenuLink ref="programmationLink" :content="menuProgrammation" />
+          <AppMenuLink
+            ref="programmationLink"
+            :content="menuProgrammation"
+            @onClickActiveLink="onCloseBurger"
+          />
         </div>
 
         <div class="app-menu__main-links">
@@ -59,6 +63,7 @@
             :content="item"
             @onToggleSubmenu="onToggleSubmenu"
             @onHoverLink="onSelectImage"
+            @onClickActiveLink="onCloseBurger"
           />
         </div>
 
@@ -73,6 +78,7 @@
             ref="submenuLinks"
             :content="item"
             @onHoverLink="onSelectImage"
+            @onClickActiveLink="onCloseBurger"
           />
         </div>
       </div>
@@ -125,7 +131,7 @@ export default {
     menuActive(payload) {
       if (payload) {
         this.initMainTimeline()
-      } else if (!payload) {
+      } else if (!payload && this.tlMain) {
         if (this.submenuActive) {
           this.initMainTimelineClosing()
         } else {
@@ -175,6 +181,15 @@ export default {
         borders: this.$el.querySelectorAll('.app-menu-link__border-top'),
       }
 
+      this.els.submenuTitle = {
+        nodeWrapper:
+          this.els.main.nodesWrapper[this.els.main.nodesWrapper.length - 1],
+        nodeTitle:
+          this.els.main.nodesTitle[this.els.main.nodesTitle.length - 1],
+      }
+
+      this.els.targetFlip = this.els.main.nodesComponents[0]
+
       if (this.$viewport.isMobile) {
         this.els.main = {
           vueComponents: [
@@ -203,16 +218,9 @@ export default {
             ),
           ],
         }
-      }
 
-      this.els.submenuTitle = {
-        nodeWrapper:
-          this.els.main.nodesWrapper[this.els.main.nodesWrapper.length - 1],
-        nodeTitle:
-          this.els.main.nodesTitle[this.els.main.nodesTitle.length - 1],
+        this.els.targetFlip = this.els.main.nodesComponents[1]
       }
-
-      this.els.targetFlip = this.els.main.nodesComponents[0]
     },
     onKeyUp(e) {
       if (e.key === 'Escape') {
@@ -340,9 +348,16 @@ export default {
       this.tlSubmenu?.clear()
       this.tlSubmenu?.kill()
 
-      const elsMenuSubmenuTitleReversed = [
-        ...this.els.submenu.nodesTitle,
-      ].reverse()
+      let elsMenuSubmenuTitleReversed
+
+      if (this.$viewport.isMobile) {
+        elsMenuSubmenuTitleReversed = [
+          this.els.main.nodesTitle[0],
+          ...this.els.submenu.nodesTitle,
+        ].reverse()
+      } else {
+        elsMenuSubmenuTitleReversed = [...this.els.submenu.nodesTitle].reverse()
+      }
 
       const elsTopBorderReversed = [...this.els.borders].reverse()
 
@@ -479,9 +494,18 @@ export default {
       this.tlSubmenu?.kill()
       this.tlSubmenu?.clear()
 
-      const linksToHide = this.els.main.nodesTitle.filter(
-        (link, index) => index !== this.els.main.nodesTitle.length - 1
-      )
+      let linksToHide
+
+      if (this.$viewport.isMobile) {
+        linksToHide = this.els.main.nodesTitle.filter(
+          (link, index) =>
+            index !== 0 && index !== this.els.main.nodesTitle.length - 1
+        )
+      } else {
+        linksToHide = this.els.main.nodesTitle.filter(
+          (link, index) => index !== this.els.main.nodesTitle.length - 1
+        )
+      }
 
       this.tlSubmenu = gsap
         .timeline()
@@ -558,19 +582,26 @@ export default {
       this.pointerEventsActivated = false
     },
     onResetMenu() {
-      this.setMenuActive(false)
+      this.tlMain?.getChildren().forEach((tween) => {
+        gsap.set(tween.targets(), { clearProps: 'all' })
+      })
+      this.tlMain?.clear(true)
+      this.tlMain?.kill()
+      this.tlMain = null
 
-      this.pointerEventsActivated = false
-      this.submenuActive = false
+      this.tlMainClose?.getChildren().forEach((tween) => {
+        gsap.set(tween.targets(), { clearProps: 'all' })
+      })
+      this.tlMainClose?.clear(true)
+      this.tlMainClose?.kill()
+      this.tlMainClose = null
 
-      this.tlMain?.pause(0)
-      this.tlMain?.clear()
-
-      this.tlMainClose?.pause(0)
-      this.tlMainClose?.clear()
-
-      this.tlSubmenu?.pause(0)
-      this.tlSubmenu?.clear()
+      this.tlSubmenu?.getChildren().forEach((tween) => {
+        gsap.set(tween.targets(), { clearProps: 'all' })
+      })
+      this.tlSubmenu?.clear(true)
+      this.tlSubmenu?.kill()
+      this.tlSubmenu = null
 
       const elTitleSubmenuSave =
         this.els.main.nodesComponents[this.els.main.nodesComponents.length - 1]
@@ -583,17 +614,10 @@ export default {
         rotation: 0,
       })
 
-      gsap.set(this.els.main.nodesTitle, {
-        y: '110%',
-      })
+      this.pointerEventsActivated = false
+      this.submenuActive = false
 
-      gsap.set(this.els.submenu.nodesTitle, {
-        y: '110%',
-      })
-
-      gsap.set(this.$el, {
-        opacity: 0,
-      })
+      this.setMenuActive(false)
     },
     ...mapMutations({
       setMenuActive: 'setMenuActive',

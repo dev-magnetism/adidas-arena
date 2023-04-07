@@ -241,6 +241,7 @@ export default {
   methods: {
     onEnterArena() {
       this.DOMVisible = false
+      this.setAppCursor('initial')
 
       this.$router.push({ name: 'arena', params: { enterArena: true } })
     },
@@ -664,6 +665,7 @@ export default {
       setExteriorVisible: 'setExteriorVisible',
       setExteriorFullwidth: 'setExteriorFullwidth',
       setAllowScroll: 'setAllowScroll',
+      setAppCursor: 'setAppCursor',
     }),
   },
 }

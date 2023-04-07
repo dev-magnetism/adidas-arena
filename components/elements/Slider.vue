@@ -39,7 +39,6 @@
               format="webp"
               :alt="`slider-visual-${index}`"
               sizes="sm:50vw md:85vw"
-              loading="lazy"
             />
           </div>
 

@@ -9,11 +9,14 @@
         />
       </TH1>
       <TH2 weight="bold" class="app-error__content__subtitle">
-        <div
-          ref="lottieGribouillisRed"
-          class="app-error__lottie app-error__lottie-gribouillis-red"
-        />
-        la page que <br />
+        la
+        <span
+          >page
+          <div
+            ref="lottieGribouillisRed"
+            class="app-error__lottie app-error__lottie-gribouillis-red"
+        /></span>
+        que <br />
         vous recherchez</TH2
       >
       <TH1 class="app-error__content__title">
@@ -49,6 +52,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import lottie from 'lottie-web'
 
 const lottieCircleBlueJson = {
@@ -1539,6 +1544,27 @@ export default {
     }
   },
 
+  head({ $seo }) {
+    return $seo({
+      title: '404',
+      description: `La page que vous cherchez est introuvable. Erreur 404. Retrouvez notre site et notre contenu depuis notre page d'accueil.`,
+      openGraph: {
+        title: this.appContent.data.seo_title,
+        description: `La page que vous cherchez est introuvable. Erreur 404. Retrouvez notre site et notre contenu depuis notre page d'accueil.`,
+      },
+      twitter: {
+        title: this.appContent.data.seo_title,
+        description: `La page que vous cherchez est introuvable. Erreur 404. Retrouvez notre site et notre contenu depuis notre page d'accueil.`,
+      },
+    })
+  },
+
+  computed: {
+    ...mapState({
+      appContent: (state) => state.appContent,
+    }),
+  },
+
   mounted() {
     if (this.$viewport.isMobile) return
 
@@ -1558,11 +1584,13 @@ export default {
     this.lottieFlecheRed3.destroy()
     this.lottieFlecheRed4.destroy()
     this.lottieFlecheBlue.destroy()
+    this.lottieGribouillisRed.destroy()
   },
   methods: {
     runLotties() {
       this.lottieCircleBlue.play()
       this.lottieGribouillisBlue.play()
+      this.lottieGribouillisRed.play()
       this.lottieFlecheRed1.play()
       this.lottieFlecheRed2.play()
       this.lottieFlecheRed3.play()
@@ -1676,9 +1704,9 @@ export default {
 
     &-gribouillis-red {
       left: 50%;
-      top: 40%;
-      transform: translate(-50%, -50%);
-      width: 35%;
+      transform: translate(-50%, 0%);
+      width: 100%;
+      bottom: 0%;
     }
     &-gribouillis-blue {
       top: 50%;
@@ -1736,6 +1764,10 @@ export default {
 
     &__subtitle.H2 {
       position: relative;
+
+      span {
+        position: relative;
+      }
     }
 
     &__title.H1 {

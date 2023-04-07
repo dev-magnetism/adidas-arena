@@ -39,6 +39,7 @@ export default {
     leave(el, done) {
       this.$store.commit('setAllowScroll', false)
       this.$store.commit('setWebglInFront', false)
+      this.$store.commit('setAppCursor', 'initial')
 
       const layerBlue = document.querySelector('.app-transition-layer.blue')
       const layerRed = document.querySelector('.app-transition-layer.red')
@@ -66,7 +67,6 @@ export default {
             onComplete: () => {
               this.$store.commit('setHeaderWhite', false)
               this.$store.commit('setHeaderReduced', false)
-              this.$store.commit('setCursorState', 'hide')
 
               if (
                 this.$route.name.includes('projet') ||
