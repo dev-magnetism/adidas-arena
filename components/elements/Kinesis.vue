@@ -15,27 +15,34 @@ export default {
     },
   },
   mounted() {
-    if (this.$viewport.isMobile) return
-
-    window.addEventListener('mousemove', this.onMouseMove)
+    this.initMatchMedia()
   },
   beforeDestroy() {
-    if (this.$viewport.isMobile) return
-
-    window.removeEventListener('mousemove', this.onMouseMove)
+    this.mm?.kill()
   },
   methods: {
-    onMouseMove(e) {
-      if (this.$viewport.isMobile) return
+    initMatchMedia() {
+      this.mm = gsap.matchMedia()
 
-      const x = (e.clientX / this.$viewport.width - 0.5) * 2 * this.speed
-      const y = (e.clientY / this.$viewport.height - 0.5) * 2 * this.speed
+      this.mm.add('(min-width: 768px)', (context) => {
+        console.log(context)
+        context.add('onMouseMove', (e) => {
+          const x = (e.clientX / this.$viewport.width - 0.5) * 2 * this.speed
+          const y = (e.clientY / this.$viewport.height - 0.5) * 2 * this.speed
 
-      gsap.to(this.$el, {
-        x,
-        y,
-        duration: 1,
-        ease: 'expo.out',
+          gsap.to(this.$el, {
+            x,
+            y,
+            duration: 1,
+            ease: 'expo.out',
+          })
+        })
+
+        window.addEventListener('mousemove', context.onMouseMove)
+
+        return () => {
+          window.removeEventListener('mousemove', context.onMouseMove)
+        }
       })
     },
   },

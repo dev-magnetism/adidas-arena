@@ -1,107 +1,111 @@
 <template>
   <div :style="bgColor" class="app-programmation-card">
+    <div ref="layerFiltering" class="app-programmation-card__layer-filtering" />
+
     <div class="app-programmation-card__visual">
+      <AppProgrammationEventStatut :color="statutColor">
+        Complet
+      </AppProgrammationEventStatut>
       <div :class="{ visible }" class="app-programmation-card__layer" />
 
-      <nuxt-picture
+      <!-- <nuxt-picture
         provider="directus"
         sizes="sm:100vw md:40vw"
         :src="content.visual"
         :alt="`visual-${content.name}`"
         loading="lazy"
-      />
+      /> -->
+
+      <picture>
+        <img src="https://picsum.photos/200/300" alt="fdsfds" />
+      </picture>
     </div>
 
     <div class="app-programmation-card__informations">
       <div class="app-programmation-card__head">
-        <TP2
-          class="type"
-          weight="bold"
-          :color="whitedTexts ? 'white' : 'black'"
-          tag="h3"
-        >
-          {{ content.type }}
+        <TP2 class="type" weight="bold" :color="whitedTexts" tag="h3">
+          {{ event.content.category }}
+          {{ hideInListing }}
         </TP2>
-        <TP2
-          v-if="content.date"
-          class="date"
-          weight="medium"
-          :color="whitedTexts ? 'white' : 'black'"
-          tag="h3"
-        >
-          {{ content.date }}
+        <TP2 class="date" weight="medium" :color="whitedTexts" tag="h3">
+          {{ $formatDate(event.sessions, true) }}
         </TP2>
       </div>
-      <TH2 :color="whitedTexts ? 'white' : 'black'" weight="bold" tag="h2">
-        {{ content.name }}
+      <TH2 :color="whitedTexts" weight="bold" tag="h2">
+        {{ event.artist_reference }}
       </TH2>
 
       <TP2
-        v-if="content.from_price"
+        v-if="event.min_price"
         class="app-programmation-card__from-price"
         weight="medium"
-        :color="whitedTexts ? 'white' : 'black'"
+        :color="whitedTexts"
       >
-        À partir de {{ content.from_price }}€
+        À partir de
+        {{ event.min_price }}€
       </TP2>
 
-      <a
+      <AtomsCTA
+        :color="statutColor"
+        :layer-color="statutColor"
+        :bg="'grey'"
+        :href="`programmation/${$convertToKebabCase(event.content.url)}--${
+          event.id
+        }`"
         class="app-programmation-card__cta"
-        :href="content.link"
-        target="_blank"
-        @mouseenter="onMouseEnter"
-        @mouseleave="onMouseLeave"
+        >coucou</AtomsCTA
       >
-        <SvgCtaUnion ref="arrow" :color="ctaColor" />
-      </a>
     </div>
-    <span v-if="content.full" class="app-programmation-card__full">
-      <TP2 weight="bold" :color="ctaColor">Complet</TP2>
-    </span>
   </div>
 </template>
 
 <script>
-import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default {
   props: {
-    content: {
+    event: {
       type: Object,
       default: () => {},
+    },
+    theme: {
+      type: String,
+      default: 'grey',
     },
   },
   data() {
     return {
       visible: false,
+      hideInListing: false,
     }
   },
   computed: {
-    theme() {
-      return Math.random() < 0.5 ? 'red' : Math.random() < 0.5 ? 'blue' : 'grey'
-    },
     bgColor() {
       return {
-        '--bg':
-          this.theme === 'blue'
-            ? 'var(--c-blue-adidas)'
-            : this.theme === 'red'
-            ? 'var(--c-red-adidas)'
-            : 'var(--c-grey)',
+        '--bg': `var(--c-${this.theme})`,
       }
     },
-    ctaColor() {
-      return this.theme === 'blue'
+    statutColor() {
+      return this.theme === 'blue-adidas'
         ? 'blue-adidas'
-        : this.theme === 'red'
+        : this.theme === 'red-adidas'
+        ? 'red-adidas'
+        : 'black'
+    },
+    ctaColor() {
+      return this.theme === 'blue-adidas'
+        ? 'blue-adidas'
+        : this.theme === 'red-adidas'
         ? 'red-adidas'
         : 'black'
     },
     whitedTexts() {
-      return this.theme === 'blue' || this.theme === 'red'
+      return this.theme === 'blue-adidas' || this.theme === 'red-adidas'
+        ? 'white'
+        : 'black'
     },
   },
+
   mounted() {
     if (this.$viewport.isMobile) return
 
@@ -113,45 +117,9 @@ export default {
         this.visible = true
       },
     })
-
-    this.initTimelineArrow()
   },
   beforeDestroy() {
     this.scrollTrigger?.kill()
-    this.tlArrow?.kill()
-  },
-  methods: {
-    onMouseEnter() {
-      if (this.$viewport.isMobile) return
-
-      this.tlArrow?.play()
-    },
-    onMouseLeave() {
-      if (this.$viewport.isMobile) return
-
-      this.tlArrow?.reverse()
-    },
-    initTimelineArrow() {
-      if (this.$viewport.isMobile) return
-
-      this.tlArrow = gsap.timeline({ paused: true })
-
-      this.tlArrow.to(this.$refs.arrow.$el, {
-        x: `${this.$viewport.width * 0.048611111111}px`, // width cta
-        duration: 0.5,
-        ease: 'power3.inOut',
-      })
-
-      this.tlArrow.set(this.$refs.arrow.$el, {
-        x: `${this.$viewport.width * -0.048611111111}px`, // width cta
-      })
-
-      this.tlArrow.to(this.$refs.arrow.$el, {
-        x: 0,
-        duration: 0.25,
-        ease: 'power3.out',
-      })
-    },
   },
 }
 </script>
@@ -165,10 +133,23 @@ export default {
   position: relative;
   border: 1px solid var(--c-black);
   background-color: var(--bg);
+  --scale-layer-filtering: 0;
+  --origin-layer-filtering: center top;
 
   @include mobile {
     grid-column: span 6;
-    padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(15px) mobile-vw(15px);
+  }
+
+  &__layer-filtering {
+    position: absolute;
+    width: calc(100% + 5px);
+    height: calc(100% + 5px);
+    background: var(--c-grey);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scaleY(0);
+    transform-origin: center top;
+    z-index: 2;
   }
 
   &:nth-child(3n + 1) {
@@ -208,31 +189,20 @@ export default {
     }
   }
 
-  &__full {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: var(--c-grey);
-    border: 1px solid var(--c-black);
-    display: block;
-    border-top: none;
-    border-right: none;
-    padding: desktop-vw(5px) desktop-vw(8px);
-
-    @include mobile {
-      padding: mobile-vw(5px) mobile-vw(8px);
-    }
-
-    .P2 {
-      text-transform: uppercase;
-    }
-  }
-
   &__visual {
     width: 100%;
     display: block;
     position: relative;
     z-index: 0;
+
+    .app-programmation-event-statut {
+      position: absolute;
+      right: 0;
+      border-right: none;
+      border-top: none;
+      top: 0;
+      z-index: 10;
+    }
   }
 
   picture {
@@ -255,15 +225,13 @@ export default {
     border-top: 1px solid var(--c-black);
 
     @include mobile {
-      padding: 0px;
-      margin-top: mobile-vw(15px);
-      border-top: 0px solid var(--c-black);
+      padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(10px) mobile-vw(15px);
     }
   }
 
   &__head {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
 
     .P2 {
       text-transform: uppercase;
@@ -272,6 +240,7 @@ export default {
     }
 
     .date {
+      margin-left: desktop-vw(30px);
     }
   }
 
@@ -279,7 +248,7 @@ export default {
     font-size: desktop-vw(64px);
     line-height: desktop-vw(58px);
     margin-top: desktop-vw(5px);
-    margin-bottom: desktop-vw(40px);
+    margin-bottom: desktop-vw(70px);
 
     @include mobile {
       margin-top: mobile-vw(5px);
@@ -296,23 +265,11 @@ export default {
   &__cta {
     position: absolute;
     bottom: 0;
-    height: desktop-vw(55px);
-    width: desktop-vw(70px);
     background: var(--c-grey);
     right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border: 1px solid var(--c-black);
     border-right: none;
     border-bottom: none;
     overflow: hidden;
-
-    @include mobile {
-      height: mobile-vw(50px);
-      width: mobile-vw(55px);
-    }
   }
 }
 </style>

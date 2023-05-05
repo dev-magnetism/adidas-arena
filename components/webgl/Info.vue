@@ -1,12 +1,22 @@
 <template>
   <div v-if="rendererInfo" class="app-renderer-info">
-    <div>calls: {{ rendererInfo.render.calls }}</div>
-    <div>triangles: {{ rendererInfo.render.triangles }}</div>
-    <div>geometries: {{ rendererInfo.memory.geometries }}</div>
-    <div>textures: {{ rendererInfo.memory.textures }}</div>
-    <div>programs: {{ rendererInfo.programs.length }}</div>
-    <div>interior visible: {{ interiorVisible }}</div>
-    <div>exterior visible: {{ exteriorVisible }}</div>
+    <TP2 color="white" weight="medium">
+      Calls: {{ rendererInfo.render.calls }}
+    </TP2>
+    <TP2 color="white" weight="medium">
+      Triangles: {{ rendererInfo.render.triangles }}
+    </TP2>
+    <TP2 color="white" weight="medium">
+      Geometries: {{ rendererInfo.memory.geometries }}
+    </TP2>
+    <TP2 color="white" weight="medium">
+      Textures: {{ rendererInfo.memory.textures }}
+    </TP2>
+    <TP2 color="white" weight="medium">
+      Programs: {{ rendererInfo.programs.length }}
+    </TP2>
+    <TP2 color="white" weight="medium">Interior: {{ interiorVisible }}</TP2>
+    <TP2 color="white" weight="medium">Exterior: {{ exteriorVisible }}</TP2>
   </div>
 </template>
 
@@ -42,10 +52,18 @@ export default {
   top: 50px;
   color: #fff;
   left: 0;
-  opacity: 0.9;
+  opacity: 0.8;
   padding: 8px;
   position: fixed;
   z-index: 10000;
+  pointer-events: none;
+
+  .P2 {
+    @include font-adihausDIN-medium();
+    text-transform: uppercase;
+    font-size: 14px;
+    line-height: 20px;
+  }
 
   @include mobile {
     display: none;

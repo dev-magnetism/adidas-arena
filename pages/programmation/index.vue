@@ -2,20 +2,16 @@
   <main class="app-programmation">
     <AppProgrammationHero :contents="contentHero" />
 
-    <div class="app-programmation-grid grid-inner">
-      <AppProgrammationCard
-        v-for="(event, index) in programmationsContent"
-        :key="index"
-        :content="event"
-      />
-    </div>
+    <AppProgrammationTest />
 
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+/* eslint-disable */
+
+import { mapState, mapMutations, mapGetters } from 'vuex'
 
 import scroll from '@/mixins/scroll'
 import pageTransition from '@/mixins/page-transition'
@@ -36,6 +32,12 @@ export default {
       content,
     }
   },
+  data() {
+    return {
+      inputCategory: 'tout',
+    }
+  },
+
   head({ $seo }) {
     return $seo({
       title: this.content.data.page_title,
@@ -50,12 +52,18 @@ export default {
       },
     })
   },
+
   computed: {
+    ...mapGetters({
+      programmesCategories: 'programmesCategories',
+      programmesMonths: 'programmesMonths',
+    }),
     ...mapState({
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
       allLoadedFake: (state) => state.allLoadedFake,
       programmationsContent: (state) => state.programmationsContent,
+      programmes: (state) => state.programmes,
     }),
     // contentProgrammationEvents() {
     //   return this.programmationsContent.filter((el) => !el.main_event)
@@ -66,7 +74,27 @@ export default {
         paragraph: this.content.data.hero_paragraph,
       }
     },
+    monthfileters() {
+      if (this.inputCategory === 'tout') {
+        return this.programmesMonths
+      } else {
+        return this.programmesMonths
+          .map((month) => {
+            const filteredMonthEvents = month.events.filter(
+              (event) =>
+                event.content.category.toLowerCase() === this.inputCategory
+            )
+            return {
+              month: month.month,
+              year: month.year,
+              events: filteredMonthEvents,
+            }
+          })
+          .filter((month) => month.events.length > 0)
+      }
+    },
   },
+  mounted() {},
 
   methods: {
     ...mapMutations({

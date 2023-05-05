@@ -219,9 +219,21 @@ export default {
         this.transitionedToInterior ||
         this.$viewport.isMobile
       ) {
+        console.log(
+          'onTogfgle',
+          this.$route.params.enterArena,
+          this.transitionedToInterior
+        )
         this.setInteriorVisible(self.isActive)
 
         if (self.isActive) {
+          console.log(
+            'onToggle',
+            this.$route.params.enterArena,
+            this.transitionedToInterior,
+            'is-active'
+          )
+
           const state =
             this.interiorInitialState === this.interiorIndexFloor ||
             !this.alreadyAppearedOnce
@@ -236,11 +248,22 @@ export default {
 
           this.alreadyAppearedOnce = true
         }
-      } else {
+      } else if (
+        !this.transitionedToInterior ||
+        !this.$route.params.enterArena ||
+        !this.$viewport.isMobile
+      ) {
+        console.log('onToggle else')
+
         this.setExteriorFullscreen(self.isActive)
 
         if (self.isActive) {
           this.initExteriorView()
+        } else {
+          const { exterior } = useWebGL()
+
+          exterior.drag.enabled = false
+          this.setExteriorVisible(self.isActive)
         }
       }
     },
@@ -257,6 +280,7 @@ export default {
     initExteriorView() {
       const { exterior } = useWebGL()
       exterior.drag.enabled = true
+      this.setInteriorVisible(false)
 
       this.$nuxt.$emit('reset:exterior')
     },
@@ -270,26 +294,28 @@ export default {
 
       const { interior, exterior, camera, scissors, renderer } = useWebGL()
 
-      if (this.interiorVisible) {
-        interior.position.y =
-          window.lenis.scroll / (camera.zoom - camera.zoom * 0.125)
+      if (this.interiorVisible || this.exteriorVisible) {
+        if (this.interiorVisible) {
+          interior.position.y =
+            window.lenis.scroll / (camera.zoom - camera.zoom * 0.125)
+        }
+
+        if (this.exteriorVisible) {
+          exterior.position.y =
+            window.lenis.scroll / (camera.zoom - camera.zoom * 0.125)
+        }
+
+        scissors.current = { ...scissors.hero }
+
+        scissors.current.y = window.lenis.scroll + scissors.hero?.y
+
+        renderer.setScissor(
+          scissors.current.x,
+          scissors.current.y,
+          scissors.current.width,
+          scissors.current.height
+        )
       }
-
-      if (this.exteriorVisible) {
-        exterior.position.y =
-          window.lenis.scroll / (camera.zoom - camera.zoom * 0.125)
-      }
-
-      scissors.current = { ...scissors.hero }
-
-      scissors.current.y = window.lenis.scroll + scissors.hero?.y
-
-      renderer.setScissor(
-        scissors.current.x,
-        scissors.current.y,
-        scissors.current.width,
-        scissors.current.height
-      )
     },
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',

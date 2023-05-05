@@ -4,7 +4,7 @@
     <AppArenaParisBasketClub :contents="contentParisBasketClub" />
     <EFullwidth :contents="contentFullwidth" />
     <AppArenaPartners :contents="contentPartners" />
-    <!-- <AppGallery :contents="contentGallery" /> -->
+    <AppGallery :contents="contentGallery" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
@@ -29,13 +29,13 @@ export default {
       limit: -1,
     })
 
-    // const galerie = await $directus.items('Galerie_arena').readByQuery({
-    //   limit: -1,
-    // })
+    const galerie = await $directus.items('Galerie_arena').readByQuery({
+      limit: -1,
+    })
 
     return {
       content,
-      // galerie,
+      galerie,
     }
   },
 
@@ -59,11 +59,11 @@ export default {
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
     }),
-    // contentGallery() {
-    //   return {
-    //     items: this.galerie.data,
-    //   }
-    // },
+    contentGallery() {
+      return {
+        items: this.galerie.data,
+      }
+    },
     contentPartners() {
       return {
         list: this.partnersContent.data,

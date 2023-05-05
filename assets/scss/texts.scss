@@ -41,6 +41,28 @@
   }
 }
 
+@mixin h2-bis() {
+  font-size: desktop-vw(64px);
+  line-height: desktop-vw(58px);
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+
+  @include mobile {
+    font-size: mobile-vw(56px);
+    line-height: mobile-vw(50px);
+  }
+
+  &.medium {
+    @include font-adihausDIN-cn-medium();
+  }
+
+  &.bold,
+  .bold,
+  strong {
+    @include font-adihausDIN-cn-bold();
+  }
+}
+
 @mixin h3() {
   font-size: desktop-vw(72px);
   line-height: desktop-vw(65px);

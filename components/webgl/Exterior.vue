@@ -452,7 +452,7 @@ export default {
           color: { value: this.colors.outlineColor },
         },
         vertexShader: `
-    precision highp float;
+    precision lowp float;
     attribute mat4 instanceMatrix;
     varying vec3 vNormal;
     void main() {
@@ -463,7 +463,7 @@ export default {
     }
   `,
         fragmentShader: `
-    precision highp float;
+    // precision lowp float;
     uniform vec3 color;
     varying vec3 vNormal;
     void main() {

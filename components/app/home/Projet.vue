@@ -905,7 +905,7 @@ export default {
     // width: desktop-vw(195px);
     bottom: 6.5%;
     left: columns(4);
-    padding: desktop-vw(20px) desktop-vw(5px) desktop-vw(20px) desktop-vw(20px);
+    padding: desktop-vw(20px) desktop-vw(20px) desktop-vw(20px) desktop-vw(20px);
     position: absolute;
     transform: rotate(-4deg);
     z-index: 1;

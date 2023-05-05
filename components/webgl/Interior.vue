@@ -756,6 +756,7 @@ export default {
       this.zoneFocusEnabled = true
       this.setInteriorCurrentZoneName(zoneSelected.name)
       this.setInteriorCurrentZoneHovered(zoneSelected.name)
+      this.setAppCursor('pointer')
 
       this.drag.enabled = false
 
@@ -1570,6 +1571,7 @@ export default {
       const saveZoneName = this.interiorCurrentZoneName
       this.zoneFocusEnabled = false
       this.currentZoneIntersect = null
+      this.setAppCursor('initial')
 
       this.setInteriorCurrentZoneName(null)
       this.setInteriorCurrentZoneHovered(null)

@@ -29,7 +29,7 @@
     <div
       :class="{ reduced: headerReduced, white: headerWhite }"
       class="app-header__burger"
-      @click="onClickBurger"
+      @click="setMenuActive(true)"
     >
       <TP1
         weight="bold"
@@ -45,6 +45,7 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default {
   computed: {
@@ -62,7 +63,6 @@ export default {
     menuName() {
       return this.appContent.data.menu_name
     },
-
     menuProgrammation() {
       return this.menuContent.data.find((el) => el.programmation)
     },
@@ -70,12 +70,26 @@ export default {
       return this.appContent.data.header_name_mobile
     },
   },
+  mounted() {
+    this.scrollTrigger = ScrollTrigger.create({
+      trigger: this.$el,
+      start: 'top+=20px top',
+      end: 'bottom+=20px top',
+      onEnter: (e) => {
+        this.setHeaderReduced(e.isActive)
+      },
+      onLeaveBack: (e) => {
+        this.setHeaderReduced(e.isActive)
+      },
+    })
+  },
+  beforeDestroy() {
+    this.scrollTrigger?.kill()
+  },
   methods: {
-    onClickBurger() {
-      this.setMenuActive(!this.menuActive)
-    },
     ...mapMutations({
       setMenuActive: 'setMenuActive',
+      setHeaderReduced: 'setHeaderReduced',
     }),
   },
 }
@@ -100,7 +114,7 @@ export default {
   }
 
   &.reduced {
-    transform: translate(0%, calc(-#{desktop-vw(10px)} - 40px));
+    transform: translate(0%, calc(-#{desktop-vw(10px)} - 25px));
 
     @include mobile {
       transform: translate(0%, 0%);
@@ -128,6 +142,7 @@ export default {
       line-height: 16px;
       text-transform: uppercase;
       transition: color 0.4s var(--ease-out-cubic);
+      user-select: none;
     }
   }
 

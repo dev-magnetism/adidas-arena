@@ -14,12 +14,12 @@
         :content="contents.paragraph"
       />
 
-      <div class="app-programmation-hero__arrow-left">
+      <!-- <div class="app-programmation-hero__arrow-left">
         <ELottie id="Fleche_2" start="top center" end="bottom center-=25%" />
       </div>
       <div class="app-programmation-hero__arrow-right">
         <ELottie id="Fleche_2" start="top center" end="bottom center-=25%" />
-      </div>
+      </div> -->
     </div>
     <div ref="mainCard" class="app-programmation-hero__main-card">
       <EKinesis :speed="5">
@@ -273,11 +273,6 @@ export default {
 <style lang="scss">
 .app-programmation-hero {
   position: relative;
-  margin-bottom: desktop-vw(150px);
-
-  @include mobile {
-    margin-bottom: mobile-vw(150px);
-  }
 
   &__texts {
     grid-column: 2 / span 5;

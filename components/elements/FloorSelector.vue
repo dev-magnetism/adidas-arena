@@ -177,14 +177,16 @@ export default {
       }
     }
 
-    &:not(.active):hover {
-      border: 2px solid var(--c-blue-adidas);
+    @include hover {
+      &:not(.active):hover {
+        border: 2px solid var(--c-blue-adidas);
 
-      &:not(:last-child) {
-        margin-top: 7.5px;
+        &:not(:last-child) {
+          margin-top: 7.5px;
+        }
+
+        margin-bottom: -15px;
       }
-
-      margin-bottom: -15px;
     }
   }
 }

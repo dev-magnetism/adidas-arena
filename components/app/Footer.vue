@@ -581,14 +581,8 @@ export default {
       display: flex;
       flex-direction: column;
 
-      &:not(:last-child) {
-        @include mobile {
-          margin-right: mobile-vw(70px) !important;
-        }
-      }
-
       @include mobile {
-        // width: 50%;
+        flex: 0 0 50%;
       }
 
       .P2 {

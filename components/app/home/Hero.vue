@@ -514,7 +514,6 @@ export default {
           absolute: true,
           duration: 0.65,
           delay: 0.15,
-
           onUpdate: () => {
             this.onResizePreviewExterior()
           },

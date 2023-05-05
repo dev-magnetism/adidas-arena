@@ -4,6 +4,7 @@
       <AtomsCornerPoints :size-points="$viewport.isMobile ? 6 : 12" />
       <EInteriorZoneInformations />
       <EInteriorInteractions />
+      <EHeroInstructions />
       <EInteriorFloorSelectorMobile />
       <EScrollIndicator @click.native="scrollHero()" />
     </div>
@@ -33,7 +34,7 @@ export default {
       this.onToggle(this.scrollTrigger)
     },
     initialHeroDisplayed() {
-      this.setAllowScroll(true)
+      // this.setAllowScroll(true)
     },
   },
   mounted() {
@@ -61,14 +62,6 @@ export default {
       if (!this.allLoadedFake) return
 
       this.setInteriorVisible(self.isActive)
-
-      if (self.isActive) {
-        this.setInteriorIndexFloor({
-          id: 2,
-          focus: 'PUBLIC_Cantine',
-          immediate: true,
-        })
-      }
     },
     scrollHero() {
       if (!window.lenis) return
@@ -78,6 +71,12 @@ export default {
       })
     },
     initInteriorView() {
+      this.setInteriorIndexFloor({
+        id: 2,
+        focus: 'PUBLIC_Cantine',
+        immediate: true,
+      })
+
       this.$nuxt.$emit('reset:interior')
     },
 

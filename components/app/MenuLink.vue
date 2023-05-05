@@ -143,8 +143,8 @@ export default {
     this.initLotties()
   },
   beforeDestroy() {
-    this.lottieHover?.kill()
-    this.lottieActive?.kill()
+    this.lottieHover?.destroy()
+    this.lottieActive?.destroy()
   },
   methods: {
     onClickLink(url) {

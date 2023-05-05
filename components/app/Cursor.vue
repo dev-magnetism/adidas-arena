@@ -68,10 +68,12 @@ export default {
       this.xTo(e.clientX)
       this.yTo(e.clientY)
 
-      if (e.clientX > this.$viewport.width / 2) {
-        this.setCursorSliderLeftZone(false)
-      } else {
-        this.setCursorSliderLeftZone(true)
+      if (this.cursorState === 'slider') {
+        if (e.clientX > this.$viewport.width / 2) {
+          this.setCursorSliderLeftZone(false)
+        } else {
+          this.setCursorSliderLeftZone(true)
+        }
       }
     },
     ...mapMutations({

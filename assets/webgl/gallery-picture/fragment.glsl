@@ -1,9 +1,9 @@
-precision highp float;
+precision lowp float;
 
 uniform sampler2D uMap;
 uniform vec2 uRatio;
 uniform vec2 uResolutionEl;
-uniform float uOpacity;
+uniform float uThreshold;
 uniform float uZoom;
 uniform float uOffset;
 varying vec2 vUv;
@@ -27,14 +27,6 @@ vec2 resizedUv(vec2 inital_uv, vec2 aspect_ratio)
 	return new_uv;
 }
 
-vec3 stepBorder(in vec2 _uv, in float _width){
-	vec2 bl = step(vec2(_width),_uv); // bottom-left
-	vec2 tr = step(vec2(_width),1.0-_uv);   // top-right
-    // botom left && top right
-    vec3 pct = vec3(bl.x * bl.y * tr.x * tr.y);
-    return pct;
- }
-
 void main() {   
     vec2 uv = resizedUv(vUv, uRatio);
 
@@ -44,10 +36,7 @@ void main() {
     );
   
 	vec4 color = texture2D(uMap, zoomedUv);
+	vec4 greyColor = vec4(0.961, 0.961, 0.953, 1.);
 
-	gl_FragColor = color;
-
-	// gl_FragColor = vec4(.2, .84, 1., 1.);
-	
-    gl_FragColor.a *= uOpacity;
+	gl_FragColor = mix(color, greyColor, uThreshold);	
 }

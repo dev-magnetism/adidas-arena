@@ -5,16 +5,21 @@
     :class="classes"
     :style="{
       'background-color': `var(--c-${bg})`,
-      '--color-underline': `var(--c-${color})`,
+      '--layer-color': `var(--c-${layerColor})`,
     }"
     :href="href"
     :target="external || automaticHref || blank ? '_blank' : false"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
   >
-    <TP2 class="app-atoms-cta__text" weight="bold" :color="color"><slot /></TP2>
+    <TP2
+      class="app-atoms-cta__text"
+      weight="bold"
+      :color="mousehover ? 'grey' : color"
+      ><slot
+    /></TP2>
     <div v-if="arrow" class="app-atoms-cta__arrow">
-      <SvgCtaUnion ref="arrow" :color="color" />
+      <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
     </div>
   </a>
   <nuxt-link
@@ -23,16 +28,21 @@
     :class="classes"
     :style="{
       'background-color': `var(--c-${bg})`,
-      '--color-underline': `var(--c-${color})`,
+      '--layer-color': `var(--c-${layerColor})`,
     }"
     :to="href"
     :target="blank ? '_blank' : false"
-    @mouseenter="onMouseEnter"
-    @mouseleave="onMouseLeave"
+    @mouseenter.native="onMouseEnter"
+    @mouseleave.native="onMouseLeave"
   >
-    <TP2 class="app-atoms-cta__text" weight="bold" :color="color"><slot /></TP2>
+    <TP2
+      class="app-atoms-cta__text"
+      weight="bold"
+      :color="mousehover ? 'grey' : color"
+      ><slot
+    /></TP2>
     <div v-if="arrow" class="app-atoms-cta__arrow">
-      <SvgCtaUnion ref="arrow" :color="color" />
+      <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
     </div>
   </nuxt-link>
   <button
@@ -41,14 +51,19 @@
     :class="classes"
     :style="{
       'background-color': `var(--c-${bg})`,
-      '--color-underline': `var(--c-${color})`,
+      '--layer-color': `var(--c-${layerColor})`,
     }"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
   >
-    <TP2 class="app-atoms-cta__text" weight="bold" :color="color"><slot /></TP2>
+    <TP2
+      class="app-atoms-cta__text"
+      weight="bold"
+      :color="mousehover ? 'grey' : color"
+      ><slot
+    /></TP2>
     <div v-if="arrow" class="app-atoms-cta__arrow">
-      <SvgCtaUnion ref="arrow" :color="color" />
+      <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
     </div>
   </button>
 </template>
@@ -90,11 +105,21 @@ export default {
       required: false,
       default: 'grey',
     },
+    layerColor: {
+      type: String,
+      required: false,
+      default: 'red-adidas',
+    },
     blank: {
       type: Boolean,
       required: false,
       default: false,
     },
+  },
+  data() {
+    return {
+      mousehover: false,
+    }
   },
   computed: {
     automaticHref() {
@@ -122,13 +147,15 @@ export default {
     this.tl = gsap.timeline({ paused: true })
 
     this.tl.to(this.$refs.arrow.$el, {
-      xPercent: 100,
+      xPercent: 120,
       duration: 0.5,
       ease: 'power3.inOut',
     })
+
     this.tl.set(this.$refs.arrow.$el, {
-      xPercent: -100,
+      xPercent: -120,
     })
+
     this.tl.to(this.$refs.arrow.$el, {
       xPercent: 0,
       duration: 0.25,
@@ -140,9 +167,15 @@ export default {
   },
   methods: {
     onMouseEnter() {
+      if (this.$viewport.isMobile) return
+
+      this.mousehover = true
       this.tl?.play()
     },
     onMouseLeave() {
+      if (this.$viewport.isMobile) return
+
+      this.mousehover = false
       this.tl?.reverse()
     },
   },
@@ -161,19 +194,19 @@ export default {
   cursor: pointer;
 
   &.arrow {
-    padding: desktop-vw(15px) desktop-vw(5px) desktop-vw(15px) desktop-vw(25px);
+    padding: desktop-vw(15px) desktop-vw(20px) desktop-vw(15px) desktop-vw(20px);
 
     @include mobile {
-      padding: mobile-vw(18px) mobile-vw(5px) mobile-vw(18px) mobile-vw(25px);
+      padding: mobile-vw(18px) mobile-vw(25px) mobile-vw(18px) mobile-vw(25px);
     }
   }
 
   &::after {
     content: '';
-    width: 100%;
+    width: calc(100% + 2px);
     height: calc(100% + 2px);
     position: absolute;
-    background: var(--c-red-adidas);
+    background: var(--layer-color);
     left: 0;
     top: 0;
     transform: scaleY(0);
@@ -195,7 +228,7 @@ export default {
   &__text {
     position: relative;
     z-index: 1;
-    flex: 0 0 80%;
+    transition: color 0.15s var(--ease-in-out-cubic);
   }
 
   .P2,
@@ -216,7 +249,11 @@ export default {
   &__arrow {
     overflow: hidden;
     z-index: 1;
-    flex: 0 0 20%;
+    margin-left: desktop-vw(15px);
+
+    @include mobile {
+      margin-left: mobile-vw(15px);
+    }
 
     svg {
       width: 100%;
@@ -224,8 +261,12 @@ export default {
       will-change: transform;
       z-index: 1;
 
+      path {
+        transition: fill 0.15s var(--ease-in-out-cubic);
+      }
+
       @include mobile {
-        padding: 0px mobile-vw(15px) mobile-vw(0px) mobile-vw(5px);
+        padding: 0px;
       }
     }
   }

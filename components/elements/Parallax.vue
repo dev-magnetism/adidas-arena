@@ -33,31 +33,44 @@ export default {
     },
   },
   mounted() {
-    if (this.$viewport.isMobile) return
-
-    const y = this.$viewport.width * this.speed * 0.1
-
-    this.setY = gsap.quickSetter(this.$refs.trigger, 'y', 'px')
-
-    this.tl = gsap.timeline({
-      scrollTrigger: {
-        id: this.id,
-        trigger: this.$refs.trigger,
-        scrub: this.scrub,
-        start: 'top bottom',
-        end: 'bottom top',
-        onUpdate: (e) => {
-          if (this.position === 'top') {
-            this.setY(e.progress * y)
-          } else {
-            this.setY(-gsap.utils.mapRange(0, 1, -y, y, e.progress))
-          }
-        },
-      },
-    })
+    this.initMatchMedia()
   },
   beforeDestroy() {
-    this.tl?.kill()
+    this.mm?.kill()
+  },
+  methods: {
+    initMatchMedia() {
+      this.mm = gsap.matchMedia()
+
+      this.mm.add('(min-width: 768px)', (context) => {
+        const y = this.$viewport.width * this.speed * 0.1
+
+        const setY = gsap.quickSetter(this.$refs.trigger, 'y', 'px')
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            id: this.id,
+            trigger: this.$refs.trigger,
+            scrub: this.scrub,
+            start: 'top bottom',
+            end: 'bottom top',
+            onUpdate: (e) => {
+              if (this.position === 'top') {
+                setY(e.progress * y)
+              } else {
+                setY(-gsap.utils.mapRange(0, 1, -y, y, e.progress))
+              }
+            },
+          },
+        })
+
+        return () => {
+          console.log('here kill')
+          tl?.kill()
+          setY(0)
+        }
+      })
+    },
   },
 }
 </script>

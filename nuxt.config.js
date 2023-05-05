@@ -1,3 +1,10 @@
+const convertToKebabCase = (string) => {
+  return string
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/[\s_]+/g, '-')
+    .toLowerCase()
+}
+
 export default {
   target: 'static',
   head: {
@@ -31,7 +38,7 @@ export default {
 
   plugins: [
     { src: '~/plugins/gsap.js', mode: 'client' },
-    { src: '~/plugins/utils.js', mode: 'client' },
+    { src: '~/plugins/utils.js' },
     { src: '~/plugins/raf.js', mode: 'client' },
     { src: '~/plugins/viewport.js', mode: 'client' },
   ],
@@ -82,6 +89,43 @@ export default {
 
   generate: {
     fallback: true,
+    async routes() {
+      const axios = require('axios')
+
+      const limit = 50
+      const routes = []
+
+      const response = await axios.get(
+        `https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=1&page=1`
+      )
+
+      const lengthPages = Math.ceil(response.data.meta.total_count / limit)
+
+      const pages = Array(lengthPages)
+        .fill(0)
+        .map((_, index) => index + 1)
+
+      for (const index of pages) {
+        const payload = await axios.get(
+          `https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
+        )
+
+        const events = payload.data.data
+
+        events.forEach((event) => {
+          const id = event.id
+
+          const { url } = event.translations.find(
+            (translation) => translation.language === 'fr'
+          )
+
+          routes.push(`/programmation/${convertToKebabCase(url)}--${id}`)
+        })
+      }
+
+      return routes
+    },
+    interval: 250,
   },
 
   static: {
@@ -142,6 +186,7 @@ export default {
     '@nuxtjs/gtm',
     'nuxt-compress',
     '@nuxtjs/sitemap',
+    '@nuxtjs/axios',
   ],
 
   robots: {

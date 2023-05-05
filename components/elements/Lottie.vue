@@ -1,8 +1,5 @@
 <template>
-  <div ref="lottie" :class="y" class="app-element-lottie">
-    <slot />
-    <!-- <div ref="lottie" class="app-element-lottie-wrapper" /> -->
-  </div>
+  <div :class="y" class="app-element-lottie" />
 </template>
 
 <script>
@@ -99,6 +96,10 @@ export default {
           return require(`@/assets/lotties/Cercle_5.json`)
         case 'Fleche_Match':
           return require(`@/assets/lotties/Fleche_Match.json`)
+        case '404_Fleche_Rouge_01':
+          return require(`@/assets/lotties/404_Fleche_Rouge_01.json`)
+        case '404_Fleche_Bleu_01':
+          return require(`@/assets/lotties/404_Fleche_Bleu_01.json`)
         default:
           return null
       }
@@ -107,8 +108,7 @@ export default {
   mounted() {
     if (this.$viewport.isMobile) {
       this.animation = lottie.loadAnimation({
-        container: this.$refs.lottie,
-        // renderer: vars.renderer || 'svg',
+        container: this.$el,
         renderer: 'svg',
         loop: false,
         autoplay: false,
@@ -118,7 +118,7 @@ export default {
       this.animation.goToAndStop(this.animation.totalFrames - 1, true)
     } else {
       this.LottieScrollTrigger({
-        target: this.$refs.lottie,
+        target: this.$el,
         start: this.start,
         end: this.end,
         scrub: this.scrub,

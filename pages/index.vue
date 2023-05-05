@@ -142,7 +142,6 @@ export default {
       }
     },
   },
-
   methods: {
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',

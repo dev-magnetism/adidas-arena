@@ -173,6 +173,13 @@ export default {
     informationsMobileOpen(newVal) {
       if (newVal) this.setHeaderHide(newVal)
     },
+    currentContent(newVal) {
+      if (newVal) {
+        this.setAllowScroll(false)
+      } else {
+        this.setAllowScroll(true)
+      }
+    },
   },
 
   methods: {
@@ -188,6 +195,7 @@ export default {
     },
     ...mapMutations({
       setHeaderHide: 'setHeaderHide',
+      setAllowScroll: 'setAllowScroll',
     }),
   },
 }
@@ -355,6 +363,7 @@ export default {
       );
     background-size: 7px 7px;
     background-position: 0 0, 3.5px 3.5px;
+    z-index: 0;
 
     @include mobile {
       width: 100%;
@@ -403,6 +412,7 @@ export default {
       height: 80px;
       max-width: 210px;
       text-align: center;
+      z-index: 0;
 
       .H4 {
         font-size: 32px;

@@ -119,6 +119,8 @@ export default {
 
     this.$viewport.events.on('resize', this.onResize)
 
+    window.addEventListener('keyup', this.onKeyUp)
+
     this.initGUI()
   },
 
@@ -129,6 +131,8 @@ export default {
     this.$viewport.events.off('resize', this.onResize)
 
     this.$raf.remove(`arena-gallery`, this.onFrame)
+
+    window.removeEventListener('keyup', this.onKeyUp)
 
     this.gui?.dispose()
   },
@@ -143,6 +147,11 @@ export default {
     onMouseLeaveGallery() {
       this.setCursorState('hide')
       this.setAppCursor('initial')
+    },
+    onKeyUp(e) {
+      if (e.key === 'Escape') {
+        if (this.imageSelected) this.onSelectImage()
+      }
     },
     onResize() {
       if (!this.galleryVisible && !this.scrollTrigger.isActive) return
@@ -247,6 +256,8 @@ export default {
         imagesNotSelected.forEach((picture) => {
           picture.appearPicture()
         })
+
+        console.log('here')
 
         this.imageSelected = false
         this.lastImageSelectedId = null
@@ -395,7 +406,7 @@ export default {
 
   &.image-selected {
     .app-arena-gallery__title.H2 {
-      opacity: 0;
+      opacity: 0.35;
     }
   }
 

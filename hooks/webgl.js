@@ -14,9 +14,9 @@ import {
   ReinhardToneMapping,
   CineonToneMapping,
   ACESFilmicToneMapping,
+  WebGLRenderTarget,
   LinearEncoding,
   sRGBEncoding,
-  WebGLRenderTarget,
   // ColorManagement,
 } from 'three'
 
@@ -123,7 +123,6 @@ class GL {
 
     // /!\ POST PROCESSING FROM PMDRS /!\
     // /!\ POST PROCESSING FROM PMDRS /!\
-
     // this.composer = new EffectComposer(this.renderer, {
     //   frameBufferType: HalfFloatType,
     //   multisampling:
@@ -150,7 +149,6 @@ class GL {
     //   this.SMAAPass = new EffectPass(this.camera, this.SMAAEffect)
     //   this.composer.addPass(this.SMAAPass)
     // }
-
     // /!\ POST PROCESSING FROM PMDRS /!\
     // /!\ POST PROCESSING FROM PMDRS /!\
 

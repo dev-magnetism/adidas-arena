@@ -130,8 +130,10 @@ export default {
   watch: {
     menuActive(payload) {
       if (payload) {
+        console.log(payload)
+
         this.initMainTimeline()
-      } else if (!payload && this.tlMain) {
+      } else if (!payload) {
         if (this.submenuActive) {
           this.initMainTimelineClosing()
         } else {
@@ -240,9 +242,9 @@ export default {
         ? null
         : this.$route.path
 
-      this.onSelectImage(route)
+      console.log(route)
 
-      this.pointerEventsActivated = true
+      this.onSelectImage(route)
 
       this.tlMain = gsap
         .timeline()
@@ -273,9 +275,11 @@ export default {
         .to([this.$refs.layerRed, this.$refs.layerBlue], {
           scaleY: 0,
           duration: 0.6,
-
           transformOrigin: 'center bottom',
           ease: 'power3.inOut',
+          onStart: () => {
+            this.pointerEventsActivated = true
+          },
         })
         .addLabel('title', '<65%')
         .to(
@@ -332,6 +336,9 @@ export default {
             stagger: 0.15,
             duration: 0.75,
             ease: 'expo.out',
+            onReverseComplete: () => {
+              this.pointerEventsActivated = false
+            },
             onStart: () => {
               this.$refs.mainLinks.forEach((el) => {
                 el.appearActiveLottie()
@@ -394,6 +401,9 @@ export default {
             stagger: 0.15,
             duration: 0.75,
             ease: 'expo.out',
+            onStart: () => {
+              this.pointerEventsActivated = false
+            },
           },
           'title'
         )
@@ -578,8 +588,6 @@ export default {
       if (!this.menuActive) return
 
       this.setMenuActive(false)
-
-      this.pointerEventsActivated = false
     },
     onResetMenu() {
       this.tlMain?.getChildren().forEach((tween) => {
@@ -869,8 +877,10 @@ export default {
     transform-origin: center top;
     cursor: initial;
 
-    &:hover {
-      cursor: initial;
+    @include hover {
+      &:hover {
+        cursor: initial;
+      }
     }
 
     &.red {

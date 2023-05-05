@@ -34,8 +34,8 @@ import {
 import boundingRect from '@/mixins/bounding-rect-webgl-gallery'
 import useWebGL from '~/hooks/webgl'
 
-import vertexShader from '~/assets/webgl/vertex.glsl'
-import fragmentShader from '~/assets/webgl/fragment.glsl'
+import vertexShader from '~/assets/webgl/gallery-picture/vertex.glsl'
+import fragmentShader from '~/assets/webgl/gallery-picture/fragment.glsl'
 
 export default {
   mixins: [boundingRect],
@@ -75,6 +75,7 @@ export default {
   beforeDestroy() {
     const { gallery } = useWebGL()
 
+    this.texture?.dispose()
     this.mesh?.geometry.dispose()
     this.mesh?.material.dispose()
 
@@ -109,8 +110,8 @@ export default {
     hidePicture() {
       if (this.content.isVideo) this.texture.image.pause()
 
-      gsap.to(this.material.uniforms.uOpacity, {
-        value: 0.5,
+      gsap.to(this.material.uniforms.uThreshold, {
+        value: 0.65,
         ease: 'power1.inOut',
         duration: 0.25,
       })
@@ -118,13 +119,14 @@ export default {
     appearPicture() {
       if (this.content.isVideo) this.texture.image.play()
 
-      gsap.to(this.material.uniforms.uOpacity, {
-        value: 1,
+      gsap.to(this.material.uniforms.uThreshold, {
+        value: 0,
         ease: 'power1.inOut',
         duration: 0.25,
       })
     },
     focusPicture() {
+      this.mesh.renderOrder = 2
       this.setCursorState('hide')
 
       this.corners.forEach((el) => {
@@ -218,6 +220,8 @@ export default {
         )
     },
     unFocusPicture() {
+      this.mesh.renderOrder = 0
+
       this.setCursorState('slider')
 
       this.tlFocusPicture?.kill()
@@ -300,8 +304,8 @@ export default {
 
       this.material = new ShaderMaterial({
         uniforms: {
-          uOpacity: {
-            value: 1,
+          uThreshold: {
+            value: 0,
           },
           uMap: {
             value: this.texture,
@@ -351,20 +355,21 @@ export default {
       const point = new Mesh(geometry, this.materialBorder)
       point.visible = false
 
-      point.scale.set(this.cornerSizeInitial, this.cornerSizeInitial, 1)
+      point.scale.set(this.cornerSizeInitial, this.cornerSizeInitial, 0)
       point.scale.divide(this.mesh.scale)
+      point.renderOrder = 2
 
       const pointBottomLeft = point.clone()
-      pointBottomLeft.position.set(-0.5, -0.5, 1)
+      pointBottomLeft.position.set(-0.5, -0.5, 0)
 
       const pointTopLeft = point.clone()
-      pointTopLeft.position.set(-0.5, 0.5, 1)
+      pointTopLeft.position.set(-0.5, 0.5, 0)
 
       const pointTopRight = point.clone()
-      pointTopRight.position.set(0.5, 0.5, 1)
+      pointTopRight.position.set(0.5, 0.5, 0)
 
       const pointBottomRight = point.clone()
-      pointBottomRight.position.set(0.5, -0.5, 1)
+      pointBottomRight.position.set(0.5, -0.5, 0)
 
       this.corners.push(
         pointBottomLeft,
@@ -374,11 +379,12 @@ export default {
       )
 
       this.outline = new Mesh(geometry, this.materialBorder)
+      point.renderOrder = 1
 
       this.outline.scale.set(
         this.mesh.scale.x + this.outlineSize,
         this.mesh.scale.y + this.outlineSize,
-        1
+        0
       )
       this.outline.scale.divide(this.mesh.scale)
 
