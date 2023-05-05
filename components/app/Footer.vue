@@ -74,7 +74,7 @@
             </TP2>
           </AtomsLink>
         </div>
-        <ul class="app-footer__links__ul second-column">
+        <div class="app-footer__links__ul second-column">
           <AtomsLink
             v-for="(item, index) in contents.data.app_footer_links_right"
             :key="index"
@@ -84,7 +84,7 @@
               {{ item.app_footer_links_right_text }}
             </TP2>
           </AtomsLink>
-        </ul>
+        </div>
       </div>
       <div class="app-footer__social-networks">
         <a
@@ -593,7 +593,7 @@ export default {
       }
 
       &:first-of-type {
-        margin-right: 70px;
+        margin-right: desktop-vw(70px);
 
         @include mobile {
           margin-right: 0px;
