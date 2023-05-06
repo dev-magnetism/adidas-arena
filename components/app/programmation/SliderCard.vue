@@ -11,6 +11,7 @@
           :src="event.list_image.filename_disk"
           :alt="`slider-image-${event.artist_reference}`"
           :lazy="true"
+          :tiny="true"
         />
       </div>
     </div>

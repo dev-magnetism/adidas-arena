@@ -16,7 +16,7 @@
       class="app-element-enter-arena__cta"
       @click.native="$emit('onEnterArena')"
     >
-      <p>{{ appContent.data.enter_arena_cta }}</p>
+      {{ appContent.data.enter_arena_cta }}
     </AtomsCTA>
   </div>
 </template>

@@ -74,7 +74,7 @@ export default {
     this.scrollTrigger = ScrollTrigger.create({
       trigger: this.$el,
       start: 'top+=20px top',
-      end: 'bottom+=20px top',
+      end: 'max',
       fastScrollEnd: true,
       onEnter: (e) => {
         this.setHeaderReduced(true)
@@ -115,7 +115,7 @@ export default {
   }
 
   &.reduced {
-    transform: translate(0%, -35px);
+    transform: translate(0%, -40px);
 
     @include mobile {
       transform: translate(0%, 0%);
