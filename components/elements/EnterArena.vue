@@ -1,6 +1,9 @@
 <template>
   <div
-    :class="{ activated: exteriorFullscreen && exteriorVisible }"
+    :class="{
+      activated:
+        exteriorFullscreen && exteriorVisible && !instructionsWebglVisible,
+    }"
     class="app-element-enter-arena"
   >
     <div class="app-element-enter-arena__title">
@@ -27,6 +30,7 @@ export default {
       exteriorFullscreen: (state) => state.exteriorFullscreen,
       exteriorVisible: (state) => state.exteriorVisible,
       appContent: (state) => state.appContent,
+      instructionsWebglVisible: (state) => state.instructionsWebglVisible,
     }),
   },
 }

@@ -26,9 +26,9 @@
       class="app-be-part-of-guests-presentation__framed-visual"
       :speed="1"
     >
-      <EKinesis :speed="4">
+      <EKinesis :speed="7.5">
         <EFramedPicture color="blue-adidas">
-          <EKinesis :speed="-3.5">
+          <EKinesis :speed="4">
             <nuxt-picture
               class="picture-absolute"
               provider="directus"

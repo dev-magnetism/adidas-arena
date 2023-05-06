@@ -6,12 +6,11 @@
           :class="{ visible }"
           class="app-programmation-slider-card__layer"
         />
-        <nuxt-picture
+        <AppProgrammationImage
           class="app-programmation-slider-card__visual__picture"
-          provider="directus"
-          sizes="sm:100vw md:25vw"
-          :src="content.visual"
-          :alt="`visual-${content.name}`"
+          :src="event.list_image.filename_disk"
+          :alt="`slider-image-${event.artist_reference}`"
+          :lazy="true"
         />
       </div>
     </div>
@@ -24,43 +23,43 @@
           :color="whitedTexts ? 'white' : 'black'"
           tag="h3"
         >
-          {{ content.type }}
+          {{ event.content.category }}
         </TP2>
         <TP2
-          v-if="content.date"
+          v-if="event.sessions"
           class="date"
           weight="medium"
           :color="whitedTexts ? 'white' : 'black'"
         >
-          {{ content.date }}
+          {{ $formatDate(event.sessions) }}
         </TP2>
       </div>
       <TH2 :color="whitedTexts ? 'white' : 'black'" weight="bold">
-        {{ content.name }}
+        {{ event.artist_reference }}
       </TH2>
 
       <TP2
-        v-if="content.from_price"
+        v-if="event.min_price"
         class="app-programmation-slider-card__from-price"
         weight="medium"
         :color="whitedTexts ? 'white' : 'black'"
       >
-        À partir de {{ content.from_price }}€
+        À partir de {{ event.min_price }}€
       </TP2>
 
-      <a
+      <nuxt-link
         class="app-programmation-slider-card__cta"
-        :href="content.link"
-        target="_blank"
-        @click.stop="() => {}"
-        @mouseenter="onMouseEnter"
-        @mouseleave="onMouseLeave"
+        :to="`programmation/${$convertToKebabCase(event.content.url)}--${
+          event.id
+        }`"
+        @mouseenter.native="onMouseEnter"
+        @mouseleave.native="onMouseLeave"
       >
         <SvgCtaUnion ref="arrow" :color="ctaColor" />
-      </a>
+      </nuxt-link>
     </div>
     <span
-      :class="{ full: content.full }"
+      :class="{ full: event.status_code === 'K' }"
       class="app-programmation-slider-card__full"
     >
       <TP2 weight="bold" :color="ctaColor">Complet</TP2>
@@ -74,7 +73,7 @@ import { mapMutations } from 'vuex'
 
 export default {
   props: {
-    content: {
+    event: {
       type: Object,
       default: () => {},
     },

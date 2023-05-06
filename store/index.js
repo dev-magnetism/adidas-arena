@@ -1516,9 +1516,6 @@ export const state = () => ({
 })
 
 export const getters = {
-  allLoadedActual: (state) => {
-    return state.coverVideoLoaded && state.interactiveSliderLoaded
-  },
   programmesCategories: (state) => {
     const result = Object.values(
       state.programmes.reduce((acc, { content: { category } }) => {
@@ -1533,6 +1530,9 @@ export const getters = {
     result.unshift({ category: 'Tout', count: state.programmes.length })
 
     return result
+  },
+  programmesSlider: (state) => {
+    return state.programmes.slice(0, 8)
   },
   programmesMonths: (state) => {
     return (

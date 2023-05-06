@@ -27,9 +27,9 @@
     >
       <div class="app-element-programmation-slider__inner">
         <AppProgrammationSliderCard
-          v-for="(card, index) in contentProgrammations"
-          :key="'programmation slider' + index"
-          :content="card"
+          v-for="(event, index) in programmesSlider"
+          :key="`programmation-slider-${index}`"
+          :event="event"
           :theme="index % 3 === 0 ? 'grey' : index % 3 === 1 ? 'red' : 'blue'"
           :rotate-negative="!(index % 2)"
         />
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState, mapGetters } from 'vuex'
 import EmblaCarousel from 'embla-carousel'
 
 export default {
@@ -61,6 +61,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      programmesSlider: 'programmesSlider',
+    }),
     ...mapState({
       cursorSliderHold: (state) => state.cursorSliderHold,
       cursorSliderLeftZone: (state) => state.cursorSliderLeftZone,
@@ -77,6 +80,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.programmesSlider)
     this.embla = EmblaCarousel(this.$refs.wrapper, {
       dragFree: true,
       containScroll: 'keepSnaps',

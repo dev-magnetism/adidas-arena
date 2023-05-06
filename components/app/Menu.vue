@@ -130,8 +130,6 @@ export default {
   watch: {
     menuActive(payload) {
       if (payload) {
-        console.log(payload)
-
         this.initMainTimeline()
       } else if (!payload) {
         if (this.submenuActive) {
@@ -231,7 +229,18 @@ export default {
     },
     onResize() {
       if (this.submenuActive) {
-        Flip.fit(this.els.submenuTitle.nodeWrapper, this.els.targetFlip)
+        Flip.fit(this.els.submenuTitle.nodeWrapper, this.els.targetFlip, {
+          simple: true,
+        })
+      } else {
+        const elTitleSubmenuSave =
+          this.els.main.nodesComponents[
+            this.els.main.nodesComponents.length - 1
+          ]
+
+        Flip.fit(this.els.submenuTitle.nodeWrapper, elTitleSubmenuSave, {
+          simple: true,
+        })
       }
     },
     initMainTimeline() {
@@ -240,9 +249,9 @@ export default {
 
       const route = this.$route.path.includes('be-part-of')
         ? null
+        : this.$route.name === 'programmation-id'
+        ? '/programmation'
         : this.$route.path
-
-      console.log(route)
 
       this.onSelectImage(route)
 
@@ -378,7 +387,9 @@ export default {
                 this.els.main.nodesComponents.length - 1
               ]
 
-            Flip.fit(this.els.submenuTitle.nodeWrapper, elTitleSubmenuSave)
+            Flip.fit(this.els.submenuTitle.nodeWrapper, elTitleSubmenuSave, {
+              simple: true,
+            })
 
             gsap.set('.app-menu-link__button-submenu__inner', {
               rotation: 0,
@@ -554,6 +565,7 @@ export default {
           duration: 0.95,
           delay: 0.4,
           ease: 'expo.inOut',
+          simple: true,
         })
 
         this.$refs.mainLinks.forEach((el) => {
@@ -574,6 +586,7 @@ export default {
             duration: 0.9,
             delay: 0.5,
             ease: 'expo.inOut',
+            simple: true,
           }
         )
 
@@ -672,7 +685,7 @@ export default {
 
   &__visual {
     height: 100%;
-    flex: 0 0 58%;
+    width: 58%;
     transform: translateY(20%);
     position: relative;
     opacity: 0;
@@ -793,7 +806,7 @@ export default {
 
   &__content {
     height: 100%;
-    flex: 0 0 42%;
+    width: 42%;
     position: relative;
     padding: desktop-vw(20px) desktop-vw(40px) desktop-vw(5px) desktop-vw(40px);
     display: flex;

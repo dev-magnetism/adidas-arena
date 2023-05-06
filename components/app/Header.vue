@@ -75,11 +75,12 @@ export default {
       trigger: this.$el,
       start: 'top+=20px top',
       end: 'bottom+=20px top',
+      fastScrollEnd: true,
       onEnter: (e) => {
-        this.setHeaderReduced(e.isActive)
+        this.setHeaderReduced(true)
       },
       onLeaveBack: (e) => {
-        this.setHeaderReduced(e.isActive)
+        this.setHeaderReduced(false)
       },
     })
   },
@@ -98,7 +99,7 @@ export default {
 <style lang="scss">
 .app-header {
   position: fixed;
-  top: desktop-vw(75px);
+  top: 75px;
   left: 50%;
   display: flex;
   width: 50%;
@@ -114,7 +115,7 @@ export default {
   }
 
   &.reduced {
-    transform: translate(0%, calc(-#{desktop-vw(10px)} - 25px));
+    transform: translate(0%, -35px);
 
     @include mobile {
       transform: translate(0%, 0%);

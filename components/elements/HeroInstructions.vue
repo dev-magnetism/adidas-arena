@@ -3,7 +3,9 @@
     :class="{
       active:
         (exteriorFullscreen && exteriorVisible && instructionsWebglVisible) ||
-        (interiorVisible && instructionsWebglVisible),
+        (interiorVisible &&
+          instructionsWebglVisible &&
+          !interiorCurrentZoneName),
     }"
     class="app-element-hero-instructions"
   >
@@ -29,11 +31,14 @@ export default {
       exteriorArenaHovered: (state) => state.exteriorArenaHovered,
       exteriorVisible: (state) => state.exteriorVisible,
       instructionsWebglVisible: (state) => state.instructionsWebglVisible,
+      interiorCurrentZoneName: (state) => state.interiorCurrentZoneName,
     }),
   },
   watch: {
     instructionsWebglVisible(newVal) {
       if (!newVal) {
+        this.observer?.kill()
+
         setTimeout(() => {
           this.lottie?.destroy()
         }, 750)
