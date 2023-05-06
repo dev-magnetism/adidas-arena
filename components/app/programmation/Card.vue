@@ -8,24 +8,18 @@
       </AppProgrammationEventStatut>
       <div :class="{ visible }" class="app-programmation-card__layer" />
 
-      <!-- <nuxt-picture
-        provider="directus"
-        sizes="sm:100vw md:40vw"
-        :src="content.visual"
-        :alt="`visual-${content.name}`"
-        loading="lazy"
-      /> -->
-
-      <picture>
-        <img src="https://picsum.photos/200/300" alt="fdsfds" />
-      </picture>
+      <AppProgrammationImage
+        :src="event.list_image.filename_disk"
+        :alt="`card-image-${event.id}-${event.artist_reference}`"
+        :lazy="true"
+        :tiny="true"
+      />
     </div>
 
     <div class="app-programmation-card__informations">
       <div class="app-programmation-card__head">
         <TP2 class="type" weight="bold" :color="whitedTexts" tag="h3">
           {{ event.content.category }}
-          {{ hideInListing }}
         </TP2>
         <TP2 class="date" weight="medium" :color="whitedTexts" tag="h3">
           {{ $formatDate(event.sessions, true) }}

@@ -59,7 +59,10 @@
     </div>
     <div class="app-programmation-event-about-artist__right">
       <TH2 weight="bold">{{ event.content.about_headline }}</TH2>
-      <TP2 tag="div" weight="medium" v-html="event.content.about_text" />
+      <ERichTextEvent
+        :component="{ name: 'TP2', weight: 'medium', tagTarget: 'p', tag: 'p' }"
+        :content="event.content.about_text"
+      />
       <AtomsSpotify
         v-for="(tile, index) in event.content.spotify_tiles"
         :key="index"

@@ -1,10 +1,15 @@
 <template>
   <div class="app-programmation-event-ticketing block-inner">
     <TH2 weight="bold" class="app-programmation-event-ticketing__title">
-      Billeterie
+      {{ content.title }}
     </TH2>
     <div class="app-programmation-event-tickets grid">
-      <a href="#" class="app-programmation-event-ticketing__ticket">
+      <a
+        v-if="event.content.url_event"
+        :href="event.content.url_event"
+        target="_blank"
+        class="app-programmation-event-ticketing__ticket"
+      >
         <div class="app-programmation-event-ticketing__infos">
           <TH2Bis>Standard</TH2Bis>
           <TP2 weight="medium">
@@ -16,9 +21,14 @@
           <SvgScanCode />
         </div>
       </a>
-      <a href="#" class="app-programmation-event-ticketing__ticket">
+      <a
+        v-if="event.content.tm_ticket_office_url_premium"
+        target="_blank"
+        :href="event.content.tm_ticket_office_url_premium"
+        class="app-programmation-event-ticketing__ticket"
+      >
         <div class="app-programmation-event-ticketing__infos">
-          <TH2Bis>Standard</TH2Bis>
+          <TH2Bis>PREMIUM</TH2Bis>
           <TP2 weight="medium">
             Achetez votre place et venez vivre une expérience inoubliable
           </TP2>
@@ -31,6 +41,21 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    content: {
+      type: Object,
+      default: () => {},
+    },
+    event: {
+      type: Object,
+      default: () => {},
+    },
+  },
+}
+</script>
 
 <style lang="scss">
 .app-programmation-event-ticketing {

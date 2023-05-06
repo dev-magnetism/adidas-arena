@@ -31,42 +31,42 @@
         weight="bold"
         class="app-programmation-event-safety-instructions__title"
       >
-        Consignes de sécurité
+        {{ content.title }}
       </TH2Bis>
-      <ul class="app-programmation-event-safety-instructions__list">
-        <li class="app-programmation-event-safety-instructions__item">
+      <div class="app-programmation-event-safety-instructions__list">
+        <div class="app-programmation-event-safety-instructions__item">
           <TH4 weight="medium">
             Les appareils photos “professionnels” sont interdits.
           </TH4>
-        </li>
-        <li class="app-programmation-event-safety-instructions__item">
+        </div>
+        <div class="app-programmation-event-safety-instructions__item">
           <TH4 weight="medium">
             Les boissons & la nourriture extérieures ne sont pas autorisées.
           </TH4>
-        </li>
-        <li class="app-programmation-event-safety-instructions__item">
+        </div>
+        <div class="app-programmation-event-safety-instructions__item">
           <TH4 weight="medium">
             Les valises et sacs de voyage sont interdits. LEs sacs à dos sont
             autorisés. Les sacs à dos de plus de 10l sont autorisés uniquement
             en consigne.
           </TH4>
-        </li>
-        <li class="app-programmation-event-safety-instructions__item">
+        </div>
+        <div class="app-programmation-event-safety-instructions__item">
           <TH4 weight="medium">
             Les casques sont autorisés uniquement en consigne.
           </TH4>
-        </li>
-        <li class="app-programmation-event-safety-instructions__item">
+        </div>
+        <div class="app-programmation-event-safety-instructions__item">
           <TH4 weight="medium">
             Les appareils photos “professionnels” sont interdits.
           </TH4>
-        </li>
-        <li class="app-programmation-event-safety-instructions__item">
+        </div>
+        <div class="app-programmation-event-safety-instructions__item">
           <TH4 weight="medium">
             Les boissons & la nourriture extérieures ne sont pas autorisées.
           </TH4>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -75,34 +75,42 @@
 import { gsap } from 'gsap'
 
 export default {
+  props: {
+    content: {
+      type: Object,
+      default: () => {},
+    },
+  },
   mounted() {
-    this.initScrollTrigger()
+    this.initMatchMedia()
+  },
+  beforeDestroy() {
+    this.tween?.kill()
+    this.mm?.kill()
   },
 
   methods: {
-    initScrollTrigger() {
-      if (this.$viewport.isMobile) return
+    initMatchMedia() {
+      this.mm = gsap.matchMedia()
 
-      gsap.fromTo(
-        this.$refs.wrapper,
-        {
-          rotate: 8,
-          opacity: 0,
-          y: '20%',
-        },
-        {
+      this.mm.add('(min-width: 768px)', (context) => {
+        this.tween = gsap.to(this.$refs.wrapper, {
           rotate: 4,
           opacity: 1,
           y: '0%',
           ease: 'power2.inOut',
           duration: 0.5,
           scrollTrigger: {
-            toggleActions: 'play none none none',
+            toggleActions: 'play none none play',
             trigger: this.$refs.wrapper,
             start: 'top bottom-=20%',
           },
+        })
+
+        return () => {
+          this.tween?.kill()
         }
-      )
+      })
     },
   },
 }
@@ -183,7 +191,9 @@ export default {
     background-size: 1.2em 1.2em;
     padding: desktop-vw(50px) desktop-vw(50px) desktop-vw(65px) desktop-vw(50px);
     position: relative;
-    transform: rotate(4deg);
+    transform: translate(0, 20%) rotate(8deg);
+    opacity: 0;
+    height: 100%;
 
     @include mobile {
       width: 100%;

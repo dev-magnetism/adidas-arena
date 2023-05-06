@@ -9,28 +9,25 @@
           start="top center+=25%"
           end="bottom center-=10%"
         />
-        Annulation
+
+        {{ content.title }}
       </TH4>
-      <TP2 weight="medium">
-        Lorem ipsum dolor sit amet consectetur. Quisque ornare luctus id
-        molestie elementum bibendum. Nunc vel volutpat hac ut dolor in. Nec
-        semper adipiscing orci ac ultrices a. Nibh suscipit nunc nisi mi nam
-        felis sem sed. Pretium eu sed et turpis vel. Commodo blandit tincidunt
-        faucibus leo eu quam aliquet in tempor. Massa nunc vulputate quam dui
-        facilisi elementum porta orci pretium. Massa nisl vel tristique id
-        lobortis risus ut ut. Sodales nulla lectus senectus rutrum eget
-        ultricies sit. Cursus vitae est nisl ac aliquam. Quis enim consectetur
-        non mauris purus arcu est ut fringilla. Consectetur volutpat molestie
-        nunc netus pulvinar a nulla in. Eget ac vel viverra convallis sem
-        suspendisse pellentesque. Sagittis vivamus quam scelerisque volutpat
-        maecenas at suspendisse.
-      </TP2>
+      <ERichTextEvent
+        :component="{ name: 'TP2', weight: 'medium', tagTarget: 'p', tag: 'p' }"
+        :content="content.body"
+      />
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    content: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {}
   },

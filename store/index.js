@@ -1481,6 +1481,7 @@ export const state = () => ({
   interiorContent: null,
   menuContent: null,
   programmationsContent: null,
+  programmationsEventContent: null,
   programmes: null,
 
   // Exterior scene
@@ -1503,6 +1504,7 @@ export const state = () => ({
   menuActive: false,
   popinNewsletterClosedInSession: false,
   popinNewsletterOpen: false,
+  popinWaitingLineOpen: false,
   overlayContactOpen: false,
   headerReduced: false,
   headerWhite: false,
@@ -1570,6 +1572,9 @@ export const mutations = {
   },
   setInstructionsWebglVisible: (state, value) => {
     state.instructionsWebglVisible = value
+  },
+  setPopinWaitingLineOpen: (state, value) => {
+    state.popinWaitingLineOpen = value
   },
   setAppCursor: (state, value) => {
     state.appCursor = value
@@ -1667,6 +1672,9 @@ export const mutations = {
   setProgrammationsContent: (state, value) => {
     state.programmationsContent = value
   },
+  setProgrammationsEventContent: (state, value) => {
+    state.programmationsEventContent = value
+  },
   setMenuContent: (state, value) => {
     state.menuContent = value
   },
@@ -1720,6 +1728,14 @@ export const actions = {
     })
 
     commit('setProgrammationsContent', programmations.data)
+
+    const programmationsEvent = await $directus
+      .items('Programmation_Event')
+      .readByQuery({
+        limit: -1,
+      })
+
+    commit('setProgrammationsEventContent', programmationsEvent.data)
 
     const { meta } = await this.$axios.$get(
       `https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=1&page=1`

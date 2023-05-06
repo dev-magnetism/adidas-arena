@@ -192,6 +192,7 @@ export default {
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  transition: opacity 0.4s var(--ease-in-out-cubic);
 
   &.arrow {
     padding: desktop-vw(15px) desktop-vw(20px) desktop-vw(15px) desktop-vw(20px);
@@ -199,6 +200,11 @@ export default {
     @include mobile {
       padding: mobile-vw(18px) mobile-vw(25px) mobile-vw(18px) mobile-vw(25px);
     }
+  }
+
+  &.disabled {
+    opacity: 0.65;
+    pointer-events: none;
   }
 
   &::after {

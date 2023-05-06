@@ -1,22 +1,35 @@
 <template>
   <main class="app-programmation-event">
-    <AppProgrammationEventHero :event="event" />
-    <!-- <AppProgrammationEventCancelation v-if="event.status_code === 'H'" />
+    <AppProgrammationEventHero ref="hero" :event="event" />
+    <AppProgrammationEventCancelation
+      v-if="event.status_code === 'H'"
+      :content="contentCancelation"
+    />
     <AppProgrammationEventMoreInformation :event="event" />
-    <AppProgrammationEventDates :event="event" />
-    <AppProgrammationEventTicketing /> -->
+    <AppProgrammationEventDates
+      v-if="event.sessions.length - 1 >= 1"
+      :content="contentDates"
+      :event="event"
+    />
+    <AppProgrammationEventTicketing
+      :event="event"
+      :content="contentTicketing"
+    />
     <!-- <AppProgrammationEventOffers ref="offers" /> -->
-    <!-- <AppProgrammationEventSafetyInstructions /> -->
+    <AppProgrammationEventSafetyInstructions :content="contentSafety" />
     <AppProgrammationEventAboutArtist :event="event" />
-    <!-- <AppProgrammationEventMoreEvents /> -->
+    <AppProgrammationEventMoreEvents :content="contentMoreEvents" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
-    <AppProgrammationEventBar :class="{ hide: !appearBar }" />
+    <AppProgrammationEventBar :event="event" :class="{ hide: !appearBar }" />
+    <!-- <AppProgrammationPopinWaitingLine /> -->
   </main>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { gsap } from 'gsap'
+
 import scroll from '@/mixins/scroll'
 import pageTransition from '@/mixins/page-transition'
 
@@ -78,7 +91,34 @@ export default {
     ...mapState({
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
+      programmationsEventContent: (state) => state.programmationsEventContent,
     }),
+    contentCancelation() {
+      return {
+        title: this.programmationsEventContent.cancelation_title,
+        body: this.programmationsEventContent.cancelation_body,
+      }
+    },
+    contentDates() {
+      return {
+        title: this.programmationsEventContent.dates_title,
+      }
+    },
+    contentTicketing() {
+      return {
+        title: this.programmationsEventContent.ticketing_title,
+      }
+    },
+    contentSafety() {
+      return {
+        title: this.programmationsEventContent.safety_instructions_title,
+      }
+    },
+    contentMoreEvents() {
+      return {
+        title: this.programmationsEventContent.also_like_title,
+      }
+    },
     formattedDateStart() {
       const date = new Date(this.event.start)
       const options = { day: 'numeric', month: 'short', year: 'numeric' }
@@ -88,26 +128,43 @@ export default {
   },
 
   mounted() {
-    console.log('hereeedddddeeee', this.event)
+    console.log(
+      'hereeeddddddddeeee',
+      this.event,
+      this.programmationsEventContent
+    )
 
-    this.initScrollTrigger()
+    this.initMatchMedia()
   },
   beforeDestroy() {
     this.scrollTrigger?.kill()
+    this.mm?.kill()
   },
   methods: {
-    initScrollTrigger() {
-      if (!this.$refs.offers) return
-      if (this.$viewport.isMobile) return
+    initMatchMedia() {
+      this.mm = gsap.matchMedia()
 
-      this.scrollTrigger = ScrollTrigger.create({
-        trigger: this.$refs.offers.$el,
-        start: 'top center',
-        end: 'top bottom',
-        endTrigger: '.app-footer',
-        onToggle: (self) => {
-          this.appearBar = self.isActive
-        },
+      this.mm.add('(min-width: 768px)', (context) => {
+        const trigger =
+          this.event.sessions.length - 1 >= 1
+            ? '.app-programmation-event-dates'
+            : '.app-programmation-event-hero'
+
+        this.scrollTrigger = ScrollTrigger.create({
+          trigger,
+          start: 'bottom top',
+          fastScrollEnd: true,
+          end: 'top bottom',
+          endTrigger: '.app-footer',
+          onToggle: (self) => {
+            this.appearBar = self.isActive
+          },
+        })
+
+        return () => {
+          this.appearBar = false
+          this.scrollTrigger?.kill()
+        }
       })
     },
   },

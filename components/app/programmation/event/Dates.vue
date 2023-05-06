@@ -1,10 +1,7 @@
 <template>
-  <div
-    v-if="event.sessions.length - 1 >= 1"
-    class="app-programmation-event-dates block-inner"
-  >
+  <div class="app-programmation-event-dates block-inner">
     <TH2 weight="bold" class="app-programmation-event-dates__title">
-      Les dates
+      {{ content.title }}
     </TH2>
     <div class="app-programmation-event-dates__items grid">
       <AppProgrammationEventDatesItem
@@ -24,6 +21,10 @@
 export default {
   props: {
     event: {
+      type: Object,
+      default: () => {},
+    },
+    content: {
       type: Object,
       default: () => {},
     },

@@ -9,6 +9,10 @@ export default {
       type: String,
       default: 'white',
     },
+    statut: {
+      type: String,
+      default: '',
+    },
   },
 }
 </script>

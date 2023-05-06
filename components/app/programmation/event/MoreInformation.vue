@@ -5,13 +5,10 @@
         Plus d'infos
       </TH4>
 
-      <ERichText :tag="'H5'" :content="event.content.description" />
-
-      <!-- <TP2
-        v-dompurify-html="event.content.description"
-        tag="div"
-        weight="medium"
-      /> -->
+      <ERichTextEvent
+        :component="{ name: 'TP2', weight: 'medium', tagTarget: 'p', tag: 'p' }"
+        :content="event.content.description"
+      />
     </div>
     <div class="app-programmation-event-more-information__right">
       <a href="#" class="app-programmation-event-more-information__item">

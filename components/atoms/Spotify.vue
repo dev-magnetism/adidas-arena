@@ -66,6 +66,14 @@ export default {
     transform: translateX(0%) rotate(calc(var(--rotate) / 2)) !important;
   }
 
+  &:first-of-type {
+    margin-top: desktop-vw(50px);
+
+    @include mobile {
+      margin-top: mobile-vw(40px);
+    }
+  }
+
   &:last-child {
     margin-bottom: desktop-vw(0px);
   }
