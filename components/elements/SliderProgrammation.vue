@@ -223,10 +223,6 @@ export default {
     flex-direction: column;
   }
 
-  &__wrapper {
-    // overflow: hidden;
-  }
-
   &__inner {
     display: flex;
     column-gap: desktop-vw(60px);

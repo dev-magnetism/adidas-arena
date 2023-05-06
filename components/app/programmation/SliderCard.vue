@@ -288,11 +288,12 @@ export default {
     .P2 {
       text-transform: uppercase;
     }
-    .type {
-    }
 
-    .date {
-    }
+    // .type {
+    // }
+
+    // .date {
+    // }
   }
 
   .H2.bold {

@@ -65,6 +65,8 @@ export default {
       this.mouseDown = false
     },
     onMouseMove(e) {
+      if (this.cursorState === 'hide' || this.cursorState !== 'slider') return
+
       this.xTo(e.clientX)
       this.yTo(e.clientY)
 
@@ -117,6 +119,7 @@ export default {
   &--slider {
     .app-cursor__inner {
       transform: translate(-50%, -50%) scale(1);
+      transition-delay: 0.1s;
     }
   }
 
