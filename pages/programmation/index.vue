@@ -1,16 +1,14 @@
 <template>
   <main class="app-programmation">
-    <AppProgrammationHero :contents="contentHero" />
+    <AppProgrammationHero :content="contentHero" />
 
-    <AppProgrammationTest />
+    <AppProgrammationList />
 
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
 <script>
-/* eslint-disable */
-
 import { mapState, mapMutations, mapGetters } from 'vuex'
 
 import scroll from '@/mixins/scroll'
@@ -65,37 +63,19 @@ export default {
       programmationsContent: (state) => state.programmationsContent,
       programmes: (state) => state.programmes,
     }),
-    // contentProgrammationEvents() {
-    //   return this.programmationsContent.filter((el) => !el.main_event)
-    // },
+    contentMainCard() {
+      return (
+        this.programmes.find((event) => event.is_cover) || this.programmes[0]
+      )
+    },
     contentHero() {
       return {
         title: this.content.data.hero_title,
         paragraph: this.content.data.hero_paragraph,
-      }
-    },
-    monthfileters() {
-      if (this.inputCategory === 'tout') {
-        return this.programmesMonths
-      } else {
-        return this.programmesMonths
-          .map((month) => {
-            const filteredMonthEvents = month.events.filter(
-              (event) =>
-                event.content.category.toLowerCase() === this.inputCategory
-            )
-            return {
-              month: month.month,
-              year: month.year,
-              events: filteredMonthEvents,
-            }
-          })
-          .filter((month) => month.events.length > 0)
+        event: this.contentMainCard,
       }
     },
   },
-  mounted() {},
-
   methods: {
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',
@@ -113,7 +93,7 @@ export default {
   }
 
   .app-footer {
-    margin-top: desktop-vw(50px);
+    margin-top: desktop-vw(185px);
 
     @include mobile {
       margin-top: mobile-vw(80px);

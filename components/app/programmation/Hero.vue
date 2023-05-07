@@ -4,38 +4,51 @@
       <ERichText
         ref="title"
         class="app-programmation-hero__title"
-        :content="contents.title"
+        :content="content.title"
         tag="h1"
       />
 
       <ERichText
         ref="paragraph"
         class="app-programmation-hero__paragraph"
-        :content="contents.paragraph"
+        :content="content.paragraph"
       />
 
-      <!-- <div class="app-programmation-hero__arrow-left">
-        <ELottie id="Fleche_2" start="top center" end="bottom center-=25%" />
+      <!-- <ERichTextEvent
+        :component="{ name: 'TP2', weight: 'medium', tagTarget: 'p', tag: 'p' }"
+        :content="event.content.about_text"
+      /> -->
+
+      <div class="app-programmation-hero__arrow-left">
+        <ELottie
+          id="Fleche_2"
+          start="top center+=20%"
+          end="bottom center-=25%"
+        />
       </div>
       <div class="app-programmation-hero__arrow-right">
-        <ELottie id="Fleche_2" start="top center" end="bottom center-=25%" />
-      </div> -->
+        <ELottie
+          id="Fleche_2"
+          start="top center+=20%"
+          end="bottom center-=25%"
+        />
+      </div>
     </div>
     <div ref="mainCard" class="app-programmation-hero__main-card">
       <EKinesis :speed="5">
         <AtomsCornerPoints :size-points="8" />
 
         <div class="app-programmation-hero__main-card__wrapper">
-          <nuxt-picture
-            provider="directus"
-            sizes="sm:100vw md:40vw"
-            :src="contentCard.visual"
-            :alt="`visual-${contentCard.name}`"
+          <AppProgrammationImage
+            :src="content.event.list_image.filename_disk"
+            :alt="`main-card-image-${content.event.id}-${content.event.artist_reference}`"
+            :lazy="true"
+            :tiny="true"
           />
 
           <div class="app-programmation-hero__main-card__content">
             <TH3 class="app-programmation-hero__main-card__name">
-              {{ contentCard.name }}
+              {{ content.event.artist_reference }}
               <span
                 v-if="contentCard.full"
                 class="app-programmation-hero__main-card__full"
@@ -43,18 +56,20 @@
               >
             </TH3>
             <TH4 class="app-programmation-hero__main-card__date">
-              {{ contentCard.date }}
+              {{ $formatDate(content.event.sessions) }}
             </TH4>
             <TP2
               weight="medium"
               class="app-programmation-hero__main-card__from-price"
             >
-              À partir de {{ contentCard.from_price }}€
+              À partir de {{ content.event.min_price }}€
             </TP2>
           </div>
         </div>
         <AtomsCTA
-          :href="contentCard.link"
+          :href="`programmation/${$convertToKebabCase(
+            content.event.content.url
+          )}--${content.event.id}`"
           class="app-programmation-hero__main-card__cta"
         >
           {{ contentCard.full ? `Liste d'attente` : `Réserver` }}
@@ -76,9 +91,12 @@ import { mapState, mapMutations } from 'vuex'
 import { SplitText } from 'gsap/SplitText'
 import { gsap } from 'gsap'
 
+// calendar_highlight
+// is_cover
+
 export default {
   props: {
-    contents: {
+    content: {
       type: Object,
       default: () => {},
     },
@@ -315,7 +333,7 @@ export default {
 
   &__arrow-left {
     position: absolute;
-    top: calc(100% + 25%);
+    top: 85%;
     width: desktop-vw(90px);
     transform: scaleX(-1) rotate(20deg);
     left: 10%;
@@ -324,7 +342,7 @@ export default {
 
   &__arrow-right {
     position: absolute;
-    top: calc(100% + 50%);
+    top: 95%;
     width: desktop-vw(90px);
     transform: scaleX(1) rotate(20deg);
     left: 40%;
@@ -439,6 +457,7 @@ export default {
     picture {
       aspect-ratio: 540/480;
       width: 100%;
+      height: auto;
       display: block;
       @include noise();
       position: relative;

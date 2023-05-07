@@ -127,8 +127,6 @@ export default {
   position: relative;
   border: 1px solid var(--c-black);
   background-color: var(--bg);
-  --scale-layer-filtering: 0;
-  --origin-layer-filtering: center top;
 
   @include mobile {
     grid-column: span 6;
@@ -142,8 +140,8 @@ export default {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%) scaleY(0);
-    transform-origin: center top;
     z-index: 2;
+    transform-origin: center top;
   }
 
   &:nth-child(3n + 1) {

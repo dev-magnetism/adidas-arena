@@ -21,7 +21,6 @@ export default {
     }
   },
   mounted() {
-    this.initScrollTrigger()
     this.initMatchMedia()
   },
   beforeDestroy() {
@@ -29,20 +28,19 @@ export default {
     this.mm?.kill()
   },
   methods: {
-    initScrollTrigger() {
-      this.scrollTrigger = ScrollTrigger.create({
-        trigger: this.$el,
-        start: 'top bottom',
-        end: 'bottom top',
-        onToggle: (e) => {
-          this.active = e.isActive
-        },
-      })
-    },
     initMatchMedia() {
       this.mm = gsap.matchMedia()
 
       this.mm.add('(min-width: 768px)', (context) => {
+        this.scrollTrigger = ScrollTrigger.create({
+          trigger: this.$el,
+          start: 'top bottom',
+          end: 'bottom top',
+          onToggle: (e) => {
+            this.active = e.isActive
+          },
+        })
+
         context.add('onMouseMove', (e) => {
           if (!this.active) return
 
@@ -60,8 +58,9 @@ export default {
         window.addEventListener('mousemove', context.onMouseMove)
 
         return () => {
-          window.removeEventListener('mousemove', context.onMouseMove)
           this.active = false
+          this.scrollTrigger?.kill()
+          window.removeEventListener('mousemove', context.onMouseMove)
         }
       })
     },
