@@ -247,19 +247,22 @@ export default {
       return d1 > d2
     },
     updateFilters() {
-      this.filteringInProgress = true
       this.directionMonth = 'down'
       this.barActive = this.scrollTriggerBar.isActive
       this.currentMonth = `${this.monthFilters[0].month}-${this.monthFilters[0].year}`
 
-      window.lenis?.scrollTo?.(this.$el, {
-        duration: 1.5,
-        lock: true,
-        offset: 50,
-        onComplete: () => {
-          this.filteringInProgress = false
-        },
-      })
+      if (window.lenis) {
+        this.filteringInProgress = true
+
+        window.lenis?.scrollTo?.(this.$el, {
+          duration: 1.5,
+          lock: true,
+          offset: 50,
+          onComplete: () => {
+            this.filteringInProgress = false
+          },
+        })
+      }
 
       const containerState = Flip.getState(this.$refs.container)
 
