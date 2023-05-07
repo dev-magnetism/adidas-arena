@@ -26,7 +26,7 @@
             </TP1>
 
             <TP1 weight="regular">
-              {{ cat.count }}
+              {{ cat.count.toString().padStart(2, '0') }}
             </TP1>
           </label>
         </div>
@@ -55,9 +55,10 @@
             :key="`bar-month-${year.month}-${year.year}-${index}`"
             tag="p"
           >
-            {{ year.month }} {{ year.year }}
+            {{ year.month }} '{{ year.year.toString().substr(-2) }}
           </TH3>
         </transition-group>
+        <SvgArrowFilter />
       </div>
     </div>
 
@@ -359,7 +360,7 @@ export default {
   &-events {
     display: grid;
     grid-template-columns: 1fr;
-    grid-gap: desktop-vw(85px) desktop-vw(0px);
+    grid-gap: desktop-vw(120px) desktop-vw(0px);
     position: relative;
 
     &__month {
@@ -456,11 +457,18 @@ export default {
         position: absolute;
         display: block;
         top: 0;
-        left: 0;
+        right: 0;
         width: 100%;
         height: 100%;
         -webkit-appearance: none;
         z-index: 1;
+      }
+
+      svg {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translate(0%, -50%);
       }
 
       &__wrapper {
@@ -471,7 +479,7 @@ export default {
 
         .H3 {
           position: absolute;
-          right: 0;
+          right: 45px;
 
           &.up-bar-month-enter-active,
           &.up-bar-month-leave-active,
