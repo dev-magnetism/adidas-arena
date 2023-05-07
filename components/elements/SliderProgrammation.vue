@@ -223,6 +223,16 @@ export default {
     flex-direction: column;
   }
 
+  &__wrapper {
+    width: 100%;
+    overflow: hidden;
+    padding: desktop-vw(65px) 0;
+
+    @include mobile {
+      padding: mobile-vw(65px) 0;
+    }
+  }
+
   &__inner {
     display: flex;
     column-gap: desktop-vw(60px);
@@ -247,7 +257,7 @@ export default {
 
   &__cta-mobile.app-atoms-cta {
     width: 65%;
-    margin-top: mobile-vw(85px);
+    margin-top: mobile-vw(25px);
     align-self: center;
 
     @include desktop {
@@ -261,7 +271,7 @@ export default {
 
     @include mobile {
       row-gap: 0px;
-      margin-bottom: mobile-vw(40px);
+      margin-bottom: mobile-vw(0px);
     }
 
     &__title {

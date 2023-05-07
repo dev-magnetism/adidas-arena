@@ -148,10 +148,15 @@ export default {
 
       Promise.all(observers)
         .then((fonts) => {
+          console.log('here debug', this.$refs.video.readyState > 3)
+
           this.setFontsLoaded(true)
           ScrollTrigger.refresh()
 
-          if (this.$viewport.isFirefox && this.$refs.video.readyState > 3) {
+          if (
+            (this.$viewport.isFirefox && this.$refs.video.readyState > 3) ||
+            this.$refs.video.readyState > 3
+          ) {
             this.onVideoLoaded()
           } else {
             this.$refs.video.addEventListener(

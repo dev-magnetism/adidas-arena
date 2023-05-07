@@ -107,6 +107,11 @@ export default {
   pointer-events: none;
   opacity: 0;
 
+  @include mobile {
+    z-index: 3;
+    background: rgba(255, 255, 255, 0.85);
+  }
+
   &.active {
     pointer-events: all;
     opacity: 1;
@@ -131,6 +136,11 @@ export default {
     width: desktop-vw(170px);
     height: auto;
     margin-bottom: desktop-vw(20px);
+
+    @include mobile {
+      width: mobile-vw(120px);
+      margin-bottom: mobile-vw(20px);
+    }
   }
 }
 </style>

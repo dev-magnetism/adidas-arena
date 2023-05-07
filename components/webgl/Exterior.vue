@@ -149,7 +149,6 @@ export default {
       target: this.$nuxt.$el,
       type: 'touch,pointer',
       onDrag: this.onDrag,
-
       onDragStart: (e) => {
         if (e.axis === 'x') {
           this.setAllowScroll(false)
@@ -158,7 +157,7 @@ export default {
       onDragEnd: (e) => {
         if (e.axis === 'x') this.setAllowScroll(true)
       },
-      dragMinimum: 10,
+      dragMinimum: this.$viewport.isMobile ? 5 : 10,
       lockAxis: true,
       tolerance: 5,
     })
@@ -604,6 +603,8 @@ export default {
 
       const logoArena = this.mergeObject(logoArenaGroup)
       logoArena.material = this.logoMaterial
+      logoArena.matrixAutoUpdate = false
+
       this.logoArena.add(logoArena)
     },
     initArrow() {
@@ -709,8 +710,13 @@ export default {
         .sub(carObject.position)
 
       const car = this.mergeObject(carObject)
+      car.matrixAutoUpdate = false
+
       const edgeCar = this.edgeObject(car)
+      edgeCar.matrixAutoUpdate = false
+
       const conditionalCar = this.conditionalObject(car)
+      conditionalCar.matrixAutoUpdate = false
 
       carGroup.add(car)
       carGroup.add(edgeCar)
@@ -742,7 +748,10 @@ export default {
       group.add(floorArena.clone())
 
       const model = this.mergeObject(group)
+      model.matrixAutoUpdate = false
+
       const edge = this.edgeObject(model)
+      edge.matrixAutoUpdate = false
 
       this.staticObjects.add(model)
       this.staticObjects.add(edge)
@@ -767,8 +776,13 @@ export default {
       group.add(footField.clone())
 
       const model = this.mergeObject(group)
+      model.matrixAutoUpdate = false
+
       const edge = this.edgeObject(model)
+      edge.matrixAutoUpdate = false
+
       const conditional = this.conditionalObject(model)
+      conditional.matrixAutoUpdate = false
 
       this.staticObjectsConditionalRender.add(model)
       this.staticObjectsConditionalRender.add(edge)
@@ -785,10 +799,12 @@ export default {
       const floorGroup = this.gltfExterior.getObjectByName('Floor')
 
       const floor = this.mergeObject(floorGroup)
+      floor.matrixAutoUpdate = false
 
       const shadowFloor = floor.clone()
       shadowFloor.name = 'shadowModel'
       shadowFloor.material = this.shadowMaterial
+      shadowFloor.matrixAutoUpdate = false
 
       floor.castShadow = false
       floor.receiveShadow = false
@@ -808,8 +824,13 @@ export default {
       const adidasArenaGroup = this.gltfExterior.getObjectByName('Arena_00')
 
       const adidasArena = this.mergeObject(adidasArenaGroup)
+      adidasArena.matrixAutoUpdate = false
+
       const edgeAdidasArena = this.edgeObject(adidasArena)
+      edgeAdidasArena.matrixAutoUpdate = false
+
       const conditionalAdidasArena = this.conditionalObject(adidasArena)
+      conditionalAdidasArena.matrixAutoUpdate = false
 
       this.adidasArena.add(adidasArena)
       this.adidasArena.add(edgeAdidasArena)

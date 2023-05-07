@@ -59,8 +59,9 @@ export default {
     this.lenis = new Lenis({
       duration: 1.2,
       easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
-      smoothTouch: true,
-      touchMultiplier: 3,
+      syncTouch: true,
+      // smoothTouch: false,
+      // touchMultiplier: 3,
       //   smooth: true,
     })
 

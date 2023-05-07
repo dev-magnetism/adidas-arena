@@ -5,6 +5,20 @@
       :class="{ visible: barActive }"
       class="app-programmation-list-bar grid-inner"
     >
+      <AppProgrammationEventTag
+        class="app-programmation-list-bar__filters-mobile"
+      >
+        FILTRER
+        <select v-model="selectedCategory">
+          <option
+            v-for="(cat, catIndex) in programmesCategories"
+            :key="`key-${cat.category}-${catIndex}`"
+            :value="cat.category.toLowerCase()"
+          >
+            {{ cat.category }} ({{ cat.count.toString().padStart(2, '0') }})
+          </option>
+        </select>
+      </AppProgrammationEventTag>
       <div class="app-programmation-list-bar__filters">
         <div
           v-for="(cat, catIndex) in programmesCategories"
@@ -144,7 +158,6 @@ export default {
   },
   mounted() {
     this.initScrollTrigger()
-    this.updateFilters()
   },
   beforeDestroy() {
     this.scrollTriggerBar?.kill()
@@ -208,7 +221,9 @@ export default {
       this.filteringInProgress = true
       this.currentMonth = e.target.value
 
-      const valueInVw = (85 * 100) / 1400
+      const valueInVw = this.$viewport.isMobile
+        ? (85 * 100) / 375
+        : (85 * 100) / 1400
       const valueInPx = (this.$viewport.width * valueInVw) / 100
 
       window.lenis?.scrollTo?.(
@@ -250,8 +265,96 @@ export default {
     updateFilters() {
       this.directionMonth = 'down'
       this.barActive = this.scrollTriggerBar.isActive
-      this.currentMonth = `${this.monthFilters[0].month}-${this.monthFilters[0].year}`
 
+      if (this.$viewport.isMobile) {
+        this.updateFiltersMobile()
+      } else {
+        this.updateFiltersDesktop()
+      }
+    },
+    updateFiltersMobile() {
+      const layerBlue = document.querySelector('.app-transition-layer.blue')
+      const layerRed = document.querySelector('.app-transition-layer.red')
+
+      gsap
+        .timeline({
+          delay: 0.15,
+        })
+        .fromTo(
+          layerBlue,
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            duration: 1,
+            ease: 'power3.inOut',
+          }
+        )
+        .fromTo(
+          layerRed,
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            duration: 1,
+            ease: 'power3.inOut',
+          },
+          '<10%'
+        )
+        .add(() => {
+          this.filteringInProgress = true
+          this.currentMonth = `${this.monthFilters[0].month}-${this.monthFilters[0].year}`
+
+          if (window.lenis) {
+            window.lenis?.scrollTo?.(this.$el, {
+              lock: true,
+              immediate: true,
+              offset: 50,
+            })
+          }
+
+          this.$refs.events.forEach((item) => {
+            const isMatch =
+              this.selectedCategory === 'tout' ||
+              item.event.content.category === this.selectedCategory
+
+            item.$el.style.display = isMatch ? 'inline-flex' : 'none'
+          })
+
+          this.$refs.eventsContainer.forEach((month) => {
+            const cards = month.querySelectorAll('.app-programmation-card')
+
+            const visibleArticles = Object.values(cards).filter(
+              (article) => article.style.display !== 'none'
+            )
+
+            if (visibleArticles.length <= 0) {
+              month.style.position = 'absolute'
+            } else if (
+              visibleArticles.length > 0 &&
+              month.style.position === 'absolute'
+            ) {
+              month.style.position = 'relative'
+            }
+          })
+
+          this.filteringInProgress = false
+
+          this.$nextTick(() => {
+            ScrollTrigger.refresh()
+          })
+        })
+        .to([layerRed, layerBlue], {
+          scaleY: 0,
+          transformOrigin: 'center bottom',
+          duration: 0.85,
+          delay: 0.45,
+          onComplete: () => {},
+          ease: 'power3.inOut',
+        })
+        .set([layerRed, layerBlue], {
+          transformOrigin: 'center top',
+        })
+    },
+    updateFiltersDesktop() {
       if (window.lenis) {
         this.filteringInProgress = true
 
@@ -264,6 +367,8 @@ export default {
           },
         })
       }
+
+      this.currentMonth = `${this.monthFilters[0].month}-${this.monthFilters[0].year}`
 
       const containerState = Flip.getState(this.$refs.container)
 
@@ -312,8 +417,13 @@ export default {
 
             return gsap.fromTo(
               layers,
-              { scaleY: 1, transformOrigin: 'center bottom' },
               {
+                x: '-50%',
+                scaleY: 1,
+                transformOrigin: 'center bottom',
+              },
+              {
+                x: '-50%',
                 scaleY: 0,
                 duration: 0.65,
                 delay: 0.6,
@@ -329,8 +439,17 @@ export default {
             gsap.set(elements, { zIndex: 0 })
             return gsap.fromTo(
               layers,
-              { scaleY: 0, transformOrigin: 'center top' },
-              { scaleY: 1, duration: 0.4, ease: 'power1.inOut' }
+              {
+                x: '-50%',
+                scaleY: 0,
+                transformOrigin: 'center top',
+              },
+              {
+                x: '-50%',
+                scaleY: 1,
+                duration: 0.4,
+                ease: 'power1.inOut',
+              }
             )
           },
           onComplete: () => {
@@ -354,7 +473,7 @@ export default {
   padding-top: desktop-vw(225px);
 
   @include mobile {
-    padding-top: mobile-vw(150px);
+    padding-top: mobile-vw(185px);
   }
 
   &-events {
@@ -363,11 +482,20 @@ export default {
     grid-gap: desktop-vw(120px) desktop-vw(0px);
     position: relative;
 
+    @include mobile {
+      grid-gap: mobile-vw(120px) mobile-vw(0px);
+    }
+
     &__month {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
       grid-gap: desktop-vw(25px);
       position: relative;
+
+      @include mobile {
+        grid-template-columns: repeat(6, 1fr);
+        grid-gap: mobile-vw(20px);
+      }
     }
 
     .app-programmation-card {
@@ -385,8 +513,40 @@ export default {
     transform: translateY(100%);
     transition: transform 0.5s var(--ease-in-out-cubic);
 
+    @include mobile {
+      background: rgb(255 255 255);
+      background: linear-gradient(
+        0deg,
+        rgb(255 255 255) 10%,
+        rgba(255, 255, 255, 0) 100%
+      );
+    }
+
     &.visible {
       transform: translateY(0%);
+    }
+
+    &__filters-mobile.app-programmation-event-tag {
+      grid-column: 1 / span 2;
+      justify-content: center;
+
+      @include desktop {
+        display: none;
+      }
+
+      select {
+        margin: 0;
+        padding: 0;
+        opacity: 0;
+        position: absolute;
+        display: block;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-appearance: none;
+        z-index: 1;
+      }
     }
 
     &__filters {
@@ -394,6 +554,10 @@ export default {
       flex-flow: row wrap;
       column-gap: desktop-vw(10px);
       grid-column: 1 / span 8;
+
+      @include mobile {
+        display: none;
+      }
 
       &__radio {
         display: flex;
@@ -450,6 +614,10 @@ export default {
       grid-column: 9 / span 4;
       position: relative;
 
+      @include mobile {
+        grid-column: 3 / span 4;
+      }
+
       select {
         margin: 0;
         padding: 0;
@@ -477,9 +645,17 @@ export default {
         height: desktop-vw(65px);
         overflow: hidden;
 
+        @include mobile {
+          height: mobile-vw(40px);
+        }
+
         .H3 {
           position: absolute;
           right: 45px;
+
+          @include mobile {
+            right: 35px;
+          }
 
           &.up-bar-month-enter-active,
           &.up-bar-month-leave-active,

@@ -170,7 +170,6 @@ export default {
       type: 'touch,pointer',
       onDrag: this.onDrag,
       onStop: this.onStopDrag,
-
       onDragStart: (e) => {
         if (e.axis === 'x') {
           this.setAllowScroll(false)
@@ -179,7 +178,7 @@ export default {
       onDragEnd: (e) => {
         if (e.axis === 'x') this.setAllowScroll(true)
       },
-      dragMinimum: 10,
+      dragMinimum: this.$viewport.isMobile ? 5 : 10,
       lockAxis: true,
       tolerance: 5,
     })
@@ -1281,8 +1280,13 @@ export default {
       const footFieldGroup = this.model.getObjectByName('FootField')
 
       const footField = this.mergeObject(footFieldGroup)
+      footField.matrixAutoUpdate = false
+
       const edgeFootField = this.edgeObject(footField)
+      edgeFootField.matrixAutoUpdate = false
+
       const conditionalFootField = this.conditionalObject(footField)
+      conditionalFootField.matrixAutoUpdate = false
 
       this.footField.add(footField)
       this.footField.add(edgeFootField)
@@ -1322,7 +1326,11 @@ export default {
       const terrainGroup = this.model.getObjectByName('Terrain_001')
 
       const terrain = this.mergeObject(terrainGroup)
+      terrain.matrixAutoUpdate = false
+
       const edgeTerrain = this.edgeObject(terrain)
+      edgeTerrain.matrixAutoUpdate = false
+
       // const conditionalTerrain = this.conditionalObject(terrain)
 
       this.terrain.add(terrain)
@@ -1347,15 +1355,19 @@ export default {
       const floorGroup = this.model.getObjectByName('Floor')
 
       const floor = this.mergeObject(floorGroup)
+      floor.matrixAutoUpdate = false
 
       const shadowFloor = floor.clone()
       shadowFloor.name = 'shadowModel'
       shadowFloor.material = this.shadowMaterial
+      shadowFloor.matrixAutoUpdate = false
 
       floor.castShadow = false
       floor.receiveShadow = false
 
       const edgeFloor = this.edgeObject(floor)
+      edgeFloor.matrixAutoUpdate = false
+
       // const conditionalFloor = this.conditionalObject(floor)
 
       // this.floor.add(floor)
@@ -1964,6 +1976,7 @@ export default {
       }
 
       const normalObject = this.mergeObject(object)
+      normalObject.matrixAutoUpdate = false
 
       if (!object.isBasicObject) {
         if (object.publicAccess) {
@@ -1986,11 +1999,13 @@ export default {
       edgeObject.material = materials.lineMaterial
       edgeObject.material.clippingPlanes = [clippingPlane]
       edgeObject.material.clipShadows = true
+      edgeObject.matrixAutoUpdate = false
 
       const conditionalObject = this.conditionalObject(normalObject)
       conditionalObject.material = materials.conditionalMaterial
       conditionalObject.material.clippingPlanes = [clippingPlane]
       conditionalObject.material.clipShadows = true
+      conditionalObject.matrixAutoUpdate = false
 
       return {
         normalObject,

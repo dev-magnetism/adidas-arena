@@ -244,7 +244,7 @@ export default {
 
     @include mobile {
       margin-top: mobile-vw(5px);
-      margin-bottom: mobile-vw(40px);
+      margin-bottom: mobile-vw(85px);
       font-size: mobile-vw(46px);
       line-height: mobile-vw(42px);
     }
