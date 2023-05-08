@@ -84,52 +84,68 @@ export default {
     },
   },
   mounted() {
-    if (this.$viewport.isMobile) return
+    this.initMatchMedia()
+  },
+  beforeDestroy() {
+    this.mm?.kill()
+  },
+  methods: {
+    initMatchMedia() {
+      this.mm = gsap.matchMedia()
 
-    gsap.fromTo(
-      this.$refs.pictureCorner.$el,
-      {
-        rotate: 5,
-      },
-      {
-        rotate: -2,
-        scrollTrigger: {
-          trigger: this.$refs.pictureCorner.$el,
-          scrub: 0.5,
-          end: 'bottom top',
-        },
-      }
-    )
+      this.mm.add('(min-width: 768px)', (context) => {
+        const tweenVisual = gsap.fromTo(
+          this.$refs.pictureCorner.$el,
+          {
+            rotate: 5,
+          },
+          {
+            rotate: -2,
+            scrollTrigger: {
+              trigger: this.$refs.pictureCorner.$el,
+              scrub: 0.5,
+              end: 'bottom top',
+            },
+          }
+        )
 
-    gsap.fromTo(
-      this.$refs.visualBigger.$el,
-      {
-        rotate: -6,
-      },
-      {
-        rotate: -2,
-        scrollTrigger: {
-          trigger: this.$refs.visualBigger.$el,
-          scrub: 0.5,
-          end: 'bottom top',
-        },
-      }
-    )
+        const tweenVisualBigger = gsap.fromTo(
+          this.$refs.visualBigger.$el,
+          {
+            rotate: -6,
+          },
+          {
+            rotate: -2,
+            scrollTrigger: {
+              trigger: this.$refs.visualBigger.$el,
+              scrub: 0.5,
+              end: 'bottom top',
+            },
+          }
+        )
 
-    gsap.fromTo(
-      this.$refs.framed.$el,
-      {
-        rotate: 6,
-      },
-      {
-        rotate: 2,
-        scrollTrigger: {
-          trigger: this.$refs.framed.$el,
-          scrub: 0.5,
-          end: 'bottom top',
-        },
-      }
-    )
+        const tweenFramed = gsap.fromTo(
+          this.$refs.framed.$el,
+          {
+            rotate: 6,
+          },
+          {
+            rotate: 2,
+            scrollTrigger: {
+              trigger: this.$refs.framed.$el,
+              scrub: 0.5,
+              end: 'bottom top',
+            },
+          }
+        )
+
+        return () => {
+          tweenVisual?.kill()
+          tweenVisualBigger?.kill()
+          tweenFramed?.kill()
+        }
+      })
+    },
   },
 }
 </script>

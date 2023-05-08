@@ -65,7 +65,6 @@ export default {
         })
 
         return () => {
-          console.log('here kill')
           tl?.kill()
           setY(0)
         }

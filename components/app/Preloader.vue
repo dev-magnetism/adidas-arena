@@ -148,8 +148,6 @@ export default {
 
       Promise.all(observers)
         .then((fonts) => {
-          console.log('here debug', this.$refs.video.readyState > 3)
-
           this.setFontsLoaded(true)
           ScrollTrigger.refresh()
 

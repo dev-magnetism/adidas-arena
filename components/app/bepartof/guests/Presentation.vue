@@ -61,37 +61,52 @@ export default {
     },
   },
   mounted() {
-    if (this.$viewport.isMobile) return
+    this.initMatchMedia()
+  },
+  beforeDestroy() {
+    this.mm?.kill()
+  },
+  methods: {
+    initMatchMedia() {
+      this.mm = gsap.matchMedia()
 
-    gsap.fromTo(
-      this.$refs.bigVisual.$el,
-      {
-        rotate: -6,
-      },
-      {
-        rotate: -2,
-        scrollTrigger: {
-          trigger: this.$refs.bigVisual.$el,
-          scrub: 0.5,
-          end: 'bottom top',
-        },
-      }
-    )
+      this.mm.add('(min-width: 768px)', (context) => {
+        const tweenBigVisual = gsap.fromTo(
+          this.$refs.bigVisual.$el,
+          {
+            rotate: -6,
+          },
+          {
+            rotate: -2,
+            scrollTrigger: {
+              trigger: this.$refs.bigVisual.$el,
+              scrub: 0.5,
+              end: 'bottom top',
+            },
+          }
+        )
 
-    gsap.fromTo(
-      this.$refs.framedVisual.$el,
-      {
-        rotate: 8,
-      },
-      {
-        rotate: 4,
-        scrollTrigger: {
-          trigger: this.$refs.framedVisual.$el,
-          scrub: 0.5,
-          end: 'bottom top',
-        },
-      }
-    )
+        const tweenFramedVisual = gsap.fromTo(
+          this.$refs.framedVisual.$el,
+          {
+            rotate: 8,
+          },
+          {
+            rotate: 4,
+            scrollTrigger: {
+              trigger: this.$refs.framedVisual.$el,
+              scrub: 0.5,
+              end: 'bottom top',
+            },
+          }
+        )
+
+        return () => {
+          tweenBigVisual?.kill()
+          tweenFramedVisual?.kill()
+        }
+      })
+    },
   },
 }
 </script>

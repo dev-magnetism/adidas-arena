@@ -137,12 +137,7 @@ export default {
 
     this.onResize()
 
-    if (this.allLoadedActual) {
-      this.initExterior()
-      this.initClouds()
-      this.initGUI()
-      this.resetView()
-    }
+    this.mm = gsap.matchMedia()
 
     this.observer = Observer.create({
       axis: 'x',
@@ -161,6 +156,13 @@ export default {
       lockAxis: true,
       tolerance: 5,
     })
+
+    if (this.allLoadedActual) {
+      this.initExterior()
+      this.initClouds()
+      this.initGUI()
+      this.resetView()
+    }
 
     this.$viewport.events.on('resize', this.onResize)
     this.$nuxt.$on('reset:exterior', this.resetView)
@@ -215,6 +217,7 @@ export default {
     this.tweenZoom?.kill()
 
     this.observer?.kill()
+    this.mm?.kill()
     this.$viewport.events.off('resize', this.onResize)
     this.$nuxt.$off('reset:exterior', this.resetView)
     this.$raf.remove(`webgl-exterior`, this.onFrame)
@@ -582,7 +585,7 @@ export default {
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
 
-      const size = this.$viewport.isMobile ? 50 : 85
+      const size = this.$viewport.isMobile ? 120 : 85
 
       this.directionalLight.shadow.camera.left = size * -1
       this.directionalLight.shadow.camera.right = size * 1
@@ -620,19 +623,27 @@ export default {
       const arrow = this.mergeObject(arrowGroup)
       arrow.material = this.arrowMaterial
       arrow.material.flatShading = true
+      arrow.matrixAutoUpdate = false
       arrow.castShadow = true
       arrow.receiveShadow = true
 
       const edgeArrow = this.edgeObject(arrow)
+      edgeArrow.matrixAutoUpdate = false
 
       this.arrow.add(arrow)
       this.arrow.add(edgeArrow)
 
-      this.tweenArrowTranslate = gsap.to(this.arrow.position, {
-        y: 2,
-        repeat: -1,
-        yoyo: true,
-        duration: 1,
+      this.mm.add('(min-width: 768px)', (context) => {
+        this.tweenArrowTranslate = gsap.to(this.arrow.position, {
+          y: 2,
+          repeat: -1,
+          yoyo: true,
+          duration: 1,
+        })
+
+        return () => {
+          this.tweenArrowTranslate?.kill()
+        }
       })
     },
     initTrams() {

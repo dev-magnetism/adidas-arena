@@ -138,6 +138,7 @@ export default {
     }
   },
   beforeDestroy() {
+    this.mm?.kill()
     this.tlAppear?.clear()
     this.tlAppear?.kill()
   },
@@ -150,7 +151,7 @@ export default {
         .timeline({
           delay,
           onComplete: () => {
-            this.initScrollTrigger()
+            this.initMatchMedia()
           },
         })
         .addLabel('texts')
@@ -245,29 +246,39 @@ export default {
           'visuals+=30%'
         )
     },
-    initScrollTrigger() {
-      this.setAllowScroll(true)
+    initMatchMedia() {
+      this.mm = gsap.matchMedia()
 
-      gsap.to(this.$refs.mainCard, {
-        yPercent: -10,
-        rotate: 2,
-        scrollTrigger: {
-          trigger: this.$el,
-          scrub: 0.5,
-          start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
-        },
-      })
+      this.mm.add('(min-width: 768px)', (context) => {
+        this.setAllowScroll(true)
 
-      gsap.to(this.$refs.visualBack, {
-        yPercent: -40,
-        rotate: -2,
-        scrollTrigger: {
-          trigger: this.$el,
-          scrub: 0.5,
-          start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
-        },
+        const tweenMainCard = gsap.to(this.$refs.mainCard, {
+          yPercent: -10,
+          rotate: 2,
+          scrollTrigger: {
+            trigger: this.$el,
+            scrub: 0.5,
+            start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
+          },
+        })
+
+        const tweenVisualback = gsap.to(this.$refs.visualBack, {
+          yPercent: -40,
+          rotate: -2,
+          scrollTrigger: {
+            trigger: this.$el,
+            scrub: 0.5,
+            start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
+          },
+        })
+
+        return () => {
+          tweenMainCard?.kill()
+          tweenVisualback?.kill()
+        }
       })
     },
+    initScrollTrigger() {},
     initSplitText() {
       const title = this.$refs.title.$el.querySelectorAll('.H2')
 

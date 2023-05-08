@@ -106,6 +106,10 @@ export default {
       this.setAllowScroll(true)
     }
   },
+  beforeDestroy() {
+    this.mm?.kill()
+    this.tlAppear?.kill()
+  },
   methods: {
     initSplitText() {
       const title = this.$refs.title.$el.querySelectorAll('.H2')
@@ -128,7 +132,7 @@ export default {
         .timeline({
           delay,
           onComplete: () => {
-            this.initScrollTrigger()
+            this.initMatchMedia()
           },
         })
         .addLabel('texts')
@@ -223,43 +227,54 @@ export default {
           'visuals+=50%'
         )
     },
+    initMatchMedia() {
+      this.mm = gsap.matchMedia()
+
+      this.mm.add('(min-width: 768px)', (context) => {
+        const tweenFramed = gsap.to(this.$refs.visualFramed, {
+          yPercent: -10,
+          rotate: 2,
+          scrollTrigger: {
+            trigger: this.$el,
+            scrub: 0.5,
+            start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
+          },
+        })
+
+        const tweenBigger = gsap.to(this.$refs.visualBigger, {
+          yPercent: -20,
+          rotate: 2,
+          scrollTrigger: {
+            trigger: this.$el,
+            scrub: 0.5,
+            start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
+          },
+        })
+
+        const tweenTransparent = gsap.fromTo(
+          this.$refs.visualTransparent.$el,
+          {
+            rotate: -9,
+          },
+          {
+            rotate: -4,
+            scrollTrigger: {
+              trigger: this.$refs.visualTransparent.$el,
+              scrub: 0.5,
+              end: 'bottom top',
+            },
+          }
+        )
+
+        return () => {
+          tweenFramed?.kill()
+          tweenBigger?.kill()
+          tweenTransparent?.kill()
+        }
+      })
+    },
     initScrollTrigger() {
       this.setAllowScroll(true)
-
-      gsap.to(this.$refs.visualFramed, {
-        yPercent: -10,
-        rotate: 2,
-        scrollTrigger: {
-          trigger: this.$el,
-          scrub: 0.5,
-          start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
-        },
-      })
-
-      gsap.to(this.$refs.visualBigger, {
-        yPercent: -20,
-        rotate: 2,
-        scrollTrigger: {
-          trigger: this.$el,
-          scrub: 0.5,
-          start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
-        },
-      })
-
-      gsap.fromTo(
-        this.$refs.visualTransparent.$el,
-        {
-          rotate: -9,
-        },
-        {
-          rotate: -4,
-          scrollTrigger: {
-            trigger: this.$refs.visualTransparent.$el,
-            scrub: 0.5,
-            end: 'bottom top',
-          },
-        }
-      )
     },
     ...mapMutations({
       setAllowScroll: 'setAllowScroll',

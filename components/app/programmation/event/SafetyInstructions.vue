@@ -196,6 +196,7 @@ export default {
     height: 100%;
 
     @include mobile {
+      opacity: 1;
       width: 100%;
       transform: rotate(0deg);
       padding: mobile-vw(25px) mobile-vw(20px) mobile-vw(50px) mobile-vw(20px);

@@ -87,36 +87,51 @@ export default {
     },
   },
   mounted() {
-    if (this.$viewport.isMobile) return
+    this.initMatchMedia()
+  },
+  beforeDestroy() {
+    this.mm?.kill()
+  },
+  methods: {
+    initMatchMedia() {
+      this.mm = gsap.matchMedia()
 
-    gsap.fromTo(
-      this.$refs.frameWrapper.$el,
-      {
-        rotate: -10,
-      },
-      {
-        rotate: -6,
-        scrollTrigger: {
-          trigger: this.$refs.frameWrapper.$el,
-          scrub: 0.5,
-          end: 'bottom top',
-        },
-      }
-    )
-    gsap.fromTo(
-      this.$refs.withoutFrame.$el,
-      {
-        rotate: 6,
-      },
-      {
-        rotate: 2,
-        scrollTrigger: {
-          trigger: this.$refs.withoutFrame.$el,
-          scrub: 0.5,
-          end: 'bottom top',
-        },
-      }
-    )
+      this.mm.add('(min-width: 768px)', (context) => {
+        const tweenFrame = gsap.fromTo(
+          this.$refs.frameWrapper.$el,
+          {
+            rotate: -10,
+          },
+          {
+            rotate: -6,
+            scrollTrigger: {
+              trigger: this.$refs.frameWrapper.$el,
+              scrub: 0.5,
+              end: 'bottom top',
+            },
+          }
+        )
+        const tweenWithoutFrame = gsap.fromTo(
+          this.$refs.withoutFrame.$el,
+          {
+            rotate: 6,
+          },
+          {
+            rotate: 2,
+            scrollTrigger: {
+              trigger: this.$refs.withoutFrame.$el,
+              scrub: 0.5,
+              end: 'bottom top',
+            },
+          }
+        )
+
+        return () => {
+          tweenFrame?.kill()
+          tweenWithoutFrame?.kill()
+        }
+      })
+    },
   },
 }
 </script>

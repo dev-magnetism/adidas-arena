@@ -109,6 +109,10 @@ export default {
       this.setAllowScroll(true)
     }
   },
+  beforeDestroy() {
+    this.tlAppear?.kill()
+    this.mm?.kill()
+  },
   methods: {
     initSplitText() {
       const title = this.$refs.title.$el.querySelectorAll('.H2')
@@ -131,7 +135,7 @@ export default {
         .timeline({
           delay,
           onComplete: () => {
-            this.initScrollTrigger()
+            this.initMatchMedia()
           },
         })
         .addLabel('texts')
@@ -226,27 +230,36 @@ export default {
           'visuals+=50%'
         )
     },
-    initScrollTrigger() {
-      this.setAllowScroll(true)
+    initMatchMedia() {
+      this.mm = gsap.matchMedia()
 
-      gsap.to(this.$refs.bigVisual, {
-        yPercent: -20,
-        rotate: 0,
-        scrollTrigger: {
-          trigger: this.$el,
-          scrub: 0.5,
-          start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
-        },
-      })
+      this.mm.add('(min-width: 768px)', (context) => {
+        this.setAllowScroll(true)
 
-      gsap.to(this.$refs.framedVisual, {
-        yPercent: -25,
-        rotate: 0,
-        scrollTrigger: {
-          trigger: this.$el,
-          scrub: 0.5,
-          start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
-        },
+        const tweenBigVisual = gsap.to(this.$refs.bigVisual, {
+          yPercent: -20,
+          rotate: 0,
+          scrollTrigger: {
+            trigger: this.$el,
+            scrub: 0.5,
+            start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
+          },
+        })
+
+        const tweenFramedVisual = gsap.to(this.$refs.framedVisual, {
+          yPercent: -25,
+          rotate: 0,
+          scrollTrigger: {
+            trigger: this.$el,
+            scrub: 0.5,
+            start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
+          },
+        })
+
+        return () => {
+          tweenBigVisual?.kill()
+          tweenFramedVisual?.kill()
+        }
       })
     },
     ...mapMutations({

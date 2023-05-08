@@ -80,7 +80,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.programmesSlider)
     this.embla = EmblaCarousel(this.$refs.wrapper, {
       dragFree: true,
       containScroll: 'keepSnaps',

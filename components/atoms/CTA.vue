@@ -259,6 +259,8 @@ export default {
 
     @include mobile {
       margin-left: mobile-vw(15px);
+      width: mobile-vw(25px);
+      height: auto;
     }
 
     svg {

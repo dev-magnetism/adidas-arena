@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default {
@@ -101,19 +102,31 @@ export default {
   },
 
   mounted() {
-    if (this.$viewport.isMobile) return
-
-    this.scrollTrigger = ScrollTrigger.create({
-      trigger: this.$el,
-      start: 'top+=20% bottom',
-      toggleActions: 'play none none none',
-      onToggle: () => {
-        this.visible = true
-      },
-    })
+    this.initMatchMedia()
   },
   beforeDestroy() {
+    this.mm?.kill()
     this.scrollTrigger?.kill()
+  },
+  methods: {
+    initMatchMedia() {
+      this.mm = gsap.matchMedia()
+
+      this.mm.add('(min-width: 768px)', (context) => {
+        this.scrollTrigger = ScrollTrigger.create({
+          trigger: this.$el,
+          start: 'top+=20% bottom',
+          toggleActions: 'play none none none',
+          onToggle: () => {
+            this.visible = true
+          },
+        })
+
+        return () => {
+          this.scrollTrigger?.kill()
+        }
+      })
+    },
   },
 }
 </script>

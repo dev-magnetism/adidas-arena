@@ -418,12 +418,10 @@ export default {
             return gsap.fromTo(
               layers,
               {
-                x: '-50%',
                 scaleY: 1,
                 transformOrigin: 'center bottom',
               },
               {
-                x: '-50%',
                 scaleY: 0,
                 duration: 0.65,
                 delay: 0.6,
@@ -440,12 +438,10 @@ export default {
             return gsap.fromTo(
               layers,
               {
-                x: '-50%',
                 scaleY: 0,
                 transformOrigin: 'center top',
               },
               {
-                x: '-50%',
                 scaleY: 1,
                 duration: 0.4,
                 ease: 'power1.inOut',
