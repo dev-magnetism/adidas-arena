@@ -74,6 +74,8 @@ export default {
 
               ScrollTrigger.getAll().forEach((t) => t.kill())
 
+              this.$nuxt.$emit('global:forceInitScrollTrigger')
+
               done()
             },
           },
@@ -170,6 +172,8 @@ export default {
             this.$nuxt.$emit('menu:reset')
 
             ScrollTrigger.getAll().forEach((t) => t.kill())
+
+            this.$nuxt.$emit('global:forceInitScrollTrigger')
 
             done()
           },

@@ -1762,7 +1762,14 @@ export const actions = {
         content.content = content.translations.find(
           (translation) => translation.language === 'fr'
         )
+
         content.content.category = content.content.category.toLowerCase()
+
+        content.sessions.forEach((session) => {
+          session.content = session.translations.find(
+            (translation) => translation.language === 'fr'
+          )
+        })
       })
 
       programmes.push(...contents)

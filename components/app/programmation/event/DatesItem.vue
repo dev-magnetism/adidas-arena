@@ -103,13 +103,28 @@ export default {
     height: 100%;
     z-index: 999999;
     transition: background-color 0.3s var(--ease-in-out-cubic);
+    pointer-events: none;
   }
 
   &.disabled {
     opacity: 0.3;
 
+    @include hover {
+      &:hover {
+        opacity: 0.35 !important;
+
+        &::before {
+          background-color: rgba(245, 245, 243, 0.5) !important;
+        }
+      }
+    }
+
+    .app-programmation-event-dates-item__wrapper,
+    .app-atoms-cta {
+      pointer-events: none;
+    }
+
     &::before {
-      content: '';
       background-color: rgba(245, 245, 243, 0.8);
       // backdrop-filter: blur(2px);
     }

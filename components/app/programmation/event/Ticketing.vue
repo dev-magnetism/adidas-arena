@@ -5,8 +5,8 @@
     </TH2>
     <div class="app-programmation-event-tickets grid">
       <a
-        v-if="event.content.url_event"
-        :href="event.content.url_event"
+        v-if="event.sessions[0].content.url"
+        :href="event.sessions[0].content.url"
         target="_blank"
         class="app-programmation-event-ticketing__ticket"
       >
@@ -22,9 +22,9 @@
         </div>
       </a>
       <a
-        v-if="event.content.tm_ticket_office_url_premium"
+        v-if="event.sessions[0].content.url_premium"
         target="_blank"
-        :href="event.content.tm_ticket_office_url_premium"
+        :href="event.sessions[0].content.url_premium"
         class="app-programmation-event-ticketing__ticket"
       >
         <div class="app-programmation-event-ticketing__infos">

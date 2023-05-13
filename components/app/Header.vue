@@ -70,25 +70,43 @@ export default {
       return this.appContent.data.header_name_mobile
     },
   },
+
   mounted() {
-    console.log(this)
-    this.scrollTrigger = ScrollTrigger.create({
-      trigger: this.$el,
-      start: 'top+=20px top',
-      end: 'max',
-      fastScrollEnd: true,
-      onEnter: (e) => {
-        this.setHeaderReduced(true)
-      },
-      onLeaveBack: (e) => {
-        this.setHeaderReduced(false)
-      },
-    })
+    this.$nuxt.$on(
+      'global:forceInitScrollTrigger',
+      this.onForceInitScrollTrigger
+    )
+
+    this.initScrollTrigger()
   },
   beforeDestroy() {
+    this.$nuxt.$off(
+      'global:forceInitScrollTrigger',
+      this.onForceInitScrollTrigger
+    )
+
     this.scrollTrigger?.kill()
   },
   methods: {
+    onForceInitScrollTrigger() {
+      this.scrollTrigger?.kill()
+      this.initScrollTrigger()
+    },
+    initScrollTrigger() {
+      this.scrollTrigger = ScrollTrigger.create({
+        trigger: this.$el,
+        start: 'top+=20px top',
+        end: 'max',
+        fastScrollEnd: true,
+        markers: true,
+        onEnter: (e) => {
+          this.setHeaderReduced(true)
+        },
+        onLeaveBack: (e) => {
+          this.setHeaderReduced(false)
+        },
+      })
+    },
     ...mapMutations({
       setMenuActive: 'setMenuActive',
       setHeaderReduced: 'setHeaderReduced',

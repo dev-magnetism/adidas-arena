@@ -19,7 +19,7 @@
       >
         Voir les dates
       </AtomsCTA>
-      <AtomsCTA v-else :href="event.content.url_event">
+      <AtomsCTA v-else :href="event.sessions[0].content.url">
         Réserver mon billet
       </AtomsCTA>
     </div>
@@ -33,6 +33,9 @@ export default {
       type: Object,
       default: () => {},
     },
+  },
+  mounted() {
+    console.log(this.event)
   },
   methods: {
     scrollToDates() {
