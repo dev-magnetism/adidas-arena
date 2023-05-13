@@ -13,12 +13,14 @@
             <AtomsCornerPoints :size-points="8" />
             <div class="app-projet-two-columns__f-r__card__content">
               <TH2
+                tag="p"
                 weight="bold"
                 class="app-projet-two-columns__f-r__card__content__title"
               >
                 {{ contents.firstRow.cardTitle }}
               </TH2>
               <TH2
+                tag="p"
                 weight="bold"
                 class="app-projet-two-columns__f-r__card__content__subtitle"
               >
@@ -26,6 +28,7 @@
                 {{ contents.firstRow.cardSubtitle }}
               </TH2>
               <TH4
+                tag="p"
                 weight="medium"
                 class="app-projet-two-columns__f-r__card__content__paragraph"
               >
@@ -88,6 +91,7 @@
             <AtomsCornerPoints :size-points="8" />
             <div class="app-projet-two-columns__s-r__card__content">
               <TH2
+                tag="p"
                 weight="bold"
                 class="app-projet-two-columns__s-r__card__content__title"
               >
@@ -95,12 +99,14 @@
                 {{ contents.secondRow.cardTitle }}
               </TH2>
               <TH2
+                tag="p"
                 weight="bold"
                 class="app-projet-two-columns__s-r__card__content__subtitle"
               >
                 {{ contents.secondRow.cardSubtitle }}
               </TH2>
               <TH4
+                tag="p"
                 weight="medium"
                 class="app-projet-two-columns__s-r__card__content__paragraph"
               >

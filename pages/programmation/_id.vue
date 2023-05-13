@@ -10,6 +10,7 @@
       v-if="event.sessions.length - 1 >= 1"
       :content="contentDates"
       :event="event"
+      @onSelectDate="onSelectDate"
     />
     <AppProgrammationEventTicketing
       :event="event"
@@ -117,6 +118,8 @@ export default {
     contentMoreEvents() {
       return {
         title: this.programmationsEventContent.also_like_title,
+        category: this.event.content.category,
+        id: this.event.id,
       }
     },
     formattedDateStart() {
@@ -128,11 +131,7 @@ export default {
   },
 
   mounted() {
-    console.log(
-      'hereeeddddddddeeee',
-      this.event,
-      this.programmationsEventContent
-    )
+    console.log('event', this.event)
 
     this.initMatchMedia()
   },
@@ -141,6 +140,9 @@ export default {
     this.mm?.kill()
   },
   methods: {
+    onSelectDate(index) {
+      console.log('onSelectDate', index)
+    },
     initMatchMedia() {
       this.mm = gsap.matchMedia()
 

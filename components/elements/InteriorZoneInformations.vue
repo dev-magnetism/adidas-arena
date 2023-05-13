@@ -61,7 +61,7 @@
             class="app-element-interior-zone-informations__selected-mobile__title"
           >
             <AtomsCornerPoints :size-points="8" />
-            <TH4>{{ zone?.name }}</TH4>
+            <TH4 tag="p">{{ zone?.name }}</TH4>
           </div>
           <div
             class="app-element-interior-zone-informations__selected-mobile__cta"
@@ -97,6 +97,7 @@
           </button>
           <AtomsCornerPoints :size-points="8" />
           <TH3
+            tag="p"
             weight="bold"
             class="app-element-interior-zone-informations__zone-selected-mobile__overlay__title"
           >
@@ -131,6 +132,7 @@
         >
           <AtomsCornerPoints :size-points="8" />
           <TH4
+            tag="p"
             class="app-element-interior-zone-informations__zone-selected__title"
             >{{ zone?.name }}</TH4
           >

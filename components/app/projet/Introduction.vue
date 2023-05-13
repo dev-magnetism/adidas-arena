@@ -26,7 +26,7 @@
       class="app-projet-introduction__row-second-visual-principal"
     >
       <EKinesis :speed="5">
-        <TH3> {{ contents.pictureLabelText }} </TH3>
+        <TH3 tag="p"> {{ contents.pictureLabelText }} </TH3>
         <nuxt-picture
           provider="directus"
           :src="contents.pictureLabelImage"
@@ -54,7 +54,7 @@
     </EParallax>
 
     <div class="app-projet-introduction__row-second-content">
-      <TH4>{{ contents.whyTitle }}</TH4>
+      <TH4 tag="p">{{ contents.whyTitle }}</TH4>
 
       <ERichText :content="contents.whyParagraph" />
     </div>
@@ -228,6 +228,8 @@ export default {
         )
     },
     initMatchMedia() {
+      this.setAllowScroll(true)
+
       this.mm = gsap.matchMedia()
 
       this.mm.add('(min-width: 768px)', (context) => {
@@ -273,9 +275,7 @@ export default {
         }
       })
     },
-    initScrollTrigger() {
-      this.setAllowScroll(true)
-    },
+
     ...mapMutations({
       setAllowScroll: 'setAllowScroll',
     }),

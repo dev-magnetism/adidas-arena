@@ -5,13 +5,15 @@
     </TH2>
     <div class="app-programmation-event-dates__items grid">
       <AppProgrammationEventDatesItem
-        v-for="(session, index) in event.sessions"
+        v-for="(session, index) in sessions"
         :key="index"
         :index="index"
         :session="session"
         :date="$formatDate(session.date, true)"
         :artist="event.artist_reference"
         :length="event.sessions.length"
+        :disabled="dateSelected !== index && dateSelected !== null"
+        @click.native="onSelectDate(index)"
       />
     </div>
   </div>
@@ -30,7 +32,33 @@ export default {
     },
   },
   data() {
-    return {}
+    return {
+      dateSelected: null,
+    }
+  },
+  computed: {
+    sessions() {
+      const sessions = this.event.sessions
+
+      sessions.forEach((session) => {
+        session.content = session.translations.find(
+          (translation) => translation.language === 'fr'
+        )
+      })
+
+      return sessions
+    },
+  },
+  mounted() {
+    console.log('Dates.vue', this.event, this.sessions)
+  },
+  methods: {
+    onSelectDate(index) {
+      if (index === this.dateSelected) return
+
+      this.dateSelected = index
+      this.$emit('onSelectDate', this.dateSelected)
+    },
   },
 }
 </script>

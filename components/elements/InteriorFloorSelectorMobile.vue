@@ -12,7 +12,7 @@
         class="app-element-floor-selector-mobile__floor"
         @click="onClick(i - 1)"
       >
-        <TH4>{{ i - 1 }}</TH4>
+        <TH4 tag="p">{{ i - 1 }}</TH4>
       </div>
     </div>
   </div>

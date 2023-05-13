@@ -84,6 +84,8 @@ export default {
   position: relative;
   border: 1px solid var(--c-black);
   position: relative;
+  cursor: pointer;
+  transition: opacity 0.3s var(--ease-in-out-cubic);
 
   @include mobile {
     grid-column: span 6;
@@ -91,19 +93,25 @@ export default {
     flex-direction: column;
   }
 
+  &::before {
+    content: '';
+    background-color: rgba(245, 245, 243, 0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    transition: background-color 0.3s var(--ease-in-out-cubic);
+  }
+
   &.disabled {
     opacity: 0.3;
 
     &::before {
       content: '';
-      background: rgba(245, 245, 243, 0.8);
-      backdrop-filter: blur(2px);
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 999999;
+      background-color: rgba(245, 245, 243, 0.8);
+      // backdrop-filter: blur(2px);
     }
   }
 

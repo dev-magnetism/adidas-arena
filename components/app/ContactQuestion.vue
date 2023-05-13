@@ -1,6 +1,10 @@
 <template>
   <div class="app-contact-question grid-inner">
-    <ERichText class="app-contact-question__title" :content="contents.title" />
+    <ERichText
+      tag="p"
+      class="app-contact-question__title"
+      :content="contents.title"
+    />
 
     <div class="app-contact-question__ask">
       <AtomsCTA button @click.native="onClick()">{{ contents.cta }}</AtomsCTA>

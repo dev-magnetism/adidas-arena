@@ -52,6 +52,7 @@
             :duration="1000"
           >
             <TH4
+              tag="p"
               v-for="(item, index) in contents.items"
               v-show="currentIndex === index"
               :key="`configuration-${index}`"
@@ -84,6 +85,7 @@
                 :key="`capacite-${index}`"
                 class="app-be-part-of-besoins-arena__controller__s-r__text"
                 color="grey"
+                tag="p"
               >
                 {{ item.capacite }}
               </TH4>
@@ -109,6 +111,7 @@
                 :key="`jauge-${index}`"
                 class="app-be-part-of-besoins-arena__controller__s-r__text"
                 color="grey"
+                tag="p"
               >
                 {{ item.jauge }}
               </TH4>

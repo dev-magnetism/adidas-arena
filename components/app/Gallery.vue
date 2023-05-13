@@ -6,7 +6,7 @@
     @mouseleave="onMouseLeaveGallery"
     @click="onSelectImage($event)"
   >
-    <TH2 weight="bold" class="app-arena-gallery__title">Galerie</TH2>
+    <TH2 tag="p" weight="bold" class="app-arena-gallery__title">Galerie</TH2>
     <div ref="grid" class="app-arena-gallery__pictures">
       <AppGalleryPicture
         v-for="(item, index) in contents.items"

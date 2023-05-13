@@ -40,7 +40,7 @@
       </EKinesis>
     </EParallax>
     <EKinesis :speed="2.5" class="app-le-bloc-presentation__text">
-      <TH4>{{ contents.paragraphTitle }}</TH4>
+      <TH4 tag="p">{{ contents.paragraphTitle }}</TH4>
 
       <ERichText :content="contents.paragraph" />
     </EKinesis>

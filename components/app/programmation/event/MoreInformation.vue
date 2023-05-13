@@ -1,6 +1,12 @@
 <template>
-  <div class="app-programmation-event-more-information grid-inner">
-    <div class="app-programmation-event-more-information__left">
+  <div
+    v-if="event.content.description && sponsors.length"
+    class="app-programmation-event-more-information grid-inner"
+  >
+    <div
+      v-if="event.content.description"
+      class="app-programmation-event-more-information__left"
+    >
       <TH4 class="app-programmation-event-more-information__title">
         Plus d'infos
       </TH4>
@@ -10,14 +16,25 @@
         :content="event.content.description"
       />
     </div>
-    <div class="app-programmation-event-more-information__right">
-      <a href="#" class="app-programmation-event-more-information__item">
-        <img src="https://picsum.photos/200/300" alt="fdsfdsf" />
-        <TP2 weight="bold">Fédération française de karaté</TP2>
-      </a>
-      <a href="#" class="app-programmation-event-more-information__item">
-        <img src="https://picsum.photos/200/300" alt="fdsfdsf" />
-        <TP2 weight="bold">Fédération française de karaté</TP2>
+    <div
+      v-if="sponsors.length"
+      class="app-programmation-event-more-information__right"
+    >
+      <a
+        v-for="(sponsor, index) in sponsors"
+        :key="index"
+        :href="sponsor.sponsor_id.content.url"
+        target="_blank"
+        class="app-programmation-event-more-information__item"
+      >
+        <AppProgrammationImage
+          :src="sponsor.sponsor_id.logo.filename_disk"
+          :alt="`image-${sponsor.sponsor_id.content.altImage}`"
+          :lazy="true"
+        />
+        <TP2 weight="bold">
+          {{ sponsor.sponsor_id.content.title }}
+        </TP2>
       </a>
     </div>
   </div>
@@ -34,6 +51,17 @@ export default {
   computed: {
     descriptionRichText() {
       return this.event.content.description
+    },
+    sponsors() {
+      const sponsors = this.event.sponsors
+
+      sponsors.forEach((sponsor) => {
+        sponsor.sponsor_id.content = sponsor.sponsor_id.translations.find(
+          (translation) => translation.language === 'fr'
+        )
+      })
+
+      return sponsors
     },
   },
 }
@@ -82,7 +110,7 @@ export default {
   &__item {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     margin-bottom: desktop-vw(20px);
     cursor: pointer;
@@ -96,16 +124,19 @@ export default {
       margin-bottom: 0px;
     }
 
-    img {
-      width: desktop-vw(110px);
-      height: desktop-vw(110px);
+    picture {
+      width: desktop-vw(115px);
+      height: desktop-vw(115px);
       aspect-ratio: 110 / 100;
       display: block;
-      object-fit: cover;
 
       @include mobile {
-        width: mobile-vw(110px);
-        height: mobile-vw(110px);
+        width: mobile-vw(115px);
+        height: mobile-vw(115px);
+      }
+
+      img {
+        object-fit: cover;
       }
     }
 

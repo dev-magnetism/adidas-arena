@@ -226,7 +226,7 @@ export default {
     }
   }
 
-  &__video {
+  &__video.app-parallax {
     position: absolute;
     aspect-ratio: 640 / 425;
     width: desktop-vw(640px);
@@ -274,7 +274,7 @@ export default {
       pointer-events: none;
     }
 
-    &__overlay {
+    .app-programmation-event-about-artist__video__overlay {
       position: absolute;
       top: 0;
       left: 0;
@@ -310,7 +310,7 @@ export default {
     }
   }
 
-  &__visual-without-frame {
+  &__visual-without-frame.app-parallax {
     position: absolute;
     aspect-ratio: 315 / 425;
     width: desktop-vw(315px);
@@ -333,7 +333,7 @@ export default {
     }
   }
 
-  &__visual-with-frame {
+  &__visual-with-frame.app-parallax {
     position: absolute;
     aspect-ratio: 440 / 550;
     width: desktop-vw(440px);

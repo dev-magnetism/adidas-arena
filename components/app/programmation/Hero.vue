@@ -13,29 +13,9 @@
         class="app-programmation-hero__paragraph"
         :content="content.paragraph"
       />
-
-      <!-- <ERichTextEvent
-        :component="{ name: 'TP2', weight: 'medium', tagTarget: 'p', tag: 'p' }"
-        :content="event.content.about_text"
-      /> -->
-
-      <div class="app-programmation-hero__arrow-left">
-        <ELottie
-          id="Fleche_2"
-          start="top center+=20%"
-          end="bottom center-=25%"
-        />
-      </div>
-      <div class="app-programmation-hero__arrow-right">
-        <ELottie
-          id="Fleche_2"
-          start="top center+=20%"
-          end="bottom center-=25%"
-        />
-      </div>
     </div>
     <div ref="mainCard" class="app-programmation-hero__main-card">
-      <EKinesis :speed="5">
+      <EKinesis :speed="5" @click.native="onRouterPush">
         <AtomsCornerPoints :size-points="8" />
 
         <div class="app-programmation-hero__main-card__wrapper">
@@ -67,9 +47,14 @@
           </div>
         </div>
         <AtomsCTA
-          :href="`programmation/${$convertToKebabCase(
-            content.event.content.url
-          )}--${content.event.id}`"
+          :href="{
+            name: 'programmation-id',
+            params: {
+              id: `${$convertToKebabCase(content.event.content.url)}--${
+                content.event.id
+              }`,
+            },
+          }"
           class="app-programmation-hero__main-card__cta"
         >
           {{ contentCard.full ? `Liste d'attente` : `Réserver` }}
@@ -82,6 +67,13 @@
       class="app-programmation-hero__visual-back-transparent"
     >
       <EKinesis :speed="10" />
+    </div>
+
+    <div class="app-programmation-hero__arrow-left">
+      <ELottie id="Fleche_2" start="top center+=20%" end="bottom center-=25%" />
+    </div>
+    <div class="app-programmation-hero__arrow-right">
+      <ELottie id="Fleche_2" start="top center+=20%" end="bottom center-=25%" />
     </div>
   </div>
 </template>
@@ -143,6 +135,16 @@ export default {
     this.tlAppear?.kill()
   },
   methods: {
+    onRouterPush() {
+      this.$router.push({
+        name: 'programmation-id',
+        params: {
+          id: `${this.$convertToKebabCase(this.content.event.content.url)}--${
+            this.content.event.id
+          }`,
+        },
+      })
+    },
     appearHero(delay = 0) {
       this.tlAppear?.clear()
       this.tlAppear?.kill()
@@ -344,19 +346,19 @@ export default {
 
   &__arrow-left {
     position: absolute;
-    top: 85%;
+    top: 60%;
     width: desktop-vw(90px);
     transform: scaleX(-1) rotate(20deg);
-    left: 10%;
+    left: 15%;
     aspect-ratio: 90 / 130;
   }
 
   &__arrow-right {
     position: absolute;
-    top: 95%;
+    top: 80%;
     width: desktop-vw(90px);
     transform: scaleX(1) rotate(20deg);
-    left: 40%;
+    left: 30%;
     aspect-ratio: 90 / 130;
 
     svg {
@@ -397,6 +399,7 @@ export default {
       display: flex;
       flex-direction: column;
       background: var(--c-white);
+      cursor: pointer;
     }
 
     @include mobile {

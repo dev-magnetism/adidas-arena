@@ -50,9 +50,12 @@
 
       <nuxt-link
         class="app-programmation-slider-card__cta"
-        :to="`programmation/${$convertToKebabCase(event.content.url)}--${
-          event.id
-        }`"
+        :to="{
+          name: 'programmation-id',
+          params: {
+            id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
+          },
+        }"
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave"
       >
@@ -302,6 +305,7 @@ export default {
     line-height: desktop-vw(58px);
     margin-top: desktop-vw(5px);
     margin-bottom: desktop-vw(40px);
+    user-select: none;
 
     @include mobile {
       margin-top: mobile-vw(5px);

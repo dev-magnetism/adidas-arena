@@ -53,6 +53,7 @@
 
     <div class="app-be-part-of-partenaire-introduction__s-row__content">
       <TH4
+        tag="p"
         class="app-be-part-of-partenaire-introduction__s-row__content__title"
       >
         {{ contents.secondTitle }}

@@ -1,5 +1,5 @@
 <template>
-  <div :style="bgColor" class="app-programmation-card">
+  <div :style="bgColor" class="app-programmation-card" @click="onRouterPush">
     <div ref="layerFiltering" class="app-programmation-card__layer-filtering" />
 
     <div class="app-programmation-card__visual">
@@ -43,9 +43,12 @@
         :color="statutColor"
         :layer-color="statutColor"
         :bg="'grey'"
-        :href="`programmation/${$convertToKebabCase(event.content.url)}--${
-          event.id
-        }`"
+        :href="{
+          name: 'programmation-id',
+          params: {
+            id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
+          },
+        }"
         class="app-programmation-card__cta"
         >coucou</AtomsCTA
       >
@@ -109,6 +112,16 @@ export default {
     this.scrollTrigger?.kill()
   },
   methods: {
+    onRouterPush() {
+      this.$router.push({
+        name: 'programmation-id',
+        params: {
+          id: `${this.$convertToKebabCase(this.event.content.url)}--${
+            this.event.id
+          }`,
+        },
+      })
+    },
     initMatchMedia() {
       this.mm = gsap.matchMedia()
 
@@ -140,6 +153,7 @@ export default {
   position: relative;
   border: 1px solid var(--c-black);
   background-color: var(--bg);
+  cursor: pointer;
 
   @include mobile {
     grid-column: span 6;

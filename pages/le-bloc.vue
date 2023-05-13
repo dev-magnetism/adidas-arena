@@ -9,12 +9,12 @@
     <AppLeblocPresentation :contents="contentPresentation" />
     <div class="app-le-bloc__marquees">
       <EMarqueeScroll>
-        <TH1 weight="bold" color="red-adidas">
+        <TH1 tag="p" weight="bold" color="red-adidas">
           {{ contentMarquees.firstRow }}
         </TH1>
       </EMarqueeScroll>
       <EMarqueeScroll :inverted="true">
-        <TH1 weight="bold" color="red-adidas">
+        <TH1 tag="p" weight="bold" color="red-adidas">
           {{ contentMarquees.secondRow }}
         </TH1>
       </EMarqueeScroll>

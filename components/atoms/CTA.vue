@@ -96,7 +96,7 @@ export default {
       default: false,
     },
     href: {
-      type: String,
+      type: [String, Object],
       required: false,
       default: '#',
     },

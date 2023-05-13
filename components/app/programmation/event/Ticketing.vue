@@ -85,6 +85,14 @@ export default {
       grid-column: span 6;
     }
 
+    @include hover {
+      &:hover {
+        .app-programmation-event-ticketing__scan-code {
+          transform: rotate(4deg);
+        }
+      }
+    }
+
     &::after {
       content: '';
       border: 1px dashed var(--c-black);
@@ -183,6 +191,9 @@ export default {
       0 5%,
       5% 0
     );
+    transform-origin: left bottom;
+    transition: transform 0.3s var(--ease-in-out-cubic);
+    will-change: transform;
 
     @include mobile {
       padding: mobile-vw(20px) mobile-vw(10px);

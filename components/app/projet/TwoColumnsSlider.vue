@@ -5,12 +5,14 @@
         <AtomsCornerPoints :size-points="6" />
         <div class="app-projet-two-columns-slider__f-card__content">
           <TH2
+            tag="p"
             weight="bold"
             class="app-projet-two-columns-slider__f-card__content__title"
           >
             {{ content.firstRow.cardTitle }}
           </TH2>
           <TH2
+            tag="p"
             weight="bold"
             class="app-projet-two-columns-slider__f-card__content__subtitle"
           >
@@ -18,6 +20,7 @@
             {{ content.firstRow.cardSubtitle }}
           </TH2>
           <TH3
+            tag="p"
             weight="medium"
             class="app-projet-two-columns-slider__f-card__content__paragraph"
           >
@@ -32,6 +35,7 @@
         <AtomsCornerPoints :size-points="6" />
         <div class="app-projet-two-columns-slider__s-card__content">
           <TH2
+            tag="p"
             weight="bold"
             class="app-projet-two-columns-slider__s-card__content__title"
           >
@@ -39,12 +43,14 @@
             {{ content.secondRow.cardTitle }}
           </TH2>
           <TH2
+            tag="p"
             weight="bold"
             class="app-projet-two-columns-slider__s-card__content__subtitle"
           >
             {{ content.secondRow.cardSubtitle }}
           </TH2>
           <TH3
+            tag="p"
             weight="medium"
             class="app-projet-two-columns-slider__s-card__content__paragraph"
           >

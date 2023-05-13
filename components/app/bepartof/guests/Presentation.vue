@@ -43,7 +43,7 @@
       </EKinesis>
     </EParallax>
     <div class="app-be-part-of-guests-presentation__text">
-      <TH4>{{ contents.paragraphTitle }}</TH4>
+      <TH4 tag="p">{{ contents.paragraphTitle }}</TH4>
 
       <ERichText :content="contents.paragraph" />
     </div>

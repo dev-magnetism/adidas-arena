@@ -124,7 +124,7 @@ export default {
     margin-top: mobile-vw(70px);
   }
 
-  &__lottie-top-left {
+  &__lottie-top-left.app-element-lottie {
     position: absolute;
     transform: scale(-1, -1) rotate(80deg);
     width: desktop-vw(65px);
@@ -139,7 +139,7 @@ export default {
     }
   }
 
-  &__lottie-bottom-left {
+  &__lottie-bottom-left.app-element-lottie {
     position: absolute;
     transform: scale(1, 1) rotate(160deg);
     width: desktop-vw(150px);
@@ -156,7 +156,7 @@ export default {
     }
   }
 
-  &__lottie-middle-right {
+  &__lottie-middle-right.app-element-lottie {
     position: absolute;
     transform: scale(1, 1) rotate(70deg);
     height: auto;

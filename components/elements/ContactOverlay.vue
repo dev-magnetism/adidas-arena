@@ -10,12 +10,18 @@
       Retour
     </AtomsCTABack>
     <div :class="{ submited }" class="app-element-contact-overlay__successful">
-      <TH2>{{ appContent.data.contact_overlay_successful_title }}</TH2>
-      <TH4>{{ appContent.data.contact_overlay_successful_subtitle }}</TH4>
+      <TH2 tag="p">{{ appContent.data.contact_overlay_successful_title }}</TH2>
+      <TH4 tag="p">{{
+        appContent.data.contact_overlay_successful_subtitle
+      }}</TH4>
     </div>
     <AtomsCornerPoints :size-points="8" />
     <div data-lenis-prevent class="app-element-contact-overlay__wrapper">
-      <TH2 :class="{ submited }" class="app-element-contact-overlay__title">
+      <TH2
+        tag="p"
+        :class="{ submited }"
+        class="app-element-contact-overlay__title"
+      >
         {{ appContent.data.contact_overlay_title }}
       </TH2>
       <TP1
@@ -39,7 +45,7 @@
             class="app-element-contact-overlay__field"
             type="text"
           />
-          <TH4>Nom</TH4>
+          <TH4 tag="p">Nom</TH4>
         </div>
         <div class="app-element-contact-overlay__field-group">
           <input
@@ -49,7 +55,7 @@
             class="app-element-contact-overlay__field"
             type="text"
           />
-          <TH4>Prénom</TH4>
+          <TH4 tag="p">Prénom</TH4>
         </div>
         <div class="app-element-contact-overlay__field-group">
           <input
@@ -59,7 +65,7 @@
             class="app-element-contact-overlay__field"
             type="email"
           />
-          <TH4>Email</TH4>
+          <TH4 tag="p">Email</TH4>
         </div>
         <div class="app-element-contact-overlay__field-group">
           <input
@@ -70,7 +76,7 @@
             type="tel"
             pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$"
           />
-          <TH4>Téléphone</TH4>
+          <TH4 tag="p">Téléphone</TH4>
         </div>
         <div class="app-element-contact-overlay__field-group textarea">
           <textarea
@@ -79,7 +85,7 @@
             class="app-element-contact-overlay__field textarea"
             required
           />
-          <TH4>Votre message</TH4>
+          <TH4 tag="p">Votre message</TH4>
         </div>
         <div class="app-element-contact-overlay__baseline">
           <TP1 weight="bold">{{ appContent.data.contact_overlay_warning }}</TP1>

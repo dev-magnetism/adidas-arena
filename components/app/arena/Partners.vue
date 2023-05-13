@@ -7,6 +7,7 @@
         :overflow="true"
         class="app-arena-partners__title"
         :content="contents.title"
+        tag="p"
       />
       <TP2
         class="app-arena-partners__principal-paragraph partners-apparition"
@@ -70,6 +71,7 @@ export default {
           scrollTrigger,
         }
       )
+
       gsap.fromTo(
         el,
         {

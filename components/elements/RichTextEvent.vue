@@ -24,8 +24,6 @@ export default {
 
     const texts = soup.findAll()
 
-    console.log(texts)
-
     texts.forEach((text) => {
       text.attrs.class = text.name
       text.name = text.name === ('li' || 'ul') ? text.name : 'p'

@@ -3,7 +3,7 @@
     <div class="app-contact-actus__wrapper">
       <AtomsCornerPoints :size-points="8" />
 
-      <ERichText :content="contents.title" />
+      <ERichText tag="p" :content="contents.title" />
 
       <form
         :class="{ submited }"
@@ -11,8 +11,10 @@
         @submit.prevent="onSubmit"
       >
         <div class="app-contact-actus__form__successful">
-          <TH2 weight="bold">{{ appContent.data.newsletter_big_text }}</TH2>
-          <TH4>{{ appContent.data.newsletter_text }}</TH4>
+          <TH2 tag="p" weight="bold">{{
+            appContent.data.newsletter_big_text
+          }}</TH2>
+          <TH4 tag="p">{{ appContent.data.newsletter_text }}</TH4>
         </div>
         <input
           v-model="email"

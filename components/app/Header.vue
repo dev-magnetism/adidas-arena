@@ -12,7 +12,7 @@
       class="app-header__logo"
       to="/"
     >
-      <h1>Adidas Arena</h1>
+      <TH1 :tag="$route.name === 'index' ? 'h1' : 'p'">Adidas Arena</TH1>
       <SvgArenaLogo />
     </nuxt-link>
 
@@ -71,6 +71,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this)
     this.scrollTrigger = ScrollTrigger.create({
       trigger: this.$el,
       start: 'top+=20px top',
@@ -151,7 +152,8 @@ export default {
     z-index: 2;
     transform: translateX(-50%);
 
-    h1 {
+    h1,
+    p {
       position: absolute;
       pointer-events: none;
       opacity: 0;
