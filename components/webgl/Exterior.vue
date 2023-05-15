@@ -851,7 +851,10 @@ export default {
 
       const geometry = new BoxGeometry(1, 1, 1)
 
-      const material = new MeshBasicMaterial({ color: 0xff0000 })
+      const material = new MeshBasicMaterial({
+        color: 0xff0000,
+        precision: 'lowp',
+      })
       this.hitbox = new Mesh(geometry, material)
       this.hitbox.visible = false
 
@@ -1045,7 +1048,7 @@ export default {
 
       this.guiDirectionalLight
         .addInput(this.directionalLight.shadow, 'bias', {
-          min: 0,
+          min: -2,
           max: 2,
           step: 0.0001,
           label: 'Bias Shadow Camera',
@@ -1058,7 +1061,7 @@ export default {
 
       this.guiDirectionalLight
         .addInput(this.directionalLight.shadow, 'normalBias', {
-          min: 0,
+          min: -2,
           max: 2,
           step: 0.0001,
           label: 'Normal Bias Shadow Camera',

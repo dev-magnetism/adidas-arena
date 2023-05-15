@@ -944,9 +944,9 @@ export default {
         ? 2048
         : 1024
 
-      // this.directionalLight.shadow.bias = -0.001
       this.directionalLight.shadow.camera.near = 1
       this.directionalLight.shadow.camera.far = 1000
+      this.directionalLight.shadow.normalBias = 0.2
 
       const size = this.$viewport.isMobile ? 50 : 100
 
@@ -1043,6 +1043,32 @@ export default {
         })
         .on('change', (e) => {
           this.directionalLight.shadow.camera.far = e.value
+
+          this.directionalLight.shadow.camera.updateProjectionMatrix()
+        })
+
+      this.guiDirectionalLight
+        .addInput(this.directionalLight.shadow, 'bias', {
+          min: 0,
+          max: 2,
+          step: 0.0001,
+          label: 'Bias Shadow Camera',
+        })
+        .on('change', (e) => {
+          this.directionalLight.shadow.bias = e.value
+
+          this.directionalLight.shadow.camera.updateProjectionMatrix()
+        })
+
+      this.guiDirectionalLight
+        .addInput(this.directionalLight.shadow, 'normalBias', {
+          min: 0,
+          max: 2,
+          step: 0.0001,
+          label: 'Normal Bias Shadow Camera',
+        })
+        .on('change', (e) => {
+          this.directionalLight.shadow.normalBias = e.value
 
           this.directionalLight.shadow.camera.updateProjectionMatrix()
         })
@@ -1235,7 +1261,6 @@ export default {
 
       this.lineMaterial = new LineBasicMaterial({
         precision: 'lowp',
-
         color: this.colors.outlineColor,
         linewidth: 2,
       })
@@ -1302,8 +1327,13 @@ export default {
       const musicSceneGroup = this.model.getObjectByName('Scene_Music')
 
       const musicScene = this.mergeObject(musicSceneGroup)
+      musicScene.matrixAutoUpdate = false
+
       const edgeMusicScene = this.edgeObject(musicScene)
+      edgeMusicScene.matrixAutoUpdate = false
+
       const conditionalMusicScene = this.conditionalObject(musicScene)
+      conditionalMusicScene.matrixAutoUpdate = false
 
       this.musicScene.add(musicScene)
       this.musicScene.add(edgeMusicScene)
@@ -1860,18 +1890,18 @@ export default {
 
       const { basicObject, specialObjects } = this.parseFloor(object)
 
-      // const { normalObject, edgeObject, conditionalObject } =
-      //   this.buildMergedObjects(basicObject, clippingPlane, group.materials)
+      const { normalObject, edgeObject, conditionalObject } =
+        this.buildMergedObjects(basicObject, clippingPlane, group.materials)
 
-      // group.add(normalObject, edgeObject, conditionalObject)
+      group.add(normalObject, edgeObject, conditionalObject)
 
-      const { normalObject, edgeObject } = this.buildMergedObjects(
-        basicObject,
-        clippingPlane,
-        group.materials
-      )
+      // const { normalObject, edgeObject } = this.buildMergedObjects(
+      //   basicObject,
+      //   clippingPlane,
+      //   group.materials
+      // )
 
-      group.add(normalObject, edgeObject)
+      // group.add(normalObject, edgeObject)
 
       group.position.y += indexFloor * 0.05
       group.initialPosition = group.position.clone()

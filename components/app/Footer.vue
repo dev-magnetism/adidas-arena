@@ -199,11 +199,12 @@ export default {
     },
   },
   mounted() {
-    this.scrollTrigger = ScrollTrigger.create({
-      trigger: this.$el,
-      start: 'top-=7.5% top',
-      onToggle: (self) => this.setHeaderWhite(self.isActive),
-    })
+    this.$nuxt.$on(
+      'global:forceInitScrollTrigger',
+      this.onForceInitScrollTrigger
+    )
+
+    this.initScrollTrigger()
 
     this.tl = gsap.timeline({
       paused: true,
@@ -229,9 +230,25 @@ export default {
     this.tl?.clear()
     this.tl?.kill()
 
+    this.$nuxt.$off(
+      'global:forceInitScrollTrigger',
+      this.onForceInitScrollTrigger
+    )
+
     this.scrollTrigger?.kill()
   },
   methods: {
+    onForceInitScrollTrigger() {
+      this.scrollTrigger?.kill()
+      this.initScrollTrigger()
+    },
+    initScrollTrigger() {
+      this.scrollTrigger = ScrollTrigger.create({
+        trigger: this.$el,
+        start: 'top-=7.5% top',
+        onToggle: (self) => this.setHeaderWhite(self.isActive),
+      })
+    },
     onMouseEnterEl() {
       this.setCursorState('hide')
       this.setAppCursor('initial')

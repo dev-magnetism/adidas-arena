@@ -350,6 +350,7 @@ export default {
         color: 0x181818,
         transparent: true,
         opacity: 0,
+        precision: 'lowp',
       })
 
       const point = new Mesh(geometry, this.materialBorder)

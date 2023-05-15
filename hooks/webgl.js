@@ -15,8 +15,8 @@ import {
   CineonToneMapping,
   ACESFilmicToneMapping,
   WebGLRenderTarget,
-  LinearEncoding,
-  sRGBEncoding,
+  // LinearEncoding,
+  // sRGBEncoding,
   // ColorManagement,
 } from 'three'
 
@@ -92,7 +92,7 @@ class GL {
 
     this.renderer.localClippingEnabled = true
     this.renderer.shadowMap.enabled = true
-    this.renderer.shadowMap.type = PCFSoftShadowMap
+    this.renderer.shadowMap.type = PCFShadowMap
     // BasicShadowMap (Very performant but lousy quality)
     // PCFShadowMap (default) (Less performant but smoother edges)
     // PCFSoftShadowMap (best) (Less performant but even softer edges)
@@ -105,8 +105,7 @@ class GL {
     this.renderer.setScissorTest(true)
 
     this.renderTarget = new WebGLRenderTarget(800, 600, {
-      // samples: this.dpr < 2 ? this.maxSamples : 0,
-      samples: this.dpr < 2 ? 6 : 0, //
+      samples: this.dpr < 2 ? this.maxSamples : 0,
     })
 
     this.composer = new EffectComposer(this.renderer, this.renderTarget)
@@ -114,9 +113,6 @@ class GL {
 
     this.renderPass = new RenderPass(this.scene, this.camera)
     this.composer.addPass(this.renderPass)
-
-    this.layerPass = new ShaderPass(LayerShader)
-    this.composer.addPass(this.layerPass)
 
     this.layerPass = new ShaderPass(LayerShader)
     this.composer.addPass(this.layerPass)
@@ -229,16 +225,16 @@ class GL {
 
     this.gui.addSeparator()
 
-    this.gui
-      .addInput(this.renderer, 'outputEncoding', {
-        options: {
-          LinearEncoding,
-          sRGBEncoding,
-        },
-      })
-      .on('change', (e) => {
-        this.renderer.outputEncoding = e.value
-      })
+    // this.gui
+    //   .addInput(this.renderer, 'outputEncoding', {
+    //     options: {
+    //       LinearEncoding,
+    //       sRGBEncoding,
+    //     },
+    //   })
+    //   .on('change', (e) => {
+    //     this.renderer.outputEncoding = e.value
+    //   })
 
     this.gui
       .addInput(this.renderer, 'toneMapping', {

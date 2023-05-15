@@ -34,9 +34,7 @@ export default {
       default: () => {},
     },
   },
-  mounted() {
-    console.log(this.event)
-  },
+
   methods: {
     scrollToDates() {
       if (!window.lenis) return

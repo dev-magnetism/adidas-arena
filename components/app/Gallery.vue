@@ -396,6 +396,7 @@ export default {
   justify-content: center;
   position: relative;
   margin-bottom: desktop-vw(100px);
+  overflow: hidden;
 
   @include mobile {
     height: mobile-vw(375px);
