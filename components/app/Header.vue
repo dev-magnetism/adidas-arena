@@ -98,7 +98,6 @@ export default {
         start: 'top+=20px top',
         end: 'max',
         fastScrollEnd: true,
-        markers: true,
         onEnter: (e) => {
           this.setHeaderReduced(true)
         },
@@ -118,7 +117,7 @@ export default {
 <style lang="scss">
 .app-header {
   position: fixed;
-  top: 75px;
+  top: 65px;
   left: 50%;
   display: flex;
   width: 50%;

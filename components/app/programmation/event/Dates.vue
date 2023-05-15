@@ -12,7 +12,7 @@
         :date="$formatDate(session.date, true)"
         :artist="event.artist_reference"
         :length="event.sessions.length"
-        :disabled="dateSelected !== index && dateSelected !== null"
+        :disabled="indexDate !== index && indexDate !== null"
         @click.native="onSelectDate(index)"
       />
     </div>
@@ -33,7 +33,7 @@ export default {
   },
   data() {
     return {
-      dateSelected: null,
+      indexDate: null,
     }
   },
   computed: {
@@ -54,10 +54,14 @@ export default {
   },
   methods: {
     onSelectDate(index) {
-      if (index === this.dateSelected) return
+      // if (index === this.indexDate) return
+      if (index === this.indexDate) {
+        this.indexDate = null
+      } else {
+        this.indexDate = index
+      }
 
-      this.dateSelected = index
-      this.$emit('onSelectDate', this.dateSelected)
+      this.$emit('onSelectDate', this.indexDate)
     },
   },
 }

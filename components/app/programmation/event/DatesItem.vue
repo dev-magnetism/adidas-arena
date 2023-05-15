@@ -177,6 +177,7 @@ export default {
 
   &__artist {
     margin-bottom: desktop-vw(75px);
+    user-select: none;
 
     @include mobile {
       margin-bottom: mobile-vw(60px);

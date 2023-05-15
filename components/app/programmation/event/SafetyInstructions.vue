@@ -103,7 +103,7 @@ export default {
           scrollTrigger: {
             toggleActions: 'play none none play',
             trigger: this.$refs.wrapper,
-            start: 'top bottom-=20%',
+            start: 'top bottom-=10%',
           },
         })
 

@@ -15,6 +15,7 @@
     <AppProgrammationEventTicketing
       :event="event"
       :content="contentTicketing"
+      :index-date="event.sessions.length - 1 > 0 ? indexDate : 0"
     />
     <!-- <AppProgrammationEventOffers ref="offers" /> -->
     <AppProgrammationEventSafetyInstructions :content="contentSafety" />
@@ -71,6 +72,7 @@ export default {
   data() {
     return {
       appearBar: false,
+      indexDate: null,
     }
   },
   head({ $seo }) {
@@ -141,7 +143,7 @@ export default {
   },
   methods: {
     onSelectDate(index) {
-      console.log('onSelectDate', index)
+      this.indexDate = index
     },
     initMatchMedia() {
       this.mm = gsap.matchMedia()

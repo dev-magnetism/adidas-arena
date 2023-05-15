@@ -1,48 +1,64 @@
 <template>
-  <div class="app-programmation-event-ticketing block-inner">
+  <div
+    :class="{ hide: event.sessions.length - 1 > 0 && indexDate === null }"
+    class="app-programmation-event-ticketing block-inner"
+  >
     <TH2 weight="bold" class="app-programmation-event-ticketing__title">
       {{ content.title }}
     </TH2>
-    <div class="app-programmation-event-tickets grid">
-      <a
-        v-if="event.sessions[0].content.url"
-        :href="event.sessions[0].content.url"
-        target="_blank"
-        class="app-programmation-event-ticketing__ticket"
-      >
-        <div class="app-programmation-event-ticketing__infos">
-          <TH2Bis>Standard</TH2Bis>
-          <TP2 weight="medium">
-            Achetez votre place et venez vivre une expérience inoubliable
-          </TP2>
+    <div class="app-programmation-event-ticketing__tickets">
+      <transition-group tag="div" name="ticketing-ticket">
+        <div
+          v-for="(session, index) in event.sessions"
+          v-show="index === indexDate"
+          :key="`ticket-session-${index}`"
+          :class="{ initialization: initializationTickets }"
+          class="app-programmation-event-ticketing__tickets__wrapper grid"
+        >
+          <a
+            v-if="session.content.url"
+            :href="session.content.url"
+            target="_blank"
+            class="app-programmation-event-ticketing__ticket"
+          >
+            <div class="app-programmation-event-ticketing__infos">
+              <TH2Bis>Standard</TH2Bis>
+              <TP2 weight="medium">
+                Achetez votre place et venez vivre une expérience inoubliable
+              </TP2>
+            </div>
+            <div class="app-programmation-event-ticketing__scan-code">
+              <TH4 color="grey">EN SAVOIR PLUS</TH4>
+              <SvgScanCode />
+            </div>
+          </a>
+          <a
+            v-if="session.content.url_premium"
+            target="_blank"
+            :href="session.content.url_premium"
+            class="app-programmation-event-ticketing__ticket"
+          >
+            <div class="app-programmation-event-ticketing__infos">
+              <TH2Bis>PREMIUM</TH2Bis>
+              <TP2 weight="medium">
+                Achetez votre place et venez vivre une expérience inoubliable
+              </TP2>
+            </div>
+            <div class="app-programmation-event-ticketing__scan-code">
+              <TH4 color="grey">EN SAVOIR PLUS</TH4>
+              <SvgScanCode />
+            </div>
+          </a>
         </div>
-        <div class="app-programmation-event-ticketing__scan-code">
-          <TH4 color="grey">EN SAVOIR PLUS</TH4>
-          <SvgScanCode />
-        </div>
-      </a>
-      <a
-        v-if="event.sessions[0].content.url_premium"
-        target="_blank"
-        :href="event.sessions[0].content.url_premium"
-        class="app-programmation-event-ticketing__ticket"
-      >
-        <div class="app-programmation-event-ticketing__infos">
-          <TH2Bis>PREMIUM</TH2Bis>
-          <TP2 weight="medium">
-            Achetez votre place et venez vivre une expérience inoubliable
-          </TP2>
-        </div>
-        <div class="app-programmation-event-ticketing__scan-code">
-          <TH4 color="grey">EN SAVOIR PLUS</TH4>
-          <SvgScanCode />
-        </div>
-      </a>
+      </transition-group>
     </div>
   </div>
 </template>
 
 <script>
+import { Flip } from 'gsap/Flip'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
 export default {
   props: {
     content: {
@@ -53,6 +69,38 @@ export default {
       type: Object,
       default: () => {},
     },
+    indexDate: {
+      type: Number,
+      default: null,
+    },
+  },
+  data() {
+    return {
+      initializationTickets: false,
+    }
+  },
+  watch: {
+    indexDate(newVal, oldVal) {
+      console.log('here here indexDate')
+      const state = Flip.getState(this.$el)
+
+      this.initializationTickets = newVal === null || oldVal === null
+
+      this.$nextTick(() => {
+        Flip.from(state, {
+          simple: true,
+          duration: 0.45,
+          ease: 'power1.inOut',
+          onComplete: () => {
+            ScrollTrigger.refresh()
+            this.initializationTickets = false
+          },
+        })
+      })
+    },
+  },
+  mounted() {
+    console.log('dfdfdd', this.event, this.content)
   },
 }
 </script>
@@ -60,6 +108,14 @@ export default {
 <style lang="scss">
 .app-programmation-event-ticketing {
   margin-top: desktop-vw(75px);
+  height: auto;
+  overflow: hidden;
+  transition: opacity 0.3s var(--ease-in-out-cubic);
+
+  &.hide {
+    height: 0;
+    opacity: 0;
+  }
 
   @include mobile {
     margin-top: mobile-vw(65px);
@@ -70,6 +126,41 @@ export default {
 
     @include mobile {
       margin-bottom: mobile-vw(25px);
+    }
+  }
+
+  &__tickets {
+    position: relative;
+    height: desktop-vw(300px);
+    padding: desktop-vw(2.5px);
+
+    &__wrapper {
+      position: absolute;
+
+      &.initialization {
+        &.ticketing-ticket-enter-active {
+          transition-delay: 0s !important;
+        }
+      }
+
+      &.ticketing-ticket-enter-active,
+      &.ticketing-ticket-leave-active {
+        transition: opacity 0.3s var(--ease-in-out-cubic);
+      }
+
+      &.ticketing-ticket-enter-active {
+        transition-delay: 0.35s;
+      }
+
+      &.ticketing-ticket-enter,
+      &.ticketing-ticket-leave-to {
+        opacity: 0;
+      }
+
+      &.ticketing-ticket-enter-to,
+      &.ticketing-ticket-leave {
+        opacity: 1;
+      }
     }
   }
 
@@ -109,14 +200,14 @@ export default {
       }
     }
 
-    &:first-child {
+    &:nth-child(1) {
       .app-programmation-event-ticketing__scan-code::before {
         content: '';
         background: var(--c-blue-adidas);
       }
     }
 
-    &:last-child {
+    &:nth-child(2) {
       .app-programmation-event-ticketing__scan-code::before {
         content: '';
         background: var(--c-red-adidas);

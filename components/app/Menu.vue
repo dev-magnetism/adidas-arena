@@ -714,7 +714,6 @@ export default {
 
       &.menu-visual-leave {
         opacity: 1;
-        opacity: 1;
       }
 
       &.menu-visual-leave-to {
