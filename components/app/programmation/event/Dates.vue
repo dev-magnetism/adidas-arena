@@ -49,12 +49,9 @@ export default {
       return sessions
     },
   },
-  mounted() {
-    console.log('Dates.vue', this.event, this.sessions)
-  },
+
   methods: {
     onSelectDate(index) {
-      // if (index === this.indexDate) return
       if (index === this.indexDate) {
         this.indexDate = null
       } else {

@@ -92,7 +92,7 @@ export default {
     justify-content: flex-end;
 
     &__info {
-      width: 27.5%;
+      width: 32%;
       margin-right: desktop-vw(10px);
     }
 

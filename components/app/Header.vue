@@ -117,7 +117,7 @@ export default {
 <style lang="scss">
 .app-header {
   position: fixed;
-  top: 65px;
+  top: 60px;
   left: 50%;
   display: flex;
   width: 50%;

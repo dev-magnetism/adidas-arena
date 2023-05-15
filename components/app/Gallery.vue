@@ -257,8 +257,6 @@ export default {
           picture.appearPicture()
         })
 
-        console.log('here')
-
         this.imageSelected = false
         this.lastImageSelectedId = null
 

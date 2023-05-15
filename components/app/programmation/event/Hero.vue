@@ -373,7 +373,7 @@ export default {
   }
 
   &__information {
-    margin-bottom: desktop-vw(10px);
+    margin-bottom: desktop-vw(5px);
 
     @include mobile {
       margin-bottom: mobile-vw(10px);

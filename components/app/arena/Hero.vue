@@ -219,21 +219,9 @@ export default {
         this.transitionedToInterior ||
         this.$viewport.isMobile
       ) {
-        console.log(
-          'onTogfgle',
-          this.$route.params.enterArena,
-          this.transitionedToInterior
-        )
         this.setInteriorVisible(self.isActive)
 
         if (self.isActive) {
-          console.log(
-            'onToggle',
-            this.$route.params.enterArena,
-            this.transitionedToInterior,
-            'is-active'
-          )
-
           const state =
             this.interiorInitialState === this.interiorIndexFloor ||
             !this.alreadyAppearedOnce
@@ -253,8 +241,6 @@ export default {
         !this.$route.params.enterArena ||
         !this.$viewport.isMobile
       ) {
-        console.log('onToggle else')
-
         this.setExteriorFullscreen(self.isActive)
 
         if (self.isActive) {

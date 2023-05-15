@@ -7,55 +7,56 @@
       {{ content.title }}
     </TH2>
     <div class="app-programmation-event-ticketing__tickets">
-      <transition-group tag="div" name="ticketing-ticket">
-        <div
-          v-for="(session, index) in event.sessions"
-          v-show="index === indexDate"
-          :key="`ticket-session-${index}`"
-          :class="{ initialization: initializationTickets }"
-          class="app-programmation-event-ticketing__tickets__wrapper grid"
+      <!-- <transition-group tag="div" name="ticketing-ticket"> -->
+      <div
+        v-for="(session, index) in event.sessions"
+        v-show="index === indexDate"
+        :key="`ticket-session-${index}`"
+        ref="wrappers"
+        class="app-programmation-event-ticketing__tickets__wrapper grid"
+      >
+        <a
+          v-if="session.content.url"
+          :href="session.content.url"
+          target="_blank"
+          class="app-programmation-event-ticketing__ticket"
         >
-          <a
-            v-if="session.content.url"
-            :href="session.content.url"
-            target="_blank"
-            class="app-programmation-event-ticketing__ticket"
-          >
-            <div class="app-programmation-event-ticketing__infos">
-              <TH2Bis>Standard</TH2Bis>
-              <TP2 weight="medium">
-                Achetez votre place et venez vivre une expérience inoubliable
-              </TP2>
-            </div>
-            <div class="app-programmation-event-ticketing__scan-code">
-              <TH4 color="grey">EN SAVOIR PLUS</TH4>
-              <SvgScanCode />
-            </div>
-          </a>
-          <a
-            v-if="session.content.url_premium"
-            target="_blank"
-            :href="session.content.url_premium"
-            class="app-programmation-event-ticketing__ticket"
-          >
-            <div class="app-programmation-event-ticketing__infos">
-              <TH2Bis>PREMIUM</TH2Bis>
-              <TP2 weight="medium">
-                Achetez votre place et venez vivre une expérience inoubliable
-              </TP2>
-            </div>
-            <div class="app-programmation-event-ticketing__scan-code">
-              <TH4 color="grey">EN SAVOIR PLUS</TH4>
-              <SvgScanCode />
-            </div>
-          </a>
-        </div>
-      </transition-group>
+          <div class="app-programmation-event-ticketing__infos">
+            <TH2Bis>Standard</TH2Bis>
+            <TP2 weight="medium">
+              Achetez votre place et venez vivre une expérience inoubliable
+            </TP2>
+          </div>
+          <div class="app-programmation-event-ticketing__scan-code">
+            <TH4 color="grey">EN SAVOIR PLUS</TH4>
+            <SvgScanCode />
+          </div>
+        </a>
+        <a
+          v-if="session.content.url_premium"
+          target="_blank"
+          :href="session.content.url_premium"
+          class="app-programmation-event-ticketing__ticket"
+        >
+          <div class="app-programmation-event-ticketing__infos">
+            <TH2Bis>PREMIUM</TH2Bis>
+            <TP2 weight="medium">
+              Achetez votre place et venez vivre une expérience inoubliable
+            </TP2>
+          </div>
+          <div class="app-programmation-event-ticketing__scan-code">
+            <TH4 color="grey">EN SAVOIR PLUS</TH4>
+            <SvgScanCode />
+          </div>
+        </a>
+      </div>
+      <!-- </transition-group> -->
     </div>
   </div>
 </template>
 
 <script>
+import { gsap } from 'gsap'
 import { Flip } from 'gsap/Flip'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -81,10 +82,16 @@ export default {
   },
   watch: {
     indexDate(newVal, oldVal) {
-      console.log('here here indexDate')
       const state = Flip.getState(this.$el)
+      const stateWrappers = Flip.getState(this.$refs.wrappers)
 
       this.initializationTickets = newVal === null || oldVal === null
+
+      if (newVal !== null) {
+        window.lenis.scrollTo('.app-programmation-event-ticketing', {
+          duration: 0.85,
+        })
+      }
 
       this.$nextTick(() => {
         Flip.from(state, {
@@ -96,18 +103,40 @@ export default {
             this.initializationTickets = false
           },
         })
+
+        Flip.from(stateWrappers, {
+          simple: true,
+          absoluteOnLeave: true,
+          duration: 0.45,
+          ease: 'power1.inOut',
+          onEnter: (elements) =>
+            gsap.fromTo(
+              elements,
+              { opacity: 0 },
+              {
+                opacity: 1,
+                delay: this.initializationTickets ? 0 : 0.4,
+                duration: 0.3,
+                ease: 'power1.inOut',
+              }
+            ),
+          onLeave: (elements) =>
+            gsap.fromTo(
+              elements,
+              { opacity: 1 },
+              { opacity: 0, duration: 0.3, ease: 'power1.inOut' }
+            ),
+        })
       })
     },
-  },
-  mounted() {
-    console.log('dfdfdd', this.event, this.content)
   },
 }
 </script>
 
 <style lang="scss">
 .app-programmation-event-ticketing {
-  margin-top: desktop-vw(75px);
+  padding-top: desktop-vw(75px);
+  padding-bottom: desktop-vw(20px);
   height: auto;
   overflow: hidden;
   transition: opacity 0.3s var(--ease-in-out-cubic);
@@ -118,7 +147,7 @@ export default {
   }
 
   @include mobile {
-    margin-top: mobile-vw(65px);
+    padding-top: mobile-vw(65px);
   }
 
   &__title {
@@ -131,35 +160,13 @@ export default {
 
   &__tickets {
     position: relative;
-    height: desktop-vw(300px);
-    padding: desktop-vw(2.5px);
 
     &__wrapper {
-      position: absolute;
+      // position: absolute;
+      padding: desktop-vw(2.5px);
 
-      &.initialization {
-        &.ticketing-ticket-enter-active {
-          transition-delay: 0s !important;
-        }
-      }
-
-      &.ticketing-ticket-enter-active,
-      &.ticketing-ticket-leave-active {
-        transition: opacity 0.3s var(--ease-in-out-cubic);
-      }
-
-      &.ticketing-ticket-enter-active {
-        transition-delay: 0.35s;
-      }
-
-      &.ticketing-ticket-enter,
-      &.ticketing-ticket-leave-to {
-        opacity: 0;
-      }
-
-      &.ticketing-ticket-enter-to,
-      &.ticketing-ticket-leave {
-        opacity: 1;
+      @include mobile {
+        padding: mobile-vw(2.5px);
       }
     }
   }

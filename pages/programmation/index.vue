@@ -93,7 +93,7 @@ export default {
   }
 
   .app-footer {
-    margin-top: desktop-vw(185px);
+    margin-top: desktop-vw(100px);
 
     @include mobile {
       margin-top: mobile-vw(80px);

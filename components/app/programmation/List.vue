@@ -1,78 +1,79 @@
 <template>
   <div class="app-programmation-list">
-    <div
-      ref="bar"
-      :class="{ visible: barActive }"
-      class="app-programmation-list-bar grid-inner"
-    >
-      <AppProgrammationEventTag
-        class="app-programmation-list-bar__filters-mobile"
+    <div ref="bar" class="app-programmation-list-bar">
+      <div
+        ref="barWrapper"
+        class="app-programmation-list-bar__wrapper grid-inner"
       >
-        FILTRER
-        <select v-model="selectedCategory">
-          <option
+        <AppProgrammationEventTag
+          class="app-programmation-list-bar__filters-mobile"
+        >
+          FILTRER
+          <select v-model="selectedCategory">
+            <option
+              v-for="(cat, catIndex) in programmesCategories"
+              :key="`key-${cat.category}-${catIndex}`"
+              :value="cat.category.toLowerCase()"
+            >
+              {{ cat.category }} ({{ cat.count.toString().padStart(2, '0') }})
+            </option>
+          </select>
+        </AppProgrammationEventTag>
+        <div class="app-programmation-list-bar__filters">
+          <div
             v-for="(cat, catIndex) in programmesCategories"
             :key="`key-${cat.category}-${catIndex}`"
-            :value="cat.category.toLowerCase()"
+            class="app-programmation-list-bar__filters__radio"
           >
-            {{ cat.category }} ({{ cat.count.toString().padStart(2, '0') }})
-          </option>
-        </select>
-      </AppProgrammationEventTag>
-      <div class="app-programmation-list-bar__filters">
-        <div
-          v-for="(cat, catIndex) in programmesCategories"
-          :key="`key-${cat.category}-${catIndex}`"
-          class="app-programmation-list-bar__filters__radio"
-        >
-          <input
-            :id="`${cat.category.toLowerCase()}`"
-            ref="radioButtons"
-            v-model="selectedCategory"
-            type="radio"
-            name="filters-radio"
-            :value="cat.category.toLowerCase()"
-          />
+            <input
+              :id="`${cat.category.toLowerCase()}`"
+              ref="radioButtons"
+              v-model="selectedCategory"
+              type="radio"
+              name="filters-radio"
+              :value="cat.category.toLowerCase()"
+            />
 
-          <label :for="`${cat.category.toLowerCase()}`">
-            <TP1 weight="bold">
-              {{ cat.category }}
-            </TP1>
+            <label :for="`${cat.category.toLowerCase()}`">
+              <TP1 weight="bold">
+                {{ cat.category }}
+              </TP1>
 
-            <TP1 weight="regular">
-              {{ cat.count.toString().padStart(2, '0') }}
-            </TP1>
-          </label>
+              <TP1 weight="regular">
+                {{ cat.count.toString().padStart(2, '0') }}
+              </TP1>
+            </label>
+          </div>
         </div>
-      </div>
 
-      <div class="app-programmation-list-bar__months">
-        <select @change="onChangeMonth">
-          <option
-            v-for="month in monthFilters"
-            :key="`select-${month.month}-${month.year}`"
-            :value="`${month.month}-${month.year}`"
-            :selected="currentMonth === `${month.month}-${month.year}`"
-          >
-            {{ month.month }} - {{ month.year }}
-          </option>
-        </select>
+        <div class="app-programmation-list-bar__months">
+          <select @change="onChangeMonth">
+            <option
+              v-for="month in monthFilters"
+              :key="`select-${month.month}-${month.year}`"
+              :value="`${month.month}-${month.year}`"
+              :selected="currentMonth === `${month.month}-${month.year}`"
+            >
+              {{ month.month }} - {{ month.year }}
+            </option>
+          </select>
 
-        <transition-group
-          tag="div"
-          :name="`${directionMonth}-bar-month`"
-          class="app-programmation-list-bar__months__wrapper"
-        >
-          <TH3
-            v-for="(year, index) in programmesMonths"
-            v-show="currentMonth === `${year.month}-${year.year}`"
-            :key="`bar-month-${year.month}-${year.year}-${index}`"
-            tag="p"
+          <transition-group
+            tag="div"
+            :name="`${directionMonth}-bar-month`"
+            class="app-programmation-list-bar__months__wrapper"
           >
-            {{ year.month }} '{{ year.year.toString().substr(-2) }}
-          </TH3>
-        </transition-group>
-        <SvgArrowFilter />
+            <TH3
+              v-for="(year, index) in programmesMonths"
+              v-show="currentMonth === `${year.month}-${year.year}`"
+              :key="`bar-month-${year.month}-${year.year}-${index}`"
+              tag="p"
+            >
+              {{ year.month }} '{{ year.year.toString().substr(-2) }}
+            </TH3>
+          </transition-group>
+          <SvgArrowFilter />
+        </div>
       </div>
     </div>
 
@@ -109,7 +110,7 @@ export default {
   data() {
     return {
       selectedCategory: 'tout',
-      barActive: false,
+      barActive: true,
       scrollTriggerMonths: [],
       currentMonth: null,
       directionMonth: 'up',
@@ -169,14 +170,18 @@ export default {
   methods: {
     initScrollTrigger() {
       this.scrollTriggerBar = ScrollTrigger.create({
-        trigger: this.$refs.container,
+        trigger: this.$refs.bar,
         start: 'top bottom',
-        endTrigger: '.app-footer',
-        end: 'top bottom',
-        onToggle: (e) => {
+        end: 'bottom bottom',
+        onLeave: (e) => {
           if (this.filteringInProgress) return
 
-          this.barActive = e.isActive
+          this.barActive = false
+        },
+        onEnterBack: (e) => {
+          if (this.filteringInProgress) return
+
+          this.barActive = true
         },
       })
 
@@ -371,6 +376,7 @@ export default {
       this.currentMonth = `${this.monthFilters[0].month}-${this.monthFilters[0].year}`
 
       const containerState = Flip.getState(this.$refs.container)
+      const barState = Flip.getState(this.$refs.bar)
 
       const items = this.$refs.events.map((event) => event.$el)
       const state = Flip.getState(items)
@@ -458,6 +464,12 @@ export default {
           simple: true,
           ease: 'power1.inOut',
         })
+
+        Flip.from(barState, {
+          duration: 1.5,
+          simple: true,
+          ease: 'power1.inOut',
+        })
       })
     },
   },
@@ -466,10 +478,15 @@ export default {
 
 <style lang="scss">
 .app-programmation-list {
-  padding-top: desktop-vw(225px);
+  margin-top: desktop-vw(110px);
+  padding-top: desktop-vw(110px);
+  padding-bottom: desktop-vw(110px);
+  position: relative;
 
   @include mobile {
-    padding-top: mobile-vw(185px);
+    margin-top: mobile-vw(120px);
+    padding-top: mobile-vw(70px);
+    padding-bottom: mobile-vw(90px);
   }
 
   &-events {
@@ -501,25 +518,33 @@ export default {
   }
 
   &-bar {
-    position: fixed;
-    bottom: 0;
+    position: absolute;
+    top: 0;
     z-index: 99999;
     width: 100%;
-    padding-bottom: desktop-vw(25px);
-    transform: translateY(100%);
-    transition: transform 0.5s var(--ease-in-out-cubic);
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    pointer-events: none;
 
-    @include mobile {
-      background: rgb(255 255 255);
-      background: linear-gradient(
-        0deg,
-        rgb(255 255 255) 10%,
-        rgba(255, 255, 255, 0) 100%
-      );
-    }
+    &__wrapper {
+      position: sticky;
+      bottom: 25px;
+      align-self: self-end;
+      width: 100%;
+      row-gap: 0;
+      pointer-events: all;
 
-    &.visible {
-      transform: translateY(0%);
+      @include mobile {
+        bottom: 15px;
+
+        // background: rgb(255 255 255);
+        // background: linear-gradient(
+        //   0deg,
+        //   rgb(255 255 255) 10%,
+        //   rgba(255, 255, 255, 0) 100%
+        // );
+      }
     }
 
     &__filters-mobile.app-programmation-event-tag {
