@@ -33,37 +33,28 @@
       >
         {{ content.title }}
       </TH2Bis>
-      <div class="app-programmation-event-safety-instructions__list">
-        <div class="app-programmation-event-safety-instructions__item">
+      <div
+        v-if="content.externalItems"
+        class="app-programmation-event-safety-instructions__list"
+      >
+        <div
+          v-for="(instruction, index) in content.items"
+          :key="`instruction-external-${index}`"
+          class="app-programmation-event-safety-instructions__item"
+        >
           <TH4 weight="medium">
-            Les appareils photos “professionnels” sont interdits.
+            {{ instruction.content.label }}
           </TH4>
         </div>
-        <div class="app-programmation-event-safety-instructions__item">
+      </div>
+      <div v-else class="app-programmation-event-safety-instructions__list">
+        <div
+          v-for="(instruction, index) in content.items"
+          :key="`instruction-external-${index}`"
+          class="app-programmation-event-safety-instructions__item"
+        >
           <TH4 weight="medium">
-            Les boissons & la nourriture extérieures ne sont pas autorisées.
-          </TH4>
-        </div>
-        <div class="app-programmation-event-safety-instructions__item">
-          <TH4 weight="medium">
-            Les valises et sacs de voyage sont interdits. LEs sacs à dos sont
-            autorisés. Les sacs à dos de plus de 10l sont autorisés uniquement
-            en consigne.
-          </TH4>
-        </div>
-        <div class="app-programmation-event-safety-instructions__item">
-          <TH4 weight="medium">
-            Les casques sont autorisés uniquement en consigne.
-          </TH4>
-        </div>
-        <div class="app-programmation-event-safety-instructions__item">
-          <TH4 weight="medium">
-            Les appareils photos “professionnels” sont interdits.
-          </TH4>
-        </div>
-        <div class="app-programmation-event-safety-instructions__item">
-          <TH4 weight="medium">
-            Les boissons & la nourriture extérieures ne sont pas autorisées.
+            {{ instruction.safety_instructions_item }}
           </TH4>
         </div>
       </div>
@@ -84,6 +75,7 @@ export default {
   mounted() {
     this.initMatchMedia()
   },
+
   beforeDestroy() {
     this.tween?.kill()
     this.mm?.kill()

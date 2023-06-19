@@ -4,7 +4,10 @@
     class="app-programmation-event-dates-item"
     :style="{ 'background-color': `var(--c-${theme})` }"
   >
-    <AppProgrammationEventStatut :color="statutColor" />
+    <AppProgrammationEventStatus
+      :status="session.session_status"
+      :color="statutColor"
+    />
     <div class="app-programmation-event-dates-item__wrapper">
       <TH4
         :color="whitedTexts ? 'white' : 'black'"
@@ -144,7 +147,7 @@ export default {
     }
   }
 
-  .app-programmation-event-statut {
+  .app-programmation-event-status {
     position: absolute;
     right: 0;
     top: 0;

@@ -13,7 +13,7 @@
         color="blue-adidas"
         class="app-programmation-event-hero__soon timeline-text"
       >
-        bientôt disponible
+        {{ programmationsEventContent.glossary_soon_available }}
       </TH4>
       <TH2Bis
         ref="date"
@@ -32,7 +32,7 @@
       <div
         class="app-programmation-event-hero__ticket-office-opening timeline-block"
       >
-        <TH4>Ouverture de la billetterie : </TH4>
+        <TH4> {{ programmationsEventContent.glossary_opening_tickets }} </TH4>
         <TH4
           weight="bold"
           color="red-adidas"
@@ -44,9 +44,19 @@
 
       <div class="app-programmation-event-hero__cta timeline-block">
         <TP2 weight="medium" class="app-programmation-event-hero__information">
-          Exclusivité en France, à partir de {{ event.min_price }}€
+          {{ programmationsEventContent.glossary_exclu_france_price }}
+          {{ event.min_price }}€
         </TP2>
-        <AtomsCTA> Réserver mon billet </AtomsCTA>
+        <AtomsCTA
+          v-if="event.sessions.length > 1"
+          button
+          @click.native="anchorToDates"
+        >
+          Réserver
+        </AtomsCTA>
+        <AtomsCTA v-else :href="event.sessions[0].content.url">
+          Réserver mon billet
+        </AtomsCTA>
       </div>
     </div>
     <div ref="rightEl" class="app-programmation-event-hero__right">
@@ -98,6 +108,7 @@ export default {
     ...mapState({
       allLoadedFake: (state) => state.allLoadedFake,
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,
+      programmationsEventContent: (state) => state.programmationsEventContent,
     }),
   },
   watch: {
@@ -124,6 +135,13 @@ export default {
     this.lottieBottom?.destroy()
   },
   methods: {
+    anchorToDates() {
+      window.lenis.scrollTo('.app-programmation-event-dates', {
+        lock: true,
+        duration: 0.75,
+        offset: -35,
+      })
+    },
     initTimeline(delay = 0) {
       if (this.$viewport.isMobile) {
         this.setAllowScroll(true)

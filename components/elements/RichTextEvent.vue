@@ -22,7 +22,7 @@ export default {
   render(h) {
     const soup = new JSSoup(this.content)
 
-    const texts = soup.findAll()
+    const texts = soup.findAll(this.component.tagTarget)
 
     texts.forEach((text) => {
       text.attrs.class = text.name

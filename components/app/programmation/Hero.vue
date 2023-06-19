@@ -23,7 +23,6 @@
             :src="content.event.list_image.filename_disk"
             :alt="`main-card-image-${content.event.id}-${content.event.artist_reference}`"
             :lazy="true"
-            :tiny="true"
           />
 
           <div class="app-programmation-hero__main-card__content">
@@ -42,7 +41,8 @@
               weight="medium"
               class="app-programmation-hero__main-card__from-price"
             >
-              À partir de {{ content.event.min_price }}€
+              {{ programmationsEventContent.glossary_from_price }}
+              {{ content.event.min_price }}€
             </TP2>
           </div>
         </div>
@@ -70,10 +70,10 @@
     </div>
 
     <div class="app-programmation-hero__arrow-left">
-      <ELottie id="Fleche_2" start="top center+=20%" end="bottom center-=25%" />
+      <ELottie id="Fleche_2" start="top center+=25%" end="bottom center-=25%" />
     </div>
     <div class="app-programmation-hero__arrow-right">
-      <ELottie id="Fleche_2" start="top center+=20%" end="bottom center-=25%" />
+      <ELottie id="Fleche_2" start="top center+=25%" end="bottom center-=25%" />
     </div>
   </div>
 </template>
@@ -97,6 +97,7 @@ export default {
   computed: {
     ...mapState({
       programmationsContent: (state) => state.programmationsContent,
+      programmationsEventContent: (state) => state.programmationsEventContent,
       fontsLoaded: (state) => state.fontsLoaded,
       allLoadedFake: (state) => state.allLoadedFake,
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,

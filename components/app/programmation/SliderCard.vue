@@ -45,7 +45,8 @@
         weight="medium"
         :color="whitedTexts ? 'white' : 'black'"
       >
-        À partir de {{ event.min_price }}€
+        {{ programmationsEventContent.glossary_from_price }}
+        {{ event.min_price }}€
       </TP2>
 
       <nuxt-link
@@ -73,7 +74,7 @@
 
 <script>
 import { gsap } from 'gsap'
-import { mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   props: {
@@ -96,6 +97,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      programmationsEventContent: (state) => state.programmationsEventContent,
+    }),
     styles() {
       return {
         '--bg':

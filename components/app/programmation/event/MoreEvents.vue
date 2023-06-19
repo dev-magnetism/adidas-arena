@@ -59,33 +59,17 @@ export default {
           (programme) => !filteredProgrammes.includes(programme)
         )
 
-        // Add unique programmes from other categories to fill missingElements
+        // Add unique programmes from other categories to fill missingElements, up to a maximum of 3 elements
         filteredProgrammes.push(
-          ...uniqueOtherCategoryProgrammes.slice(0, missingElements)
+          ...uniqueOtherCategoryProgrammes.slice(
+            0,
+            Math.min(missingElements, 3)
+          )
         )
-
-        // Calculate the remaining missing elements after adding unique programmes
-        const remainingMissingElements =
-          missingElements - uniqueOtherCategoryProgrammes.length
-
-        // If there are still remaining missing elements
-        if (remainingMissingElements > 0) {
-          // Filter remaining unique programmes from other categories not already in filteredProgrammes
-          const remainingProgrammes = this.programmes.filter(
-            (programme) =>
-              programme.content.category !== this.content.category &&
-              !filteredProgrammes.includes(programme) &&
-              !uniqueOtherCategoryProgrammes.includes(programme)
-          )
-
-          // Add the remaining missing elements from other categories to filteredProgrammes
-          filteredProgrammes.push(
-            ...remainingProgrammes.slice(0, remainingMissingElements)
-          )
-        }
       }
 
-      return filteredProgrammes
+      // Return up to 3 elements from filteredProgrammes
+      return filteredProgrammes.slice(0, 3)
     },
   },
   mounted() {

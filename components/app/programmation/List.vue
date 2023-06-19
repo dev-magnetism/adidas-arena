@@ -92,7 +92,7 @@
           v-for="(event, indexEvent) in year.events"
           :key="indexEvent"
           ref="events"
-          :class="event.content.category.toLowerCase()"
+          :class="$convertToKebabCase(event.content.category.toLowerCase())"
           :event="event"
         />
       </div>
@@ -102,7 +102,7 @@
 
 <script>
 import { gsap } from 'gsap'
-import { Flip } from 'gsap/Flip'
+// import { Flip } from 'gsap/Flip'
 import { mapGetters } from 'vuex'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -268,16 +268,11 @@ export default {
       return d1 > d2
     },
     updateFilters() {
+      window.lenis?.stop()
+
       this.directionMonth = 'down'
       this.barActive = this.scrollTriggerBar.isActive
 
-      if (this.$viewport.isMobile) {
-        this.updateFiltersMobile()
-      } else {
-        this.updateFiltersDesktop()
-      }
-    },
-    updateFiltersMobile() {
       const layerBlue = document.querySelector('.app-transition-layer.blue')
       const layerRed = document.querySelector('.app-transition-layer.red')
 
@@ -306,13 +301,14 @@ export default {
         )
         .add(() => {
           this.filteringInProgress = true
+
           this.currentMonth = `${this.monthFilters[0].month}-${this.monthFilters[0].year}`
 
           if (window.lenis) {
             window.lenis?.scrollTo?.(this.$el, {
-              lock: true,
               immediate: true,
-              offset: 50,
+              force: true,
+              offset: -25,
             })
           }
 
@@ -320,6 +316,17 @@ export default {
             const isMatch =
               this.selectedCategory === 'tout' ||
               item.event.content.category === this.selectedCategory
+
+            if (isMatch) {
+              if (!item.isAppear) item.scrollTrigger.enable()
+
+              item.scrollTriggerInView?.enable()
+            } else {
+              item.scrollTrigger.disable()
+
+              item.scrollTriggerInView?.disable()
+              item.inView = false
+            }
 
             item.$el.style.display = isMatch ? 'inline-flex' : 'none'
           })
@@ -351,126 +358,15 @@ export default {
           scaleY: 0,
           transformOrigin: 'center bottom',
           duration: 0.85,
-          delay: 0.45,
-          onComplete: () => {},
+          delay: 0.25,
+          onComplete: () => {
+            window.lenis?.start()
+          },
           ease: 'power3.inOut',
         })
         .set([layerRed, layerBlue], {
           transformOrigin: 'center top',
         })
-    },
-    updateFiltersDesktop() {
-      if (window.lenis) {
-        this.filteringInProgress = true
-
-        window.lenis?.scrollTo?.(this.$el, {
-          duration: 1.5,
-          lock: true,
-          offset: 50,
-          onComplete: () => {
-            this.filteringInProgress = false
-          },
-        })
-      }
-
-      this.currentMonth = `${this.monthFilters[0].month}-${this.monthFilters[0].year}`
-
-      const containerState = Flip.getState(this.$refs.container)
-      const barState = Flip.getState(this.$refs.bar)
-
-      const items = this.$refs.events.map((event) => event.$el)
-      const state = Flip.getState(items)
-
-      this.$refs.events.forEach((item) => {
-        const isMatch =
-          this.selectedCategory === 'tout' ||
-          item.event.content.category === this.selectedCategory
-
-        item.$el.style.display = isMatch ? 'inline-flex' : 'none'
-      })
-
-      this.$refs.eventsContainer.forEach((month) => {
-        const cards = month.querySelectorAll('.app-programmation-card')
-
-        const visibleArticles = Object.values(cards).filter(
-          (article) => article.style.display !== 'none'
-        )
-
-        if (visibleArticles.length <= 0) {
-          month.style.position = 'absolute'
-        } else if (
-          visibleArticles.length > 0 &&
-          month.style.position === 'absolute'
-        ) {
-          month.style.position = 'relative'
-        }
-      })
-
-      this.$nextTick(() => {
-        Flip.from(state, {
-          duration: 1.5,
-          ease: 'power4.inOut',
-          absoluteOnLeave: true,
-          zIndex: 99,
-          simple: true,
-          prune: true,
-          onEnter: (elements) => {
-            const layers = elements.map((el) =>
-              el.querySelector('.app-programmation-card__layer-filtering')
-            )
-
-            gsap.set(elements, { visibility: 'hidden', zIndex: 9999 })
-
-            return gsap.fromTo(
-              layers,
-              {
-                scaleY: 1,
-                transformOrigin: 'center bottom',
-              },
-              {
-                scaleY: 0,
-                duration: 0.65,
-                delay: 0.6,
-                ease: 'power1.inOut',
-                onStart: () => gsap.set(elements, { visibility: 'inherit' }),
-              }
-            )
-          },
-          onLeave: (elements) => {
-            const layers = elements.map((el) =>
-              el.querySelector('.app-programmation-card__layer-filtering')
-            )
-            gsap.set(elements, { zIndex: 0 })
-            return gsap.fromTo(
-              layers,
-              {
-                scaleY: 0,
-                transformOrigin: 'center top',
-              },
-              {
-                scaleY: 1,
-                duration: 0.4,
-                ease: 'power1.inOut',
-              }
-            )
-          },
-          onComplete: () => {
-            ScrollTrigger.refresh()
-          },
-        })
-
-        Flip.from(containerState, {
-          duration: 1.5,
-          simple: true,
-          ease: 'power1.inOut',
-        })
-
-        Flip.from(barState, {
-          duration: 1.5,
-          simple: true,
-          ease: 'power1.inOut',
-        })
-      })
     },
   },
 }
@@ -536,23 +432,40 @@ export default {
       pointer-events: all;
 
       @include mobile {
-        bottom: 15px;
+        bottom: 10px;
 
-        // background: rgb(255 255 255);
-        // background: linear-gradient(
-        //   0deg,
-        //   rgb(255 255 255) 10%,
-        //   rgba(255, 255, 255, 0) 100%
-        // );
+        &::after {
+          content: '';
+          width: 100%;
+          height: calc(100% + 10px);
+          position: absolute;
+          // background: rgb(255 255 255);
+          // background: linear-gradient(
+          //   0deg,
+          //   rgb(255 255 255) 10%,
+          //   rgba(255, 255, 255, 0) 100%
+          // );
+          z-index: -1;
+          top: 0;
+          left: 0;
+          pointer-events: none;
+        }
       }
     }
 
     &__filters-mobile.app-programmation-event-tag {
       grid-column: 1 / span 2;
       justify-content: center;
+      padding: mobile-vw(8px) mobile-vw(15px);
 
       @include desktop {
         display: none;
+      }
+
+      .P1 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       select {
@@ -573,7 +486,7 @@ export default {
     &__filters {
       display: flex;
       flex-flow: row wrap;
-      column-gap: desktop-vw(10px);
+      gap: desktop-vw(10px);
       grid-column: 1 / span 8;
 
       @include mobile {
@@ -596,8 +509,8 @@ export default {
           flex-direction: row;
           background-color: var(--c-grey);
           border: 1px solid var(--c-black);
-          transition: background-color 0.4s var(--ease-out-cubic),
-            border-color 0.4s var(--ease-out-cubic);
+          transition: background-color 0.4s 1s var(--ease-out-cubic),
+            border-color 0.4s 1s var(--ease-out-cubic);
 
           @include hover {
             &:hover {
@@ -608,8 +521,8 @@ export default {
 
         .P1 {
           padding: desktop-vw(10px) desktop-vw(12px);
-          transition: color 0.4s var(--ease-out-cubic),
-            border-color 0.4s var(--ease-out-cubic);
+          transition: color 0.4s 1s var(--ease-out-cubic),
+            border-color 0.4s 1s var(--ease-out-cubic);
         }
 
         .P1.regular {

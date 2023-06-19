@@ -10,7 +10,8 @@
         class="app-programmation-event-bar__book__info"
         color="grey"
       >
-        Exclusivité en France, à partir de {{ event.min_price }}€</TP2
+        {{ programmationsEventContent.glossary_exclu_france_price }}
+        {{ event.min_price }}€</TP2
       >
       <AtomsCTA
         v-if="event.sessions.length - 1 >= 1"
@@ -19,14 +20,34 @@
       >
         Voir les dates
       </AtomsCTA>
-      <AtomsCTA v-else :href="event.sessions[0].content.url">
+
+      <AtomsCTA
+        v-else-if="
+          event.sessions.length - 1 < 1 &&
+          event.sessions[0].content.url &&
+          !event.sessions[0].content.url_premium
+        "
+        :href="event.sessions[0].content.url"
+      >
         Réserver mon billet
+      </AtomsCTA>
+
+      <AtomsCTA
+        v-else-if="
+          event.sessions.length - 1 < 1 && event.sessions[0].content.url_premium
+        "
+        button
+        @click.native="scrollToDates()"
+      >
+        Voir les dates
       </AtomsCTA>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   props: {
     event: {
@@ -34,7 +55,11 @@ export default {
       default: () => {},
     },
   },
-
+  computed: {
+    ...mapState({
+      programmationsEventContent: (state) => state.programmationsEventContent,
+    }),
+  },
   methods: {
     scrollToDates() {
       if (!window.lenis) return
@@ -90,7 +115,7 @@ export default {
     justify-content: flex-end;
 
     &__info {
-      width: 32%;
+      width: 28.5%;
       margin-right: desktop-vw(10px);
     }
 

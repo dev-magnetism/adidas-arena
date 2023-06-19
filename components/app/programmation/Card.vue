@@ -1,19 +1,32 @@
 <template>
-  <div :style="bgColor" class="app-programmation-card" @click="onRouterPush">
+  <div
+    :class="{ 'is-appear': isAppear, 'in-view': inView }"
+    :style="bgColor"
+    class="app-programmation-card"
+    @click="onRouterPush"
+  >
     <div ref="layerFiltering" class="app-programmation-card__layer-filtering" />
 
     <div class="app-programmation-card__visual">
-      <AppProgrammationEventStatut :color="statutColor">
-        Complet
-      </AppProgrammationEventStatut>
-      <div :class="{ visible }" class="app-programmation-card__layer" />
+      <AppProgrammationEventStatus
+        :status="event.status_code"
+        :color="statutColor"
+      />
 
-      <AppProgrammationImage
+      <div
+        :class="{ 'is-appear': isAppear }"
+        class="app-programmation-card__layer"
+      />
+
+      <picture>
+        <img src="/imgs/placeholder.png" alt="alt" />
+      </picture>
+      <!-- <AppProgrammationImage
         :src="event.list_image.filename_disk"
         :alt="`card-image-${event.id}-${event.artist_reference}`"
         :lazy="true"
         :tiny="true"
-      />
+      /> -->
     </div>
 
     <div class="app-programmation-card__informations">
@@ -35,7 +48,7 @@
         weight="medium"
         :color="whitedTexts"
       >
-        À partir de
+        {{ programmationsEventContent.glossary_from_price }}
         {{ event.min_price }}€
       </TP2>
 
@@ -57,6 +70,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -73,11 +87,15 @@ export default {
   },
   data() {
     return {
-      visible: false,
-      hideInListing: false,
+      isVisible: false, // If the card is visible in the listing
+      isAppear: false, // If the layer card has already appeared
+      inView: false, // If the card is present in the viewport zone
     }
   },
   computed: {
+    ...mapState({
+      programmationsEventContent: (state) => state.programmationsEventContent,
+    }),
     bgColor() {
       return {
         '--bg': `var(--c-${this.theme})`,
@@ -103,13 +121,14 @@ export default {
         : 'black'
     },
   },
-
+  watch: {},
   mounted() {
     this.initMatchMedia()
   },
   beforeDestroy() {
     this.mm?.kill()
     this.scrollTrigger?.kill()
+    this.scrollTriggerInView?.kill()
   },
   methods: {
     onRouterPush() {
@@ -129,14 +148,32 @@ export default {
         this.scrollTrigger = ScrollTrigger.create({
           trigger: this.$el,
           start: 'top+=20% bottom',
-          toggleActions: 'play none none none',
-          onToggle: () => {
-            this.visible = true
+          toggleActions: 'play none play none',
+          once: true,
+          onEnter: () => {
+            if (this.isAppear) return
+
+            this.isAppear = true
+          },
+          onEnterBack: () => {
+            if (this.isAppear) return
+
+            this.isAppear = true
           },
         })
 
+        // this.scrollTriggerInView = ScrollTrigger.create({
+        //   trigger: this.$el,
+        //   start: 'top bottom',
+        //   end: 'bottom top',
+        //   onToggle: (e) => {
+        //     this.inView = e.isActive
+        //   },
+        // })
+
         return () => {
           this.scrollTrigger?.kill()
+          this.scrollTriggerInView?.kill()
         }
       })
     },
@@ -199,7 +236,7 @@ export default {
     transform-origin: center bottom;
     transition: transform 0.8s var(--ease-in-out-cubic);
 
-    &.visible {
+    &.is-appear {
       transform: scaleY(0);
     }
 
@@ -214,7 +251,7 @@ export default {
     position: relative;
     z-index: 0;
 
-    .app-programmation-event-statut {
+    .app-programmation-event-status {
       position: absolute;
       right: 0;
       border-right: none;

@@ -31,13 +31,12 @@ export default {
   },
   computed: {
     srcDesktop() {
-      // const src = this.src.replace('.jpeg', '.jpg')
       const src = this.src
-      return `https://www.accorarena-onepointpprod.com/uploads/aha/originals/${src}`
+      return `https://www.accorarena.com/uploads/aha/generated/w800,h600,fcrop,q80/${src}`
     },
     srcMobile() {
-      const src = this.src.replace(/\.(jpeg|png|gif|webp)/g, '.jpg')
-      return `https://www.accorarena-onepointpprod.com/uploads/aha/generated/w400,h400,fcrop,q85/${src}`
+      const src = this.src
+      return `https://www.accorarena.com/uploads/aha/generated/w1920,h1080,fcontain,q85/${src}`
     },
   },
 }
