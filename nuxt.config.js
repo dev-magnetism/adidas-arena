@@ -29,8 +29,8 @@ export default {
 
   plugins: [
     '~/plugins/gsap.js',
-    '~/plugins/raf.js',
     '~/plugins/viewport.js',
+    '~/plugins/raf.js',
     '~/plugins/utils.js',
     '~/plugins/gtm.js',
   ],
