@@ -904,6 +904,11 @@ export default {
     position: relative;
     left: -5%;
 
+    .app-atoms-stroke-text {
+      -webkit-text-stroke: 1px var(--c-black);
+      -webkit-text-fill-color: transparent;
+    }
+
     @include mobile {
       grid-column: 1 / span 6;
       max-width: 100%;

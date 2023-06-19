@@ -201,6 +201,7 @@ export default {
       setCursorState: 'setCursorState',
       setCursorSliderHold: 'setCursorSliderHold',
       setAllowScroll: 'setAllowScroll',
+      setCursorSliderDisabled: 'setCursorSliderDisabled',
     }),
   },
 }
