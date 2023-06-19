@@ -3,7 +3,6 @@ import { mapState } from 'vuex'
 import JSSoup from 'jssoup'
 import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
-import { decode } from 'html-entities'
 
 export default {
   props: {
@@ -29,7 +28,8 @@ export default {
     },
     tag: {
       type: String,
-      default: '',
+      require: false,
+      default: null,
     },
   },
   computed: {
@@ -159,8 +159,13 @@ export default {
 
     const lotties = soup.findAll(undefined, 'lottie-word')
     const texts = soup.findAll(undefined, 'wysiwyg-text')
-    const strokeTexts = soup.findAll('em')
-    const boldTexts = soup.findAll('strong')
+    const strokeTexts = soup.findAll(undefined, 'wysiwyg-stroke')
+    const strongTexts = soup.findAll('strong')
+
+    strongTexts.forEach((text) => {
+      delete text.attrs.class
+      delete text.attrs.style
+    })
 
     texts.forEach((text) => {
       const componentName = text.attrs.class
@@ -169,47 +174,27 @@ export default {
 
       text.name = `T${componentName}`
 
-      text.attrs.tag = this.tag || componentName
-
-      text.attrs.class = 'wysiwyg-text'
-      delete text.attrs.style
-    })
-
-    boldTexts.forEach((text) => {
-      if (this.split) {
-        const string = text.getText()
-        const stringDecode = decode(string)
-
-        const finalString = stringDecode.replace(/\S+/g, (a, b, c) => {
-          return `<span class="bold">` + a + '</span>'
-        })
-
-        text.replaceWith(finalString)
+      if (this.tag === null && componentName.includes('P')) {
+        text.attrs.tag = 'p'
+      } else if (this.tag === null) {
+        text.attrs.tag = componentName
+      } else {
+        text.attrs.tag = this.tag
       }
 
-      delete text.attrs.style
       delete text.attrs.class
-
-      text.attrs.class = 'bold'
+      delete text.attrs.style
+      text.attrs.class = 'wysiwyg-text'
     })
 
     strokeTexts.forEach((text) => {
-      const string = text.getText()
-      const stringDecode = decode(string)
-
-      const finalString = stringDecode.replace(/\S+/g, (a, b, c) => {
-        return `<AtomsTextStroke>` + a + '</AtomsTextStroke>'
-      })
-
-      text.replaceWith(finalString)
-
       delete text.attrs.style
-      delete text.attrs.class
     })
 
     lotties.forEach((lottie) => {
       lottie.name = 'ELottieWord'
-      lottie.attrs.class = lottie.attrs.id
+      lottie.attrs.class += ` ${lottie.attrs.id}`
+
       delete lottie.attrs.style
     })
 

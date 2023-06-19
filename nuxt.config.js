@@ -28,10 +28,11 @@ export default {
   css: ['~assets/scss/global.scss'],
 
   plugins: [
-    { src: '~/plugins/gsap.js', mode: 'client' },
-    { src: '~/plugins/utils.js', mode: 'client' },
-    { src: '~/plugins/raf.js', mode: 'client' },
-    { src: '~/plugins/viewport.js', mode: 'client' },
+    '~/plugins/gsap.js',
+    '~/plugins/raf.js',
+    '~/plugins/viewport.js',
+    '~/plugins/utils.js',
+    '~/plugins/gtm.js',
   ],
 
   // vue: {
@@ -151,6 +152,12 @@ export default {
       lastmod: new Date(),
     },
   },
+
+  // gtm: {
+  //   // Always send real GTM events (also when using `nuxt dev`)
+  //   enabled: true,
+  //   debug: true,
+  // },
 
   'nuxt-compress': {
     gzip: {

@@ -236,6 +236,15 @@ export default {
     &__title {
       margin-bottom: desktop-vw(25px);
 
+      .H2 {
+        @include font-adihausDIN-cn-bold();
+      }
+
+      .app-atoms-stroke-text {
+        -webkit-text-stroke: 1px var(--c-black);
+        -webkit-text-fill-color: transparent;
+      }
+
       @include mobile {
         margin-bottom: mobile-vw(25px);
       }
