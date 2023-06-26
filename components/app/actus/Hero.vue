@@ -98,6 +98,8 @@ export default {
   },
   methods: {
     initTimeline(delay = 0) {
+      this.setAllowScroll(true)
+
       if (this.$viewport.isMobile) {
         this.setAllowScroll(true)
       } else {
