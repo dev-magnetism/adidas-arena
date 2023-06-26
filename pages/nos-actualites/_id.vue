@@ -3,13 +3,11 @@
     <AppActusActuHero ref="hero" :content="content" />
     <AppActusAccessibility ref="hero" :content="content" />
     <div class="app-actualite__spacer" />
-    <client-only>
-      <AppActusDynamicComponent
-        v-for="(component, i) in content.body"
-        :key="`dynamic-component-${i}`"
-        :content="component"
-      />
-    </client-only>
+    <AppActusDynamicComponent
+      v-for="(el, index) in content.body"
+      :key="`dynamic-component-${index}`"
+      :content="el"
+    />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
@@ -35,27 +33,7 @@ export default {
 
     return pageTransition.basic
   },
-  asyncData({ params, store, $axios, $convertToKebabCase }) {
-    const slug = params.id
 
-    const content = store.state.actualites.find(
-      (element) =>
-        $convertToKebabCase(slug) === $convertToKebabCase(element.title)
-    )
-
-    store.state.actualites.forEach((element) => {
-      console.log(slug, '||||||', element.title)
-      console.log(
-        $convertToKebabCase(slug),
-        '||||||',
-        $convertToKebabCase(element.title)
-      )
-    })
-
-    console.log('async', content)
-
-    return { content }
-  },
   // head({ $seo }) {
   //   // return $seo({
   //   //   templateTitle: '%title% - %name%',
@@ -77,10 +55,21 @@ export default {
       appContent: (state) => state.appContent,
       programmationsEventContent: (state) => state.programmationsEventContent,
       headerReduced: (state) => state.headerReduced,
+      actualites: (state) => state.actualites,
     }),
+    content() {
+      return this.actualites.find(
+        (element) =>
+          this.$convertToKebabCase(this.$route.params.id) ===
+          this.$convertToKebabCase(element.title)
+      )
+    },
   },
   mounted() {
     console.log('content', this.content, this)
+    // setTimeout(() => {
+    //   console.log('content timeout', this.content, this)
+    // }, 5000)
   },
   beforeDestroy() {
     this.scrollTriggerCTA?.kill()
