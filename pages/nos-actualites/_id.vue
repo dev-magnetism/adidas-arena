@@ -3,11 +3,13 @@
     <AppActusActuHero ref="hero" :content="content" />
     <AppActusAccessibility ref="hero" :content="content" />
     <div class="app-actualite__spacer" />
-    <AppActusDynamicComponent
-      v-for="(component, i) in content.body"
-      :key="`dynamic-component-${i}`"
-      :content="component"
-    />
+    <client-only>
+      <AppActusDynamicComponent
+        v-for="(component, i) in content.body"
+        :key="`dynamic-component-${i}`"
+        :content="component"
+      />
+    </client-only>
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
