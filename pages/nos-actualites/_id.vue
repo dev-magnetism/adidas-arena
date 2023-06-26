@@ -43,19 +43,23 @@ export default {
   asyncData({ params, store, $axios }) {
     const slug = params.id
 
-    console.log('async store', store.state.actualites)
-
     const content = store.state.actualites.find(
       (element) =>
         convertToKebabCase(slug) === convertToKebabCase(element.title)
     )
 
+    store.state.actualites.forEach((element) => {
+      console.log(slug, '||||||', element.title)
+      console.log(
+        convertToKebabCase(slug),
+        '||||||',
+        convertToKebabCase(element.title)
+      )
+    })
+
     console.log('async', content)
 
     return { content }
-  },
-  data() {
-    return {}
   },
   // head({ $seo }) {
   //   // return $seo({
