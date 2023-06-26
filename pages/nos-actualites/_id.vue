@@ -84,9 +84,8 @@ export default {
       headerReduced: (state) => state.headerReduced,
     }),
   },
-
   mounted() {
-    console.log('content', this.content)
+    console.log('content', this.content, this)
   },
   beforeDestroy() {
     this.scrollTriggerCTA?.kill()
