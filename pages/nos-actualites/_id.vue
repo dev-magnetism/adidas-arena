@@ -18,21 +18,14 @@ import { mapState } from 'vuex'
 import scroll from '@/mixins/scroll'
 import pageTransition from '@/mixins/page-transition'
 
-const convertToKebabCase = (string) => {
-  return string
-    .replace(/([a-z])([A-Z])/g, '$1-$2')
-    .replace(/[\s_]+/g, '-')
-    .toLowerCase()
-}
-
 export default {
   mixins: [scroll],
-  validate({ params, $axios, store }) {
+  validate({ params, $axios, store, $convertToKebabCase }) {
     const slug = params.id
 
     return store.state.actualites.some(
       (element) =>
-        convertToKebabCase(slug) === convertToKebabCase(element.title)
+        $convertToKebabCase(slug) === $convertToKebabCase(element.title)
     )
   },
   transition(to, from) {
@@ -40,20 +33,20 @@ export default {
 
     return pageTransition.basic
   },
-  asyncData({ params, store, $axios }) {
+  asyncData({ params, store, $axios, $convertToKebabCase }) {
     const slug = params.id
 
     const content = store.state.actualites.find(
       (element) =>
-        convertToKebabCase(slug) === convertToKebabCase(element.title)
+        $convertToKebabCase(slug) === $convertToKebabCase(element.title)
     )
 
     store.state.actualites.forEach((element) => {
       console.log(slug, '||||||', element.title)
       console.log(
-        convertToKebabCase(slug),
+        $convertToKebabCase(slug),
         '||||||',
-        convertToKebabCase(element.title)
+        $convertToKebabCase(element.title)
       )
     })
 
