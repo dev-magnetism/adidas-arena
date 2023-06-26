@@ -29,19 +29,6 @@ export default {
       default: () => {},
     },
   },
-  async mounted() {
-    const routes = []
-
-    const actualites = await this.$axios.get(
-      `https://adidasarena.directus.app/items/Actualites?limit=-1`
-    )
-
-    actualites.data.data.forEach((actu) => {
-      routes.push(`/nos-actualites/${this.$convertToKebabCase(actu.title)}`)
-    })
-
-    console.log(routes)
-  },
 }
 </script>
 

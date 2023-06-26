@@ -293,10 +293,12 @@ export const actions = {
         '*',
         'cover.*',
         'body.*',
+        'items.*',
         'body.item.*',
         'body.item.picture.*',
         'body.item.items.*',
         'body.item.items.item.*',
+        'body.item.items.item.picture.*',
         '*.collection',
       ],
     })

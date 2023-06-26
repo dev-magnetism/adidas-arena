@@ -15,8 +15,6 @@ export default {
       default: () => {},
     },
   },
-  // AppActusBlockTitleParagraphCta
-  // Actualites_Block_Title_Paragraph_Cta
   computed: {
     tag() {
       return this.content.collection
@@ -29,9 +27,7 @@ export default {
   },
   watch: {},
   created() {},
-  mounted() {
-    console.log(this.content)
-  },
+  mounted() {},
   methods: {},
 }
 </script>

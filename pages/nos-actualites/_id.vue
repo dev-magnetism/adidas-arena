@@ -1,13 +1,13 @@
 <template>
   <main class="app-actualite">
-    <!-- <AppActusActuHero ref="hero" :content="content" /> -->
+    <AppActusActuHero ref="hero" :content="content" />
     <AppActusAccessibility ref="hero" :content="content" />
     <div class="app-actualite__spacer" />
-    <!-- <AppActusDynamicComponent
+    <AppActusDynamicComponent
       v-for="(component, i) in content.body"
       :key="`dynamic-component-${i}`"
       :content="component"
-    /> -->
+    />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
@@ -57,21 +57,21 @@ export default {
   data() {
     return {}
   },
-  head({ $seo }) {
-    // return $seo({
-    //   templateTitle: '%title% - %name%',
-    //   title: `${this.event.content.title} ${this.formattedDateStart} - Programmation`,
-    //   description: this.event.content.metaDescription,
-    //   openGraph: {
-    //     title: this.appContent.data.seo_title,
-    //     description: this.event.content.metaDescription,
-    //   },
-    //   twitter: {
-    //     title: this.appContent.data.seo_title,
-    //     description: this.event.content.metaDescription,
-    //   },
-    // })
-  },
+  // head({ $seo }) {
+  //   // return $seo({
+  //   //   templateTitle: '%title% - %name%',
+  //   //   title: `${this.event.content.title} ${this.formattedDateStart} - Programmation`,
+  //   //   description: this.event.content.metaDescription,
+  //   //   openGraph: {
+  //   //     title: this.appContent.data.seo_title,
+  //   //     description: this.event.content.metaDescription,
+  //   //   },
+  //   //   twitter: {
+  //   //     title: this.appContent.data.seo_title,
+  //   //     description: this.event.content.metaDescription,
+  //   //   },
+  //   // })
+  // },
   computed: {
     ...mapState({
       partnersContent: (state) => state.partnersContent,
