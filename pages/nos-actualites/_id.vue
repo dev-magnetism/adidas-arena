@@ -43,6 +43,8 @@ export default {
   asyncData({ params, store, $axios }) {
     const slug = params.id
 
+    console.log('hehrezhrezh', params)
+
     const payload = store.state.actualites.find(
       (element) =>
         convertToKebabCase(slug) === convertToKebabCase(element.title)
