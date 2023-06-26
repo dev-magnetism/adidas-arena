@@ -77,9 +77,7 @@ export default {
     }),
   },
 
-  mounted() {
-    console.log('content', this.content)
-  },
+  mounted() {},
   beforeDestroy() {
     this.scrollTriggerCTA?.kill()
     this.scrollTrigger?.kill()

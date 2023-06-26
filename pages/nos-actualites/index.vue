@@ -1,8 +1,8 @@
 <template>
-  <main class="app-programmation">
+  <main class="app-actualites">
     <AppProgrammationHero :content="contentHero" />
 
-    <AppProgrammationList />
+    <AppActusList />
 
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
@@ -53,8 +53,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      programmesCategories: 'programmesCategories',
-      programmesMonths: 'programmesMonths',
+      actualitesCategories: 'actualitesCategories',
     }),
     ...mapState({
       partnersContent: (state) => state.partnersContent,
@@ -85,7 +84,7 @@ export default {
 </script>
 
 <style lang="scss">
-.app-programmation {
+.app-actualites {
   padding-top: desktop-vw(200px);
 
   @include mobile {

@@ -69,6 +69,21 @@ export const getters = {
 
     return result
   },
+  actualitesCategories: (state) => {
+    const result = Object.values(
+      state.actualites.reduce((acc, { category }) => {
+        const key = category ? category.toLowerCase() : 'no cat'
+
+        acc[key] = acc[key] || { category: key, count: 0 }
+        acc[key].count++
+        return acc
+      }, {})
+    )
+
+    result.unshift({ category: 'Tout', count: state.actualites.length })
+
+    return result
+  },
   programmesSlider: (state) => {
     return state.programmes.slice(0, 8)
   },

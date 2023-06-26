@@ -12,7 +12,7 @@
 
     <div class="app-atoms-spotify__cover">
       <AppProgrammationImage
-        v-if="tile.image.filename_disk"
+        v-if="tile.image || tile.image.filename_disk"
         :src="tile.image.filename_disk"
         :alt="`image-${tile.title}`"
         :tiny="true"
