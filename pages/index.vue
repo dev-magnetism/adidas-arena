@@ -14,7 +14,7 @@
       </TH1>
     </EMarqueeScroll>
     <AppHomeProjet :contents="contentProjet" />
-    <AppHomeArticles />
+    <AppHomeArticles :content="contentArticles" />
     <AppHomePartners :contents="contentPartners" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
@@ -136,12 +136,22 @@ export default {
         cta: this.content.data.slider_programmation_cta,
       }
     },
+    contentArticles() {
+      return {
+        title: this.content.data.articles_title,
+        cta: this.content.data.articles_cta_title,
+        ctaHref: this.content.data.articles_cta_link,
+      }
+    },
     contentMarquees() {
       return {
         firstRow: this.content.data.marquee_first_row,
         secondRow: this.content.data.marquee_second_row,
       }
     },
+  },
+  mounted() {
+    console.log(this.contentArticles)
   },
   methods: {
     ...mapMutations({

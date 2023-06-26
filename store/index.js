@@ -19,6 +19,7 @@ export const state = () => ({
   programmationsContent: null,
   programmationsEventContent: null,
   programmes: null,
+  actualites: null,
 
   // Exterior scene
   exteriorVisible: true,
@@ -113,6 +114,9 @@ export const mutations = {
   },
   setWebglInFront: (state, value) => {
     state.webglInFront = value
+  },
+  setActualites: (state, value) => {
+    state.actualites = value
   },
   setInteriorCurrentZoneHovered: (state, value) => {
     state.interiorCurrentZoneHovered = value
@@ -227,7 +231,7 @@ export const mutations = {
 export const actions = {
   async nuxtServerInit(
     { dispatch, commit },
-    { route, query, params, $directus }
+    { route, query, params, $directus, $convertToKebabCase }
   ) {
     const partners = await $directus.items('Partners').readByQuery({
       limit: -1,
@@ -260,6 +264,26 @@ export const actions = {
     })
 
     commit('setProgrammationsContent', programmations.data)
+
+    const actualites = await $directus.items('Actualites').readByQuery({
+      limit: -1,
+      fields: [
+        '*',
+        'cover.*',
+        'body.*',
+        'body.item.*',
+        'body.item.picture.*',
+        'body.item.items.*',
+        'body.item.items.item.*',
+        '*.collection',
+      ],
+    })
+
+    actualites.data.forEach((actu) => {
+      actu.slug = $convertToKebabCase(actu.title)
+    })
+
+    commit('setActualites', actualites.data)
 
     const programmationsEvent = await $directus
       .items('Programmation_Event')
