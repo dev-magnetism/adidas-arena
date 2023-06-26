@@ -1,13 +1,13 @@
 <template>
   <main class="app-actualite">
-    <AppActusHero ref="hero" :content="content" />
+    <!-- <AppActusActuHero ref="hero" :content="content" /> -->
     <AppActusAccessibility ref="hero" :content="content" />
     <div class="app-actualite__spacer" />
-    <AppActusDynamicComponent
+    <!-- <AppActusDynamicComponent
       v-for="(component, i) in content.body"
       :key="`dynamic-component-${i}`"
       :content="component"
-    />
+    /> -->
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
@@ -43,14 +43,16 @@ export default {
   asyncData({ params, store, $axios }) {
     const slug = params.id
 
-    console.log('hehrezhrezh', params)
+    console.log('async store', store.state.actualites)
 
-    const payload = store.state.actualites.find(
+    const content = store.state.actualites.find(
       (element) =>
         convertToKebabCase(slug) === convertToKebabCase(element.title)
     )
 
-    return { content: payload }
+    console.log('async', content)
+
+    return { content }
   },
   data() {
     return {}
@@ -79,7 +81,9 @@ export default {
     }),
   },
 
-  mounted() {},
+  mounted() {
+    console.log('content', this.content)
+  },
   beforeDestroy() {
     this.scrollTriggerCTA?.kill()
     this.scrollTrigger?.kill()

@@ -1,5 +1,12 @@
 // export const strict = false
 
+const convertToKebabCase = (string) => {
+  return string
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/[\s_]+/g, '-')
+    .toLowerCase()
+}
+
 export const state = () => ({
   // Preloader
   fontsLoaded: false,
@@ -246,7 +253,7 @@ export const mutations = {
 export const actions = {
   async nuxtServerInit(
     { dispatch, commit },
-    { route, query, params, $directus, $convertToKebabCase }
+    { route, query, params, $directus }
   ) {
     const partners = await $directus.items('Partners').readByQuery({
       limit: -1,
@@ -295,7 +302,7 @@ export const actions = {
     })
 
     actualites.data.forEach((actu) => {
-      actu.slug = $convertToKebabCase(actu.title)
+      actu.slug = convertToKebabCase(actu.title)
     })
 
     commit('setActualites', actualites.data)
