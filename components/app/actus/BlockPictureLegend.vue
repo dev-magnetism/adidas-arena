@@ -14,9 +14,9 @@
         :alt="`block-picture-${content.legend}`"
         :sizes="`sm:50vw md:${content.picture.width}px`"
       />
-      <TP2 class="app-actualites-block-picture-legend__text" weight="medium">{{
-        content.legend
-      }}</TP2>
+      <TP2 class="app-actualites-block-picture-legend__text" weight="medium">
+        {{ content.legend }}
+      </TP2>
     </div>
   </div>
 </template>
@@ -41,11 +41,20 @@ export default {
     display: flex;
     justify-content: center;
     flex-direction: column;
+    align-items: center;
+
+    @include mobile {
+      grid-column: 1 / span 6;
+    }
   }
 
   &__text {
     opacity: 0.5;
     margin-top: desktop-vw(10px);
+
+    @include mobile {
+      margin-top: mobile-vw(5px);
+    }
   }
 
   picture {
@@ -58,10 +67,6 @@ export default {
     img {
       @include draggable-false();
     }
-  }
-
-  &__title {
-    margin-bottom: desktop-vw(30px);
   }
 }
 </style>

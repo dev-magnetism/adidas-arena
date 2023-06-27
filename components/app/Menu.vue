@@ -251,6 +251,8 @@ export default {
         ? null
         : this.$route.name === 'programmation-id'
         ? '/programmation'
+        : this.$route.name === 'nos-actualites-id'
+        ? '/nos-actualites'
         : this.$route.path
 
       this.onSelectImage(route)

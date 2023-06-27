@@ -2,6 +2,7 @@
   <div class="app-actualites-block-quote grid-inner">
     <div class="app-actualites-block-quote__wrapper">
       <TH2
+        tag="div"
         color="blue-adidas"
         weight="medium"
         class="app-actualites-block-quote__sign top"
@@ -9,6 +10,7 @@
         “
       </TH2>
       <TH2
+        tag="div"
         color="blue-adidas"
         weight="medium"
         class="app-actualites-block-quote__sign bottom"
@@ -22,7 +24,7 @@
         :split="true"
         :scrub="true"
       />
-      <TH4 class="app-actualites-block-quote__name" weight="bold">
+      <TH4 tag="p" class="app-actualites-block-quote__name" weight="bold">
         {{ content.name }}
       </TH4>
     </div>
@@ -42,9 +44,17 @@ export default {
 
 <style lang="scss">
 .app-actualites-block-quote {
+  position: relative;
+
   &__wrapper {
     grid-column: 3 / span 8;
     position: relative;
+
+    @include mobile {
+      grid-column: 1 / span 6;
+      width: 95%;
+      justify-self: center;
+    }
   }
 
   &__sign {
@@ -54,6 +64,11 @@ export default {
       position: absolute;
       top: -5%;
       left: -7%;
+
+      @include mobile {
+        top: -4%;
+        left: 2%;
+      }
     }
 
     &.bottom {
@@ -61,11 +76,26 @@ export default {
       bottom: desktop-vw(70px);
       right: -5%;
       transform: rotate(180deg);
+
+      @include mobile {
+        bottom: mobile-vw(35px);
+        right: -3%;
+      }
     }
   }
 
   &__title {
     margin-bottom: desktop-vw(70px);
+
+    @include mobile {
+      .wysiwyg-text {
+        text-align: center;
+
+        .line {
+          text-align: center;
+        }
+      }
+    }
 
     .app-element-lottie-word {
       svg {

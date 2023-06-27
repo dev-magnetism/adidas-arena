@@ -40,6 +40,13 @@
         sizes="sm:50vw md:100vw"
       />
     </div>
+
+    <TH4
+      weight="bold"
+      class="app-actualite-hero__description-mobile timeline-text"
+    >
+      {{ content.subtitle }}
+    </TH4>
   </div>
 </template>
 
@@ -98,8 +105,6 @@ export default {
   },
   methods: {
     initTimeline(delay = 0) {
-      this.setAllowScroll(true)
-
       if (this.$viewport.isMobile) {
         this.setAllowScroll(true)
       } else {
@@ -197,6 +202,10 @@ export default {
   &__breadcrumb {
     margin-bottom: desktop-vw(15px);
 
+    @include mobile {
+      margin-bottom: mobile-vw(15px);
+    }
+
     &-home,
     &-actus {
       color: var(--c-blue-adidas) !important;
@@ -206,14 +215,36 @@ export default {
 
   &__date {
     margin-bottom: desktop-vw(15px);
+
+    @include mobile {
+      margin-bottom: mobile-vw(15px);
+    }
   }
 
   &__title {
     margin-bottom: desktop-vw(55px);
-    word-break: break-word;
+
+    @include mobile {
+      margin-bottom: mobile-vw(60px);
+    }
   }
+
   &__description {
     width: 85.5%;
+
+    @include mobile {
+      display: none;
+    }
+  }
+
+  &__description-mobile {
+    width: 100%;
+    grid-column: 1 / span 6;
+    margin-top: mobile-vw(15px);
+
+    @include desktop {
+      display: none;
+    }
   }
 
   &__right {

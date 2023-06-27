@@ -282,6 +282,7 @@ export default {
     &:first-child {
       margin-left: var(--layout-margin);
     }
+
     &:last-child {
       margin-right: var(--layout-margin);
     }

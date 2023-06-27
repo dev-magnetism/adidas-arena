@@ -125,6 +125,11 @@ export default {
     position: relative;
     display: inline-flex;
     width: 100%;
+
+    @include mobile {
+      margin-top: mobile-vw(40px);
+      margin-bottom: mobile-vw(40px);
+    }
   }
 
   .app-footer {
