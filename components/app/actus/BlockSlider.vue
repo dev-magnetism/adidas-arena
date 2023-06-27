@@ -1,5 +1,10 @@
 <template>
-  <div class="app-actualites-block-slider grid-inner">
+  <div
+    class="app-actualites-block-slider grid-inner"
+    @mouseenter="setCursorState('slider')"
+    @mouseleave="setCursorState('hide')"
+    @click="onClickSlider"
+  >
     <div class="app-actualites-block-slider__wrapper">
       <div
         v-for="(slide, index) in content.items"
@@ -37,6 +42,8 @@
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex'
+
 import EmblaCarousel from 'embla-carousel'
 
 export default {
@@ -46,8 +53,19 @@ export default {
       default: () => {},
     },
   },
+  computed: {
+    ...mapState({
+      cursorSliderHold: (state) => state.cursorSliderHold,
+      cursorSliderLeftZone: (state) => state.cursorSliderLeftZone,
+      allowScroll: (state) => state.allowScroll,
+    }),
+  },
+  watch: {
+    cursorSliderLeftZone() {
+      this.handleDisabledCursor()
+    },
+  },
   mounted() {
-    console.log(this.content)
     this.embla = EmblaCarousel(this.$el, {
       dragFree: true,
       containScroll: 'keepSnaps',
@@ -57,9 +75,74 @@ export default {
         '(max-width: 800px)': { dragFree: false, skipSnaps: false, speed: 10 },
       },
     })
+
+    this.embla.on('pointerUp', this.onPointerUp)
+    this.embla.on('pointerDown', this.onPointerDown)
+
+    if (!this.$viewport.isMobile) {
+      this.embla.on('select', this.onSelect)
+    }
   },
   beforeDestroy() {
+    this.embla?.off('pointerUp', this.onPointerUp)
+    this.embla?.off('pointerDown', this.onPointerDown)
+
+    if (!this.$viewport.isMobile) {
+      this.embla?.off('select', this.onSelect)
+    }
+
     this.embla?.destroy()
+  },
+  methods: {
+    onSelect(e) {
+      this.handleDisabledCursor()
+    },
+    onPointerDown() {
+      if (this.allowScroll) {
+        this.setAllowScroll(false)
+      }
+
+      this.setCursorSliderHold(true)
+    },
+    onPointerUp() {
+      if (!this.allowScroll) {
+        this.setAllowScroll(true)
+      }
+
+      this.setCursorSliderHold(false)
+    },
+    handleDisabledCursor() {
+      const canScrollPrev = this.embla.canScrollPrev()
+      const canScrollNext = this.embla.canScrollNext()
+
+      if (
+        (this.cursorSliderLeftZone && !canScrollPrev) ||
+        (!this.cursorSliderLeftZone && !canScrollNext)
+      ) {
+        this.setCursorSliderDisabled(true)
+      } else {
+        this.setCursorSliderDisabled(false)
+      }
+    },
+    onClickSlider(e) {
+      if (this.$viewport.isMobile) return
+
+      const isLeft = e.clientX < this.$viewport.width / 2
+      const canScrollPrev = this.embla.canScrollPrev()
+      const canScrollNext = this.embla.canScrollNext()
+
+      if (isLeft && canScrollPrev) {
+        this.embla.scrollPrev()
+      } else if (!isLeft && canScrollNext) {
+        this.embla.scrollNext()
+      }
+    },
+    ...mapMutations({
+      setCursorState: 'setCursorState',
+      setCursorSliderHold: 'setCursorSliderHold',
+      setCursorSliderDisabled: 'setCursorSliderDisabled',
+      setAllowScroll: 'setAllowScroll',
+    }),
   },
 }
 </script>
@@ -74,6 +157,10 @@ export default {
     column-gap: var(--layout-columns-gap);
     flex-direction: row;
     will-change: transform;
+
+    @include mobile {
+      grid-column: 1 / span 6;
+    }
   }
 
   &__slide {
@@ -84,12 +171,15 @@ export default {
 
     &:first-child {
       margin-left: columns(2);
+
+      @include mobile {
+        margin-left: 0px;
+      }
     }
 
     picture {
       aspect-ratio: var(--width-ratio) / var(--height-ratio);
       display: block;
-      width: var(--width);
       height: 100%;
       max-width: 100%;
 

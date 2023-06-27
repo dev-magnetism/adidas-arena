@@ -60,8 +60,14 @@ export default {
 
 <style lang="scss">
 .app-actualites-block-youtube {
+  position: relative;
+
   &__wrapper {
     grid-column: 3 / span 8;
+
+    @include mobile {
+      grid-column: 1 / span 6;
+    }
   }
 
   &__video.app-parallax {
@@ -70,11 +76,7 @@ export default {
     transform: rotate(-2deg);
 
     @include mobile {
-      aspect-ratio: 265 / 175;
-      width: mobile-vw(265px);
-      top: mobile-vw(250px);
-      left: mobile-vw(25px);
-      transform: rotate(-4deg);
+      aspect-ratio: 340 / 225;
     }
 
     .app-element-kinesis {

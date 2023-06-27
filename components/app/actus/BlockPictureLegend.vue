@@ -12,7 +12,11 @@
         :src="content.picture.filename_disk"
         format="webp"
         :alt="`block-picture-${content.legend}`"
-        :sizes="`sm:50vw md:${content.picture.width}px`"
+        :sizes="`sm:${
+          content.picture.width / 2 > 375
+            ? content.picture.width / 2
+            : content.picture.width
+        }px md:${content.picture.width}px`"
       />
       <TP2 class="app-actualites-block-picture-legend__text" weight="medium">
         {{ content.legend }}
