@@ -24,9 +24,8 @@
           format="webp"
           :alt="`block-picture-${slide.item.legend}`"
           :sizes="`sm:50vw md:${slide.item.picture.width}px`"
-          loading="lazy"
         />
-        <video v-else ref="video" preload="none" loop muted playsinline>
+        <video v-else ref="video" loop muted playsinline>
           <source
             :src="`${$img.options.providers.directus.defaults.baseURL}assets/${slide.item.picture.filename_disk}`"
             :type="slide.item.picture.type"
@@ -244,7 +243,7 @@ export default {
 
     &__active {
       height: desktop-vw(65px);
-      width: desktop-vw(50px);
+      width: desktop-vw(55px);
       overflow: hidden;
       position: relative;
 
@@ -295,7 +294,7 @@ export default {
     }
 
     &__separator {
-      margin: 0px desktop-vw(10px);
+      margin: 0px desktop-vw(10px) 0px desktop-vw(5px);
     }
   }
 
