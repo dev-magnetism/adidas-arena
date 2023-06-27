@@ -31,7 +31,6 @@ export default {
       default: () => {},
     },
   },
-
   computed: {
     ...mapState({
       programmationsContent: (state) => state.programmationsContent,
@@ -40,9 +39,6 @@ export default {
       allLoadedFake: (state) => state.allLoadedFake,
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,
     }),
-    contentCard() {
-      return this.programmationsContent.find((el) => el.main_event)
-    },
   },
   watch: {
     initialHeroDisplayed(newVal) {
@@ -195,16 +191,8 @@ export default {
     }
   }
 
-  .child {
-    display: inline-block !important;
-  }
-
-  .parent {
-    overflow: hidden;
-  }
-
   &__paragraph {
-    width: 85%;
+    width: 75%;
     text-transform: uppercase;
     margin-top: desktop-vw(25px);
 

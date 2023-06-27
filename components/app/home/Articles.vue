@@ -13,20 +13,31 @@
     </div>
     <div class="app-home-articles__items grid">
       <AppActusCard
-        v-for="i in 3"
-        :key="`article-${i}`"
-        :theme="i % 2 ? 'red-adidas' : 'blue-adidas'"
+        v-for="(article, index) in articles"
+        :key="`article-${index}`"
+        :content="article"
+        :theme="index % 2 ? 'red-adidas' : 'blue-adidas'"
       />
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   props: {
     content: {
       type: Object,
       default: () => {},
+    },
+  },
+  computed: {
+    ...mapState({
+      actualites: (state) => state.actualites,
+    }),
+    articles() {
+      return this.actualites.slice(0, 3)
     },
   },
 }

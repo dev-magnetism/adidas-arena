@@ -25,6 +25,7 @@ export const state = () => ({
   menuContent: null,
   programmationsContent: null,
   programmationsEventContent: null,
+  actualitesArticleContent: null,
   programmes: null,
   actualites: null,
 
@@ -233,6 +234,9 @@ export const mutations = {
   setProgrammationsEventContent: (state, value) => {
     state.programmationsEventContent = value
   },
+  setActualitesArticleContent: (state, value) => {
+    state.actualitesArticleContent = value
+  },
   setMenuContent: (state, value) => {
     state.menuContent = value
   },
@@ -316,6 +320,14 @@ export const actions = {
       })
 
     commit('setProgrammationsEventContent', programmationsEvent.data)
+
+    const actualitesArticle = await $directus
+      .items('Actualites_article')
+      .readByQuery({
+        limit: -1,
+      })
+
+    commit('setActualitesArticleContent', actualitesArticle.data)
 
     const { meta } = await this.$axios.$get(
       `https://www.accorarena.com/api-svc/partners/accor-arena/events?limit=1&page=1`

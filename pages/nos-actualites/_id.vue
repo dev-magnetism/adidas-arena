@@ -8,6 +8,7 @@
       :key="`dynamic-component-${index}`"
       :content="el"
     />
+    <AppActusMoreActus :content="contentMoreArticles" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
@@ -52,7 +53,7 @@ export default {
     ...mapState({
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
-      programmationsEventContent: (state) => state.programmationsEventContent,
+      actualitesArticleContent: (state) => state.actualitesArticleContent,
       headerReduced: (state) => state.headerReduced,
       actualites: (state) => state.actualites,
     }),
@@ -63,12 +64,16 @@ export default {
           this.$convertToKebabCase(element.title)
       )
     },
+    contentMoreArticles() {
+      return {
+        title: this.actualitesArticleContent.also_like_title,
+        id: this.content.id,
+        slug: this.content.slug,
+      }
+    },
   },
   mounted() {
-    console.log('content', this.content, this)
-    // setTimeout(() => {
-    //   console.log('content timeout', this.content, this)
-    // }, 5000)
+    console.log('contenet', this.content, this)
   },
   beforeDestroy() {
     this.scrollTriggerCTA?.kill()

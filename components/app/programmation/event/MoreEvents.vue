@@ -72,45 +72,7 @@ export default {
       return filteredProgrammes.slice(0, 3)
     },
   },
-  mounted() {
-    const filteredProgrammes = this.programmes.filter(
-      (programme) =>
-        programme.content.category === this.content.category &&
-        programme.id !== this.content.id
-    )
-
-    const missingElements = Math.max(0, 3 - filteredProgrammes.length)
-
-    if (missingElements > 0) {
-      const otherCategoryProgrammes = this.programmes.filter(
-        (programme) => programme.content.category !== this.content.category
-      )
-
-      const uniqueOtherCategoryProgrammes = otherCategoryProgrammes.filter(
-        (programme) => !filteredProgrammes.includes(programme)
-      )
-
-      const additionalProgrammes = uniqueOtherCategoryProgrammes.slice(
-        0,
-        missingElements
-      )
-
-      if (additionalProgrammes.length < missingElements) {
-        const remainingMissingElements =
-          missingElements - additionalProgrammes.length
-        const allOtherProgrammes = otherCategoryProgrammes.filter(
-          (programme) =>
-            !filteredProgrammes.includes(programme) &&
-            !additionalProgrammes.includes(programme)
-        )
-        additionalProgrammes.push(
-          ...allOtherProgrammes.slice(0, remainingMissingElements)
-        )
-      }
-
-      filteredProgrammes.push(...additionalProgrammes)
-    }
-  },
+  mounted() {},
 }
 </script>
 
