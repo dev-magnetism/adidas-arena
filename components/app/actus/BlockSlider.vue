@@ -31,12 +31,42 @@
             :type="slide.item.picture.type"
           />
         </video>
-        <TP2
-          class="app-actualites-block-picture-legend__text"
-          weight="medium"
-          >{{ slide.item.legend }}</TP2
-        >
+        <TP2 class="app-actualites-block-picture-legend__text" weight="medium">
+          {{ slide.item.legend }}
+        </TP2>
       </div>
+    </div>
+    <div class="app-actualites-block-slider__counter">
+      <div class="app-actualites-block-slider__counter__active">
+        <transition-group
+          :name="`transition-block-slider-active-${directionSlider}`"
+          tag="div"
+          mode="out-in"
+          :duration="800"
+        >
+          <TH3
+            v-for="(item, index) in content.items"
+            v-show="indexSlider === index"
+            :key="`block-slider-counter-active-${index}`"
+            tag="p"
+            weight="bold"
+          >
+            {{ ('0' + (index + 1)).slice(-2) }}
+          </TH3>
+        </transition-group>
+      </div>
+      <TH3
+        class="app-actualites-block-slider__counter__separator"
+        tag="p"
+        weight="bold"
+        >/</TH3
+      >
+      <TH3
+        class="app-actualites-block-slider__counter__total"
+        tag="p"
+        weight="bold"
+        >{{ totalSlides }}</TH3
+      >
     </div>
   </div>
 </template>
@@ -53,12 +83,21 @@ export default {
       default: () => {},
     },
   },
+  data() {
+    return {
+      indexSlider: 0,
+      directionSlider: 'next',
+    }
+  },
   computed: {
     ...mapState({
       cursorSliderHold: (state) => state.cursorSliderHold,
       cursorSliderLeftZone: (state) => state.cursorSliderLeftZone,
       allowScroll: (state) => state.allowScroll,
     }),
+    totalSlides() {
+      return ('0' + this.content.items.length).slice(-2)
+    },
   },
   watch: {
     cursorSliderLeftZone() {
@@ -95,6 +134,16 @@ export default {
   },
   methods: {
     onSelect(e) {
+      this.indexSlider = this.embla.selectedScrollSnap()
+
+      const previousIndexSlider = this.embla.previousScrollSnap()
+
+      if (this.indexSlider > previousIndexSlider) {
+        this.directionSlider = 'next'
+      } else {
+        this.directionSlider = 'previous'
+      }
+
       this.handleDisabledCursor()
     },
     onPointerDown() {
@@ -163,11 +212,72 @@ export default {
     }
   }
 
+  &__counter {
+    grid-column: 1 / span 12;
+    justify-self: center;
+    display: flex;
+
+    &__active {
+      height: desktop-vw(65px);
+      width: desktop-vw(50px);
+      overflow: hidden;
+      position: relative;
+
+      .H3 {
+        position: absolute;
+
+        &.transition-block-slider-active-next-enter-active,
+        &.transition-block-slider-active-next-leave-active,
+        &.transition-block-slider-active-previous-enter-active,
+        &.transition-block-slider-active-previous-leave-active {
+          transition: transform 0.45s var(--ease-out-cubic);
+        }
+
+        &.transition-block-slider-active-next-enter-active,
+        &.transition-block-slider-active-previous-enter-active {
+          transition-delay: 0.35s;
+        }
+
+        &.transition-block-slider-active-next-enter {
+          transform: translateY(-105%);
+        }
+        &.transition-block-slider-active-previous-enter {
+          transform: translateY(105%);
+        }
+
+        &.transition-block-slider-active-next-enter-to,
+        &.transition-block-slider-active-previous-enter-to {
+          transform: translateY(0%);
+        }
+
+        &.transition-block-slider-active-next-leave,
+        &.transition-block-slider-active-previous-leave {
+          transform: translateY(0%);
+        }
+
+        &.transition-block-slider-active-next-leave-to {
+          transform: translateY(105%);
+        }
+        &.transition-block-slider-active-previous-leave-to {
+          transform: translateY(-105%);
+        }
+      }
+    }
+
+    &__total {
+      -webkit-text-stroke: 1px var(--c-black);
+      -webkit-text-fill-color: transparent;
+    }
+
+    &__separator {
+      margin: 0px desktop-vw(10px);
+    }
+  }
+
   &__slide {
     flex: 0 0 auto; /* Adapt slide size to its content */
     min-width: 0;
     max-width: 100%; /* Prevent from growing larger than viewport */
-    max-height: 75vh;
 
     &:first-child {
       margin-left: columns(2);
@@ -182,6 +292,7 @@ export default {
       display: block;
       height: 100%;
       max-width: 100%;
+      max-height: 75vh;
 
       img {
         @include draggable-false();
@@ -192,6 +303,7 @@ export default {
       aspect-ratio: 16 / 9;
       width: auto;
       height: 100%;
+      max-height: 75vh;
     }
   }
 }
