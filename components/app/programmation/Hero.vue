@@ -331,7 +331,7 @@ export default {
   }
 
   .child {
-    display: inline-block !important;
+    // display: inline-block !important;
   }
 
   .parent {

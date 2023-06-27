@@ -14,7 +14,31 @@
     </div>
 
     <div ref="visualBack" class="app-actualites-hero__visual-back">
-      <EKinesis :speed="10" />
+      <EKinesis :speed="2">
+        <nuxt-picture
+          provider="directus"
+          :src="content.frontPicture"
+          format="webp"
+          :alt="'fdsfsdf'"
+          sizes="sm:35vw md:50vw"
+        />
+      </EKinesis>
+    </div>
+
+    <div ref="visualFront" class="app-actualites-hero__visual-front">
+      <EKinesis :speed="6">
+        <EFramedPicture color="blue-adidas">
+          <EKinesis :speed="-3.5">
+            <nuxt-picture
+              provider="directus"
+              :src="content.frontPicture"
+              format="webp"
+              :alt="'fdsfsdf'"
+              sizes="sm:35vw md:50vw"
+            />
+          </EKinesis>
+        </EFramedPicture>
+      </EKinesis>
     </div>
   </div>
 </template>
@@ -57,6 +81,8 @@ export default {
     },
   },
   mounted() {
+    console.log('hero', this.content)
+
     if (this.allLoadedFake && !this.$viewport.isMobile) {
       this.initSplitText()
       this.appearHero(0.95)
@@ -121,6 +147,58 @@ export default {
           'texts+=15%'
         )
         .addLabel('visuals', 'texts')
+        .fromTo(
+          this.$refs.visualBack,
+          {
+            y: '20%',
+            rotate: -10,
+          },
+          {
+            y: '0%',
+            rotate: -4,
+            duration: 0.5,
+            ease: 'power3.out',
+          },
+          'visuals'
+        )
+        .fromTo(
+          this.$refs.visualBack,
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+            duration: 0.55,
+            ease: 'power3.out',
+          },
+          'visuals+=5%'
+        )
+        .fromTo(
+          this.$refs.visualFront,
+          {
+            y: '20%',
+            rotate: 8,
+          },
+          {
+            y: '0%',
+            rotate: 4,
+            duration: 0.5,
+            ease: 'power3.out',
+          },
+          'visuals+=30%'
+        )
+        .fromTo(
+          this.$refs.visualFront,
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+            duration: 0.55,
+            ease: 'power3.out',
+          },
+          'visuals+=35%'
+        )
     },
     initMatchMedia() {
       this.mm = gsap.matchMedia()
@@ -128,9 +206,19 @@ export default {
       this.mm.add('(min-width: 768px)', (context) => {
         this.setAllowScroll(true)
 
-        const tweenVisualback = gsap.to(this.$refs.visualBack, {
-          yPercent: -40,
-          rotate: -2,
+        const tweenVisualFront = gsap.to(this.$refs.visualFront, {
+          yPercent: -35,
+          rotate: 1.5,
+          scrollTrigger: {
+            trigger: this.$el,
+            scrub: 0.5,
+            start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
+          },
+        })
+
+        const tweenVisualBack = gsap.to(this.$refs.visualBack, {
+          yPercent: -20,
+          rotate: -1,
           scrollTrigger: {
             trigger: this.$el,
             scrub: 0.5,
@@ -139,7 +227,8 @@ export default {
         })
 
         return () => {
-          tweenVisualback?.kill()
+          tweenVisualFront?.kill()
+          tweenVisualBack?.kill()
         }
       })
     },
@@ -168,6 +257,10 @@ export default {
   position: relative;
   min-height: calc(75vh - desktop-vw(200px));
 
+  @include mobile {
+    min-height: 100%;
+  }
+
   &__texts {
     grid-column: 2 / span 5;
     display: inline-flex;
@@ -192,6 +285,10 @@ export default {
     }
   }
 
+  .parent {
+    overflow: hidden;
+  }
+
   &__paragraph {
     width: 75%;
     text-transform: uppercase;
@@ -213,17 +310,52 @@ export default {
     position: absolute;
     width: 100%;
     height: auto;
-    bottom: 5%;
+    top: -10%;
     z-index: 0;
-    transform: rotate(-4deg);
+    transform: rotate(-3deg);
     transform-origin: right center;
     aspect-ratio: 340 / 420;
-    background: red;
 
     @include mobile {
-      grid-column: 1 / span 3;
-      left: -35%;
-      bottom: -10%;
+      grid-column: 1 / span 4;
+      left: 0;
+      top: 10%;
+      position: relative;
+      aspect-ratio: 220 / 275;
+      transform: rotate(-2deg);
+    }
+
+    .app-element-framed-picture {
+      padding: desktop-vw(15px);
+    }
+  }
+
+  &__visual-front {
+    grid-column: 9 / span 3;
+    position: absolute;
+    width: 100%;
+    height: auto;
+    top: 35%;
+    z-index: 0;
+    transform: rotate(4deg);
+    transform-origin: left center;
+    aspect-ratio: 310 / 380;
+
+    @include mobile {
+      grid-column: 3 / span 4;
+      left: 0;
+      top: -35%;
+      position: relative;
+      aspect-ratio: 205 / 250;
+      transform: rotate(3.5deg);
+    }
+
+    .app-element-framed-picture {
+      padding: desktop-vw(15px);
+
+      @include mobile {
+        padding: mobile-vw(10px);
+      }
     }
   }
 }

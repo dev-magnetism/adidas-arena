@@ -176,10 +176,6 @@ export default {
   background-color: var(--c-grey);
   cursor: pointer;
 
-  @include mobile {
-    grid-column: span 6;
-  }
-
   &__layer-filtering {
     position: absolute;
     width: calc(100% + 5px);
@@ -243,6 +239,10 @@ export default {
     position: relative;
     @include noise();
 
+    @include mobile {
+      aspect-ratio: 350 / 350;
+    }
+
     img {
       display: block;
     }
@@ -284,6 +284,10 @@ export default {
   &__reading-time.P2 {
     margin-top: auto;
     text-transform: uppercase;
+
+    @include mobile {
+      width: 35%;
+    }
   }
 
   &__cta {

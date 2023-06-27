@@ -10,7 +10,7 @@
             <option
               v-for="(cat, catIndex) in actualitesCategories"
               :key="`key-${cat.category}-${catIndex}`"
-              :value="cat.category.toLowerCase()"
+              :value="$convertToKebabCase(cat.category)"
             >
               {{ cat.category }} ({{ cat.count.toString().padStart(2, '0') }})
             </option>
@@ -158,11 +158,11 @@ export default {
                 this.selectedCategory
 
             if (isMatch) {
-              if (!item.isAppear) item.scrollTrigger.enable()
+              if (!item.isAppear) item.scrollTrigger?.enable()
 
               item.scrollTriggerInView?.enable()
             } else {
-              item.scrollTrigger.disable()
+              item.scrollTrigger?.disable()
 
               item.scrollTriggerInView?.disable()
               item.inView = false
@@ -203,7 +203,7 @@ export default {
   position: relative;
 
   @include mobile {
-    margin-top: mobile-vw(120px);
+    margin-top: mobile-vw(0px);
     padding-top: mobile-vw(70px);
     padding-bottom: mobile-vw(90px);
   }
@@ -212,13 +212,17 @@ export default {
     position: relative;
 
     @include mobile {
-      grid-gap: mobile-vw(120px) mobile-vw(0px);
+      grid-gap: mobile-vw(20px) mobile-vw(0px);
     }
 
     .app-actualites-card {
       width: auto;
       height: auto;
       grid-column: span 4;
+
+      @include mobile {
+        grid-column: span 6;
+      }
     }
   }
 
