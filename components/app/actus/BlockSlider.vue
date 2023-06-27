@@ -117,18 +117,12 @@ export default {
 
     this.embla.on('pointerUp', this.onPointerUp)
     this.embla.on('pointerDown', this.onPointerDown)
-
-    if (!this.$viewport.isMobile) {
-      this.embla.on('select', this.onSelect)
-    }
+    this.embla.on('select', this.onSelect)
   },
   beforeDestroy() {
     this.embla?.off('pointerUp', this.onPointerUp)
     this.embla?.off('pointerDown', this.onPointerDown)
-
-    if (!this.$viewport.isMobile) {
-      this.embla?.off('select', this.onSelect)
-    }
+    this.embla?.off('select', this.onSelect)
 
     this.embla?.destroy()
   },
@@ -147,7 +141,7 @@ export default {
       const isVideo =
         this.content.items[this.indexSlider].item.picture.type.includes('video')
 
-      if (isVideo) {
+      if (isVideo && !this.$viewport.isMobile) {
         const currentSlide = this.embla.slideNodes()[this.indexSlider]
 
         const video = currentSlide.getElementsByTagName('video')[0]
@@ -160,7 +154,7 @@ export default {
           'video'
         )
 
-      if (isVideoPrevious) {
+      if (isVideoPrevious && !this.$viewport.isMobile) {
         const previousSlide = this.embla.slideNodes()[previousIndexSlider]
 
         const video = previousSlide.getElementsByTagName('video')[0]
@@ -241,11 +235,20 @@ export default {
     justify-self: center;
     display: flex;
 
+    @include mobile {
+      grid-column: 1 / span 6;
+    }
+
     &__active {
       height: desktop-vw(65px);
       width: desktop-vw(55px);
       overflow: hidden;
       position: relative;
+
+      @include mobile {
+        height: mobile-vw(40px);
+        width: mobile-vw(30px);
+      }
 
       .H3 {
         position: absolute;
@@ -295,6 +298,10 @@ export default {
 
     &__separator {
       margin: 0px desktop-vw(10px) 0px desktop-vw(5px);
+
+      @include mobile {
+        margin: 0px mobile-vw(10px) 0px mobile-vw(5px);
+      }
     }
   }
 
@@ -302,6 +309,10 @@ export default {
     flex: 0 0 auto; /* Adapt slide size to its content */
     min-width: 0;
     max-width: 100%; /* Prevent from growing larger than viewport */
+
+    @include mobile {
+      max-width: 90%;
+    }
 
     &:first-child {
       margin-left: columns(2);
@@ -316,10 +327,18 @@ export default {
       display: block;
       height: 100%;
       max-width: 100%;
-      max-height: 70vh;
 
       img {
         @include draggable-false();
+      }
+    }
+
+    picture,
+    video {
+      max-height: 70vh;
+
+      @include mobile {
+        max-height: 50vh;
       }
     }
 
@@ -327,7 +346,10 @@ export default {
       aspect-ratio: 16 / 9;
       width: auto;
       height: 100%;
-      max-height: 70vh;
+
+      @include mobile {
+        width: 100%;
+      }
     }
   }
 }
