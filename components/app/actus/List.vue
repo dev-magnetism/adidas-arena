@@ -1,12 +1,9 @@
 <template>
-  <div class="app-programmation-list">
-    <div ref="bar" class="app-programmation-list-bar">
-      <div
-        ref="barWrapper"
-        class="app-programmation-list-bar__wrapper grid-inner"
-      >
+  <div class="app-actualites-list">
+    <div ref="bar" class="app-actualites-list-bar">
+      <div ref="barWrapper" class="app-actualites-list-bar__wrapper grid-inner">
         <AppProgrammationEventTag
-          class="app-programmation-list-bar__filters-mobile"
+          class="app-actualites-list-bar__filters-mobile"
         >
           FILTRER
           <select v-model="selectedCategory">
@@ -19,11 +16,11 @@
             </option>
           </select>
         </AppProgrammationEventTag>
-        <div class="app-programmation-list-bar__filters">
+        <div class="app-actualites-list-bar__filters">
           <div
             v-for="(cat, catIndex) in actualitesCategories"
             :key="`key-${cat.category}-${catIndex}`"
-            class="app-programmation-list-bar__filters__radio"
+            class="app-actualites-list-bar__filters__radio"
           >
             <input
               :id="`${cat.category.toLowerCase()}`"
@@ -50,12 +47,13 @@
 
     <div
       ref="container"
-      class="container app-programmation-list-events grid-inner"
+      class="container app-actualites-list-events grid-inner"
     >
       <AppActusCard
         v-for="(actu, index) in actualites"
         :key="`article-${index}`"
         ref="events"
+        :content="actu"
         :theme="index % 2 ? 'red-adidas' : 'blue-adidas'"
       />
     </div>
@@ -119,56 +117,6 @@ export default {
           this.barActive = true
         },
       })
-    },
-    onChangeMonth(e) {
-      if (e.target.value === this.currentMonth) return
-
-      const oldest = this.compareDates(this.currentMonth, e.target.value)
-
-      this.directionMonth = oldest ? 'down' : 'up'
-      this.filteringInProgress = true
-      this.currentMonth = e.target.value
-
-      const valueInVw = this.$viewport.isMobile
-        ? (85 * 100) / 375
-        : (85 * 100) / 1400
-      const valueInPx = (this.$viewport.width * valueInVw) / 100
-
-      window.lenis?.scrollTo?.(
-        `.app-programmation-list-events__month.${e.target.value}`,
-        {
-          duration: 1.5,
-          offset: valueInPx * -1,
-          lock: true,
-          onComplete: () => {
-            this.filteringInProgress = false
-          },
-        }
-      )
-    },
-    compareDates(date1, date2) {
-      const months = {
-        janvier: '01',
-        février: '02',
-        mars: '03',
-        avril: '04',
-        mai: '05',
-        juin: '06',
-        juillet: '07',
-        août: '08',
-        septembre: '09',
-        octobre: '10',
-        novembre: '11',
-        décembre: '12',
-      }
-
-      const [month1, year1] = date1.split('-')
-      const [month2, year2] = date2.split('-')
-
-      const d1 = new Date(`${year1}-${months[month1]}-01`)
-      const d2 = new Date(`${year2}-${months[month2]}-01`)
-
-      return d1 > d2
     },
     updateFilters() {
       window.lenis?.stop()
@@ -234,23 +182,6 @@ export default {
             item.$el.style.display = isMatch ? 'inline-flex' : 'none'
           })
 
-          this.$refs.eventsContainer.forEach((month) => {
-            const cards = month.querySelectorAll('.app-programmation-card')
-
-            const visibleArticles = Object.values(cards).filter(
-              (article) => article.style.display !== 'none'
-            )
-
-            if (visibleArticles.length <= 0) {
-              month.style.position = 'absolute'
-            } else if (
-              visibleArticles.length > 0 &&
-              month.style.position === 'absolute'
-            ) {
-              month.style.position = 'relative'
-            }
-          })
-
           this.filteringInProgress = false
 
           this.$nextTick(() => {
@@ -276,7 +207,7 @@ export default {
 </script>
 
 <style lang="scss">
-.app-programmation-list {
+.app-actualites-list {
   margin-top: desktop-vw(110px);
   padding-top: desktop-vw(110px);
   padding-bottom: desktop-vw(110px);
@@ -289,25 +220,10 @@ export default {
   }
 
   &-events {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: desktop-vw(120px) desktop-vw(0px);
     position: relative;
 
     @include mobile {
       grid-gap: mobile-vw(120px) mobile-vw(0px);
-    }
-
-    &__month {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      grid-gap: desktop-vw(25px);
-      position: relative;
-
-      @include mobile {
-        grid-template-columns: repeat(6, 1fr);
-        grid-gap: mobile-vw(20px);
-      }
     }
 
     .app-actualites-card {

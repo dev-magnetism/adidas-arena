@@ -13,27 +13,34 @@
         class="app-actualites-card__layer"
       />
 
-      <picture>
-        <img src="/imgs/placeholder.png" alt="alt" />
-      </picture>
+      <nuxt-picture
+        ref="picture"
+        provider="directus"
+        :src="content.cover.filename_disk"
+        format="webp"
+        :alt="`hero-cover-${content.title}`"
+        sizes="sm:85vw md:50vw"
+        loading="lazy"
+      />
     </div>
 
     <div class="app-actualites-card__informations">
       <div class="app-actualites-card__head">
         <TP2 class="type" weight="bold" :color="'blue-adidas'" tag="h3">
-          22 JANV. 2023
+          {{ frenchDate }}
         </TP2>
       </div>
+
       <TH4 :color="whitedTexts" weight="bold" tag="h4">
-        Les évènements marquants de l’année 2022 à L’adidas arena
+        {{ content.title }}
       </TH4>
 
       <TP2
-        class="app-actualites-card__from-price"
+        class="app-actualites-card__reading-time"
         weight="regular"
         :color="whitedTexts"
       >
-        TEMPS DE LECTURE : 6MIN
+        TEMPS DE LECTURE : {{ content.reading_time }}
       </TP2>
 
       <AtomsCTA
@@ -41,8 +48,10 @@
         :layer-color="statutColor"
         :bg="'grey'"
         class="app-actualites-card__cta"
-        >Lire la suite</AtomsCTA
+        button
       >
+        Lire la suite
+      </AtomsCTA>
     </div>
   </div>
 </template>
@@ -54,7 +63,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default {
   props: {
-    event: {
+    content: {
       type: Object,
       default: () => {},
     },
@@ -72,7 +81,6 @@ export default {
   },
   computed: {
     ...mapState({
-      programmationsEventContent: (state) => state.programmationsEventContent,
       actualites: (state) => state.actualites,
     }),
     bgColor() {
@@ -90,10 +98,17 @@ export default {
     whitedTexts() {
       return 'black'
     },
+    frenchDate() {
+      const date = new Date(this.content.date)
+
+      const options = { day: 'numeric', month: 'long', year: 'numeric' }
+
+      return date.toLocaleDateString('fr-FR', options)
+    },
   },
   watch: {},
   mounted() {
-    console.log(this.actualites)
+    console.log(this.content)
     this.initMatchMedia()
   },
   beforeDestroy() {
@@ -105,9 +120,9 @@ export default {
     onRouterPush() {
       this.$router.push({
         name: 'nos-actualites-id',
-        // params: {
-        //   id: `${this.$convertToKebabCase(this.event.content.url)}`,
-        // },
+        params: {
+          id: `${this.content.slug}`,
+        },
       })
     },
     initMatchMedia() {
@@ -266,8 +281,9 @@ export default {
     }
   }
 
-  &__from-price.P2 {
+  &__reading-time.P2 {
     margin-top: auto;
+    text-transform: uppercase;
   }
 
   &__cta {
