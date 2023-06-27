@@ -24,8 +24,9 @@
           format="webp"
           :alt="`block-picture-${slide.item.legend}`"
           :sizes="`sm:50vw md:${slide.item.picture.width}px`"
+          loading="lazy"
         />
-        <video v-else ref="video" loop muted playsinline controls>
+        <video v-else ref="video" preload="none" loop muted playsinline>
           <source
             :src="`${$img.options.providers.directus.defaults.baseURL}assets/${slide.item.picture.filename_disk}`"
             :type="slide.item.picture.type"
@@ -142,6 +143,30 @@ export default {
         this.directionSlider = 'next'
       } else {
         this.directionSlider = 'previous'
+      }
+
+      const isVideo =
+        this.content.items[this.indexSlider].item.picture.type.includes('video')
+
+      if (isVideo) {
+        const currentSlide = this.embla.slideNodes()[this.indexSlider]
+
+        const video = currentSlide.getElementsByTagName('video')[0]
+
+        video.play()
+      }
+
+      const isVideoPrevious =
+        this.content.items[previousIndexSlider].item.picture.type.includes(
+          'video'
+        )
+
+      if (isVideoPrevious) {
+        const previousSlide = this.embla.slideNodes()[previousIndexSlider]
+
+        const video = previousSlide.getElementsByTagName('video')[0]
+
+        video.pause()
       }
 
       this.handleDisabledCursor()
@@ -292,7 +317,7 @@ export default {
       display: block;
       height: 100%;
       max-width: 100%;
-      max-height: 75vh;
+      max-height: 70vh;
 
       img {
         @include draggable-false();
@@ -303,7 +328,7 @@ export default {
       aspect-ratio: 16 / 9;
       width: auto;
       height: 100%;
-      max-height: 75vh;
+      max-height: 70vh;
     }
   }
 }
