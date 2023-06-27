@@ -52,6 +52,11 @@ export default {
 
   &__title {
     margin-bottom: desktop-vw(30px);
+
+    @include mobile {
+      margin-bottom: mobile-vw(50px);
+      width: 80%;
+    }
   }
 
   &__items {

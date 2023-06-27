@@ -25,9 +25,16 @@
           :alt="`block-picture-${slide.item.legend}`"
           :sizes="`sm:50vw md:${slide.item.picture.width}px`"
         />
-        <video v-else ref="video" loop muted playsinline>
+        <video
+          v-else
+          ref="video"
+          :controls="$viewport.isMobile"
+          loop
+          muted
+          playsinline
+        >
           <source
-            :src="`${$img.options.providers.directus.defaults.baseURL}assets/${slide.item.picture.filename_disk}`"
+            :src="`${$img.options.providers.directus.defaults.baseURL}assets/${slide.item.picture.filename_disk}#t=0.1`"
             :type="slide.item.picture.type"
           />
         </video>
@@ -311,7 +318,9 @@ export default {
     max-width: 100%; /* Prevent from growing larger than viewport */
 
     @include mobile {
-      max-width: 90%;
+      flex: 0 0 85%; /* Adapt slide size to its content */
+      display: flex;
+      flex-direction: column;
     }
 
     &:first-child {

@@ -176,6 +176,10 @@ export default {
   background-color: var(--c-grey);
   cursor: pointer;
 
+  @include mobile {
+    grid-column: span 6;
+  }
+
   &__layer-filtering {
     position: absolute;
     width: calc(100% + 5px);
