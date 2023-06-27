@@ -127,7 +127,7 @@ export default {
     &:nth-child(2n + 2) {
       left: var(--layout-columns-gap);
       transform: rotate(-6deg);
-      margin-top: desktop-vw(185px);
+      margin-top: desktop-vw(165px);
 
       @include mobile {
         left: 0;

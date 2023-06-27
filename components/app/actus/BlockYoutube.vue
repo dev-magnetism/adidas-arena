@@ -4,7 +4,7 @@
       <EParallax
         ref="video"
         class="app-actualites-block-youtube__video"
-        :speed="1"
+        :speed="0.85"
       >
         <EKinesis :speed="5">
           <div
