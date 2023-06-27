@@ -16,6 +16,7 @@
             </option>
           </select>
         </AppProgrammationEventTag>
+
         <div class="app-actualites-list-bar__filters">
           <div
             v-for="(cat, catIndex) in actualitesCategories"
@@ -23,15 +24,15 @@
             class="app-actualites-list-bar__filters__radio"
           >
             <input
-              :id="`${cat.category.toLowerCase()}`"
+              :id="`${$convertToKebabCase(cat.category)}`"
               ref="radioButtons"
               v-model="selectedCategory"
               type="radio"
               name="filters-radio"
-              :value="cat.category.toLowerCase()"
+              :value="$convertToKebabCase(cat.category)"
             />
 
-            <label :for="`${cat.category.toLowerCase()}`">
+            <label :for="`${$convertToKebabCase(cat.category)}`">
               <TP1 weight="bold">
                 {{ cat.category }}
               </TP1>
@@ -45,14 +46,11 @@
       </div>
     </div>
 
-    <div
-      ref="container"
-      class="container app-actualites-list-events grid-inner"
-    >
+    <div ref="container" class="container app-actualites-list-actus grid-inner">
       <AppActusCard
         v-for="(actu, index) in actualites"
         :key="`article-${index}`"
-        ref="events"
+        ref="actus"
         :content="actu"
         :theme="index % 2 ? 'red-adidas' : 'blue-adidas'"
       />
@@ -71,9 +69,6 @@ export default {
     return {
       selectedCategory: 'tout',
       barActive: true,
-      scrollTriggerMonths: [],
-      currentMonth: null,
-      directionMonth: 'up',
       filteringInProgress: false,
     }
   },
@@ -95,10 +90,6 @@ export default {
   },
   beforeDestroy() {
     this.scrollTriggerBar?.kill()
-
-    this.scrollTriggerMonths?.forEach((st) => {
-      st?.kill()
-    })
   },
   methods: {
     initScrollTrigger() {
@@ -121,7 +112,6 @@ export default {
     updateFilters() {
       window.lenis?.stop()
 
-      this.directionMonth = 'down'
       this.barActive = this.scrollTriggerBar.isActive
 
       const layerBlue = document.querySelector('.app-transition-layer.blue')
@@ -153,8 +143,6 @@ export default {
         .add(() => {
           this.filteringInProgress = true
 
-          this.currentMonth = `${this.monthFilters[0].month}-${this.monthFilters[0].year}`
-
           if (window.lenis) {
             window.lenis?.scrollTo?.(this.$el, {
               immediate: true,
@@ -163,10 +151,11 @@ export default {
             })
           }
 
-          this.$refs.events.forEach((item) => {
+          this.$refs.actus.forEach((item) => {
             const isMatch =
               this.selectedCategory === 'tout' ||
-              item.event.content.category === this.selectedCategory
+              this.$convertToKebabCase(item.content.category) ===
+                this.selectedCategory
 
             if (isMatch) {
               if (!item.isAppear) item.scrollTrigger.enable()
@@ -219,7 +208,7 @@ export default {
     padding-bottom: mobile-vw(90px);
   }
 
-  &-events {
+  &-actus {
     position: relative;
 
     @include mobile {
@@ -364,9 +353,5 @@ export default {
       }
     }
   }
-}
-
-.article {
-  grid-column: span 4;
 }
 </style>

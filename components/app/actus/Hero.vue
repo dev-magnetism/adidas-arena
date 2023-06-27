@@ -166,6 +166,7 @@ export default {
 <style lang="scss">
 .app-actualites-hero {
   position: relative;
+  min-height: calc(75vh - desktop-vw(200px));
 
   &__texts {
     grid-column: 2 / span 5;
