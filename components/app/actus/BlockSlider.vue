@@ -264,10 +264,10 @@ export default {
         }
 
         &.transition-block-slider-active-next-enter {
-          transform: translateY(-105%);
+          transform: translateY(105%);
         }
         &.transition-block-slider-active-previous-enter {
-          transform: translateY(105%);
+          transform: translateY(-105%);
         }
 
         &.transition-block-slider-active-next-enter-to,
@@ -281,10 +281,10 @@ export default {
         }
 
         &.transition-block-slider-active-next-leave-to {
-          transform: translateY(105%);
+          transform: translateY(-105%);
         }
         &.transition-block-slider-active-previous-leave-to {
-          transform: translateY(-105%);
+          transform: translateY(105%);
         }
       }
     }
