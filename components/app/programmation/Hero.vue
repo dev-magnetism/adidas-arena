@@ -23,6 +23,10 @@
             :src="content.event.list_image.filename_disk"
             :alt="`main-card-image-${content.event.id}-${content.event.artist_reference}`"
             :lazy="true"
+            :sizes="{
+              desktop: 'w400,h400,fcrop,q85',
+              mobile: 'w400,h400,fcrop,q85',
+            }"
           />
 
           <div class="app-programmation-hero__main-card__content">

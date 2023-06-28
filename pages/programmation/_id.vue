@@ -12,27 +12,36 @@
     </AtomsCTABack>
 
     <AppProgrammationEventHero ref="hero" :event="event" />
+
     <AppProgrammationEventCancelation
       v-if="event.status_code === 'H'"
       :content="contentCancelation"
     />
+
     <AppProgrammationEventMoreInformation :event="event" />
+
     <AppProgrammationEventDates
       v-if="event.sessions.length - 1 >= 1"
       :content="contentDates"
       :event="event"
       @onSelectDate="onSelectDate"
     />
+
     <AppProgrammationEventTicketing
       :event="event"
       :content="contentTicketing"
       :index-date="event.sessions.length - 1 > 0 ? indexDate : 0"
     />
+
     <!-- <AppProgrammationEventOffers ref="offers" /> -->
     <AppProgrammationEventSafetyInstructions :content="contentSafety" />
+
     <AppProgrammationEventAboutArtist :event="event" />
+
     <AppProgrammationEventMoreEvents :content="contentMoreEvents" />
+
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
+
     <AppProgrammationEventBar :event="event" :class="{ hide: !appearBar }" />
   </main>
 </template>

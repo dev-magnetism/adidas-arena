@@ -1,10 +1,7 @@
 <template>
   <!-- sizes="sm:35vw md:15vw" -->
   <picture class="app-programmation-image">
-    <source
-      media="(min-width: 768px)"
-      :srcset="tiny ? srcMobile : srcDesktop"
-    />
+    <source media="(min-width: 768px)" :srcset="srcDesktop" />
     <img :src="srcMobile" :alt="alt" :loading="lazy ? 'lazy' : 'eager'" />
   </picture>
 </template>
@@ -28,15 +25,19 @@ export default {
       type: Boolean,
       default: false,
     },
+    sizes: {
+      type: Object,
+      default: () => {},
+    },
   },
   computed: {
     srcDesktop() {
       const src = this.src
-      return `https://www.accorarena.com/uploads/aha/generated/w800,h600,fcrop,q80/${src}`
+      return `https://www.accorarena.com/uploads/aha/generated/${this.sizes.desktop}/${src}`
     },
     srcMobile() {
       const src = this.src
-      return `https://www.accorarena.com/uploads/aha/generated/w1920,h1080,fcontain,q85/${src}`
+      return `https://www.accorarena.com/uploads/aha/generated/${this.sizes.mobile}/${src}`
     },
   },
 }
