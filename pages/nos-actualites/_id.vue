@@ -34,21 +34,21 @@ export default {
 
     return pageTransition.basic
   },
-  // head({ $seo }) {
-  //   return $seo({
-  //     templateTitle: '%title% - %name%',
-  //     title: `${this.event.content.title} - Nos actualités`,
-  //     description: this.event.content.metaDescription,
-  //     openGraph: {
-  //       title: this.appContent.data.seo_title,
-  //       description: this.event.content.metaDescription,
-  //     },
-  //     twitter: {
-  //       title: this.appContent.data.seo_title,
-  //       description: this.event.content.metaDescription,
-  //     },
-  //   })
-  // },
+  head({ $seo }) {
+    return $seo({
+      templateTitle: '%title% - %name%',
+      title: `${this.content.title} - Nos actualités`,
+      description: this.content.page_description_seo,
+      openGraph: {
+        title: this.appContent.data.seo_title,
+        description: this.content.page_description_seo,
+      },
+      twitter: {
+        title: this.appContent.data.seo_title,
+        description: this.content.page_description_seo,
+      },
+    })
+  },
   computed: {
     ...mapState({
       partnersContent: (state) => state.partnersContent,

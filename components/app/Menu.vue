@@ -255,8 +255,6 @@ export default {
         ? '/nos-actualites'
         : this.$route.path
 
-      console.log('here', route)
-
       this.onSelectImage(route)
 
       this.tlMain = gsap
