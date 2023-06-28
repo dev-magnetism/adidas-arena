@@ -21,6 +21,7 @@
           <div
             v-for="(cat, catIndex) in actualitesCategories"
             :key="`key-${cat.category}-${catIndex}`"
+            :class="{ 'search-active': searchInProgress }"
             class="app-actualites-list-bar__filters__radio"
           >
             <input
@@ -43,6 +44,17 @@
             </label>
           </div>
         </div>
+        <div class="app-actualites-list-bar__search-bar">
+          <form @submit.prevent="onSearch">
+            <input
+              v-model="searchText"
+              type="text"
+              placeholder="RECHERCHER un article"
+              name="search"
+            />
+            <button type="submit"><SvgSearch /></button>
+          </form>
+        </div>
       </div>
     </div>
 
@@ -60,7 +72,6 @@
 
 <script>
 import { gsap } from 'gsap'
-// import { Flip } from 'gsap/Flip'
 import { mapState, mapGetters } from 'vuex'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -68,6 +79,8 @@ export default {
   data() {
     return {
       selectedCategory: 'tout',
+      searchText: null,
+      searchInProgress: false,
       barActive: true,
       filteringInProgress: false,
     }
@@ -82,6 +95,10 @@ export default {
   },
   watch: {
     selectedCategory() {
+      if (this.searchInProgress) return
+
+      console.log('searchInProgress watch', this.searchInProgress)
+
       this.updateFilters()
     },
   },
@@ -92,24 +109,31 @@ export default {
     this.scrollTriggerBar?.kill()
   },
   methods: {
+    onSearch() {
+      if (this.searchText === null || /^\s*$/.test(this.searchText)) return // If searchText is null OR contain only spaces --> return
+
+      this.updateFilters(true)
+
+      console.log('search', this.searchText)
+    },
     initScrollTrigger() {
       this.scrollTriggerBar = ScrollTrigger.create({
         trigger: this.$refs.bar,
         start: 'top bottom',
         end: 'bottom bottom',
         onLeave: (e) => {
-          if (this.filteringInProgress) return
+          if (this.filteringInProgress || this.searchInProgress) return
 
           this.barActive = false
         },
         onEnterBack: (e) => {
-          if (this.filteringInProgress) return
+          if (this.filteringInProgress || this.searchInProgress) return
 
           this.barActive = true
         },
       })
     },
-    updateFilters() {
+    updateFilters(search = false) {
       window.lenis?.stop()
 
       this.barActive = this.scrollTriggerBar.isActive
@@ -152,13 +176,47 @@ export default {
           }
 
           this.$refs.actus.forEach((item) => {
-            const isMatch =
-              this.selectedCategory === 'tout' ||
-              this.$convertToKebabCase(item.content.category) ===
-                this.selectedCategory
+            let matchFound = false
 
-            if (isMatch) {
+            if (search) {
+              this.searchInProgress = true
+
+              matchFound =
+                item.content.title
+                  .toLowerCase()
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036F]/g, '')
+                  .includes(
+                    this.searchText
+                      .toLowerCase()
+                      .normalize('NFD')
+                      .replace(/[\u0300-\u036F]/g, '')
+                  ) ||
+                item.content.subtitle
+                  .toLowerCase()
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036F]/g, '')
+                  .includes(
+                    this.searchText
+                      .toLowerCase()
+                      .normalize('NFD')
+                      .replace(/[\u0300-\u036F]/g, '')
+                  )
+            } else {
+              matchFound =
+                this.selectedCategory === 'tout' ||
+                this.$convertToKebabCase(item.content.category) ===
+                  this.selectedCategory
+
+              this.searchText = null
+            }
+
+            if (matchFound) {
               if (!item.isAppear) item.scrollTrigger?.enable()
+
+              if (search) {
+                this.selectedCategory = null
+              }
 
               item.scrollTriggerInView?.enable()
             } else {
@@ -168,12 +226,13 @@ export default {
               item.inView = false
             }
 
-            item.$el.style.display = isMatch ? 'inline-flex' : 'none'
+            item.$el.style.display = matchFound ? 'inline-flex' : 'none'
           })
 
-          this.filteringInProgress = false
-
           this.$nextTick(() => {
+            this.filteringInProgress = false
+            this.searchInProgress = false
+
             ScrollTrigger.refresh()
           })
         })
@@ -182,6 +241,7 @@ export default {
           transformOrigin: 'center bottom',
           duration: 0.85,
           delay: 0.25,
+
           onComplete: () => {
             window.lenis?.start()
           },
@@ -252,17 +312,48 @@ export default {
           width: 100%;
           height: calc(100% + 10px);
           position: absolute;
-          // background: rgb(255 255 255);
-          // background: linear-gradient(
-          //   0deg,
-          //   rgb(255 255 255) 10%,
-          //   rgba(255, 255, 255, 0) 100%
-          // );
           z-index: -1;
           top: 0;
           left: 0;
           pointer-events: none;
         }
+      }
+    }
+
+    &__search-bar {
+      grid-column: 10 / span 3;
+      width: 85%;
+      justify-self: flex-end;
+      border: 1px solid var(--c-black);
+      align-self: flex-start;
+
+      form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      input {
+        width: 85%;
+        padding: desktop-vw(10px) desktop-vw(15px);
+        border-right: 1px solid var(--c-black);
+        @include p1();
+        @include font-adihausDIN-bold();
+
+        &::placeholder {
+          opacity: 1;
+          color: var(--c-black);
+        }
+      }
+
+      button {
+        width: 15%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: relative;
+        align-self: stretch;
       }
     }
 
@@ -310,6 +401,18 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+
+        &.search-active {
+          label {
+            transition: background-color 0.4s 0.5s var(--ease-out-cubic),
+              border-color 0.4s 0.5s var(--ease-out-cubic);
+          }
+
+          .P1 {
+            transition: color 0.4s 0.5s var(--ease-out-cubic),
+              border-color 0.4s 0.5s var(--ease-out-cubic);
+          }
+        }
 
         input[type='radio'] {
           opacity: 0;
