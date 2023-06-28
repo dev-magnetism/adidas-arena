@@ -1,5 +1,16 @@
 <template>
   <main class="app-actualite">
+    <AtomsCTABack
+      :class="{
+        reduced: headerReduced,
+        hide: !appearCTABack,
+      }"
+      class="app-actualite__cta-back"
+      @click.native="onBack()"
+    >
+      Retour
+    </AtomsCTABack>
+
     <AppActusActuHero ref="hero" :content="content" />
     <AppActusAccessibility ref="hero" :content="content" />
     <div class="app-actualite__spacer" />
@@ -21,6 +32,7 @@ import pageTransition from '@/mixins/page-transition'
 
 export default {
   mixins: [scroll],
+
   validate({ params, $axios, store, $convertToKebabCase }) {
     const slug = params.id
 
@@ -33,6 +45,11 @@ export default {
     if (!to || !from) return
 
     return pageTransition.basic
+  },
+  data() {
+    return {
+      appearCTABack: true,
+    }
   },
   head({ $seo }) {
     return $seo({
@@ -49,6 +66,7 @@ export default {
       },
     })
   },
+
   computed: {
     ...mapState({
       partnersContent: (state) => state.partnersContent,
@@ -72,9 +90,6 @@ export default {
       }
     },
   },
-  mounted() {
-    console.log('contenet', this.content, this)
-  },
   beforeDestroy() {
     this.scrollTriggerCTA?.kill()
     this.scrollTrigger?.kill()
@@ -82,7 +97,7 @@ export default {
   },
   methods: {
     onBack() {
-      this.$router.push({ path: '/programmation' })
+      this.$router.push({ path: '/nos-actualites' })
     },
   },
 }

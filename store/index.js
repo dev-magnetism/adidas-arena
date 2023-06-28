@@ -138,6 +138,7 @@ export const mutations = {
   setWebglInFront: (state, value) => {
     state.webglInFront = value
   },
+
   setActualites: (state, value) => {
     state.actualites = value
   },

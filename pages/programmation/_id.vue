@@ -161,7 +161,7 @@ export default {
   },
 
   mounted() {
-    console.log('event', this.event)
+    console.log('event', this.event, this.event.status_code)
 
     this.initScrollTrigger()
     this.initMatchMedia()

@@ -1,22 +1,54 @@
 <template>
   <div class="app-actualite-accessibility grid-inner">
     <div class="app-actualite-accessibility__wrapper">
-      <TP2 class="app-actualite-accessibility-a-plus" weight="bold">A+</TP2>
-      <TP2 class="app-actualite-accessibility-a-minus" weight="bold">A-</TP2>
-      <TP2 class="app-actualite-accessibility-reading-time" weight="medium"
-        >Temps de lecture : 6MIN</TP2
+      <TP2
+        class="app-actualite-accessibility-a-plus"
+        weight="bold"
+        @click.native="increaseFontSize"
       >
+        A+
+      </TP2>
+      <TP2
+        class="app-actualite-accessibility-a-minus"
+        weight="bold"
+        @click.native="decreaseFontSize"
+      >
+        A-
+      </TP2>
+      <TP2 class="app-actualite-accessibility-reading-time" weight="medium">
+        Temps de lecture : 6MIN
+      </TP2>
       <TP2
         color="blue-adidas"
         class="app-actualite-accessibility-share"
         weight="bold"
-        >PARTAGER</TP2
       >
+        PARTAGER
+      </TP2>
     </div>
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  data() {
+    return {}
+  },
+  computed: {
+    totalSlides() {
+      return ('0' + this.content.items.length).slice(-2)
+    },
+  },
+  methods: {
+    increaseFontSize() {
+      console.log('increase', this.fontSize)
+    },
+    decreaseFontSize() {
+      console.log('decrease', this.fontSize)
+    },
+  },
+}
+</script>
 
 <style lang="scss">
 .app-actualite-accessibility {
