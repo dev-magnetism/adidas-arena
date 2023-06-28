@@ -1,7 +1,12 @@
 <template>
   <div class="app-actualite-hero grid-inner">
     <div class="app-actualite-hero__left">
-      <TP1 tag="div" weight="medium" class="app-actualite-hero__breadcrumb">
+      <TP1
+        ref="breadcrumb"
+        tag="div"
+        weight="medium"
+        class="app-actualite-hero__breadcrumb"
+      >
         <nuxt-link to="/" class="app-actualite-hero__breadcrumb-home">
           ACCUEIL
         </nuxt-link>
@@ -24,7 +29,7 @@
         {{ content.title }}
       </TH2>
 
-      <TH4 weight="bold" class="app-actualite-hero__description timeline-text">
+      <TH4 ref="subtitle" weight="bold" class="app-actualite-hero__description">
         {{ content.subtitle }}
       </TH4>
     </div>
@@ -141,7 +146,12 @@ export default {
             'texts+=20%'
           )
           .fromTo(
-            ['.timeline-text', this.splitting.lines, '.timeline-block'],
+            [
+              this.$refs.breadcrumb.$el,
+              '.timeline-text',
+              this.splitting.lines,
+              this.$refs.subtitle.$el,
+            ],
             {
               y: 75,
             },
@@ -154,7 +164,12 @@ export default {
             'texts'
           )
           .fromTo(
-            ['.timeline-text', this.splitting.lines, '.timeline-block'],
+            [
+              this.$refs.breadcrumb.$el,
+              '.timeline-text',
+              this.splitting.lines,
+              this.$refs.subtitle.$el,
+            ],
             {
               opacity: 0,
             },
@@ -166,7 +181,6 @@ export default {
             },
             'texts'
           )
-          .addLabel('texts')
       }
     },
     initSplitText() {
