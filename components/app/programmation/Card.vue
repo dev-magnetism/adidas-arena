@@ -63,7 +63,7 @@
           },
         }"
         class="app-programmation-card__cta"
-        >coucou</AtomsCTA
+        >Réserver</AtomsCTA
       >
     </div>
   </div>
