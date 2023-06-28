@@ -101,7 +101,7 @@ export default {
     },
     searchText(newVal) {
       if (
-        !newVal.length &&
+        (newVal === null || !newVal.length) &&
         this.$refs.searchBar.classList.contains('wrong-search')
       ) {
         this.$refs.searchBar.classList.remove('wrong-search')
