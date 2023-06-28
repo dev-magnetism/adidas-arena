@@ -358,6 +358,13 @@ export default {
       justify-self: flex-end;
       border: 1px solid var(--c-black);
       align-self: flex-start;
+      background: var(--c-white);
+
+      @include mobile {
+        grid-column: 3 / span 4;
+        width: 100%;
+        height: 100%;
+      }
 
       &.wrong-search {
         border: 1px solid var(--c-red-adidas);
@@ -378,6 +385,11 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+
+        @include mobile {
+          align-items: stretch;
+          height: 100%;
+        }
       }
 
       input {
@@ -386,6 +398,10 @@ export default {
         border-right: 1px solid var(--c-black);
         @include p1();
         @include font-adihausDIN-bold();
+
+        @include mobile {
+          padding: mobile-vw(8px) mobile-vw(12px);
+        }
 
         &::placeholder {
           opacity: 1;
@@ -408,6 +424,7 @@ export default {
       grid-column: 1 / span 2;
       justify-content: center;
       padding: mobile-vw(8px) mobile-vw(15px);
+      position: relative;
 
       @include desktop {
         display: none;
