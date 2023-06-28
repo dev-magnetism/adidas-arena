@@ -44,7 +44,7 @@
             </label>
           </div>
         </div>
-        <div class="app-actualites-list-bar__search-bar">
+        <div ref="searchBar" class="app-actualites-list-bar__search-bar">
           <form @submit.prevent="onSearch">
             <input
               v-model="searchText"
@@ -97,9 +97,15 @@ export default {
     selectedCategory() {
       if (this.searchInProgress) return
 
-      console.log('searchInProgress watch', this.searchInProgress)
-
       this.updateFilters()
+    },
+    searchText(newVal) {
+      if (
+        !newVal.length &&
+        this.$refs.searchBar.classList.contains('wrong-search')
+      ) {
+        this.$refs.searchBar.classList.remove('wrong-search')
+      }
     },
   },
   mounted() {
@@ -113,8 +119,6 @@ export default {
       if (this.searchText === null || /^\s*$/.test(this.searchText)) return // If searchText is null OR contain only spaces --> return
 
       this.updateFilters(true)
-
-      console.log('search', this.searchText)
     },
     initScrollTrigger() {
       this.scrollTriggerBar = ScrollTrigger.create({
@@ -134,6 +138,34 @@ export default {
       })
     },
     updateFilters(search = false) {
+      if (search) {
+        const searchExist = this.$refs.actus.some((item) => {
+          const normalizeText = (text) =>
+            text
+              .toLowerCase()
+              .normalize('NFD')
+              .replace(/[\u0300-\u036F]/g, '')
+
+          const itemTitle = normalizeText(item.content.title)
+          const itemSubtitle = normalizeText(item.content.subtitle)
+          const searchText = normalizeText(this.searchText)
+
+          return (
+            itemTitle.includes(searchText) || itemSubtitle.includes(searchText)
+          )
+        })
+
+        if (searchExist) {
+          this.$refs.searchBar.classList.remove('wrong-search')
+        } else {
+          this.$refs.searchBar.classList.add('wrong-search')
+        }
+
+        if (!searchExist) {
+          return
+        }
+      }
+
       window.lenis?.stop()
 
       this.barActive = this.scrollTriggerBar.isActive
@@ -211,12 +243,12 @@ export default {
               this.searchText = null
             }
 
+            if (search) {
+              this.selectedCategory = null
+            }
+
             if (matchFound) {
               if (!item.isAppear) item.scrollTrigger?.enable()
-
-              if (search) {
-                this.selectedCategory = null
-              }
 
               item.scrollTriggerInView?.enable()
             } else {
@@ -327,6 +359,21 @@ export default {
       border: 1px solid var(--c-black);
       align-self: flex-start;
 
+      &.wrong-search {
+        border: 1px solid var(--c-red-adidas);
+
+        input {
+          border-right: 1px solid var(--c-red-adidas);
+        }
+
+        svg {
+          path {
+            fill: var(--c-red-adidas);
+            stroke: var(--c-red-adidas);
+          }
+        }
+      }
+
       form {
         display: flex;
         justify-content: center;
@@ -404,13 +451,13 @@ export default {
 
         &.search-active {
           label {
-            transition: background-color 0.4s 0.5s var(--ease-out-cubic),
-              border-color 0.4s 0.5s var(--ease-out-cubic);
+            transition: background-color 0.4s 0.35s var(--ease-out-cubic),
+              border-color 0.4s 0.35s var(--ease-out-cubic);
           }
 
           .P1 {
-            transition: color 0.4s 0.5s var(--ease-out-cubic),
-              border-color 0.4s 0.5s var(--ease-out-cubic);
+            transition: color 0.4s 0.35s var(--ease-out-cubic),
+              border-color 0.4s 0.35s var(--ease-out-cubic);
           }
         }
 
