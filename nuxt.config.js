@@ -22,7 +22,7 @@ export default {
 
   publicRuntimeConfig: {
     baseURL: process.env.BASE_URL || 'https://www.adidasarena.com/',
-    apiKeyDelight: process.env.API_KEY_DELIGHT || 'MMcR9vQkDKfuug',
+    apiKeyDelight: process.env.API_KEY_DELIGHT || 'EBu7rZdGJLInGv',
   },
 
   css: ['~assets/scss/global.scss'],
