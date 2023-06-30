@@ -198,7 +198,7 @@ export default {
     }
 
     .P2 {
-      margin-left: columns(1.5);
+      margin-left: 0;
       text-transform: initial;
     }
   }
