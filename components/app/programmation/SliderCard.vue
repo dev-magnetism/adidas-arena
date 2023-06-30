@@ -11,7 +11,10 @@
           :src="event.list_image.filename_disk"
           :alt="`slider-image-${event.artist_reference}`"
           :lazy="true"
-          :tiny="true"
+          :sizes="{
+            desktop: 'w400,h400,fcrop,q85',
+            mobile: 'w400,h400,fcrop,q85',
+          }"
         />
       </div>
     </div>

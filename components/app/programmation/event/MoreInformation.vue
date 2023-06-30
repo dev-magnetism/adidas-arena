@@ -31,6 +31,10 @@
           :src="sponsor.sponsor_id.logo.filename_disk"
           :alt="`image-${sponsor.sponsor_id.content.altImage}`"
           :lazy="true"
+          :sizes="{
+            desktop: 'w116,h116,fcrop,q85',
+            mobile: 'w116,h116,fcrop,q85',
+          }"
         />
         <TP2 weight="bold">
           {{ sponsor.sponsor_id.content.title }}

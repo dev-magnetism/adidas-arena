@@ -1,8 +1,8 @@
 <template>
-  <main class="app-programmation">
-    <AppProgrammationHero :content="contentHero" />
+  <main class="app-actualites">
+    <AppActusHero :content="contentHero" />
 
-    <AppProgrammationList />
+    <AppActusList />
 
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
@@ -22,7 +22,7 @@ export default {
     return pageTransition.basic
   },
   async asyncData({ $directus }) {
-    const content = await $directus.items('Programmation_page').readByQuery({
+    const content = await $directus.items('Actualites_page').readByQuery({
       limit: -1,
     })
 
@@ -30,12 +30,6 @@ export default {
       content,
     }
   },
-  data() {
-    return {
-      inputCategory: 'tout',
-    }
-  },
-
   head({ $seo }) {
     return $seo({
       title: this.content.data.page_title,
@@ -50,29 +44,21 @@ export default {
       },
     })
   },
-
   computed: {
     ...mapGetters({
-      programmesCategories: 'programmesCategories',
-      programmesMonths: 'programmesMonths',
+      actualitesCategories: 'actualitesCategories',
     }),
     ...mapState({
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
-      allLoadedFake: (state) => state.allLoadedFake,
-      programmationsContent: (state) => state.programmationsContent,
       programmes: (state) => state.programmes,
     }),
-    contentMainCard() {
-      return (
-        this.programmes.find((event) => event.is_cover) || this.programmes[0]
-      )
-    },
     contentHero() {
       return {
         title: this.content.data.hero_title,
         paragraph: this.content.data.hero_paragraph,
-        event: this.contentMainCard,
+        frontPicture: this.content.data.hero_front_picture,
+        backPicture: this.content.data.hero_back_picture,
       }
     },
   },
@@ -85,7 +71,7 @@ export default {
 </script>
 
 <style lang="scss">
-.app-programmation {
+.app-actualites {
   padding-top: desktop-vw(200px);
 
   @include mobile {

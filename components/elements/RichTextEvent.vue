@@ -23,10 +23,15 @@ export default {
     const soup = new JSSoup(this.content)
 
     const texts = soup.findAll(this.component.tagTarget)
+    const listBullets = soup.findAll('li')
 
     texts.forEach((text) => {
       text.attrs.class = text.name
       text.name = text.name === ('li' || 'ul') ? text.name : 'p'
+    })
+
+    listBullets.forEach((text) => {
+      text.attrs.class = 'li'
     })
 
     return h({
@@ -60,6 +65,12 @@ export default {
     &:last-of-type {
       margin-bottom: desktop-vw(0px);
     }
+  }
+
+  a {
+    color: var(--c-blue-adidas) !important;
+    cursor: pointer;
+    text-decoration: underline;
   }
 
   .li {

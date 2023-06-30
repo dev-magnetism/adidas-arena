@@ -318,11 +318,11 @@ export default {
               item.event.content.category === this.selectedCategory
 
             if (isMatch) {
-              if (!item.isAppear) item.scrollTrigger.enable()
+              if (!item.isAppear) item.scrollTrigger?.enable()
 
               item.scrollTriggerInView?.enable()
             } else {
-              item.scrollTrigger.disable()
+              item.scrollTrigger?.disable()
 
               item.scrollTriggerInView?.disable()
               item.inView = false

@@ -2,7 +2,6 @@
   <div class="app-programmation-event-hero grid-inner">
     <div class="app-programmation-event-hero__left">
       <TH4
-        v-if="event.status_code === 'H' || event.status_code === 'K'"
         color="red-adidas"
         class="app-programmation-event-hero__full timeline-text"
       >
@@ -76,6 +75,10 @@
         :src="event.list_image.filename_disk"
         :alt="`image-`"
         :lazy="false"
+        :sizes="{
+          desktop: 'w400,h400,fcrop,q85',
+          mobile: 'w400,h400,fcrop,q85',
+        }"
       />
     </div>
   </div>

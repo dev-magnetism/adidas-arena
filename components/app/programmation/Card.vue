@@ -18,15 +18,15 @@
         class="app-programmation-card__layer"
       />
 
-      <picture>
-        <img src="/imgs/placeholder.png" alt="alt" />
-      </picture>
-      <!-- <AppProgrammationImage
+      <AppProgrammationImage
         :src="event.list_image.filename_disk"
         :alt="`card-image-${event.id}-${event.artist_reference}`"
         :lazy="true"
-        :tiny="true"
-      /> -->
+        :sizes="{
+          desktop: 'w400,h400,fcrop,q85',
+          mobile: 'w400,h400,fcrop,q85',
+        }"
+      />
     </div>
 
     <div class="app-programmation-card__informations">
@@ -63,7 +63,7 @@
           },
         }"
         class="app-programmation-card__cta"
-        >coucou</AtomsCTA
+        >Réserver</AtomsCTA
       >
     </div>
   </div>

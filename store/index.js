@@ -1,5 +1,12 @@
 // export const strict = false
 
+const convertToKebabCase = (string) => {
+  return string
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/[\s_]+/g, '-')
+    .toLowerCase()
+}
+
 export const state = () => ({
   // Preloader
   fontsLoaded: false,
@@ -18,7 +25,9 @@ export const state = () => ({
   menuContent: null,
   programmationsContent: null,
   programmationsEventContent: null,
+  actualitesArticleContent: null,
   programmes: null,
+  actualites: null,
 
   // Exterior scene
   exteriorVisible: true,
@@ -68,6 +77,21 @@ export const getters = {
 
     return result
   },
+  actualitesCategories: (state) => {
+    const result = Object.values(
+      state.actualites.reduce((acc, { category }) => {
+        const key = category ? category.toLowerCase() : 'no cat'
+
+        acc[key] = acc[key] || { category: key, count: 0 }
+        acc[key].count++
+        return acc
+      }, {})
+    )
+
+    result.unshift({ category: 'Tout', count: state.actualites.length })
+
+    return result
+  },
   programmesSlider: (state) => {
     return state.programmes.slice(0, 8)
   },
@@ -113,6 +137,10 @@ export const mutations = {
   },
   setWebglInFront: (state, value) => {
     state.webglInFront = value
+  },
+
+  setActualites: (state, value) => {
+    state.actualites = value
   },
   setInteriorCurrentZoneHovered: (state, value) => {
     state.interiorCurrentZoneHovered = value
@@ -207,6 +235,9 @@ export const mutations = {
   setProgrammationsEventContent: (state, value) => {
     state.programmationsEventContent = value
   },
+  setActualitesArticleContent: (state, value) => {
+    state.actualitesArticleContent = value
+  },
   setMenuContent: (state, value) => {
     state.menuContent = value
   },
@@ -261,6 +292,28 @@ export const actions = {
 
     commit('setProgrammationsContent', programmations.data)
 
+    const actualites = await $directus.items('Actualites').readByQuery({
+      limit: -1,
+      fields: [
+        '*',
+        'cover.*',
+        'body.*',
+        'items.*',
+        'body.item.*',
+        'body.item.picture.*',
+        'body.item.items.*',
+        'body.item.items.item.*',
+        'body.item.items.item.picture.*',
+        '*.collection',
+      ],
+    })
+
+    actualites.data.forEach((actu) => {
+      actu.slug = convertToKebabCase(actu.title)
+    })
+
+    commit('setActualites', actualites.data)
+
     const programmationsEvent = await $directus
       .items('Programmation_Event')
       .readByQuery({
@@ -268,6 +321,14 @@ export const actions = {
       })
 
     commit('setProgrammationsEventContent', programmationsEvent.data)
+
+    const actualitesArticle = await $directus
+      .items('Actualites_article')
+      .readByQuery({
+        limit: -1,
+      })
+
+    commit('setActualitesArticleContent', actualitesArticle.data)
 
     const { meta } = await this.$axios.$get(
       `https://www.accorarena.com/api-svc/partners/accor-arena/events?limit=1&page=1`

@@ -123,6 +123,14 @@ export default {
         })
       }
 
+      const actualites = await axios.get(
+        `https://adidasarena.directus.app/items/Actualites?limit=-1`
+      )
+
+      actualites.data.data.forEach((actu) => {
+        routes.push(`/nos-actualites/${convertToKebabCase(actu.title)}`)
+      })
+
       return routes
     },
     interval: 250,
