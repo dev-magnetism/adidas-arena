@@ -78,7 +78,7 @@ export default {
     },
     pageUrl() {
       console.log('pageUrl', this.$route)
-      return 'https://www.adidas-arena.com/' + this.$route.path
+      return 'https://www.adidas-arena.com' + this.$route.path
     }
   },
   methods: {
