@@ -25,7 +25,6 @@ export default {
     const content = await $directus.items('Actualites_page').readByQuery({
       limit: -1,
     })
-
     return {
       content,
     }

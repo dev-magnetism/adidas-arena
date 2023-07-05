@@ -17,7 +17,7 @@
       <EKinesis :speed="2">
         <nuxt-picture
           provider="directus"
-          :src="content.frontPicture"
+          :src="content.backPicture"
           format="webp"
           :alt="'fdsfsdf'"
           sizes="sm:35vw md:50vw"

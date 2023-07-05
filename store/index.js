@@ -307,6 +307,11 @@ export const actions = {
         '*.collection',
       ],
     })
+    
+    // SORT ACTUALITES BY DATE DESC
+    actualites.data = actualites.data.sort(function(a,b){
+      return new Date(b.date) - new Date(a.date);
+    });
 
     actualites.data.forEach((actu) => {
       actu.slug = convertToKebabCase(actu.title)

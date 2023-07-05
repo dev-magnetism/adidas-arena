@@ -195,6 +195,7 @@ export default {
     'nuxt-compress',
     '@nuxtjs/sitemap',
     '@nuxtjs/axios',
+    'vue-social-sharing/nuxt',
   ],
 
   robots: {

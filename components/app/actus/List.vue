@@ -90,7 +90,7 @@ export default {
       actualitesCategories: 'actualitesCategories',
     }),
     ...mapState({
-      actualites: (state) => state.actualites,
+      actualites: (state) => state.actualites
     }),
   },
   watch: {

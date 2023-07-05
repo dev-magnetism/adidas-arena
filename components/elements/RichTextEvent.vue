@@ -57,7 +57,7 @@ export default {
   }
 
   .p {
-    @include p2();
+    @include p3();
     @include font-adihausDIN-medium();
 
     margin-bottom: desktop-vw(10px);
@@ -74,7 +74,7 @@ export default {
   }
 
   .li {
-    @include p2();
+    @include p3();
     @include font-adihausDIN-medium();
   }
 }
