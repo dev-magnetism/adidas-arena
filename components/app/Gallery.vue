@@ -123,8 +123,8 @@ export default {
 
     this.initGUI()
   },
-
   beforeDestroy() {
+    console.log('Gallery beforeDestroy');
     this.observer?.kill()
     this.scrollTrigger?.kill()
 

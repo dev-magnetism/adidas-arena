@@ -13,6 +13,14 @@ export default {
       type: String,
       default: 'white',
     },
+    presale: {
+      type: Boolean,
+      default: false,
+    },
+    reported: {
+      type: Boolean,
+      default: false,
+    },
     status: {
       type: String,
       default: 'D',
@@ -25,13 +33,34 @@ export default {
     statusText() {
       let status
 
-      // Preventes
-      // Reporté
+      // console.log('Status', this.status)
+      // console.log('Presale', this.presale)
+      // console.log('Reported', this.reported)
 
-      if (this.status === 'K') {
-        status = this.programmationsEventContent.glossary_full
+      if (this.status === 'B') {
+        // Bientôt disponible
+        status = this.programmationsEventContent.glossary_soon_available
+      } else if (this.status === 'C') {
+        // Bientôt disponible
+        status = this.programmationsEventContent.glossary_soon_available
       } else if (this.status === 'H') {
+        // Annulé
         status = this.programmationsEventContent.glossary_cancelled
+      } else if (this.status === 'K') {
+        status = this.programmationsEventContent.glossary_full
+      }
+
+      /* Cas spécifiques (presale & reported)
+        Si presale = true, la valeur du status est surchargée
+        Si reported = true, la valeur du status est surchargée par cette dernière
+      */
+      // Cas spécifique à la clé 'presale'
+      if(this.presale){
+        status = this.programmationsEventContent.glossary_presales
+      }
+      // Cas spécifique à la clé 'reported'
+      if(this.reported){
+        status = this.programmationsEventContent.glossary_deferred
       }
 
       return status

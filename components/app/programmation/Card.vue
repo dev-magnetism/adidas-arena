@@ -9,6 +9,8 @@
 
     <div class="app-programmation-card__visual">
       <AppProgrammationEventStatus
+        :presale="event.presale"
+        :reported="event.reported"
         :status="event.status_code"
         :color="statutColor"
       />

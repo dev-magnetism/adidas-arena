@@ -22,7 +22,8 @@
         color="blue-adidas"
         class="app-actualite-accessibility-share"
         weight="bold"
-        @click.native="handleShare"
+        @mouseover.native="openShare"
+        @mouseout.native="handleShareKTO(false)"
       >
         PARTAGER
 
@@ -32,6 +33,8 @@
         >
           <div
             class="P2 medium app-actualite-accessibility-share"
+            v-on:mouseover="handleShareKTO(true)"
+            v-on:mouseout="handleShareKTO(false)"
           >
             <ShareNetwork
                 network="facebook"
@@ -46,6 +49,8 @@
           </div>
           <div
             class="P2 medium app-actualite-accessibility-share"
+            v-on:mouseover="handleShareKTO(true)"
+            v-on:mouseout="handleShareKTO(false)"
           >
             <ShareNetwork
                 network="twitter"
@@ -77,42 +82,57 @@ export default {
       return ('0' + this.content.items.length).slice(-2)
     },
     pageUrl() {
-      console.log('pageUrl', this.$route)
+      //  console.log('pageUrl', this.$route)
       return 'https://www.adidas-arena.com' + this.$route.path
     }
   },
   methods: {
-    handleShare() {
-
+    openShare() {
+      clearTimeout(this._timeoutShare);
+      this._timeoutShare = '';
       const ref = document.querySelector('.app-actualite-accessibility-share');
       const tar = document.querySelector('.app-actualite-accessibility-share-layer');
-      if(tar.offsetHeight === 0){
-        const refW = ref.offsetWidth;
-        const refH = ref.offsetHeight;
-        const refXpos = ref.offsetLeft;
-        const refYpos = ref.offsetTop;
-        tar.style.width = `${refW}px`;
-        tar.style.left = `${refXpos}px`;
-        tar.style.top = `${refYpos + refH}px`;
-        tar.style.height = `${refH * 2}px` 
+
+      const refW = ref.offsetWidth;
+      const refH = ref.offsetHeight;
+      const refXpos = ref.offsetLeft;
+      const refYpos = ref.offsetTop;
+
+      tar.style.width = `${refW}px`;
+      tar.style.left = `${refXpos}px`;
+      tar.style.top = `${refYpos + refH}px`;
+      tar.style.height = `${refH * 2}px`;
+    },
+    closeShare() {
+      const tar = document.querySelector('.app-actualite-accessibility-share-layer');
+      tar.style.height = "0px"
+    },
+    handleShareKTO(sens){
+      const oThis = this;
+      if(sens){
+        clearTimeout(oThis._timeoutShare);
       } else {
-        tar.style.height = "0px"
+        oThis._timeoutShare = setTimeout(function(){oThis.closeShare()}, 120);
       }
     },
     increaseFontSize() {
-      console.log('increase', this.fontSize);
+      //  console.log('increase', this.fontSize);
       const _dynText = document.querySelectorAll('.p, .li');
       _dynText.forEach((el)=>{
-        el.style.fontSize = `${parseInt(window.getComputedStyle(el).fontSize) + 4}px`;
-        el.style.lineHeight = `${parseInt(window.getComputedStyle(el).lineHeight) + 4}px`;
+        if(parseInt(window.getComputedStyle(el).fontSize) < 20){
+          el.style.fontSize = `${parseInt(window.getComputedStyle(el).fontSize) + 1}px`;
+          el.style.lineHeight = `${parseInt(window.getComputedStyle(el).lineHeight) + 1}px`;
+        }
       })
     },
     decreaseFontSize() {
-      console.log('decrease', this.fontSize);
+      //  console.log('decrease', this.fontSize);
       const _dynText = document.querySelectorAll('.p, .li');
       _dynText.forEach((el)=>{
-        el.style.fontSize = `${parseInt(window.getComputedStyle(el).fontSize) - 2}px`;
-        el.style.lineHeight = `${parseInt(window.getComputedStyle(el).lineHeight) - 2}px`;
+        if(parseInt(window.getComputedStyle(el).fontSize) > 14){
+          el.style.fontSize = `${parseInt(window.getComputedStyle(el).fontSize) - 1}px`;
+          el.style.lineHeight = `${parseInt(window.getComputedStyle(el).lineHeight) - 1}px`;
+        }
       })
     },
   },
@@ -151,6 +171,7 @@ export default {
     position: relative;
     padding: desktop-vw(15px) desktop-vw(30px);
     border: 1px solid black;
+    border-right: none;
 
     @include mobile {
       padding: mobile-vw(10px) mobile-vw(15px);
@@ -158,9 +179,10 @@ export default {
       align-items: center;
     }
 
-    &:not(:last-child) {
-      border-right: none;
+    &:nth-child(4){
+      border-right: 1px solid black;
     }
+
     &:not(.app-actualite-accessibility-reading-time) {
       cursor: pointer;
     }
@@ -175,9 +197,7 @@ export default {
 
     .P2{
       border-top: none;
-      &:not(:last-child) {
-        border-right: 1px solid black;
-      }
+      border-right: 1px solid black;
     }
   }
 }
