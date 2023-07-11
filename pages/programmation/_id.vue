@@ -31,6 +31,8 @@
       :event="event"
       :content="contentTicketing"
       :index-date="event.sessions.length - 1 > 0 ? indexDate : 0"
+
+      v-if="event.status_code!=='H' && event.status_code!=='K'"
     />
 
     <!-- <AppProgrammationEventOffers ref="offers" /> -->

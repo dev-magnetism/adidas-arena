@@ -20,6 +20,7 @@
     "@nuxtjs/style-resources": "^1.2.1",
     "@studio-freight/lenis": "^1.0.11",
     "@tweakpane/plugin-essentials": "^0.1.5",
+    "@typeform/embed": "^2.13.2",
     "cookie-universal-nuxt": "^2.2.2",
     "core-js": "^3.26.1",
     "embla-carousel": "^7.1.0",

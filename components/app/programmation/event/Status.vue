@@ -55,7 +55,7 @@ export default {
         Si reported = true, la valeur du status est surchargée par cette dernière
       */
       // Cas spécifique à la clé 'presale'
-      if(this.presale){
+      if(this.presale && this.status !== 'K'){
         status = this.programmationsEventContent.glossary_presales
       }
       // Cas spécifique à la clé 'reported'

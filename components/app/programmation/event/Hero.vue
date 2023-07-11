@@ -11,7 +11,7 @@
         color="blue-adidas"
         class="app-programmation-event-hero__soon timeline-text"
       >
-        {{ event.presale ? programmationsEventContent.glossary_presales : event.status_code === 'B' || event.status_code === 'C' ? programmationsEventContent.glossary_soon_available : '' }}
+        {{ event.presale && event.status_code !== 'K' ? programmationsEventContent.glossary_presales : event.status_code === 'B' || event.status_code === 'C' ? programmationsEventContent.glossary_soon_available : '' }}
 
       </TH4>
       <TH2Bis
@@ -30,6 +30,7 @@
 
       <div
         class="app-programmation-event-hero__ticket-office-opening timeline-block"
+        v-if="event.status_code!=='H'"
       >
         <TH4> {{ programmationsEventContent.glossary_opening_tickets }} </TH4>
         <TH4
@@ -41,7 +42,7 @@
         </TH4>
       </div>
 
-      <div class="app-programmation-event-hero__cta timeline-block">
+      <div class="app-programmation-event-hero__cta timeline-block" v-if="event.status_code!=='H'">
         <TP2 weight="medium" class="app-programmation-event-hero__information">
           {{ programmationsEventContent.glossary_exclu_france_price }}
           {{ event.min_price }}€
@@ -53,6 +54,14 @@
         >
           Réserver
         </AtomsCTA>
+        <AtomsCTAForm 
+          :session="event.sessions[0]" 
+          :eventId="event.id" 
+          :eventName="event.artist_reference"
+          v-else-if="event.status_code==='K'"
+        >
+          Liste d'attente
+        </AtomsCTAForm>
         <AtomsCTA v-else :href="event.sessions[0].content.url">
           Réserver mon billet
         </AtomsCTA>
@@ -90,6 +99,9 @@ import { SplitText } from 'gsap/SplitText'
 
 import lottie from 'lottie-web'
 import { mapState, mapMutations } from 'vuex'
+
+import { createPopup } from '@typeform/embed'
+import '@typeform/embed/build/css/popup.css'
 
 export default {
   props: {
@@ -138,6 +150,28 @@ export default {
     this.lottieBottom?.destroy()
   },
   methods: {
+    popup() {
+
+      const options = {
+        opacity: '100',
+        size: '70',
+        iframeProps: {
+          title:'Test Adidas Arena',
+        },
+        transitiveSearchParams: '',
+        medium: 'snippet', 
+        hidden: {
+          list_name:'Site Adidas Arena',
+          api_key:'EBu7rZdGJLInGv'
+        }
+
+      }
+
+        
+      const { toggle } = createPopup('ZAHIdrU3', options)
+
+      toggle
+    },
     anchorToDates() {
       window.lenis.scrollTo('.app-programmation-event-dates', {
         lock: true,

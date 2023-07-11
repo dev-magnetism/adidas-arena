@@ -9,6 +9,7 @@
         :key="index"
         :index="index"
         :session="session"
+        :eventId="event.id"
         :date="$formatDate(session.date, true)"
         :artist="event.artist_reference"
         :length="event.sessions.length"

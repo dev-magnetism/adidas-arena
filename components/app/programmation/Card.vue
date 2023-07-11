@@ -45,13 +45,22 @@
       </TH2>
 
       <TP2
-        v-if="event.min_price"
+        v-if="event.min_price && event.status_code!=='K'"
         class="app-programmation-card__from-price"
         weight="medium"
         :color="whitedTexts"
       >
         {{ programmationsEventContent.glossary_from_price }}
         {{ event.min_price }}€
+      </TP2>
+
+      <TP2
+        weight="medium"
+        :color="whitedTexts"
+        v-else-if="event.status_code==='K'"
+        class="app-programmation-card__from-price"
+      >
+        Show complet, inscrivez-vous sur la liste d’attente !
       </TP2>
 
       <AtomsCTA
@@ -65,8 +74,21 @@
           },
         }"
         class="app-programmation-card__cta"
-        >Réserver</AtomsCTA
-      >
+        v-if="event.status_code!=='K'"
+        >Réserver</AtomsCTA>
+
+        <AtomsCTAForm 
+          :color="statutColor"
+          :layer-color="statutColor"
+          :bg="'grey'"
+          :session="event.sessions[0]" 
+          :eventId="event.id" 
+          :eventName="event.artist_reference"
+          v-else
+          class="app-programmation-card__cta"
+        >
+          Liste d'attente
+        </AtomsCTAForm>
     </div>
   </div>
 </template>
@@ -318,6 +340,7 @@ export default {
 
   &__from-price.P2 {
     margin-top: auto;
+    width: 50%;
   }
 
   &__cta {

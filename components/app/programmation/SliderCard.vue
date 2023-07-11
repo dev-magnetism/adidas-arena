@@ -49,13 +49,22 @@
       </TH2>
 
       <TP2
-        v-if="event.min_price"
+        v-if="event.min_price && event.status_code!=='K'"
         class="app-programmation-slider-card__from-price"
         weight="medium"
         :color="whitedTexts ? 'white' : 'black'"
       >
         {{ programmationsEventContent.glossary_from_price }}
         {{ event.min_price }}€
+      </TP2>
+
+      <TP2
+        weight="medium"
+        :color="whitedTexts"
+        v-else-if="event.status_code==='K'"
+        class="app-programmation-slider-card__from-price"
+      >
+        Show complet, inscrivez-vous sur la liste d’attente !
       </TP2>
 
 
@@ -72,7 +81,23 @@
         class="app-programmation-card__cta"
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave"
+        v-if="event.status_code!=='K'"
         >Réserver</AtomsCTA>
+
+        <AtomsCTAForm 
+          :color="statutColor"
+          :layer-color="statutColor"
+          :bg="'grey'"
+          :session="event.sessions[0]" 
+          :eventId="event.id" 
+          :eventName="event.artist_reference"
+          v-else
+          class="app-programmation-card__cta"
+          @mouseenter.native="onMouseEnter"
+          @mouseleave.native="onMouseLeave"
+        >
+          Liste d'attente
+        </AtomsCTAForm>
 
     </div>
     <span

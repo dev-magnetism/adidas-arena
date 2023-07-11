@@ -9,10 +9,19 @@
         weight="medium"
         class="app-programmation-event-bar__book__info"
         color="grey"
+        v-if="event.min_price && event.status_code!=='K'"
       >
         {{ programmationsEventContent.glossary_exclu_france_price }}
         {{ event.min_price }}€</TP2
       >
+      <TP2
+        weight="medium"
+        color="grey"
+        v-else-if="event.status_code==='K'"
+        class="app-programmation-slider-card__from-price"
+      >
+        Show complet, inscrivez-vous sur la liste d’attente !
+      </TP2>
       <AtomsCTA
         v-if="event.sessions.length - 1 >= 1"
         button
@@ -25,12 +34,22 @@
         v-else-if="
           event.sessions.length - 1 < 1 &&
           event.sessions[0].content.url &&
-          !event.sessions[0].content.url_premium
+          !event.sessions[0].content.url_premium && 
+          event.status_code!=='K'
         "
         :href="event.sessions[0].content.url"
       >
         Réserver mon billet
       </AtomsCTA>
+
+      <AtomsCTAForm 
+        :session="event.sessions[0]" 
+        :eventId="event.id" 
+        :eventName="event.artist_reference"
+        v-else-if="event.status_code==='K'"
+      >
+        Liste d'attente
+      </AtomsCTAForm>
 
       <AtomsCTA
         v-else-if="

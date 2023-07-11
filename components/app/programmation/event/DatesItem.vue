@@ -24,13 +24,26 @@
       <TP2
         weight="medium"
         :color="whitedTexts ? 'white' : 'black'"
+        v-if="session.session_status==='K'"
         class="app-programmation-event-dates-item__info"
       >
         Show complet, inscrivez-vous sur la liste d’attente !
       </TP2>
     </div>
-    <AtomsCTA :color="statutColor" :layer-color="statutColor" :bg="'grey'">
+    <AtomsCTAForm 
+      :session="session" 
+      :eventId="eventId" 
+      :eventName="artist"
+      :color="statutColor" 
+      :layer-color="statutColor" 
+      :bg="'grey'"
+      v-if="session.session_status==='K'"
+    >
       Liste d'attente
+    </AtomsCTAForm>
+
+    <AtomsCTA v-else :href="session.content.url">
+      Réserver mon billet
     </AtomsCTA>
   </div>
 </template>
@@ -57,6 +70,10 @@ export default {
     artist: {
       type: String,
       default: 'Artist error',
+    },
+    eventId: {
+      type: Number,
+      default: 0,
     },
     session: {
       type: Object,
