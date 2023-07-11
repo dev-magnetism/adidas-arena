@@ -1,5 +1,11 @@
 <template>
   <div :style="styles" class="app-programmation-slider-card">
+        <AppProgrammationEventStatus
+          :presale="event.presale"
+          :reported="event.reported"
+          :status="event.status_code"
+          :color="statutColor"
+        />
     <div class="app-programmation-slider-card__visual">
       <div class="app-programmation-slider-card__visual__wrapper">
         <div
@@ -52,19 +58,22 @@
         {{ event.min_price }}€
       </TP2>
 
-      <nuxt-link
-        class="app-programmation-slider-card__cta"
-        :to="{
+
+      <AtomsCTA
+        :color="statutColor"
+        :layer-color="statutColor"
+        :bg="'grey'"
+        :href="{
           name: 'programmation-id',
           params: {
             id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
           },
         }"
+        class="app-programmation-card__cta"
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave"
-      >
-        <SvgCtaUnion ref="arrow" :color="ctaColor" />
-      </nuxt-link>
+        >Réserver</AtomsCTA>
+
     </div>
     <span
       :class="{ full: event.status_code === 'K' }"
@@ -76,7 +85,7 @@
 </template>
 
 <script>
-import { gsap } from 'gsap'
+//  import { gsap } from 'gsap'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
@@ -116,7 +125,13 @@ export default {
         }deg`,
       }
     },
-
+    statutColor() {
+      return this.theme === 'blue'
+        ? 'blue-adidas'
+        : this.theme === 'red'
+        ? 'red-adidas'
+        : 'black'
+    },
     ctaColor() {
       return this.theme === 'blue'
         ? 'blue-adidas'
@@ -134,7 +149,7 @@ export default {
     this.initTimelineArrow()
   },
   beforeDestroy() {
-    this.tlArrow?.kill()
+    //  this.tlArrow?.kill()
   },
   methods: {
     onMouseEnter() {
@@ -142,20 +157,20 @@ export default {
 
       this.setCursorState('hide')
 
-      this.tlArrow?.play()
+      //  this.tlArrow?.play()
     },
     onMouseLeave() {
       if (this.$viewport.isMobile) return
 
       this.setCursorState('slider')
 
-      this.tlArrow?.reverse()
+      //  this.tlArrow?.reverse()
     },
     initTimelineArrow() {
-      if (this.$viewport.isMobile) return
+      //  if (this.$viewport.isMobile) return
 
-      this.tlArrow = gsap.timeline({ paused: true })
-
+      // this.tlArrow = gsap.timeline({ paused: true })
+      /*
       this.tlArrow.to(this.$refs.arrow.$el, {
         x: `${this.$viewport.width * 0.048611111111}px`, // width cta
         duration: 0.5,
@@ -171,6 +186,7 @@ export default {
         duration: 0.25,
         ease: 'power3.out',
       })
+      */
     },
     genRand(min, max, decimalPlaces) {
       const rand = Math.random() * (max - min) + min
@@ -222,6 +238,16 @@ export default {
 
   @include mobile {
     flex: 0 0 75%;
+  }
+
+
+  .app-programmation-event-status {
+    position: absolute;
+    right: 0;
+    border-right: none;
+    border-top: none;
+    top: 0;
+    z-index: 10;
   }
 
   &__full {

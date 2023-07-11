@@ -425,13 +425,15 @@ export default {
 
     &__wrapper {
       position: sticky;
-      bottom: 25px;
-      align-self: self-end;
+      top: 100px;
+      align-self: self-start;
       width: 100%;
       row-gap: 0;
       pointer-events: all;
 
       @include mobile {
+        top: unset;
+        align-self: self-end;
         bottom: 10px;
 
         &::after {

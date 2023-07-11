@@ -5,14 +5,14 @@
         color="red-adidas"
         class="app-programmation-event-hero__full timeline-text"
       >
-        {{ event.status_code === 'H' ? 'Annulé' : '' }}
-        {{ event.status_code === 'K' ? 'Complet' : '' }}
+        {{ event.reported ? programmationsEventContent.glossary_deferred : event.status_code === 'H' ? programmationsEventContent.glossary_cancelled : event.status_code === 'K' ? programmationsEventContent.glossary_full : '' }}
       </TH4>
       <TH4
         color="blue-adidas"
         class="app-programmation-event-hero__soon timeline-text"
       >
-        {{ programmationsEventContent.glossary_soon_available }}
+        {{ event.presale ? programmationsEventContent.glossary_presales : event.status_code === 'B' || event.status_code === 'C' ? programmationsEventContent.glossary_soon_available : '' }}
+
       </TH4>
       <TH2Bis
         ref="date"
@@ -37,7 +37,7 @@
           color="red-adidas"
           class="app-programmation-event-hero__ticket-office-opening__date"
         >
-          le 15 novembre 2023
+          le {{ $formatDate(event.opening) }}
         </TH4>
       </div>
 
