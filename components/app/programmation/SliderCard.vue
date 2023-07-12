@@ -377,7 +377,7 @@ export default {
     margin-top: auto;
   }
 
-  &__cta {
+  &__cta.app-atoms-cta  {
     position: absolute;
     bottom: 0;
     height: desktop-vw(55px);
