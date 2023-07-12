@@ -78,7 +78,7 @@
             id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
           },
         }"
-        class="app-programmation-card__cta"
+        class="app-programmation-slider-card__cta"
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave"
         v-if="event.status_code!=='K'"
@@ -92,7 +92,7 @@
           :eventId="event.id" 
           :eventName="event.artist_reference"
           v-else
-          class="app-programmation-card__cta"
+          class="app-programmation-slider-card__cta"
           @mouseenter.native="onMouseEnter"
           @mouseleave.native="onMouseLeave"
         >
@@ -381,7 +381,6 @@ export default {
     position: absolute;
     bottom: 0;
     height: desktop-vw(55px);
-    width: desktop-vw(70px);
     background: var(--c-grey);
     right: 0;
     display: flex;

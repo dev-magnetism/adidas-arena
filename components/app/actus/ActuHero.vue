@@ -42,7 +42,7 @@
         :src="content.cover.filename_disk"
         format="webp"
         :alt="`hero-cover-${content.title}`"
-        sizes="sm:50vw md:100vw"
+        sizes="sm:50vw md:150vw"
       />
     </div>
 

@@ -87,6 +87,15 @@ export default {
   &__title {
     margin-bottom: desktop-vw(70px);
 
+    .H2{
+      font-size: 6.805555555555556vW;
+
+      .line{
+        text-align: center!important;
+      }
+
+    }
+
     @include mobile {
       .wysiwyg-text {
         text-align: center;
@@ -111,6 +120,10 @@ export default {
   &__name {
     text-align: center;
     opacity: 0.5;
+
+    &.H4{
+      font-size: 2.083333333333333vW;
+    }
   }
 }
 </style>
