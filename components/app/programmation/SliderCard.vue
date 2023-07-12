@@ -48,8 +48,26 @@
         À partir de {{ content.from_price }}€
       </TP2>
 
+      <TP2
+        v-else
+        class="app-programmation-slider-card__from-price"
+        weight="medium"
+        :color="whitedTexts ? 'white' : 'black'"
+      >
+      </TP2>
+
+      <AtomsCTAForm
+        v-if="content.main_event"
+        class="app-programmation-slider-card__cta larger"
+        :bg="ctaColor"
+        :color="whitedTexts ? 'white' : 'black'"
+      >
+        S'inscrire aux préventes
+      </AtomsCTAForm>
+
       <a
         class="app-programmation-slider-card__cta"
+        v-else
         :href="content.link"
         target="_blank"
         @click.stop="() => {}"
@@ -58,6 +76,7 @@
       >
         <SvgCtaUnion ref="arrow" :color="ctaColor" />
       </a>
+
     </div>
     <span
       :class="{ full: content.full }"
@@ -146,17 +165,17 @@ export default {
 
       this.tlArrow = gsap.timeline({ paused: true })
 
-      this.tlArrow.to(this.$refs.arrow.$el, {
+      this.tlArrow?.to(this.$refs?.arrow?.$el, {
         x: `${this.$viewport.width * 0.048611111111}px`, // width cta
         duration: 0.5,
         ease: 'power3.inOut',
       })
 
-      this.tlArrow.set(this.$refs.arrow.$el, {
+      this.tlArrow?.set(this.$refs?.arrow?.$el, {
         x: `${this.$viewport.width * -0.048611111111}px`, // width cta
       })
 
-      this.tlArrow.to(this.$refs.arrow.$el, {
+      this.tlArrow?.to(this.$refs?.arrow?.$el, {
         x: 0,
         duration: 0.25,
         ease: 'power3.out',
@@ -333,6 +352,25 @@ export default {
     @include mobile {
       height: mobile-vw(50px);
       width: mobile-vw(55px);
+    }
+
+    &.app-atoms-cta {
+      min-width:  70%;
+      margin-left: auto;
+      display: inline-flex;
+      border-bottom: none;
+      border-right: none;
+
+      @include mobile {
+        padding: mobile-vw(10px) mobile-vw(5px) mobile-vw(10px) mobile-vw(15px);
+        min-width: 60%;
+      }
+
+      svg {
+        @include mobile {
+          // padding: mobile-vw(10px) mobile-vw(5px) mobile-vw(10px) mobile-vw(15px);
+        }
+      }
     }
   }
 }
