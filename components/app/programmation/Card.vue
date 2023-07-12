@@ -343,7 +343,7 @@ export default {
     width: 50%;
   }
 
-  &__cta {
+  &__cta.app-atoms-cta {
     position: absolute;
     bottom: 0;
     background: var(--c-grey);

@@ -437,6 +437,7 @@ export default {
 
   &__title {
     margin-bottom: desktop-vw(55px);
+    font-size: 8.680555555555556vW;
 
     @include mobile {
       margin-bottom: mobile-vw(30px);

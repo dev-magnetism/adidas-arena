@@ -42,8 +42,15 @@
       Liste d'attente
     </AtomsCTAForm>
 
-    <AtomsCTA v-else :href="session.content.url">
-      Réserver mon billet
+    <AtomsCTA 
+      v-else 
+      :href="session.content.url"
+      :color="statutColor" 
+      :layer-color="statutColor" 
+      :bg="'grey'"
+
+    >
+      Réserver
     </AtomsCTA>
   </div>
 </template>
@@ -59,7 +66,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    length: {
+    totalItems: {
       type: Number,
       default: 0,
     },
@@ -82,9 +89,12 @@ export default {
   },
   computed: {
     theme() {
-      return this.index % this.length === 0
+    console.log('theme index: ', this.index, ' / totalItems:', this.totalItems);
+    console.log('this.index % this.totalItems = ', this.index % this.totalItems);
+
+      return this.index % this.totalItems === 0
         ? 'blue-adidas'
-        : this.index % this.length === 1
+        : this.index % this.totalItems === 1
         ? 'red-adidas'
         : 'grey'
     },
