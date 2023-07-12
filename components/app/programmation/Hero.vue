@@ -19,6 +19,15 @@
         <AtomsCornerPoints :size-points="8" />
 
         <div class="app-programmation-hero__main-card__wrapper">
+
+          <AppProgrammationEventStatus
+            :presale="content.event.presale"
+            :reported="content.event.reported"
+            :status="content.event.status_code"
+            :color="statutColor"
+            class="app-programmation-event-status"
+          />
+
           <AppProgrammationImage
             :src="content.event.list_image.filename_disk"
             :alt="`main-card-image-${content.event.id}-${content.event.artist_reference}`"
@@ -108,6 +117,16 @@ export default {
     }),
     contentCard() {
       return this.programmationsContent.find((el) => el.main_event)
+    },
+    theme() {
+      return this.index % 3 === 0
+        ? 'blue-adidas'
+        : this.index % 3 === 1
+        ? 'red-adidas'
+        : 'grey'
+    },
+    statutColor() {
+      return this.theme === 'grey' ? 'black' : this.theme
     },
   },
   watch: {
@@ -399,6 +418,16 @@ export default {
     display: flex;
     flex-direction: column;
     transform-origin: left center;
+
+
+    .app-programmation-event-status {
+      position: absolute;
+      right: 0;
+      border-right: none;
+      border-top: none;
+      top: 0;
+      z-index: 10;
+    }
 
     .app-element-kinesis {
       display: flex;

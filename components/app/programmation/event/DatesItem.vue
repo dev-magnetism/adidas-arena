@@ -89,9 +89,6 @@ export default {
   },
   computed: {
     theme() {
-    console.log('theme index: ', this.index, ' / totalItems:', this.totalItems);
-    console.log('this.index % this.totalItems = ', this.index % this.totalItems);
-
       return this.index % 3 === 0
         ? 'blue-adidas'
         : this.index % 3 === 1
