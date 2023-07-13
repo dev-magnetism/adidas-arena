@@ -23,7 +23,7 @@
     "@typeform/embed": "^2.13.2",
     "cookie-universal-nuxt": "^2.2.2",
     "core-js": "^3.26.1",
-    "embla-carousel": "^7.1.0",
+    "embla-carousel": "latest",
     "fontfaceobserver": "^2.3.0",
     "glslify-loader": "^2.0.0",
     "gsap": "npm:@gsap/shockingly@^3.11.5",
