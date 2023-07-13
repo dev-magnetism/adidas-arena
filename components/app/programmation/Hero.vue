@@ -45,6 +45,7 @@
               {{ contentCard.date }}
             </TH4>
             <TP2
+              v-if="contentCard.from_price"
               weight="medium"
               class="app-programmation-hero__main-card__from-price"
             >
