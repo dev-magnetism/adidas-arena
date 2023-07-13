@@ -4,7 +4,7 @@
     :class="classes"
     :style="{
       'background-color': `var(--c-${bg})`,
-      '--color-underline': `var(--c-${color})`,
+      '--layer-color': `var(--c-${layerColor})`,
     }"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
@@ -17,9 +17,10 @@
     data-tf-medium="snippet" 
     data-tf-hidden="list_name=Les Yonex Internationaux de France,api_key=EBu7rZdGJLInGv" 
   >
-    <TP2 class="app-atoms-cta__text" weight="bold" :color="color"><slot /></TP2>
+    <TP2 class="app-atoms-cta__text" weight="bold" 
+        :color="mousehover ? 'grey' : color"><slot /></TP2>
     <div v-if="arrow" class="app-atoms-cta__arrow">
-      <SvgCtaUnion ref="arrow" :color="color" />
+      <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
     </div>
     <script src="https://embed.typeform.com/next/embed.js"></script>
   </button>
@@ -38,13 +39,23 @@ export default {
     bg: {
       type: String,
       required: false,
-      default: 'white',
+      default: 'blue-adidas',
     },
     color: {
       type: String,
       required: false,
-      default: 'black',
+      default: 'grey',
     },
+    layerColor: {
+      type: String,
+      required: false,
+      default: 'red-adidas',
+    },
+  },
+  data() {
+    return {
+      mousehover: false,
+    }
   },
   computed: {
     classes() {
@@ -79,9 +90,13 @@ export default {
   },
   methods: {
     onMouseEnter() {
+      if (this.$viewport.isMobile) return
+      this.mousehover = true
       this.tl?.play()
     },
     onMouseLeave() {
+      if (this.$viewport.isMobile) return
+      this.mousehover = false
       this.tl?.reverse()
     },
   },

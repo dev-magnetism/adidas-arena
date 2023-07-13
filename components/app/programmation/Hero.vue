@@ -52,7 +52,15 @@
             </TP2>
           </div>
         </div>
+        <AtomsCTAForm
+          v-if="contentCard.main_event"
+          class="app-programmation-hero__main-card__cta"
+
+        >
+          S'inscrire aux préventes
+        </AtomsCTAForm>
         <AtomsCTA
+          v-else
           :href="contentCard.link"
           class="app-programmation-hero__main-card__cta"
         >
@@ -434,7 +442,7 @@ export default {
 
     &__from-price {
       margin-top: desktop-vw(30px);
-      align-self: flex-end;
+      align-self: flex-start;
 
       @include mobile {
         margin-top: mobile-vw(15px);
@@ -454,9 +462,9 @@ export default {
     }
 
     &__cta.app-atoms-cta {
-      min-width: 50%;
+      width: 65%;
       margin-left: auto;
-      display: inline-flex;
+      display: flex;
       border-bottom: none;
       border-right: none;
 

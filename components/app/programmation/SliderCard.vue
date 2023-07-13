@@ -58,9 +58,11 @@
 
       <AtomsCTAForm
         v-if="content.main_event"
-        class="app-programmation-slider-card__cta larger"
-        :bg="ctaColor"
-        :color="whitedTexts ? 'white' : 'black'"
+        class="app-programmation-slider-card__cta"
+
+        :color="ctaColor"
+        :layer-color="ctaColor"
+        :bg="'grey'"
       >
         S'inscrire aux préventes
       </AtomsCTAForm>
@@ -126,6 +128,11 @@ export default {
       }
     },
 
+    bgColor() {
+      return {
+        '--bg': `var(--c-${this.theme})`,
+      }
+    },
     ctaColor() {
       return this.theme === 'blue'
         ? 'blue-adidas'
@@ -333,7 +340,7 @@ export default {
     margin-top: auto;
   }
 
-  &__cta {
+  &__cta.app-atoms-cta {
     position: absolute;
     bottom: 0;
     height: desktop-vw(55px);

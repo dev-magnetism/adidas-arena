@@ -3,7 +3,7 @@
     <AppProgrammationHero :contents="contentHero" />
     <div class="app-programmation-grid grid-inner">
       <AppProgrammationCard
-        v-for="(event, index) in programmationsContent"
+        v-for="(event, index) in contentProgrammationEvents"
         :key="index"
         :content="event"
       />
@@ -55,9 +55,9 @@ export default {
       allLoadedFake: (state) => state.allLoadedFake,
       programmationsContent: (state) => state.programmationsContent,
     }),
-    // contentProgrammationEvents() {
-    //   return this.programmationsContent.filter((el) => !el.main_event)
-    // },
+    contentProgrammationEvents() {
+      return this.programmationsContent.filter((el) => !el.main_event)
+    },
     contentHero() {
       return {
         title: this.content.data.hero_title,
