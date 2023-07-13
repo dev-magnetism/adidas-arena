@@ -83,7 +83,7 @@ export default {
     },
     pageUrl() {
       //  console.log('pageUrl', this.$route)
-      return 'https://www.adidas-arena.com' + this.$route.path
+      return 'https://www.adidasarena.com' + this.$route.path
     }
   },
   methods: {
@@ -119,19 +119,17 @@ export default {
       //  console.log('increase', this.fontSize);
       const _dynText = document.querySelectorAll('.p, .li');
       _dynText.forEach((el)=>{
-        if(parseInt(window.getComputedStyle(el).fontSize) < 20){
-          el.style.fontSize = `${parseInt(window.getComputedStyle(el).fontSize) + 1}px`;
-          el.style.lineHeight = `${parseInt(window.getComputedStyle(el).lineHeight) + 1}px`;
-        }
+          el.style.fontSize = `${parseInt(window.getComputedStyle(el).fontSize) + 2}px`;
+          el.style.lineHeight = `${parseInt(window.getComputedStyle(el).lineHeight) + 2}px`;
       })
     },
     decreaseFontSize() {
       //  console.log('decrease', this.fontSize);
       const _dynText = document.querySelectorAll('.p, .li');
       _dynText.forEach((el)=>{
-        if(parseInt(window.getComputedStyle(el).fontSize) > 14){
-          el.style.fontSize = `${parseInt(window.getComputedStyle(el).fontSize) - 1}px`;
-          el.style.lineHeight = `${parseInt(window.getComputedStyle(el).lineHeight) - 1}px`;
+        if(parseInt(window.getComputedStyle(el).fontSize) > 16){
+          el.style.fontSize = `${parseInt(window.getComputedStyle(el).fontSize) - 2}px`;
+          el.style.lineHeight = `${parseInt(window.getComputedStyle(el).lineHeight) - 2}px`;
         }
       })
     },

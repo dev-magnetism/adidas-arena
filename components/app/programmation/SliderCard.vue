@@ -30,7 +30,7 @@
         <TP2
           class="type"
           weight="bold"
-          :color="whitedTexts ? 'white' : 'black'"
+          :color="whitedTexts"
           tag="h3"
         >
           {{ event.content.category }}
@@ -39,12 +39,12 @@
           v-if="event.sessions"
           class="date"
           weight="medium"
-          :color="whitedTexts ? 'white' : 'black'"
+          :color="whitedTexts"
         >
           {{ $formatDate(event.sessions) }}
         </TP2>
       </div>
-      <TH2 :color="whitedTexts ? 'white' : 'black'" weight="bold">
+      <TH2 :color="whitedTexts" weight="bold">
         {{ event.artist_reference }}
       </TH2>
 
@@ -52,7 +52,7 @@
         v-if="event.min_price && event.status_code!=='K'"
         class="app-programmation-slider-card__from-price"
         weight="medium"
-        :color="whitedTexts ? 'white' : 'black'"
+        :color="whitedTexts"
       >
         {{ programmationsEventContent.glossary_from_price }}
         {{ event.min_price }}€
@@ -67,6 +67,21 @@
         Show complet, inscrivez-vous sur la liste d’attente !
       </TP2>
 
+      <AtomsCTA
+        :color="statutColor"
+        :layer-color="statutColor"
+        :bg="'grey'"
+        :href="{
+          name: 'programmation-id',
+          params: {
+            id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
+          },
+        }"
+        class="app-programmation-slider-card__cta"
+        @mouseenter.native="onMouseEnter"
+        @mouseleave.native="onMouseLeave"
+        v-if="event.status_code==='H'"
+        >En savoir +</AtomsCTA>
 
       <AtomsCTA
         :color="statutColor"
@@ -81,7 +96,7 @@
         class="app-programmation-slider-card__cta"
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave"
-        v-if="event.status_code!=='K'"
+        v-else-if="event.status_code!=='K'"
         >Réserver</AtomsCTA>
 
         <AtomsCTAForm 
@@ -165,7 +180,10 @@ export default {
         : 'black'
     },
     whitedTexts() {
+    console.log('this.theme', this.theme)
       return this.theme === 'blue' || this.theme === 'red'
+        ? 'white'
+        : 'black'
     },
   },
   mounted() {
@@ -375,6 +393,7 @@ export default {
 
   &__from-price.P2 {
     margin-top: auto;
+    max-width: 50%;
   }
 
   &__cta.app-atoms-cta  {

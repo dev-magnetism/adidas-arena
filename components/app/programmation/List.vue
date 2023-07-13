@@ -185,7 +185,7 @@ export default {
         },
       })
 
-      this.$refs.eventsContainer.forEach((month, index) => {
+      this.$refs?.eventsContainer?.forEach((month, index) => {
         const lastIndex = this.$refs.eventsContainer.length - 1 === index
 
         const scrolltrigger = ScrollTrigger.create({

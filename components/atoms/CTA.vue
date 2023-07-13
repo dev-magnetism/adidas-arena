@@ -7,7 +7,7 @@
       'background-color': `var(--c-${bg})`,
       '--layer-color': `var(--c-${layerColor})`,
     }"
-    :href="href"
+    :href="(href)?href:''"
     :target="external || automaticHref || blank ? '_blank' : false"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
@@ -30,7 +30,7 @@
       'background-color': `var(--c-${bg})`,
       '--layer-color': `var(--c-${layerColor})`,
     }"
-    :to="href"
+    :to="(href)?href:''"
     :target="blank ? '_blank' : false"
     @mouseenter.native="onMouseEnter"
     @mouseleave.native="onMouseLeave"

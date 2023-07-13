@@ -108,7 +108,7 @@ export default {
     }),
     menu() {
       return this.menuContent.data.filter(
-        (el) => !el.submenu_element && !el.homepage && !el.programmation
+        (el) => !el.submenu_element && !el.homepage
       )
     },
     menuVisuals() {

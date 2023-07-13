@@ -98,7 +98,7 @@ export default {
     menuActive(newVal) {
       if (
         !newVal &&
-        !this.content.programmation &&
+        //  !this.content.programmation &&
         !this.$viewport.isMobile &&
         !this.content.submenu_title
       ) {
@@ -245,7 +245,7 @@ export default {
     initLotties() {
       if (
         this.$viewport.isMobile ||
-        this.content.programmation ||
+        //  this.content.programmation ||
         this.content.submenu_title
       )
         return

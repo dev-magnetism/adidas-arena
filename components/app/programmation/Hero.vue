@@ -59,7 +59,22 @@
             </TP2>
           </div>
         </div>
+
+        <AtomsCTAForm 
+          v-if="content.event.status_code==='K'"
+          :color="statutColor"
+          :layer-color="statutColor"
+          :bg="'grey'"
+          :session="content.event.sessions[0]" 
+          :eventId="content.event.id" 
+          :eventName="content.event.artist_reference"
+          class="app-programmation-card__cta"
+        >
+          Liste d'attente
+        </AtomsCTAForm>
+
         <AtomsCTA
+          v-else
           :href="{
             name: 'programmation-id',
             params: {
@@ -70,7 +85,7 @@
           }"
           class="app-programmation-hero__main-card__cta"
         >
-          {{ contentCard.full ? `Liste d'attente` : `Réserver` }}
+          {{ content.event.status_code==='H' ? `En savoir +` : `Réserver` }}
         </AtomsCTA>
       </EKinesis>
     </div>
@@ -146,6 +161,7 @@ export default {
     },
   },
   mounted() {
+    //  console.log('hero props', this.content);
     if (this.allLoadedFake && !this.$viewport.isMobile) {
       this.initSplitText()
       this.appearHero(0.95)

@@ -43,6 +43,17 @@
     </AtomsCTAForm>
 
     <AtomsCTA 
+      v-else-if="session.session_status==='H'" 
+      :href="session.content.url"
+      :color="statutColor" 
+      :layer-color="statutColor" 
+      :bg="'grey'"
+
+    >
+      En savoir +
+    </AtomsCTA>
+
+    <AtomsCTA 
       v-else 
       :href="session.content.url"
       :color="statutColor" 

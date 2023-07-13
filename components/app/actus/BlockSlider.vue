@@ -112,6 +112,7 @@ export default {
     },
   },
   mounted() {
+    console.log((this.embla)?this.embla:'no carousel')
     this.embla = EmblaCarousel(this.$el, {
       dragFree: true,
       containScroll: 'keepSnaps',
@@ -122,15 +123,22 @@ export default {
       },
     })
 
-    this.embla.on('pointerUp', this.onPointerUp)
-    this.embla.on('pointerDown', this.onPointerDown)
-    this.embla.on('select', this.onSelect)
+    this.embla?.on('pointerUp', this.onPointerUp)
+    this.embla?.on('pointerDown', this.onPointerDown)
+    this.embla?.on('select', this.onSelect)
+
   },
   beforeDestroy() {
+  console.log('beforeDestroy')
     this.embla?.off('pointerUp', this.onPointerUp)
     this.embla?.off('pointerDown', this.onPointerDown)
-    this.embla?.off('select', this.onSelect)
 
+    if (!this.$viewport.isMobile) {
+      this.embla?.off('init', this.onScroll)
+      this.embla?.off('scroll', this.onScroll)
+      this.embla?.off('resize', this.onScroll)
+      this.embla?.off('select', this.onSelect)
+    }
     this.embla?.destroy()
   },
   methods: {

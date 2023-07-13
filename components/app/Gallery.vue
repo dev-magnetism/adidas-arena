@@ -67,6 +67,7 @@ export default {
     },
   },
   mounted() {
+    console.log('Gallery mounted');
     this.observer = Observer.create({
       axis: 'x',
       target: this.$el,

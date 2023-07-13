@@ -98,7 +98,8 @@ export const getters = {
   programmesMonths: (state) => {
     return (
       Object.values(
-        state.programmes.reduce((groups, program) => {
+        state.programmes.filter(event => !event.is_cover).reduce((groups, program) => {
+
           // Create a date object from the program's start date
           const date = new Date(program.start)
           // Format the month name using the French locale
@@ -336,7 +337,7 @@ export const actions = {
     commit('setActualitesArticleContent', actualitesArticle.data)
 
     const { meta } = await this.$axios.$get(
-      `https://www.accorarena.com/api-svc/partners/accor-arena/events?limit=1&page=1`
+      `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=1&page=1`
     )
 
     const limit = 50
@@ -351,7 +352,7 @@ export const actions = {
 
     for (const index of pages) {
       const payload = await this.$axios.$get(
-        `https://www.accorarena.com/api-svc/partners/accor-arena/events?limit=${limit}&page=${index}`
+        `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
       )
 
       const contents = payload.data

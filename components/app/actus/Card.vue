@@ -108,7 +108,6 @@ export default {
   },
   watch: {},
   mounted() {
-    console.log(this.content)
     this.initMatchMedia()
   },
   beforeDestroy() {

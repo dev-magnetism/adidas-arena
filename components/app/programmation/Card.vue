@@ -74,7 +74,21 @@
           },
         }"
         class="app-programmation-card__cta"
-        v-if="event.status_code!=='K'"
+        v-if="event.status_code==='H'"
+        >En savoir +</AtomsCTA>
+
+      <AtomsCTA
+        :color="statutColor"
+        :layer-color="statutColor"
+        :bg="'grey'"
+        :href="{
+          name: 'programmation-id',
+          params: {
+            id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
+          },
+        }"
+        class="app-programmation-card__cta"
+        v-else-if="event.status_code!=='K'"
         >Réserver</AtomsCTA>
 
         <AtomsCTAForm 
