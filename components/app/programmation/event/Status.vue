@@ -33,9 +33,9 @@ export default {
     statusText() {
       let status
 
-      // console.log('Status', this.status)
-      // console.log('Presale', this.presale)
-      // console.log('Reported', this.reported)
+      console.log('Status', this.status)
+      console.log('Presale', this.presale)
+      console.log('Reported', this.reported)
 
       if (this.status === 'B') {
         // Bientôt disponible
@@ -55,7 +55,7 @@ export default {
         Si reported = true, la valeur du status est surchargée par cette dernière
       */
       // Cas spécifique à la clé 'presale'
-      if(this.presale && this.status !== 'K'){
+      if(this.presale && this.status !== 'K' && this.status !== 'B' && this.status !== 'C'){
         status = this.programmationsEventContent.glossary_presales
       }
       // Cas spécifique à la clé 'reported'

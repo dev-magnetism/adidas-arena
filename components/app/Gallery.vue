@@ -67,7 +67,6 @@ export default {
     },
   },
   mounted() {
-    console.log('Gallery mounted');
     this.observer = Observer.create({
       axis: 'x',
       target: this.$el,
@@ -125,7 +124,6 @@ export default {
     this.initGUI()
   },
   beforeDestroy() {
-    console.log('Gallery beforeDestroy');
     this.observer?.kill()
     this.scrollTrigger?.kill()
 

@@ -51,17 +51,24 @@
               {{ $formatDate(content.event.sessions) }}
             </TH4>
             <TP2
+            v-if="content.event.min_price && content.event.status_code!=='K'"
               weight="medium"
               class="app-programmation-hero__main-card__from-price"
             >
               {{ programmationsEventContent.glossary_from_price }}
               {{ content.event.min_price }}€
             </TP2>
+            <TP2
+            v-else
+              weight="medium"
+              class="app-programmation-hero__main-card__from-price"
+            >
+            </TP2>
           </div>
         </div>
 
         <AtomsCTAForm 
-          v-if="content.event.status_code==='K'"
+          v-if="content.event.status_code==='K' || content.event.status_code==='B' || content.event.status_code==='C'"
           :color="statutColor"
           :layer-color="statutColor"
           :bg="'grey'"
@@ -161,7 +168,7 @@ export default {
     },
   },
   mounted() {
-    //  console.log('hero props', this.content);
+    console.log('hero props', this.content);
     if (this.allLoadedFake && !this.$viewport.isMobile) {
       this.initSplitText()
       this.appearHero(0.95)
@@ -511,7 +518,7 @@ export default {
 
     &__from-price {
       margin-top: desktop-vw(30px);
-      align-self: flex-end;
+      align-self: flex-start;
 
       @include mobile {
         margin-top: mobile-vw(15px);

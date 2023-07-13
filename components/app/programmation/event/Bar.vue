@@ -46,7 +46,7 @@
         :session="event.sessions[0]" 
         :eventId="event.id" 
         :eventName="event.artist_reference"
-        v-else-if="event.status_code==='K'"
+        v-else-if="event.status_code==='K' || event.status_code==='B' || event.status_code==='C'"
       >
         Liste d'attente
       </AtomsCTAForm>
@@ -139,7 +139,7 @@ export default {
     }
 
     .app-atoms-cta {
-      width: 60%;
+      width: auto;
     }
   }
 }

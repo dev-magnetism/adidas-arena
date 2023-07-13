@@ -37,7 +37,7 @@
       :color="statutColor" 
       :layer-color="statutColor" 
       :bg="'grey'"
-      v-if="session.session_status==='K'"
+      v-if="session.session_status==='K' || session.session_status==='B' || session.session_status==='C'"
     >
       Liste d'attente
     </AtomsCTAForm>
@@ -171,7 +171,7 @@ export default {
   &__wrapper {
     height: 100%;
     width: 100%;
-    padding: desktop-vw(25px) desktop-vw(25px) desktop-vw(15px) desktop-vw(25px);
+    padding: desktop-vw(45px) desktop-vw(25px) desktop-vw(15px) desktop-vw(25px);
     display: flex;
     flex-direction: column;
 

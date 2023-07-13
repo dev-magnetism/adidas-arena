@@ -49,7 +49,7 @@
       </TH2>
 
       <TP2
-        v-if="event.min_price && event.status_code!=='K'"
+        v-if="event.min_price && event.status_code!=='K' && event.status_code!=='B' && event.status_code!=='C'"
         class="app-programmation-slider-card__from-price"
         weight="medium"
         :color="whitedTexts"
@@ -65,6 +65,15 @@
         class="app-programmation-slider-card__from-price"
       >
         Show complet, inscrivez-vous sur la liste d’attente !
+      </TP2>
+
+      <TP2
+        weight="medium"
+        :color="whitedTexts"
+        v-else-if="event.status_code==='B' || event.status_code==='C'"
+        class="app-programmation-slider-card__from-price"
+      >
+        Inscrivez-vous sur la liste d’attente !
       </TP2>
 
       <AtomsCTA
@@ -96,7 +105,7 @@
         class="app-programmation-slider-card__cta"
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave"
-        v-else-if="event.status_code!=='K'"
+        v-else-if="event.status_code!=='K' && event.status_code!=='B' && event.status_code!=='C'"
         >Réserver</AtomsCTA>
 
         <AtomsCTAForm 

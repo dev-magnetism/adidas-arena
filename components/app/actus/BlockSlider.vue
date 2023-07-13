@@ -125,8 +125,6 @@ export default {
     this.embla.on('pointerUp', this.onPointerUp)
     this.embla.on('pointerDown', this.onPointerDown)
     this.embla.on('select', this.onSelect)
-
-    //  setTimeout(function(){this.embla?.reInit()} , 500);
   },
   beforeDestroy() {
     this.embla?.off('pointerUp', this.onPointerUp)

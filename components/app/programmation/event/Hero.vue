@@ -11,7 +11,7 @@
         color="blue-adidas"
         class="app-programmation-event-hero__soon timeline-text"
       >
-        {{ event.presale && event.status_code !== 'K' ? programmationsEventContent.glossary_presales : event.status_code === 'B' || event.status_code === 'C' ? programmationsEventContent.glossary_soon_available : '' }}
+        {{ event.presale && event.status_code !== 'K' && event.status_code !== 'B' && event.status_code !== 'C' && event.status_code !== 'H' ? programmationsEventContent.glossary_presales : event.status_code === 'B' || event.status_code === 'C' ? programmationsEventContent.glossary_soon_available : '' }}
 
       </TH4>
       <TH2Bis
@@ -43,22 +43,42 @@
       </div>
 
       <div class="app-programmation-event-hero__cta timeline-block" v-if="event.status_code!=='H'">
-        <TP2 weight="medium" class="app-programmation-event-hero__information">
+        <TP2 
+          v-if="event.status_code!=='K' && event.status_code!=='B' && event.status_code!=='C'"
+          weight="medium" 
+          class="app-programmation-event-hero__information"
+        >
           {{ programmationsEventContent.glossary_exclu_france_price }}
           {{ event.min_price }}€
+        </TP2>
+        <TP2 
+          v-else-if="event.status_code==='K'"
+          weight="medium" 
+          class="app-programmation-event-hero__information"
+        >
+          Show complet, inscrivez-vous sur la liste d’attente !
+        </TP2>
+        <TP2 
+          v-else-if="event.status_code==='B' || event.status_code==='C'"
+          weight="medium" 
+          class="app-programmation-event-hero__information"
+        >
+          Inscrivez-vous sur la liste d’attente !
         </TP2>
         <AtomsCTA
           v-if="event.sessions.length > 1"
           button
           @click.native="anchorToDates"
         >
-          Réserver
+          {{ event.status_code==='K' || event.status_code==='B' || event.status_code==='C' ? `Liste d'attente` : `Réserver` }}
         </AtomsCTA>
+        
+
         <AtomsCTAForm 
           :session="event.sessions[0]" 
           :eventId="event.id" 
           :eventName="event.artist_reference"
-          v-else-if="event.status_code==='K'"
+          v-else-if="event.status_code==='K' || event.status_code==='B' || event.status_code==='C'"
         >
           Liste d'attente
         </AtomsCTAForm>

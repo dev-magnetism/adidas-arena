@@ -116,7 +116,6 @@ export default {
       }
     },
     increaseFontSize() {
-      //  console.log('increase', this.fontSize);
       const _dynText = document.querySelectorAll('.p, .li');
       _dynText.forEach((el)=>{
           el.style.fontSize = `${parseInt(window.getComputedStyle(el).fontSize) + 2}px`;
@@ -124,7 +123,6 @@ export default {
       })
     },
     decreaseFontSize() {
-      //  console.log('decrease', this.fontSize);
       const _dynText = document.querySelectorAll('.p, .li');
       _dynText.forEach((el)=>{
         if(parseInt(window.getComputedStyle(el).fontSize) > 16){
