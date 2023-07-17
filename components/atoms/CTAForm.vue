@@ -6,7 +6,7 @@
     data-tf-iframe-props="title=Test Adidas Arena" 
     data-tf-transitive-search-params 
     data-tf-medium="snippet" 
-    :data-tf-hidden="`list_name=${eventName},api_key=EBu7rZdGJLInGv,id=${eventId},url=${session.content.url}`" 
+    :data-tf-hidden="`list_name=${statusCode==='K'?'ListeD’Attente_':'PRV_'}${eventName}_${eventDate},api_key=EBu7rZdGJLInGv`" 
 
     class="app-atoms-cta"
     :class="classes"
@@ -59,6 +59,10 @@ export default {
       type: String,
       default: 'Artist error',
     },
+    eventDate: {
+      type: String,
+      default: '',
+    },
     layerColor: {
       type: String,
       required: false,
@@ -67,6 +71,11 @@ export default {
     session: {
       type: Object,
       default: () => {},
+    },
+    statusCode: {
+      type: String,
+      required: false,
+      default: 'D',
     },
   },
   data() {

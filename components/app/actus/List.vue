@@ -289,7 +289,7 @@ export default {
 
 <style lang="scss">
 .app-actualites-list {
-  margin-top: desktop-vw(110px);
+  margin-top: desktop-vw(180px);
   padding-top: desktop-vw(110px);
   padding-bottom: desktop-vw(110px);
   position: relative;
@@ -330,13 +330,14 @@ export default {
 
     &__wrapper {
       position: sticky;
-      bottom: 25px;
-      align-self: self-end;
+      top: 100px;
+      align-self: self-start;
       width: 100%;
       row-gap: 0;
       pointer-events: all;
 
       @include mobile {
+        top: unset;
         bottom: 10px;
 
         &::after {

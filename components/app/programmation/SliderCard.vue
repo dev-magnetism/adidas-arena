@@ -33,7 +33,7 @@
           :color="whitedTexts"
           tag="h3"
         >
-          {{ event.content.category }}
+          {{ (event.content.category.toLowerCase() !== "no cat")? event.content.category : '' }}
         </TP2>
         <TP2
           v-if="event.sessions"
@@ -115,6 +115,8 @@
           :session="event.sessions[0]" 
           :eventId="event.id" 
           :eventName="event.artist_reference"
+          :eventDate="event.sessions[0].date"
+          :statusCode="event.status_code"
           v-else
           class="app-programmation-slider-card__cta"
           @mouseenter.native="onMouseEnter"

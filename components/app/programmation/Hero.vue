@@ -75,6 +75,8 @@
           :session="content.event.sessions[0]" 
           :eventId="content.event.id" 
           :eventName="content.event.artist_reference"
+          :eventDate="content.event.sessions[0].date"
+          :statusCode="content.event.status_code"
           class="app-programmation-card__cta"
         >
           Liste d'attente

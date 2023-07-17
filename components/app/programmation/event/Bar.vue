@@ -46,6 +46,8 @@
         :session="event.sessions[0]" 
         :eventId="event.id" 
         :eventName="event.artist_reference"
+        :eventDate="event.sessions[0].date"
+        :statusCode="event.status_code"
         v-else-if="event.status_code==='K' || event.status_code==='B' || event.status_code==='C'"
       >
         Liste d'attente

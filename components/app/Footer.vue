@@ -119,6 +119,14 @@
         >
           <SvgFooterTwitter />
         </a>
+        <a
+          v-if="contents.data.social_networks_tiktok_link"
+          :href="contents.data.social_networks_tiktok_link"
+          target="_blank"
+          class="app-footer__social-network"
+        >
+          <SvgFooterTiktok />
+        </a>
       </div>
     </div>
     <div class="app-footer__partners">

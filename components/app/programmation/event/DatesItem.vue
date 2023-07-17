@@ -34,6 +34,8 @@
       :session="session" 
       :eventId="eventId" 
       :eventName="artist"
+      :eventDate="date"
+      :statusCode="session.session_status"
       :color="statutColor" 
       :layer-color="statutColor" 
       :bg="'grey'"

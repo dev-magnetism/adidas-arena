@@ -34,7 +34,7 @@
     <div class="app-programmation-card__informations">
       <div class="app-programmation-card__head">
         <TP2 class="type" weight="bold" :color="whitedTexts" tag="h3">
-          {{ event.content.category }}
+          {{ (event.content.category.toLowerCase() !== "no cat")? event.content.category : '' }}
         </TP2>
         <TP2 class="date" weight="medium" :color="whitedTexts" tag="h3">
           {{ $formatDate(event.sessions, true) }}
@@ -107,6 +107,8 @@
           :session="event.sessions[0]" 
           :eventId="event.id" 
           :eventName="event.artist_reference"
+          :eventDate="event.sessions[0].date"
+          :statusCode="event.status_code"
           v-else
           class="app-programmation-card__cta"
         >
@@ -170,6 +172,7 @@ export default {
   },
   watch: {},
   mounted() {
+    console.log('event ', this.event);
     this.initMatchMedia()
   },
   beforeDestroy() {
