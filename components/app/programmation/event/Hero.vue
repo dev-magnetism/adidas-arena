@@ -11,7 +11,7 @@
         color="blue-adidas"
         class="app-programmation-event-hero__soon timeline-text"
       >
-        {{ event.presale && event.status_code !== 'K' && event.status_code !== 'B' && event.status_code !== 'C' && event.status_code !== 'H' ? programmationsEventContent.glossary_presales : event.status_code === 'B' || event.status_code === 'C' ? programmationsEventContent.glossary_soon_available : '' }}
+        {{ event.presale && event.status_code === 'B' ? programmationsEventContent.glossary_presales : event.status_code === 'B' || event.status_code === 'C' ? programmationsEventContent.glossary_soon_available : '' }}
 
       </TH4>
       <TH2Bis
@@ -30,7 +30,7 @@
 
       <div
         class="app-programmation-event-hero__ticket-office-opening timeline-block"
-        v-if="event.status_code!=='H'"
+        v-if="event.status_code!=='H' && event.status_code!=='B' && event.status_code!=='C'"
       >
         <TH4> {{ programmationsEventContent.glossary_opening_tickets }} </TH4>
         <TH4
@@ -42,9 +42,9 @@
         </TH4>
       </div>
 
-      <div class="app-programmation-event-hero__cta timeline-block" v-if="event.status_code!=='H'">
+      <div class="app-programmation-event-hero__cta timeline-block">
         <TP2 
-          v-if="event.status_code!=='K' && event.status_code!=='B' && event.status_code!=='C'"
+          v-if="event.status_code==='D'"
           weight="medium" 
           class="app-programmation-event-hero__information"
         >
@@ -59,18 +59,22 @@
           Show complet, inscrivez-vous sur la liste d’attente !
         </TP2>
         <TP2 
-          v-else-if="event.status_code==='B' || event.status_code==='C'"
+          v-else-if="event.status_code==='B' && event.presale"
           weight="medium" 
           class="app-programmation-event-hero__information"
         >
           Inscrivez-vous sur la liste d’attente !
         </TP2>
         <AtomsCTA
-          v-if="event.sessions.length > 1"
+          v-if="event.sessions.length > 1 && 
+          (event.status_code==='B' && event.presale) ||
+          event.status_code!=='C' &&
+          event.status_code!=='H'
+          "
           button
           @click.native="anchorToDates"
         >
-          {{ event.status_code==='K' || event.status_code==='B' || event.status_code==='C' ? `Liste d'attente` : `Réserver` }}
+          {{ event.status_code==='K' || (event.status_code==='B' && event.presale) ? `Liste d'attente` : `Réserver` }}
         </AtomsCTA>
         
 
@@ -80,11 +84,11 @@
           :eventName="event.artist_reference"
           :eventDate="event.sessions[0].date"
           :statusCode="event.status_code"
-          v-else-if="event.status_code==='K' || event.status_code==='B' || event.status_code==='C'"
+          v-else-if="event.status_code==='K' || (event.status_code==='B' && event.presale)"
         >
           Liste d'attente
         </AtomsCTAForm>
-        <AtomsCTA v-else :href="event.sessions[0].content.url">
+        <AtomsCTA v-else-if="event.status_code==='D'" :href="event.sessions[0].content.url">
           Réserver mon billet
         </AtomsCTA>
       </div>

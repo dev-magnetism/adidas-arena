@@ -9,7 +9,7 @@
         weight="medium"
         class="app-programmation-event-bar__book__info"
         color="grey"
-        v-if="event.min_price && event.status_code!=='K'"
+        v-if="event.min_price && (event.status_code!=='B' && event.status_code!=='C' && event.status_code!=='H' && event.status_code!=='K')"
       >
         {{ programmationsEventContent.glossary_exclu_france_price }}
         {{ event.min_price }}€</TP2
@@ -35,7 +35,7 @@
           event.sessions.length - 1 < 1 &&
           event.sessions[0].content.url &&
           !event.sessions[0].content.url_premium && 
-          event.status_code!=='K'
+          ( event.status_code==='D' )
         "
         :href="event.sessions[0].content.url"
       >
@@ -48,7 +48,7 @@
         :eventName="event.artist_reference"
         :eventDate="event.sessions[0].date"
         :statusCode="event.status_code"
-        v-else-if="event.status_code==='K' || event.status_code==='B' || event.status_code==='C'"
+        v-else-if="event.status_code==='K' || (event.status_code==='B' && event.presale)"
       >
         Liste d'attente
       </AtomsCTAForm>

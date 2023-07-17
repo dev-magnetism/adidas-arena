@@ -45,7 +45,7 @@
       </TH2>
 
       <TP2
-        v-if="event.min_price && event.status_code!=='K' && event.status_code!=='B' && event.status_code!=='C'"
+        v-if="event.min_price && event.status_code!=='K' && event.status_code!=='B' && event.status_code!=='C' && event.status_code!=='H'"
         class="app-programmation-card__from-price"
         weight="medium"
         :color="whitedTexts"
@@ -66,7 +66,7 @@
       <TP2
         weight="medium"
         :color="whitedTexts"
-        v-else-if="event.status_code==='B' || event.status_code==='C'"
+        v-else-if="event.status_code==='B' && event.presale"
         class="app-programmation-card__from-price"
       >
         Inscrivez-vous sur la liste d’attente !
@@ -83,7 +83,7 @@
           },
         }"
         class="app-programmation-card__cta"
-        v-if="event.status_code==='H'"
+        v-if="event.status_code==='H' || (event.status_code==='B' && !event.presale) || event.status_code==='C'"
         >En savoir +</AtomsCTA>
 
       <AtomsCTA
@@ -97,7 +97,7 @@
           },
         }"
         class="app-programmation-card__cta"
-        v-else-if="event.status_code!=='K' && event.status_code!=='B' && event.status_code!=='C'"
+        v-else-if="event.status_code!=='K' && event.status_code!=='B'"
         >Réserver</AtomsCTA>
 
         <AtomsCTAForm 

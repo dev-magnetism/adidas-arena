@@ -51,7 +51,7 @@
               {{ $formatDate(content.event.sessions) }}
             </TH4>
             <TP2
-            v-if="content.event.min_price && content.event.status_code!=='K'"
+            v-if="content.event.min_price && content.event.status_code!=='K' && content.event.status_code!=='B' && content.event.status_code!=='C' && content.event.status_code!=='H'"
               weight="medium"
               class="app-programmation-hero__main-card__from-price"
             >
@@ -68,7 +68,7 @@
         </div>
 
         <AtomsCTAForm 
-          v-if="content.event.status_code==='K' || content.event.status_code==='B' || content.event.status_code==='C'"
+          v-if="content.event.status_code==='K' || (content.event.status_code==='B' && content.event.presale)"
           :color="statutColor"
           :layer-color="statutColor"
           :bg="'grey'"
@@ -94,7 +94,7 @@
           }"
           class="app-programmation-hero__main-card__cta"
         >
-          {{ content.event.status_code==='H' ? `En savoir +` : `Réserver` }}
+          {{ content.event.status_code==='H' || (content.event.status_code==='B' && !content.event.presale) || content.event.status_code==='C' ? `En savoir +` : `Réserver` }}
         </AtomsCTA>
       </EKinesis>
     </div>

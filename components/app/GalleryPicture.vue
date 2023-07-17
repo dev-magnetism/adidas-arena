@@ -8,7 +8,7 @@
       :src="content.picture"
       format="webp"
       :alt="content.alt"
-      sizes="sm:50vw md:50vw"
+      sizes="sm:50vw md:100vw"
       @load="onLoad"
     />
     <div v-else class="picture-absolute" />
