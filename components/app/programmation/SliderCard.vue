@@ -105,25 +105,11 @@
         class="app-programmation-slider-card__cta"
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave"
-        v-else-if="event.status_code!=='K' && event.status_code!=='B'"
-        >Réserver</AtomsCTA>
-
-        <AtomsCTAForm 
-          :color="statutColor"
-          :layer-color="statutColor"
-          :bg="'grey'"
-          :session="event.sessions[0]" 
-          :eventId="event.id" 
-          :eventName="event.artist_reference"
-          :eventDate="event.sessions[0].date"
-          :statusCode="event.status_code"
-          v-else
-          class="app-programmation-slider-card__cta"
-          @mouseenter.native="onMouseEnter"
-          @mouseleave.native="onMouseLeave"
+        v-else
         >
-          Liste d'attente
-        </AtomsCTAForm>
+          {{ event.status_code==='K' || (event.status_code==='B' && event.presale)?`Liste d'attente`:`Réserver` }}
+        </AtomsCTA>
+
 
     </div>
     <span

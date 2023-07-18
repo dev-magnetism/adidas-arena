@@ -67,23 +67,7 @@
           </div>
         </div>
 
-        <AtomsCTAForm 
-          v-if="content.event.status_code==='K' || (content.event.status_code==='B' && content.event.presale)"
-          :color="statutColor"
-          :layer-color="statutColor"
-          :bg="'grey'"
-          :session="content.event.sessions[0]" 
-          :eventId="content.event.id" 
-          :eventName="content.event.artist_reference"
-          :eventDate="content.event.sessions[0].date"
-          :statusCode="content.event.status_code"
-          class="app-programmation-card__cta"
-        >
-          Liste d'attente
-        </AtomsCTAForm>
-
         <AtomsCTA
-          v-else
           :href="{
             name: 'programmation-id',
             params: {
@@ -94,7 +78,7 @@
           }"
           class="app-programmation-hero__main-card__cta"
         >
-          {{ content.event.status_code==='H' || (content.event.status_code==='B' && !content.event.presale) || content.event.status_code==='C' ? `En savoir +` : `Réserver` }}
+          {{ content.event.status_code==='H' || (content.event.status_code==='B' && !content.event.presale) || content.event.status_code==='C' ? `En savoir +` : content.event.status_code==='K' || (content.event.status_code==='B' && content.event.presale)? `Liste d'attente` :`Réserver` }}
         </AtomsCTA>
       </EKinesis>
     </div>

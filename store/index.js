@@ -337,7 +337,7 @@ export const actions = {
     commit('setActualitesArticleContent', actualitesArticle.data)
 
     const { meta } = await this.$axios.$get(
-      `https://www.accorarena.com/api-svc/partners/accor-arena/events?limit=1&page=1`
+      `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=1&page=1`
     )
 
     const limit = 50
@@ -352,7 +352,7 @@ export const actions = {
 
     for (const index of pages) {
       const payload = await this.$axios.$get(
-        `https://www.accorarena.com/api-svc/partners/accor-arena/events?limit=${limit}&page=${index}`
+        `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
       )
 
       const contents = payload.data
