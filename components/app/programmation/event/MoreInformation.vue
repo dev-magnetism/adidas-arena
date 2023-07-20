@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="event.content.description && sponsors.length"
+    v-if="event.content.description"
     class="app-programmation-event-more-information grid-inner"
   >
     <div

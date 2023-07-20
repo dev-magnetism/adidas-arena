@@ -108,9 +108,20 @@ export default {
   },
   computed: {
     mediaGalleryImages() {
-      return this.event.content.media_gallery.filter(
+
+      const _mediaGallery = JSON.parse(JSON.stringify(this.event.content.media_gallery))
+
+      let mediaGallery = _mediaGallery.filter(
         (item) => !item.youtube_url
       )
+
+      const mediaVideo = _mediaGallery.filter(
+        (item) => item.youtube_url
+      )
+
+      mediaGallery = (mediaVideo && !mediaVideo.image)? mediaGallery.splice(0, mediaGallery.length - 1): mediaGallery;
+
+      return mediaGallery
     },
     imageFrame() {
       return this.mediaGalleryImages.length >= 1 &&
@@ -126,16 +137,18 @@ export default {
     videoFrame() {
       const items = this.event.content.media_gallery || []
 
-      const videoItem = items.find((item) => item.youtube_url)
+      const videoItem = items.find((item) => item.youtube_url);
+      const ImageItem = items.filter((item) => !item.youtube_url);
+
       const image =
         videoItem && videoItem.image
           ? videoItem.image
-          : this.mediaGalleryImages[2]?.image
+          : ImageItem[ImageItem.length - 1]?.image
 
       if (videoItem) {
         videoItem.id = this.getYouTubeVideoId(videoItem.youtube_url)
       }
-
+    
       return videoItem && image ? { video: videoItem, image } : false
     },
     elHide() {
@@ -399,6 +412,7 @@ export default {
 
   &__right {
     grid-column: 9 / span 4;
+    min-height: desktop-vw(652px);
 
     @include mobile {
       grid-row: 2;
@@ -406,6 +420,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-height: unset;
     }
 
     .H2 {

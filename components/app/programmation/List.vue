@@ -432,9 +432,6 @@ export default {
       pointer-events: all;
 
       @include mobile {
-        top: unset;
-        align-self: self-end;
-        bottom: 10px;
 
         &::after {
           content: '';

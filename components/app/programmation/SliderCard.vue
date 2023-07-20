@@ -353,7 +353,7 @@ export default {
     border-top: 1px solid var(--c-black);
 
     @include mobile {
-      padding: mobile-vw(15px) mobile-vw(15px);
+      padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(65px) ;
       margin-top: mobile-vw(0px);
     }
   }
@@ -391,6 +391,11 @@ export default {
   &__from-price.P2 {
     margin-top: auto;
     max-width: 50%;
+
+    @include mobile {
+      margin-left: auto;
+      max-width: 100%;
+    }
   }
 
   &__cta.app-atoms-cta  {
@@ -409,8 +414,8 @@ export default {
     overflow: hidden;
 
     @include mobile {
-      height: mobile-vw(50px);
-      width: mobile-vw(55px);
+      padding: mobile-vw(15px) mobile-vw(20px) mobile-vw(15px) mobile-vw(20px);
+      height: mobile-vw(55px);
     }
   }
 }

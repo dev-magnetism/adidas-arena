@@ -508,6 +508,7 @@ export default {
 
       @include mobile {
         margin-top: mobile-vw(15px);
+        align-self: flex-end;
       }
     }
 

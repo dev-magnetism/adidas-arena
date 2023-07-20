@@ -318,7 +318,7 @@ export default {
     border-top: 1px solid var(--c-black);
 
     @include mobile {
-      padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(10px) mobile-vw(15px);
+      padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(76px) mobile-vw(15px);
     }
   }
 
@@ -354,6 +354,11 @@ export default {
   &__from-price.P2 {
     margin-top: auto;
     width: 50%;
+
+    @include mobile {
+      width: 100%;
+      text-align: right;
+    }
   }
 
   &__cta.app-atoms-cta {

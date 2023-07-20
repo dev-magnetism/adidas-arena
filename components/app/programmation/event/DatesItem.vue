@@ -180,7 +180,7 @@ export default {
     @include mobile {
       height: auto;
 
-      padding: mobile-vw(25px) mobile-vw(15px) mobile-vw(15px) mobile-vw(15px);
+      padding: mobile-vw(50px) mobile-vw(15px) mobile-vw(15px) mobile-vw(15px);
     }
   }
 

@@ -30,7 +30,7 @@
 
       <div
         class="app-programmation-event-hero__ticket-office-opening timeline-block"
-        v-if="event.status_code!=='H' && event.status_code!=='B' && event.status_code!=='C'"
+        v-if="event.opening && event.status_code==='B' && event.presale"
       >
         <TH4> {{ programmationsEventContent.glossary_opening_tickets }} </TH4>
         <TH4
@@ -67,9 +67,9 @@
         </TP2>
         <AtomsCTA
           v-if="event.sessions.length > 1 && 
-          (event.status_code==='B' && event.presale) ||
+          ((event.status_code==='B' && event.presale) ||
           event.status_code!=='C' &&
-          event.status_code!=='H'
+          event.status_code!=='H')
           "
           button
           @click.native="anchorToDates"

@@ -47,13 +47,6 @@
           <TH1 ref="menuTitle" tag="p" weight="bold">{{ menuName }} </TH1>
         </div>
 
-        <div class="app-menu__mobile-links">
-          <AppMenuLink
-            ref="programmationLink"
-            :content="menuProgrammation"
-            @onClickActiveLink="onCloseBurger"
-          />
-        </div>
 
         <div class="app-menu__main-links">
           <AppMenuLink
@@ -193,33 +186,24 @@ export default {
       if (this.$viewport.isMobile) {
         this.els.main = {
           vueComponents: [
-            this.$refs.programmationLink,
             ...this.$refs.mainLinks,
           ],
           nodesComponents: [
-            this.$refs.programmationLink.$el,
-
             ...this.$refs.mainLinks.map((link) => link.$el),
           ],
           nodesWrapper: [
-            this.$refs.programmationLink.$el.querySelector(
-              '.app-menu-link__title-wrapper'
-            ),
             ...this.$refs.mainLinks.map((link) =>
               link.$el.querySelector('.app-menu-link__title-wrapper')
             ),
           ],
           nodesTitle: [
-            this.$refs.programmationLink.$el.querySelector(
-              '.app-menu-link__title'
-            ),
             ...this.$refs.mainLinks.map((link) =>
               link.$el.querySelector('.app-menu-link__title')
             ),
           ],
         }
 
-        this.els.targetFlip = this.els.main.nodesComponents[1]
+        this.els.targetFlip = this.els.main.nodesComponents[2]
       }
     },
     onKeyUp(e) {
