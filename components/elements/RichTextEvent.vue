@@ -54,6 +54,7 @@ export default {
     margin: desktop-vw(20px) 0px desktop-vw(10px) 0px;
     @include h4();
     @include font-adihausDIN-cn-bold();
+
   }
 
   .p {

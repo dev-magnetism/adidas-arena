@@ -43,7 +43,10 @@
           class="app-programmation-event-safety-instructions__item"
         >
           <TH4 weight="medium">
-            {{ instruction.content.label }}
+            <ERichTextEvent 
+              :component="{ name: 'H4', weight: 'medium', tagTarget: 'p', tag: 'h4'}"
+              :content="instruction.content.description"
+            />
           </TH4>
         </div>
       </div>
@@ -239,11 +242,18 @@ export default {
     }
 
     .H4 {
+      .p{
+        margin: 0;
+        @include h4();
+        @include font-adihausDIN-cn-medium();
+      }
       @include mobile {
         font-size: mobile-vw(14px);
         line-height: mobile-vw(20px);
 
         @include font-adihausDIN-medium();
+
+
       }
     }
   }

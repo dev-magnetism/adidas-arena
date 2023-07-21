@@ -357,27 +357,46 @@ export const actions = {
 
       const contents = payload.data
 
-      contents.forEach((content) => {
-        content.content = content.translations.find(
+      //  contents.forEach(async(content) => {
+
+      for (let i = 0; i < contents.length; i++){
+
+        console.log('contents[i]', contents[i])
+
+        const payloadEvent = await this.$axios.$get(
+          `https://www.accorarena.com/api-svc/partners/adidas-arena/event/${contents[i].id}`
+        )
+
+        const contentEvent = payloadEvent
+
+        //  console.log('contentEvent', contentEvent)
+
+        contents[i].instruction_id = contentEvent.instruction_id ? contentEvent.instruction_id : []
+
+        //  console.log('content.instruction_id', contents[i].instruction_id)
+
+        contents[i].content = contents[i].translations.find(
           (translation) => translation.language === 'fr'
         )
 
-        content.content.category = content.content.category
-          ? content.content.category.toLowerCase()
+        contents[i].content.category = contents[i].content.category
+          ? contents[i].content.category.toLowerCase()
           : 'no cat'
 
-        content.sessions.forEach((session) => {
+        contents[i].sessions.forEach((session) => {
           session.content = session.translations.find(
             (translation) => translation.language === 'fr'
           )
         })
 
-        content.instruction_id.forEach((instruction) => {
-          instruction.content = instruction.instruction_id.translations.find(
+        contents[i].instruction_id.forEach((instruction) => {
+          instruction.content = instruction.translations.find(
             (translation) => translation.language === 'fr'
           )
+
+          //  console.log('instruction.content', instruction.content)
         })
-      })
+      }
 
       programmes.push(...contents)
     }

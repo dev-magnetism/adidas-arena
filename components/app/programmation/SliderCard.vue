@@ -18,8 +18,8 @@
           :alt="`slider-image-${event.artist_reference}`"
           :lazy="true"
           :sizes="{
-            desktop: 'w400,h400,fcrop,q85',
-            mobile: 'w400,h400,fcrop,q85',
+            desktop: 'w600,h600,fcrop,q85',
+            mobile: 'w600,h600,fcrop,q85',
           }"
         />
       </div>
