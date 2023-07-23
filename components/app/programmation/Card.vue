@@ -21,7 +21,7 @@
       />
 
       <AppProgrammationImage
-        :src="event.list_image.filename_disk"
+        :src="event.presentation_event.filename_disk"
         :alt="`card-image-${event.id}-${event.artist_reference}`"
         :lazy="true"
         :sizes="{
@@ -159,7 +159,6 @@ export default {
   },
   watch: {},
   mounted() {
-    console.log('event ', this.event);
     this.initMatchMedia()
   },
   beforeDestroy() {

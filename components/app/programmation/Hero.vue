@@ -29,7 +29,7 @@
           />
 
           <AppProgrammationImage
-            :src="content.event.list_image.filename_disk"
+            :src="content.event.presentation_event.filename_disk"
             :alt="`main-card-image-${content.event.id}-${content.event.artist_reference}`"
             :lazy="true"
             :sizes="{
@@ -154,7 +154,6 @@ export default {
     },
   },
   mounted() {
-    console.log('hero props', this.content);
     if (this.allLoadedFake && !this.$viewport.isMobile) {
       this.initSplitText()
       this.appearHero(0.95)

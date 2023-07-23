@@ -56,7 +56,6 @@ export default {
     },
     sponsors() {
       const sponsors = this.event.sponsors
-      console.log('sponsors', sponsors)
       sponsors.forEach((sponsor) => {
         sponsor.sponsor_id.content = sponsor.sponsor_id.translations.find(
           (translation) => translation.language === 'fr'

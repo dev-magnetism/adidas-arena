@@ -357,23 +357,16 @@ export const actions = {
 
       const contents = payload.data
 
-      //  contents.forEach(async(content) => {
-
       for (let i = 0; i < contents.length; i++){
 
-        console.log('contents[i]', contents[i])
-
+        // Récupération du flux par event pour la clé 'instruction_id' qui n'est pas complète dans le flux global
         const payloadEvent = await this.$axios.$get(
           `https://www.accorarena.com/api-svc/partners/adidas-arena/event/${contents[i].id}`
         )
 
         const contentEvent = payloadEvent
 
-        //  console.log('contentEvent', contentEvent)
-
         contents[i].instruction_id = contentEvent.instruction_id ? contentEvent.instruction_id : []
-
-        //  console.log('content.instruction_id', contents[i].instruction_id)
 
         contents[i].content = contents[i].translations.find(
           (translation) => translation.language === 'fr'
@@ -394,7 +387,6 @@ export const actions = {
             (translation) => translation.language === 'fr'
           )
 
-          //  console.log('instruction.content', instruction.content)
         })
       }
 

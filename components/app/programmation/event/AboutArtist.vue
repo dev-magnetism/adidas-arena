@@ -15,8 +15,8 @@
             :src="imageFrame.filename_disk"
             :alt="imageFrame.title"
             :sizes="{
-              desktop: 'w600,h600,fcrop,q85',
-              mobile: 'w600,h600,fcrop,q85',
+              desktop: 'w400,h400,fcrop,q85',
+              mobile: 'w400,h400,fcrop,q85',
             }"
           />
           <ELottie id="Cadre_01" start="top bottom-=15%" />
@@ -33,8 +33,8 @@
             :src="imageWithoutFrame.filename_disk"
             :alt="imageWithoutFrame.title"
             :sizes="{
-              desktop: 'w600,h600,fcrop,q85',
-              mobile: 'w600,h600,fcrop,q85',
+              desktop: 'w400,h400,fcrop,q85',
+              mobile: 'w400,h400,fcrop,q85',
             }"
           />
         </EKinesis>
@@ -57,8 +57,8 @@
               :src="videoFrame.image.filename_disk"
               :alt="videoFrame.image.title"
               :sizes="{
-                desktop: 'w600,h600,fcrop,q85',
-                mobile: 'w600,h600,fcrop,q85',
+                desktop: 'w400,h400,fcrop,q85',
+                mobile: 'w400,h400,fcrop,q85',
               }"
             />
           </div>

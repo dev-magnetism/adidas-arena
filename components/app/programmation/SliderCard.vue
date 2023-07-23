@@ -14,7 +14,7 @@
         />
         <AppProgrammationImage
           class="app-programmation-slider-card__visual__picture"
-          :src="event.list_image.filename_disk"
+          :src="event.presentation_event.filename_disk"
           :alt="`slider-image-${event.artist_reference}`"
           :lazy="true"
           :sizes="{
@@ -177,7 +177,6 @@ export default {
         : 'black'
     },
     whitedTexts() {
-    console.log('this.theme', this.theme)
       return this.theme === 'blue' || this.theme === 'red'
         ? 'white'
         : 'black'
