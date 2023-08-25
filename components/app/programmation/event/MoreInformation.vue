@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="event.content.description && sponsors.length"
+    v-if="event.content.description"
     class="app-programmation-event-more-information grid-inner"
   >
     <div
@@ -20,22 +20,24 @@
       v-if="sponsors.length"
       class="app-programmation-event-more-information__right"
     >
-      <a
+      <div
         v-for="(sponsor, index) in sponsors"
         :key="index"
-        :href="sponsor.sponsor_id.content.url"
-        target="_blank"
         class="app-programmation-event-more-information__item"
       >
         <AppProgrammationImage
           :src="sponsor.sponsor_id.logo.filename_disk"
           :alt="`image-${sponsor.sponsor_id.content.altImage}`"
           :lazy="true"
+          :sizes="{
+            desktop: 'w116,h116,fcrop,q85',
+            mobile: 'w116,h116,fcrop,q85',
+          }"
         />
         <TP2 weight="bold">
           {{ sponsor.sponsor_id.content.title }}
         </TP2>
-      </a>
+      </div>
     </div>
   </div>
 </template>
@@ -54,7 +56,6 @@ export default {
     },
     sponsors() {
       const sponsors = this.event.sponsors
-
       sponsors.forEach((sponsor) => {
         sponsor.sponsor_id.content = sponsor.sponsor_id.translations.find(
           (translation) => translation.language === 'fr'
@@ -113,7 +114,6 @@ export default {
     justify-content: flex-start;
     align-items: center;
     margin-bottom: desktop-vw(20px);
-    cursor: pointer;
 
     @include mobile {
       justify-content: flex-start;

@@ -19,11 +19,23 @@
         <AtomsCornerPoints :size-points="8" />
 
         <div class="app-programmation-hero__main-card__wrapper">
+
+          <AppProgrammationEventStatus
+            :presale="content.event.presale"
+            :reported="content.event.reported"
+            :status="content.event.status_code"
+            :color="statutColor"
+            class="app-programmation-event-status"
+          />
+
           <AppProgrammationImage
-            :src="content.event.list_image.filename_disk"
+            :src="content.event.presentation_event.filename_disk"
             :alt="`main-card-image-${content.event.id}-${content.event.artist_reference}`"
             :lazy="true"
-            :tiny="true"
+            :sizes="{
+              desktop: 'w600,h600,fcrop,q85',
+              mobile: 'w600,h600,fcrop,q85',
+            }"
           />
 
           <div class="app-programmation-hero__main-card__content">
@@ -39,13 +51,22 @@
               {{ $formatDate(content.event.sessions) }}
             </TH4>
             <TP2
+            v-if="content.event.min_price && content.event.status_code!=='K' && content.event.status_code!=='B' && content.event.status_code!=='C' && content.event.status_code!=='H'"
               weight="medium"
               class="app-programmation-hero__main-card__from-price"
             >
-              À partir de {{ content.event.min_price }}€
+              {{ programmationsEventContent.glossary_from_price }}
+              {{ content.event.min_price }}€
+            </TP2>
+            <TP2
+            v-else
+              weight="medium"
+              class="app-programmation-hero__main-card__from-price"
+            >
             </TP2>
           </div>
         </div>
+
         <AtomsCTA
           :href="{
             name: 'programmation-id',
@@ -57,7 +78,7 @@
           }"
           class="app-programmation-hero__main-card__cta"
         >
-          {{ contentCard.full ? `Liste d'attente` : `Réserver` }}
+          {{ content.event.status_code==='H' || (content.event.status_code==='B' && !content.event.presale) || content.event.status_code==='C' ? `En savoir +` : content.event.status_code==='K' || (content.event.status_code==='B' && content.event.presale)? `Liste d'attente` :`Réserver` }}
         </AtomsCTA>
       </EKinesis>
     </div>
@@ -70,10 +91,10 @@
     </div>
 
     <div class="app-programmation-hero__arrow-left">
-      <ELottie id="Fleche_2" start="top center+=20%" end="bottom center-=25%" />
+      <ELottie id="Fleche_2" start="top center+=25%" end="bottom center-=25%" />
     </div>
     <div class="app-programmation-hero__arrow-right">
-      <ELottie id="Fleche_2" start="top center+=20%" end="bottom center-=25%" />
+      <ELottie id="Fleche_2" start="top center+=25%" end="bottom center-=25%" />
     </div>
   </div>
 </template>
@@ -97,12 +118,23 @@ export default {
   computed: {
     ...mapState({
       programmationsContent: (state) => state.programmationsContent,
+      programmationsEventContent: (state) => state.programmationsEventContent,
       fontsLoaded: (state) => state.fontsLoaded,
       allLoadedFake: (state) => state.allLoadedFake,
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,
     }),
     contentCard() {
       return this.programmationsContent.find((el) => el.main_event)
+    },
+    theme() {
+      return this.index % 3 === 0
+        ? 'blue-adidas'
+        : this.index % 3 === 1
+        ? 'red-adidas'
+        : 'grey'
+    },
+    statutColor() {
+      return this.theme === 'grey' ? 'black' : this.theme
     },
   },
   watch: {
@@ -330,7 +362,7 @@ export default {
   }
 
   .child {
-    display: inline-block !important;
+    // display: inline-block !important;
   }
 
   .parent {
@@ -394,6 +426,16 @@ export default {
     display: flex;
     flex-direction: column;
     transform-origin: left center;
+
+
+    .app-programmation-event-status {
+      position: absolute;
+      right: 0;
+      border-right: none;
+      border-top: none;
+      top: 0;
+      z-index: 10;
+    }
 
     .app-element-kinesis {
       display: flex;
@@ -461,10 +503,11 @@ export default {
 
     &__from-price {
       margin-top: desktop-vw(30px);
-      align-self: flex-end;
+      align-self: flex-start;
 
       @include mobile {
         margin-top: mobile-vw(15px);
+        align-self: flex-end;
       }
     }
 

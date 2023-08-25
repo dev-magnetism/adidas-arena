@@ -1,52 +1,13 @@
 <template>
-  <a
-    v-if="external || automaticHref"
-    class="app-atoms-cta"
-    :class="classes"
-    :style="{
-      'background-color': `var(--c-${bg})`,
-      '--layer-color': `var(--c-${layerColor})`,
-    }"
-    :href="(href)?href:''"
-    :target="external || automaticHref || blank ? '_blank' : false"
-    @mouseenter="onMouseEnter"
-    @mouseleave="onMouseLeave"
-  >
-    <TP2
-      class="app-atoms-cta__text"
-      weight="bold"
-      :color="mousehover ? 'grey' : color"
-      ><slot
-    /></TP2>
-    <div v-if="arrow" class="app-atoms-cta__arrow">
-      <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
-    </div>
-  </a>
-  <nuxt-link
-    v-else-if="!button && (!external || !automaticHref)"
-    class="app-atoms-cta"
-    :class="classes"
-    :style="{
-      'background-color': `var(--c-${bg})`,
-      '--layer-color': `var(--c-${layerColor})`,
-    }"
-    :to="(href)?href:''"
-    :target="blank ? '_blank' : false"
-    @mouseenter.native="onMouseEnter"
-    @mouseleave.native="onMouseLeave"
-  >
-    <TP2
-      class="app-atoms-cta__text"
-      weight="bold"
-      :color="mousehover ? 'grey' : color"
-      ><slot
-    /></TP2>
-    <div v-if="arrow" class="app-atoms-cta__arrow">
-      <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
-    </div>
-  </nuxt-link>
-  <button
-    v-else-if="button"
+  <button 
+    data-tf-popup="ZAHIdrU3" 
+    data-tf-opacity="100" 
+    data-tf-size="70" 
+    data-tf-iframe-props="title=Test Adidas Arena" 
+    data-tf-transitive-search-params 
+    data-tf-medium="snippet" 
+    :data-tf-hidden="`list_name=${statusCode==='K'?'ListeD’Attente_':'PRV_'}${eventName}_${eventDate},api_key=EBu7rZdGJLInGv`" 
+
     class="app-atoms-cta"
     :class="classes"
     :style="{
@@ -55,23 +16,23 @@
     }"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
-  >
-    <TP2
-      class="app-atoms-cta__text"
-      weight="bold"
-      :color="mousehover ? 'grey' : color"
-      ><slot
-    /></TP2>
-    <div v-if="arrow" class="app-atoms-cta__arrow">
-      <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
-    </div>
-  </button>
+    >
+      <TP2
+        class="app-atoms-cta__text"
+        weight="bold"
+        :color="mousehover ? 'grey' : color"
+        ><slot
+      /></TP2>
+      <div v-if="arrow" class="app-atoms-cta__arrow">
+        <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
+      </div>
+      <script src="https://embed.typeform.com/next/embed.js"></script>
+    </button>
+
 </template>
 
 <script>
 import { gsap } from 'gsap'
-
-const validUrl = require('valid-url')
 
 export default {
   props: {
@@ -85,35 +46,36 @@ export default {
       required: false,
       default: 'blue-adidas',
     },
-    external: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    button: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    href: {
-      type: [String, Object],
-      required: false,
-      default: '#',
-    },
     color: {
       type: String,
       required: false,
       default: 'grey',
+    },
+    eventId: {
+      type: Number,
+      default: 0,
+    },
+    eventName: {
+      type: String,
+      default: 'Artist error',
+    },
+    eventDate: {
+      type: String,
+      default: '',
     },
     layerColor: {
       type: String,
       required: false,
       default: 'red-adidas',
     },
-    blank: {
-      type: Boolean,
+    session: {
+      type: Object,
+      default: () => {},
+    },
+    statusCode: {
+      type: String,
       required: false,
-      default: false,
+      default: 'D',
     },
   },
   data() {

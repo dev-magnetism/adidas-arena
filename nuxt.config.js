@@ -29,7 +29,7 @@ export default {
 
   publicRuntimeConfig: {
     baseURL: process.env.BASE_URL || 'https://www.adidasarena.com/',
-    apiKeyDelight: process.env.API_KEY_DELIGHT || 'MMcR9vQkDKfuug',
+    apiKeyDelight: process.env.API_KEY_DELIGHT || 'EBu7rZdGJLInGv',
   },
 
   telemetry: false,
@@ -96,7 +96,7 @@ export default {
       const routes = []
 
       const response = await axios.get(
-        `https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=1&page=1`
+        `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=1&page=1`
       )
 
       const lengthPages = Math.ceil(response.data.meta.total_count / limit)
@@ -107,7 +107,7 @@ export default {
 
       for (const index of pages) {
         const payload = await axios.get(
-          `https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
+          `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
         )
 
         const events = payload.data.data
@@ -122,6 +122,14 @@ export default {
           routes.push(`/programmation/${convertToKebabCase(url)}--${id}`)
         })
       }
+
+      const actualites = await axios.get(
+        `https://adidasarena.directus.app/items/Actualites?limit=-1`
+      )
+
+      actualites.data.data.forEach((actu) => {
+        routes.push(`/nos-actualites/${convertToKebabCase(actu.title)}`)
+      })
 
       return routes
     },
@@ -165,7 +173,7 @@ export default {
           baseURL: 'https://adidasarena.directus.app/',
           modifiers: {
             format: 'webp',
-            quality: 80,
+            quality: 90,
           },
         },
       },
@@ -187,6 +195,7 @@ export default {
     'nuxt-compress',
     '@nuxtjs/sitemap',
     '@nuxtjs/axios',
+    'vue-social-sharing/nuxt',
   ],
 
   robots: {
@@ -222,13 +231,18 @@ export default {
     name: 'adidas arena',
     templateTitle: '%name% — %title%',
     keywords: 'adidas, arena, sports, concerts',
-    image: '/seo.jpg',
+    image: `${process.env.BASE_URL || 'https://www.adidasarena.com/'}seo.jpg`,
     openGraph: {
       type: 'website',
       name: 'adidas arena',
       image: {
-        url: '/seo.jpg',
+        url: `${process.env.BASE_URL || 'https://www.adidasarena.com/'}seo.jpg`,
       },
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'adidas arena',
+      image: `${process.env.BASE_URL || 'https://www.adidasarena.com/'}seo.jpg`,
     },
   },
 

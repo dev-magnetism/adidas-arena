@@ -1,5 +1,11 @@
 <template>
   <div :style="styles" class="app-programmation-slider-card">
+        <AppProgrammationEventStatus
+          :presale="event.presale"
+          :reported="event.reported"
+          :status="event.status_code"
+          :color="statutColor"
+        />
     <div class="app-programmation-slider-card__visual">
       <div class="app-programmation-slider-card__visual__wrapper">
         <div
@@ -8,10 +14,13 @@
         />
         <AppProgrammationImage
           class="app-programmation-slider-card__visual__picture"
-          :src="event.list_image.filename_disk"
+          :src="event.presentation_event.filename_disk"
           :alt="`slider-image-${event.artist_reference}`"
           :lazy="true"
-          :tiny="true"
+          :sizes="{
+            desktop: 'w600,h600,fcrop,q85',
+            mobile: 'w600,h600,fcrop,q85',
+          }"
         />
       </div>
     </div>
@@ -21,46 +30,87 @@
         <TP2
           class="type"
           weight="bold"
-          :color="whitedTexts ? 'white' : 'black'"
+          :color="whitedTexts"
           tag="h3"
         >
-          {{ event.content.category }}
+          {{ (event.content.category.toLowerCase() !== "no cat")? event.content.category : '' }}
         </TP2>
         <TP2
           v-if="event.sessions"
           class="date"
           weight="medium"
-          :color="whitedTexts ? 'white' : 'black'"
+          :color="whitedTexts"
         >
           {{ $formatDate(event.sessions) }}
         </TP2>
       </div>
-      <TH2 :color="whitedTexts ? 'white' : 'black'" weight="bold">
+      <TH2 :color="whitedTexts" weight="bold">
         {{ event.artist_reference }}
       </TH2>
 
       <TP2
-        v-if="event.min_price"
+        v-if="event.min_price && event.status_code!=='K' && event.status_code!=='B' && event.status_code!=='C' && event.status_code!=='H'"
         class="app-programmation-slider-card__from-price"
         weight="medium"
-        :color="whitedTexts ? 'white' : 'black'"
+        :color="whitedTexts"
       >
-        À partir de {{ event.min_price }}€
+        {{ programmationsEventContent.glossary_from_price }}
+        {{ event.min_price }}€
       </TP2>
 
-      <nuxt-link
-        class="app-programmation-slider-card__cta"
-        :to="{
+      <TP2
+        weight="medium"
+        :color="whitedTexts"
+        v-else-if="event.status_code==='K'"
+        class="app-programmation-slider-card__from-price"
+      >
+        Show complet, inscrivez-vous sur la liste d’attente !
+      </TP2>
+
+      <TP2
+        weight="medium"
+        :color="whitedTexts"
+        v-else-if="event.status_code==='B' && event.presale"
+        class="app-programmation-slider-card__from-price"
+      >
+        Inscrivez-vous sur la liste d’attente !
+      </TP2>
+
+      <AtomsCTA
+        :color="statutColor"
+        :layer-color="statutColor"
+        :bg="'grey'"
+        :href="{
           name: 'programmation-id',
           params: {
             id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
           },
         }"
+        class="app-programmation-slider-card__cta"
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave"
-      >
-        <SvgCtaUnion ref="arrow" :color="ctaColor" />
-      </nuxt-link>
+        v-if="event.status_code==='H' || (event.status_code==='B' && !event.presale) || event.status_code==='C'"
+        >En savoir +</AtomsCTA>
+
+      <AtomsCTA
+        :color="statutColor"
+        :layer-color="statutColor"
+        :bg="'grey'"
+        :href="{
+          name: 'programmation-id',
+          params: {
+            id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
+          },
+        }"
+        class="app-programmation-slider-card__cta"
+        @mouseenter.native="onMouseEnter"
+        @mouseleave.native="onMouseLeave"
+        v-else
+        >
+          {{ event.status_code==='K' || (event.status_code==='B' && event.presale)?`Liste d'attente`:`Réserver` }}
+        </AtomsCTA>
+
+
     </div>
     <span
       :class="{ full: event.status_code === 'K' }"
@@ -72,8 +122,8 @@
 </template>
 
 <script>
-import { gsap } from 'gsap'
-import { mapMutations } from 'vuex'
+//  import { gsap } from 'gsap'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   props: {
@@ -96,6 +146,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      programmationsEventContent: (state) => state.programmationsEventContent,
+    }),
     styles() {
       return {
         '--bg':
@@ -109,7 +162,13 @@ export default {
         }deg`,
       }
     },
-
+    statutColor() {
+      return this.theme === 'blue'
+        ? 'blue-adidas'
+        : this.theme === 'red'
+        ? 'red-adidas'
+        : 'black'
+    },
     ctaColor() {
       return this.theme === 'blue'
         ? 'blue-adidas'
@@ -119,6 +178,8 @@ export default {
     },
     whitedTexts() {
       return this.theme === 'blue' || this.theme === 'red'
+        ? 'white'
+        : 'black'
     },
   },
   mounted() {
@@ -127,7 +188,7 @@ export default {
     this.initTimelineArrow()
   },
   beforeDestroy() {
-    this.tlArrow?.kill()
+    //  this.tlArrow?.kill()
   },
   methods: {
     onMouseEnter() {
@@ -135,20 +196,20 @@ export default {
 
       this.setCursorState('hide')
 
-      this.tlArrow?.play()
+      //  this.tlArrow?.play()
     },
     onMouseLeave() {
       if (this.$viewport.isMobile) return
 
       this.setCursorState('slider')
 
-      this.tlArrow?.reverse()
+      //  this.tlArrow?.reverse()
     },
     initTimelineArrow() {
-      if (this.$viewport.isMobile) return
+      //  if (this.$viewport.isMobile) return
 
-      this.tlArrow = gsap.timeline({ paused: true })
-
+      // this.tlArrow = gsap.timeline({ paused: true })
+      /*
       this.tlArrow.to(this.$refs.arrow.$el, {
         x: `${this.$viewport.width * 0.048611111111}px`, // width cta
         duration: 0.5,
@@ -164,6 +225,7 @@ export default {
         duration: 0.25,
         ease: 'power3.out',
       })
+      */
     },
     genRand(min, max, decimalPlaces) {
       const rand = Math.random() * (max - min) + min
@@ -215,6 +277,16 @@ export default {
 
   @include mobile {
     flex: 0 0 75%;
+  }
+
+
+  .app-programmation-event-status {
+    position: absolute;
+    right: 0;
+    border-right: none;
+    border-top: none;
+    top: 0;
+    z-index: 10;
   }
 
   &__full {
@@ -280,7 +352,7 @@ export default {
     border-top: 1px solid var(--c-black);
 
     @include mobile {
-      padding: mobile-vw(15px) mobile-vw(15px);
+      padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(65px) ;
       margin-top: mobile-vw(0px);
     }
   }
@@ -317,13 +389,18 @@ export default {
 
   &__from-price.P2 {
     margin-top: auto;
+    max-width: 50%;
+
+    @include mobile {
+      margin-left: auto;
+      max-width: 100%;
+    }
   }
 
-  &__cta {
+  &__cta.app-atoms-cta  {
     position: absolute;
     bottom: 0;
     height: desktop-vw(55px);
-    width: desktop-vw(70px);
     background: var(--c-grey);
     right: 0;
     display: flex;
@@ -336,8 +413,8 @@ export default {
     overflow: hidden;
 
     @include mobile {
-      height: mobile-vw(50px);
-      width: mobile-vw(55px);
+      padding: mobile-vw(15px) mobile-vw(20px) mobile-vw(15px) mobile-vw(20px);
+      height: mobile-vw(55px);
     }
   }
 }
