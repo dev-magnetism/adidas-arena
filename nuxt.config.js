@@ -231,13 +231,18 @@ export default {
     name: 'adidas arena',
     templateTitle: '%name% — %title%',
     keywords: 'adidas, arena, sports, concerts',
-    image: '/seo.jpg',
+    image: `${process.env.BASE_URL || 'https://www.adidasarena.com/'}seo.jpg`,
     openGraph: {
       type: 'website',
       name: 'adidas arena',
       image: {
-        url: '/seo.jpg',
+        url: `${process.env.BASE_URL || 'https://www.adidasarena.com/'}seo.jpg`,
       },
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'adidas arena',
+      image: `${process.env.BASE_URL || 'https://www.adidasarena.com/'}seo.jpg`,
     },
   },
 
