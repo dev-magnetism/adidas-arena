@@ -39,25 +39,26 @@ export default {
   },
   watch: {
     accepted(newVal) {
-      if (newVal) this.initializeGTM()
+      // if (newVal) this.initializeGTM()
     },
   },
   mounted() {
-    this.accepted = this.$cookies.get('aa-cookies')
+    this.initializeGTM()
+
+    // this.accepted = this.$cookies.get('aa-cookies')
   },
   methods: {
     onAccept() {
-      if (!this.accepted) {
-        this.$cookies.set('aa-cookies', true, {
-          path: '/',
-          maxAge: 60 * 60 * 24 * 7 * 4 * 6,
-        })
-
-        this.accepted = true
-      }
+      // if (!this.accepted) {
+      //   this.$cookies.set('aa-cookies', true, {
+      //     path: '/',
+      //     maxAge: 60 * 60 * 24 * 7 * 4 * 6,
+      //   })
+      //   this.accepted = true
+      // }
     },
     onDenied() {
-      this.denied = true
+      // this.denied = true
     },
     initializeGTM() {
       this.$gtm.init('GTM-TJGC9WK')
@@ -77,6 +78,11 @@ export default {
   left: var(--layout-margin);
   transition: opacity 0.35s var(--ease-in-out-cubic);
 
+  display: none;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+
   @include mobile {
     left: mobile-vw(12px);
     width: calc(100% - mobile-vw(24px));
@@ -95,6 +101,7 @@ export default {
     align-self: center;
     text-transform: uppercase;
     margin-bottom: desktop-vw(25px);
+    user-select: none;
 
     @include mobile {
       margin: 0 auto mobile-vw(20px) 0;
@@ -122,6 +129,7 @@ export default {
     margin-bottom: desktop-vw(15px);
     @include font-adihausDIN();
     text-transform: uppercase;
+    user-select: none;
 
     @include mobile {
       margin-bottom: mobile-vw(15px);
@@ -135,6 +143,7 @@ export default {
     .app-atoms-cta {
       flex: 0 0 55%;
       padding: 10px 10px 10px 20px;
+      user-select: none;
 
       .P2 {
         font-size: 20px;
@@ -153,6 +162,7 @@ export default {
       text-align: center;
       align-self: center;
       text-transform: uppercase;
+      user-select: none;
 
       @include mobile {
         margin: 0 auto 0 mobile-vw(20px);

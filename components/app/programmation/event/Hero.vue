@@ -2,18 +2,17 @@
   <div class="app-programmation-event-hero grid-inner">
     <div class="app-programmation-event-hero__left">
       <TH4
-        v-if="event.status_code === 'H' || event.status_code === 'K'"
         color="red-adidas"
         class="app-programmation-event-hero__full timeline-text"
       >
-        {{ event.status_code === 'H' ? 'Annulé' : '' }}
-        {{ event.status_code === 'K' ? 'Complet' : '' }}
+        {{ event.reported ? programmationsEventContent.glossary_deferred : event.status_code === 'H' ? programmationsEventContent.glossary_cancelled : event.status_code === 'K' ? programmationsEventContent.glossary_full : '' }}
       </TH4>
       <TH4
         color="blue-adidas"
         class="app-programmation-event-hero__soon timeline-text"
       >
-        bientôt disponible
+        {{ event.presale && event.status_code === 'B' ? programmationsEventContent.glossary_presales : event.status_code === 'B' || event.status_code === 'C' ? programmationsEventContent.glossary_soon_available : '' }}
+
       </TH4>
       <TH2Bis
         ref="date"
@@ -31,22 +30,67 @@
 
       <div
         class="app-programmation-event-hero__ticket-office-opening timeline-block"
+        v-if="event.opening && event.status_code==='B' && event.presale"
       >
-        <TH4>Ouverture de la billetterie : </TH4>
+        <TH4> {{ programmationsEventContent.glossary_opening_tickets }} </TH4>
         <TH4
           weight="bold"
           color="red-adidas"
           class="app-programmation-event-hero__ticket-office-opening__date"
         >
-          le 15 novembre 2023
+          le {{ $formatDate(event.opening) }}
         </TH4>
       </div>
 
       <div class="app-programmation-event-hero__cta timeline-block">
-        <TP2 weight="medium" class="app-programmation-event-hero__information">
-          Exclusivité en France, à partir de {{ event.min_price }}€
+        <TP2 
+          v-if="event.status_code==='D'"
+          weight="medium" 
+          class="app-programmation-event-hero__information"
+        >
+          {{ programmationsEventContent.glossary_exclu_france_price }}
+          {{ event.min_price }}€
         </TP2>
-        <AtomsCTA> Réserver mon billet </AtomsCTA>
+        <TP2 
+          v-else-if="event.status_code==='K'"
+          weight="medium" 
+          class="app-programmation-event-hero__information"
+        >
+          Show complet, inscrivez-vous sur la liste d’attente !
+        </TP2>
+        <TP2 
+          v-else-if="event.status_code==='B' && event.presale"
+          weight="medium" 
+          class="app-programmation-event-hero__information"
+        >
+          Inscrivez-vous sur la liste d’attente !
+        </TP2>
+        <AtomsCTA
+          v-if="event.sessions.length > 1 && 
+          ((event.status_code==='B' && event.presale) ||
+          event.status_code!=='C' &&
+          event.status_code!=='H')
+          "
+          button
+          @click.native="anchorToDates"
+        >
+          {{ event.status_code==='K' || (event.status_code==='B' && event.presale) ? `Liste d'attente` : `Réserver` }}
+        </AtomsCTA>
+        
+
+        <AtomsCTAForm 
+          :session="event.sessions[0]" 
+          :eventId="event.id" 
+          :eventName="event.artist_reference"
+          :eventDate="event.sessions[0].date"
+          :statusCode="event.status_code"
+          v-else-if="event.status_code==='K' || (event.status_code==='B' && event.presale)"
+        >
+          Liste d'attente
+        </AtomsCTAForm>
+        <AtomsCTA v-else-if="event.status_code==='D'" :href="event.sessions[0].content.url">
+          Réserver mon billet
+        </AtomsCTA>
       </div>
     </div>
     <div ref="rightEl" class="app-programmation-event-hero__right">
@@ -58,14 +102,18 @@
       />
 
       <AtomsCornerPoints :size-points="10" />
-      <AppProgrammationEventTag>
+      <AppProgrammationEventTag v-if="event.content.category.toLowerCase() !== 'no cat'">
         {{ event.content.category }}
       </AppProgrammationEventTag>
 
       <AppProgrammationImage
-        :src="event.list_image.filename_disk"
+        :src="event.presentation_event.filename_disk"
         :alt="`image-`"
         :lazy="false"
+        :sizes="{
+          desktop: 'w600,h600,fcrop,q85',
+          mobile: 'w600,h600,fcrop,q85',
+        }"
       />
     </div>
   </div>
@@ -77,6 +125,9 @@ import { SplitText } from 'gsap/SplitText'
 
 import lottie from 'lottie-web'
 import { mapState, mapMutations } from 'vuex'
+
+import { createPopup } from '@typeform/embed'
+import '@typeform/embed/build/css/popup.css'
 
 export default {
   props: {
@@ -98,6 +149,7 @@ export default {
     ...mapState({
       allLoadedFake: (state) => state.allLoadedFake,
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,
+      programmationsEventContent: (state) => state.programmationsEventContent,
     }),
   },
   watch: {
@@ -124,6 +176,35 @@ export default {
     this.lottieBottom?.destroy()
   },
   methods: {
+    popup() {
+
+      const options = {
+        opacity: '100',
+        size: '70',
+        iframeProps: {
+          title:'Test Adidas Arena',
+        },
+        transitiveSearchParams: '',
+        medium: 'snippet', 
+        hidden: {
+          list_name:'Site Adidas Arena',
+          api_key:'EBu7rZdGJLInGv'
+        }
+
+      }
+
+        
+      const { toggle } = createPopup('ZAHIdrU3', options)
+
+      toggle
+    },
+    anchorToDates() {
+      window.lenis.scrollTo('.app-programmation-event-dates', {
+        lock: true,
+        duration: 0.75,
+        offset: -35,
+      })
+    },
     initTimeline(delay = 0) {
       if (this.$viewport.isMobile) {
         this.setAllowScroll(true)
@@ -382,6 +463,7 @@ export default {
 
   &__title {
     margin-bottom: desktop-vw(55px);
+    font-size: 8.680555555555556vW;
 
     @include mobile {
       margin-bottom: mobile-vw(30px);

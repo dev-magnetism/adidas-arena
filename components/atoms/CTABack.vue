@@ -19,21 +19,30 @@ export default {
   align-items: center;
   background: var(--c-black);
   z-index: 1;
+  justify-content: center;
 
   @include hover {
     cursor: pointer;
   }
 
   @include mobile {
-    padding: mobile-vw(10px) mobile-vw(12px);
+    padding: mobile-vw(8px) mobile-vw(8px);
   }
 
   svg {
     margin-right: desktop-vw(15px);
+
+    @include mobile {
+      margin-right: mobile-vw(0px);
+    }
   }
 
   .P1 {
     @include font-adihausDIN-cn-bold();
+
+    @include mobile {
+      display: none;
+    }
   }
 }
 </style>

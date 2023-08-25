@@ -2,105 +2,56 @@
   <div
     :class="{ 'is-appear': isAppear, 'in-view': inView }"
     :style="bgColor"
-    class="app-programmation-card"
+    class="app-actualites-card"
     @click="onRouterPush"
   >
-    <div ref="layerFiltering" class="app-programmation-card__layer-filtering" />
+    <div ref="layerFiltering" class="app-actualites-card__layer-filtering" />
 
-    <div class="app-programmation-card__visual">
-      <AppProgrammationEventStatus
-        :presale="event.presale"
-        :reported="event.reported"
-        :status="event.status_code"
-        :color="statutColor"
-      />
-
+    <div class="app-actualites-card__visual">
       <div
         :class="{ 'is-appear': isAppear }"
-        class="app-programmation-card__layer"
+        class="app-actualites-card__layer"
       />
 
-      <AppProgrammationImage
-        :src="event.presentation_event.filename_disk"
-        :alt="`card-image-${event.id}-${event.artist_reference}`"
-        :lazy="true"
-        :sizes="{
-          desktop: 'w600,h600,fcrop,q85',
-          mobile: 'w600,h600,fcrop,q85',
-        }"
+      <nuxt-picture
+        ref="picture"
+        provider="directus"
+        :src="content.cover.filename_disk"
+        format="webp"
+        :alt="`hero-cover-${content.title}`"
+        sizes="sm:85vw md:50vw"
+        loading="lazy"
       />
     </div>
 
-    <div class="app-programmation-card__informations">
-      <div class="app-programmation-card__head">
-        <TP2 class="type" weight="bold" :color="whitedTexts" tag="h3">
-          {{ (event.content.category.toLowerCase() !== "no cat")? event.content.category : '' }}
-        </TP2>
-        <TP2 class="date" weight="medium" :color="whitedTexts" tag="h3">
-          {{ $formatDate(event.sessions, true) }}
+    <div class="app-actualites-card__informations">
+      <div class="app-actualites-card__head">
+        <TP2 class="type" weight="bold" :color="'blue-adidas'" tag="h3">
+          {{ frenchDate }}
         </TP2>
       </div>
-      <TH2 :color="whitedTexts" weight="bold" tag="h2">
-        {{ event.artist_reference }}
-      </TH2>
+
+      <TH4 :color="whitedTexts" weight="bold" tag="h4">
+        {{ content.title }}
+      </TH4>
 
       <TP2
-        v-if="event.min_price && event.status_code!=='K' && event.status_code!=='B' && event.status_code!=='C' && event.status_code!=='H'"
-        class="app-programmation-card__from-price"
-        weight="medium"
+        class="app-actualites-card__reading-time"
+        weight="regular"
         :color="whitedTexts"
       >
-        {{ programmationsEventContent.glossary_from_price }}
-        {{ event.min_price }}€
-      </TP2>
-
-      <TP2
-        weight="medium"
-        :color="whitedTexts"
-        v-else-if="event.status_code==='K'"
-        class="app-programmation-card__from-price"
-      >
-        Show complet, inscrivez-vous sur la liste d’attente !
-      </TP2>
-
-      <TP2
-        weight="medium"
-        :color="whitedTexts"
-        v-else-if="event.status_code==='B' && event.presale"
-        class="app-programmation-card__from-price"
-      >
-        Inscrivez-vous sur la liste d’attente !
+        TEMPS DE LECTURE : {{ content.reading_time }}
       </TP2>
 
       <AtomsCTA
         :color="statutColor"
         :layer-color="statutColor"
         :bg="'grey'"
-        :href="{
-          name: 'programmation-id',
-          params: {
-            id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
-          },
-        }"
-        class="app-programmation-card__cta"
-        v-if="event.status_code==='H' || (event.status_code==='B' && !event.presale) || event.status_code==='C'"
-        >En savoir +</AtomsCTA>
-
-      <AtomsCTA
-        :color="statutColor"
-        :layer-color="statutColor"
-        :bg="'grey'"
-        :href="{
-          name: 'programmation-id',
-          params: {
-            id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
-          },
-        }"
-        class="app-programmation-card__cta"
-        v-else
-        >
-          {{ event.status_code==='K' || (event.status_code==='B' && event.presale)?`Liste d'attente`:`Réserver` }}
-        </AtomsCTA>
+        class="app-actualites-card__cta"
+        button
+      >
+        Lire la suite
+      </AtomsCTA>
     </div>
   </div>
 </template>
@@ -112,7 +63,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default {
   props: {
-    event: {
+    content: {
       type: Object,
       default: () => {},
     },
@@ -130,7 +81,7 @@ export default {
   },
   computed: {
     ...mapState({
-      programmationsEventContent: (state) => state.programmationsEventContent,
+      actualites: (state) => state.actualites,
     }),
     bgColor() {
       return {
@@ -144,17 +95,15 @@ export default {
         ? 'red-adidas'
         : 'black'
     },
-    ctaColor() {
-      return this.theme === 'blue-adidas'
-        ? 'blue-adidas'
-        : this.theme === 'red-adidas'
-        ? 'red-adidas'
-        : 'black'
-    },
     whitedTexts() {
-      return this.theme === 'blue-adidas' || this.theme === 'red-adidas'
-        ? 'white'
-        : 'black'
+      return 'black'
+    },
+    frenchDate() {
+      const date = new Date(this.content.date)
+
+      const options = { day: 'numeric', month: 'long', year: 'numeric' }
+
+      return date.toLocaleDateString('fr-FR', options)
     },
   },
   watch: {},
@@ -169,11 +118,9 @@ export default {
   methods: {
     onRouterPush() {
       this.$router.push({
-        name: 'programmation-id',
+        name: 'nos-actualites-id',
         params: {
-          id: `${this.$convertToKebabCase(this.event.content.url)}--${
-            this.event.id
-          }`,
+          id: `${this.content.slug}`,
         },
       })
     },
@@ -218,14 +165,14 @@ export default {
 </script>
 
 <style lang="scss">
-.app-programmation-card {
+.app-actualites-card {
   grid-column: span 4;
   width: 100%;
   display: flex;
   flex-direction: column;
   position: relative;
   border: 1px solid var(--c-black);
-  background-color: var(--bg);
+  background-color: var(--c-grey);
   cursor: pointer;
 
   @include mobile {
@@ -245,17 +192,17 @@ export default {
   }
 
   &:nth-child(3n + 1) {
-    .app-programmation-card__layer {
+    .app-actualites-card__layer {
       transition-delay: 0.1s;
     }
   }
   &:nth-child(3n + 2) {
-    .app-programmation-card__layer {
+    .app-actualites-card__layer {
       transition-delay: 0.3s;
     }
   }
   &:nth-child(3n + 3) {
-    .app-programmation-card__layer {
+    .app-actualites-card__layer {
       transition-delay: 0.5s;
     }
   }
@@ -286,15 +233,6 @@ export default {
     display: block;
     position: relative;
     z-index: 0;
-
-    .app-programmation-event-status {
-      position: absolute;
-      right: 0;
-      border-right: none;
-      border-top: none;
-      top: 0;
-      z-index: 10;
-    }
   }
 
   picture {
@@ -303,6 +241,10 @@ export default {
     display: block;
     position: relative;
     @include noise();
+
+    @include mobile {
+      aspect-ratio: 350 / 350;
+    }
 
     img {
       display: block;
@@ -317,7 +259,7 @@ export default {
     border-top: 1px solid var(--c-black);
 
     @include mobile {
-      padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(76px) mobile-vw(15px);
+      padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(10px) mobile-vw(15px);
     }
   }
 
@@ -330,37 +272,28 @@ export default {
     }
     .type {
     }
-
-    .date {
-      margin-left: desktop-vw(30px);
-    }
   }
 
-  .H2.bold {
-    font-size: desktop-vw(64px);
-    line-height: desktop-vw(58px);
-    margin-top: desktop-vw(5px);
+  .H4.bold {
+    margin-top: desktop-vw(15px);
     margin-bottom: desktop-vw(70px);
 
     @include mobile {
       margin-top: mobile-vw(5px);
       margin-bottom: mobile-vw(85px);
-      font-size: mobile-vw(46px);
-      line-height: mobile-vw(42px);
     }
   }
 
-  &__from-price.P2 {
+  &__reading-time.P2 {
     margin-top: auto;
-    width: 50%;
+    text-transform: uppercase;
 
     @include mobile {
-      width: 100%;
-      text-align: right;
+      width: 35%;
     }
   }
 
-  &__cta.app-atoms-cta {
+  &__cta {
     position: absolute;
     bottom: 0;
     background: var(--c-grey);

@@ -80,6 +80,11 @@ select {
   cursor: pointer;
 }
 
+strong,
+b {
+  font-weight: bold;
+}
+
 .char,
 .word,
 .line {

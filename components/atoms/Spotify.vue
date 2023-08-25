@@ -12,9 +12,13 @@
 
     <div class="app-atoms-spotify__cover">
       <AppProgrammationImage
+        v-if="tile.image"
         :src="tile.image.filename_disk"
         :alt="`image-${tile.title}`"
-        :tiny="true"
+        :sizes="{
+          desktop: 'w116,h116,fcrop,q85',
+          mobile: 'w116,h116,fcrop,q85',
+        }"
       />
     </div>
     <div class="app-atoms-spotify__artist">

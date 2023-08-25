@@ -1,29 +1,50 @@
 <template>
   <main class="app-programmation-event">
+    <AtomsCTABack
+      :class="{
+        reduced: headerReduced,
+        hide: !appearCTABack,
+      }"
+      class="app-programmation-event__cta-back"
+      @click.native="onBack()"
+    >
+      Retour
+    </AtomsCTABack>
+
     <AppProgrammationEventHero ref="hero" :event="event" />
+
     <AppProgrammationEventCancelation
       v-if="event.status_code === 'H'"
       :content="contentCancelation"
     />
+
     <AppProgrammationEventMoreInformation :event="event" />
+
     <AppProgrammationEventDates
       v-if="event.sessions.length - 1 >= 1"
       :content="contentDates"
       :event="event"
       @onSelectDate="onSelectDate"
     />
+
     <AppProgrammationEventTicketing
       :event="event"
       :content="contentTicketing"
       :index-date="event.sessions.length - 1 > 0 ? indexDate : 0"
+
+      v-if="event.status_code!=='H' && event.status_code!=='K' && event.status_code!=='B' && event.status_code!=='C'"
     />
+
     <!-- <AppProgrammationEventOffers ref="offers" /> -->
     <AppProgrammationEventSafetyInstructions :content="contentSafety" />
+
     <AppProgrammationEventAboutArtist :event="event" />
+
     <AppProgrammationEventMoreEvents :content="contentMoreEvents" />
+
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
+
     <AppProgrammationEventBar :event="event" :class="{ hide: !appearBar }" />
-    <!-- <AppProgrammationPopinWaitingLine /> -->
   </main>
 </template>
 
@@ -72,6 +93,7 @@ export default {
   data() {
     return {
       appearBar: false,
+      appearCTABack: true,
       indexDate: null,
     }
   },
@@ -95,6 +117,7 @@ export default {
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
       programmationsEventContent: (state) => state.programmationsEventContent,
+      headerReduced: (state) => state.headerReduced,
     }),
     contentCancelation() {
       return {
@@ -113,8 +136,15 @@ export default {
       }
     },
     contentSafety() {
+      const externalItems =
+        !this.event.instruction_id || this.event.instruction_id.length > 0
+
       return {
         title: this.programmationsEventContent.safety_instructions_title,
+        externalItems,
+        items: externalItems
+          ? this.event.instruction_id
+          : this.programmationsEventContent.safety_instructions_items,
       }
     },
     contentMoreEvents() {
@@ -133,17 +163,35 @@ export default {
   },
 
   mounted() {
-    console.log('event', this.event)
-
+    this.initScrollTrigger()
     this.initMatchMedia()
   },
   beforeDestroy() {
+    this.scrollTriggerCTA?.kill()
     this.scrollTrigger?.kill()
     this.mm?.kill()
   },
   methods: {
+    onBack() {
+      this.$router.push({ path: '/programmation' })
+    },
     onSelectDate(index) {
       this.indexDate = index
+    },
+    initScrollTrigger() {
+      this.scrollTriggerCTA = ScrollTrigger.create({
+        trigger: this.$el,
+        start: 'top top',
+        end: 'top center-=25%',
+        endTrigger: '.app-footer',
+        fastScrollEnd: true,
+        onEnterBack: (e) => {
+          this.appearCTABack = true
+        },
+        onLeave: () => {
+          this.appearCTABack = false
+        },
+      })
     },
     initMatchMedia() {
       this.mm = gsap.matchMedia()
@@ -181,6 +229,33 @@ export default {
 
   @include mobile {
     padding-top: mobile-vw(85px);
+  }
+
+  &__cta-back {
+    position: fixed;
+    top: 65px;
+    left: var(--layout-margin);
+    z-index: 3;
+    transition: transform 0.65s var(--ease-out-cubic),
+      opacity 0.35s var(--ease-in-out-cubic);
+    will-change: transform;
+
+    @include mobile {
+      top: mobile-vw(25px);
+    }
+
+    &.reduced {
+      transform: translate(0%, -40px);
+
+      @include mobile {
+        transform: translate(0%, 0%);
+      }
+    }
+
+    &.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
   }
 
   .app-footer {

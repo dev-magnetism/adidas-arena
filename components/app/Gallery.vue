@@ -123,7 +123,6 @@ export default {
 
     this.initGUI()
   },
-
   beforeDestroy() {
     this.observer?.kill()
     this.scrollTrigger?.kill()

@@ -359,7 +359,10 @@ export default {
       }
       &__text.app-element-rich-text {
         width: 80%;
-        margin-left: auto;
+        
+        @include mobile {
+          margin-left: auto;
+        }
 
         .P2.wysiwyg-text {
           @include font-adihausDIN-medium();

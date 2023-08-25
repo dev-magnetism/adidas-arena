@@ -1,6 +1,9 @@
 <template>
-  <div class="app-programmation-event-about-artist grid-inner">
-    <div class="app-programmation-event-about-artist__left">
+  <div v-if="elHide" class="app-programmation-event-about-artist grid-inner">
+    <div
+      v-if="imageFrame || imageWithoutFrame || videoFrame"
+      class="app-programmation-event-about-artist__left"
+    >
       <EParallax
         v-if="imageFrame"
         ref="withFrame"
@@ -11,6 +14,10 @@
           <AppProgrammationImage
             :src="imageFrame.filename_disk"
             :alt="imageFrame.title"
+            :sizes="{
+              desktop: 'w400,h400,fcrop,q85',
+              mobile: 'w400,h400,fcrop,q85',
+            }"
           />
           <ELottie id="Cadre_01" start="top bottom-=15%" />
         </EKinesis>
@@ -25,6 +32,10 @@
           <AppProgrammationImage
             :src="imageWithoutFrame.filename_disk"
             :alt="imageWithoutFrame.title"
+            :sizes="{
+              desktop: 'w400,h400,fcrop,q85',
+              mobile: 'w400,h400,fcrop,q85',
+            }"
           />
         </EKinesis>
       </EParallax>
@@ -45,6 +56,10 @@
             <AppProgrammationImage
               :src="videoFrame.image.filename_disk"
               :alt="videoFrame.image.title"
+              :sizes="{
+                desktop: 'w400,h400,fcrop,q85',
+                mobile: 'w400,h400,fcrop,q85',
+              }"
             />
           </div>
           <client-only>
@@ -58,8 +73,11 @@
       </EParallax>
     </div>
     <div class="app-programmation-event-about-artist__right">
-      <TH2 weight="bold">{{ event.content.about_headline }}</TH2>
+      <TH2 v-if="event.content.about_headline" weight="bold">{{
+        event.content.about_headline
+      }}</TH2>
       <ERichTextEvent
+        v-if="event.content.about_text"
         :component="{ name: 'TP2', weight: 'medium', tagTarget: 'p', tag: 'p' }"
         :content="event.content.about_text"
       />
@@ -90,9 +108,20 @@ export default {
   },
   computed: {
     mediaGalleryImages() {
-      return this.event.content.media_gallery.filter(
+
+      const _mediaGallery = JSON.parse(JSON.stringify(this.event.content.media_gallery))
+
+      let mediaGallery = _mediaGallery.filter(
         (item) => !item.youtube_url
       )
+
+      const mediaVideo = _mediaGallery.filter(
+        (item) => item.youtube_url
+      )
+
+      mediaGallery = (mediaVideo && !mediaVideo.image)? mediaGallery.splice(0, mediaGallery.length - 1): mediaGallery;
+
+      return mediaGallery
     },
     imageFrame() {
       return this.mediaGalleryImages.length >= 1 &&
@@ -108,17 +137,28 @@ export default {
     videoFrame() {
       const items = this.event.content.media_gallery || []
 
-      const videoItem = items.find((item) => item.youtube_url)
+      const videoItem = items.find((item) => item.youtube_url);
+      const ImageItem = items.filter((item) => !item.youtube_url);
+
       const image =
         videoItem && videoItem.image
           ? videoItem.image
-          : this.mediaGalleryImages[2]?.image
+          : ImageItem[ImageItem.length - 1]?.image
 
       if (videoItem) {
         videoItem.id = this.getYouTubeVideoId(videoItem.youtube_url)
       }
-
+    
       return videoItem && image ? { video: videoItem, image } : false
+    },
+    elHide() {
+      return (
+        this.imageFrame ||
+        this.imageWithoutFrame ||
+        this.videoFrame ||
+        this.event.content.about_headline ||
+        this.event.content.about_text
+      )
     },
   },
 
@@ -372,6 +412,7 @@ export default {
 
   &__right {
     grid-column: 9 / span 4;
+    min-height: desktop-vw(652px);
 
     @include mobile {
       grid-row: 2;
@@ -379,6 +420,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-height: unset;
     }
 
     .H2 {

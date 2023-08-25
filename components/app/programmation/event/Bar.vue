@@ -9,9 +9,19 @@
         weight="medium"
         class="app-programmation-event-bar__book__info"
         color="grey"
+        v-if="event.min_price && (event.status_code!=='B' && event.status_code!=='C' && event.status_code!=='H' && event.status_code!=='K')"
       >
-        Exclusivité en France, à partir de {{ event.min_price }}€</TP2
+        {{ programmationsEventContent.glossary_exclu_france_price }}
+        {{ event.min_price }}€</TP2
       >
+      <TP2
+        weight="medium"
+        color="grey"
+        v-else-if="event.status_code==='K'"
+        class="app-programmation-slider-card__from-price"
+      >
+        Show complet, inscrivez-vous sur la liste d’attente !
+      </TP2>
       <AtomsCTA
         v-if="event.sessions.length - 1 >= 1"
         button
@@ -19,14 +29,46 @@
       >
         Voir les dates
       </AtomsCTA>
-      <AtomsCTA v-else :href="event.sessions[0].content.url">
+
+      <AtomsCTA
+        v-else-if="
+          event.sessions.length - 1 < 1 &&
+          event.sessions[0].content.url &&
+          !event.sessions[0].content.url_premium && 
+          ( event.status_code==='D' )
+        "
+        :href="event.sessions[0].content.url"
+      >
         Réserver mon billet
+      </AtomsCTA>
+
+      <AtomsCTAForm 
+        :session="event.sessions[0]" 
+        :eventId="event.id" 
+        :eventName="event.artist_reference"
+        :eventDate="event.sessions[0].date"
+        :statusCode="event.status_code"
+        v-else-if="event.status_code==='K' || (event.status_code==='B' && event.presale)"
+      >
+        Liste d'attente
+      </AtomsCTAForm>
+
+      <AtomsCTA
+        v-else-if="
+          event.sessions.length - 1 < 1 && event.sessions[0].content.url_premium
+        "
+        button
+        @click.native="scrollToDates()"
+      >
+        Voir les dates
       </AtomsCTA>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   props: {
     event: {
@@ -34,7 +76,11 @@ export default {
       default: () => {},
     },
   },
-
+  computed: {
+    ...mapState({
+      programmationsEventContent: (state) => state.programmationsEventContent,
+    }),
+  },
   methods: {
     scrollToDates() {
       if (!window.lenis) return
@@ -90,12 +136,12 @@ export default {
     justify-content: flex-end;
 
     &__info {
-      width: 32%;
+      width: 28.5%;
       margin-right: desktop-vw(10px);
     }
 
     .app-atoms-cta {
-      width: 60%;
+      width: auto;
     }
   }
 }

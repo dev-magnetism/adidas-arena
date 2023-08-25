@@ -18,7 +18,7 @@
     <nuxt class="app-main" />
     <AppScene />
     <WebglScene />
-    <WebglInfo />
+    <!-- <WebglInfo /> -->
   </div>
 </template>
 

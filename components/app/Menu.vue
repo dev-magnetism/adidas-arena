@@ -47,13 +47,6 @@
           <TH1 ref="menuTitle" tag="p" weight="bold">{{ menuName }} </TH1>
         </div>
 
-        <div class="app-menu__mobile-links">
-          <AppMenuLink
-            ref="programmationLink"
-            :content="menuProgrammation"
-            @onClickActiveLink="onCloseBurger"
-          />
-        </div>
 
         <div class="app-menu__main-links">
           <AppMenuLink
@@ -108,7 +101,7 @@ export default {
     }),
     menu() {
       return this.menuContent.data.filter(
-        (el) => !el.submenu_element && !el.homepage && !el.programmation
+        (el) => !el.submenu_element && !el.homepage
       )
     },
     menuVisuals() {
@@ -188,38 +181,29 @@ export default {
           this.els.main.nodesTitle[this.els.main.nodesTitle.length - 1],
       }
 
-      this.els.targetFlip = this.els.main.nodesComponents[0]
+      this.els.targetFlip = this.els.main.nodesComponents[2]
 
       if (this.$viewport.isMobile) {
         this.els.main = {
           vueComponents: [
-            this.$refs.programmationLink,
             ...this.$refs.mainLinks,
           ],
           nodesComponents: [
-            this.$refs.programmationLink.$el,
-
             ...this.$refs.mainLinks.map((link) => link.$el),
           ],
           nodesWrapper: [
-            this.$refs.programmationLink.$el.querySelector(
-              '.app-menu-link__title-wrapper'
-            ),
             ...this.$refs.mainLinks.map((link) =>
               link.$el.querySelector('.app-menu-link__title-wrapper')
             ),
           ],
           nodesTitle: [
-            this.$refs.programmationLink.$el.querySelector(
-              '.app-menu-link__title'
-            ),
             ...this.$refs.mainLinks.map((link) =>
               link.$el.querySelector('.app-menu-link__title')
             ),
           ],
         }
 
-        this.els.targetFlip = this.els.main.nodesComponents[1]
+        this.els.targetFlip = this.els.main.nodesComponents[2]
       }
     },
     onKeyUp(e) {
@@ -251,6 +235,8 @@ export default {
         ? null
         : this.$route.name === 'programmation-id'
         ? '/programmation'
+        : this.$route.name === 'nos-actualites-id'
+        ? '/nos-actualites'
         : this.$route.path
 
       this.onSelectImage(route)

@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   props: {
     tag: {
@@ -29,6 +31,9 @@ export default {
     },
   },
   computed: {
+    ...mapState({
+      fontSize: (state) => state.fontSize,
+    }),
     classes() {
       return [
         'H2',

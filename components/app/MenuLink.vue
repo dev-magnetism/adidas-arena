@@ -98,7 +98,7 @@ export default {
     menuActive(newVal) {
       if (
         !newVal &&
-        !this.content.programmation &&
+        //  !this.content.programmation &&
         !this.$viewport.isMobile &&
         !this.content.submenu_title
       ) {
@@ -245,7 +245,7 @@ export default {
     initLotties() {
       if (
         this.$viewport.isMobile ||
-        this.content.programmation ||
+        //  this.content.programmation ||
         this.content.submenu_title
       )
         return
@@ -344,8 +344,8 @@ export default {
     .H2.medium,
     .H2.bold {
       transform: translateY(110%);
-      font-size: desktop-vw(72px);
-      line-height: desktop-vw(78px);
+      font-size: desktop-vh(78px);
+      line-height: desktop-vh(84px);
       cursor: pointer;
       will-change: transform;
       display: flex;

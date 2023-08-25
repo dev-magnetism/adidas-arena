@@ -4,7 +4,10 @@
     class="app-programmation-event-dates-item"
     :style="{ 'background-color': `var(--c-${theme})` }"
   >
-    <AppProgrammationEventStatut :color="statutColor" />
+    <AppProgrammationEventStatus
+      :status="session.session_status"
+      :color="statutColor"
+    />
     <div class="app-programmation-event-dates-item__wrapper">
       <TH4
         :color="whitedTexts ? 'white' : 'black'"
@@ -21,13 +24,46 @@
       <TP2
         weight="medium"
         :color="whitedTexts ? 'white' : 'black'"
+        v-if="session.session_status==='K'"
         class="app-programmation-event-dates-item__info"
       >
         Show complet, inscrivez-vous sur la liste d’attente !
       </TP2>
     </div>
-    <AtomsCTA :color="statutColor" :layer-color="statutColor" :bg="'grey'">
+    <AtomsCTAForm 
+      :session="session" 
+      :eventId="eventId" 
+      :eventName="artist"
+      :eventDate="date"
+      :statusCode="session.session_status"
+      :color="statutColor" 
+      :layer-color="statutColor" 
+      :bg="'grey'"
+      v-if="session.session_status==='K' || session.session_status==='B' || session.session_status==='C'"
+    >
       Liste d'attente
+    </AtomsCTAForm>
+
+    <AtomsCTA 
+      v-else-if="session.session_status==='H'" 
+      :href="session.content.url"
+      :color="statutColor" 
+      :layer-color="statutColor" 
+      :bg="'grey'"
+
+    >
+      En savoir +
+    </AtomsCTA>
+
+    <AtomsCTA 
+      v-else 
+      :href="session.content.url"
+      :color="statutColor" 
+      :layer-color="statutColor" 
+      :bg="'grey'"
+
+    >
+      Réserver
     </AtomsCTA>
   </div>
 </template>
@@ -43,7 +79,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    length: {
+    totalItems: {
       type: Number,
       default: 0,
     },
@@ -55,6 +91,10 @@ export default {
       type: String,
       default: 'Artist error',
     },
+    eventId: {
+      type: Number,
+      default: 0,
+    },
     session: {
       type: Object,
       default: () => {},
@@ -62,9 +102,9 @@ export default {
   },
   computed: {
     theme() {
-      return this.index % this.length === 0
+      return this.index % 3 === 0
         ? 'blue-adidas'
-        : this.index % this.length === 1
+        : this.index % 3 === 1
         ? 'red-adidas'
         : 'grey'
     },
@@ -133,18 +173,18 @@ export default {
   &__wrapper {
     height: 100%;
     width: 100%;
-    padding: desktop-vw(25px) desktop-vw(25px) desktop-vw(15px) desktop-vw(25px);
+    padding: desktop-vw(45px) desktop-vw(25px) desktop-vw(15px) desktop-vw(25px);
     display: flex;
     flex-direction: column;
 
     @include mobile {
       height: auto;
 
-      padding: mobile-vw(25px) mobile-vw(15px) mobile-vw(15px) mobile-vw(15px);
+      padding: mobile-vw(50px) mobile-vw(15px) mobile-vw(15px) mobile-vw(15px);
     }
   }
 
-  .app-programmation-event-statut {
+  .app-programmation-event-status {
     position: absolute;
     right: 0;
     top: 0;
