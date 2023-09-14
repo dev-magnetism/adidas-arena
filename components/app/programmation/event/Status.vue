@@ -33,10 +33,6 @@ export default {
     statusText() {
       let status
 
-      console.log('Status', this.status)
-      console.log('Presale', this.presale)
-      console.log('Reported', this.reported)
-
       if (this.status === 'B') {
         // Bientôt disponible
         status = this.programmationsEventContent.glossary_soon_available

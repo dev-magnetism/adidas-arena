@@ -9,18 +9,19 @@
     }"
     :href="(href)?href:''"
     :target="external || automaticHref || blank ? '_blank' : false"
-    @click="onClick()"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
   >
-    <TP2
-      class="app-atoms-cta__text"
-      weight="bold"
-      :color="mousehover ? 'grey' : color"
-      ><slot
-    /></TP2>
-    <div v-if="arrow" class="app-atoms-cta__arrow">
-      <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
+    <div class="app-atoms-cta-click" @click="clickGtm">
+      <TP2
+        class="app-atoms-cta__text"
+        weight="bold"
+        :color="mousehover ? 'grey' : color"
+        ><slot
+      /></TP2>
+      <div v-if="arrow" class="app-atoms-cta__arrow">
+        <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
+      </div>
     </div>
   </a>
   <nuxt-link
@@ -33,18 +34,20 @@
     }"
     :to="(href)?href:''"
     :target="blank ? '_blank' : false"
-    @click="onClick()"
+    
     @mouseenter.native="onMouseEnter"
     @mouseleave.native="onMouseLeave"
   >
-    <TP2
-      class="app-atoms-cta__text"
-      weight="bold"
-      :color="mousehover ? 'grey' : color"
-      ><slot
-    /></TP2>
-    <div v-if="arrow" class="app-atoms-cta__arrow">
-      <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
+    <div class="app-atoms-cta-click" @click="clickGtm">
+      <TP2
+        class="app-atoms-cta__text"
+        weight="bold"
+        :color="mousehover ? 'grey' : color"
+        ><slot
+      /></TP2>
+      <div v-if="arrow" class="app-atoms-cta__arrow">
+        <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
+      </div>
     </div>
   </nuxt-link>
   <button
@@ -55,18 +58,20 @@
       'background-color': `var(--c-${bg})`,
       '--layer-color': `var(--c-${layerColor})`,
     }"
-    @click="onClick()"
+    @click="clickGtm"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
   >
-    <TP2
-      class="app-atoms-cta__text"
-      weight="bold"
-      :color="mousehover ? 'grey' : color"
-      ><slot
-    /></TP2>
-    <div v-if="arrow" class="app-atoms-cta__arrow">
-      <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
+    <div class="app-atoms-cta-click" @click="clickGtm">
+      <TP2
+        class="app-atoms-cta__text"
+        weight="bold"
+        :color="mousehover ? 'grey' : color"
+        ><slot
+      /></TP2>
+      <div v-if="arrow" class="app-atoms-cta__arrow">
+        <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
+      </div>
     </div>
   </button>
 </template>
@@ -87,6 +92,11 @@ export default {
       type: String,
       required: false,
       default: 'blue-adidas',
+    },
+    gtmClick: {
+      type: [String, Object],
+      required: false,
+      default: '#',
     },
     external: {
       type: Boolean,
@@ -145,9 +155,7 @@ export default {
     },
   },
   mounted() {
-    if(this.click){
-      console.log('this.click', this.click);
-    }
+
     if (!this.arrow || this.$viewport.isMobile) return
 
     this.tl = gsap.timeline({ paused: true })
@@ -172,8 +180,28 @@ export default {
     this.tl?.kill()
   },
   methods: {
-    onClick(){
-      if(this.click) this.click()
+    clickGtm(){
+      if(this.gtmClick){
+        console.log('CLICK GTM IN CTA');
+        this.$gtm.push({
+          event: "select_item",
+          ecommerce: {
+            items: [
+            {
+              item_id: `SKU_${this.gtmClick.id}`,
+              item_name: this.gtmClick.name,
+              affiliation: "",
+              currency: "EUR",
+              index: 0,
+              item_brand: "",
+              item_category: this.gtmClick.category,
+              item_category2: this.gtmClick.category2,
+              price: this.gtmClick.price,
+              quantity: 1
+            }]
+          }
+        })
+      }
     },
     onMouseEnter() {
       if (this.$viewport.isMobile) return
@@ -194,7 +222,6 @@ export default {
 <style lang="scss">
 .app-atoms-cta {
   border: 1px solid var(--c-black);
-  padding: desktop-vw(15px) desktop-vw(25px);
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
@@ -203,17 +230,29 @@ export default {
   cursor: pointer;
   transition: opacity 0.4s var(--ease-in-out-cubic);
 
+  &-click{
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   &.arrow {
-    padding: desktop-vw(15px) desktop-vw(20px) desktop-vw(15px) desktop-vw(20px);
+    padding: 0!important;
 
-    @include mobile {
-      padding: mobile-vw(18px) mobile-vw(25px) mobile-vw(18px) mobile-vw(25px);
-    }
+    .app-atoms-cta-click{
+      padding: desktop-vw(15px) desktop-vw(20px) desktop-vw(15px) desktop-vw(20px);
 
-    @include desktop-xl {
-      padding: desktop-vw(10px) desktop-vw(15px) desktop-vw(10px) desktop-vw(15px) !important;
+      @include mobile {
+        padding: mobile-vw(18px) mobile-vw(25px) mobile-vw(18px) mobile-vw(25px);
+      }
+
+      @include desktop-xl {
+        padding: desktop-vw(10px) desktop-vw(15px) desktop-vw(10px) desktop-vw(15px) !important;
+      }
     }
   }
+
+
 
   &.disabled {
     opacity: 0.65;
