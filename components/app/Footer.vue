@@ -88,6 +88,30 @@
       </div>
       <div class="app-footer__social-networks">
         <a
+          v-if="contents.data.social_networks_instagram_link"
+          :href="contents.data.social_networks_instagram_link"
+          target="_blank"
+          class="app-footer__social-network"
+        >
+          <SvgFooterInstagram />
+        </a>
+        <a
+          v-if="contents.data.social_networks_tiktok_link"
+          :href="contents.data.social_networks_tiktok_link"
+          target="_blank"
+          class="app-footer__social-network"
+        >
+          <SvgFooterTiktok />
+        </a>
+        <a
+          v-if="contents.data.social_networks_twitter_link"
+          :href="contents.data.social_networks_twitter_link"
+          target="_blank"
+          class="app-footer__social-network"
+        >
+          <SvgFooterTwitter />
+        </a>
+        <a
           v-if="contents.data.social_networks_facebook_link"
           :href="contents.data.social_networks_facebook_link"
           target="_blank"
@@ -102,30 +126,6 @@
           class="app-footer__social-network"
         >
           <SvgFooterLinkedin />
-        </a>
-        <a
-          v-if="contents.data.social_networks_instagram_link"
-          :href="contents.data.social_networks_instagram_link"
-          target="_blank"
-          class="app-footer__social-network"
-        >
-          <SvgFooterInstagram />
-        </a>
-        <a
-          v-if="contents.data.social_networks_twitter_link"
-          :href="contents.data.social_networks_twitter_link"
-          target="_blank"
-          class="app-footer__social-network"
-        >
-          <SvgFooterTwitter />
-        </a>
-        <a
-          v-if="contents.data.social_networks_tiktok_link"
-          :href="contents.data.social_networks_tiktok_link"
-          target="_blank"
-          class="app-footer__social-network"
-        >
-          <SvgFooterTiktok />
         </a>
       </div>
     </div>

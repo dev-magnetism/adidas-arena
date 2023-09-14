@@ -87,6 +87,7 @@
           },
         }"
         class="app-programmation-slider-card__cta"
+        :click="click()"
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave"
         v-if="event.status_code==='H' || (event.status_code==='B' && !event.presale) || event.status_code==='C'"
@@ -103,6 +104,7 @@
           },
         }"
         class="app-programmation-slider-card__cta"
+        :click="click()"
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave"
         v-else
@@ -185,6 +187,7 @@ export default {
   mounted() {
     if (this.$viewport.isMobile) return
 
+    console.log('this.event', this.event);
     this.initTimelineArrow()
   },
   beforeDestroy() {
@@ -204,6 +207,27 @@ export default {
       this.setCursorState('slider')
 
       //  this.tlArrow?.reverse()
+    },
+    click(){ 
+    
+      this.$gtm.push({
+        event: "select_item",
+        ecommerce: {
+          items: [
+          {
+            item_id: `SKU_${this.event.id}`,
+            item_name: this.event.artist_reference,
+            affiliation: "",
+            currency: "EUR",
+            index: 0,
+            item_brand: "",
+            item_category: this.event.content.category,
+            item_category2: this.event.content.sub_category,
+            price: this.event.min_price,
+            quantity: 1
+          }]
+        }
+      })
     },
     initTimelineArrow() {
       //  if (this.$viewport.isMobile) return
@@ -277,6 +301,10 @@ export default {
 
   @include mobile {
     flex: 0 0 75%;
+  }
+
+  @include desktop-xl {
+    flex: 0 0 25%;
   }
 
 
@@ -384,6 +412,11 @@ export default {
       margin-bottom: mobile-vw(40px);
       font-size: mobile-vw(46px);
       line-height: mobile-vw(42px);
+    }
+
+    @include desktop-xl {
+      font-size: desktop-vw(48px);
+      line-height: desktop-vw(42px);
     }
   }
 

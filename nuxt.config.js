@@ -99,6 +99,9 @@ export default {
         `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=1&page=1`
       )
 
+
+      // https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=1&page=1
+
       const lengthPages = Math.ceil(response.data.meta.total_count / limit)
 
       const pages = Array(lengthPages)
@@ -109,6 +112,8 @@ export default {
         const payload = await axios.get(
           `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
         )
+
+        // https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}
 
         const events = payload.data.data
 

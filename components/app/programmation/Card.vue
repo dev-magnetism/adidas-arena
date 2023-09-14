@@ -74,6 +74,7 @@
 
       <AtomsCTA
         :color="statutColor"
+        :click="click()"
         :layer-color="statutColor"
         :bg="'grey'"
         :href="{
@@ -88,6 +89,7 @@
 
       <AtomsCTA
         :color="statutColor"
+        :click="click()"
         :layer-color="statutColor"
         :bg="'grey'"
         :href="{
@@ -213,6 +215,27 @@ export default {
         }
       })
     },
+    click(){ 
+    
+      this.$gtm.push({
+        event: "select_item",
+        ecommerce: {
+          items: [
+          {
+            item_id: `SKU_${this.event.id}`,
+            item_name: this.event.artist_reference,
+            affiliation: "",
+            currency: "EUR",
+            index: 0,
+            item_brand: "",
+            item_category: this.event.content.category,
+            item_category2: this.event.content.sub_category,
+            price: this.event.min_price,
+            quantity: 1
+          }]
+        }
+      })
+    },
   },
 }
 </script>
@@ -230,6 +253,14 @@ export default {
 
   @include mobile {
     grid-column: span 6;
+  }
+
+  @include mobile-l {
+    grid-column: span 3;
+  }
+
+  @include desktop-xl {
+    grid-column: span 3;
   }
 
   &__layer-filtering {
@@ -294,6 +325,17 @@ export default {
       border-top: none;
       top: 0;
       z-index: 10;
+
+
+      @include mobile-l {
+        font-size: mobile-vw(15px);
+        line-height: mobile-vw(15px);
+      }
+
+      @include desktop-xl {
+        font-size: desktop-vw(25px);
+        line-height: desktop-vw(25px);
+      }
     }
   }
 
@@ -319,6 +361,14 @@ export default {
     @include mobile {
       padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(76px) mobile-vw(15px);
     }
+
+    @include mobile-l {
+      padding: mobile-vw(8px) mobile-vw(8px) mobile-vw(4px) mobile-vw(8px);
+    }
+
+    @include desktop-xl {
+      padding: desktop-vw(12px) desktop-vw(18px);
+    }
   }
 
   &__head {
@@ -327,6 +377,11 @@ export default {
 
     .P2 {
       text-transform: uppercase;
+
+      @include mobile-l {
+        font-size: mobile-vw(10px);
+        line-height: mobile-vw(8px);
+      }
     }
     .type {
     }
@@ -348,6 +403,17 @@ export default {
       font-size: mobile-vw(46px);
       line-height: mobile-vw(42px);
     }
+
+    @include mobile-l {
+      margin-bottom: mobile-vw(40px);
+      font-size: mobile-vw(24px);
+      line-height: mobile-vw(20px);
+    }
+
+    @include desktop-xl {
+      font-size: desktop-vw(32px);
+      line-height: desktop-vw(26px);
+    }
   }
 
   &__from-price.P2 {
@@ -357,6 +423,19 @@ export default {
     @include mobile {
       width: 100%;
       text-align: right;
+    }
+
+    @include mobile-l {
+      width: 35%;
+      text-align: left;
+      font-size: mobile-vw(10px);
+      line-height: mobile-vw(10px);
+    }
+
+    @include desktop-xl {
+      font-size: desktop-vw(12px);
+      line-height: desktop-vw(16px);
+      width: 40%;
     }
   }
 
@@ -368,6 +447,26 @@ export default {
     border-right: none;
     border-bottom: none;
     overflow: hidden;
+
+    @include mobile-l {
+      padding: mobile-vw(5px) mobile-vw(12px) mobile-vw(5px) mobile-vw(12px);
+    }
+
+    .app-atoms-cta__arrow{
+      @include mobile-l {
+        margin-left: mobile-vw(8px);
+        width: mobile-vw(8px);
+      }
+    }
+
+    .P2{
+
+      @include mobile-l {
+        font-size: mobile-vw(10px);
+        line-height: mobile-vw(8px);
+      }
+    }
+
   }
 }
 </style>
