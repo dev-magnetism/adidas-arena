@@ -74,7 +74,6 @@
 
       <AtomsCTA
         :color="statutColor"
-        :click="click"
         :layer-color="statutColor"
         :bg="'grey'"
         :href="{
@@ -83,13 +82,20 @@
             id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
           },
         }"
+        :gtmClick="{
+          id: `${event.id}`,
+          name: `${event.artist_reference}`,
+          category: `${event.content.category}`,
+          category2: `${event.content.sub_category}`,
+          price: `${event.min_price}`
+
+        }"
         class="app-programmation-card__cta"
         v-if="event.status_code==='H' || (event.status_code==='B' && !event.presale) || event.status_code==='C'"
         >En savoir +</AtomsCTA>
 
       <AtomsCTA
         :color="statutColor"
-        :click="click"
         :layer-color="statutColor"
         :bg="'grey'"
         :href="{
@@ -97,6 +103,14 @@
           params: {
             id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
           },
+        }"
+        :gtmClick="{
+          id: `${event.id}`,
+          name: `${event.artist_reference}`,
+          category: `${event.content.category}`,
+          category2: `${event.content.sub_category}`,
+          price: `${event.min_price}`
+
         }"
         class="app-programmation-card__cta"
         v-else
@@ -212,27 +226,6 @@ export default {
         return () => {
           this.scrollTrigger?.kill()
           this.scrollTriggerInView?.kill()
-        }
-      })
-    },
-    click(){ 
-    
-      this.$gtm.push({
-        event: "select_item",
-        ecommerce: {
-          items: [
-          {
-            item_id: `SKU_${this.event.id}`,
-            item_name: this.event.artist_reference,
-            affiliation: "",
-            currency: "EUR",
-            index: 0,
-            item_brand: "",
-            item_category: this.event.content.category,
-            item_category2: this.event.content.sub_category,
-            price: this.event.min_price,
-            quantity: 1
-          }]
         }
       })
     },
