@@ -9,6 +9,7 @@
     }"
     :href="(href)?href:''"
     :target="external || automaticHref || blank ? '_blank' : false"
+    @click="onClick()"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
   >
@@ -32,6 +33,7 @@
     }"
     :to="(href)?href:''"
     :target="blank ? '_blank' : false"
+    @click="onClick()"
     @mouseenter.native="onMouseEnter"
     @mouseleave.native="onMouseLeave"
   >
@@ -53,6 +55,7 @@
       'background-color': `var(--c-${bg})`,
       '--layer-color': `var(--c-${layerColor})`,
     }"
+    @click="onClick()"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
   >
@@ -142,6 +145,9 @@ export default {
     },
   },
   mounted() {
+    if(this.click){
+      console.log('this.click', this.click);
+    }
     if (!this.arrow || this.$viewport.isMobile) return
 
     this.tl = gsap.timeline({ paused: true })
@@ -166,6 +172,9 @@ export default {
     this.tl?.kill()
   },
   methods: {
+    onClick(){
+      if(this.click) this.click()
+    },
     onMouseEnter() {
       if (this.$viewport.isMobile) return
 
@@ -199,6 +208,10 @@ export default {
 
     @include mobile {
       padding: mobile-vw(18px) mobile-vw(25px) mobile-vw(18px) mobile-vw(25px);
+    }
+
+    @include desktop-xl {
+      padding: desktop-vw(10px) desktop-vw(15px) desktop-vw(10px) desktop-vw(15px) !important;
     }
   }
 
@@ -249,6 +262,11 @@ export default {
     @include mobile {
       font-size: mobile-vw(24px);
       line-height: mobile-vw(32px);
+    }
+
+    @include desktop-xl {
+      font-size: desktop-vw(20px) !important;
+      line-height: desktop-vw(28px) !important;
     }
   }
 

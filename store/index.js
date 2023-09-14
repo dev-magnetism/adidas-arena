@@ -340,6 +340,8 @@ export const actions = {
       `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=1&page=1`
     )
 
+    // https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=1&page=1
+
     const limit = 50
 
     const lengthPages = Math.ceil(meta.total_count / limit)
@@ -355,6 +357,8 @@ export const actions = {
         `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
       )
 
+      // https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}
+
       const contents = payload.data
 
       for (let i = 0; i < contents.length; i++){
@@ -363,6 +367,8 @@ export const actions = {
         const payloadEvent = await this.$axios.$get(
           `https://www.accorarena.com/api-svc/partners/adidas-arena/event/${contents[i].id}`
         )
+
+        // https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/event/${contents[i].id}
 
         const contentEvent = payloadEvent
 

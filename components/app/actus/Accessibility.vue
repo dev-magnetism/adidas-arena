@@ -57,7 +57,7 @@
                 :url="pageUrl"
                 :title="this.content.title"
               >
-                Twitter
+                Twitter/X
             </ShareNetwork>
           </div>
         </div>

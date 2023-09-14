@@ -590,6 +590,11 @@ export default {
             right: 35px;
           }
 
+          @include desktop-xl{
+            font-size: desktop-vw(56px);
+            line-height: desktop-vw(49px);
+          }
+
           &.up-bar-month-enter-active,
           &.up-bar-month-leave-active,
           &.down-bar-month-enter-active,
