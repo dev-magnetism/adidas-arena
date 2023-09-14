@@ -87,7 +87,7 @@
           },
         }"
         class="app-programmation-slider-card__cta"
-        :click="click()"
+        :click="click"
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave"
         v-if="event.status_code==='H' || (event.status_code==='B' && !event.presale) || event.status_code==='C'"
@@ -104,7 +104,7 @@
           },
         }"
         class="app-programmation-slider-card__cta"
-        :click="click()"
+        :click="click"
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave"
         v-else
