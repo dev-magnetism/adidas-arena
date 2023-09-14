@@ -74,7 +74,7 @@
 
       <AtomsCTA
         :color="statutColor"
-        :click="click()"
+        :click="click"
         :layer-color="statutColor"
         :bg="'grey'"
         :href="{
@@ -89,7 +89,7 @@
 
       <AtomsCTA
         :color="statutColor"
-        :click="click()"
+        :click="click"
         :layer-color="statutColor"
         :bg="'grey'"
         :href="{

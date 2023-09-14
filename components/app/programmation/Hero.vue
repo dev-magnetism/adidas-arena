@@ -76,6 +76,7 @@
               }`,
             },
           }"
+          :click="click"
           class="app-programmation-hero__main-card__cta"
         >
           {{ content.event.status_code==='H' || (content.event.status_code==='B' && !content.event.presale) || content.event.status_code==='C' ? `En savoir +` : content.event.status_code==='K' || (content.event.status_code==='B' && content.event.presale)? `Liste d'attente` :`Réserver` }}
@@ -329,6 +330,27 @@ export default {
     ...mapMutations({
       setAllowScroll: 'setAllowScroll',
     }),
+    click(){ 
+    
+      this.$gtm.push({
+        event: "select_item",
+        ecommerce: {
+          items: [
+          {
+            item_id: `SKU_${this.event.id}`,
+            item_name: this.content.event.artist_reference,
+            affiliation: "",
+            currency: "EUR",
+            index: 0,
+            item_brand: "",
+            item_category: this.content.event.content.category,
+            item_category2: this.content.event.content.sub_category,
+            price: this.content.event.min_price,
+            quantity: 1
+          }]
+        }
+      })
+    },
   },
 }
 </script>
