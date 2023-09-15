@@ -12,7 +12,7 @@
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
   >
-    <div class="app-atoms-cta-click" @click="clickGtm">
+    <div class="app-atoms-cta-click" @click.prevent="clickGtm">
       <TP2
         class="app-atoms-cta__text"
         weight="bold"
@@ -58,7 +58,6 @@
       'background-color': `var(--c-${bg})`,
       '--layer-color': `var(--c-${layerColor})`,
     }"
-    @click="clickGtm"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
   >
@@ -222,18 +221,19 @@ export default {
 <style lang="scss">
 .app-atoms-cta {
   border: 1px solid var(--c-black);
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
+  display: block;
   position: relative;
   overflow: hidden;
-  cursor: pointer;
   transition: opacity 0.4s var(--ease-in-out-cubic);
 
   &-click{
+    position: relative;
+    z-index: 1;
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
+    cursor: pointer;
+
   }
 
   &.arrow {
