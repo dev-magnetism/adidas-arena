@@ -5,6 +5,13 @@ const convertToKebabCase = (string) => {
     .toLowerCase()
 }
 
+const removeSpecialChar = (string) => {
+    return  string.toLowerCase()
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036F]/g, '')
+                  .replace(/[^\w\s]/gi, '-');
+}
+
 export default {
   target: 'static',
   head: {
@@ -133,7 +140,9 @@ export default {
       )
 
       actualites.data.data.forEach((actu) => {
-        routes.push(`/nos-actualites/${convertToKebabCase(actu.title)}`)
+        const _slug = removeSpecialChar(actu.title);
+        console.log('actualites slug ', convertToKebabCase(_slug));
+        routes.push(`/nos-actualites/${convertToKebabCase(_slug)}`)
       })
 
       return routes

@@ -297,7 +297,7 @@ export default {
     flex: 0 0 75%;
   }
 
-  @include desktop-xl {
+  @include desktop-l {
     flex: 0 0 25%;
   }
 
@@ -408,7 +408,7 @@ export default {
       line-height: mobile-vw(42px);
     }
 
-    @include desktop-xl {
+    @include desktop-l {
       font-size: desktop-vw(48px);
       line-height: desktop-vw(42px);
     }
