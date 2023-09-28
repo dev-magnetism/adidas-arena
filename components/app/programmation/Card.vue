@@ -82,6 +82,14 @@
             id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
           },
         }"
+        :gtmClick="{
+          id: `${event.id}`,
+          name: `${event.artist_reference}`,
+          category: `${event.content.category}`,
+          category2: `${event.content.sub_category}`,
+          price: `${event.min_price}`
+
+        }"
         class="app-programmation-card__cta"
         v-if="event.status_code==='H' || (event.status_code==='B' && !event.presale) || event.status_code==='C'"
         >En savoir +</AtomsCTA>
@@ -95,6 +103,14 @@
           params: {
             id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
           },
+        }"
+        :gtmClick="{
+          id: `${event.id}`,
+          name: `${event.artist_reference}`,
+          category: `${event.content.category}`,
+          category2: `${event.content.sub_category}`,
+          price: `${event.min_price}`
+
         }"
         class="app-programmation-card__cta"
         v-else
@@ -232,6 +248,14 @@ export default {
     grid-column: span 6;
   }
 
+  @include mobile-l {
+    grid-column: span 3;
+  }
+
+  @include desktop-l {
+    grid-column: span 3;
+  }
+
   &__layer-filtering {
     position: absolute;
     width: calc(100% + 5px);
@@ -294,6 +318,17 @@ export default {
       border-top: none;
       top: 0;
       z-index: 10;
+
+
+      @include mobile-l {
+        font-size: mobile-vw(15px);
+        line-height: mobile-vw(15px);
+      }
+
+      @include desktop-l {
+        font-size: desktop-vw(25px);
+        line-height: desktop-vw(25px);
+      }
     }
   }
 
@@ -319,6 +354,14 @@ export default {
     @include mobile {
       padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(76px) mobile-vw(15px);
     }
+
+    @include mobile-l {
+      padding: mobile-vw(8px) mobile-vw(8px) mobile-vw(4px) mobile-vw(8px);
+    }
+
+    @include desktop-l {
+      padding: desktop-vw(12px) desktop-vw(18px);
+    }
   }
 
   &__head {
@@ -327,6 +370,11 @@ export default {
 
     .P2 {
       text-transform: uppercase;
+
+      @include mobile-l {
+        font-size: mobile-vw(10px);
+        line-height: mobile-vw(8px);
+      }
     }
     .type {
     }
@@ -348,6 +396,17 @@ export default {
       font-size: mobile-vw(46px);
       line-height: mobile-vw(42px);
     }
+
+    @include mobile-l {
+      margin-bottom: mobile-vw(40px);
+      font-size: mobile-vw(24px);
+      line-height: mobile-vw(20px);
+    }
+
+    @include desktop-l {
+      font-size: desktop-vw(32px);
+      line-height: desktop-vw(26px);
+    }
   }
 
   &__from-price.P2 {
@@ -357,6 +416,19 @@ export default {
     @include mobile {
       width: 100%;
       text-align: right;
+    }
+
+    @include mobile-l {
+      width: 35%;
+      text-align: left;
+      font-size: mobile-vw(10px);
+      line-height: mobile-vw(10px);
+    }
+
+    @include desktop-l {
+      font-size: desktop-vw(12px);
+      line-height: desktop-vw(16px);
+      width: 40%;
     }
   }
 
@@ -368,6 +440,26 @@ export default {
     border-right: none;
     border-bottom: none;
     overflow: hidden;
+
+    @include mobile-l {
+      padding: mobile-vw(5px) mobile-vw(12px) mobile-vw(5px) mobile-vw(12px);
+    }
+
+    .app-atoms-cta__arrow{
+      @include mobile-l {
+        margin-left: mobile-vw(8px);
+        width: mobile-vw(8px);
+      }
+    }
+
+    .P2{
+
+      @include mobile-l {
+        font-size: mobile-vw(10px);
+        line-height: mobile-vw(8px);
+      }
+    }
+
   }
 }
 </style>

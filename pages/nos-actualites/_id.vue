@@ -33,12 +33,12 @@ import pageTransition from '@/mixins/page-transition'
 export default {
   mixins: [scroll],
 
-  validate({ params, $axios, store, $convertToKebabCase }) {
+  validate({ params, $axios, store, $convertToKebabCase, $removeSpecialChar }) {
     const slug = params.id
 
     return store.state.actualites.some(
       (element) =>
-        $convertToKebabCase(slug) === $convertToKebabCase(element.title)
+        $convertToKebabCase(slug) === $convertToKebabCase($removeSpecialChar(element.title))
     )
   },
   transition(to, from) {
@@ -79,7 +79,7 @@ export default {
       return this.actualites.find(
         (element) =>
           this.$convertToKebabCase(this.$route.params.id) ===
-          this.$convertToKebabCase(element.title)
+          this.$convertToKebabCase(this.$removeSpecialChar(element.title))
       )
     },
     contentMoreArticles() {

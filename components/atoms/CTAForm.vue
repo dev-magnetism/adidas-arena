@@ -17,14 +17,16 @@
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
     >
-      <TP2
-        class="app-atoms-cta__text"
-        weight="bold"
-        :color="mousehover ? 'grey' : color"
-        ><slot
-      /></TP2>
-      <div v-if="arrow" class="app-atoms-cta__arrow">
-        <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
+      <div class="app-atoms-cta-click">
+        <TP2
+          class="app-atoms-cta__text"
+          weight="bold"
+          :color="mousehover ? 'grey' : color"
+          ><slot
+        /></TP2>
+        <div v-if="arrow" class="app-atoms-cta__arrow">
+          <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
+        </div>
       </div>
       <script src="https://embed.typeform.com/next/embed.js"></script>
     </button>
@@ -156,11 +158,21 @@ export default {
   cursor: pointer;
   transition: opacity 0.4s var(--ease-in-out-cubic);
 
-  &.arrow {
-    padding: desktop-vw(15px) desktop-vw(20px) desktop-vw(15px) desktop-vw(20px);
+  &-click{
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-    @include mobile {
-      padding: mobile-vw(18px) mobile-vw(25px) mobile-vw(18px) mobile-vw(25px);
+  &.arrow {
+    padding: 0!important;
+
+    .app-atoms-cta-click{
+      padding: desktop-vw(15px) desktop-vw(20px) desktop-vw(15px) desktop-vw(20px);
+
+      @include mobile {
+        padding: mobile-vw(18px) mobile-vw(25px) mobile-vw(18px) mobile-vw(25px);
+      }
     }
   }
 

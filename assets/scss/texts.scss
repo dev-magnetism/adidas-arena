@@ -75,11 +75,6 @@
     line-height: mobile-vw(40px);
   }
 
-  @include mobile {
-    font-size: mobile-vw(40px);
-    line-height: mobile-vw(40px);
-  }
-
   &.bold,
   strong {
     @include font-adihausDIN-cn-bold();

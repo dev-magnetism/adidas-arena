@@ -5,6 +5,13 @@ const convertToKebabCase = (string) => {
     .toLowerCase()
 }
 
+const removeSpecialChar = (string) => {
+    return  string.toLowerCase()
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036F]/g, '')
+                  .replace(/[^\w\s]/gi, '-');
+}
+
 export default {
   target: 'static',
   head: {
@@ -99,6 +106,9 @@ export default {
         `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=1&page=1`
       )
 
+
+      // https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=1&page=1
+
       const lengthPages = Math.ceil(response.data.meta.total_count / limit)
 
       const pages = Array(lengthPages)
@@ -109,6 +119,8 @@ export default {
         const payload = await axios.get(
           `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
         )
+
+        // https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}
 
         const events = payload.data.data
 
@@ -128,7 +140,9 @@ export default {
       )
 
       actualites.data.data.forEach((actu) => {
-        routes.push(`/nos-actualites/${convertToKebabCase(actu.title)}`)
+        const _slug = removeSpecialChar(actu.title);
+        console.log('actualites slug ', convertToKebabCase(_slug));
+        routes.push(`/nos-actualites/${convertToKebabCase(_slug)}`)
       })
 
       return routes

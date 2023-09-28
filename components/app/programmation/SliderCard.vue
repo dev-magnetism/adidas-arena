@@ -86,7 +86,16 @@
             id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
           },
         }"
+        :gtmClick="{
+          id: `${event.id}`,
+          name: `${event.artist_reference}`,
+          category: `${event.content.category}`,
+          category2: `${event.content.sub_category}`,
+          price: `${event.min_price}`
+
+        }"
         class="app-programmation-slider-card__cta"
+
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave"
         v-if="event.status_code==='H' || (event.status_code==='B' && !event.presale) || event.status_code==='C'"
@@ -101,6 +110,14 @@
           params: {
             id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
           },
+        }"
+        :gtmClick="{
+          id: `${event.id}`,
+          name: `${event.artist_reference}`,
+          category: `${event.content.category}`,
+          category2: `${event.content.sub_category}`,
+          price: `${event.min_price}`
+
         }"
         class="app-programmation-slider-card__cta"
         @mouseenter.native="onMouseEnter"
@@ -185,6 +202,7 @@ export default {
   mounted() {
     if (this.$viewport.isMobile) return
 
+    //  console.log('this.event', this.event);
     this.initTimelineArrow()
   },
   beforeDestroy() {
@@ -277,6 +295,10 @@ export default {
 
   @include mobile {
     flex: 0 0 75%;
+  }
+
+  @include desktop-l {
+    flex: 0 0 25%;
   }
 
 
@@ -384,6 +406,11 @@ export default {
       margin-bottom: mobile-vw(40px);
       font-size: mobile-vw(46px);
       line-height: mobile-vw(42px);
+    }
+
+    @include desktop-l {
+      font-size: desktop-vw(48px);
+      line-height: desktop-vw(42px);
     }
   }
 

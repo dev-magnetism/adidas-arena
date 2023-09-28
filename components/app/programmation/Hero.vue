@@ -76,6 +76,14 @@
               }`,
             },
           }"
+          :gtmClick="{
+            id: `${content.event.id}`,
+            name: `${content.event.artist_reference}`,
+            category: `${content.event.content.category}`,
+            category2: `${content.event.content.sub_category}`,
+            price: `${content.event.min_price}`
+
+          }"
           class="app-programmation-hero__main-card__cta"
         >
           {{ content.event.status_code==='H' || (content.event.status_code==='B' && !content.event.presale) || content.event.status_code==='C' ? `En savoir +` : content.event.status_code==='K' || (content.event.status_code==='B' && content.event.presale)? `Liste d'attente` :`Réserver` }}
@@ -358,6 +366,16 @@ export default {
 
     .H2.medium {
       @include font-adihausDIN-cn-bold();
+
+      @include mobile-l {
+        font-size: mobile-vw(57px);
+        line-height: mobile-vw(47px);
+      }
+
+      @include desktop-xl {
+        font-size: desktop-vw(80px);
+        line-height: desktop-vw(70px);
+      }
     }
   }
 
@@ -408,11 +426,27 @@ export default {
     p.P2 {
       @include font-adihausDIN-bold();
       color: var(--c-black);
+
+      @include mobile-l {
+        font-size: mobile-vw(12px);
+        line-height: mobile-vw(18px);
+      }
+
+      @include desktop-xl {
+        font-size: desktop-vw(12px);
+        line-height: desktop-vw(18px);
+      }
+
     }
 
     @include mobile {
       width: 75%;
       margin-top: mobile-vw(40px);
+    }
+
+    @include desktop-xl {
+      width: 50%;
+      margin-top: desktop-vw(15px);
     }
   }
 
@@ -427,7 +461,6 @@ export default {
     flex-direction: column;
     transform-origin: left center;
 
-
     .app-programmation-event-status {
       position: absolute;
       right: 0;
@@ -435,6 +468,16 @@ export default {
       border-top: none;
       top: 0;
       z-index: 10;
+
+      @include mobile-l {
+        font-size: mobile-vw(15px);
+        line-height: mobile-vw(15px);
+      }
+
+      @include desktop-xl {
+        font-size: desktop-vw(25px);
+        line-height: desktop-vw(25px);
+      }
     }
 
     .app-element-kinesis {
@@ -452,6 +495,15 @@ export default {
       margin-top: mobile-vw(40px);
     }
 
+    @include mobile-l {
+      width: 85%;
+      margin: mobile-vw(30px) auto 0;
+    }
+
+    @include desktop-xl {
+      grid-column: 8 / span 4;
+    }
+
     &__wrapper {
       padding: desktop-vw(15px) desktop-vw(15px) desktop-vw(25px)
         desktop-vw(15px);
@@ -459,6 +511,15 @@ export default {
 
       @include mobile {
         padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(15px) mobile-vw(15px);
+      }
+
+      @include mobile-l {
+        padding: mobile-vw(10px) mobile-vw(10px) mobile-vw(10px) mobile-vw(10px);
+      }
+
+      @include desktop-xl {
+        padding: desktop-vw(10px) desktop-vw(10px) desktop-vw(20px)
+        desktop-vw(10px);
       }
     }
 
@@ -474,6 +535,16 @@ export default {
 
       @include mobile {
         margin-top: mobile-vw(20px);
+      }
+
+      @include mobile-l {
+        font-size: mobile-vw(36px);
+        line-height: mobile-vw(36px);
+      }
+
+      @include desktop-xl {
+        font-size: desktop-vw(48px);
+        line-height: desktop-vw(54px);
       }
     }
 
@@ -498,6 +569,16 @@ export default {
 
       @include mobile {
         margin-top: mobile-vw(10px);
+      }
+
+      @include mobile-l {
+        font-size: mobile-vw(16px);
+        line-height: mobile-vw(16px);
+      }
+
+      @include desktop-xl {
+        font-size: desktop-vw(28px);
+        line-height: desktop-vw(28px);
       }
     }
 
@@ -536,6 +617,26 @@ export default {
         min-width: 60%;
       }
 
+      @include mobile-l {
+        padding: mobile-vw(5px) mobile-vw(20px) mobile-vw(5px) mobile-vw(20px);
+        min-width: unset;
+      }
+
+      .P2{
+
+        @include mobile-l {
+          font-size: mobile-vw(12px);
+          line-height: mobile-vw(10px);
+        }
+      }
+
+      .app-atoms-cta__arrow{
+        @include mobile-l {
+          margin-left: mobile-vw(20px);
+          width: mobile-vw(12px);
+        }
+      }
+
       svg {
         @include mobile {
           // padding: mobile-vw(10px) mobile-vw(5px) mobile-vw(10px) mobile-vw(15px);
@@ -562,6 +663,16 @@ export default {
       grid-column: 1 / span 3;
       left: -35%;
       bottom: -10%;
+    }
+
+    @include mobile-l {
+      left: -30%;
+      bottom: -5%;
+    }
+
+    @include desktop-xl {
+      left: 15%;
+      bottom: 3%;
     }
   }
 }
