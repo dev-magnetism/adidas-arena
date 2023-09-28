@@ -7,6 +7,13 @@ const convertToKebabCase = (string) => {
     .toLowerCase()
 }
 
+const removeSpecialChar = (string) => {
+    return  string.toLowerCase()
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036F]/g, '')
+                  .replace(/[^\w\s]/gi, '-');
+}
+
 export const state = () => ({
   // Preloader
   fontsLoaded: false,
@@ -315,7 +322,9 @@ export const actions = {
     });
 
     actualites.data.forEach((actu) => {
-      actu.slug = convertToKebabCase(actu.title)
+      const _slug = removeSpecialChar(actu.title);
+      console.log('actualites slug ', convertToKebabCase(_slug));
+      actu.slug = convertToKebabCase(_slug)
     })
 
     commit('setActualites', actualites.data)

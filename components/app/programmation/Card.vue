@@ -252,7 +252,7 @@ export default {
     grid-column: span 3;
   }
 
-  @include desktop-xl {
+  @include desktop-l {
     grid-column: span 3;
   }
 
@@ -325,7 +325,7 @@ export default {
         line-height: mobile-vw(15px);
       }
 
-      @include desktop-xl {
+      @include desktop-l {
         font-size: desktop-vw(25px);
         line-height: desktop-vw(25px);
       }
@@ -359,7 +359,7 @@ export default {
       padding: mobile-vw(8px) mobile-vw(8px) mobile-vw(4px) mobile-vw(8px);
     }
 
-    @include desktop-xl {
+    @include desktop-l {
       padding: desktop-vw(12px) desktop-vw(18px);
     }
   }
@@ -403,7 +403,7 @@ export default {
       line-height: mobile-vw(20px);
     }
 
-    @include desktop-xl {
+    @include desktop-l {
       font-size: desktop-vw(32px);
       line-height: desktop-vw(26px);
     }
@@ -425,7 +425,7 @@ export default {
       line-height: mobile-vw(10px);
     }
 
-    @include desktop-xl {
+    @include desktop-l {
       font-size: desktop-vw(12px);
       line-height: desktop-vw(16px);
       width: 40%;

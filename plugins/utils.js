@@ -6,6 +6,13 @@ export default ({ app }, inject) => {
       .toLowerCase()
   })
 
+  inject('removeSpecialChar', (string) => {
+    return  string.toLowerCase()
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036F]/g, '')
+                  .replace(/[^\w\s]/gi, '-');
+  })
+
   inject('formatDate', (dates, displayTime = false) => {
     if (!Array.isArray(dates)) {
       dates = [dates]

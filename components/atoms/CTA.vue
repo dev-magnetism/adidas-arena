@@ -246,7 +246,7 @@ export default {
         padding: mobile-vw(18px) mobile-vw(25px) mobile-vw(18px) mobile-vw(25px);
       }
 
-      @include desktop-xl {
+      @include desktop-l {
         padding: desktop-vw(10px) desktop-vw(15px) desktop-vw(10px) desktop-vw(15px) !important;
       }
     }
@@ -303,7 +303,7 @@ export default {
       line-height: mobile-vw(32px);
     }
 
-    @include desktop-xl {
+    @include desktop-l {
       font-size: desktop-vw(20px) !important;
       line-height: desktop-vw(28px) !important;
     }
