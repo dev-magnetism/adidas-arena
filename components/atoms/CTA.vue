@@ -8,7 +8,7 @@
       '--layer-color': `var(--c-${layerColor})`,
     }"
     :href="(href)?href:''"
-    :target="external || automaticHref || blank ? '_blank' : false"
+    :target="external || automaticHref || blank ? false : false"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
   >
