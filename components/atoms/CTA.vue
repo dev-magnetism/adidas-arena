@@ -12,7 +12,7 @@
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
   >
-    <div class="app-atoms-cta-click" @click.prevent="clickGtm">
+    <div class="app-atoms-cta-click" @click="clickGtm">
       <TP2
         class="app-atoms-cta__text"
         weight="bold"
