@@ -323,7 +323,7 @@ export const actions = {
 
     actualites.data.forEach((actu) => {
       const _slug = removeSpecialChar(actu.title);
-      console.log('actualites slug ', convertToKebabCase(_slug));
+      //  console.log('actualites slug ', convertToKebabCase(_slug));
       actu.slug = convertToKebabCase(_slug)
     })
 
@@ -362,13 +362,27 @@ export const actions = {
       .map((_, index) => index + 1)
 
     for (const index of pages) {
+
+      // 1 / Récupération de la liste complète des Events via accorarena
+
       const payload = await this.$axios.$get(
         `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
       )
 
       // https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}
 
-      const contents = payload.data
+      // 2 / Récupération des données Programmation via Directus
+      const progDirect = await $directus.items('Programmations').readByQuery({
+        limit: -1,
+        fields: [
+          '*',
+        ],
+      });
+
+      // 3 / Récupération des données complètes par Event
+
+      const contents = payload.data;
+      const progDirectContents = progDirect.data;
 
       for (let i = 0; i < contents.length; i++){
 
@@ -379,8 +393,14 @@ export const actions = {
 
         // https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/event/${contents[i].id}
 
+        // Complétion des données 1 avec données 2 et 3
+
         const contentEvent = payloadEvent
 
+        const progDirectContent = progDirectContents.find(cont => parseInt(cont.id_event) === contents[i].id);
+        
+        contents[i].main_event = progDirectContent.main_event;
+        contents[i].inside_slider = progDirectContent.inside_slider;
         contents[i].instruction_id = contentEvent.instruction_id ? contentEvent.instruction_id : []
 
         contents[i].content = contents[i].translations.find(
