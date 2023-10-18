@@ -131,6 +131,8 @@ export default {
             (translation) => translation.language === 'fr'
           )
 
+          // TO DO : corriger convertToKebabCase(url) par convertToKebabCase(removeSpecialChar(url))
+
           routes.push(`/programmation/${convertToKebabCase(url)}--${id}`)
         })
       }
@@ -141,7 +143,7 @@ export default {
 
       actualites.data.data.forEach((actu) => {
         const _slug = removeSpecialChar(actu.title);
-        console.log('actualites slug ', convertToKebabCase(_slug));
+        //console.log('actualites slug ', convertToKebabCase(_slug));
         routes.push(`/nos-actualites/${convertToKebabCase(_slug)}`)
       })
 
