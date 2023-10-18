@@ -64,6 +64,7 @@ export default {
       programmes: (state) => state.programmes,
     }),
     contentMainCard() {
+      console.log('contentMainCard', this.programmes);
       return (
         this.programmes.find((event) => event.is_cover) || this.programmes[0]
       )
