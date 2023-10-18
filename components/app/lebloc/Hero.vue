@@ -34,7 +34,7 @@ export default {
       this.onToggle(this.scrollTrigger)
     },
     initialHeroDisplayed() {
-      // this.setAllowScroll(true)
+      this.setAllowScroll(true)
     },
   },
   mounted() {
