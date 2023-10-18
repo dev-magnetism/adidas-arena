@@ -133,7 +133,7 @@ export default {
 
           // TO DO : corriger convertToKebabCase(url) par convertToKebabCase(removeSpecialChar(url))
 
-          routes.push(`/programmation/${convertToKebabCase(url)}--${id}`)
+          routes.push(`/programmation/${convertToKebabCase(removeSpecialChar(url))}--${id}`)
         })
       }
 
