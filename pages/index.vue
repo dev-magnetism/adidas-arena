@@ -1,22 +1,5 @@
 <template>
   <main class="app-home">
-    <AppHomeHero :contents="contentHero" />
-    <ESliderProgrammation :content="contentSlider" />
-    <AppHomePresentation :contents="contentPresentation" />
-    <EMarqueeScroll>
-      <TH1 tag="p" weight="bold">
-        {{ contentMarquees.firstRow }}
-      </TH1>
-    </EMarqueeScroll>
-    <EMarqueeScroll :inverted="true">
-      <TH1 tag="p" weight="bold">
-        {{ contentMarquees.secondRow }}
-      </TH1>
-    </EMarqueeScroll>
-    <AppHomeProjet :contents="contentProjet" />
-    <AppHomeArticles :content="contentArticles" />
-    <AppHomePartners :contents="contentPartners" />
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -144,6 +127,9 @@ export default {
       }
     },
     contentMarquees() {
+
+    console.log('contentMarquees / firstRow', this.content.data.marquee_first_row);
+    console.log('contentMarquees / secondRow', this.content.data.marquee_second_row);
       return {
         firstRow: this.content.data.marquee_first_row,
         secondRow: this.content.data.marquee_second_row,
