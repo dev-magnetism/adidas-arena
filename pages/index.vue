@@ -13,7 +13,6 @@
         {{ contentMarquees.secondRow }}
       </TH1>
     </EMarqueeScroll>
-    <AppHomeProjet :contents="contentProjet" />
   </main>
 </template>
 
