@@ -3,6 +3,11 @@
     <AppHomeHero :contents="contentHero" />
     <ESliderProgrammation :content="contentSlider" />
     <AppHomePresentation :contents="contentPresentation" />
+    <EMarqueeScroll>
+      <TH1 tag="p" weight="bold">
+        {{ contentMarquees.firstRow }}
+      </TH1>
+    </EMarqueeScroll>
   </main>
 </template>
 
