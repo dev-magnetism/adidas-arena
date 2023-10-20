@@ -1,6 +1,7 @@
 <template>
   <main class="app-home">
     <AppHomeHero :contents="contentHero" />
+    <ESliderProgrammation :content="contentSlider" />
   </main>
 </template>
 
