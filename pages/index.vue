@@ -1,6 +1,9 @@
 <template>
   <main class="app-home">
     <AppHomeProjet :contents="contentProjet" />
+    <AppHomeArticles :content="contentArticles" />
+    <AppHomePartners :contents="contentPartners" />
+    <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
