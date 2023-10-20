@@ -139,7 +139,7 @@ export default {
 
   mounted() {
     document.fonts.ready.then(() => {
-      this.initSplitText()
+      //  this.initSplitText()
     })
   },
   beforeDestroy() {
