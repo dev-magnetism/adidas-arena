@@ -13,6 +13,9 @@
         {{ contentMarquees.secondRow }}
       </TH1>
     </EMarqueeScroll>
+    <AppHomeArticles :content="contentArticles" />
+    <AppHomePartners :contents="contentPartners" />
+    <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
