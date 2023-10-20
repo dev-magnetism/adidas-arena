@@ -151,7 +151,7 @@ export default {
     },
   },
   mounted() {
-    console.log(this.contentArticles)
+    //  console.log(this.contentArticles)
   },
   methods: {
     ...mapMutations({
