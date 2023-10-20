@@ -240,6 +240,7 @@ export default {
     padding: 0!important;
 
     .app-atoms-cta-click{
+      width: 100%;
       padding: desktop-vw(15px) desktop-vw(20px) desktop-vw(15px) desktop-vw(20px);
 
       @include mobile {
