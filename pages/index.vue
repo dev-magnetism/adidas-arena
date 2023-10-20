@@ -8,6 +8,11 @@
         {{ contentMarquees.firstRow }}
       </TH1>
     </EMarqueeScroll>
+    <EMarqueeScroll :inverted="true">
+      <TH1 tag="p" weight="bold">
+        {{ contentMarquees.secondRow }}
+      </TH1>
+    </EMarqueeScroll>
   </main>
 </template>
 
