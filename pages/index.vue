@@ -1,5 +1,6 @@
 <template>
   <main class="app-home">
+    <AppHomeHero :contents="contentHero" />
   </main>
 </template>
 
