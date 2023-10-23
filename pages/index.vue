@@ -144,9 +144,6 @@ export default {
       }
     },
     contentMarquees() {
-
-    console.log('contentMarquees / firstRow', this.content.data.marquee_first_row);
-    console.log('contentMarquees / secondRow', this.content.data.marquee_second_row);
       return {
         firstRow: this.content.data.marquee_first_row,
         secondRow: this.content.data.marquee_second_row,
