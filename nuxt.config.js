@@ -158,15 +158,16 @@ export default {
 
   pageTransition: false,
 
-  // router: {
-  //   scrollBehavior: (to, from, savedPosition) => {
-  //     return new Promise((resolve) => {
-  //       setTimeout(() => {
-  //         resolve({ x: 0, y: 0 })
-  //       }, 1250)
-  //     })
-  //   },
-  // },
+  router: {
+    trailingSlash: false,
+    // scrollBehavior: (to, from, savedPosition) => {
+    //   return new Promise((resolve) => {
+    //     setTimeout(() => {
+    //       resolve({ x: 0, y: 0 })
+    //     }, 1250)
+    //   })
+    // },
+  },
 
   styleResources: {
     scss: ['~assets/scss/main.scss'],
