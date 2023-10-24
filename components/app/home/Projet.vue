@@ -450,6 +450,7 @@ export default {
             '.info-text-3',
             '.info-text-4',
             '.info-text-5',
+            '.info-text-6',
           ],
           {
             y: 10,
