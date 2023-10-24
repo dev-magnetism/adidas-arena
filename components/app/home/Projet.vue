@@ -9,10 +9,8 @@
         />
         <div ref="inner" class="app-home-projet__inner">
           <div class="app-home-projet__main">
-            <AppHomeProjetHeader
-              :content-left="contents.headerContentLeft"
-              :content-right="contents.headerContentRight"
-            />
+            <AppHomeProjetBigVisual />
+            <AppHomeProjetPlan ref="plan" />
 
             <EFramedPicture
               :fake-transparent="true"
