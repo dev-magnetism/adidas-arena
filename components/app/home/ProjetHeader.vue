@@ -3,14 +3,19 @@
     <div class="app-home-projet__header__infos">
       <div class="app-home-projet__header__info">
         
+        <span class="line-info-border-bottom header-line header-line-1" />
       </div>
       <div class="app-home-projet__header__info">
         
+        <span class="line-info-border-bottom header-line header-line-1" />
       </div>
+      <span class="line-infos-border-right header-line header-line-3" />
     </div>
     <div class="app-home-projet__header__description">
       
     </div>
+    <span class="line-header-border-bottom header-line header-line-2" />
+    <span class="line-header-border-right header-line header-line-4" />
   </div>
 </template>
 
