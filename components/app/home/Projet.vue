@@ -425,6 +425,45 @@ export default {
           },
           'charsHeader'
         )
+        this.tl.to(
+          ['.header-line-1', '.header-line-2'],
+
+          {
+            scaleX: 1,
+            stagger: 0.05,
+          },
+          'charsHeader'
+        )
+        this.tl.to(
+          ['.header-line-3', '.header-line-4'],
+
+          {
+            scaleY: 1,
+            stagger: 0.2,
+          },
+          'charsHeader+=55%'
+        )
+        this.tl.fromTo(
+          [
+            '.info-text-1',
+            '.info-text-2',
+            '.info-text-3',
+            '.info-text-4',
+            '.info-text-5',
+            '.info-text-6',
+          ],
+          {
+            y: 10,
+            opacity: 0,
+          },
+          {
+            y: 0,
+            opacity: 1,
+
+            stagger: 0.085,
+          },
+          'charsHeader+=20%'
+        )
         this.tl.fromTo(
           '.app-projet-tag-5',
           {
