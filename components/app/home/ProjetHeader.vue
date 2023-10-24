@@ -2,31 +2,43 @@
   <div class="app-home-projet__header">
     <div class="app-home-projet__header__infos">
       <div class="app-home-projet__header__info">
-        <TP1 class="app-home-projet__header__info__title info-text-1"></TP1>
+        <TP1 class="app-home-projet__header__info__title info-text-1">{{
+          contentLeft[0].surtitle
+        }}</TP1>
         <TH2
           tag="p"
           weight="bold"
           class="app-home-projet__header__info__content info-text-2"
-        ></TH2>
+        >
+          {{ contentLeft[0].title }}
+        </TH2>
         <span class="line-info-border-bottom header-line header-line-1" />
       </div>
       <div class="app-home-projet__header__info">
-        <TP1 class="app-home-projet__header__info__title info-text-3"></TP1>
+        <TP1 class="app-home-projet__header__info__title info-text-3">{{
+          contentLeft[1].surtitle
+        }}</TP1>
         <TH2
           tag="p"
           weight="bold"
           class="app-home-projet__header__info__content info-text-4"
-        ></TH2>
+        >
+          {{ contentLeft[1].title }}
+        </TH2>
         <span class="line-info-border-bottom header-line header-line-1" />
       </div>
       <span class="line-infos-border-right header-line header-line-3" />
     </div>
     <div class="app-home-projet__header__description">
-      <TP1 class="app-home-projet__header__description__title info-text-5"></TP1>
+      <TP1 class="app-home-projet__header__description__title info-text-5">
+        {{ contentRight.surtitle }}
+      </TP1>
       <TH3
         tag="p"
         class="app-home-projet__header__description__content info-text-6"
-      ></TH3>
+      >
+        {{ contentRight.title }}
+      </TH3>
     </div>
     <span class="line-header-border-bottom header-line header-line-2" />
     <span class="line-header-border-right header-line header-line-4" />
