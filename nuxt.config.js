@@ -96,6 +96,7 @@ export default {
 
   generate: {
     fallback: true,
+    subFolders: false,
     async routes() {
       const axios = require('axios')
 
