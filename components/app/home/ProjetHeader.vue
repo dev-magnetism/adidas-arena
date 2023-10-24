@@ -2,17 +2,19 @@
   <div class="app-home-projet__header">
     <div class="app-home-projet__header__infos">
       <div class="app-home-projet__header__info">
-        
+        <TP1 
+          class="app-home-projet__header__info__title info-text-1"
+          >
+            {{ contentLeft[0].surtitle }}
+        </TP1>
         <span class="line-info-border-bottom header-line header-line-1" />
       </div>
       <div class="app-home-projet__header__info">
-        
         <span class="line-info-border-bottom header-line header-line-1" />
       </div>
       <span class="line-infos-border-right header-line header-line-3" />
     </div>
     <div class="app-home-projet__header__description">
-      
     </div>
     <span class="line-header-border-bottom header-line header-line-2" />
     <span class="line-header-border-right header-line header-line-4" />
