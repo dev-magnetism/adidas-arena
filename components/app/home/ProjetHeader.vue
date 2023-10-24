@@ -38,7 +38,6 @@
         {{ contentRight.surtitle }}
       </TP1>
       <TH3
-        tag="p"
         class="app-home-projet__header__description__content info-text-6"
         >
         {{ contentRight.title }}
