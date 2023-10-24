@@ -9,12 +9,7 @@
         />
         <div ref="inner" class="app-home-projet__inner">
           <div class="app-home-projet__main">
-            <AppHomeProjetHeader
-              :content-left="contents.headerContentLeft"
-              :content-right="contents.headerContentRight"
-            />
-            <AppHomeProjetBigVisual />
-            <AppHomeProjetPlan ref="plan" />
+           
 
             <EFramedPicture
               :fake-transparent="true"
@@ -47,8 +42,8 @@
               tag="p"
               weight="bold"
               class="app-home-projet__title"
-              >{{ contents.bigTitle }}</TH2
-            >
+              >{{ contents.bigTitle }}</TH2>
+              
           </div>
           <div ref="fakeVisual" class="app-home-projet__fake-visual"></div>
           <div ref="lottieCircle" class="app-home-projet__circle" />
