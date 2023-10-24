@@ -1,5 +1,6 @@
 <template>
   <main class="app-home">
+    <AppHomeProjet :contents="contentProjet" />
     <AppHomeArticles :content="contentArticles" />
   </main>
 </template>
