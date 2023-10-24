@@ -37,6 +37,12 @@
       <TP1 class="app-home-projet__header__description__title info-text-5">
         {{ contentRight.surtitle }}
       </TP1>
+      <TH3
+        tag="p"
+        class="app-home-projet__header__description__content info-text-6"
+        >
+        {{ contentRight.title }}
+      </TH3>
     </div>
     <span class="line-header-border-bottom header-line header-line-2" />
     <span class="line-header-border-right header-line header-line-4" />
