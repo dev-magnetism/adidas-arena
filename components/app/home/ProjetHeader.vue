@@ -22,6 +22,13 @@
           >
             {{ contentLeft[1].surtitle }}
         </TP1>
+        <TH2
+          tag="p"
+          weight="bold"
+          class="app-home-projet__header__info__content info-text-4"
+          >
+            {{ contentLeft[1].title }}
+        </TH2>
         <span class="line-info-border-bottom header-line header-line-1" />
       </div>
       <span class="line-infos-border-right header-line header-line-3" />
