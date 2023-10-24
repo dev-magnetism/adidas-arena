@@ -34,6 +34,9 @@
       <span class="line-infos-border-right header-line header-line-3" />
     </div>
     <div class="app-home-projet__header__description">
+      <TP1 class="app-home-projet__header__description__title info-text-5">
+        {{ contentRight.surtitle }}
+      </TP1>
     </div>
     <span class="line-header-border-bottom header-line header-line-2" />
     <span class="line-header-border-right header-line header-line-4" />
