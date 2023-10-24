@@ -1,7 +1,12 @@
 <template>
   <main class="app-home">
+    <AppHomeHero :contents="contentHero" />
+    <ESliderProgrammation :content="contentSlider" />
+    <AppHomePresentation :contents="contentPresentation" />
     <AppHomeProjet :contents="contentProjet" />
     <AppHomeArticles :content="contentArticles" />
+    <AppHomePartners :contents="contentPartners" />
+    <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
