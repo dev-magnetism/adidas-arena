@@ -2,7 +2,7 @@
   <main class="page-be-part-of-partenaire">
     <AppBepartofPartenaireIntroduction :contents="contentIntroduction" />
     <AppBepartofPartenairePartenaires :contents="contentPartners" />
-    <AppContactQuestion :contents="contentContactQuestion" />
+    <AppContactQuestion ref="questform" :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
     <!-- <AppGallery :contents="contentGallery" /> -->
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
@@ -101,7 +101,13 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() {
+    // Trigger Question open
+    const _url = document.location.href;
+    if(_url.includes('#contact')){
+      this.$refs.questform.onClick();
+    }
+  },
 }
 </script>
 
