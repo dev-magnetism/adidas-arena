@@ -2,7 +2,7 @@
   <main class="page-be-part-of-besoins">
     <AppBepartofBesoinsIntroduction :contents="contentIntroduction" />
     <AppBepartofBesoinsArena :contents="contentArena" />
-    <AppContactQuestion :contents="contentContactQuestion" />
+    <AppContactQuestion ref="questform" :contents="contentContactQuestion" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
@@ -87,7 +87,13 @@ export default {
     },
   },
 
-  mounted() {},
+  mounted() {
+    // Trigger Question open
+    const _url = document.location.href;
+    if(_url.includes('#contact')){
+      this.$refs.questform.onClick();
+    }
+  },
 }
 </script>
 

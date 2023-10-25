@@ -7,7 +7,7 @@
     />
     <AppBepartofGuestsPresentation :contents="contentPresentation" />
     <ESlider :contents="contentSlider" />
-    <AppContactQuestion :contents="contentContactQuestion" />
+    <AppContactQuestion ref="questform" :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
@@ -110,7 +110,13 @@ export default {
     },
   },
 
-  mounted() {},
+  mounted() {
+    // Trigger Question open
+    const _url = document.location.href;
+    if(_url.includes('#contact')){
+      this.$refs.questform.onClick();
+    }
+  },
 }
 </script>
 
