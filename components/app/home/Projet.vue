@@ -47,8 +47,8 @@
               tag="p"
               weight="bold"
               class="app-home-projet__title"
-              >{{ contents.bigTitle }}</TH2
-            >
+              >{{ contents.bigTitle }}</TH2>
+              
           </div>
           <div ref="fakeVisual" class="app-home-projet__fake-visual"></div>
           <div ref="lottieCircle" class="app-home-projet__circle" />

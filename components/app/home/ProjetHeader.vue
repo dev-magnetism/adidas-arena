@@ -2,28 +2,32 @@
   <div class="app-home-projet__header">
     <div class="app-home-projet__header__infos">
       <div class="app-home-projet__header__info">
-        <TP1 class="app-home-projet__header__info__title info-text-1">{{
-          contentLeft[0].surtitle
-        }}</TP1>
+        <TP1 
+          class="app-home-projet__header__info__title info-text-1"
+          >
+            {{ contentLeft[0].surtitle }}
+        </TP1>
         <TH2
           tag="p"
           weight="bold"
           class="app-home-projet__header__info__content info-text-2"
-        >
-          {{ contentLeft[0].title }}
+          >
+            {{ contentLeft[0].title }}
         </TH2>
         <span class="line-info-border-bottom header-line header-line-1" />
       </div>
       <div class="app-home-projet__header__info">
-        <TP1 class="app-home-projet__header__info__title info-text-3">{{
-          contentLeft[1].surtitle
-        }}</TP1>
+        <TP1 
+          class="app-home-projet__header__info__title info-text-3"
+          >
+            {{ contentLeft[1].surtitle }}
+        </TP1>
         <TH2
           tag="p"
           weight="bold"
           class="app-home-projet__header__info__content info-text-4"
-        >
-          {{ contentLeft[1].title }}
+          >
+            {{ contentLeft[1].title }}
         </TH2>
         <span class="line-info-border-bottom header-line header-line-1" />
       </div>
@@ -36,7 +40,7 @@
       <TH3
         tag="p"
         class="app-home-projet__header__description__content info-text-6"
-      >
+        >
         {{ contentRight.title }}
       </TH3>
     </div>
@@ -56,6 +60,10 @@ export default {
       type: Object,
       default: () => {},
     },
+  },
+
+  mounted() {
+    //  console.log('contentRight', this.contentRight);
   },
 }
 </script>
