@@ -166,6 +166,7 @@ export default {
       const data = {
         name: this.prenom,
         surname: this.nom,
+        structure: this.structure,
         email: this.email,
         phone: this.telephone,
         message: this.body,
