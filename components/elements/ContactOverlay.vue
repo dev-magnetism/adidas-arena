@@ -59,16 +59,6 @@
         </div>
         <div class="app-element-contact-overlay__field-group">
           <input
-            v-model="email"
-            placeholder=" "
-            required
-            class="app-element-contact-overlay__field"
-            type="email"
-          />
-          <TH4 tag="p">Email</TH4>
-        </div>
-        <div class="app-element-contact-overlay__field-group">
-          <input
             v-model="structure"
             placeholder=" "
             required
@@ -76,6 +66,16 @@
             type="text"
           />
           <TH4 tag="p">Structure</TH4>
+        </div>
+        <div class="app-element-contact-overlay__field-group">
+          <input
+            v-model="email"
+            placeholder=" "
+            required
+            class="app-element-contact-overlay__field"
+            type="email"
+          />
+          <TH4 tag="p">Email</TH4>
         </div>
         <div class="app-element-contact-overlay__field-group">
           <input
