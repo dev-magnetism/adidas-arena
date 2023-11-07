@@ -39,7 +39,7 @@
 <script>
 import { mapMutations, mapState } from 'vuex'
 import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+// import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 import loaderManager from '~/assets/js/loaderManager'
 
@@ -149,7 +149,7 @@ export default {
       Promise.all(observers)
         .then((fonts) => {
           this.setFontsLoaded(true)
-          ScrollTrigger.refresh()
+          // ScrollTrigger.refresh()
 
           if (
             (this.$viewport.isFirefox && this.$refs.video.readyState > 3) ||

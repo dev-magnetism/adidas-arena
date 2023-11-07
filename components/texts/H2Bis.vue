@@ -46,8 +46,5 @@ export default {
 <style lang="scss">
 .H2-bis {
   @include h2-bis();
-
-  &--type {
-  }
 }
 </style>

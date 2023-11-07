@@ -52,10 +52,10 @@
             :duration="1000"
           >
             <TH4
-              tag="p"
               v-for="(item, index) in contents.items"
               v-show="currentIndex === index"
               :key="`configuration-${index}`"
+              tag="p"
               class="app-be-part-of-besoins-arena__controller__f-r__text"
               color="grey"
             >

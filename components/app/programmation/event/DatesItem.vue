@@ -22,46 +22,48 @@
         {{ artist }}
       </TH2Bis>
       <TP2
+        v-if="session.session_status === 'K'"
         weight="medium"
         :color="whitedTexts ? 'white' : 'black'"
-        v-if="session.session_status==='K'"
         class="app-programmation-event-dates-item__info"
       >
         Show complet, inscrivez-vous sur la liste d’attente !
       </TP2>
     </div>
-    <AtomsCTAForm 
-      :session="session" 
-      :eventId="eventId" 
-      :eventName="artist"
-      :eventDate="date"
-      :statusCode="session.session_status"
-      :color="statutColor" 
-      :layer-color="statutColor" 
+    <AtomsCTAForm
+      v-if="
+        session.session_status === 'K' ||
+        session.session_status === 'B' ||
+        session.session_status === 'C'
+      "
+      :session="session"
+      :event-dd="eventId"
+      :event-name="artist"
+      :event-date="date"
+      :status-code="session.session_status"
+      :color="statutColor"
+      :layer-color="statutColor"
       :bg="'grey'"
-      v-if="session.session_status==='K' || session.session_status==='B' || session.session_status==='C'"
     >
       Liste d'attente
     </AtomsCTAForm>
 
-    <AtomsCTA 
-      v-else-if="session.session_status==='H'" 
+    <AtomsCTA
+      v-else-if="session.session_status === 'H'"
       :href="session.content.url"
-      :color="statutColor" 
-      :layer-color="statutColor" 
+      :color="statutColor"
+      :layer-color="statutColor"
       :bg="'grey'"
-
     >
       En savoir +
     </AtomsCTA>
 
-    <AtomsCTA 
-      v-else 
+    <AtomsCTA
+      v-else
       :href="session.content.url"
-      :color="statutColor" 
-      :layer-color="statutColor" 
+      :color="statutColor"
+      :layer-color="statutColor"
       :bg="'grey'"
-
     >
       Réserver
     </AtomsCTA>

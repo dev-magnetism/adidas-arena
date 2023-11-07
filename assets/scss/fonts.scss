@@ -1,53 +1,53 @@
 @font-face {
-  font-family: 'AdihausDIN Cn Bold';
-  src: url('~assets/fonts/AdihausDIN-Cn-Bold/AdihausDIN-Cn-Bold.woff2')
-    format('woff2');
+  font-family: "AdihausDIN Cn Bold";
+  src: url("~assets/fonts/AdihausDIN-Cn-Bold/AdihausDIN-Cn-Bold.woff")format("woff"),
+    url("~assets/fonts/AdihausDIN-Cn-Bold/AdihausDIN-Cn-Bold.woff2")format("woff2");
+  font-weight: normal;
   font-style: normal;
-  font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'AdihausDIN Cn Medium';
-  src: url('~assets/fonts/AdihausDIN-Cn-Medium/AdihausDIN-Cn-Medium.woff2')
-    format('woff2');
+  font-family: "AdihausDIN Cn Medium";
+  src: url("~assets/fonts/AdihausDIN-Cn-Medium/AdihausDIN-Cn-Medium.woff")format("woff"),
+    url("~assets/fonts/AdihausDIN-Cn-Medium/AdihausDIN-Cn-Medium.woff2")format("woff2");
+  font-weight: normal;
   font-style: normal;
-  font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'AdihausDIN Cn';
-  src: url('~assets/fonts/AdihausDIN-Cn-Regular/AdihausDIN-Cn-Regular.woff2')
-    format('woff2');
+  font-family: "AdihausDIN Cn";
+  src: url("~assets/fonts/AdihausDIN-Cn/AdihausDIN-Cn.woff")format("woff"),
+    url("~assets/fonts/AdihausDIN-Cn/AdihausDIN-Cn.woff2")format("woff2");
+  font-weight: normal;
   font-style: normal;
-  font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'AdihausDIN Bold';
-  src: url('~assets/fonts/AdihausDIN-Bold/AdihausDIN-Bold.woff2')
-    format('woff2');
+  font-family: "AdihausDIN Bold";
+  src: url("~assets/fonts/AdihausDIN-Bold/AdihausDIN-Bold.woff")format("woff"),
+    url("~assets/fonts/AdihausDIN-Bold/AdihausDIN-Bold.woff2")format("woff2");
+  font-weight: normal;
   font-style: normal;
-  font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'AdihausDIN Medium';
-  src: url('~assets/fonts/AdihausDIN-Medium/AdihausDIN-Medium.woff2')
-    format('woff2');
+  font-family: "AdihausDIN Medium";
+  src: url("~assets/fonts/AdihausDIN-Medium/AdihausDIN-Medium.woff")format("woff"),
+    url("~assets/fonts/AdihausDIN-Medium/AdihausDIN-Medium.woff2")format("woff2");
+  font-weight: normal;
   font-style: normal;
-  font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'AdihausDIN';
-  src: url('~assets/fonts/AdihausDIN-Regular/AdihausDIN-Regular.woff2')
-    format('woff2');
+  font-family: "AdihausDIN";
+  src: url("~assets/fonts/AdihausDIN/AdihausDIN.woff")format("woff"),
+    url("~assets/fonts/AdihausDIN/AdihausDIN.woff2")format("woff2");
+  font-weight: normal;
   font-style: normal;
-  font-weight: 400;
   font-display: swap;
 }
