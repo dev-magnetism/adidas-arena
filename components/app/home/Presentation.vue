@@ -6,7 +6,7 @@
       :split="true"
       :overflow="false"
       :scrub="true"
-      tag="p"
+      tag="div"
     />
 
     <EParallax

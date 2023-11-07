@@ -4,11 +4,11 @@
     class="app-two-columns-stick"
   >
     <div class="app-two-columns-stick__column left">
-      <ERichText tag="p" :content="leftContent" />
+      <ERichText tag="div" :content="leftContent" />
     </div>
 
     <div class="app-two-columns-stick__column right">
-      <ERichText tag="p" :content="rightContent" />
+      <ERichText tag="div" :content="rightContent" />
     </div>
   </div>
 </template>

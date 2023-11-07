@@ -6,7 +6,7 @@
     :class="classes"
     :style="{ color: `var(--c-${color})` }"
   >
-    <slot></slot>
+    <slot />
   </component>
 </template>
 
@@ -100,14 +100,8 @@ export default {
 .H3 {
   @include h3();
 
-  &--type {
-  }
-
   &__parent {
     overflow: hidden;
-  }
-
-  &__child {
   }
 }
 </style>

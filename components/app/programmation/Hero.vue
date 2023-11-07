@@ -19,7 +19,6 @@
         <AtomsCornerPoints :size-points="8" />
 
         <div class="app-programmation-hero__main-card__wrapper">
-
           <AppProgrammationEventStatus
             :presale="content.event.presale"
             :reported="content.event.reported"
@@ -51,7 +50,13 @@
               {{ $formatDate(content.event.sessions) }}
             </TH4>
             <TP2
-            v-if="content.event.min_price && content.event.status_code!=='K' && content.event.status_code!=='B' && content.event.status_code!=='C' && content.event.status_code!=='H'"
+              v-if="
+                content.event.min_price &&
+                content.event.status_code !== 'K' &&
+                content.event.status_code !== 'B' &&
+                content.event.status_code !== 'C' &&
+                content.event.status_code !== 'H'
+              "
               weight="medium"
               class="app-programmation-hero__main-card__from-price"
             >
@@ -59,7 +64,7 @@
               {{ content.event.min_price }}€
             </TP2>
             <TP2
-            v-else
+              v-else
               weight="medium"
               class="app-programmation-hero__main-card__from-price"
             >
@@ -76,17 +81,25 @@
               }`,
             },
           }"
-          :gtmClick="{
+          :gtm-click="{
             id: `${content.event.id}`,
             name: `${content.event.artist_reference}`,
             category: `${content.event.content.category}`,
             category2: `${content.event.content.sub_category}`,
-            price: `${content.event.min_price}`
-
+            price: `${content.event.min_price}`,
           }"
           class="app-programmation-hero__main-card__cta"
         >
-          {{ content.event.status_code==='H' || (content.event.status_code==='B' && !content.event.presale) || content.event.status_code==='C' ? `En savoir +` : content.event.status_code==='K' || (content.event.status_code==='B' && content.event.presale)? `Liste d'attente` :`Réserver` }}
+          {{
+            content.event.status_code === 'H' ||
+            (content.event.status_code === 'B' && !content.event.presale) ||
+            content.event.status_code === 'C'
+              ? `En savoir +`
+              : content.event.status_code === 'K' ||
+                (content.event.status_code === 'B' && content.event.presale)
+              ? `Liste d'attente`
+              : `Réserver`
+          }}
         </AtomsCTA>
       </EKinesis>
     </div>
@@ -436,7 +449,6 @@ export default {
         font-size: desktop-vw(12px);
         line-height: desktop-vw(18px);
       }
-
     }
 
     @include mobile {
@@ -519,7 +531,7 @@ export default {
 
       @include desktop-xl {
         padding: desktop-vw(10px) desktop-vw(10px) desktop-vw(20px)
-        desktop-vw(10px);
+          desktop-vw(10px);
       }
     }
 
@@ -622,15 +634,14 @@ export default {
         min-width: unset;
       }
 
-      .P2{
-
+      .P2 {
         @include mobile-l {
           font-size: mobile-vw(12px);
           line-height: mobile-vw(10px);
         }
       }
 
-      .app-atoms-cta__arrow{
+      .app-atoms-cta__arrow {
         @include mobile-l {
           margin-left: mobile-vw(20px);
           width: mobile-vw(12px);

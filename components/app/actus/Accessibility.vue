@@ -26,47 +26,38 @@
         @mouseout.native="handleShareKTO(false)"
       >
         PARTAGER
-
       </TP2>
-      <div
-          class="app-actualite-accessibility-share-layer"
+      <div class="app-actualite-accessibility-share-layer">
+        <div
+          class="P2 medium app-actualite-accessibility-share"
+          @mouseover="handleShareKTO(true)"
+          @mouseout="handleShareKTO(false)"
         >
-          <div
-            class="P2 medium app-actualite-accessibility-share"
-            v-on:mouseover="handleShareKTO(true)"
-            v-on:mouseout="handleShareKTO(false)"
+          <ShareNetwork
+            network="facebook"
+            :url="pageUrl"
+            :title="content.title"
+            :description="content.page_description_seo"
+            :quote="content.page_description_seo"
           >
-            <ShareNetwork
-                network="facebook"
-                :url="pageUrl"
-                :title="this.content.title"
-                :description="this.content.page_description_seo"
-                :quote="this.content.page_description_seo"
-              >
-                Facebook
-            </ShareNetwork>
-
-          </div>
-          <div
-            class="P2 medium app-actualite-accessibility-share"
-            v-on:mouseover="handleShareKTO(true)"
-            v-on:mouseout="handleShareKTO(false)"
-          >
-            <ShareNetwork
-                network="twitter"
-                :url="pageUrl"
-                :title="this.content.title"
-              >
-                Twitter/X
-            </ShareNetwork>
-          </div>
+            Facebook
+          </ShareNetwork>
         </div>
+        <div
+          class="P2 medium app-actualite-accessibility-share"
+          @mouseover="handleShareKTO(true)"
+          @mouseout="handleShareKTO(false)"
+        >
+          <ShareNetwork network="twitter" :url="pageUrl" :title="content.title">
+            Twitter/X
+          </ShareNetwork>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   props: {
     content: {
@@ -84,50 +75,64 @@ export default {
     pageUrl() {
       //  console.log('pageUrl', this.$route)
       return 'https://www.adidasarena.com' + this.$route.path
-    }
+    },
   },
   methods: {
     openShare() {
-      clearTimeout(this._timeoutShare);
-      this._timeoutShare = '';
-      const ref = document.querySelector('.app-actualite-accessibility-share');
-      const tar = document.querySelector('.app-actualite-accessibility-share-layer');
+      clearTimeout(this._timeoutShare)
+      this._timeoutShare = ''
+      const ref = document.querySelector('.app-actualite-accessibility-share')
+      const tar = document.querySelector(
+        '.app-actualite-accessibility-share-layer'
+      )
 
-      const refW = ref.offsetWidth;
-      const refH = ref.offsetHeight;
-      const refXpos = ref.offsetLeft;
-      const refYpos = ref.offsetTop;
+      const refW = ref.offsetWidth
+      const refH = ref.offsetHeight
+      const refXpos = ref.offsetLeft
+      const refYpos = ref.offsetTop
 
-      tar.style.width = `${refW}px`;
-      tar.style.left = `${refXpos}px`;
-      tar.style.top = `${refYpos + refH}px`;
-      tar.style.height = `${refH * 2}px`;
+      tar.style.width = `${refW}px`
+      tar.style.left = `${refXpos}px`
+      tar.style.top = `${refYpos + refH}px`
+      tar.style.height = `${refH * 2}px`
     },
     closeShare() {
-      const tar = document.querySelector('.app-actualite-accessibility-share-layer');
-      tar.style.height = "0px"
+      const tar = document.querySelector(
+        '.app-actualite-accessibility-share-layer'
+      )
+      tar.style.height = '0px'
     },
-    handleShareKTO(sens){
-      const oThis = this;
-      if(sens){
-        clearTimeout(oThis._timeoutShare);
+    handleShareKTO(sens) {
+      const oThis = this
+      if (sens) {
+        clearTimeout(oThis._timeoutShare)
       } else {
-        oThis._timeoutShare = setTimeout(function(){oThis.closeShare()}, 120);
+        oThis._timeoutShare = setTimeout(function () {
+          oThis.closeShare()
+        }, 120)
       }
     },
     increaseFontSize() {
-      const _dynText = document.querySelectorAll('.p, .li');
-      _dynText.forEach((el)=>{
-          el.style.fontSize = `${parseInt(window.getComputedStyle(el).fontSize) + 2}px`;
-          el.style.lineHeight = `${parseInt(window.getComputedStyle(el).lineHeight) + 2}px`;
+      const _dynText = document.querySelectorAll('.p, .li')
+      _dynText.forEach((el) => {
+        el.style.fontSize = `${
+          parseInt(window.getComputedStyle(el).fontSize) + 2
+        }px`
+        el.style.lineHeight = `${
+          parseInt(window.getComputedStyle(el).lineHeight) + 2
+        }px`
       })
     },
     decreaseFontSize() {
-      const _dynText = document.querySelectorAll('.p, .li');
-      _dynText.forEach((el)=>{
-        if(parseInt(window.getComputedStyle(el).fontSize) > 16){
-          el.style.fontSize = `${parseInt(window.getComputedStyle(el).fontSize) - 2}px`;
-          el.style.lineHeight = `${parseInt(window.getComputedStyle(el).lineHeight) - 2}px`;
+      const _dynText = document.querySelectorAll('.p, .li')
+      _dynText.forEach((el) => {
+        if (parseInt(window.getComputedStyle(el).fontSize) > 16) {
+          el.style.fontSize = `${
+            parseInt(window.getComputedStyle(el).fontSize) - 2
+          }px`
+          el.style.lineHeight = `${
+            parseInt(window.getComputedStyle(el).lineHeight) - 2
+          }px`
         }
       })
     },
@@ -175,7 +180,7 @@ export default {
       align-items: center;
     }
 
-    &:nth-child(4){
+    &:nth-child(4) {
       border-right: 1px solid black;
     }
 
@@ -184,14 +189,14 @@ export default {
     }
   }
 
-  &-share-layer{
+  &-share-layer {
     position: absolute;
     width: 100%;
     height: 0;
     transition: height 360ms ease-in-out;
     overflow: hidden;
 
-    .P2{
+    .P2 {
       border-top: none;
       border-right: 1px solid black;
     }

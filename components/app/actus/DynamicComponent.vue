@@ -6,8 +6,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 export default {
   props: {
     content: {
@@ -21,14 +19,7 @@ export default {
         .replace('Actualites', 'AppActus')
         .replace(/_/g, '')
     },
-    ...mapState({
-      fontsLoaded: (state) => state.fontsLoaded,
-    }),
   },
-  watch: {},
-  created() {},
-  mounted() {},
-  methods: {},
 }
 </script>
 
