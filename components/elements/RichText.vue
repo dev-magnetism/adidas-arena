@@ -37,15 +37,6 @@ export default {
       fontsLoaded: (state) => state.fontsLoaded,
     }),
   },
-
-  watch: {
-    fontsLoaded() {
-      // this.initSplitText()
-    },
-  },
-
-  created() {},
-
   mounted() {
     document.fonts.ready.then(() => {
       if (!this.split || this.$viewport.isMobile) return

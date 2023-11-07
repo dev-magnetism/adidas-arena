@@ -42,7 +42,6 @@ export default {
       default: false,
     },
   },
-
   computed: {
     classes() {
       return [
@@ -54,7 +53,6 @@ export default {
       ]
     },
   },
-
   mounted() {
     document.fonts.ready.then(() => {
       if (!this.split || this.$viewport.isMobile) return
@@ -101,9 +99,6 @@ export default {
 .H1 {
   @include h1();
 
-  &--type {
-  }
-
   &__parent {
     // display: inline-block !important;
     overflow: hidden;
@@ -111,7 +106,6 @@ export default {
 
   &__child {
     // display: inline-block !important;
-
     // transform: translateY(120%);
   }
 }
