@@ -9,8 +9,22 @@
  */
 
 html {
-  line-height: 1.15; /* 1 */
-  -webkit-text-size-adjust: 100%; /* 2 */
+  line-height: 1.15;
+  /* 1 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */
+  text-rendering: geometricPrecision;
+  /* 2 */
+  -webkit-font-smoothing: antialiased;
+  /* 3 */
+  -webkit-font-smoothing: subpixel-antialiased;
+  /* 3 */
+  -moz-font-smoothing: antialiased;
+  /* 3 */
+  font-smoothing: antialiased;
+  /* 3 */
+  -moz-osx-font-smoothing: grayscale;
+  /* 3 */
 }
 
 /* Remove all the styles of the "User-Agent-Stylesheet", except for the 'display' property */

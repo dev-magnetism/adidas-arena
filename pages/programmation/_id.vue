@@ -28,14 +28,19 @@
     />
 
     <AppProgrammationEventTicketing
+      v-if="
+        event.status_code !== 'H' &&
+        event.status_code !== 'K' &&
+        event.status_code !== 'B' &&
+        event.status_code !== 'C'
+      "
       :event="event"
       :content="contentTicketing"
       :index-date="event.sessions.length - 1 > 0 ? indexDate : 0"
-
-      v-if="event.status_code!=='H' && event.status_code!=='K' && event.status_code!=='B' && event.status_code!=='C'"
     />
 
     <!-- <AppProgrammationEventOffers ref="offers" /> -->
+
     <AppProgrammationEventSafetyInstructions :content="contentSafety" />
 
     <AppProgrammationEventAboutArtist :event="event" />

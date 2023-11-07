@@ -3,7 +3,7 @@
     <div class="app-contact-actus__wrapper">
       <AtomsCornerPoints :size-points="8" />
 
-      <ERichText tag="p" :content="contents.title" />
+      <ERichText tag="div" :content="contents.title" />
 
       <form
         :class="{ submited }"

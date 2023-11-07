@@ -34,7 +34,11 @@
     <div class="app-programmation-card__informations">
       <div class="app-programmation-card__head">
         <TP2 class="type" weight="bold" :color="whitedTexts" tag="h3">
-          {{ (event.content.category.toLowerCase() !== "no cat")? event.content.category : '' }}
+          {{
+            event.content.category.toLowerCase() !== 'no cat'
+              ? event.content.category
+              : ''
+          }}
         </TP2>
         <TP2 class="date" weight="medium" :color="whitedTexts" tag="h3">
           {{ $formatDate(event.sessions, true) }}
@@ -45,7 +49,13 @@
       </TH2>
 
       <TP2
-        v-if="event.min_price && event.status_code!=='K' && event.status_code!=='B' && event.status_code!=='C' && event.status_code!=='H'"
+        v-if="
+          event.min_price &&
+          event.status_code !== 'K' &&
+          event.status_code !== 'B' &&
+          event.status_code !== 'C' &&
+          event.status_code !== 'H'
+        "
         class="app-programmation-card__from-price"
         weight="medium"
         :color="whitedTexts"
@@ -55,24 +65,29 @@
       </TP2>
 
       <TP2
+        v-else-if="event.status_code === 'K'"
         weight="medium"
         :color="whitedTexts"
-        v-else-if="event.status_code==='K'"
         class="app-programmation-card__from-price"
       >
         Show complet, inscrivez-vous sur la liste d’attente !
       </TP2>
 
       <TP2
+        v-else-if="event.status_code === 'B' && event.presale"
         weight="medium"
         :color="whitedTexts"
-        v-else-if="event.status_code==='B' && event.presale"
         class="app-programmation-card__from-price"
       >
         Inscrivez-vous sur la liste d’attente !
       </TP2>
 
       <AtomsCTA
+        v-if="
+          event.status_code === 'H' ||
+          (event.status_code === 'B' && !event.presale) ||
+          event.status_code === 'C'
+        "
         :color="statutColor"
         :layer-color="statutColor"
         :bg="'grey'"
@@ -82,19 +97,19 @@
             id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
           },
         }"
-        :gtmClick="{
+        :gtm-click="{
           id: `${event.id}`,
           name: `${event.artist_reference}`,
           category: `${event.content.category}`,
           category2: `${event.content.sub_category}`,
-          price: `${event.min_price}`
-
+          price: `${event.min_price}`,
         }"
         class="app-programmation-card__cta"
-        v-if="event.status_code==='H' || (event.status_code==='B' && !event.presale) || event.status_code==='C'"
-        >En savoir +</AtomsCTA>
+        >En savoir +</AtomsCTA
+      >
 
       <AtomsCTA
+        v-else
         :color="statutColor"
         :layer-color="statutColor"
         :bg="'grey'"
@@ -104,19 +119,22 @@
             id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
           },
         }"
-        :gtmClick="{
+        :gtm-click="{
           id: `${event.id}`,
           name: `${event.artist_reference}`,
           category: `${event.content.category}`,
           category2: `${event.content.sub_category}`,
-          price: `${event.min_price}`
-
+          price: `${event.min_price}`,
         }"
         class="app-programmation-card__cta"
-        v-else
-        >
-          {{ event.status_code==='K' || (event.status_code==='B' && event.presale)?`Liste d'attente`:`Réserver` }}
-        </AtomsCTA>
+      >
+        {{
+          event.status_code === 'K' ||
+          (event.status_code === 'B' && event.presale)
+            ? `Liste d'attente`
+            : `Réserver`
+        }}
+      </AtomsCTA>
     </div>
   </div>
 </template>
@@ -319,7 +337,6 @@ export default {
       top: 0;
       z-index: 10;
 
-
       @include mobile-l {
         font-size: mobile-vw(15px);
         line-height: mobile-vw(15px);
@@ -445,21 +462,19 @@ export default {
       padding: mobile-vw(5px) mobile-vw(12px) mobile-vw(5px) mobile-vw(12px);
     }
 
-    .app-atoms-cta__arrow{
+    .app-atoms-cta__arrow {
       @include mobile-l {
         margin-left: mobile-vw(8px);
         width: mobile-vw(8px);
       }
     }
 
-    .P2{
-
+    .P2 {
       @include mobile-l {
         font-size: mobile-vw(10px);
         line-height: mobile-vw(8px);
       }
     }
-
   }
 }
 </style>

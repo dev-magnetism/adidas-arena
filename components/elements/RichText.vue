@@ -211,6 +211,7 @@ export default {
   .line-child {
     display: inline-block !important;
   }
+
   .line-parent {
     overflow: hidden;
     // display: inline-block !important;

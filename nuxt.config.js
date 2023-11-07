@@ -6,10 +6,11 @@ const convertToKebabCase = (string) => {
 }
 
 const removeSpecialChar = (string) => {
-    return  string.toLowerCase()
-                  .normalize('NFD')
-                  .replace(/[\u0300-\u036F]/g, '')
-                  .replace(/[^\w\s]/gi, '-');
+  return string
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036F]/g, '')
+    .replace(/[^\w\s]/gi, '-')
 }
 
 export default {
@@ -107,7 +108,6 @@ export default {
         `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=1&page=1`
       )
 
-
       // https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=1&page=1
 
       const lengthPages = Math.ceil(response.data.meta.total_count / limit)
@@ -134,7 +134,11 @@ export default {
 
           // TO DO : corriger convertToKebabCase(url) par convertToKebabCase(removeSpecialChar(url))
 
-          routes.push(`/programmation/${convertToKebabCase(removeSpecialChar(url))}--${id}`)
+          routes.push(
+            `/programmation/${convertToKebabCase(
+              removeSpecialChar(url)
+            )}--${id}`
+          )
         })
       }
 
@@ -143,8 +147,8 @@ export default {
       )
 
       actualites.data.data.forEach((actu) => {
-        const _slug = removeSpecialChar(actu.title);
-        //console.log('actualites slug ', convertToKebabCase(_slug));
+        const _slug = removeSpecialChar(actu.title)
+        // console.log('actualites slug ', convertToKebabCase(_slug));
         routes.push(`/nos-actualites/${convertToKebabCase(_slug)}`)
       })
 
@@ -264,13 +268,13 @@ export default {
     },
   },
 
-  render: {
-    bundleRenderer: {
-      shouldPreload: (file, type) => {
-        return ['script', 'style', 'font'].includes(type)
-      },
-    },
-  },
+  // render: {
+  //   bundleRenderer: {
+  //     shouldPreload: (file, type) => {
+  //       return ['script', 'style', 'font'].includes(type)
+  //     },
+  //   },
+  // },
 
   loading: false,
 

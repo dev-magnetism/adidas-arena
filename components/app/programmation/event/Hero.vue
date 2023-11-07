@@ -5,14 +5,27 @@
         color="red-adidas"
         class="app-programmation-event-hero__full timeline-text"
       >
-        {{ event.reported ? programmationsEventContent.glossary_deferred : event.status_code === 'H' ? programmationsEventContent.glossary_cancelled : event.status_code === 'K' ? programmationsEventContent.glossary_full : '' }}
+        {{
+          event.reported
+            ? programmationsEventContent.glossary_deferred
+            : event.status_code === 'H'
+            ? programmationsEventContent.glossary_cancelled
+            : event.status_code === 'K'
+            ? programmationsEventContent.glossary_full
+            : ''
+        }}
       </TH4>
       <TH4
         color="blue-adidas"
         class="app-programmation-event-hero__soon timeline-text"
       >
-        {{ event.presale && event.status_code === 'B' ? programmationsEventContent.glossary_presales : event.status_code === 'B' || event.status_code === 'C' ? programmationsEventContent.glossary_soon_available : '' }}
-
+        {{
+          event.presale && event.status_code === 'B'
+            ? programmationsEventContent.glossary_presales
+            : event.status_code === 'B' || event.status_code === 'C'
+            ? programmationsEventContent.glossary_soon_available
+            : ''
+        }}
       </TH4>
       <TH2Bis
         ref="date"
@@ -29,8 +42,8 @@
       </TH1>
 
       <div
+        v-if="event.opening && event.status_code === 'B' && event.presale"
         class="app-programmation-event-hero__ticket-office-opening timeline-block"
-        v-if="event.opening && event.status_code==='B' && event.presale"
       >
         <TH4> {{ programmationsEventContent.glossary_opening_tickets }} </TH4>
         <TH4
@@ -43,52 +56,62 @@
       </div>
 
       <div class="app-programmation-event-hero__cta timeline-block">
-        <TP2 
-          v-if="event.status_code==='D'"
-          weight="medium" 
+        <TP2
+          v-if="event.status_code === 'D'"
+          weight="medium"
           class="app-programmation-event-hero__information"
         >
           {{ programmationsEventContent.glossary_exclu_france_price }}
           {{ event.min_price }}€
         </TP2>
-        <TP2 
-          v-else-if="event.status_code==='K'"
-          weight="medium" 
+        <TP2
+          v-else-if="event.status_code === 'K'"
+          weight="medium"
           class="app-programmation-event-hero__information"
         >
           Show complet, inscrivez-vous sur la liste d’attente !
         </TP2>
-        <TP2 
-          v-else-if="event.status_code==='B' && event.presale"
-          weight="medium" 
+        <TP2
+          v-else-if="event.status_code === 'B' && event.presale"
+          weight="medium"
           class="app-programmation-event-hero__information"
         >
           Inscrivez-vous sur la liste d’attente !
         </TP2>
         <AtomsCTA
-          v-if="event.sessions.length > 1 && 
-          ((event.status_code==='B' && event.presale) ||
-          event.status_code!=='C' &&
-          event.status_code!=='H')
+          v-if="
+            event.sessions.length > 1 &&
+            ((event.status_code === 'B' && event.presale) ||
+              (event.status_code !== 'C' && event.status_code !== 'H'))
           "
           button
           @click.native="anchorToDates"
         >
-          {{ event.status_code==='K' || (event.status_code==='B' && event.presale) ? `Liste d'attente` : `Réserver` }}
+          {{
+            event.status_code === 'K' ||
+            (event.status_code === 'B' && event.presale)
+              ? `Liste d'attente`
+              : `Réserver`
+          }}
         </AtomsCTA>
-        
 
-        <AtomsCTAForm 
-          :session="event.sessions[0]" 
-          :eventId="event.id" 
-          :eventName="event.artist_reference"
-          :eventDate="event.sessions[0].date"
-          :statusCode="event.status_code"
-          v-else-if="event.status_code==='K' || (event.status_code==='B' && event.presale)"
+        <AtomsCTAForm
+          v-else-if="
+            event.status_code === 'K' ||
+            (event.status_code === 'B' && event.presale)
+          "
+          :session="event.sessions[0]"
+          :event-id="event.id"
+          :event-name="event.artist_reference"
+          :event-date="event.sessions[0].date"
+          :status-code="event.status_code"
         >
           Liste d'attente
         </AtomsCTAForm>
-        <AtomsCTA v-else-if="event.status_code==='D'" :href="event.sessions[0].content.url">
+        <AtomsCTA
+          v-else-if="event.status_code === 'D'"
+          :href="event.sessions[0].content.url"
+        >
           Réserver mon billet
         </AtomsCTA>
       </div>
@@ -102,7 +125,9 @@
       />
 
       <AtomsCornerPoints :size-points="10" />
-      <AppProgrammationEventTag v-if="event.content.category.toLowerCase() !== 'no cat'">
+      <AppProgrammationEventTag
+        v-if="event.content.category.toLowerCase() !== 'no cat'"
+      >
         {{ event.content.category }}
       </AppProgrammationEventTag>
 
@@ -177,23 +202,20 @@ export default {
   },
   methods: {
     popup() {
-
       const options = {
         opacity: '100',
         size: '70',
         iframeProps: {
-          title:'Test Adidas Arena',
+          title: 'Test Adidas Arena',
         },
         transitiveSearchParams: '',
-        medium: 'snippet', 
+        medium: 'snippet',
         hidden: {
-          list_name:'Site Adidas Arena',
-          api_key:'EBu7rZdGJLInGv'
-        }
-
+          list_name: 'Site Adidas Arena',
+          api_key: 'EBu7rZdGJLInGv',
+        },
       }
 
-        
       const { toggle } = createPopup('ZAHIdrU3', options)
 
       toggle
@@ -463,7 +485,7 @@ export default {
 
   &__title {
     margin-bottom: desktop-vw(55px);
-    font-size: 8.680555555555556vW;
+    font-size: 8.680555555555556vw;
 
     @include mobile {
       margin-bottom: mobile-vw(30px);

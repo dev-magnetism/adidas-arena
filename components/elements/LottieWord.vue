@@ -1,7 +1,7 @@
 <template>
-  <span ref="lottie" class="app-element-lottie-word">
+  <div ref="lottie" class="app-element-lottie-word">
     <slot />
-  </span>
+  </div>
 </template>
 
 <script>
