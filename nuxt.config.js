@@ -15,6 +15,7 @@ const removeSpecialChar = (string) => {
 
 export default {
   target: 'static',
+
   head: {
     htmlAttrs: {
       lang: 'fr',
@@ -41,7 +42,6 @@ export default {
   },
 
   telemetry: false,
-
   css: ['~assets/scss/global.scss'],
 
   plugins: [

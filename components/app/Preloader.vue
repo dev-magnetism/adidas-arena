@@ -39,6 +39,7 @@
 <script>
 import { mapMutations, mapState } from 'vuex'
 import { gsap } from 'gsap'
+// import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 import loaderManager from '~/assets/js/loaderManager'
 
@@ -126,21 +127,45 @@ export default {
       this.videoLoaded = true
     },
     loadFonts() {
-      document.fonts.ready.then(() => {
-        this.setFontsLoaded(true)
+      const FontFaceObserver = require('fontfaceobserver')
 
-        if (
-          (this.$viewport.isFirefox && this.$refs.video.readyState > 3) ||
-          this.$refs.video.readyState > 3
-        ) {
-          this.onVideoLoaded()
-        } else {
-          this.$refs.video.addEventListener(
-            'canplaythrough',
-            this.onVideoLoaded
-          )
-        }
+      const fontData = {
+        'AdihausDIN Cn': { weight: 400 },
+        'AdihausDIN Cn Medium': { weight: 400 },
+        'AdihausDIN Cn Bold': { weight: 400 },
+        AdihausDIN: { weight: 400 },
+        'AdihausDIN Medium': { weight: 400 },
+        'AdihausDIN Bold': { weight: 400 },
+      }
+
+      const observers = []
+
+      Object.keys(fontData).forEach((family) => {
+        const data = fontData[family]
+        const obs = new FontFaceObserver(family, data)
+        observers.push(obs.load())
       })
+
+      Promise.all(observers)
+        .then((fonts) => {
+          this.setFontsLoaded(true)
+          // ScrollTrigger.refresh()
+
+          if (
+            (this.$viewport.isFirefox && this.$refs.video.readyState > 3) ||
+            this.$refs.video.readyState > 3
+          ) {
+            this.onVideoLoaded()
+          } else {
+            this.$refs.video.addEventListener(
+              'canplaythrough',
+              this.onVideoLoaded
+            )
+          }
+        })
+        .catch((err) => {
+          console.warn('Some critical font are not available:', err)
+        })
     },
 
     initTimeline() {
