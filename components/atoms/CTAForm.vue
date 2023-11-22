@@ -209,6 +209,7 @@ export default {
     position: relative;
     z-index: 1;
     transition: color 0.15s var(--ease-in-out-cubic);
+    margin-top: desktop-vw(8px)
   }
 
   .P2,
@@ -216,7 +217,7 @@ export default {
   .P2.medium,
   .P2.regular {
     font-size: desktop-vw(24px);
-    line-height: desktop-vw(32px);
+    line-height: desktop-vw(20px);
     text-transform: uppercase;
     @include font-adihausDIN-cn-bold();
 

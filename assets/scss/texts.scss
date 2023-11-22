@@ -45,10 +45,10 @@
 }
 
 @mixin h2() {
-  font-size: desktop-vw(100px);
-  line-height: desktop-vw(90px);
+  font-size: desktop-vw(98px);
+  line-height: desktop-vw(100px);
   text-transform: uppercase;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.03em;
 
   @include mobile {
     font-size: mobile-vw(64px);
@@ -90,8 +90,8 @@
 
 @mixin h3() {
   font-size: desktop-vw(72px);
-  line-height: desktop-vw(65px);
-  letter-spacing: -0.05em;
+  line-height: desktop-vw(72px);
+  letter-spacing: -0.03em;
   text-transform: uppercase;
   @include font-adihausDIN-cn-bold();
 
@@ -111,9 +111,9 @@
 }
 
 @mixin h4() {
-  font-size: desktop-vw(32px);
-  line-height: desktop-vw(32px);
-  letter-spacing: -0.04em;
+  font-size: desktop-vw(36px);
+  line-height: desktop-vw(36px);
+  letter-spacing: -0.03em;
   text-transform: uppercase;
 
   @include mobile {
@@ -165,7 +165,7 @@
 }
 
 @mixin p2() {
-  font-size: desktop-vw(14px);
+  font-size: desktop-vw(20px);
   line-height: desktop-vw(20px);
 
   @include mobile {
