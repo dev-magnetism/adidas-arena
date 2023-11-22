@@ -387,7 +387,7 @@ export default {
 
       @include desktop-xl {
         font-size: desktop-vw(80px);
-        line-height: desktop-vw(70px);
+        line-height: desktop-vw(80px);
       }
     }
   }
@@ -541,7 +541,7 @@ export default {
     }
 
     &__name {
-      margin-top: desktop-vw(10px);
+      margin-top: desktop-vw(20px);
       display: flex;
       flex-direction: row;
 
@@ -577,7 +577,7 @@ export default {
     }
 
     &__date {
-      margin-top: desktop-vw(15px);
+      margin-top: desktop-vw(4px);
 
       @include mobile {
         margin-top: mobile-vw(10px);
