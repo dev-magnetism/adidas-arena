@@ -64,7 +64,6 @@ export default {
       programmes: (state) => state.programmes,
     }),
     contentMainCard() {
-      //  console.log('contentMainCard', this.programmes);
       return (
         this.programmes.find((event) => event.main_event) || this.programmes[0]
       )
