@@ -68,12 +68,12 @@ export default {
       onToggle: (self) => this.onToggle(self),
     })
 
-    this.$raf.add(`le-bloc-hero`, this.onFrame)
+    this.$raf.add(`be-part-of-guests-hero`, this.onFrame)
   },
   beforeDestroy() {
     this.scrollTrigger?.kill()
 
-    this.$raf.remove(`le-bloc-hero`, this.onFrame)
+    this.$raf.remove(`be-part-of-guests-hero`, this.onFrame)
   },
   methods: {
     onToggle(self) {
