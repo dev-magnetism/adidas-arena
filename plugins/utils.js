@@ -24,14 +24,14 @@ export default ({ app }, inject) => {
       return _date.replaceAll('-', '/');
     })
 
-    console.log('formatDate / _formatDates', _formatDates);
+    // console.log('formatDate / _formatDates', _formatDates);
 
     const dateObjects = _formatDates
       .map((obj) => new Date(obj))
       .sort((a, b) => a - b)
     const formattedDates = []
     let index = 0
-    console.log('formatDate / dateObjects', dateObjects);
+    // console.log('formatDate / dateObjects', dateObjects);
 
     while (index < dateObjects.length) {
       const currentDate = dateObjects[index]
