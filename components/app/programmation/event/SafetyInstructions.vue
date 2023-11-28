@@ -81,7 +81,7 @@ export default {
 
   beforeDestroy() {
     this.tween?.kill()
-    this.mm?.kill()
+    this.mm?.revert()
   },
 
   methods: {

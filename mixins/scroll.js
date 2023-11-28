@@ -60,9 +60,9 @@ export default {
       duration: 1.2,
       easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
       syncTouch: true,
-      // smoothTouch: false,
-      // touchMultiplier: 3,
-      //   smooth: true,
+      syncTouchLerp: 0.1, // default 0.1
+      touchMultiplier: 1.25, // default 2
+      touchInertiaMultiplier: 20, // default 35
     })
 
     this.lenis.scrollTo(0, { immediate: true })

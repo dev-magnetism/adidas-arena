@@ -417,8 +417,8 @@ export default {
       z-index: 0;
 
       .H4 {
-        font-size: 32px;
-        line-height: 32px;
+        font-size: 30px;
+        line-height: 30px;
       }
     }
   }

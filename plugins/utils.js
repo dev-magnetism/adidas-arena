@@ -14,15 +14,24 @@ export default ({ app }, inject) => {
   })
 
   inject('formatDate', (dates, displayTime = false) => {
+
     if (!Array.isArray(dates)) {
       dates = [dates]
     }
 
-    const dateObjects = dates
-      .map((obj) => new Date(typeof obj === 'object' ? obj.date : obj))
+    const _formatDates = dates.map((obj)=>{
+      const _date = (typeof obj === 'object')? obj.date : obj;
+      return _date.replaceAll('-', '/');
+    })
+
+    // console.log('formatDate / _formatDates', _formatDates);
+
+    const dateObjects = _formatDates
+      .map((obj) => new Date(obj))
       .sort((a, b) => a - b)
     const formattedDates = []
     let index = 0
+    // console.log('formatDate / dateObjects', dateObjects);
 
     while (index < dateObjects.length) {
       const currentDate = dateObjects[index]

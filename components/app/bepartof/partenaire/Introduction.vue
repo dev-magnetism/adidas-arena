@@ -112,7 +112,7 @@ export default {
   },
   beforeDestroy() {
     this.tlAppear?.kill()
-    this.mm?.kill()
+    this.mm?.revert()
   },
   methods: {
     initSplitText() {
