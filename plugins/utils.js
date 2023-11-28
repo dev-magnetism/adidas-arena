@@ -23,15 +23,12 @@ export default ({ app }, inject) => {
       const _date = (typeof obj === 'object')? obj.date : obj;
       return _date.replaceAll('-', '/');
     })
-    console.log('formatDate / _formatDates', _formatDates);
 
     const dateObjects = _formatDates
       .map((obj) => new Date(typeof obj === 'object' ? obj.date : obj))
       .sort((a, b) => a - b)
     const formattedDates = []
     let index = 0
-
-    console.log('formatDate / dateObjects', dateObjects);
 
     while (index < dateObjects.length) {
       const currentDate = dateObjects[index]
