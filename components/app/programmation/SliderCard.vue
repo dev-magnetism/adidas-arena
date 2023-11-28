@@ -210,7 +210,6 @@ export default {
   mounted() {
     if (this.$viewport.isMobile) return
 
-    //  console.log('this.event', this.event);
     this.initTimelineArrow()
   },
   beforeDestroy() {

@@ -81,8 +81,6 @@ export default {
     },
   },
   mounted() {
-    console.log('hero', this.content)
-
     if (this.allLoadedFake && !this.$viewport.isMobile) {
       this.initSplitText()
       this.appearHero(0.95)
@@ -91,7 +89,7 @@ export default {
     }
   },
   beforeDestroy() {
-    this.mm?.kill()
+    this.mm?.revert()
 
     this.tlAppear?.clear()
     this.tlAppear?.kill()

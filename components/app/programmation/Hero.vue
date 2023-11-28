@@ -183,7 +183,7 @@ export default {
     }
   },
   beforeDestroy() {
-    this.mm?.kill()
+    this.mm?.revert()
     this.tlAppear?.clear()
     this.tlAppear?.kill()
   },

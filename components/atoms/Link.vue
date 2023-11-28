@@ -61,7 +61,6 @@ export default {
   methods: {
     // initHoverAnimation() {
     //   this.$el.onmouseenter = this.$el.onmouseleave = (e) => {
-    //     console.log('here')
     //     const tolerance = 10
     //     const left = 0
     //     const right = this.$el.clientWidth
