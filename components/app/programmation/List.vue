@@ -526,17 +526,8 @@ export default {
 
         .P1.regular {
           border-left: 1px solid var(--c-black);
-            padding-top: desktop-vw(16px);
-            font-size: desktop-vw(20px);
-            line-height: desktop-vw(20px);
         }
 
-        .P1.bold{
-          padding-top: desktop-vw(16px);
-          font-size: desktop-vw(20px);
-          line-height: desktop-vw(20px);
-        }
-        
         input[type='radio']:checked + label {
           background-color: var(--c-blue-adidas);
           border-color: var(--c-white);
@@ -548,7 +539,6 @@ export default {
           .P1.regular {
             border-color: var(--c-white);
           }
-
         }
       }
     }
