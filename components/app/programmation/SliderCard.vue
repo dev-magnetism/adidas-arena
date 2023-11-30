@@ -361,7 +361,7 @@ export default {
 
     img {
       display: block;
-      transform: scale(1.3);
+      transform: scale(1.1);
       transition: transform 0.95s var(--ease-out-quart);
     }
   }
