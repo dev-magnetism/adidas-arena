@@ -6,18 +6,24 @@
     </div>
     <div class="app-programmation-event-bar__book">
       <TP2
+        v-if="
+          event.min_price &&
+          event.status_code !== 'B' &&
+          event.status_code !== 'C' &&
+          event.status_code !== 'H' &&
+          event.status_code !== 'K'
+        "
         weight="medium"
         class="app-programmation-event-bar__book__info"
         color="grey"
-        v-if="event.min_price && (event.status_code!=='B' && event.status_code!=='C' && event.status_code!=='H' && event.status_code!=='K')"
       >
         {{ programmationsEventContent.glossary_exclu_france_price }}
         {{ event.min_price }}€</TP2
       >
       <TP2
+        v-else-if="event.status_code === 'K'"
         weight="medium"
         color="grey"
-        v-else-if="event.status_code==='K'"
         class="app-programmation-slider-card__from-price"
       >
         Show complet, inscrivez-vous sur la liste d’attente !
@@ -34,21 +40,24 @@
         v-else-if="
           event.sessions.length - 1 < 1 &&
           event.sessions[0].content.url &&
-          !event.sessions[0].content.url_premium && 
-          ( event.status_code==='D' )
+          !event.sessions[0].content.url_premium &&
+          event.status_code === 'D'
         "
         :href="event.sessions[0].content.url"
       >
         Réserver mon billet
       </AtomsCTA>
 
-      <AtomsCTAForm 
-        :session="event.sessions[0]" 
-        :eventId="event.id" 
-        :eventName="event.artist_reference"
-        :eventDate="event.sessions[0].date"
-        :statusCode="event.status_code"
-        v-else-if="event.status_code==='K' || (event.status_code==='B' && event.presale)"
+      <AtomsCTAForm
+        v-else-if="
+          event.status_code === 'K' ||
+          (event.status_code === 'B' && event.presale)
+        "
+        :session="event.sessions[0]"
+        :event-id="event.id"
+        :event-name="event.artist_reference"
+        :event-date="event.sessions[0].date"
+        :status-code="event.status_code"
       >
         Liste d'attente
       </AtomsCTAForm>

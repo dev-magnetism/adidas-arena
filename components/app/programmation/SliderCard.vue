@@ -1,11 +1,11 @@
 <template>
   <div :style="styles" class="app-programmation-slider-card">
-        <AppProgrammationEventStatus
-          :presale="event.presale"
-          :reported="event.reported"
-          :status="event.status_code"
-          :color="statutColor"
-        />
+    <AppProgrammationEventStatus
+      :presale="event.presale"
+      :reported="event.reported"
+      :status="event.status_code"
+      :color="statutColor"
+    />
     <div class="app-programmation-slider-card__visual">
       <div class="app-programmation-slider-card__visual__wrapper">
         <div
@@ -27,13 +27,12 @@
 
     <div class="app-programmation-slider-card__informations">
       <div class="app-programmation-slider-card__head">
-        <TP2
-          class="type"
-          weight="bold"
-          :color="whitedTexts"
-          tag="h3"
-        >
-          {{ (event.content.category.toLowerCase() !== "no cat")? event.content.category : '' }}
+        <TP2 class="type" weight="bold" :color="whitedTexts" tag="h3">
+          {{
+            event.content.category.toLowerCase() !== 'no cat'
+              ? event.content.category
+              : ''
+          }}
         </TP2>
         <TP2
           v-if="event.sessions"
@@ -49,7 +48,13 @@
       </TH2>
 
       <TP2
-        v-if="event.min_price && event.status_code!=='K' && event.status_code!=='B' && event.status_code!=='C' && event.status_code!=='H'"
+        v-if="
+          event.min_price &&
+          event.status_code !== 'K' &&
+          event.status_code !== 'B' &&
+          event.status_code !== 'C' &&
+          event.status_code !== 'H'
+        "
         class="app-programmation-slider-card__from-price"
         weight="medium"
         :color="whitedTexts"
@@ -59,24 +64,29 @@
       </TP2>
 
       <TP2
+        v-else-if="event.status_code === 'K'"
         weight="medium"
         :color="whitedTexts"
-        v-else-if="event.status_code==='K'"
         class="app-programmation-slider-card__from-price"
       >
         Show complet, inscrivez-vous sur la liste d’attente !
       </TP2>
 
       <TP2
+        v-else-if="event.status_code === 'B' && event.presale"
         weight="medium"
         :color="whitedTexts"
-        v-else-if="event.status_code==='B' && event.presale"
         class="app-programmation-slider-card__from-price"
       >
         Inscrivez-vous sur la liste d’attente !
       </TP2>
 
       <AtomsCTA
+        v-if="
+          event.status_code === 'H' ||
+          (event.status_code === 'B' && !event.presale) ||
+          event.status_code === 'C'
+        "
         :color="statutColor"
         :layer-color="statutColor"
         :bg="'grey'"
@@ -86,22 +96,21 @@
             id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
           },
         }"
-        :gtmClick="{
+        :gtm-click="{
           id: `${event.id}`,
           name: `${event.artist_reference}`,
           category: `${event.content.category}`,
           category2: `${event.content.sub_category}`,
-          price: `${event.min_price}`
-
+          price: `${event.min_price}`,
         }"
         class="app-programmation-slider-card__cta"
-
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave"
-        v-if="event.status_code==='H' || (event.status_code==='B' && !event.presale) || event.status_code==='C'"
-        >En savoir +</AtomsCTA>
-
+      >
+        En savoir +
+      </AtomsCTA>
       <AtomsCTA
+        v-else
         :color="statutColor"
         :layer-color="statutColor"
         :bg="'grey'"
@@ -111,23 +120,24 @@
             id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
           },
         }"
-        :gtmClick="{
+        :gtm-click="{
           id: `${event.id}`,
           name: `${event.artist_reference}`,
           category: `${event.content.category}`,
           category2: `${event.content.sub_category}`,
-          price: `${event.min_price}`
-
+          price: `${event.min_price}`,
         }"
         class="app-programmation-slider-card__cta"
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave"
-        v-else
-        >
-          {{ event.status_code==='K' || (event.status_code==='B' && event.presale)?`Liste d'attente`:`Réserver` }}
-        </AtomsCTA>
-
-
+      >
+        {{
+          event.status_code === 'K' ||
+          (event.status_code === 'B' && event.presale)
+            ? `Liste d'attente`
+            : `Réserver`
+        }}
+      </AtomsCTA>
     </div>
     <span
       :class="{ full: event.status_code === 'K' }"
@@ -194,15 +204,12 @@ export default {
         : 'black'
     },
     whitedTexts() {
-      return this.theme === 'blue' || this.theme === 'red'
-        ? 'white'
-        : 'black'
+      return this.theme === 'blue' || this.theme === 'red' ? 'white' : 'black'
     },
   },
   mounted() {
     if (this.$viewport.isMobile) return
 
-    //  console.log('this.event', this.event);
     this.initTimelineArrow()
   },
   beforeDestroy() {
@@ -225,7 +232,6 @@ export default {
     },
     initTimelineArrow() {
       //  if (this.$viewport.isMobile) return
-
       // this.tlArrow = gsap.timeline({ paused: true })
       /*
       this.tlArrow.to(this.$refs.arrow.$el, {
@@ -301,7 +307,6 @@ export default {
     flex: 0 0 25%;
   }
 
-
   .app-programmation-event-status {
     position: absolute;
     right: 0;
@@ -374,7 +379,7 @@ export default {
     border-top: 1px solid var(--c-black);
 
     @include mobile {
-      padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(65px) ;
+      padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(65px);
       margin-top: mobile-vw(0px);
     }
   }
@@ -424,7 +429,7 @@ export default {
     }
   }
 
-  &__cta.app-atoms-cta  {
+  &__cta.app-atoms-cta {
     position: absolute;
     bottom: 0;
     height: desktop-vw(55px);

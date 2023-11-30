@@ -9,10 +9,10 @@
         :key="index"
         :index="index"
         :session="session"
-        :eventId="event.id"
+        :event-id="event.id"
         :date="$formatDate(session.date, true)"
         :artist="event.artist_reference"
-        :totalItems="event.sessions.length"
+        :total-items="event.sessions.length"
         :disabled="indexDate !== index && indexDate !== null"
         @click.native="onSelectDate(index)"
       />

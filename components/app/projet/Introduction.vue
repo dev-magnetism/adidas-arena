@@ -1,7 +1,7 @@
 <template>
   <div class="app-projet-introduction grid-inner">
     <div class="app-projet-introduction__row-framed-content">
-      <ERichText tag="h1" ref="title" :content="contents.title" />
+      <ERichText ref="title" tag="h1" :content="contents.title" />
       <ERichText ref="paragraph" :content="contents.subtitle" />
     </div>
 
@@ -107,7 +107,7 @@ export default {
     }
   },
   beforeDestroy() {
-    this.mm?.kill()
+    this.mm?.revert()
     this.tlAppear?.kill()
   },
   methods: {

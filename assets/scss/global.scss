@@ -62,6 +62,10 @@ body {
   display: none;
 }
 
+:root {
+  scrollbar-width: none
+}
+
 .app.cursor-none {
   cursor: none !important;
 }

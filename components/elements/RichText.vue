@@ -37,15 +37,6 @@ export default {
       fontsLoaded: (state) => state.fontsLoaded,
     }),
   },
-
-  watch: {
-    fontsLoaded() {
-      // this.initSplitText()
-    },
-  },
-
-  created() {},
-
   mounted() {
     document.fonts.ready.then(() => {
       if (!this.split || this.$viewport.isMobile) return
@@ -167,6 +158,7 @@ export default {
       delete text.attrs.style
     })
 
+
     texts.forEach((text) => {
       const componentName = text.attrs.class
         .replace('wysiwyg-text', '')
@@ -211,6 +203,7 @@ export default {
   .line-child {
     display: inline-block !important;
   }
+
   .line-parent {
     overflow: hidden;
     // display: inline-block !important;

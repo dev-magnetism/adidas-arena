@@ -526,14 +526,15 @@ export default {
     aspect-ratio: 255/170;
     top: desktop-vw(430px);
     z-index: 1;
-    grid-column: 19 / span 2;
+    grid-column: 18 / span 2;
     width: 100%;
+    left: 30%;
   }
   &:nth-of-type(6) {
-    grid-column: 20 / span 2;
-    width: 55%;
+    grid-column: 20 / span 1;
+    width: 100%;
     aspect-ratio: 118/142;
-    left: desktop-vw(60px);
+    left: desktop-vw(20px);
     top: desktop-vw(380px);
     z-index: 9;
   }

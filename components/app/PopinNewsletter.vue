@@ -15,7 +15,7 @@
       </span>
       <AtomsCornerPoints :size-points="8" />
 
-      <ERichText tag="p" :content="appContent.data.popin_newsletter_title" />
+      <ERichText tag="div" :content="appContent.data.popin_newsletter_title" />
 
       <form
         :class="{ submited }"
