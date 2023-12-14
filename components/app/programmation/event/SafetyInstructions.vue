@@ -246,6 +246,13 @@ export default {
         margin: 0;
         @include h4();
         @include font-adihausDIN-cn-medium();
+
+        @include mobile {
+          @include font-adihausDIN-medium();
+          font-size: mobile-vw(14px);
+          line-height: mobile-vw(20px);
+        }
+
       }
       @include mobile {
         font-size: mobile-vw(14px);
