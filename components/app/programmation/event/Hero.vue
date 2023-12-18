@@ -132,7 +132,7 @@
       </AppProgrammationEventTag>
 
       <AppProgrammationImage
-        :src="event.presentation_event.filename_disk"
+        :src="event?.presentation_event?.filename_disk"
         :alt="`image-`"
         :lazy="false"
         :sizes="{
