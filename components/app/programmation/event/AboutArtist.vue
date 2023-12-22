@@ -65,7 +65,7 @@
           </div>
           <client-only>
             <iframe
-              :class="{ invisible: !hideVideoOverlay }"
+              :class="{ invisible: videoFrame.image && videoFrame.image !== ''?!hideVideoOverlay:hideVideoOverlay }"
               :src="`https://www.youtube-nocookie.com/embed/${videoFrame.video.id}?modestbranding=1&rel=0&cc_load_policy=1&iv_load_policy=3&hl=fr-fr&fs=0&controls=0&disablekb=1`"
               frameborder="0"
             />
