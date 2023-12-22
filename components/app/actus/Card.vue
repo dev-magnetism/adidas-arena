@@ -111,7 +111,7 @@ export default {
     this.initMatchMedia()
   },
   beforeDestroy() {
-    this.mm?.kill()
+    this.mm?.revert()
     this.scrollTrigger?.kill()
     this.scrollTriggerInView?.kill()
   },

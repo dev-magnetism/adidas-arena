@@ -174,7 +174,7 @@ export default {
   beforeDestroy() {
     this.scrollTriggerCTA?.kill()
     this.scrollTrigger?.kill()
-    this.mm?.kill()
+    this.mm?.revert()
   },
   methods: {
     onBack() {

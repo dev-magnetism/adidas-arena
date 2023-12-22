@@ -14,7 +14,7 @@
         />
         <AppProgrammationImage
           class="app-programmation-slider-card__visual__picture"
-          :src="event.presentation_event.filename_disk"
+          :src="event?.presentation_event?.filename_disk"
           :alt="`slider-image-${event.artist_reference}`"
           :lazy="true"
           :sizes="{
@@ -210,7 +210,8 @@ export default {
   mounted() {
     if (this.$viewport.isMobile) return
 
-    //  console.log('this.event', this.event);
+    console.log('event', this.event)
+
     this.initTimelineArrow()
   },
   beforeDestroy() {

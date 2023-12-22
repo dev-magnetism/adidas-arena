@@ -158,6 +158,7 @@ export default {
       delete text.attrs.style
     })
 
+
     texts.forEach((text) => {
       const componentName = text.attrs.class
         .replace('wysiwyg-text', '')

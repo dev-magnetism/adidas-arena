@@ -28,7 +28,7 @@
           />
 
           <AppProgrammationImage
-            :src="content.event.presentation_event.filename_disk"
+            :src="content?.event?.presentation_event?.filename_disk"
             :alt="`main-card-image-${content.event.id}-${content.event.artist_reference}`"
             :lazy="true"
             :sizes="{
@@ -183,7 +183,7 @@ export default {
     }
   },
   beforeDestroy() {
-    this.mm?.kill()
+    this.mm?.revert()
     this.tlAppear?.clear()
     this.tlAppear?.kill()
   },

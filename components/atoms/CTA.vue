@@ -314,6 +314,7 @@ export default {
     overflow: hidden;
     z-index: 1;
     margin-left: desktop-vw(15px);
+    width: desktop-vw(25px);
 
     @include mobile {
       margin-left: mobile-vw(15px);

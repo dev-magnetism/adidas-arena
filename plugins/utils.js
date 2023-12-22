@@ -14,43 +14,83 @@ export default ({ app }, inject) => {
   })
 
   inject('formatDate', (dates, displayTime = false) => {
+
     if (!Array.isArray(dates)) {
       dates = [dates]
     }
 
-    const dateObjects = dates
-      .map((obj) => new Date(typeof obj === 'object' ? obj.date : obj))
-      .sort((a, b) => a - b)
+
+    /*
+      This insures that date's format can be read by all browsers.
+    */
+    const _formatDates = dates.map((obj)=>{
+      const _date = (typeof obj === 'object')? obj.date : obj;
+      return _date.replaceAll('-', '/');
+    })
+
+
+    const dateObjects = [];
+
+    /*
+      We need to exclude already existing dates with an id, 
+      create a date set to midnight (for later comparison)
+    */
+    for(let i = 0; i < _formatDates.length; i++){
+      const _date = new Date(_formatDates[i]);
+      const _compDate = new Date(_formatDates[i]);
+      const _id = `${_date.getDate()}${_date.getMonth()}${_date.getFullYear()}`
+
+      const _obj = {
+        id: _id,
+        compdate: new Date(_compDate.setHours(0,0,0)),
+        date: _date
+      }
+
+      if(dateObjects.findIndex(dateobj => dateobj.id === _obj.id) < 0){
+          dateObjects.push(_obj)
+      }
+    }
+
     const formattedDates = []
     let index = 0
 
     while (index < dateObjects.length) {
-      const currentDate = dateObjects[index]
+      const currentDate = dateObjects[index].date
       const startDay = currentDate.getDate()
 
+      /* 
+        Carefull : this compares 2 dates with a 24 hours difference,
+        but a date object contains hours/minutes/seconds, so its tricky.
+        That's why I use 'compdate', event if it doesn't contain the correct
+        time.
+      */
       while (
         index < dateObjects.length - 1 &&
-        (dateObjects[index + 1] - dateObjects[index]) /
+        (dateObjects[index + 1].compdate - dateObjects[index].compdate) /
           (1000 * 60 * 60 * 24) ===
           1
       ) {
         index++
       }
 
-      const endDay = dateObjects[index].getDate()
+      const endDay = dateObjects[index].date.getDate()
+
+      let _formattedDate;
 
       if (startDay === endDay) {
-        formattedDates.push(`${startDay}`)
+        _formattedDate = `${startDay}`
       } else if (endDay - startDay === 1) {
-        formattedDates.push(`${startDay} & ${endDay}`)
+        _formattedDate = `${startDay} & ${endDay}`
       } else {
-        formattedDates.push(`${startDay} au ${endDay}`)
+        _formattedDate = `${startDay} au ${endDay}`
       }
+
+      formattedDates.push(_formattedDate)
 
       index++
     }
 
-    const lastDate = dateObjects[dateObjects.length - 1]
+    const lastDate = dateObjects[dateObjects.length - 1].date
     const month = lastDate
       .toLocaleString('fr-FR', { month: 'long' })
       .toUpperCase()

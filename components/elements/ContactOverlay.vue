@@ -125,6 +125,7 @@ export default {
       telephone: '',
       email: '',
       body: '',
+      structure: '',
     }
   },
   computed: {

@@ -150,9 +150,6 @@ export default {
       }
     },
   },
-  mounted() {
-    //  console.log(this.contentArticles)
-  },
   methods: {
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',

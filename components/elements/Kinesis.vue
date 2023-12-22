@@ -25,7 +25,7 @@ export default {
   },
   beforeDestroy() {
     this.scrollTrigger?.kill()
-    this.mm?.kill()
+    this.mm?.revert()
   },
   methods: {
     initMatchMedia() {

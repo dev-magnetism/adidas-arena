@@ -21,7 +21,7 @@
       />
 
       <AppProgrammationImage
-        :src="event.presentation_event.filename_disk"
+        :src="event?.presentation_event?.filename_disk"
         :alt="`card-image-${event.id}-${event.artist_reference}`"
         :lazy="true"
         :sizes="{
@@ -196,7 +196,7 @@ export default {
     this.initMatchMedia()
   },
   beforeDestroy() {
-    this.mm?.kill()
+    this.mm?.revert()
     this.scrollTrigger?.kill()
     this.scrollTriggerInView?.kill()
   },

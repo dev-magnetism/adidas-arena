@@ -64,7 +64,7 @@ export default {
     this.initMatchMedia()
   },
   beforeDestroy() {
-    this.mm?.kill()
+    this.mm?.revert()
   },
   methods: {
     initMatchMedia() {

@@ -217,7 +217,7 @@ export default {
     this.tweenZoom?.kill()
 
     this.observer?.kill()
-    this.mm?.kill()
+    this.mm?.revert()
     this.$viewport.events.off('resize', this.onResize)
     this.$nuxt.$off('reset:exterior', this.resetView)
     this.$raf.remove(`webgl-exterior`, this.onFrame)
