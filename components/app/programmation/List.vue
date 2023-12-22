@@ -46,6 +46,11 @@
           </div>
         </div>
 
+        <AtomsSpotifyPlaylist
+          v-if="content.spotifyLink !== '' && content.spotifyLink !== null"
+          :cta-link="content.spotifyLink"
+          />
+
         <div class="app-programmation-list-bar__months">
           <select @change="onChangeMonth">
             <option
@@ -107,6 +112,12 @@ import { mapGetters } from 'vuex'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default {
+  props: {
+    content: {
+      type: Object,
+      default: () => {},
+    }
+  },
   data() {
     return {
       selectedCategory: 'tout',
@@ -430,6 +441,7 @@ export default {
       width: 100%;
       row-gap: 0;
       pointer-events: all;
+      align-items: center;
 
       @include mobile {
 
@@ -486,7 +498,7 @@ export default {
       display: flex;
       flex-flow: row wrap;
       gap: desktop-vw(10px);
-      grid-column: 1 / span 8;
+      grid-column: 1 / span 6;
 
       @include mobile {
         display: none;

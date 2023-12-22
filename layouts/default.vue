@@ -60,6 +60,10 @@ export default {
 .app {
   height: 100%;
   width: 100%;
+  /*
+  max-width: $desktop-xl-width;
+  margin: 0 auto;
+  */
   display: flex;
   flex: 1;
   flex-direction: column;

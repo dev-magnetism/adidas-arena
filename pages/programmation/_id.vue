@@ -41,9 +41,9 @@
 
     <!-- <AppProgrammationEventOffers ref="offers" /> -->
 
-    <AppProgrammationEventSafetyInstructions :content="contentSafety" />
-
     <AppProgrammationEventAboutArtist :event="event" />
+
+    <AppProgrammationEventSafetyInstructions :content="contentSafety" />
 
     <AppProgrammationEventMoreEvents :content="contentMoreEvents" />
 
