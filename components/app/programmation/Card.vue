@@ -336,9 +336,6 @@ export default {
       border-top: none;
       top: 0;
       z-index: 10;
-      padding-top: desktop-vw(12px);
-      font-size: desktop-vw(20px);
-      line-height: desktop-vw(20px);
 
       @include mobile-l {
         font-size: mobile-vw(15px);
@@ -367,7 +364,7 @@ export default {
   &__informations {
     display: flex;
     flex-direction: column;
-    padding: desktop-vw(20px) desktop-vw(25px) desktop-vw(15px);
+    padding: desktop-vw(15px) desktop-vw(25px);
     height: 100%;
     border-top: 1px solid var(--c-black);
 
@@ -397,21 +394,17 @@ export default {
       }
     }
     .type {
-      font-size: desktop-vw(16px);
-      line-height: desktop-vw(16px);
     }
 
     .date {
       margin-left: desktop-vw(30px);
-      font-size: desktop-vw(16px);
-      line-height: desktop-vw(16px);
     }
   }
 
   .H2.bold {
     font-size: desktop-vw(64px);
     line-height: desktop-vw(58px);
-    margin-top: desktop-vw(15px);
+    margin-top: desktop-vw(5px);
     margin-bottom: desktop-vw(70px);
 
     @include mobile {
@@ -436,8 +429,6 @@ export default {
   &__from-price.P2 {
     margin-top: auto;
     width: 50%;
-    font-size: desktop-vw(18px);
-    line-height: desktop-vw(18px);
 
     @include mobile {
       width: 100%;
