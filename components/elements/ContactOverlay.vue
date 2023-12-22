@@ -69,16 +69,6 @@
         </div>
         <div class="app-element-contact-overlay__field-group">
           <input
-            v-model="structure"
-            placeholder=" "
-            required
-            class="app-element-contact-overlay__field"
-            type="text"
-          />
-          <TH4 tag="p">Structure</TH4>
-        </div>
-        <div class="app-element-contact-overlay__field-group">
-          <input
             v-model="telephone"
             required
             placeholder=" "
