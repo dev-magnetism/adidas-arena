@@ -47,6 +47,7 @@
       >
         <EKinesis :speed="5">
           <div
+            v-if="videoFrame.image && videoFrame.image !== ''"
             :class="{ invisible: hideVideoOverlay }"
             class="app-programmation-event-about-artist__video__overlay"
             @click="hideVideoOverlay = true"
@@ -111,21 +112,20 @@ export default {
 
       const _mediaGallery = JSON.parse(JSON.stringify(this.event.content.media_gallery))
 
-      let mediaGallery = _mediaGallery.filter(
+      const mediaGallery = _mediaGallery.filter(
         (item) => !item.youtube_url
       )
 
-      const mediaVideo = _mediaGallery.filter(
-        (item) => item.youtube_url
-      )
+      //  const mediaVideo = _mediaGallery.filter(
+      //    (item) => item.youtube_url
+      //  )
 
-      mediaGallery = (mediaVideo && !mediaVideo.image)? mediaGallery.splice(0, mediaGallery.length - 1): mediaGallery;
+      // mediaGallery = (mediaVideo && !mediaVideo.image)? mediaGallery.splice(0, mediaGallery.length - 1): mediaGallery;
 
       return mediaGallery
     },
     imageFrame() {
-      return this.mediaGalleryImages.length >= 1 &&
-        !this.mediaGalleryImages[0].youtube_url
+      return this.mediaGalleryImages.length >= 1 
         ? this.mediaGalleryImages[0].image
         : null
     },
@@ -135,21 +135,24 @@ export default {
         : null
     },
     videoFrame() {
-      const items = this.event.content.media_gallery || []
+      const itemsMedia = this.event.content.media_gallery || []
+      const videoItem = itemsMedia.find((item) => item.youtube_url);
+      const itemCover = this.event.cover_video
 
-      const videoItem = items.find((item) => item.youtube_url);
-      const ImageItem = items.filter((item) => !item.youtube_url);
+      // console.log('videoItem', videoItem)
 
-      const image =
-        videoItem && videoItem.image
-          ? videoItem.image
-          : ImageItem[ImageItem.length - 1]?.image
+      // console.log('itemCover', itemCover)
 
-      if (videoItem) {
+      const image = (itemCover && itemCover != null && itemCover.image)? itemCover.image : ''
+
+      // console.log('image', image)
+
+      if (videoItem && videoItem !== 'undefined') {
         videoItem.id = this.getYouTubeVideoId(videoItem.youtube_url)
       }
-    
-      return videoItem && image ? { video: videoItem, image } : false
+      
+      return videoItem && videoItem !== 'undefined' ? { video: videoItem, image } : false
+      //  return videoItem ? { video: videoItem, image } : false
     },
     elHide() {
       return (

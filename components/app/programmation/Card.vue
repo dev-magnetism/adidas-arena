@@ -20,6 +20,11 @@
         class="app-programmation-card__layer"
       />
 
+      <AtomsSpotifyCardLink
+        v-if="event.spotify_link !== '' && event.spotify_link !== null"
+        :cta-link="event.spotify_link"
+        />
+
       <AppProgrammationImage
         :src="event?.presentation_event?.filename_disk"
         :alt="`card-image-${event.id}-${event.artist_reference}`"
@@ -193,6 +198,7 @@ export default {
   },
   watch: {},
   mounted() {
+    console.log('event', this.event);
     this.initMatchMedia()
   },
   beforeDestroy() {

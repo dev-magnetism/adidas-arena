@@ -402,7 +402,9 @@ export const actions = {
         contents[i].main_event = progDirectContent.main_event;
         contents[i].inside_slider = progDirectContent.inside_slider;
         contents[i].instruction_id = contentEvent.instruction_id ? contentEvent.instruction_id : []
-
+        contents[i].spotify_link = progDirectContent.spotify_link;
+        contents[i].cover_video = progDirectContent.cover_video;
+        
         contents[i].content = contents[i].translations.find(
           (translation) => translation.language === 'fr'
         )

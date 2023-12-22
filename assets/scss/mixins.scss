@@ -41,11 +41,13 @@
 }
 
 @function desktop-vw($pixels, $base-vw: $desktop-width) {
+  // @return $pixels;
   @return math.div($pixels * 100vw, $base-vw);
   // @return calc(min($pixels, math.div($pixels * 100vw, $base-vw)));
 }
 
 @function desktop-vh($pixels, $base-vh: $desktop-height) {
+  // @return $pixels;
   @return math.div($pixels * 100vh, $base-vh);
   // @return calc(min($pixels, math.div($pixels * 100vh, $base-vh)));
 }

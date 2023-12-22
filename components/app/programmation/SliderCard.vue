@@ -12,6 +12,12 @@
           :class="{ visible }"
           class="app-programmation-slider-card__layer"
         />
+
+        <AtomsSpotifyCardLink
+          v-if="event.spotify_link !== '' && event.spotify_link !== null"
+          :cta-link="event.spotify_link"
+          />
+
         <AppProgrammationImage
           class="app-programmation-slider-card__visual__picture"
           :src="event?.presentation_event?.filename_disk"
@@ -25,7 +31,25 @@
       </div>
     </div>
 
-    <div class="app-programmation-slider-card__informations">
+    <nuxt-link
+      class="app-programmation-slider-card__informations"
+      :to="{
+        name: 'programmation-id',
+        params: {
+          id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
+        }
+      }"
+
+      :gtm-click="{
+        id: `${event.id}`,
+        name: `${event.artist_reference}`,
+        category: `${event.content.category}`,
+        category2: `${event.content.sub_category}`,
+        price: `${event.min_price}`,
+      }"
+      @mouseenter.native="onMouseEnter"
+      @mouseleave.native="onMouseLeave"
+      >
       <div class="app-programmation-slider-card__head">
         <TP2 class="type" weight="bold" :color="whitedTexts" tag="h3">
           {{
@@ -90,22 +114,7 @@
         :color="statutColor"
         :layer-color="statutColor"
         :bg="'grey'"
-        :href="{
-          name: 'programmation-id',
-          params: {
-            id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
-          },
-        }"
-        :gtm-click="{
-          id: `${event.id}`,
-          name: `${event.artist_reference}`,
-          category: `${event.content.category}`,
-          category2: `${event.content.sub_category}`,
-          price: `${event.min_price}`,
-        }"
         class="app-programmation-slider-card__cta"
-        @mouseenter.native="onMouseEnter"
-        @mouseleave.native="onMouseLeave"
       >
         En savoir +
       </AtomsCTA>
@@ -114,22 +123,8 @@
         :color="statutColor"
         :layer-color="statutColor"
         :bg="'grey'"
-        :href="{
-          name: 'programmation-id',
-          params: {
-            id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
-          },
-        }"
-        :gtm-click="{
-          id: `${event.id}`,
-          name: `${event.artist_reference}`,
-          category: `${event.content.category}`,
-          category2: `${event.content.sub_category}`,
-          price: `${event.min_price}`,
-        }"
+        
         class="app-programmation-slider-card__cta"
-        @mouseenter.native="onMouseEnter"
-        @mouseleave.native="onMouseLeave"
       >
         {{
           event.status_code === 'K' ||
@@ -138,7 +133,7 @@
             : `Réserver`
         }}
       </AtomsCTA>
-    </div>
+    </nuxt-link>
     <span
       :class="{ full: event.status_code === 'K' }"
       class="app-programmation-slider-card__full"
@@ -209,8 +204,6 @@ export default {
   },
   mounted() {
     if (this.$viewport.isMobile) return
-
-    console.log('event', this.event)
 
     this.initTimelineArrow()
   },
@@ -379,6 +372,7 @@ export default {
     padding: desktop-vw(15px) desktop-vw(25px);
     height: 100%;
     border-top: 1px solid var(--c-black);
+    cursor: pointer;
 
     @include mobile {
       padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(65px);

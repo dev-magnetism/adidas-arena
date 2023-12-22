@@ -15,7 +15,13 @@
       >
         {{ content.cta }}
       </AtomsCTA>
+      
+      <AtomsSpotifyPlaylist
+        v-if="content.spotifyLink !== '' && content.spotifyLink !== null"
+        :cta-link="content.spotifyLink"
+        />
     </div>
+
 
     <div
       ref="wrapper"

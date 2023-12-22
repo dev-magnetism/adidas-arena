@@ -27,6 +27,11 @@
             class="app-programmation-event-status"
           />
 
+          <AtomsSpotifyCardLink
+            v-if="content.event.spotify_link !== '' && content.event.spotify_link !== null"
+            :cta-link="content.event.spotify_link"
+            />
+
           <AppProgrammationImage
             :src="content?.event?.presentation_event?.filename_disk"
             :alt="`main-card-image-${content.event.id}-${content.event.artist_reference}`"
