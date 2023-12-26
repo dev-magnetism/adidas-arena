@@ -269,7 +269,7 @@ export default {
       text-transform: uppercase;
 
       .P2.bold {
-        @include font-adihausDIN-cn-bold();
+        @include font-ITCFranklinGothicLT-DmCp();
       }
     }
   }

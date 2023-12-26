@@ -38,7 +38,7 @@ export default {
   }
 
   .P1 {
-    @include font-adihausDIN-cn-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
 
     @include mobile {
       display: none;

@@ -252,7 +252,7 @@ export default {
       margin-bottom: desktop-vw(25px);
 
       .H2 {
-        @include font-adihausDIN-cn-bold();
+        @include font-ITCFranklinGothicLT-DmCp();
       }
 
       .app-atoms-stroke-text {
@@ -280,7 +280,12 @@ export default {
 
     &__paragraph.app-element-rich-text {
       .P2 {
-        @include font-adihausDIN-medium();
+        font-size: desktop-vw(18px);
+        @include font-ITCFranklinGothicLT-BkCp();
+
+        @include mobile{
+          font-size: mobile-vw(16px);
+        }
       }
     }
 

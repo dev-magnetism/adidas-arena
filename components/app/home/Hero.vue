@@ -865,9 +865,9 @@ export default {
       }
 
       .P2.bold {
-        @include font-adihausDIN-medium();
-        font-size: desktop-vw(16px);
-        line-height: desktop-vw(21px);
+        @include font-ITCFranklinGothicLT-BkCp();
+        font-size: desktop-vw(17px);
+        line-height: desktop-vw(20px);
 
         @include mobile {
           font-size: mobile-vw(16px);
@@ -903,9 +903,9 @@ export default {
 
     .P2.bold {
       text-transform: uppercase;
-      @include font-adihausDIN-cn-medium();
-      font-size: desktop-vw(16px);
-      line-height: desktop-vw(21px);
+      @include font-ITCFranklinGothicLT-BkCp();
+      font-size: desktop-vw(17px);
+      line-height: desktop-vw(20px);
 
       @include mobile {
         font-size: mobile-vw(16px);
@@ -1013,7 +1013,7 @@ export default {
     }
 
     &__city {
-      @include font-adihausDIN-bold();
+      @include font-ITCFranklinGothicLT-DmCp();
     }
     &__place {
     }

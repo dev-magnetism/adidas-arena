@@ -176,6 +176,7 @@ export default {
 
   &__wrapper {
     width: 58%;
+    max-width: 1280px;
     margin: 0 auto;
     background: linear-gradient(
         rgba(251, 245, 238, 0.8) 0.1em,
@@ -242,13 +243,14 @@ export default {
     }
 
     .H4 {
+      @include font-ITCFranklinGothicLT-DmXtraCp();
       .p{
         margin: 0;
         @include h4();
-        @include font-adihausDIN-cn-medium();
+        @include font-ITCFranklinGothicLT-DmXtraCp();
 
         @include mobile {
-          @include font-adihausDIN-medium();
+          @include font-ITCFranklinGothicLT-DmXtraCp();
           font-size: mobile-vw(14px);
           line-height: mobile-vw(20px);
         }
@@ -258,7 +260,7 @@ export default {
         font-size: mobile-vw(14px);
         line-height: mobile-vw(20px);
 
-        @include font-adihausDIN-medium();
+        @include font-ITCFranklinGothicLT-DmXtraCp();
 
 
       }

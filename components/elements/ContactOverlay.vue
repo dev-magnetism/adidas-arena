@@ -405,7 +405,7 @@ export default {
     @include h2();
     font-size: desktop-vw(64px);
     line-height: desktop-vw(58px);
-    @include font-adihausDIN-cn-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
 
     @include mobile {
       font-size: mobile-vw(24px);
@@ -415,7 +415,7 @@ export default {
 
     &.textarea {
       @include p1();
-      @include font-adihausDIN-medium();
+      @include font-ITCFranklinGothicLT-BkCp();
       height: desktop-vw(125px);
       text-transform: initial;
 
