@@ -73,11 +73,18 @@ export default {
   validate({ params, $axios, store }) {
     const [artist, id] = params.id.split('--')
 
-    return store.state.programmes.some(
-      (element) =>
+    return store.state.programmes.some((element) => {
+      // Vérifier s'il est en environnement de production et si l'élément est en mode brouillon
+      if (process.env.SITE_ENV === 'production' && element.is_draft) {
+        return false // Ignorer cet élément, retourner false
+      }
+
+      // Vérifier les autres conditions
+      return (
         convertToKebabCase(artist) ===
           convertToKebabCase(element.content.url) && element.id === Number(id)
-    )
+      )
+    })
   },
   transition(to, from) {
     if (!to || !from) return
