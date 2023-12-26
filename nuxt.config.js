@@ -39,6 +39,7 @@ export default {
   publicRuntimeConfig: {
     baseURL: process.env.BASE_URL || 'https://www.adidasarena.com/',
     apiKeyDelight: process.env.API_KEY_DELIGHT || 'EBu7rZdGJLInGv',
+    siteEnv: process.env.SITE_ENV || 'production',
   },
 
   telemetry: false,

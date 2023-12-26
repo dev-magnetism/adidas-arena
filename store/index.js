@@ -8,10 +8,11 @@ const convertToKebabCase = (string) => {
 }
 
 const removeSpecialChar = (string) => {
-    return  string.toLowerCase()
-                  .normalize('NFD')
-                  .replace(/[\u0300-\u036F]/g, '')
-                  .replace(/[^\w\s]/gi, '-');
+  return string
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036F]/g, '')
+    .replace(/[^\w\s]/gi, '-')
 }
 
 export const state = () => ({
@@ -105,27 +106,28 @@ export const getters = {
   programmesMonths: (state) => {
     return (
       Object.values(
-        state.programmes.filter(event => !event.is_cover).reduce((groups, program) => {
-
-          // Create a date object from the program's start date
-          const date = new Date(program.start)
-          // Format the month name using the French locale
-          const monthName = new Intl.DateTimeFormat('fr', {
-            month: 'long',
-          }).format(date)
-          // Get the year of the program's start date
-          const year = date.getFullYear()
-          // Create a key for the group by combining the month name and year
-          const key = `${monthName}-${year}`
-          // If the group doesn't exist yet, create it with an empty events array
-          if (!groups[key]) {
-            groups[key] = { month: monthName, year, events: [] }
-          }
-          // Add the program to the events array of the corresponding group
-          groups[key].events.push(program)
-          // Return the updated groups object
-          return groups
-        }, {})
+        state.programmes
+          .filter((event) => !event.is_cover)
+          .reduce((groups, program) => {
+            // Create a date object from the program's start date
+            const date = new Date(program.start)
+            // Format the month name using the French locale
+            const monthName = new Intl.DateTimeFormat('fr', {
+              month: 'long',
+            }).format(date)
+            // Get the year of the program's start date
+            const year = date.getFullYear()
+            // Create a key for the group by combining the month name and year
+            const key = `${monthName}-${year}`
+            // If the group doesn't exist yet, create it with an empty events array
+            if (!groups[key]) {
+              groups[key] = { month: monthName, year, events: [] }
+            }
+            // Add the program to the events array of the corresponding group
+            groups[key].events.push(program)
+            // Return the updated groups object
+            return groups
+          }, {})
       )
         // Filter out any empty groups and return an array of group objects
         .filter((group) => group.events.length > 0)
@@ -296,6 +298,7 @@ export const actions = {
 
     const programmations = await $directus.items('Programmations').readByQuery({
       limit: -1,
+      fields: ['*'],
     })
 
     commit('setProgrammationsContent', programmations.data)
@@ -315,14 +318,14 @@ export const actions = {
         '*.collection',
       ],
     })
-    
+
     // SORT ACTUALITES BY DATE DESC
-    actualites.data = actualites.data.sort(function(a,b){
-      return new Date(b.date) - new Date(a.date);
-    });
+    actualites.data = actualites.data.sort(function (a, b) {
+      return new Date(b.date) - new Date(a.date)
+    })
 
     actualites.data.forEach((actu) => {
-      const _slug = removeSpecialChar(actu.title);
+      const _slug = removeSpecialChar(actu.title)
       //  console.log('actualites slug ', convertToKebabCase(_slug));
       actu.slug = convertToKebabCase(_slug)
     })
@@ -362,30 +365,19 @@ export const actions = {
       .map((_, index) => index + 1)
 
     for (const index of pages) {
-
       // 1 / Récupération de la liste complète des Events via accorarena
 
       const payload = await this.$axios.$get(
         `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
       )
-
       // https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}
 
-      // 2 / Récupération des données Programmation via Directus
-      const progDirect = await $directus.items('Programmations').readByQuery({
-        limit: -1,
-        fields: [
-          '*',
-        ],
-      });
+      // 2 / Récupération des données Programmations via Directus (réutilisation de la variable programmations plus haut)
+      const contents = payload.data
+      const progDirectContents = programmations.data
 
       // 3 / Récupération des données complètes par Event
-
-      const contents = payload.data;
-      const progDirectContents = progDirect.data;
-
-      for (let i = 0; i < contents.length; i++){
-
+      for (let i = 0; i < contents.length; i++) {
         // Récupération du flux par event pour la clé 'instruction_id' qui n'est pas complète dans le flux global
         const payloadEvent = await this.$axios.$get(
           `https://www.accorarena.com/api-svc/partners/adidas-arena/event/${contents[i].id}`
@@ -397,11 +389,16 @@ export const actions = {
 
         const contentEvent = payloadEvent
 
-        const progDirectContent = progDirectContents.find(cont => parseInt(cont.id_event) === contents[i].id);
-        
-        contents[i].main_event = progDirectContent.main_event;
-        contents[i].inside_slider = progDirectContent.inside_slider;
-        contents[i].instruction_id = contentEvent.instruction_id ? contentEvent.instruction_id : []
+        const progDirectContent = progDirectContents.find(
+          (cont) => parseInt(cont.id_event) === contents[i].id
+        )
+
+        contents[i].is_draft = progDirectContent.is_draft
+        contents[i].main_event = progDirectContent.main_event
+        contents[i].inside_slider = progDirectContent.inside_slider
+        contents[i].instruction_id = contentEvent.instruction_id
+          ? contentEvent.instruction_id
+          : []
 
         contents[i].content = contents[i].translations.find(
           (translation) => translation.language === 'fr'
@@ -421,11 +418,19 @@ export const actions = {
           instruction.content = instruction.translations.find(
             (translation) => translation.language === 'fr'
           )
-
         })
       }
 
-      programmes.push(...contents)
+      // Copie de l'array "contents" dans la variable "test".
+      let finalContents = contents
+
+      // Si l'environnement est en mode "production", filtrer les éléments non brouillons.
+      if (process.env.SITE_ENV === 'production') {
+        finalContents = contents.filter((content) => !content.is_draft)
+      }
+
+      // Ajout de tous les éléments de "test" à "programmes".
+      programmes.push(...finalContents)
     }
 
     commit('setProgrammes', programmes)
