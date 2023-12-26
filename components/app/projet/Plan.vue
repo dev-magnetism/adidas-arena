@@ -430,7 +430,12 @@ export default {
       width: 65%;
 
       .P2.wysiwyg-text {
-        @include font-adihausDIN-medium();
+        @include font-ITCFranklinGothicLT-BkCp();
+        font-size: desktop-vw(18px);
+
+        @include mobile{ 
+          font-size: mobile-vw(16px);
+        }
       }
     }
   }

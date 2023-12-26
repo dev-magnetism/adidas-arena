@@ -128,7 +128,7 @@ export default {
 
     .app-atoms-cta {
       .P2 {
-        @include font-adihausDIN-cn-medium();
+        @include font-ITCFranklinGothicLT-BkCp();
         font-size: desktop-vw(24px);
         line-height: desktop-vw(32px);
         letter-spacing: 0.04em;
@@ -180,7 +180,7 @@ export default {
     }
 
     &__text.P2 {
-      @include font-adihausDIN-cn-bold();
+      @include font-ITCFranklinGothicLT-DmCp();
     }
   }
 }

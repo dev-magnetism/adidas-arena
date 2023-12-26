@@ -288,7 +288,7 @@ export default {
       }
 
       .H2.medium {
-        @include font-adihausDIN-cn-bold();
+        @include font-ITCFranklinGothicLT-DmCp();
       }
 
       @include mobile {

@@ -468,6 +468,7 @@ export default {
       grid-column: 1 / span 2;
       justify-content: center;
       padding: mobile-vw(8px) mobile-vw(15px);
+      order: 2;
 
       @include desktop {
         display: none;
@@ -499,6 +500,7 @@ export default {
       flex-flow: row wrap;
       gap: desktop-vw(10px);
       grid-column: 1 / span 6;
+      order: 1;
 
       @include mobile {
         display: none;
@@ -555,11 +557,22 @@ export default {
       }
     }
 
+    .app-atoms-spotify-playlist{
+      order: 2;
+
+      @include mobile{
+       order: 1;
+       margin-top: 0;
+       margin-bottom: mobile-vw(16px);
+      }
+    }
+
     &__months {
       grid-column: 9 / span 4;
       position: relative;
+      order: 3;
 
-      @include mobile {
+      @include mobile {;
         grid-column: 3 / span 4;
       }
 

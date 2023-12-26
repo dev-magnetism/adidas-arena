@@ -127,7 +127,7 @@ export default {
   &__text.P2 {
     text-align: left;
     margin-bottom: desktop-vw(15px);
-    @include font-adihausDIN();
+    @include font-ITCFranklinGothicLT-BkCp();
     text-transform: uppercase;
     user-select: none;
 

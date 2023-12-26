@@ -471,7 +471,6 @@ export default {
       margin-bottom: mobile-vw(15px);
       font-size: mobile-vw(32px);
       line-height: mobile-vw(30px);
-      @include font-adihausDIN-cn-bold();
     }
   }
 
@@ -498,7 +497,9 @@ export default {
 
   &__title {
     margin-bottom: desktop-vw(55px);
-    font-size: 8.680555555555556vw;
+    font-size: desktop-vw(101px);
+    line-height: desktop-vw(91px);
+    letter-spacing: 1px;
 
     @include mobile {
       margin-bottom: mobile-vw(30px);

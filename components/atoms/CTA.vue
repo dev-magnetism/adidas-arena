@@ -294,19 +294,19 @@ export default {
   .P2.bold,
   .P2.medium,
   .P2.regular {
-    font-size: desktop-vw(24px);
-    line-height: desktop-vw(32px);
+    font-size: desktop-vw(25px);
+    line-height: desktop-vw(20px);
     text-transform: uppercase;
-    @include font-adihausDIN-cn-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
 
     @include mobile {
-      font-size: mobile-vw(24px);
-      line-height: mobile-vw(32px);
+      font-size: mobile-vw(18px);
+      line-height: mobile-vw(18px);
     }
 
     @include desktop-l {
-      font-size: desktop-vw(20px) !important;
-      line-height: desktop-vw(28px) !important;
+      font-size: desktop-vw(21px) !important;
+      line-height: desktop-vw(16px) !important;
     }
   }
 

@@ -8,7 +8,7 @@
     data-tf-medium="snippet" 
     :data-tf-hidden="`list_name=${statusCode==='K'?'ListeD’Attente_':'PRV_'}${eventName}_${eventDate},api_key=EBu7rZdGJLInGv`" 
 
-    class="app-atoms-cta"
+    class="app-atoms-cta-form"
     :class="classes"
     :style="{
       'background-color': `var(--c-${bg})`,
@@ -17,14 +17,14 @@
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
     >
-      <div class="app-atoms-cta-click">
+      <div class="app-atoms-cta-form-click">
         <TP2
-          class="app-atoms-cta__text"
+          class="app-atoms-cta-form__text"
           weight="bold"
           :color="mousehover ? 'grey' : color"
           ><slot
         /></TP2>
-        <div v-if="arrow" class="app-atoms-cta__arrow">
+        <div v-if="arrow" class="app-atoms-cta-form__arrow">
           <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
         </div>
       </div>
@@ -147,7 +147,7 @@ export default {
 </script>
 
 <style lang="scss">
-.app-atoms-cta {
+.app-atoms-cta-form {
   border: 1px solid var(--c-black);
   padding: desktop-vw(15px) desktop-vw(25px);
   display: inline-flex;
@@ -215,10 +215,10 @@ export default {
   .P2.bold,
   .P2.medium,
   .P2.regular {
-    font-size: desktop-vw(24px);
-    line-height: desktop-vw(32px);
+    font-size: desktop-vw(25px);
+    line-height: desktop-vw(20px);
     text-transform: uppercase;
-    @include font-adihausDIN-cn-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
 
     @include mobile {
       font-size: mobile-vw(24px);

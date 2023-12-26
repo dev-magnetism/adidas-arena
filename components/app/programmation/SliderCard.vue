@@ -115,6 +115,7 @@
         :layer-color="statutColor"
         :bg="'grey'"
         class="app-programmation-slider-card__cta"
+        ref="cta"
       >
         En savoir +
       </AtomsCTA>
@@ -125,6 +126,7 @@
         :bg="'grey'"
         
         class="app-programmation-slider-card__cta"
+        ref="cta"
       >
         {{
           event.status_code === 'K' ||
@@ -216,14 +218,18 @@ export default {
 
       this.setCursorState('hide')
 
-      //  this.tlArrow?.play()
+      // this.tlArrow?.play()
+      console.log('ref cta', this.$refs.cta);
+      this.$refs.cta.onMouseEnter();
     },
     onMouseLeave() {
       if (this.$viewport.isMobile) return
 
       this.setCursorState('slider')
 
-      //  this.tlArrow?.reverse()
+      // this.tlArrow?.reverse()
+      console.log('ref cta', this.$refs.cta);
+      this.$refs.cta.onMouseLeave();
     },
     initTimelineArrow() {
       //  if (this.$viewport.isMobile) return
@@ -378,6 +384,16 @@ export default {
       padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(65px);
       margin-top: mobile-vw(0px);
     }
+
+    &:hover{
+
+      .app-atoms-cta{
+         &::after {
+          transform: scaleY(1);
+        }
+      }
+
+    }
   }
 
   &__head {
@@ -385,7 +401,14 @@ export default {
     justify-content: space-between;
 
     .P2 {
+      font-size: desktop-vw(18px);
+      line-height: desktop-vw(20px);
       text-transform: uppercase;
+
+      @include mobile{
+        font-size: mobile-vw(14px);
+        line-height: mobile-vw(18px);
+      }
     }
 
     // .type {
@@ -401,6 +424,8 @@ export default {
     margin-top: desktop-vw(5px);
     margin-bottom: desktop-vw(40px);
     user-select: none;
+    letter-spacing: 0;
+    @include font-ITCFranklinGothicLT-DmXtraCp();
 
     @include mobile {
       margin-top: mobile-vw(5px);

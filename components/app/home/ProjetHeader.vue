@@ -157,7 +157,7 @@ export default {
     &__title.P1 {
       font-size: desktop-vw(12px);
       line-height: desktop-vw(16px);
-      @include font-adihausDIN-cn-medium();
+      @include font-ITCFranklinGothicLT-BkCp();
 
       @include mobile {
         font-size: mobile-vw(8px);
@@ -195,7 +195,8 @@ export default {
     &__title.P1 {
       font-size: desktop-vw(12px);
       line-height: desktop-vw(16px);
-      @include font-adihausDIN-cn-medium();
+      @include font-ITCFranklinGothicLT-BkCp();
+      letter-spacing: 0;
 
       @include mobile {
         font-size: mobile-vw(8px);
@@ -206,7 +207,8 @@ export default {
     &__content.H3.info-text-6 {
       font-size: desktop-vw(12px);
       line-height: desktop-vw(20px);
-      @include font-adihausDIN();
+      @include font-ITCFranklinGothicLT-BkCp();
+      letter-spacing: 0;
       margin-top: desktop-vw(10px);
 
       @include mobile {

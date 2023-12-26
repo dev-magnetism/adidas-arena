@@ -408,6 +408,7 @@ export default {
   }
 
   .H2.bold {
+    @include font-ITCFranklinGothicLT-DmXtraCp();
     font-size: desktop-vw(64px);
     line-height: desktop-vw(58px);
     margin-top: desktop-vw(5px);

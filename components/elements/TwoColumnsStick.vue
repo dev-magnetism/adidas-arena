@@ -99,7 +99,7 @@ export default {
       .wysiwyg-text.H2 {
         font-size: desktop-vw(110px);
         line-height: desktop-vw(100px);
-        @include font-adihausDIN-cn-bold();
+        @include font-ITCFranklinGothicLT-DmCp();
         position: relative;
 
         .app-atoms-stroke-text {
