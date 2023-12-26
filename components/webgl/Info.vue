@@ -59,7 +59,7 @@ export default {
   pointer-events: none;
 
   .P2 {
-    @include font-adihausDIN-medium();
+    @include font-ITCFranklinGothicLT-BkCp();
     text-transform: uppercase;
     font-size: 14px;
     line-height: 20px;

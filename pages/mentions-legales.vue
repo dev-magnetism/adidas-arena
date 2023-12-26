@@ -128,12 +128,12 @@ export default {
 
   &__content {
     strong {
-      @include font-adihausDIN-bold();
+      @include font-ITCFranklinGothicLT-DmCp();
     }
 
     h4 {
       text-transform: uppercase;
-      @include font-adihausDIN-bold();
+      @include font-ITCFranklinGothicLT-DmCp();
     }
 
     a {
