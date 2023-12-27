@@ -197,7 +197,7 @@ export default {
   },
   mounted() {
 
-    console.log('Page event', this.event)
+    // console.log('Page event', this.event)
     this.initSplitText()
     this.initLotties()
 
