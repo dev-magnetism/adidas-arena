@@ -149,32 +149,39 @@ export default {
 <style lang="scss">
 .app-atoms-cta-form {
   border: 1px solid var(--c-black);
-  padding: desktop-vw(15px) desktop-vw(25px);
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
+  display: block;
   position: relative;
   overflow: hidden;
-  cursor: pointer;
   transition: opacity 0.4s var(--ease-in-out-cubic);
 
   &-click{
+    position: relative;
+    z-index: 1;
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
+    cursor: pointer;
+
   }
 
   &.arrow {
     padding: 0!important;
 
-    .app-atoms-cta-click{
+    .app-atoms-cta-form-click{
+      width: 100%;
       padding: desktop-vw(15px) desktop-vw(20px) desktop-vw(15px) desktop-vw(20px);
 
       @include mobile {
         padding: mobile-vw(18px) mobile-vw(25px) mobile-vw(18px) mobile-vw(25px);
       }
+
+      @include desktop-l {
+        padding: desktop-vw(10px) desktop-vw(15px) desktop-vw(10px) desktop-vw(15px) !important;
+      }
     }
   }
+
+
 
   &.disabled {
     opacity: 0.65;
@@ -221,8 +228,13 @@ export default {
     @include font-ITCFranklinGothicLT-DmCp();
 
     @include mobile {
-      font-size: mobile-vw(24px);
-      line-height: mobile-vw(32px);
+      font-size: mobile-vw(18px);
+      line-height: mobile-vw(18px);
+    }
+
+    @include desktop-l {
+      font-size: desktop-vw(21px) !important;
+      line-height: desktop-vw(16px) !important;
     }
   }
 
@@ -230,6 +242,7 @@ export default {
     overflow: hidden;
     z-index: 1;
     margin-left: desktop-vw(15px);
+    width: desktop-vw(25px);
 
     @include mobile {
       margin-left: mobile-vw(15px);

@@ -176,7 +176,7 @@ export default {
 
   &__wrapper {
     width: 58%;
-    max-width: 1280px;
+    max-width: 1024px;
     margin: 0 auto;
     background: linear-gradient(
         rgba(251, 245, 238, 0.8) 0.1em,
@@ -202,6 +202,11 @@ export default {
   &__title {
     margin-bottom: desktop-vw(100px);
     text-align: center;
+
+    @include desktop-xl{
+     margin-bottom: desktop-vw(50px);
+    }
+    
   }
 
   &__list {
@@ -211,6 +216,10 @@ export default {
     margin-bottom: desktop-vw(40px);
     list-style-type: none;
     display: flex;
+
+    @include desktop-xl{
+     margin-bottom: desktop-vw(20px);
+    }
 
     @include mobile {
       margin-bottom: mobile-vw(25px);
@@ -249,6 +258,11 @@ export default {
         @include h4();
         @include font-ITCFranklinGothicLT-DmXtraCp();
 
+        @include desktop-xl{
+          font-size: desktop-vw(20px);
+          line-height: desktop-vw(20px);
+        }
+
         @include mobile {
           @include font-ITCFranklinGothicLT-DmXtraCp();
           font-size: mobile-vw(14px);
@@ -256,6 +270,12 @@ export default {
         }
 
       }
+
+      @include desktop-xl{
+        font-size: desktop-vw(20px);
+        line-height: desktop-vw(20px);
+      }
+
       @include mobile {
         font-size: mobile-vw(14px);
         line-height: mobile-vw(20px);

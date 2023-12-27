@@ -41,7 +41,7 @@
 
     <!-- <AppProgrammationEventOffers ref="offers" /> -->
 
-    <AppProgrammationEventAboutArtist :event="event" />
+    <AppProgrammationEventAboutArtist v-if="event.content.about_text !==''" :event="event" />
 
     <AppProgrammationEventSafetyInstructions :content="contentSafety" />
 
