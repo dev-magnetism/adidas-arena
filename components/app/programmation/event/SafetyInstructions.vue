@@ -176,7 +176,7 @@ export default {
 
   &__wrapper {
     width: 58%;
-    max-width: 1024px;
+    max-width: 900px;
     margin: 0 auto;
     background: linear-gradient(
         rgba(251, 245, 238, 0.8) 0.1em,
@@ -203,7 +203,7 @@ export default {
     margin-bottom: desktop-vw(100px);
     text-align: center;
 
-    @include desktop-xl{
+    @include desktop-l{
      margin-bottom: desktop-vw(50px);
     }
     
@@ -217,7 +217,7 @@ export default {
     list-style-type: none;
     display: flex;
 
-    @include desktop-xl{
+    @include desktop-l{
      margin-bottom: desktop-vw(20px);
     }
 
@@ -258,7 +258,7 @@ export default {
         @include h4();
         @include font-ITCFranklinGothicLT-DmXtraCp();
 
-        @include desktop-xl{
+        @include desktop-l{
           font-size: desktop-vw(20px);
           line-height: desktop-vw(20px);
         }
@@ -271,7 +271,7 @@ export default {
 
       }
 
-      @include desktop-xl{
+      @include desktop-l{
         font-size: desktop-vw(20px);
         line-height: desktop-vw(20px);
       }
