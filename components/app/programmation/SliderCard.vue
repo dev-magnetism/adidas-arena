@@ -219,7 +219,7 @@ export default {
       this.setCursorState('hide')
 
       // this.tlArrow?.play()
-      console.log('ref cta', this.$refs.cta);
+      // console.log('ref cta', this.$refs.cta);
       this.$refs.cta.onMouseEnter();
     },
     onMouseLeave() {
@@ -228,7 +228,7 @@ export default {
       this.setCursorState('slider')
 
       // this.tlArrow?.reverse()
-      console.log('ref cta', this.$refs.cta);
+      // console.log('ref cta', this.$refs.cta);
       this.$refs.cta.onMouseLeave();
     },
     initTimelineArrow() {

@@ -174,7 +174,9 @@ export default {
     viewExteriorOpen(newVal) {
       const { exterior } = useWebGL()
 
+
       if (newVal) {
+
         gsap.to(exterior.position, {
           x: 0,
           z: 0,
@@ -526,10 +528,8 @@ export default {
 
       const { exterior, camera, renderer, scissors } = useWebGL()
 
-      exterior.position.y =
-        (window.lenis?.scroll + scissors.mask?.y) /
-        (camera.zoom - camera.zoom * 0.125)
-
+      exterior.position.y = (window.lenis?.scroll + scissors.mask?.y) / (camera.zoom - camera.zoom * 0.125)
+       
       scissors.current.y = window.lenis?.scroll + scissors.mask?.y
 
       renderer.setScissor(
@@ -571,10 +571,12 @@ export default {
         onToggle: (self) => {
           this.setExteriorVisible(self.isActive)
 
+        },
+        onUpdate: (self) => {
           if (self.isActive || this.exteriorVisible) {
             this.onResizePreviewExterior()
           }
-        },
+        }
       })
 
       if (!this.$viewport.isMobile) {
