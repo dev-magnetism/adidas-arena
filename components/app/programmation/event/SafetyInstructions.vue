@@ -236,6 +236,12 @@ export default {
       margin-right: desktop-vw(30px);
       transform: translateY(desktop-vw(12.5px));
 
+      @include desktop-l{
+        margin-right: desktop-vw(15px);
+        transform: translateY(desktop-vw(5px));
+      }
+
+
       @include mobile {
         content: '';
         width: mobile-vw(8px);
