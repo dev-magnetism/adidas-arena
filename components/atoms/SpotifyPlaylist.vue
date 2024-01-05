@@ -63,6 +63,10 @@ export default {
       margin-top: mobile-vw(16px);
       width: mobile-vw(160px);
       height: mobile-vw(32px);
+
+      &.hide{
+        margin-top: 0;
+      }
     }
 
 

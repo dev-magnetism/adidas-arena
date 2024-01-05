@@ -113,10 +113,10 @@ export default {
 
 <style lang="scss">
 .app-programmation-event-safety-instructions {
-  margin-top: desktop-vw(160px);
+  // margin-top: desktop-vw(160px);
 
   @include mobile {
-    margin-top: mobile-vw(70px);
+    // margin-top: mobile-vw(70px);
   }
 
   &__lottie-top-left.app-element-lottie {
