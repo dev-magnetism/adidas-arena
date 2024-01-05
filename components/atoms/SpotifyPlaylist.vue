@@ -54,6 +54,8 @@ export default {
 
     &.hide{
       opacity: 0;
+      height: 0;
+      overflow: hidden;
       pointer-events: none;
     }
 
