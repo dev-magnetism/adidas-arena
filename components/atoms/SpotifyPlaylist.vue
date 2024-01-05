@@ -4,6 +4,7 @@
     target="_blank"
 
     class="app-atoms-spotify-playlist"
+    :class="{ hide: barsticky }"
   >
     <div class="app-atoms-spotify-playlist__row">
       <AtomsCornerPoints :size-points="8" />
@@ -25,6 +26,10 @@
 <script>
 export default {
   props: {
+    barsticky: {
+      type: Boolean,
+      default: false
+    },
     ctaLink: {
       type: String,
       default: '',
@@ -45,6 +50,12 @@ export default {
     width: desktop-vw(271px);
     height: desktop-vw(56px);
     cursor: pointer;
+    transition: all 360ms ease-in-out;
+
+    &.hide{
+      opacity: 0;
+      pointer-events: none;
+    }
 
     @include mobile{
       margin-top: mobile-vw(16px);
@@ -81,6 +92,10 @@ export default {
       svg{
         display: inline-block;
         flex: 0 0 auto;
+
+        @include desktop{
+          transform: scale(1.2);
+        }
       }
 
       @include mobile{

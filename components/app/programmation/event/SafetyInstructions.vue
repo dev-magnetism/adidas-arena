@@ -176,7 +176,7 @@ export default {
 
   &__wrapper {
     width: 58%;
-    max-width: 900px;
+    max-width: 500px;
     margin: 0 auto;
     background: linear-gradient(
         rgba(251, 245, 238, 0.8) 0.1em,
@@ -200,11 +200,14 @@ export default {
   }
 
   &__title {
-    margin-bottom: desktop-vw(100px);
+    margin-bottom: desktop-vw(40px);
     text-align: center;
+    font-size: desktop-vw(44px);
 
-    @include desktop-l{
-     margin-bottom: desktop-vw(50px);
+
+    @include mobile{
+      font-size: mobile-vw(44px);
+      margin-bottom: mobile-vw(40px);
     }
     
   }
@@ -213,43 +216,43 @@ export default {
   }
 
   &__item {
-    margin-bottom: desktop-vw(40px);
+    margin-bottom: desktop-vw(16px);
     list-style-type: none;
     display: flex;
 
     @include desktop-l{
-     margin-bottom: desktop-vw(20px);
+     margin-bottom: desktop-vw(16px);
     }
 
     @include mobile {
-      margin-bottom: mobile-vw(25px);
+      margin-bottom: mobile-vw(10px);
     }
 
     &::before {
       content: '';
-      width: desktop-vw(8px);
-      min-width: desktop-vw(8px);
-      height: desktop-vw(8px);
-      min-height: desktop-vw(8px);
+      width: desktop-vw(4px);
+      min-width: desktop-vw(4px);
+      height: desktop-vw(4px);
+      min-height: desktop-vw(4px);
       display: flex;
       background: var(--c-black);
-      margin-right: desktop-vw(30px);
-      transform: translateY(desktop-vw(12.5px));
+      margin-right: desktop-vw(10px);
+      transform: translateY(desktop-vw(8px));
 
       @include desktop-l{
-        margin-right: desktop-vw(15px);
+        margin-right: desktop-vw(10px);
         transform: translateY(desktop-vw(5px));
       }
 
 
       @include mobile {
         content: '';
-        width: mobile-vw(8px);
-        min-width: mobile-vw(8px);
-        height: mobile-vw(8px);
-        min-height: mobile-vw(8px);
-        margin-right: mobile-vw(8px);
-        transform: translateY(mobile-vw(7px));
+        width: mobile-vw(4px);
+        min-width: mobile-vw(4px);
+        height: mobile-vw(4px);
+        min-height: mobile-vw(4px);
+        margin-right: mobile-vw(4px);
+        transform: translateY(mobile-vw(2px));
       }
     }
 
@@ -258,35 +261,39 @@ export default {
     }
 
     .H4 {
-      @include font-ITCFranklinGothicLT-DmXtraCp();
+      @include font-ITCFranklinGothicLT-BkCp();
+      font-size: desktop-vw(16px);
+      line-height: desktop-vw(16px);
       .p{
         margin: 0;
         @include h4();
-        @include font-ITCFranklinGothicLT-DmXtraCp();
+        @include font-ITCFranklinGothicLT-BkCp();
+        font-size: desktop-vw(16px);
+        line-height: desktop-vw(16px);
 
         @include desktop-l{
-          font-size: desktop-vw(20px);
-          line-height: desktop-vw(20px);
+          font-size: desktop-vw(16px);
+          line-height: desktop-vw(16px);
         }
 
         @include mobile {
-          @include font-ITCFranklinGothicLT-DmXtraCp();
-          font-size: mobile-vw(14px);
-          line-height: mobile-vw(20px);
+          @include font-ITCFranklinGothicLT-BkCp();
+          font-size: mobile-vw(12px);
+          line-height: mobile-vw(14px);
         }
 
       }
 
       @include desktop-l{
-        font-size: desktop-vw(20px);
-        line-height: desktop-vw(20px);
+        font-size: desktop-vw(16px);
+        line-height: desktop-vw(16px);
       }
 
       @include mobile {
-        font-size: mobile-vw(14px);
-        line-height: mobile-vw(20px);
+        font-size: mobile-vw(12px);
+        line-height: mobile-vw(14px);
 
-        @include font-ITCFranklinGothicLT-DmXtraCp();
+        @include font-ITCFranklinGothicLT-BkCp();
 
 
       }

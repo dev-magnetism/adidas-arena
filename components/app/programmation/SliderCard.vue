@@ -111,22 +111,23 @@
           (event.status_code === 'B' && !event.presale) ||
           event.status_code === 'C'
         "
+        ref="cta"
         :color="statutColor"
         :layer-color="statutColor"
         :bg="'grey'"
+        :fakebutton="true"
         class="app-programmation-slider-card__cta"
-        ref="cta"
       >
         En savoir +
       </AtomsCTA>
       <AtomsCTA
         v-else
+        ref="cta"
         :color="statutColor"
         :layer-color="statutColor"
         :bg="'grey'"
-        
+        :fakebutton="true"
         class="app-programmation-slider-card__cta"
-        ref="cta"
       >
         {{
           event.status_code === 'K' ||

@@ -271,7 +271,7 @@ export default {
   }
 
   &__heading {
-    margin-bottom: desktop-vw(85px);
+    margin-bottom: desktop-vw(10px);
     position: relative;
 
     @include mobile {
