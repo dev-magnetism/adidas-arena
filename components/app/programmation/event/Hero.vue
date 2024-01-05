@@ -511,7 +511,7 @@ export default {
   &__right {
     grid-column: 8 / span 5;
     background: white;
-    aspect-ratio: 550/ 695;
+    aspect-ratio: 550/ 550; // 550/ 695;
     width: 100%;
     height: auto;
     position: relative;

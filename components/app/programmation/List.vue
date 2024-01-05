@@ -49,6 +49,8 @@
         <AtomsSpotifyPlaylist
           v-if="content.spotifyLink !== '' && content.spotifyLink !== null"
           :cta-link="content.spotifyLink"
+          :barsticky="barSticky"
+          ref="spotify"
           />
 
         <div class="app-programmation-list-bar__months">
@@ -122,6 +124,7 @@ export default {
     return {
       selectedCategory: 'tout',
       barActive: true,
+      barSticky: false,
       scrollTriggerMonths: [],
       currentMonth: null,
       directionMonth: 'up',
@@ -173,6 +176,7 @@ export default {
   },
   beforeDestroy() {
     this.scrollTriggerBar?.kill()
+    this.scrollTriggerBarWrapper?.kill()
 
     this.scrollTriggerMonths?.forEach((st) => {
       st?.kill()
@@ -193,6 +197,22 @@ export default {
           if (this.filteringInProgress) return
 
           this.barActive = true
+        },
+      })
+
+      this.scrollTriggerBarWrapper = ScrollTrigger.create({
+        trigger: this.$refs.barWrapper,
+        start: 'top top',
+        end: 'bottom bottom',
+        onEnter: (e) => {
+          this.barSticky = true
+
+          console.log('scrollTriggerBarWrapper Enter')
+        },
+        onEnterBack: (e) => {
+          this.barSticky = false
+
+          console.log('scrollTriggerBarWrapper Enter Back')
         },
       })
 

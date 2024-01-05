@@ -25,7 +25,7 @@
     </div>
   </a>
   <nuxt-link
-    v-else-if="!button && (!external || !automaticHref)"
+    v-else-if="!fakebutton && !button && (!external || !automaticHref)"
     class="app-atoms-cta"
     :class="classes"
     :style="{
@@ -73,6 +73,27 @@
       </div>
     </div>
   </button>
+  <div
+    v-else-if="fakebutton"
+    class="app-atoms-cta"
+    :class="classes"
+    :style="{
+      'background-color': `var(--c-${bg})`,
+      '--layer-color': `var(--c-${layerColor})`,
+    }"
+  >
+    <div class="app-atoms-cta-click">
+      <TP2
+        class="app-atoms-cta__text"
+        weight="bold"
+        :color="mousehover ? 'grey' : color"
+        ><slot
+      /></TP2>
+      <div v-if="arrow" class="app-atoms-cta__arrow">
+        <SvgCtaUnion ref="arrow" :color="mousehover ? 'grey' : color" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -98,6 +119,11 @@ export default {
       default: '#',
     },
     external: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    fakebutton: {
       type: Boolean,
       required: false,
       default: false,
