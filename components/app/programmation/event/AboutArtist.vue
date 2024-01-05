@@ -1,5 +1,5 @@
 <template>
-  <div v-if="elHide" class="app-programmation-event-about-artist grid-inner">
+  <div v-if="elHide" class="app-programmation-event-about-artist grid-inner" :class="{novideo: !videoFrame}">
     <div
       v-if="imageFrame || imageWithoutFrame || videoFrame"
       class="app-programmation-event-about-artist__left"
@@ -253,6 +253,10 @@ export default {
   position: relative;
   margin-top: desktop-vw(350px);
   margin-bottom: desktop-vw(185px);
+
+  &.novideo{
+    margin-bottom: 0;
+  }
 
   @include mobile {
     margin-top: mobile-vw(110px);

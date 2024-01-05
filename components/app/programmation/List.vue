@@ -412,7 +412,7 @@ export default {
 
   @include mobile {
     margin-top: mobile-vw(120px);
-    padding-top: mobile-vw(70px);
+    padding-top: mobile-vw(134px);
     padding-bottom: mobile-vw(90px);
   }
 
@@ -584,6 +584,10 @@ export default {
        order: 1;
        margin-top: 0;
        margin-bottom: mobile-vw(16px);
+
+       &.hide{
+        margin-bottom: 0;
+       }
       }
     }
 
