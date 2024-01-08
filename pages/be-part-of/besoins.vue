@@ -1,7 +1,7 @@
 <template>
   <main class="page-be-part-of-besoins">
     <AppBepartofBesoinsIntroduction :contents="contentIntroduction" />
-    <AppBepartofBesoinsArena :contents="contentArena" />
+    <!-- AppBepartofBesoinsArena :contents="contentArena" / -->
     <AppContactQuestion ref="questform" :contents="contentContactQuestion" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>

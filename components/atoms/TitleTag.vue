@@ -52,7 +52,7 @@ export default {
   }
 
   & > .P2.bold {
-    @include font-adihausDIN-cn-bold();
+    @include font-ITCFranklinGothicLT-BkCp();
   }
 }
 </style>

@@ -94,7 +94,7 @@ export default {
     p {
       font-size: min(54px, desktop-vw(54px));
       line-height: min(54px, desktop-vw(54px));
-      @include font-adihausDIN-cn-bold();
+      @include font-ITCFranklinGothicLT-DmCp();
       text-transform: uppercase;
     }
   }

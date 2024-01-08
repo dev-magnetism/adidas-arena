@@ -396,7 +396,7 @@ export default {
         padding: desktop-vw(10px) desktop-vw(15px);
         border-right: 1px solid var(--c-black);
         @include p1();
-        @include font-adihausDIN-bold();
+        @include font-ITCFranklinGothicLT-DmCp();
 
         @include mobile {
           padding: mobile-vw(8px) mobile-vw(12px);

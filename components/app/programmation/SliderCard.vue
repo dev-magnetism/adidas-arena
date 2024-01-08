@@ -12,6 +12,12 @@
           :class="{ visible }"
           class="app-programmation-slider-card__layer"
         />
+
+        <AtomsSpotifyCardLink
+          v-if="event.spotify_link !== '' && event.spotify_link !== null"
+          :cta-link="event.spotify_link"
+          />
+
         <AppProgrammationImage
           class="app-programmation-slider-card__visual__picture"
           :src="event?.presentation_event?.filename_disk"
@@ -25,7 +31,25 @@
       </div>
     </div>
 
-    <div class="app-programmation-slider-card__informations">
+    <nuxt-link
+      class="app-programmation-slider-card__informations"
+      :to="{
+        name: 'programmation-id',
+        params: {
+          id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
+        }
+      }"
+
+      :gtm-click="{
+        id: `${event.id}`,
+        name: `${event.artist_reference}`,
+        category: `${event.content.category}`,
+        category2: `${event.content.sub_category}`,
+        price: `${event.min_price}`,
+      }"
+      @mouseenter.native="onMouseEnter"
+      @mouseleave.native="onMouseLeave"
+      >
       <div class="app-programmation-slider-card__head">
         <TP2 class="type" weight="bold" :color="whitedTexts" tag="h3">
           {{
@@ -87,49 +111,23 @@
           (event.status_code === 'B' && !event.presale) ||
           event.status_code === 'C'
         "
+        ref="cta"
         :color="statutColor"
         :layer-color="statutColor"
         :bg="'grey'"
-        :href="{
-          name: 'programmation-id',
-          params: {
-            id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
-          },
-        }"
-        :gtm-click="{
-          id: `${event.id}`,
-          name: `${event.artist_reference}`,
-          category: `${event.content.category}`,
-          category2: `${event.content.sub_category}`,
-          price: `${event.min_price}`,
-        }"
+        :fakebutton="true"
         class="app-programmation-slider-card__cta"
-        @mouseenter.native="onMouseEnter"
-        @mouseleave.native="onMouseLeave"
       >
         En savoir +
       </AtomsCTA>
       <AtomsCTA
         v-else
+        ref="cta"
         :color="statutColor"
         :layer-color="statutColor"
         :bg="'grey'"
-        :href="{
-          name: 'programmation-id',
-          params: {
-            id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
-          },
-        }"
-        :gtm-click="{
-          id: `${event.id}`,
-          name: `${event.artist_reference}`,
-          category: `${event.content.category}`,
-          category2: `${event.content.sub_category}`,
-          price: `${event.min_price}`,
-        }"
+        :fakebutton="true"
         class="app-programmation-slider-card__cta"
-        @mouseenter.native="onMouseEnter"
-        @mouseleave.native="onMouseLeave"
       >
         {{
           event.status_code === 'K' ||
@@ -138,7 +136,7 @@
             : `Réserver`
         }}
       </AtomsCTA>
-    </div>
+    </nuxt-link>
     <span
       :class="{ full: event.status_code === 'K' }"
       class="app-programmation-slider-card__full"
@@ -210,8 +208,6 @@ export default {
   mounted() {
     if (this.$viewport.isMobile) return
 
-    console.log('event', this.event)
-
     this.initTimelineArrow()
   },
   beforeDestroy() {
@@ -223,14 +219,18 @@ export default {
 
       this.setCursorState('hide')
 
-      //  this.tlArrow?.play()
+      // this.tlArrow?.play()
+      // console.log('ref cta', this.$refs.cta);
+      this.$refs.cta.onMouseEnter();
     },
     onMouseLeave() {
       if (this.$viewport.isMobile) return
 
       this.setCursorState('slider')
 
-      //  this.tlArrow?.reverse()
+      // this.tlArrow?.reverse()
+      // console.log('ref cta', this.$refs.cta);
+      this.$refs.cta.onMouseLeave();
     },
     initTimelineArrow() {
       //  if (this.$viewport.isMobile) return
@@ -379,10 +379,21 @@ export default {
     padding: desktop-vw(15px) desktop-vw(25px);
     height: 100%;
     border-top: 1px solid var(--c-black);
+    cursor: pointer;
 
     @include mobile {
       padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(65px);
       margin-top: mobile-vw(0px);
+    }
+
+    &:hover{
+
+      .app-atoms-cta{
+         &::after {
+          transform: scaleY(1);
+        }
+      }
+
     }
   }
 
@@ -391,7 +402,14 @@ export default {
     justify-content: space-between;
 
     .P2 {
+      font-size: desktop-vw(18px);
+      line-height: desktop-vw(20px);
       text-transform: uppercase;
+
+      @include mobile{
+        font-size: mobile-vw(14px);
+        line-height: mobile-vw(18px);
+      }
     }
 
     // .type {
@@ -407,6 +425,8 @@ export default {
     margin-top: desktop-vw(5px);
     margin-bottom: desktop-vw(40px);
     user-select: none;
+    letter-spacing: 0;
+    @include font-ITCFranklinGothicLT-DmXtraCp();
 
     @include mobile {
       margin-top: mobile-vw(5px);

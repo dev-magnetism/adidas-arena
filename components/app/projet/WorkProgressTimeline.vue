@@ -118,7 +118,7 @@ export default {
       position: relative;
       font-size: 16px;
       line-height: 21px;
-      @include font-adihausDIN-cn-bold();
+      @include font-ITCFranklinGothicLT-DmCp();
     }
 
     .P2.regular {
@@ -127,7 +127,12 @@ export default {
       line-height: desktop-vw(18px);
       max-width: desktop-vw(150px);
       text-transform: uppercase;
-      @include font-adihausDIN-cn();
+      @include font-ITCFranklinGothicLT-BkCp();
+
+      @include mobile{
+        font-size: mobile-vw(16px);
+        line-height: mobile-vw(18px);
+      }
     }
   }
 

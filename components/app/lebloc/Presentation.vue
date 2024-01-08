@@ -190,7 +190,12 @@ export default {
 
     .P2 {
       text-transform: initial;
-      @include font-adihausDIN-medium();
+      font-size: desktop-vw(18px);
+      @include font-ITCFranklinGothicLT-BkCp();
+
+      @include mobile{
+        font-size: mobile-vw(16px);
+      }
     }
   }
 }

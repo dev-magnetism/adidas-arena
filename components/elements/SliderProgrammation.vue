@@ -15,7 +15,13 @@
       >
         {{ content.cta }}
       </AtomsCTA>
+      
+      <AtomsSpotifyPlaylist
+        v-if="content.spotifyLink !== '' && content.spotifyLink !== null"
+        :cta-link="content.spotifyLink"
+        />
     </div>
+
 
     <div
       ref="wrapper"
@@ -265,7 +271,7 @@ export default {
   }
 
   &__heading {
-    margin-bottom: desktop-vw(85px);
+    margin-bottom: desktop-vw(10px);
     position: relative;
 
     @include mobile {
@@ -282,7 +288,7 @@ export default {
       }
 
       .H2.medium {
-        @include font-adihausDIN-cn-bold();
+        @include font-ITCFranklinGothicLT-DmCp();
       }
 
       @include mobile {

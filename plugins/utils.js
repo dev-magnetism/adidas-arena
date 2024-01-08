@@ -14,10 +14,24 @@ export default ({ app }, inject) => {
   })
 
   inject('formatDate', (dates, displayTime = false) => {
+    // let dates;
+    // console.log('formatDate / _dates', _dates);
 
     if (!Array.isArray(dates)) {
       dates = [dates]
     }
+
+    // if (!Array.isArray(_dates)) {
+    //   dates = [_dates]
+    // } else if(_dates.length > 1){
+    //   dates = _dates
+    //   dates.splice(1, _dates.length - 2)
+
+    // } else {
+    //   dates = _dates
+    // }
+
+    //  console.log('formatDate / dates', dates);
 
 
     /*
@@ -38,11 +52,11 @@ export default ({ app }, inject) => {
     for(let i = 0; i < _formatDates.length; i++){
       const _date = new Date(_formatDates[i]);
       const _compDate = new Date(_formatDates[i]);
-      const _id = `${_date.getDate()}${_date.getMonth()}${_date.getFullYear()}`
+      const _id = `${_date.getDate()}${_date.getMonth() + 1}${_date.getFullYear()}`
 
       const _obj = {
         id: _id,
-        compdate: new Date(_compDate.setHours(0,0,0)),
+        compdate: new Date(_compDate.setHours(2,0,0)),
         date: _date
       }
 
@@ -51,12 +65,15 @@ export default ({ app }, inject) => {
       }
     }
 
+    //  console.log('dateObjects', dateObjects);
+
     const formattedDates = []
     let index = 0
 
     while (index < dateObjects.length) {
       const currentDate = dateObjects[index].date
       const startDay = currentDate.getDate()
+      //  console.log('startDay', startDay);
 
       /* 
         Carefull : this compares 2 dates with a 24 hours difference,
@@ -64,16 +81,22 @@ export default ({ app }, inject) => {
         That's why I use 'compdate', event if it doesn't contain the correct
         time.
       */
+      // while (
+      //   index < dateObjects.length - 1 &&
+      //   (dateObjects[index + 1].compdate - dateObjects[index].compdate) /
+      //     (1000 * 60 * 60 * 24) ===
+      //     1
+      // ) {
+      //   index++
+      // }
       while (
-        index < dateObjects.length - 1 &&
-        (dateObjects[index + 1].compdate - dateObjects[index].compdate) /
-          (1000 * 60 * 60 * 24) ===
-          1
+        index < dateObjects.length - 1
       ) {
         index++
       }
 
       const endDay = dateObjects[index].date.getDate()
+      //  console.log('endDay', endDay);
 
       let _formattedDate;
 
@@ -84,6 +107,7 @@ export default ({ app }, inject) => {
       } else {
         _formattedDate = `${startDay} au ${endDay}`
       }
+      //  console.log('_formattedDate', _formattedDate);
 
       formattedDates.push(_formattedDate)
 
@@ -91,10 +115,13 @@ export default ({ app }, inject) => {
     }
 
     const lastDate = dateObjects[dateObjects.length - 1].date
+      //  console.log('lastDate', lastDate);
     const month = lastDate
       .toLocaleString('fr-FR', { month: 'long' })
       .toUpperCase()
+      //  console.log('month', month);
     const year = lastDate.getFullYear()
+      //  console.log('year', year);
 
     let time = ''
     if (displayTime && dateObjects.length === 1) {
@@ -105,6 +132,9 @@ export default ({ app }, inject) => {
       }`
     }
 
-    return `${formattedDates.join(' & ')} ${month} ${year}${time}`
+    const _stringDate = `${formattedDates.join(' & ')} ${month} ${year}${time}`;
+    //  console.log('_stringDate:', _stringDate)
+
+    return _stringDate
   })
 }

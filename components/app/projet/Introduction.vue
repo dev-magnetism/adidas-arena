@@ -301,11 +301,13 @@ export default {
 
     .P2.wysiwyg-text {
       width: 80%;
+      font-size: desktop-vw(18px);
       text-transform: uppercase;
-      @include font-adihausDIN-bold();
+      @include font-ITCFranklinGothicLT-BkCp();
       // font-weight: 700;
 
       @include mobile {
+        font-size: mobile-vw(16px);
         width: 65%;
       }
 
@@ -398,7 +400,12 @@ export default {
 
     .app-element-rich-text {
       .P2.wysiwyg-text {
-        @include font-adihausDIN-medium();
+        font-size: desktop-vw(18px);
+        @include font-ITCFranklinGothicLT-BkCp();
+
+        @include mobile {
+         font-size: mobile-vw(16px);
+        }
 
         &:first-child {
           margin-top: desktop-vw(30px);

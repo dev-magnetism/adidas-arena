@@ -306,9 +306,16 @@ export default {
 
     .app-element-rich-text {
       .P2.wysiwyg-text {
+        font-size: desktop-vw(18px);
+        line-height: desktop-vw(20px);
         text-transform: uppercase;
-        @include font-adihausDIN-medium();
+        @include font-ITCFranklinGothicLT-BkCp();
         color: var(--c-grey) !important;
+
+        @include mobile{
+          font-size: mobile-vw(16px);
+          line-height: mobile-vw(20px);
+        }
       }
     }
   }
@@ -325,7 +332,7 @@ export default {
 
     .H1.wysiwyg-text {
       color: var(--c-grey) !important;
-      @include font-adihausDIN-cn-bold();
+      @include font-ITCFranklinGothicLT-DmCp();
 
       .app-atoms-stroke-text {
         -webkit-text-stroke: 1px var(--c-grey) !important;
@@ -373,7 +380,7 @@ export default {
         line-height: desktop-vw(16px);
         letter-spacing: -0.04em;
         text-transform: uppercase;
-        @include font-adihausDIN-cn-bold();
+        @include font-ITCFranklinGothicLT-DmCp();
 
         @include mobile {
           font-size: mobile-vw(12px);
@@ -386,7 +393,7 @@ export default {
         line-height: desktop-vw(20px);
         letter-spacing: -0.04em;
         margin-top: desktop-vw(5px);
-        @include font-adihausDIN-cn-bold();
+        @include font-ITCFranklinGothicLT-DmCp();
 
         @include mobile {
           font-size: mobile-vw(24px);
@@ -410,7 +417,7 @@ export default {
         font-size: desktop-vw(12px);
         line-height: desktop-vw(16px);
         letter-spacing: -0.04em;
-        @include font-adihausDIN-cn-bold();
+        @include font-ITCFranklinGothicLT-DmCp();
         text-transform: uppercase;
 
         @include mobile {

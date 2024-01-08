@@ -174,7 +174,9 @@ export default {
     viewExteriorOpen(newVal) {
       const { exterior } = useWebGL()
 
+
       if (newVal) {
+
         gsap.to(exterior.position, {
           x: 0,
           z: 0,
@@ -526,10 +528,8 @@ export default {
 
       const { exterior, camera, renderer, scissors } = useWebGL()
 
-      exterior.position.y =
-        (window.lenis?.scroll + scissors.mask?.y) /
-        (camera.zoom - camera.zoom * 0.125)
-
+      exterior.position.y = (window.lenis?.scroll + scissors.mask?.y) / (camera.zoom - camera.zoom * 0.125)
+       
       scissors.current.y = window.lenis?.scroll + scissors.mask?.y
 
       renderer.setScissor(
@@ -571,10 +571,12 @@ export default {
         onToggle: (self) => {
           this.setExteriorVisible(self.isActive)
 
+        },
+        onUpdate: (self) => {
           if (self.isActive || this.exteriorVisible) {
             this.onResizePreviewExterior()
           }
-        },
+        }
       })
 
       if (!this.$viewport.isMobile) {
@@ -865,9 +867,9 @@ export default {
       }
 
       .P2.bold {
-        @include font-adihausDIN-medium();
-        font-size: desktop-vw(16px);
-        line-height: desktop-vw(21px);
+        @include font-ITCFranklinGothicLT-BkCp();
+        font-size: desktop-vw(17px);
+        line-height: desktop-vw(20px);
 
         @include mobile {
           font-size: mobile-vw(16px);
@@ -903,9 +905,9 @@ export default {
 
     .P2.bold {
       text-transform: uppercase;
-      @include font-adihausDIN-cn-medium();
-      font-size: desktop-vw(16px);
-      line-height: desktop-vw(21px);
+      @include font-ITCFranklinGothicLT-BkCp();
+      font-size: desktop-vw(17px);
+      line-height: desktop-vw(20px);
 
       @include mobile {
         font-size: mobile-vw(16px);
@@ -1013,7 +1015,7 @@ export default {
     }
 
     &__city {
-      @include font-adihausDIN-bold();
+      @include font-ITCFranklinGothicLT-DmCp();
     }
     &__place {
     }
