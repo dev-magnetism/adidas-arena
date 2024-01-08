@@ -59,6 +59,16 @@
         </div>
         <div class="app-element-contact-overlay__field-group">
           <input
+            v-model="structure"
+            placeholder=" "
+            required
+            class="app-element-contact-overlay__field"
+            type="text"
+          />
+          <TH4 tag="p">Structure</TH4>
+        </div>
+        <div class="app-element-contact-overlay__field-group">
+          <input
             v-model="email"
             placeholder=" "
             required
@@ -157,6 +167,7 @@ export default {
       const data = {
         name: this.prenom,
         surname: this.nom,
+        structure: this.structure,
         email: this.email,
         phone: this.telephone,
         message: this.body,
