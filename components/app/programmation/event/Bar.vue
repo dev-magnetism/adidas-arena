@@ -131,7 +131,6 @@ export default {
   &__event {
     display: flex;
     flex-direction: column;
-    margin-left:40px;
 
     .P2 {
       text-transform: uppercase;
