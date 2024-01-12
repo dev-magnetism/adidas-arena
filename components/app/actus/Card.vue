@@ -268,7 +268,12 @@ export default {
     justify-content: flex-start;
 
     .P2 {
+      font-size: desktop-vw(18px);
       text-transform: uppercase;
+
+      @include mobile{
+        font-size: mobile-vw(14px);
+      }
     }
     .type {
     }
@@ -277,6 +282,7 @@ export default {
   .H4.bold {
     margin-top: desktop-vw(15px);
     margin-bottom: desktop-vw(70px);
+    @include font-ITCFranklinGothicLT-DmXtraCp();
 
     @include mobile {
       margin-top: mobile-vw(5px);

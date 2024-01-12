@@ -2,7 +2,9 @@
   <main class="app-programmation">
     <AppProgrammationHero :content="contentHero" />
 
-    <AppProgrammationList />
+    <AppProgrammationList 
+      :content="contentList"
+      />
 
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
@@ -75,6 +77,11 @@ export default {
         event: this.contentMainCard,
       }
     },
+    contentList() {
+      return {
+        spotifyLink: this.content.data.spotify_link
+      }
+    }
   },
   methods: {
     ...mapMutations({

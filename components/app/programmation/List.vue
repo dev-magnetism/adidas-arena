@@ -46,6 +46,13 @@
           </div>
         </div>
 
+        <AtomsSpotifyPlaylist
+          v-if="content.spotifyLink !== '' && content.spotifyLink !== null"
+          :cta-link="content.spotifyLink"
+          :barsticky="barSticky"
+          ref="spotify"
+          />
+
         <div class="app-programmation-list-bar__months">
           <select @change="onChangeMonth">
             <option
@@ -107,10 +114,17 @@ import { mapGetters } from 'vuex'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default {
+  props: {
+    content: {
+      type: Object,
+      default: () => {},
+    }
+  },
   data() {
     return {
       selectedCategory: 'tout',
       barActive: true,
+      barSticky: false,
       scrollTriggerMonths: [],
       currentMonth: null,
       directionMonth: 'up',
@@ -162,6 +176,7 @@ export default {
   },
   beforeDestroy() {
     this.scrollTriggerBar?.kill()
+    this.scrollTriggerBarWrapper?.kill()
 
     this.scrollTriggerMonths?.forEach((st) => {
       st?.kill()
@@ -182,6 +197,22 @@ export default {
           if (this.filteringInProgress) return
 
           this.barActive = true
+        },
+      })
+
+      this.scrollTriggerBarWrapper = ScrollTrigger.create({
+        trigger: this.$refs.barWrapper,
+        start: 'top top',
+        end: 'bottom bottom',
+        onEnter: (e) => {
+          this.barSticky = true
+
+          console.log('scrollTriggerBarWrapper Enter')
+        },
+        onEnterBack: (e) => {
+          this.barSticky = false
+
+          console.log('scrollTriggerBarWrapper Enter Back')
         },
       })
 
@@ -381,7 +412,7 @@ export default {
 
   @include mobile {
     margin-top: mobile-vw(120px);
-    padding-top: mobile-vw(70px);
+    padding-top: mobile-vw(134px);
     padding-bottom: mobile-vw(90px);
   }
 
@@ -430,6 +461,7 @@ export default {
       width: 100%;
       row-gap: 0;
       pointer-events: all;
+      align-items: center;
 
       @include mobile {
 
@@ -456,6 +488,7 @@ export default {
       grid-column: 1 / span 2;
       justify-content: center;
       padding: mobile-vw(8px) mobile-vw(15px);
+      order: 2;
 
       @include desktop {
         display: none;
@@ -486,7 +519,8 @@ export default {
       display: flex;
       flex-flow: row wrap;
       gap: desktop-vw(10px);
-      grid-column: 1 / span 8;
+      grid-column: 1 / span 6;
+      order: 1;
 
       @include mobile {
         display: none;
@@ -543,11 +577,26 @@ export default {
       }
     }
 
+    .app-atoms-spotify-playlist{
+      order: 2;
+
+      @include mobile{
+       order: 1;
+       margin-top: 0;
+       margin-bottom: mobile-vw(16px);
+
+       &.hide{
+        margin-bottom: 0;
+       }
+      }
+    }
+
     &__months {
       grid-column: 9 / span 4;
       position: relative;
+      order: 3;
 
-      @include mobile {
+      @include mobile {;
         grid-column: 3 / span 4;
       }
 

@@ -59,6 +59,16 @@
         </div>
         <div class="app-element-contact-overlay__field-group">
           <input
+            v-model="structure"
+            placeholder=" "
+            required
+            class="app-element-contact-overlay__field"
+            type="text"
+          />
+          <TH4 tag="p">Structure</TH4>
+        </div>
+        <div class="app-element-contact-overlay__field-group">
+          <input
             v-model="email"
             placeholder=" "
             required
@@ -157,6 +167,7 @@ export default {
       const data = {
         name: this.prenom,
         surname: this.nom,
+        structure: this.structure,
         email: this.email,
         phone: this.telephone,
         message: this.body,
@@ -405,7 +416,7 @@ export default {
     @include h2();
     font-size: desktop-vw(64px);
     line-height: desktop-vw(58px);
-    @include font-adihausDIN-cn-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
 
     @include mobile {
       font-size: mobile-vw(24px);
@@ -415,7 +426,7 @@ export default {
 
     &.textarea {
       @include p1();
-      @include font-adihausDIN-medium();
+      @include font-ITCFranklinGothicLT-BkCp();
       height: desktop-vw(125px);
       text-transform: initial;
 

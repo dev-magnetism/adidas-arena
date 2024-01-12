@@ -27,6 +27,11 @@
             class="app-programmation-event-status"
           />
 
+          <AtomsSpotifyCardLink
+            v-if="content.event.spotify_link !== '' && content.event.spotify_link !== null"
+            :cta-link="content.event.spotify_link"
+            />
+
           <AppProgrammationImage
             :src="content?.event?.presentation_event?.filename_disk"
             :alt="`main-card-image-${content.event.id}-${content.event.artist_reference}`"
@@ -378,7 +383,7 @@ export default {
     }
 
     .H2.medium {
-      @include font-adihausDIN-cn-bold();
+      @include font-ITCFranklinGothicLT-DmCp();
 
       @include mobile-l {
         font-size: mobile-vw(57px);
@@ -437,8 +442,14 @@ export default {
     margin-top: desktop-vw(25px);
 
     p.P2 {
-      @include font-adihausDIN-bold();
+      font-size: desktop-vw(17px);
+      @include font-ITCFranklinGothicLT-DmCp();
       color: var(--c-black);
+
+      @include mobile {
+        font-size: mobile-vw(16px);
+        line-height: mobile-vw(18px);
+      }
 
       @include mobile-l {
         font-size: mobile-vw(12px);
@@ -538,7 +549,17 @@ export default {
     &__content {
       display: flex;
       flex-direction: column;
+
+      .H3.bold{
+        font-size: desktop-vw(64px);
+
+        @include mobile{
+          font-size: mobile-vw(64px);
+        }
+      }
+
     }
+
 
     &__name {
       margin-top: desktop-vw(10px);
@@ -564,7 +585,7 @@ export default {
       font-size: desktop-vw(14px);
       line-height: desktop-vw(16px);
       letter-spacing: -0.02em;
-      @include font-adihausDIN-bold();
+      @include font-ITCFranklinGothicLT-DmCp();
       color: var(--c-red-adidas);
       margin-left: desktop-vw(20px);
       align-self: flex-start;

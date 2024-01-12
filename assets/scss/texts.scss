@@ -1,32 +1,20 @@
-@mixin font-adihausDIN-cn-bold() {
-  font-family: 'AdihausDIN Cn Bold';
+@mixin font-ITCFranklinGothicLT-BkCp() {
+  font-family: 'ITCFranklinGothicLT-BkCp';
 }
 
-@mixin font-adihausDIN-cn-medium() {
-  font-family: 'AdihausDIN Cn Medium';
+@mixin font-ITCFranklinGothicLT-DmCp() {
+  font-family: 'ITCFranklinGothicLT-DmCp';
 }
 
-@mixin font-adihausDIN-cn() {
-  font-family: 'AdihausDIN Cn';
-}
-
-@mixin font-adihausDIN-bold() {
-  font-family: 'AdihausDIN Bold';
-}
-
-@mixin font-adihausDIN-medium() {
-  font-family: 'AdihausDIN Medium';
-}
-
-@mixin font-adihausDIN() {
-  font-family: 'AdihausDIN';
+@mixin font-ITCFranklinGothicLT-DmXtraCp() {
+  font-family: 'ITCFranklinGothicLT-DmXtraCp';
 }
 
 @mixin h1() {
   font-size: desktop-vw(135px);
   line-height: desktop-vw(120px);
   text-transform: uppercase;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.25rem;
 
   @include mobile {
     font-size: mobile-vw(80px);
@@ -34,13 +22,13 @@
   }
 
   &.medium {
-    @include font-adihausDIN-cn-medium();
+    @include font-ITCFranklinGothicLT-DmCp();
   }
 
   &.bold,
   .bold,
   strong {
-    @include font-adihausDIN-cn-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
   }
 }
 
@@ -56,13 +44,13 @@
   }
 
   &.medium {
-    @include font-adihausDIN-cn-medium();
+    @include font-ITCFranklinGothicLT-DmCp();
   }
 
   &.bold,
   .bold,
   strong {
-    @include font-adihausDIN-cn-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
   }
 }
 
@@ -70,7 +58,6 @@
   font-size: desktop-vw(64px);
   line-height: desktop-vw(58px);
   text-transform: uppercase;
-  letter-spacing: -0.05em;
 
   @include mobile {
     font-size: mobile-vw(56px);
@@ -78,35 +65,36 @@
   }
 
   &.medium {
-    @include font-adihausDIN-cn-medium();
+    @include font-ITCFranklinGothicLT-DmXtraCp();
   }
 
   &.bold,
   .bold,
   strong {
-    @include font-adihausDIN-cn-bold();
+    @include font-ITCFranklinGothicLT-DmXtraCp();
   }
 }
 
 @mixin h3() {
   font-size: desktop-vw(72px);
   line-height: desktop-vw(65px);
-  letter-spacing: -0.05em;
+  letter-spacing: -0.25rem;
   text-transform: uppercase;
-  @include font-adihausDIN-cn-bold();
+  @include font-ITCFranklinGothicLT-DmCp();
 
   @include mobile {
+    letter-spacing: -0.125rem;
     font-size: mobile-vw(40px);
     line-height: mobile-vw(40px);
   }
 
   &.bold,
   strong {
-    @include font-adihausDIN-cn-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
   }
 
   &.medium {
-    @include font-adihausDIN-cn-medium();
+    @include font-ITCFranklinGothicLT-DmCp();
   }
 }
 
@@ -122,27 +110,27 @@
   }
 
   &.bold-normal {
-    @include font-adihausDIN-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
   }
 
   &.regular {
-    @include font-adihausDIN-cn();
+    @include font-ITCFranklinGothicLT-DmCp();
   }
 
   &.bold,
   strong {
-    @include font-adihausDIN-cn-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
   }
 
   &.medium {
-    @include font-adihausDIN-cn-medium();
+    @include font-ITCFranklinGothicLT-DmCp();
   }
 }
 
 @mixin p1() {
-  font-size: desktop-vw(16px);
+  font-size: desktop-vw(18px);
   line-height: desktop-vw(20px);
-  letter-spacing: -0.02em;
+  // letter-spacing: -0.02em;
   text-transform: uppercase;
 
   @include mobile {
@@ -151,21 +139,21 @@
   }
 
   &.regular {
-    @include font-adihausDIN();
+    @include font-ITCFranklinGothicLT-BkCp();
   }
 
   &.bold,
   strong {
-    @include font-adihausDIN-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
   }
 
   &.medium {
-    @include font-adihausDIN-medium();
+    @include font-ITCFranklinGothicLT-DmCp();
   }
 }
 
 @mixin p2() {
-  font-size: desktop-vw(14px);
+  font-size: desktop-vw(16px);
   line-height: desktop-vw(20px);
 
   @include mobile {
@@ -174,21 +162,21 @@
   }
 
   &.regular {
-    @include font-adihausDIN();
+    @include font-ITCFranklinGothicLT-BkCp();
   }
 
   &.bold,
   strong {
-    @include font-adihausDIN-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
   }
 
   &.medium {
-    @include font-adihausDIN-medium();
+    @include font-ITCFranklinGothicLT-BkCp();
   }
 }
 
 @mixin p3() {
-  font-size: desktop-vw(16px);
+  font-size: desktop-vw(18px);
   line-height: desktop-vw(22px);
 
   @include mobile {
@@ -197,15 +185,15 @@
   }
 
   &.regular {
-    @include font-adihausDIN();
+    @include font-ITCFranklinGothicLT-BkCp();
   }
 
   &.bold,
   strong {
-    @include font-adihausDIN-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
   }
 
   &.medium {
-    @include font-adihausDIN-medium();
+    @include font-ITCFranklinGothicLT-DmCp();
   }
 }

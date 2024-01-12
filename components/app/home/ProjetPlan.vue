@@ -92,7 +92,7 @@
     position: absolute;
     left: 0;
     height: 3.8194444444vw;
-    @include font-adihausDIN-cn-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
 
     @include mobile {
       font-size: mobile-vw(16px);
@@ -193,7 +193,7 @@
         left: 0;
         height: 3.8194444444vw;
 
-        @include font-adihausDIN-cn-bold();
+        @include font-ITCFranklinGothicLT-BkCp();
 
         @include mobile {
           font-size: mobile-vw(16px);
@@ -224,7 +224,7 @@
         line-height: desktop-vw(20px);
         text-transform: uppercase;
 
-        @include font-adihausDIN-cn-bold();
+        @include font-ITCFranklinGothicLT-BkCp();
 
         @include mobile {
           font-size: mobile-vw(16px);

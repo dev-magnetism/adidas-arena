@@ -279,7 +279,7 @@ export default {
     }
 
     .H2.medium {
-      @include font-adihausDIN-cn-bold();
+      @include font-ITCFranklinGothicLT-DmCp();
     }
   }
 
@@ -293,7 +293,7 @@ export default {
     margin-top: desktop-vw(25px);
 
     p.P2 {
-      @include font-adihausDIN-bold();
+      @include font-ITCFranklinGothicLT-DmCp();
       color: var(--c-black);
     }
 

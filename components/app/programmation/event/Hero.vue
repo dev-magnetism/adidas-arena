@@ -78,21 +78,26 @@
         >
           Inscrivez-vous sur la liste d’attente !
         </TP2>
+
         <AtomsCTA
           v-if="
             event.sessions.length > 1 &&
             ((event.status_code === 'B' && event.presale) ||
-              (event.status_code !== 'C' && event.status_code !== 'H'))
+              (event.status_code !== 'C' && event.status_code !== 'H' && event.status_code !== 'D'))
           "
           button
           @click.native="anchorToDates"
         >
-          {{
-            event.status_code === 'K' ||
-            (event.status_code === 'B' && event.presale)
-              ? `Liste d'attente`
-              : `Réserver`
-          }}
+          Liste d'attente
+        </AtomsCTA>
+
+        <AtomsCTA
+          v-else-if="
+            event.sessions.length > 1 && event.status_code === 'D'
+          "
+          :href="event.sessions[0].content.url"
+        >
+          Réserver
         </AtomsCTA>
 
         <AtomsCTAForm
@@ -108,6 +113,7 @@
         >
           Liste d'attente
         </AtomsCTAForm>
+
         <AtomsCTA
           v-else-if="event.status_code === 'D'"
           :href="event.sessions[0].content.url"
@@ -130,6 +136,11 @@
       >
         {{ event.content.category }}
       </AppProgrammationEventTag>
+
+      <AtomsSpotifyCardLink
+        v-if="event.spotify_link !== '' && event.spotify_link !== null"
+        :cta-link="event.spotify_link"
+        />
 
       <AppProgrammationImage
         :src="event?.presentation_event?.filename_disk"
@@ -185,6 +196,8 @@ export default {
     },
   },
   mounted() {
+
+    // console.log('Page event', this.event)
     this.initSplitText()
     this.initLotties()
 
@@ -458,7 +471,6 @@ export default {
       margin-bottom: mobile-vw(15px);
       font-size: mobile-vw(32px);
       line-height: mobile-vw(30px);
-      @include font-adihausDIN-cn-bold();
     }
   }
 
@@ -485,7 +497,9 @@ export default {
 
   &__title {
     margin-bottom: desktop-vw(55px);
-    font-size: 8.680555555555556vw;
+    font-size: desktop-vw(101px);
+    line-height: desktop-vw(91px);
+    letter-spacing: 1px;
 
     @include mobile {
       margin-bottom: mobile-vw(30px);
@@ -497,7 +511,7 @@ export default {
   &__right {
     grid-column: 8 / span 5;
     background: white;
-    aspect-ratio: 550/ 695;
+    aspect-ratio: 550/ 550; // 550/ 695;
     width: 100%;
     height: auto;
     position: relative;
