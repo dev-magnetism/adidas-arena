@@ -20,6 +20,11 @@
         class="app-programmation-card__layer"
       />
 
+      <AtomsSpotifyCardLink
+        v-if="event.spotify_link !== '' && event.spotify_link !== null"
+        :cta-link="event.spotify_link"
+        />
+
       <AppProgrammationImage
         :src="event?.presentation_event?.filename_disk"
         :alt="`card-image-${event.id}-${event.artist_reference}`"
@@ -193,6 +198,7 @@ export default {
   },
   watch: {},
   mounted() {
+    // console.log('event', this.event);
     this.initMatchMedia()
   },
   beforeDestroy() {
@@ -402,6 +408,7 @@ export default {
   }
 
   .H2.bold {
+    @include font-ITCFranklinGothicLT-DmXtraCp();
     font-size: desktop-vw(64px);
     line-height: desktop-vw(58px);
     margin-top: desktop-vw(5px);

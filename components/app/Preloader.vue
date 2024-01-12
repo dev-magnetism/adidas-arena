@@ -130,13 +130,19 @@ export default {
       const FontFaceObserver = require('fontfaceobserver')
 
       const fontData = {
-        'AdihausDIN Cn': { weight: 400 },
-        'AdihausDIN Cn Medium': { weight: 400 },
-        'AdihausDIN Cn Bold': { weight: 400 },
-        AdihausDIN: { weight: 400 },
-        'AdihausDIN Medium': { weight: 400 },
-        'AdihausDIN Bold': { weight: 400 },
+        'ITCFranklinGothicLT-BkCp': { weight: 400 },
+        'ITCFranklinGothicLT-DmCp': { weight: 400 },
+        'ITCFranklinGothicLT-DmXtraCp': { weight: 400 },
       }
+
+      //  const fontData = {
+      //    'AdihausDIN Cn': { weight: 400 },
+      //    'AdihausDIN Cn Medium': { weight: 400 },
+      //    'AdihausDIN Cn Bold': { weight: 400 },
+      //    AdihausDIN: { weight: 400 },
+      //    'AdihausDIN Medium': { weight: 400 },
+      //    'AdihausDIN Bold': { weight: 400 },
+      //  }
 
       const observers = []
 

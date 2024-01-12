@@ -53,13 +53,13 @@ export default {
   .h5 {
     margin: desktop-vw(20px) 0px desktop-vw(10px) 0px;
     @include h4();
-    @include font-adihausDIN-cn-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
 
   }
 
   .p {
     @include p3();
-    @include font-adihausDIN-medium();
+    @include font-ITCFranklinGothicLT-BkCp();
 
     margin-bottom: desktop-vw(10px);
 
@@ -76,7 +76,7 @@ export default {
 
   .li {
     @include p3();
-    @include font-adihausDIN-medium();
+    @include font-ITCFranklinGothicLT-BkCp();
   }
 }
 </style>

@@ -162,7 +162,9 @@ export default {
     }
 
     .app-programmation-event-dates-item__wrapper,
-    .app-atoms-cta {
+    .app-atoms-cta,
+    .app-atoms-cta-form,
+    {
       pointer-events: none;
     }
 
@@ -194,7 +196,8 @@ export default {
     border-right: none;
   }
 
-  .app-atoms-cta {
+  .app-atoms-cta,
+  .app-atoms-cta-form{
     position: absolute;
     bottom: 0;
     right: 0;

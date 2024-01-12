@@ -410,9 +410,9 @@ export default {
       align-items: center;
 
       &__text.P1 {
-        font-size: desktop-vw(16px);
+        font-size: desktop-vw(18px);
         line-height: desktop-vw(16px);
-        @include font-adihausDIN-cn();
+        @include font-ITCFranklinGothicLT-BkCp();
 
         @include mobile {
           font-size: mobile-vw(20px);
@@ -458,7 +458,7 @@ export default {
       &__title.P1 {
         font-size: desktop-vw(12px);
         line-height: desktop-vw(12px);
-        @include font-adihausDIN-cn-bold();
+        @include font-ITCFranklinGothicLT-DmCp();
 
         @include mobile {
           font-size: mobile-vw(12px);
@@ -468,7 +468,7 @@ export default {
       &__text.H4 {
         font-size: desktop-vw(24px);
         line-height: desktop-vw(20px);
-        @include font-adihausDIN-cn-bold();
+        @include font-ITCFranklinGothicLT-DmCp();
         position: absolute;
         top: 0;
         left: 0;

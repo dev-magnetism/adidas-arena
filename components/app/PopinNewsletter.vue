@@ -338,7 +338,7 @@ export default {
         @include mobile {
           font-size: mobile-vw(14px);
           line-height: mobile-vw(20px);
-          @include font-adihausDIN-bold();
+          @include font-ITCFranklinGothicLT-DmCp();
         }
 
         .app-element-lottie-word.Trait_1 {
@@ -362,7 +362,7 @@ export default {
     color: var(--c-grey);
     z-index: 10;
     display: block;
-    @include font-adihausDIN-cn-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
     font-size: desktop-vw(14px);
     line-height: desktop-vw(18px);
     text-transform: uppercase;
@@ -424,7 +424,7 @@ export default {
 
     a {
       text-decoration: underline;
-      @include font-adihausDIN-medium();
+      @include font-ITCFranklinGothicLT-BkCp();
       position: relative;
     }
 
@@ -518,7 +518,7 @@ export default {
     }
 
     &__field-mail {
-      @include font-adihausDIN-cn-medium();
+      @include font-ITCFranklinGothicLT-BkCp();
       text-transform: uppercase;
       font-size: desktop-vw(82px);
       line-height: desktop-vw(106px);

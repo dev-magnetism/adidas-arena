@@ -329,7 +329,7 @@ export default {
     }
 
     .P2 {
-      @include font-adihausDIN-cn();
+      @include font-ITCFranklinGothicLT-BkCp();
       letter-spacing: -0.04em;
       text-transform: uppercase;
 
@@ -449,7 +449,7 @@ export default {
 
       a {
         text-decoration: underline;
-        @include font-adihausDIN-medium();
+        @include font-ITCFranklinGothicLT-BkCp();
         position: relative;
       }
 
@@ -499,7 +499,7 @@ export default {
     }
 
     &__field-mail {
-      @include font-adihausDIN-cn-medium();
+      @include font-ITCFranklinGothicLT-BkCp();
       text-transform: uppercase;
       font-size: desktop-vw(82px);
       line-height: desktop-vw(106px);
@@ -511,7 +511,7 @@ export default {
         width: calc(80% - (mobile-vw(20px)));
         font-size: mobile-vw(40px);
         line-height: mobile-vw(50px);
-        @include font-adihausDIN-cn-medium();
+        @include font-ITCFranklinGothicLT-BkCp();
       }
 
       &::placeholder {
@@ -611,7 +611,7 @@ export default {
       }
 
       .P2 {
-        @include font-adihausDIN-cn-bold();
+        @include font-ITCFranklinGothicLT-BkCp();
         text-transform: uppercase;
         display: inline-block;
         letter-spacing: 0.04em;
@@ -744,7 +744,7 @@ export default {
     .P2 {
       padding: desktop-vw(20px) desktop-vw(15px);
       text-transform: uppercase;
-      @include font-adihausDIN();
+      @include font-ITCFranklinGothicLT-BkCp();
 
       @include mobile {
         padding: mobile-vw(15px) mobile-vw(15px);
@@ -793,7 +793,7 @@ export default {
     font-size: desktop-vw(26px);
     line-height: desktop-vw(33px);
     margin-right: desktop-vw(100px);
-    @include font-adihausDIN-cn-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
     display: none;
 
     @include mobile {

@@ -18,7 +18,7 @@ export default {
   display: inline-flex;
   align-items: center;
   background: var(--c-black);
-  z-index: 1;
+  z-index: 10;
   justify-content: center;
 
   @include hover {
@@ -38,7 +38,7 @@ export default {
   }
 
   .P1 {
-    @include font-adihausDIN-cn-bold();
+    @include font-ITCFranklinGothicLT-DmCp();
 
     @include mobile {
       display: none;
