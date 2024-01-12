@@ -9,6 +9,7 @@
 
     <div class="app-programmation-card__visual">
       <AppProgrammationEventStatus
+        v-if="event.status_code !== 'C'"
         :presale="event.presale"
         :reported="event.reported"
         :status="event.status_code"

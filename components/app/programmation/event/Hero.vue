@@ -22,7 +22,7 @@
         {{
           event.presale && event.status_code === 'B'
             ? programmationsEventContent.glossary_presales
-            : event.status_code === 'B' || event.status_code === 'C'
+            : event.status_code === 'B' 
             ? programmationsEventContent.glossary_soon_available
             : ''
         }}
