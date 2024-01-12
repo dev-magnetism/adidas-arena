@@ -39,6 +39,7 @@ export default {
   publicRuntimeConfig: {
     baseURL: process.env.BASE_URL || 'https://www.adidasarena.com/',
     apiKeyDelight: process.env.API_KEY_DELIGHT || 'EBu7rZdGJLInGv',
+    siteEnv: process.env.SITE_ENV || 'production',
   },
 
   telemetry: false,
@@ -134,11 +135,14 @@ export default {
 
           // TO DO : corriger convertToKebabCase(url) par convertToKebabCase(removeSpecialChar(url))
 
-          routes.push(
-            `/programmation/${convertToKebabCase(
-              removeSpecialChar(url)
-            )}--${id}`
-          )
+          if (process.env.SITE_ENV !== 'production' && !event.is_draft) {
+            // Si l'environnement n'est pas en production et que l'élément n'est pas en mode brouillon
+            routes.push(
+              `/programmation/${convertToKebabCase(
+                removeSpecialChar(url)
+              )}--${id}`
+            )
+          }
         })
       }
 
