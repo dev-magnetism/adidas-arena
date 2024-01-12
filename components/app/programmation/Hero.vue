@@ -20,6 +20,7 @@
 
         <div class="app-programmation-hero__main-card__wrapper">
           <AppProgrammationEventStatus
+            v-if="content.event.status_code !== 'C'"
             :presale="content.event.presale"
             :reported="content.event.reported"
             :status="content.event.status_code"

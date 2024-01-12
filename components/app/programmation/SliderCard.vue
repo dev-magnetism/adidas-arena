@@ -1,6 +1,7 @@
 <template>
   <div :style="styles" class="app-programmation-slider-card">
     <AppProgrammationEventStatus
+      v-if="event.status_code !== 'C'"
       :presale="event.presale"
       :reported="event.reported"
       :status="event.status_code"
