@@ -400,6 +400,9 @@ export const actions = {
           ? contentEvent.instruction_id
           : []
 
+        contents[i].spotify_link = progDirectContent.spotify_link;
+        contents[i].cover_video = progDirectContent.cover_video;
+        
         contents[i].content = contents[i].translations.find(
           (translation) => translation.language === 'fr'
         )
