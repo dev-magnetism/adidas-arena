@@ -411,7 +411,7 @@ export default {
       this.submited = true
 
       const url = 'https://hooks.delight-data.com/v1/contacts'
-      const apiKey = 'qHpk02SuYn-Myg'
+      const apiKey = this.$config.apiKeyDelightContest2;
       const xhr = new XMLHttpRequest()
 
       xhr.open('POST', url)
