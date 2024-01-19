@@ -235,6 +235,10 @@ export default {
   sitemap: {
     hostname: process.env.BASE_URL || 'https://www.adidasarena.com/',
     path: '/sitemap.xml',
+    exclude: [
+      '/tonnomsurlarena1',
+      '/tonnomsurlarena2'
+    ],
     defaults: {
       changefreq: 'daily',
       priority: 1,
