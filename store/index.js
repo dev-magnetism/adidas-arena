@@ -67,6 +67,7 @@ export const state = () => ({
   cursorSliderLeftZone: false,
   cursorSliderDisabled: false,
   instructionsWebglVisible: true,
+  step: 1,
 })
 
 export const getters = {
@@ -262,6 +263,9 @@ export const mutations = {
   },
   setInteriorVisible: (state, value) => {
     state.interiorVisible = value
+  },
+  setStep: (state, value) => {
+    state.step = value
   },
 }
 

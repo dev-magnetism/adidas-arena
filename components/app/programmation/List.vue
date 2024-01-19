@@ -423,7 +423,7 @@ export default {
     position: relative;
 
     @include mobile {
-      grid-gap: mobile-vw(120px) mobile-vw(0px);
+      grid-gap: mobile-vw(0px) mobile-vw(0px);
     }
 
     &__month {
