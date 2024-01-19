@@ -811,6 +811,7 @@ export default {
         position: absolute;
         grid-row: 2;
         width: 30%;
+        max-width: 30%;
         grid-column: 6 / span 2;
         top: 35%;
         transform: rotate(-9deg);
