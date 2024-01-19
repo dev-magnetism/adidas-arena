@@ -567,6 +567,14 @@ export default {
       display: flex;
       flex-direction: row;
 
+      &.H3.bold {
+          
+        @include mobile {
+          font-size: mobile-vw(50px);
+          line-height: mobile-vw(50px);
+        }
+      }
+
       @include mobile {
         margin-top: mobile-vw(20px);
       }
