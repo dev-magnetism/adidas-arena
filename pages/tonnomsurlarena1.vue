@@ -195,6 +195,31 @@
           :content="`<p class='app-tonnomsurlarena__intro__paragraph'>Rendez-vous les 10 et 11 février pour voir ton prénom projeté sur l’adidas arena !</p>`"
           tag="p"
         />
+        <ERichText
+          ref="paragraph"
+          :content="`<p class='app-tonnomsurlarena__intro__paragraph regular'>De 14h00 à 18h00 plusieurs animations sont ouvertes <br/>
+          au public au sein de l'adidas arena et des ses 2 gymnases.<br/>
+          Inscris-toi ci-dessous pour participer aux activités.</p>`"
+          tag="p"
+        />
+        <ERichText
+          ref="paragraph"
+          :content="`<p class='app-tonnomsurlarena__intro__paragraph regular'>
+          - Visite de l’arena<br/>
+          - Workshop upclycling : crée ta propre sape (by 093 lab)<br/>
+          - Workshop beatmaking avec Kera Beatz : crée ta propre instru <br/>&nbsp;&nbsp;(by Interlude)<br/>
+          - Dance : démonstration, battle et workshop (by Turgot Dance)<br/>
+          - Basket-fauteuil : démonstration, initiation et match <br/>&nbsp;&nbsp;(by Paris Basketball fauteuil)<br/>
+          - Escrime : Initiation (by escrime Paris Nord)</p>`"
+          tag="p"
+        />
+
+          <AtomsCTA
+            class="app-tonnomsurlarena__confirm__cta"
+            href="https://www.adidasarena-opening.com"
+          >
+            Je m'inscris
+          </AtomsCTA>
       </div>
 
     </div>
@@ -869,10 +894,10 @@ export default {
 
       &.confirmation{
         @include mobile{
-          margin-bottom: mobile-vw(30px);
+          margin-bottom: mobile-vw(20px);
         }
         @include desktop{
-          margin-bottom: desktop-vw(50px);
+          margin-bottom: desktop-vw(30px);
         }
       }
 
@@ -942,6 +967,19 @@ export default {
         font-size: desktop-vw(12px);
         line-height: desktop-vw(18px);
       }
+
+      &.regular{
+        @include font-ITCFranklinGothicLT-BkCp();
+
+        @include mobile{
+          margin-top: mobile-vw(10px);
+        }
+
+        @include desktop{
+          margin-top: desktop-vw(16px);
+        }
+      }
+
     }
 
     &__cta{
@@ -958,6 +996,24 @@ export default {
       }
     }
 
+  }
+
+  &__confirm{
+
+
+    &__cta{
+      width: 50%;
+
+      @include mobile{
+        margin-top: mobile-vw(16px);
+        margin-bottom: mobile-vw(30px);
+
+      }
+
+      @include desktop{
+        margin-top: desktop-vw(30px);
+      }
+    }
   }
 
 }
