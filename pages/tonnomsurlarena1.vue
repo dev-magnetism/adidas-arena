@@ -192,25 +192,25 @@
         />
         <ERichText
           ref="paragraph"
-          :content="`<p class='app-tonnomsurlarena__intro__paragraph'>Rendez-vous les 10 et 11 février pour voir ton prénom projeté sur l’adidas arena !</p>`"
+          :content="`<p class='app-tonnomsurlarena__intro__paragraph confirmation'>Rendez-vous les 10 et 11 février pour voir ton prénom projeté <br class='br-hidden'/>sur l’adidas arena !</p>`"
           tag="p"
         />
         <ERichText
           ref="paragraph"
-          :content="`<p class='app-tonnomsurlarena__intro__paragraph regular'>De 14h00 à 18h00 plusieurs animations sont ouvertes <br/>
-          au public au sein de l'adidas arena et des ses 2 gymnases.<br/>
+          :content="`<p class='app-tonnomsurlarena__intro__paragraph regular'>De 14h00 à 18h00 plusieurs animations sont ouvertes au public au sein de l'adidas arena <br class='br-hidden'/>et des ses 2 gymnases.<br/><br/>
           Inscris-toi ci-dessous pour participer aux activités.</p>`"
           tag="p"
         />
         <ERichText
           ref="paragraph"
-          :content="`<p class='app-tonnomsurlarena__intro__paragraph regular'>
-          - Visite de l’arena<br/>
-          - Workshop upclycling : crée ta propre sape (by 093 lab)<br/>
-          - Workshop beatmaking avec Kera Beatz : crée ta propre instru <br/>&nbsp;&nbsp;(by Interlude)<br/>
-          - Dance : démonstration, battle et workshop (by Turgot Dance)<br/>
-          - Basket-fauteuil : démonstration, initiation et match <br/>&nbsp;&nbsp;(by Paris Basketball fauteuil)<br/>
-          - Escrime : Initiation (by escrime Paris Nord)</p>`"
+          :content="`<ul class='app-tonnomsurlarena__intro__paragraph regular list'>
+          <li>Visite de l’arena</li>
+          <li>Workshop upclycling : crée ta propre sape (by 093 lab)</li>
+          <li>Workshop beatmaking avec Kera Beatz : crée ta propre instru (by Interlude)</li>
+          <li>Dance : démonstration, battle et workshop (by Turgot Dance)</li>
+          <li>Basket-fauteuil : démonstration, initiation et match  (by Paris Basketball fauteuil)</li>
+          <li>Escrime : Initiation (by escrime Paris Nord)</li>
+          </ul>`"
           tag="p"
         />
 
@@ -897,7 +897,7 @@ export default {
           margin-bottom: mobile-vw(20px);
         }
         @include desktop{
-          margin-bottom: desktop-vw(30px);
+          margin-bottom: desktop-vw(50px);
         }
       }
 
@@ -944,6 +944,12 @@ export default {
       @include font-ITCFranklinGothicLT-DmCp();
       color: var(--c-black);
 
+      .br-hidden{
+        @include mobile{
+          display: none;
+        }
+      }
+
       @include mobile{
         padding-left: mobile-vw(2px);
         margin-top: mobile-vw(16px);
@@ -968,15 +974,70 @@ export default {
         line-height: desktop-vw(18px);
       }
 
-      &.regular{
-        @include font-ITCFranklinGothicLT-BkCp();
+      &.confirmation{
 
         @include mobile{
-          margin-top: mobile-vw(10px);
+          margin-bottom: mobile-vw(32px);
         }
 
         @include desktop{
-          margin-top: desktop-vw(16px);
+          margin-bottom: desktop-vw(50px);
+        }
+      }
+
+      &.regular{
+        width: 100%;
+
+        @include font-ITCFranklinGothicLT-BkCp();
+
+        @include mobile{
+          margin-top: 0;
+          font-size: mobile-vw(14px);
+          line-height: mobile-vw(16px);
+        }
+
+        @include desktop{
+          margin-top: 0;
+          font-size: desktop-vw(14px);
+          line-height: desktop-vw(16px);
+        }
+      }
+
+      &.list{
+        list-style: none;
+
+        li{
+          position: relative;
+
+          @include mobile{
+            padding: 0 0 0 mobile-vw(12px);
+          }
+
+          @include desktop{
+            padding: 0 0 0 desktop-vw(24px);
+          }
+
+          &:before{
+            content:'';
+            position: absolute;
+            top: 50%;
+            line-height: 0;
+            font-size: 0;
+            background-color: #000;
+            transform: translateY(-50%);
+
+            @include mobile{
+              left: mobile-vw(5px);
+              width: mobile-vw(2px);
+              height: mobile-vw(2px);
+            }
+
+            @include desktop{
+              left: desktop-vw(10px);
+              width: desktop-vw(2px);
+              height: desktop-vw(2px);
+            }
+          }
         }
       }
 
