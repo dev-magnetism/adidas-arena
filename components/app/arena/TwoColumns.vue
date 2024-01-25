@@ -24,7 +24,7 @@
                 weight="bold"
                 class="app-arena-two-columns__f-r__card__content__subtitle"
               >
-                <ELottieWord id="Cercle_3" />
+                <!-- ELottieWord id="Cercle_3" / -->
                 {{ contents.firstRow.cardSubtitle }}
               </TH2>
               <TH4
@@ -95,7 +95,7 @@
                 weight="bold"
                 class="app-arena-two-columns__s-r__card__content__title"
               >
-                <ELottieWord id="Cercle_4" />
+                <!-- ELottieWord id="Cercle_4" / -->
                 {{ contents.secondRow.cardTitle }}
               </TH2>
               <TH2
@@ -128,7 +128,11 @@ export default {
       default: () => {},
     },
   },
-  mounted() {},
+  mounted() {
+
+    console.log('contents', this.contents);
+
+  },
 }
 </script>
 
