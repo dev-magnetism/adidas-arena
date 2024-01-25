@@ -5,10 +5,10 @@
     <AppArenaCatchPhrase :contents="contentCatchphrase" />
     <AppArenaParisBasketClub :contents="contentParisBasketClub" />
     <ESlider :contents="contentSlider" />
-    <AppArenaPlan :contents="contentPlan" />
     <!-- EFullwidth :contents="contentFullwidth" / -->
     <!-- AppArenaPartners :contents="contentPartners" / -->
-    <AppArenaTwoColumns :contents="contentTwoColumns" />
+    <AppArenaPlan :contents="contentPlan" />
+    <AppArenaTwoColumns :contents="contentTwoColumns"/>
     <AppGallery :contents="contentGallery" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>

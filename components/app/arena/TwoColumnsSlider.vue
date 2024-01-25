@@ -16,7 +16,7 @@
             weight="bold"
             class="app-arena-two-columns-slider__f-card__content__subtitle"
           >
-            <ELottieWord id="Cercle_3" />
+            <!-- ELottieWord id="Cercle_3" / -->
             {{ content.firstRow.cardSubtitle }}
           </TH2>
           <TH3
@@ -39,7 +39,7 @@
             weight="bold"
             class="app-arena-two-columns-slider__s-card__content__title"
           >
-            <ELottieWord id="Cercle_4" />
+            <!-- ELottieWord id="Cercle_4" / -->
             {{ content.secondRow.cardTitle }}
           </TH2>
           <TH2
