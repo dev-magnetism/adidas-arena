@@ -207,9 +207,9 @@
           <li>Visite de l’arena</li>
           <li>Workshop upclycling : crée ta propre sape (by 093 lab)</li>
           <li>Workshop beatmaking avec Kera Beatz : crée ta propre instru (by Interlude)</li>
-          <li>Dance : démonstration, battle et workshop (by Turgot Dance)</li>
-          <li>Basket-fauteuil : démonstration, initiation et match  (by Paris Basketball fauteuil)</li>
-          <li>Escrime : Initiation (by escrime Paris Nord)</li>
+          <li>Dance : démonstration, battle et workshop (by HipHop Turgot, Barbès Street Dance & In Beatween)</li>
+          <li>Basket-fauteuil : démonstration, initiation et match (by Paris Basket Fauteuil)</li>
+          <li>Escrime : Initiation (by Escrime ParisNord)</li>
           </ul>`"
           tag="p"
         />
