@@ -439,6 +439,7 @@ export default {
       xhr.setRequestHeader("x-api-key", apiKey);
     
       const data = {
+        listname: "Adidas Contest",
         email: this.email,
         firstname: this.prenom,
         lastname: this.nom,
