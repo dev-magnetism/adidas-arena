@@ -39,6 +39,8 @@ export default {
   publicRuntimeConfig: {
     baseURL: process.env.BASE_URL || 'https://www.adidasarena.com/',
     apiKeyDelight: process.env.API_KEY_DELIGHT || 'EBu7rZdGJLInGv',
+    apiKeyDelightContest1: process.env.API_KEY_DELIGHT_CONTEST1 || 'NsURo5eO8i4IGA',
+    apiKeyDelightContest2: process.env.API_KEY_DELIGHT_CONTEST2 || 'qHpk02SuYn-Myg',
     siteEnv: process.env.SITE_ENV || 'production',
   },
 
@@ -233,6 +235,10 @@ export default {
   sitemap: {
     hostname: process.env.BASE_URL || 'https://www.adidasarena.com/',
     path: '/sitemap.xml',
+    exclude: [
+      '/tonnomsurlarena1',
+      '/tonnomsurlarena2'
+    ],
     defaults: {
       changefreq: 'daily',
       priority: 1,
