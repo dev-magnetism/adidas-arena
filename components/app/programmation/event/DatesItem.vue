@@ -7,7 +7,7 @@
   >
       
     <div class="app-programmation-event-dates-item__wrapper">
-      <AppProgrammationEventStatus
+      <AppProgrammationEventStatusShort
         :status="session.session_status"
         :color="statutColor"
       />
@@ -215,7 +215,7 @@ export default {
     }
   }
 
-  .app-programmation-event-status {
+  .app-programmation-event-status-short {
     position: absolute;
     top: 50%;
     left: desktop-vw(-29px);
@@ -228,7 +228,7 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     transform: translateY(-50%) rotate(-90deg);
-    font-size: desktop-vw(24px);
+    font-size: desktop-vw(17px);
     line-height: desktop-vw(24px);
     text-align: center;
 
@@ -270,7 +270,7 @@ export default {
       text-align: center;
     }
   }
-  .app-programmation-event-status + .app-programmation-event-dates-item__date{
+  .app-programmation-event-status-short + .app-programmation-event-dates-item__date{
      padding: 0 0 0 desktop-vw(49px);
 
      @include mobile{
