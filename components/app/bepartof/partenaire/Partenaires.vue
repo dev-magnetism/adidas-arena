@@ -29,7 +29,7 @@
       :cols="!$viewport.isMobile ? 6 : 4"
       :rows="!$viewport.isMobile ? 7 : 8"
       :logos="contents.list"
-      class="app-arena-partners__grid-logos"
+      class="app-be-part-of-partenaire-partenaires__grid-logos"
     />
     <EPartnersTotal :total="contents.list.length" :text="contents.totalText" />
   </div>
