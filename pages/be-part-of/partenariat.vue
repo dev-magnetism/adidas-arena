@@ -64,6 +64,11 @@ export default {
       return {
         title: this.content.data.partenaires_title,
         list: this.partnersContent.data,
+        subtitle: this.content.data.partenaires_subtitle,
+        paragraph: this.content.data.partenaires_paragraph,
+        totalText: this.content.data.partenaires_total_text,
+        ctaTitle: this.content.data.partenaires_cta_title,
+        ctaLink: this.content.data.partenaires_cta_link,
       }
     },
     contentContactQuestion() {

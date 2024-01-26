@@ -2,6 +2,7 @@
   <main class="page-be-part-of-besoins">
     <AppBepartofBesoinsIntroduction :contents="contentIntroduction" />
     <!-- AppBepartofBesoinsArena :contents="contentArena" / -->
+    <EVideosList :contents="contentVideos" />
     <AppContactQuestion ref="questform" :contents="contentContactQuestion" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
   </main>
@@ -25,8 +26,13 @@ export default {
       limit: -1,
     })
 
+    const videos = await $directus.items('Configurations_videos').readByQuery({
+      limit: -1,
+    })
+
     return {
       content,
+      videos,
     }
   },
   data() {
@@ -83,6 +89,12 @@ export default {
         email: this.content.data.contact_question_email,
         emailSubject: this.content.data.contact_question_email_sujet,
         formType: this.content.data.contact_question_form_type,
+      }
+    },
+    contentVideos() {
+      return {
+        title: this.content.data.videos_title,
+        items: this.videos.data,
       }
     },
   },

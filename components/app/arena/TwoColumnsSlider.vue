@@ -11,14 +11,17 @@
           >
             {{ content.firstRow.cardTitle }}
           </TH2>
-          <TH2
-            tag="p"
-            weight="bold"
+          <div
             class="app-arena-two-columns-slider__f-card__content__subtitle"
-          >
-            <!-- ELottieWord id="Cercle_3" / -->
-            {{ content.firstRow.cardSubtitle }}
-          </TH2>
+            >
+            <ELottieWord id="Cercle_3" />
+            <TH2
+              tag="p"
+              weight="bold"
+            >
+              {{ content.firstRow.cardSubtitle }}
+            </TH2>
+          </div>
           <TH3
             tag="p"
             weight="medium"
@@ -34,14 +37,17 @@
       <div class="app-arena-two-columns-slider__s-card">
         <AtomsCornerPoints :size-points="6" />
         <div class="app-arena-two-columns-slider__s-card__content">
-          <TH2
-            tag="p"
-            weight="bold"
+          <div
             class="app-arena-two-columns-slider__s-card__content__title"
-          >
-            <!-- ELottieWord id="Cercle_4" / -->
-            {{ content.secondRow.cardTitle }}
-          </TH2>
+            >
+            <ELottieWord id="Cercle_4" />
+            <TH2
+              tag="p"
+              weight="bold"
+            >
+              {{ content.secondRow.cardTitle }}
+            </TH2>
+          </div>
           <TH2
             tag="p"
             weight="bold"

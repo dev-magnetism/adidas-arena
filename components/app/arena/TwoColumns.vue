@@ -19,14 +19,17 @@
               >
                 {{ contents.firstRow.cardTitle }}
               </TH2>
-              <TH2
-                tag="p"
-                weight="bold"
+              <div
                 class="app-arena-two-columns__f-r__card__content__subtitle"
-              >
-                <!-- ELottieWord id="Cercle_3" / -->
-                {{ contents.firstRow.cardSubtitle }}
-              </TH2>
+                >
+                <ELottieWord id="Cercle_3" />
+                <TH2
+                  tag="p"
+                  weight="bold"
+                >
+                  {{ contents.firstRow.cardSubtitle }}
+                </TH2>
+              </div>
               <TH4
                 tag="p"
                 weight="medium"
@@ -90,14 +93,17 @@
           <EKinesis :speed="7.5">
             <AtomsCornerPoints :size-points="8" />
             <div class="app-arena-two-columns__s-r__card__content">
-              <TH2
-                tag="p"
-                weight="bold"
+              <div
                 class="app-arena-two-columns__s-r__card__content__title"
-              >
-                <!-- ELottieWord id="Cercle_4" / -->
-                {{ contents.secondRow.cardTitle }}
-              </TH2>
+                >
+                <ELottieWord id="Cercle_4" />
+                <TH2
+                  tag="p"
+                  weight="bold"
+                >
+                  {{ contents.secondRow.cardTitle }}
+                </TH2>
+              </div>
               <TH2
                 tag="p"
                 weight="bold"
@@ -128,11 +134,7 @@ export default {
       default: () => {},
     },
   },
-  mounted() {
-
-    console.log('contents', this.contents);
-
-  },
+  mounted() {},
 }
 </script>
 

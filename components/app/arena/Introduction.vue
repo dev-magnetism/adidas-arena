@@ -287,6 +287,10 @@ export default {
 .app-arena-introduction {
   position: relative;
 
+  @include mobile{
+    margin-top: mobile-vw(40px);
+  }
+
   &__row-framed-content {
     grid-column: 2 / span 6;
     grid-row: 1;
