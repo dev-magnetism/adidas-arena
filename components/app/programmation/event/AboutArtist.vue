@@ -243,9 +243,6 @@ export default {
     },
     getYouTubeVideoId(url) {
       const match = url.match(/[?&]v=([^&#]*)/)
-      //  const match2 = url.match(/['.be/']([^&#]*)/)
-      //  console.log('match2', match2);
-
       return match ? match[1] : false
     },
   },
