@@ -7,6 +7,7 @@
     <ESlider :contents="contentSlider" />
     <!-- EFullwidth :contents="contentFullwidth" / -->
     <!-- AppArenaPartners :contents="contentPartners" / -->
+    <EVideosList :contents="contentVideos" />
     <AppArenaPlan :contents="contentPlan" />
     <AppArenaTwoColumns :contents="contentTwoColumns"/>
     <AppGallery :contents="contentGallery" />
@@ -34,23 +35,23 @@ export default {
       limit: -1,
     })
 
-    const contentProject = await $directus.items('Projet_page').readByQuery({
-      limit: -1,
-    })
-
     const galerie = await $directus.items('Galerie_arena').readByQuery({
       limit: -1,
     })
 
-    const slider = await $directus.items('Projet_slider').readByQuery({
+    const slider = await $directus.items('Arena_slider').readByQuery({
+      limit: -1,
+    })
+
+    const videos = await $directus.items('Arena_videos').readByQuery({
       limit: -1,
     })
 
     return {
       content,
-      contentProject,
       galerie,
       slider,
+      videos,
     }
   },
 
@@ -76,7 +77,7 @@ export default {
     }),
     contentCatchphrase() {
       return {
-        catchphrase: this.contentProject.data.projet_catchphrase,
+        catchphrase: this.content.data.arena_catchphrase,
       }
     },
     contentFullwidth() {
@@ -92,23 +93,23 @@ export default {
     },
     contentIntroduction() {
       return {
-        title: this.contentProject.data.projet_introduction_title,
-        subtitle: this.contentProject.data.projet_introduction_subtitle,
-        whyTitle: this.contentProject.data.projet_introduction_why_title,
-        whyParagraph: this.contentProject.data.projet_introduction_why_paragraph,
+        title: this.content.data.arena_introduction_title,
+        subtitle: this.content.data.arena_introduction_subtitle,
+        whyTitle: this.content.data.arena_introduction_why_title,
+        whyParagraph: this.content.data.arena_introduction_why_paragraph,
         pictureFramedImage:
-          this.contentProject.data.projet_introduction_picture_framed_image,
+          this.content.data.arena_introduction_picture_framed_image,
         pictureFramedAlt:
-          this.contentProject.data.projet_introduction_picture_framed_alt,
+          this.content.data.arena_introduction_picture_framed_alt,
         pictureLabelImage:
-          this.contentProject.data.projet_introduction_picture_label_image,
+          this.content.data.arena_introduction_picture_label_image,
         pictureLabelAlt:
-          this.contentProject.data.projet_introduction_picture_label_alt,
+          this.content.data.arena_introduction_picture_label_alt,
         pictureLabelText:
-          this.contentProject.data.projet_introduction_picture_label_text,
+          this.content.data.arena_introduction_picture_label_text,
         pictureLogoImage:
-          this.contentProject.data.projet_introduction_picture_logo_image,
-        pictureLogoAlt: this.contentProject.data.projet_introduction_picture_logo_alt,
+          this.content.data.arena_introduction_picture_logo_image,
+        pictureLogoAlt: this.content.data.arena_introduction_picture_logo_alt,
       }
     },
     contentParisBasketClub() {
@@ -145,45 +146,51 @@ export default {
     },
     contentPlan() {
       return {
-        title: this.contentProject.data.projet_plan_title,
-        subtitle: this.contentProject.data.projet_plan_subtitle,
-        paragraph: this.contentProject.data.projet_plan_paragraph,
-        chapelle: this.contentProject.data.projet_plan_chapelle_place,
-        basilique: this.contentProject.data.projet_plan_basilique_place,
+        title: this.content.data.arena_plan_title,
+        subtitle: this.content.data.arena_plan_subtitle,
+        paragraph: this.content.data.arena_plan_paragraph,
+        chapelle: this.content.data.arena_plan_chapelle_place,
+        basilique: this.content.data.arena_plan_basilique_place,
       }
     },
     contentSlider() {
       return {
-        title: this.contentProject.data.slider_title,
-        totalText: this.contentProject.data.slider_total_text,
+        title: this.content.data.slider_title,
+        totalText: this.content.data.slider_total_text,
         items: this.slider.data,
       }
     },
     contentTwoColumns() {
       return {
         firstRow: {
-          title: this.contentProject.data.projet_two_columns_first_row_title,
-          paragraph: this.contentProject.data.projet_two_columns_first_row_paragraph,
-          cardTitle: this.contentProject.data.projet_two_columns_first_row_card_title,
+          title: this.content.data.arena_two_columns_first_row_title,
+          paragraph: this.content.data.arena_two_columns_first_row_paragraph,
+          cardTitle: this.content.data.arena_two_columns_first_row_card_title,
           cardSubtitle:
-            this.contentProject.data.projet_two_columns_first_row_card_subtitle,
+            this.content.data.arena_two_columns_first_row_card_subtitle,
           cardParagraph:
-            this.contentProject.data.projet_two_columns_first_row_card_paragraph,
+            this.content.data.arena_two_columns_first_row_card_paragraph,
           cardCtaText:
-            this.contentProject.data.projet_two_columns_first_row_card_cta_text,
+            this.content.data.arena_two_columns_first_row_card_cta_text,
         },
         secondRow: {
-          title: this.contentProject.data.projet_two_columns_second_row_title,
-          paragraph: this.contentProject.data.projet_two_columns_second_row_paragraph,
-          picture: this.contentProject.data.projet_two_columns_second_row_picture,
+          title: this.content.data.arena_two_columns_second_row_title,
+          paragraph: this.content.data.arena_two_columns_second_row_paragraph,
+          picture: this.content.data.arena_two_columns_second_row_picture,
           pictureAlt:
-            this.contentProject.data.projet_two_columns_second_row_picture_alt,
-          cardTitle: this.contentProject.data.projet_two_columns_second_row_card_title,
+            this.content.data.arena_two_columns_second_row_picture_alt,
+          cardTitle: this.content.data.arena_two_columns_second_row_card_title,
           cardSubtitle:
-            this.contentProject.data.projet_two_columns_second_row_card_subtitle,
+            this.content.data.arena_two_columns_second_row_card_subtitle,
           cardParagraph:
-            this.contentProject.data.projet_two_columns_second_row_card_paragraph,
+            this.content.data.arena_two_columns_second_row_card_paragraph,
         },
+      }
+    },
+    contentVideos() {
+      return {
+        title: this.content.data.videos_title,
+        items: this.videos.data,
       }
     },
   },
@@ -200,6 +207,11 @@ export default {
   }
   .app-footer {
     margin-top: desktop-vw(165px);
+  }
+  .app-element-slider{
+    @include mobile{
+      margin: mobile-vw(60px) 0;
+    }
   }
 }
 </style>
