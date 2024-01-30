@@ -204,12 +204,13 @@
         <ERichText
           ref="paragraph"
           :content="`<ul class='app-tonnomsurlarena__intro__paragraph regular list'>
-          <li>Visite de l’arena</li>
-          <li>Workshop upclycling : crée ta propre sape (by 093 lab)</li>
-          <li>Workshop beatmaking avec Kera Beatz : crée ta propre instru (by Interlude)</li>
-          <li>Dance : démonstration, battle et workshop (by Turgot Dance)</li>
-          <li>Basket-fauteuil : démonstration, initiation et match  (by Paris Basketball fauteuil)</li>
-          <li>Escrime : Initiation (by escrime Paris Nord)</li>
+          <li> Visite de l’arena : ça ne sera ton adidas arena que si tu la connais comme ta poche. Viens la visiter et découvre ses coulisses et son histoire.</li>
+          <li>L'upcycling featuring 093 lab : venez créer votre maillot upcyclé personnalisé avec les génies créatifs de l’association du designer Bastien J.Laurent. Flow garanti à la sortie.</li>
+          <li> Le beatmaking feat Kera Beatz : il a travaillé avec Freeze Corleone et Gucci Mane, mais ce 11 février, il compose avec et répond à toutes vos questions.</li>
+          <li>La cabine à rêves : on te donne la parole pour que tu lui parles de tes passions, tes objectifs et tes reves avec un but simple : mieux te comprendre pour mieux d'accompagner.</li>
+          <li>  Danse avec HipHop Turgot, Barbès Street Dance & InBeatween : trois associations de danse hip-hop, un seul et même but : apprendre en bougeant. Entre show, héritage culture et initiations.</li>
+          <li>Basket-fauteuil avec Paris Basketball Fauteuil : entre intensité et précision, viens découvrir ce sport spectaculaire avec l'équipe made in 18ème fondée par le crack Sofyane Mehiaoui.</li>
+          <li> Escrime by escrime ParisNord : encadrés par 3 boss de la discipline (deux maîtres d'armes et un jeune champion de France, venez découvrir le sport qui fait briller la France aux Jeux Olympiques.</li>
           </ul>`"
           tag="p"
         />
@@ -438,6 +439,7 @@ export default {
       xhr.setRequestHeader("x-api-key", apiKey);
     
       const data = {
+        listname: "Adidas Contest - 100% Winner",
         email: this.email,
         firstname: this.prenom,
         lastname: this.nom,
