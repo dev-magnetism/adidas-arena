@@ -987,10 +987,6 @@ export default {
           margin-bottom: desktop-vw(32px);
         }
       }
-      
-      &.strong{
-         font-family:'ITCFranklinGothicLT-DmCp';
-      }
 
       &.regular{
         width: 100%;
@@ -1022,6 +1018,10 @@ export default {
 
           @include desktop{
             padding: 0 0 0 desktop-vw(24px);
+          }
+
+          strong{
+           font-family:'ITCFranklinGothicLT-DmCp';
           }
 
           &:before{
