@@ -204,13 +204,13 @@
         <ERichText
           ref="paragraph"
           :content="`<ul class='app-tonnomsurlarena__intro__paragraph regular list'>
-          <li> Visite de l’arena : ça ne sera ton adidas arena que si tu la connais comme ta poche. Viens la visiter et découvre ses coulisses et son histoire.</li>
-          <li>L'upcycling featuring 093 lab : venez créer votre maillot upcyclé personnalisé avec les génies créatifs de l’association du designer Bastien J.Laurent. Flow garanti à la sortie.</li>
-          <li> Le beatmaking feat Kera Beatz : il a travaillé avec Freeze Corleone et Gucci Mane, mais ce 11 février, il compose avec et répond à toutes vos questions.</li>
-          <li>La cabine à rêves : on te donne la parole pour que tu lui parles de tes passions, tes objectifs et tes reves avec un but simple : mieux te comprendre pour mieux d'accompagner.</li>
-          <li>  Danse avec HipHop Turgot, Barbès Street Dance & InBeatween : trois associations de danse hip-hop, un seul et même but : apprendre en bougeant. Entre show, héritage culture et initiations.</li>
-          <li>Basket-fauteuil avec Paris Basketball Fauteuil : entre intensité et précision, viens découvrir ce sport spectaculaire avec l'équipe made in 18ème fondée par le crack Sofyane Mehiaoui.</li>
-          <li> Escrime by escrime ParisNord : encadrés par 3 boss de la discipline (deux maîtres d'armes et un jeune champion de France, venez découvrir le sport qui fait briller la France aux Jeux Olympiques.</li>
+          <li><strong>Visite de l’arena :</strong> ça ne sera ton adidas arena que si tu la connais comme ta poche. Viens la visiter et découvre ses coulisses et son histoire.</li>
+          <li><strong>L'upcycling featuring 093 lab :</strong> venez créer votre maillot upcyclé personnalisé avec les génies créatifs de l’association du designer Bastien J.Laurent. Flow garanti à la sortie.</li>
+          <li><strong>Le beatmaking feat Kera Beatz :</strong> il a travaillé avec Freeze Corleone et Gucci Mane, mais ce 11 février, il compose avec et répond à toutes vos questions.</li>
+          <li><strong>La cabine à rêves :</strong> on te donne la parole pour que tu lui parles de tes passions, tes objectifs et tes reves avec un but simple : mieux te comprendre pour mieux d'accompagner.</li>
+          <li><strong>Danse avec HipHop Turgot, Barbès Street Dance & InBeatween :</strong> trois associations de danse hip-hop, un seul et même but : apprendre en bougeant. Entre show, héritage culture et initiations.</li>
+          <li><strong>Basket-fauteuil avec Paris Basketball Fauteuil :</strong> entre intensité et précision, viens découvrir ce sport spectaculaire avec l'équipe made in 18ème fondée par le crack Sofyane Mehiaoui.</li>
+          <li><strong>Escrime by escrime ParisNord :</strong> encadrés par 3 boss de la discipline (deux maîtres d'armes et un jeune champion de France, venez découvrir le sport qui fait briller la France aux Jeux Olympiques.</li>
           </ul>`"
           tag="p"
         />
@@ -962,7 +962,7 @@ export default {
 
       @include desktop{
         padding-left: desktop-vw(4px);
-        margin-top: desktop-vw(30px);
+        margin-top: desktop-vw(20px);
         font-size: desktop-vw(17px);
         line-height: desktop-vw(20px);
       }
@@ -984,7 +984,7 @@ export default {
         }
 
         @include desktop{
-          margin-bottom: desktop-vw(50px);
+          margin-bottom: desktop-vw(32px);
         }
       }
 
@@ -1018,6 +1018,10 @@ export default {
 
           @include desktop{
             padding: 0 0 0 desktop-vw(24px);
+          }
+
+          strong{
+           font-family:'ITCFranklinGothicLT-DmCp';
           }
 
           &:before{
