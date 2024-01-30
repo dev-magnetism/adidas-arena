@@ -962,7 +962,7 @@ export default {
 
       @include desktop{
         padding-left: desktop-vw(4px);
-        margin-top: desktop-vw(30px);
+        margin-top: desktop-vw(20px);
         font-size: desktop-vw(17px);
         line-height: desktop-vw(20px);
       }
@@ -984,7 +984,7 @@ export default {
         }
 
         @include desktop{
-          margin-bottom: desktop-vw(50px);
+          margin-bottom: desktop-vw(32px);
         }
       }
 
