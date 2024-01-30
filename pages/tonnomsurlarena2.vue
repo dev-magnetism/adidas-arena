@@ -987,6 +987,10 @@ export default {
           margin-bottom: desktop-vw(32px);
         }
       }
+      
+      &.strong{
+         font-family:'ITCFranklinGothicLT-DmCp';
+      }
 
       &.regular{
         width: 100%;
