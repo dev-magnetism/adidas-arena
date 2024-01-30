@@ -1019,6 +1019,10 @@ export default {
             padding: 0 0 0 desktop-vw(24px);
           }
 
+          strong{
+           font-family:'ITCFranklinGothicLT-DmCp';
+          }
+
           &:before{
             content:'';
             position: absolute;
