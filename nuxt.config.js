@@ -290,17 +290,12 @@ export default {
 
   build: {
     extractCSS: true,
-    transpile: ['three', 'gsap'],
+    transpile: ['three', 'gsap', '@studio-freight/lenis'],
     extend(config, ctx) {
       config.resolve.alias.vue = 'vue/dist/vue.common'
       config.module.rules.push({
         test: /\.(glsl|vs|fs)$/,
         use: [{ loader: 'raw-loader' }, { loader: 'glslify-loader' }],
-      })
-      config.module.rules.push({
-        test: /\.mjs$/,
-        include: /node_modules/,
-        type: 'javascript/auto',
       })
     },
   },

@@ -7,6 +7,7 @@
     />
     <AppBepartofGuestsPresentation :contents="contentPresentation" />
     <ESlider :contents="contentSlider" />
+    <EVideosList :contents="contentVideos" />
     <AppContactQuestion ref="questform" :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
     <AppFooter :contents="appContent" :logos="partnersContent.data" />
@@ -35,9 +36,14 @@ export default {
       limit: -1,
     })
 
+    const videos = await $directus.items('Hospitalite_videos').readByQuery({
+      limit: -1,
+    })
+
     return {
       content,
       slider,
+      videos,
     }
   },
   data() {
@@ -106,6 +112,12 @@ export default {
         text: this.content.data.contact_newsletter_text,
         ctaText: this.content.data.contact_newsletter_cta_text,
         ctaHref: this.content.data.contact_newsletter_cta_href,
+      }
+    },
+    contentVideos() {
+      return {
+        title: this.content.data.videos_title,
+        items: this.videos.data,
       }
     },
   },

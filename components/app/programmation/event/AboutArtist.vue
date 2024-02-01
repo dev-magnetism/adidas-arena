@@ -139,8 +139,6 @@ export default {
       const videoItem = itemsMedia.find((item) => item.youtube_url);
       const itemCover = this.event.cover_video
 
-      console.log('videoItem', videoItem)
-
       // console.log('itemCover', itemCover)
 
       const image = (itemCover && itemCover != null && itemCover.image)? itemCover.image : ''
@@ -149,7 +147,6 @@ export default {
 
       if (videoItem && videoItem !== 'undefined') {
         videoItem.id = this.getYouTubeVideoId(videoItem.youtube_url)
-        console.log('videoItem.id', this.getYouTubeVideoId(videoItem.youtube_url));
       }
       
       return videoItem && videoItem !== 'undefined' ? { video: videoItem, image } : false
@@ -243,9 +240,6 @@ export default {
     },
     getYouTubeVideoId(url) {
       const match = url.match(/[?&]v=([^&#]*)/)
-      //  const match2 = url.match(/['.be/']([^&#]*)/)
-      //  console.log('match2', match2);
-
       return match ? match[1] : false
     },
   },
