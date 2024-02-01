@@ -31,7 +31,7 @@
             >
               <span class="app-programmation-event-dates__filter__toggle__label">{{session}}</span>
               <div 
-                :class="{active: filteredDate === index && filteredDate !== null}"
+                :class="{active: filteredDate === session && filteredDate !== null}"
                 class="app-programmation-event-dates__filter__toggle__icon-container"
                 >
                 <svg class="app-programmation-event-dates__filter__toggle__icon" width="21" height="18" viewBox="0 0 21 18" fill="none" xmlns="http://www.w3.org/2000/svg">
