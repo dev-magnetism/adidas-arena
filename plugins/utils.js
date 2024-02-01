@@ -15,7 +15,10 @@ export default ({ app }, inject) => {
 
   inject('formatDate', (dates, displayTime = false) => {
     // let dates;
-    // console.log('formatDate / _dates', _dates);
+    //  console.log('formatDate / dates', dates);
+    //  console.log('formatDate / displayTime', displayTime);
+
+    if(typeof dates === "undefined") return;
 
     if (!Array.isArray(dates)) {
       dates = [dates]
@@ -38,7 +41,9 @@ export default ({ app }, inject) => {
       This insures that date's format can be read by all browsers.
     */
     const _formatDates = dates.map((obj)=>{
+      //  console.log('formatDate obj', obj);
       const _date = (typeof obj === 'object')? obj.date : obj;
+      //  console.log('formatDate _date', _date);
       return _date.replaceAll('-', '/');
     })
 
