@@ -181,7 +181,7 @@ export default {
           this.els.main.nodesTitle[this.els.main.nodesTitle.length - 1],
       }
 
-      this.els.targetFlip = this.els.main.nodesComponents[2]
+      this.els.targetFlip = this.els.main.nodesComponents[1]
 
       if (this.$viewport.isMobile) {
         this.els.main = {
