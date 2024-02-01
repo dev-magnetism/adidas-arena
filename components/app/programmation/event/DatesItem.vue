@@ -3,8 +3,7 @@
     :class="{ disabled }"
     class="app-programmation-event-dates-item"
     :style="{ 'background-color': `var(--c-${theme})` }"
-    v-if="filteredDate === index && filteredDate !== null || filteredDate === null"
-  >
+    >
       
     <div class="app-programmation-event-dates-item__wrapper">
       <AppProgrammationEventStatusShort
@@ -88,14 +87,18 @@ export default {
       default: false,
     },
     filteredDate: {
-      type: Number,
-      default: 0,
+      type: String,
+      default: 'Date error',
     },
     totalItems: {
       type: Number,
       default: 0,
     },
     date: {
+      type: String,
+      default: 'Date error',
+    },
+    day: {
       type: String,
       default: 'Date error',
     },
