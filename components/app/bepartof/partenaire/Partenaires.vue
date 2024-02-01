@@ -123,7 +123,7 @@ export default {
   }
 
   &__content {
-    grid-column: 2 / span 7;
+    grid-column: 2 / span 6;
 
     @include mobile {
       grid-row: 1;
@@ -154,6 +154,9 @@ export default {
 
     .H1{
       @include font-ITCFranklinGothicLT-BkCp();
+      font-size: desktop-vw(100px);
+      line-height: desktop-vw(100px);
+
       strong{
          @include font-ITCFranklinGothicLT-DmCp();
       }
