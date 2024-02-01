@@ -136,7 +136,7 @@
         color="grey"
         class="app-footer__partners-title"
       >
-        NOS PARTENAIRES
+        NOS PARTENAIRES ET FOURNISSEURS
       </TH2>
       <EGridLogosFooter :contents="logos" />
       <div class="app-footer__paris-e-c">
