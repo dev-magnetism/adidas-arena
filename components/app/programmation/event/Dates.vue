@@ -24,12 +24,12 @@
         </div>
         <div class="app-programmation-event-dates__filter__toggle">
           <button
-            v-for="(session, index) in sessions"
+            v-for="(session, index) in sessionsdates"
             :key="index"
             class="app-programmation-event-dates__filter__toggle__button"
-            @click="onFilterDate(index)"
+            @click="onFilterDate(session)"
             >
-              <span class="app-programmation-event-dates__filter__toggle__label">{{$formatDate(session.date, true)}}</span>
+              <span class="app-programmation-event-dates__filter__toggle__label">{{session}}</span>
               <div 
                 :class="{active: filteredDate === index && filteredDate !== null}"
                 class="app-programmation-event-dates__filter__toggle__icon-container"
@@ -54,6 +54,7 @@
         :session="session"
         :event-id="event.id"
         :date="$formatDate(session.date, true)"
+        :day="$formatDate(session.date, false)"
         :filtered-date="filteredDate"
         :artist="event.artist_reference"
         :total-items="event.sessions.length"
@@ -85,19 +86,57 @@ export default {
   },
   computed: {
     sessions() {
-      const sessions = this.event.sessions
+      const sessions = JSON.parse(JSON.stringify(this.event.sessions))
 
       sessions.forEach((session) => {
+
         session.content = session.translations.find(
           (translation) => translation.language === 'fr'
         )
+
+        session.day = this.formatDay(session.date);
       })
 
-      return sessions
+      const _filteredSessions = (this.filteredDate !== null)?sessions.filter( _s => _s.day === this.filteredDate):sessions;
+      return _filteredSessions
+    },
+
+    sessionsdates() {
+      const _sessions = JSON.parse(JSON.stringify(this.event.sessions))
+
+      const _sessionsdates = []
+
+      _sessions.forEach((session) => {
+        const sessiondate = this.formatDay(session.date);
+        if(_sessionsdates.findIndex(_sd => _sd === sessiondate) < 0){
+          _sessionsdates.push(sessiondate)
+        }
+      })
+
+      return _sessionsdates
+      
     },
   },
 
   methods: {
+    formatDay(_dateObj){
+
+      const dateObj = _dateObj.toString();
+
+      const _formatDateObj = (dateObj)?dateObj?.replaceAll('-', '/'):'';
+
+      const _date = new Date(_formatDateObj);
+      const day = _date.getDate()
+      const month = _date
+        .toLocaleString('fr-FR', { month: 'long' })
+        .toUpperCase()
+      const year = _date.getFullYear()
+
+      const _stringDate = `${day} ${month} ${year}`;
+
+      return _stringDate;
+
+    },
     onSelectDate(index) {
       if (index === this.indexDate) {
         this.indexDate = null
