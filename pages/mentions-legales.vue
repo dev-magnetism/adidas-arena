@@ -29,6 +29,13 @@ export default {
 
     return pageTransition.basic
   },
+  props: {
+    webview: {
+      type: String,
+      required: true,
+      default: 'ko',
+    },
+  },
   async asyncData({ $directus }) {
     const content = await $directus.items('Mentions_Legales').readByQuery({
       limit: -1,

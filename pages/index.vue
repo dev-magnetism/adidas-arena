@@ -35,6 +35,13 @@ export default {
       ? pageTransition.fromIndexToArena
       : pageTransition.basic
   },
+  props: {
+    webview: {
+      type: String,
+      required: true,
+      default: 'ko',
+    },
+  },
   async asyncData({ $directus }) {
     const content = await $directus.items('Homepage').readByQuery({
       limit: -1,
@@ -56,13 +63,6 @@ export default {
         title: this.appContent.data.seo_title,
         description: this.content.data.page_description_seo,
       },
-      meta: [
-        {
-          hid: 'apple-itunes-app',
-          name: 'apple-itunes-app',
-          content: `app-id=${this.$config.apiKeyAppstore}, app-argument=${this.$config.baseURL}`
-        },
-      ],
     })
   },
   computed: {

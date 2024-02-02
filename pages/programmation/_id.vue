@@ -91,6 +91,13 @@ export default {
 
     return pageTransition.basic
   },
+  props: {
+    webview: {
+      type: String,
+      required: true,
+      default: 'ko',
+    },
+  },
   asyncData({ params, store, $axios }) {
     const [artist, id] = params.id.split('--')
 

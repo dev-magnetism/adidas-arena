@@ -6,17 +6,17 @@
       prod: devToolsHidden,
     }"
   >
-    <SmartAppBanner/>
+    <!-- SmartAppBannerb / -->
     <div ref="layerBlue" class="app-transition-layer blue" />
     <div ref="layerRed" class="app-transition-layer red" />
     <AppCursor />
     <AppPreloader />
     <AppCookie />
     <AppPopinNewsletter />
-    <AppHeader />
-    <AppMenu />
+    <AppHeader :webview="this.webview" />
+    <AppMenu v-if="this.webview !== 'ok'" />
     <AppScrollbar />
-    <nuxt class="app-main" />
+    <nuxt class="app-main" :webview="this.webview" />
     <AppScene />
     <WebglScene />
     <!-- <WebglInfo /> -->
@@ -30,8 +30,10 @@ import useGUI from '~/hooks/gui'
 
 export default {
   layout: 'DefaultLayout',
-  data() {
-    return {}
+  data(){
+    return{
+      webview: ''
+    }
   },
   computed: {
     ...mapState({
@@ -50,6 +52,13 @@ export default {
     if (this.$viewport.isMobile) {
       gui.hidden = true
     }
+
+    console.log('this.$route.query', this.$route.query);
+
+    this.webview =  this.$route.query.webview;
+
+    console.log('this.webview', this.webview);
+
   },
 
   beforeDestroy() {},
