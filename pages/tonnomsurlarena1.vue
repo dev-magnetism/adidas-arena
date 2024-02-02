@@ -217,7 +217,7 @@
 
           <AtomsCTA
             class="app-tonnomsurlarena__confirm__cta"
-            href="https://www.adidasarena-opening.com"
+            href="https://adidasarena-opening.com"
           >
             Je m'inscris
           </AtomsCTA>
