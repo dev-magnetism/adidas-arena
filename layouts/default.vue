@@ -6,7 +6,11 @@
       prod: devToolsHidden,
     }"
   >
+<<<<<<< HEAD
     <!-- SmartAppBanner / -->
+=======
+    <SmartAppBanner/>
+>>>>>>> a666d66 (WIP)
     <div ref="layerBlue" class="app-transition-layer blue" />
     <div ref="layerRed" class="app-transition-layer red" />
     <AppCursor />
