@@ -17,9 +17,13 @@
           @mouseleave.native="onLinkLeave"
           @click.native="onClickLink(content.url)"
         >
-          <nuxt-link :to="content.url">
+          <nuxt-link v-if="!content.external_link" :to="content.url">
             {{ content.name }}
           </nuxt-link>
+
+          <a v-else :href="content.url" target="_blank">
+            {{ content.name }}
+          </a>
         </TH2>
         <TH2
           v-else-if="content.submenu_title"
