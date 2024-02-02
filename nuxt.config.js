@@ -215,6 +215,7 @@ export default {
       {
         url: 'https://adidasarena.directus.app/',
       },
+      'nuxt-smart-app-banner',
     ],
     'cookie-universal-nuxt',
     '@nuxtjs/eslint-module',
@@ -226,6 +227,16 @@ export default {
     '@nuxtjs/axios',
     'vue-social-sharing/nuxt',
   ],
+
+  'nuxt-smart-app-banner': {
+    bannerOptions: {
+      title: "Title",
+      androidAppId: "",
+      icon: "https://icon-library.com/images/play-store-icon/play-store-icon-9.jpg",
+      iosAppId: "",
+      appStoreLanguage: "fr",
+    }
+  },
 
   robots: {
     Sitemap: process.env.BASE_URL

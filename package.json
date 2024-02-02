@@ -49,6 +49,7 @@
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-vue": "^7.12.1",
     "nuxt-compress": "^5.0.0",
+    "nuxt-smart-app-banner": "^0.2.0",
     "prettier": "^2.3.2",
     "sass": "^1.69.5",
     "sass-loader": "^10.4.1"
