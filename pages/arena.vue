@@ -73,6 +73,12 @@ export default {
         title: this.appContent.data.seo_title,
         description: this.content.data.page_description_seo,
       },
+      meta: [
+        {
+          name: 'apple-itunes-app',
+          content: `app-id=${this.$config.apiKeyAppstore}, app-argument=${this.$config.baseURL}`
+        },
+      ],
     })
   },
 
@@ -201,6 +207,10 @@ export default {
     },
   },
   mounted() {
+<<<<<<< HEAD
+=======
+    console.log('this.$route.query.page', this.$route.query.page);
+>>>>>>> 165c1f8 (WIP)
   },
   beforeDestroy() {},
   methods: {},
