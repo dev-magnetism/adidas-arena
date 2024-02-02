@@ -73,12 +73,6 @@ export default {
         title: this.appContent.data.seo_title,
         description: this.content.data.page_description_seo,
       },
-      meta: [
-        {
-          name: 'apple-itunes-app',
-          content: `app-id=${this.$config.apiKeyAppstore}, app-argument=${this.$config.baseURL}`
-        },
-      ],
     })
   },
 
