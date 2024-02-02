@@ -22,6 +22,13 @@ export default {
 
     return pageTransition.basic
   },
+  props: {
+    webview: {
+      type: String,
+      required: true,
+      default: 'ko',
+    },
+  },
   async asyncData({ $directus }) {
     const content = await $directus.items('Partenaire_page').readByQuery({
       limit: -1,

@@ -38,7 +38,6 @@ export default {
 
   publicRuntimeConfig: {
     baseURL: process.env.BASE_URL || 'https://www.adidasarena.com/',
-    apiKeyAppstore: process.env.API_KEY_APPSTORE || '',
     apiKeyDelight: process.env.API_KEY_DELIGHT || 'EBu7rZdGJLInGv',
     apiKeyDelightContest1: process.env.API_KEY_DELIGHT_CONTEST1 || 'NsURo5eO8i4IGA',
     apiKeyDelightContest2: process.env.API_KEY_DELIGHT_CONTEST2 || 'qHpk02SuYn-Myg',
@@ -231,9 +230,9 @@ export default {
   'nuxt-smart-app-banner': {
     bannerOptions: {
       title: "Title",
-      androidAppId: "",
+      androidAppId: process.env.ANDROID_APP_ID || '',
       icon: "https://icon-library.com/images/play-store-icon/play-store-icon-9.jpg",
-      iosAppId: "",
+      iosAppId: process.env.IOS_APP_ID || '',
       appStoreLanguage: "fr",
     }
   },
@@ -288,12 +287,6 @@ export default {
       title: 'adidas arena',
       image: `${process.env.BASE_URL || 'https://www.adidasarena.com/'}seo.jpg`,
     },
-    meta: [
-      {
-        name: 'apple-itunes-app',
-        content: `app-id=${process.env.API_KEY_APPSTORE}, app-argument=${process.env.BASE_URL || 'https://www.adidasarena.com/'}`
-      },
-    ],
   },
 
   render: {

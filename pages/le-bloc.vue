@@ -38,6 +38,13 @@ export default {
 
     return pageTransition.basic
   },
+  props: {
+    webview: {
+      type: String,
+      required: true,
+      default: 'ko',
+    },
+  },
   async asyncData({ $directus }) {
     const content = await $directus.items('Le_Bloc_page').readByQuery({
       limit: -1,
@@ -52,7 +59,6 @@ export default {
       slider,
     }
   },
-
   data() {
     return {}
   },

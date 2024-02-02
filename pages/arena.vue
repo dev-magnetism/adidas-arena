@@ -11,7 +11,7 @@
     <AppArenaPlan :contents="contentPlan" />
     <AppArenaTwoColumns :contents="contentTwoColumns"/>
     <AppGallery :contents="contentGallery" />
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -29,6 +29,13 @@ export default {
     return to.name === 'arena' && to.params.enterArena
       ? pageTransition.fromIndexToArena
       : pageTransition.basic
+  },
+  props: {
+    webview: {
+      type: String,
+      required: true,
+      default: 'ko',
+    },
   },
   async asyncData({ $directus }) {
     const content = await $directus.items('Arena_page').readByQuery({
@@ -54,7 +61,6 @@ export default {
       videos,
     }
   },
-
   head({ $seo }) {
     return $seo({
       title: this.content.data.page_title,
@@ -67,12 +73,6 @@ export default {
         title: this.appContent.data.seo_title,
         description: this.content.data.page_description_seo,
       },
-      meta: [
-        {
-          name: 'apple-itunes-app',
-          content: `app-id=${this.$config.apiKeyAppstore}, app-argument=${this.$config.baseURL}`
-        },
-      ],
     })
   },
 
@@ -201,7 +201,6 @@ export default {
     },
   },
   mounted() {
-    console.log('this.$route.query.page', this.$route.query.page);
   },
   beforeDestroy() {},
   methods: {},

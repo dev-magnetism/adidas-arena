@@ -8,6 +8,7 @@
     @click.stop="() => {}"
   >
     <nuxt-link
+      v-if="this.webview !== 'ok'"
       :class="{ reduced: headerReduced, white: headerWhite }"
       class="app-header__logo"
       to="/"
@@ -16,7 +17,17 @@
       <SvgArenaLogo />
     </nuxt-link>
 
+    <div 
+      v-else
+      :class="{ reduced: headerReduced, white: headerWhite }"
+      class="app-header__logo"
+      >
+      <TH1 :tag="$route.name === 'index' ? 'h1' : 'p'">Adidas Arena</TH1>
+      <SvgArenaLogo />
+    </div>
+
     <nuxt-link
+      v-if="this.webview !== 'ok'"
       :class="{ reduced: headerReduced, white: headerWhite }"
       class="app-header__programmation"
       :to="menuProgrammation.url"
@@ -27,6 +38,7 @@
     </nuxt-link>
 
     <div
+      v-if="this.webview !== 'ok'"
       :class="{ reduced: headerReduced, white: headerWhite }"
       class="app-header__burger"
       @click="setMenuActive(true)"
@@ -48,6 +60,13 @@ import { mapMutations, mapState } from 'vuex'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default {
+  props: {
+    webview: {
+      type: String,
+      required: true,
+      default: 'ko',
+    },
+  },
   computed: {
     ...mapState({
       menuContent: (state) => state.menuContent,

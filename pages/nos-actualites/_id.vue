@@ -46,6 +46,13 @@ export default {
 
     return pageTransition.basic
   },
+  props: {
+    webview: {
+      type: String,
+      required: true,
+      default: 'ko',
+    },
+  },
   data() {
     return {
       appearCTABack: true,
