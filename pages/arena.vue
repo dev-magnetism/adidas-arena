@@ -207,10 +207,6 @@ export default {
     },
   },
   mounted() {
-<<<<<<< HEAD
-=======
-    console.log('this.$route.query.page', this.$route.query.page);
->>>>>>> 165c1f8 (WIP)
   },
   beforeDestroy() {},
   methods: {},
