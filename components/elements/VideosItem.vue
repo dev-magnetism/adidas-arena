@@ -60,7 +60,7 @@ export default {
   computed: {
 
     videoFrame(){
-      console.log('this.content', this.content)
+      // console.log('this.content', this.content)
       const videoItem = { youtube_url: this.content.video_url};
       const itemCover = this.content.video_cover;
 
@@ -77,7 +77,7 @@ export default {
     },
   },
   mounted() {
-  	console.log('VideosItem / props content', this.content)
+  	// console.log('VideosItem / props content', this.content)
   },
   beforeDestroy() {
   },
