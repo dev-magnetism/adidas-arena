@@ -66,7 +66,7 @@ export default {
       },
       {
         name: 'smartbanner:enabled-platforms',
-        content: 'android'
+        content: 'android, ios'
       },
       {
         name: 'smartbanner:close-label',
