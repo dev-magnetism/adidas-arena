@@ -33,6 +33,10 @@ export default {
         content: 'sCUfvG-_I5Fmsll2gdkBf35SJrj3BEnNWilC4NsuG1Q',
       },
       {
+        name: 'apple-itunes-app',
+        content: 'app-id=6475820994'
+      },
+      {
         name: 'smartbanner:title',
         content: 'Adidas Arena'
       },
@@ -45,16 +49,8 @@ export default {
         content: 'Gratuit'
       },
       {
-        name: 'smartbanner:price-suffix-apple',
-        content: ' - Sur l\'App Store'
-      },
-      {
         name: 'smartbanner:price-suffix-google',
         content: ' - Dans Google Play'
-      },
-      {
-        name: 'smartbanner:icon-apple',
-        content: '/logo_app_adidasarena.png'
       },
       {
         name: 'smartbanner:icon-google',
@@ -65,16 +61,12 @@ export default {
         content: 'VOIR'
       },
       {
-        name: 'smartbanner:button-url-apple',
-        content: 'https://apps.apple.com/us/app/adidas-arena/id6475820994'
-      },
-      {
         name: 'smartbanner:button-url-google',
         content: 'https://play.google.com/store/apps/details?id=com.parisentertainmentcompany.adidasarena'
       },
       {
         name: 'smartbanner:enabled-platforms',
-        content: 'android,ios'
+        content: 'android'
       },
       {
         name: 'smartbanner:close-label',
