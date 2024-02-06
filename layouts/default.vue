@@ -6,14 +6,13 @@
       prod: devToolsHidden,
     }"
   >
-    <!-- SmartAppBanner / -->
     <div ref="layerBlue" class="app-transition-layer blue" />
     <div ref="layerRed" class="app-transition-layer red" />
     <AppCursor />
     <AppPreloader />
     <AppCookie />
     <AppPopinNewsletter />
-    <AppHeader :webview="this.webview" />
+    <AppHeader />
     <AppMenu v-if="this.webview !== 'ok'" />
     <AppScrollbar />
     <nuxt class="app-main" />
@@ -24,21 +23,17 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 import useGUI from '~/hooks/gui'
 
 export default {
   layout: 'DefaultLayout',
-  data(){
-    return{
-      webview: ''
-    }
-  },
   computed: {
     ...mapState({
       cursorState: (state) => state.cursorState,
       appCursor: (state) => state.appCursor,
+      webview: (state) => state.webview
     }),
     devToolsHidden() {
       return process.env.NODE_ENV !== 'development'
@@ -52,17 +47,18 @@ export default {
     if (this.$viewport.isMobile) {
       gui.hidden = true
     }
-
-    console.log('this.$route.query', this.$route.query);
-
-    this.webview =  this.$route.query.webview;
-
-    console.log('this.webview', this.webview);
+    
+    this.setWebview(this.$route.query.webview);
 
   },
 
   beforeDestroy() {},
-  methods: {},
+  methods: {
+    ...mapMutations({
+      setWebview: 'setWebview',
+    }),
+
+  },
 }
 </script>
 

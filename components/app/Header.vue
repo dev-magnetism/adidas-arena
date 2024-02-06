@@ -60,13 +60,6 @@ import { mapMutations, mapState } from 'vuex'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default {
-  props: {
-    webview: {
-      type: String,
-      required: true,
-      default: 'ko',
-    },
-  },
   computed: {
     ...mapState({
       menuContent: (state) => state.menuContent,
@@ -78,6 +71,7 @@ export default {
       overlayContactOpen: (state) => state.overlayContactOpen,
       interiorVisible: (state) => state.interiorVisible,
       exteriorVisible: (state) => state.exteriorVisible,
+      webview: (state) => state.webview
     }),
     menuName() {
       return this.appContent.data.menu_name

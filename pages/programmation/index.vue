@@ -35,7 +35,6 @@ export default {
   data() {
     return {
       inputCategory: 'tout',
-      webview: ''
     }
   },
 
@@ -65,6 +64,7 @@ export default {
       allLoadedFake: (state) => state.allLoadedFake,
       programmationsContent: (state) => state.programmationsContent,
       programmes: (state) => state.programmes,
+      webview: (state) => state.webview,
     }),
     contentMainCard() {
       return (
@@ -84,9 +84,7 @@ export default {
       }
     }
   },
-  mounted() {
-    this.webview =  this.$route.query.webview;
-  },
+  mounted() { },
   methods: {
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',

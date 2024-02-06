@@ -100,7 +100,7 @@
         :href="{
           name: 'programmation-id',
           params: {
-            id: `${$convertToKebabCase(event.content.url)}--${event.id}?webview=${this.webview}`,
+            id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
           },
         }"
         :gtm-click="{
@@ -122,7 +122,7 @@
         :href="{
           name: 'programmation-id',
           params: {
-            id: `${$convertToKebabCase(event.content.url)}--${event.id}?webview=${this.webview}`,
+            id: `${$convertToKebabCase(event.content.url)}--${event.id}`,
           },
         }"
         :gtm-click="{
@@ -160,11 +160,6 @@ export default {
       type: String,
       default: 'grey',
     },
-    webview: {
-      type: String,
-      required: false,
-      default: '',
-    }
   },
   data() {
     return {
@@ -219,7 +214,7 @@ export default {
         params: {
           id: `${this.$convertToKebabCase(this.event.content.url)}--${
             this.event.id
-          }?webview=${this.webview}`,
+          }`,
         },
       })
     },

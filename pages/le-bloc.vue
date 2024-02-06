@@ -52,11 +52,6 @@ export default {
       slider,
     }
   },
-  data(){
-    return{
-      webview: ''
-    }
-  },
   head({ $seo }) {
     return $seo({
       title: this.content.data.page_title,
@@ -75,6 +70,7 @@ export default {
     ...mapState({
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
+      webview: (state) => state.webview,
     }),
     contentSlider() {
       return {
@@ -117,9 +113,7 @@ export default {
       }
     },
   },
-  mounted() {
-    this.webview =  this.$route.query.webview;
-  },
+  mounted() { },
 }
 </script>
 

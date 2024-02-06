@@ -49,7 +49,6 @@ export default {
   data() {
     return {
       appearCTABack: true,
-      webview: ''
     }
   },
   head({ $seo }) {
@@ -75,6 +74,7 @@ export default {
       actualitesArticleContent: (state) => state.actualitesArticleContent,
       headerReduced: (state) => state.headerReduced,
       actualites: (state) => state.actualites,
+      webview: (state) => state.webview,
     }),
     content() {
       return this.actualites.find(
@@ -91,9 +91,7 @@ export default {
       }
     },
   },
-  mounted() {
-    this.webview =  this.$route.query.webview;
-  },
+  mounted() { },
   beforeDestroy() {
     this.scrollTriggerCTA?.kill()
     this.scrollTrigger?.kill()

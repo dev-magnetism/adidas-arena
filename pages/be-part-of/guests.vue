@@ -46,11 +46,6 @@ export default {
       videos,
     }
   },
-  data(){
-    return{
-      webview: ''
-    }
-  },
   head({ $seo }) {
     return $seo({
       title: this.content.data.page_title,
@@ -69,6 +64,7 @@ export default {
     ...mapState({
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
+      webview: (state) => state.webview,
     }),
     contentTwoColumns() {
       return {
@@ -130,7 +126,6 @@ export default {
     if(_url.includes('#contact')){
       this.$refs.questform.onClick();
     }
-    this.webview =  this.$route.query.webview;
   },
 }
 </script>

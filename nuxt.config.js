@@ -32,6 +32,54 @@ export default {
         name: 'google-site-verification',
         content: 'sCUfvG-_I5Fmsll2gdkBf35SJrj3BEnNWilC4NsuG1Q',
       },
+      {
+        name: 'smartbanner:title',
+        content: 'Adidas Arena'
+      },
+      {
+        name: 'smartbanner:author',
+        content: 'Paris Entertainment Company'
+      },
+      {
+        name: 'smartbanner:price',
+        content: 'Gratuit'
+      },
+      {
+        name: 'smartbanner:price-suffix-apple',
+        content: ' - Sur l\'App Store'
+      },
+      {
+        name: 'smartbanner:price-suffix-google',
+        content: ' - Dans Google Play'
+      },
+      {
+        name: 'smartbanner:icon-apple',
+        content: '/logo_app_adidasarena.png'
+      },
+      {
+        name: 'smartbanner:icon-google',
+        content: '/logo_app_adidasarena.png'
+      },
+      {
+        name: 'smartbanner:button',
+        content: 'VOIR'
+      },
+      {
+        name: 'smartbanner:button-url-apple',
+        content: 'https://apps.apple.com/us/app/adidas-arena/id6475820994'
+      },
+      {
+        name: 'smartbanner:button-url-google',
+        content: 'https://play.google.com/store/apps/details?id=com.parisentertainmentcompany.adidasarena'
+      },
+      {
+        name: 'smartbanner:enabled-platforms',
+        content: 'android,ios'
+      },
+      {
+        name: 'smartbanner:close-label',
+        content: 'Fermer'
+      },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
@@ -53,6 +101,7 @@ export default {
     { src: '~/plugins/utils.js' },
     { src: '~/plugins/raf.js', mode: 'client' },
     { src: '~/plugins/viewport.js', mode: 'client' },
+    { src: '~/plugins/smartbanner.min.js', mode: 'client' },
   ],
 
   // vue: {
@@ -215,7 +264,7 @@ export default {
       {
         url: 'https://adidasarena.directus.app/',
       },
-      'nuxt-smart-app-banner',
+      // 'nuxt-smart-app-banner',
     ],
     'cookie-universal-nuxt',
     '@nuxtjs/eslint-module',
@@ -228,15 +277,15 @@ export default {
     'vue-social-sharing/nuxt',
   ],
 
-  'nuxt-smart-app-banner': {
-    bannerOptions: {
-      title: "Title",
-      androidAppId: process.env.ANDROID_APP_ID || '',
-      icon: "https://icon-library.com/images/play-store-icon/play-store-icon-9.jpg",
-      iosAppId: process.env.IOS_APP_ID || '',
-      appStoreLanguage: "fr",
-    }
-  },
+  // 'nuxt-smart-app-banner': {
+  //   bannerOptions: {
+  //     title: "Title",
+  //     androidAppId: process.env.ANDROID_APP_ID || 'com.parisentertainmentcompany.adidasarena',
+  //     icon: "https://icon-library.com/images/play-store-icon/play-store-icon-9.jpg",
+  //     iosAppId: process.env.IOS_APP_ID || '6475820994',
+  //     appStoreLanguage: "fr",
+  //   }
+  // },
 
   robots: {
     Sitemap: process.env.BASE_URL

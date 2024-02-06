@@ -48,11 +48,6 @@ export default {
       content,
     }
   },
-  data(){
-    return{
-      webview: ''
-    }
-  },
   head({ $seo }) {
     return $seo({
       title: this.content.data.page_title,
@@ -84,7 +79,6 @@ export default {
     if (this.allLoadedFake) {
       this.setAllowScroll(true)
     }
-    this.webview =  this.$route.query.webview;
   },
   methods: {
     onBack() {

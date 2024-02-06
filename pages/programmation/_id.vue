@@ -46,7 +46,7 @@
 
     <AppProgrammationEventSafetyInstructions :content="contentSafety" />
 
-    <AppProgrammationEventMoreEvents :content="contentMoreEvents" :webview="this.webview" />
+    <AppProgrammationEventMoreEvents :content="contentMoreEvents" />
 
     <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
 
@@ -108,7 +108,6 @@ export default {
       appearBar: false,
       appearCTABack: true,
       indexDate: null,
-      webview: ''
     }
   },
   head({ $seo }) {
@@ -132,6 +131,7 @@ export default {
       appContent: (state) => state.appContent,
       programmationsEventContent: (state) => state.programmationsEventContent,
       headerReduced: (state) => state.headerReduced,
+      webview: (state) => state.webview,
     }),
     contentCancelation() {
       return {
@@ -179,8 +179,6 @@ export default {
   mounted() {
     this.initScrollTrigger()
     this.initMatchMedia()
-
-    this.webview =  this.$route.query.webview;
   },
   beforeDestroy() {
     this.scrollTriggerCTA?.kill()

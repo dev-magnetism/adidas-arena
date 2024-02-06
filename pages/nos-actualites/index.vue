@@ -29,11 +29,6 @@ export default {
       content,
     }
   },
-  data(){
-    return{
-      webview: ''
-    }
-  },
   head({ $seo }) {
     return $seo({
       title: this.content.data.page_title,
@@ -56,6 +51,7 @@ export default {
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
       programmes: (state) => state.programmes,
+      webview: (state) => state.webview,
     }),
     contentHero() {
       return {
@@ -66,9 +62,7 @@ export default {
       }
     },
   },
-  mounted() {
-    this.webview =  this.$route.query.webview;
-  },
+  mounted() { },
   methods: {
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',

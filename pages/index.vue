@@ -44,11 +44,6 @@ export default {
       content,
     }
   },
-  data(){
-    return{
-      webview: ''
-    }
-  },
   head({ $seo }) {
     return $seo({
       title: this.content.data.page_title,
@@ -76,6 +71,7 @@ export default {
       appContent: (state) => state.appContent,
       allLoadedFake: (state) => state.allLoadedFake,
       exteriorVisible: (state) => state.exteriorVisible,
+      webview: (state) => state.webview,
     }),
     contentPresentation() {
       return {
@@ -163,9 +159,7 @@ export default {
       }
     },
   },
-  mounted() {
-    this.webview =  this.$route.query.webview;
-  },
+  mounted() { },
   methods: {
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',
