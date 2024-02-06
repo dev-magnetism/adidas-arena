@@ -1,6 +1,7 @@
 <template>
   <main class="app-programmation-event">
     <AtomsCTABack
+      v-if="this.webview !== 'ok'"
       :class="{
         reduced: headerReduced,
         hide: !appearCTABack,
@@ -45,9 +46,9 @@
 
     <AppProgrammationEventSafetyInstructions :content="contentSafety" />
 
-    <AppProgrammationEventMoreEvents :content="contentMoreEvents" />
+    <AppProgrammationEventMoreEvents :content="contentMoreEvents" :webview="this.webview" />
 
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
 
     <AppProgrammationEventBar :event="event" :class="{ hide: !appearBar }" />
   </main>
@@ -91,13 +92,6 @@ export default {
 
     return pageTransition.basic
   },
-  props: {
-    webview: {
-      type: String,
-      required: true,
-      default: 'ko',
-    },
-  },
   asyncData({ params, store, $axios }) {
     const [artist, id] = params.id.split('--')
 
@@ -114,6 +108,7 @@ export default {
       appearBar: false,
       appearCTABack: true,
       indexDate: null,
+      webview: ''
     }
   },
   head({ $seo }) {
@@ -184,6 +179,8 @@ export default {
   mounted() {
     this.initScrollTrigger()
     this.initMatchMedia()
+
+    this.webview =  this.$route.query.webview;
   },
   beforeDestroy() {
     this.scrollTriggerCTA?.kill()

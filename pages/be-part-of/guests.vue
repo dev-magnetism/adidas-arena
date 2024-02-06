@@ -10,7 +10,7 @@
     <EVideosList :contents="contentVideos" />
     <AppContactQuestion ref="questform" :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -26,13 +26,6 @@ export default {
     if (!to || !from) return
 
     return pageTransition.basic
-  },
-  props: {
-    webview: {
-      type: String,
-      required: true,
-      default: 'ko',
-    },
   },
   async asyncData({ $directus }) {
     const content = await $directus.items('Hospitalite_page').readByQuery({
@@ -53,8 +46,10 @@ export default {
       videos,
     }
   },
-  data() {
-    return {}
+  data(){
+    return{
+      webview: ''
+    }
   },
   head({ $seo }) {
     return $seo({
@@ -135,6 +130,7 @@ export default {
     if(_url.includes('#contact')){
       this.$refs.questform.onClick();
     }
+    this.webview =  this.$route.query.webview;
   },
 }
 </script>

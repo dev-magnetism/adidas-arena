@@ -30,13 +30,6 @@ export default {
       ? pageTransition.fromIndexToArena
       : pageTransition.basic
   },
-  props: {
-    webview: {
-      type: String,
-      required: true,
-      default: 'ko',
-    },
-  },
   async asyncData({ $directus }) {
     const content = await $directus.items('Arena_page').readByQuery({
       limit: -1,
@@ -59,6 +52,11 @@ export default {
       galerie,
       slider,
       videos,
+    }
+  },
+  data(){
+    return{
+      webview: ''
     }
   },
   head({ $seo }) {
@@ -207,6 +205,7 @@ export default {
     },
   },
   mounted() {
+    this.webview =  this.$route.query.webview;
   },
   beforeDestroy() {},
   methods: {},

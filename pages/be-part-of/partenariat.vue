@@ -5,7 +5,7 @@
     <AppContactQuestion ref="questform" :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
     <!-- <AppGallery :contents="contentGallery" /> -->
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -22,13 +22,6 @@ export default {
 
     return pageTransition.basic
   },
-  props: {
-    webview: {
-      type: String,
-      required: true,
-      default: 'ko',
-    },
-  },
   async asyncData({ $directus }) {
     const content = await $directus.items('Partenaire_page').readByQuery({
       limit: -1,
@@ -41,6 +34,11 @@ export default {
     return {
       content,
       // galerie,
+    }
+  },
+  data(){
+    return{
+      webview: ''
     }
   },
   head({ $seo }) {
@@ -119,6 +117,7 @@ export default {
     if(_url.includes('#contact')){
       this.$refs.questform.onClick();
     }
+    this.webview =  this.$route.query.webview;
   },
 }
 </script>

@@ -21,7 +21,7 @@
     </div>
     <EFullwidth :contents="contentFullwidth" />
     <ESlider :contents="contentSlider" />
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -38,13 +38,6 @@ export default {
 
     return pageTransition.basic
   },
-  props: {
-    webview: {
-      type: String,
-      required: true,
-      default: 'ko',
-    },
-  },
   async asyncData({ $directus }) {
     const content = await $directus.items('Le_Bloc_page').readByQuery({
       limit: -1,
@@ -59,8 +52,10 @@ export default {
       slider,
     }
   },
-  data() {
-    return {}
+  data(){
+    return{
+      webview: ''
+    }
   },
   head({ $seo }) {
     return $seo({
@@ -121,6 +116,9 @@ export default {
         paragraph: this.content.data.presentation_paragraph,
       }
     },
+  },
+  mounted() {
+    this.webview =  this.$route.query.webview;
   },
 }
 </script>

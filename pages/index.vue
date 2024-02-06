@@ -16,7 +16,7 @@
     <AppHomeProjet :contents="contentProjet" />
     <AppHomeArticles :content="contentArticles" />
     <AppHomePartners :contents="contentPartners" />
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -35,13 +35,6 @@ export default {
       ? pageTransition.fromIndexToArena
       : pageTransition.basic
   },
-  props: {
-    webview: {
-      type: String,
-      required: true,
-      default: 'ko',
-    },
-  },
   async asyncData({ $directus }) {
     const content = await $directus.items('Homepage').readByQuery({
       limit: -1,
@@ -49,6 +42,11 @@ export default {
 
     return {
       content,
+    }
+  },
+  data(){
+    return{
+      webview: ''
     }
   },
   head({ $seo }) {
@@ -164,6 +162,9 @@ export default {
         secondRow: this.content.data.marquee_second_row,
       }
     },
+  },
+  mounted() {
+    this.webview =  this.$route.query.webview;
   },
   methods: {
     ...mapMutations({
