@@ -16,7 +16,7 @@
     <AppHomeProjet :contents="contentProjet" />
     <AppHomeArticles :content="contentArticles" />
     <AppHomePartners :contents="contentPartners" />
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -56,6 +56,13 @@ export default {
         title: this.appContent.data.seo_title,
         description: this.content.data.page_description_seo,
       },
+      meta: [
+        {
+          hid: 'apple-itunes-app',
+          name: 'apple-itunes-app',
+          content: `app-id=${this.$config.apiKeyAppstore}, app-argument=${this.$config.baseURL}`
+        },
+      ],
     })
   },
   computed: {
@@ -64,6 +71,7 @@ export default {
       appContent: (state) => state.appContent,
       allLoadedFake: (state) => state.allLoadedFake,
       exteriorVisible: (state) => state.exteriorVisible,
+      webview: (state) => state.webview,
     }),
     contentPresentation() {
       return {
@@ -151,6 +159,7 @@ export default {
       }
     },
   },
+  mounted() { },
   methods: {
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',

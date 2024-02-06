@@ -13,7 +13,7 @@
     <AppCookie />
     <AppPopinNewsletter />
     <AppHeader />
-    <AppMenu />
+    <AppMenu v-if="this.webview !== 'ok'" />
     <AppScrollbar />
     <nuxt class="app-main" />
     <AppScene />
@@ -23,19 +23,17 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 import useGUI from '~/hooks/gui'
 
 export default {
   layout: 'DefaultLayout',
-  data() {
-    return {}
-  },
   computed: {
     ...mapState({
       cursorState: (state) => state.cursorState,
       appCursor: (state) => state.appCursor,
+      webview: (state) => state.webview
     }),
     devToolsHidden() {
       return process.env.NODE_ENV !== 'development'
@@ -49,10 +47,18 @@ export default {
     if (this.$viewport.isMobile) {
       gui.hidden = true
     }
+    
+    this.setWebview(this.$route.query.webview);
+
   },
 
   beforeDestroy() {},
-  methods: {},
+  methods: {
+    ...mapMutations({
+      setWebview: 'setWebview',
+    }),
+
+  },
 }
 </script>
 

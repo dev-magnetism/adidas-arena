@@ -1,6 +1,7 @@
 <template>
   <main class="app-programmation-event">
     <AtomsCTABack
+      v-if="this.webview !== 'ok'"
       :class="{
         reduced: headerReduced,
         hide: !appearCTABack,
@@ -47,7 +48,7 @@
 
     <AppProgrammationEventMoreEvents :content="contentMoreEvents" />
 
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
 
     <AppProgrammationEventBar :event="event" :class="{ hide: !appearBar }" />
   </main>
@@ -130,6 +131,7 @@ export default {
       appContent: (state) => state.appContent,
       programmationsEventContent: (state) => state.programmationsEventContent,
       headerReduced: (state) => state.headerReduced,
+      webview: (state) => state.webview,
     }),
     contentCancelation() {
       return {

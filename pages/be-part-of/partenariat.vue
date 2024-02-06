@@ -5,7 +5,7 @@
     <AppContactQuestion ref="questform" :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
     <!-- <AppGallery :contents="contentGallery" /> -->
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -54,6 +54,7 @@ export default {
     ...mapState({
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
+      webview: (state) => state.webview,
     }),
     // contentGallery() {
     //   return {

@@ -6,7 +6,7 @@
       :content="contentList"
       />
 
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -64,6 +64,7 @@ export default {
       allLoadedFake: (state) => state.allLoadedFake,
       programmationsContent: (state) => state.programmationsContent,
       programmes: (state) => state.programmes,
+      webview: (state) => state.webview,
     }),
     contentMainCard() {
       return (
@@ -83,6 +84,7 @@ export default {
       }
     }
   },
+  mounted() { },
   methods: {
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',

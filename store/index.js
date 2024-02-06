@@ -51,6 +51,7 @@ export const state = () => ({
   interiorTimelineFloorsInProgress: false,
 
   // UI
+  webview: false,
   allowScroll: false,
   webglInFront: false,
   initialHeroDisplayed: false,
@@ -176,6 +177,9 @@ export const mutations = {
   },
   setHeaderHide: (state, value) => {
     state.headerHide = value
+  },
+  setWebview: (state, value) => {
+    state.webview = value
   },
   setAllowScroll: (state, value) => {
     state.allowScroll = value

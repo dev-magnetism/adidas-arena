@@ -21,7 +21,7 @@
     </div>
     <EFullwidth :contents="contentFullwidth" />
     <ESlider :contents="contentSlider" />
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -52,10 +52,6 @@ export default {
       slider,
     }
   },
-
-  data() {
-    return {}
-  },
   head({ $seo }) {
     return $seo({
       title: this.content.data.page_title,
@@ -74,6 +70,7 @@ export default {
     ...mapState({
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
+      webview: (state) => state.webview,
     }),
     contentSlider() {
       return {
@@ -116,6 +113,7 @@ export default {
       }
     },
   },
+  mounted() { },
 }
 </script>
 
