@@ -50,9 +50,9 @@ export default {
     
     this.setWebview(this.$route.query.webview);
 
-    if(this.$route.query.webview !== 'ok'){
-      smartbanner.publish();
-    }
+    window.addEventListener('load', this.handleSmartBanner)
+
+    
 
   },
 
@@ -61,6 +61,11 @@ export default {
     ...mapMutations({
       setWebview: 'setWebview',
     }),
+    handleSmartBanner(){
+      if(this.$route.query.webview !== 'ok'){
+        smartbanner.publish();
+      }
+    }
 
   },
 }
