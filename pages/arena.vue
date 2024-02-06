@@ -11,7 +11,7 @@
     <AppArenaPlan :contents="contentPlan" />
     <AppArenaTwoColumns :contents="contentTwoColumns"/>
     <AppGallery :contents="contentGallery" />
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -54,7 +54,6 @@ export default {
       videos,
     }
   },
-
   head({ $seo }) {
     return $seo({
       title: this.content.data.page_title,
@@ -67,6 +66,12 @@ export default {
         title: this.appContent.data.seo_title,
         description: this.content.data.page_description_seo,
       },
+      meta: [
+        {
+          name: 'apple-itunes-app',
+          content: `app-id=${this.$config.apiKeyAppstore}, app-argument=${this.$config.baseURL}`
+        },
+      ],
     })
   },
 
@@ -74,6 +79,7 @@ export default {
     ...mapState({
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
+      webview: (state) => state.webview,
     }),
     contentCatchphrase() {
       return {

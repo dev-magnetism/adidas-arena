@@ -10,7 +10,7 @@
     <EVideosList :contents="contentVideos" />
     <AppContactQuestion ref="questform" :contents="contentContactQuestion" />
     <AppContactNewsletter :contents="contentContactNewsletter" />
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -46,9 +46,6 @@ export default {
       videos,
     }
   },
-  data() {
-    return {}
-  },
   head({ $seo }) {
     return $seo({
       title: this.content.data.page_title,
@@ -67,6 +64,7 @@ export default {
     ...mapState({
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
+      webview: (state) => state.webview,
     }),
     contentTwoColumns() {
       return {

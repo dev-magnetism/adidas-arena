@@ -4,7 +4,7 @@
 
     <AppActusList />
 
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -51,6 +51,7 @@ export default {
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
       programmes: (state) => state.programmes,
+      webview: (state) => state.webview,
     }),
     contentHero() {
       return {
@@ -61,6 +62,7 @@ export default {
       }
     },
   },
+  mounted() { },
   methods: {
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',
