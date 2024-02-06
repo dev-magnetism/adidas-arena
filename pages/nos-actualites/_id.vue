@@ -20,7 +20,7 @@
       :content="el"
     />
     <AppActusMoreActus :content="contentMoreArticles" />
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -74,6 +74,7 @@ export default {
       actualitesArticleContent: (state) => state.actualitesArticleContent,
       headerReduced: (state) => state.headerReduced,
       actualites: (state) => state.actualites,
+      webview: (state) => state.webview,
     }),
     content() {
       return this.actualites.find(
@@ -90,6 +91,7 @@ export default {
       }
     },
   },
+  mounted() { },
   beforeDestroy() {
     this.scrollTriggerCTA?.kill()
     this.scrollTrigger?.kill()

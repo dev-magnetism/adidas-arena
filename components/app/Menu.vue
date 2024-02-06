@@ -181,8 +181,6 @@ export default {
           this.els.main.nodesTitle[2],
       }
 
-      console.log('this.els.submenuTitle', this.els.submenuTitle);
-
       // this.els.submenuTitle = {
       //   nodeWrapper:
       //     this.els.main.nodesWrapper[this.els.main.nodesWrapper.length - 1],
@@ -228,8 +226,13 @@ export default {
       } else {
         const elTitleSubmenuSave =
           this.els.main.nodesComponents[
-            this.els.main.nodesComponents.length - 1
+            2
           ]
+
+        // const elTitleSubmenuSave =
+        //   this.els.main.nodesComponents[
+        //     this.els.main.nodesComponents.length - 1
+        //   ]
 
         Flip.fit(this.els.submenuTitle.nodeWrapper, elTitleSubmenuSave, {
           simple: true,
@@ -363,9 +366,13 @@ export default {
 
       if (this.$viewport.isMobile) {
         elsMenuSubmenuTitleReversed = [
-          this.els.main.nodesTitle[0],
+          this.els.main.nodesTitle[2],
           ...this.els.submenu.nodesTitle,
         ].reverse()
+        // elsMenuSubmenuTitleReversed = [
+        //   this.els.main.nodesTitle[0],
+        //   ...this.els.submenu.nodesTitle,
+        // ].reverse()
       } else {
         elsMenuSubmenuTitleReversed = [...this.els.submenu.nodesTitle].reverse()
       }
@@ -379,8 +386,13 @@ export default {
 
             const elTitleSubmenuSave =
               this.els.main.nodesComponents[
-                this.els.main.nodesComponents.length - 1
+                2
               ]
+
+            // const elTitleSubmenuSave =
+            //   this.els.main.nodesComponents[
+            //     this.els.main.nodesComponents.length - 1
+            //   ]
 
             Flip.fit(this.els.submenuTitle.nodeWrapper, elTitleSubmenuSave, {
               simple: true,
@@ -515,7 +527,7 @@ export default {
       if (this.$viewport.isMobile) {
         linksToHide = this.els.main.nodesTitle.filter(
           (link, index) =>
-            index !== 0 && index !== 2
+            index !== 2
         )
         // linksToHide = this.els.main.nodesTitle.filter(
         //   (link, index) =>

@@ -8,6 +8,7 @@
     @click.stop="() => {}"
   >
     <nuxt-link
+      v-if="this.webview !== 'ok'"
       :class="{ reduced: headerReduced, white: headerWhite }"
       class="app-header__logo"
       to="/"
@@ -16,7 +17,17 @@
       <SvgArenaLogo />
     </nuxt-link>
 
+    <div 
+      v-else
+      :class="{ reduced: headerReduced, white: headerWhite }"
+      class="app-header__logo"
+      >
+      <TH1 :tag="$route.name === 'index' ? 'h1' : 'p'">Adidas Arena</TH1>
+      <SvgArenaLogo />
+    </div>
+
     <nuxt-link
+      v-if="this.webview !== 'ok'"
       :class="{ reduced: headerReduced, white: headerWhite }"
       class="app-header__programmation"
       :to="menuProgrammation.url"
@@ -27,6 +38,7 @@
     </nuxt-link>
 
     <div
+      v-if="this.webview !== 'ok'"
       :class="{ reduced: headerReduced, white: headerWhite }"
       class="app-header__burger"
       @click="setMenuActive(true)"
@@ -59,6 +71,7 @@ export default {
       overlayContactOpen: (state) => state.overlayContactOpen,
       interiorVisible: (state) => state.interiorVisible,
       exteriorVisible: (state) => state.exteriorVisible,
+      webview: (state) => state.webview
     }),
     menuName() {
       return this.appContent.data.menu_name
