@@ -46,11 +46,11 @@ export default {
       },
       {
         name: 'smartbanner:price',
-        content: 'Gratuit'
+        content: ''
       },
       {
         name: 'smartbanner:price-suffix-google',
-        content: ' - Dans Google Play'
+        content: ' '
       },
       {
         name: 'smartbanner:icon-google',
