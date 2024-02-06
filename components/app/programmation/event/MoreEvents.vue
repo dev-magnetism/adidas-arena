@@ -11,6 +11,7 @@
         :theme="
           index === 0 ? 'blue-adidas' : index === 1 ? 'red-adidas' : 'grey'
         "
+        :webview="webview"
       />
     </div>
   </div>
@@ -25,6 +26,11 @@ export default {
       type: Object,
       default: () => {},
     },
+    webview: {
+      type: String,
+      required: false,
+      default: '',
+    }
   },
   data() {
     return {}

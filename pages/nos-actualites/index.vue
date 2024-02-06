@@ -4,7 +4,7 @@
 
     <AppActusList />
 
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -21,19 +21,17 @@ export default {
 
     return pageTransition.basic
   },
-  props: {
-    webview: {
-      type: String,
-      required: true,
-      default: 'ko',
-    },
-  },
   async asyncData({ $directus }) {
     const content = await $directus.items('Actualites_page').readByQuery({
       limit: -1,
     })
     return {
       content,
+    }
+  },
+  data(){
+    return{
+      webview: ''
     }
   },
   head({ $seo }) {
@@ -67,6 +65,9 @@ export default {
         backPicture: this.content.data.hero_back_picture,
       }
     },
+  },
+  mounted() {
+    this.webview =  this.$route.query.webview;
   },
   methods: {
     ...mapMutations({

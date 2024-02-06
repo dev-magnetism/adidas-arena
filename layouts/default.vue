@@ -6,7 +6,7 @@
       prod: devToolsHidden,
     }"
   >
-    <!-- SmartAppBannerb / -->
+    <!-- SmartAppBanner / -->
     <div ref="layerBlue" class="app-transition-layer blue" />
     <div ref="layerRed" class="app-transition-layer red" />
     <AppCursor />
@@ -16,7 +16,7 @@
     <AppHeader :webview="this.webview" />
     <AppMenu v-if="this.webview !== 'ok'" />
     <AppScrollbar />
-    <nuxt class="app-main" :webview="this.webview" />
+    <nuxt class="app-main" />
     <AppScene />
     <WebglScene />
     <!-- <WebglInfo /> -->

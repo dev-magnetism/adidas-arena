@@ -39,13 +39,6 @@ export default {
 
     return pageTransition.basic
   },
-  props: {
-    webview: {
-      type: String,
-      required: true,
-      default: 'ko',
-    },
-  },
   async asyncData({ $directus }) {
     const content = await $directus.items('Communique_de_presse').readByQuery({
       limit: -1,
@@ -53,6 +46,11 @@ export default {
 
     return {
       content,
+    }
+  },
+  data(){
+    return{
+      webview: ''
     }
   },
   head({ $seo }) {
@@ -86,6 +84,7 @@ export default {
     if (this.allLoadedFake) {
       this.setAllowScroll(true)
     }
+    this.webview =  this.$route.query.webview;
   },
   methods: {
     onBack() {

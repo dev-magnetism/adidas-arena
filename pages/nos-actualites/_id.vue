@@ -20,7 +20,7 @@
       :content="el"
     />
     <AppActusMoreActus :content="contentMoreArticles" />
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -46,16 +46,10 @@ export default {
 
     return pageTransition.basic
   },
-  props: {
-    webview: {
-      type: String,
-      required: true,
-      default: 'ko',
-    },
-  },
   data() {
     return {
       appearCTABack: true,
+      webview: ''
     }
   },
   head({ $seo }) {
@@ -96,6 +90,9 @@ export default {
         slug: this.content.slug,
       }
     },
+  },
+  mounted() {
+    this.webview =  this.$route.query.webview;
   },
   beforeDestroy() {
     this.scrollTriggerCTA?.kill()

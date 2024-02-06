@@ -6,7 +6,7 @@
       :content="contentList"
       />
 
-    <AppFooter :contents="appContent" :logos="partnersContent.data" />
+    <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
@@ -23,13 +23,6 @@ export default {
 
     return pageTransition.basic
   },
-  props: {
-    webview: {
-      type: String,
-      required: true,
-      default: 'ko',
-    },
-  },
   async asyncData({ $directus }) {
     const content = await $directus.items('Programmation_page').readByQuery({
       limit: -1,
@@ -42,6 +35,7 @@ export default {
   data() {
     return {
       inputCategory: 'tout',
+      webview: ''
     }
   },
 
@@ -89,6 +83,9 @@ export default {
         spotifyLink: this.content.data.spotify_link
       }
     }
+  },
+  mounted() {
+    this.webview =  this.$route.query.webview;
   },
   methods: {
     ...mapMutations({
