@@ -50,7 +50,7 @@ export default {
     
     this.setWebview(this.$route.query.webview);
 
-    if(this.$route.query.webview === 'ok'){
+    if(this.$route.query.webview !== 'ok'){
       smartbanner.publish();
     }
 
