@@ -176,12 +176,21 @@ export default {
 
       this.els.submenuTitle = {
         nodeWrapper:
-          this.els.main.nodesWrapper[this.els.main.nodesWrapper.length - 1],
+          this.els.main.nodesWrapper[2],
         nodeTitle:
-          this.els.main.nodesTitle[this.els.main.nodesTitle.length - 1],
+          this.els.main.nodesTitle[2],
       }
 
-      this.els.targetFlip = this.els.main.nodesComponents[1]
+      console.log('this.els.submenuTitle', this.els.submenuTitle);
+
+      // this.els.submenuTitle = {
+      //   nodeWrapper:
+      //     this.els.main.nodesWrapper[this.els.main.nodesWrapper.length - 1],
+      //   nodeTitle:
+      //     this.els.main.nodesTitle[this.els.main.nodesTitle.length - 1],
+      // }
+
+      this.els.targetFlip = this.els.main.nodesComponents[2]
 
       if (this.$viewport.isMobile) {
         this.els.main = {
@@ -506,12 +515,19 @@ export default {
       if (this.$viewport.isMobile) {
         linksToHide = this.els.main.nodesTitle.filter(
           (link, index) =>
-            index !== 0 && index !== this.els.main.nodesTitle.length - 1
+            index !== 0 && index !== 2
         )
+        // linksToHide = this.els.main.nodesTitle.filter(
+        //   (link, index) =>
+        //     index !== 0 && index !== this.els.main.nodesTitle.length - 1
+        // )
       } else {
         linksToHide = this.els.main.nodesTitle.filter(
-          (link, index) => index !== this.els.main.nodesTitle.length - 1
+          (link, index) => index !== 2
         )
+        // linksToHide = this.els.main.nodesTitle.filter(
+        //   (link, index) => index !== this.els.main.nodesTitle.length - 1
+        // )
       }
 
       this.tlSubmenu = gsap
@@ -562,8 +578,12 @@ export default {
       } else {
         const elMainLinkSubmenuWrapperSave =
           this.els.main.nodesComponents[
-            this.els.main.nodesComponents.length - 1
+            2
           ]
+        // const elMainLinkSubmenuWrapperSave =
+        //   this.els.main.nodesComponents[
+        //     this.els.main.nodesComponents.length - 1
+        //   ]
 
         Flip.fit(
           this.els.submenuTitle.nodeWrapper,
@@ -611,7 +631,10 @@ export default {
       this.tlSubmenu = null
 
       const elTitleSubmenuSave =
-        this.els.main.nodesComponents[this.els.main.nodesComponents.length - 1]
+        this.els.main.nodesComponents[2]
+
+      // const elTitleSubmenuSave =
+      //   this.els.main.nodesComponents[this.els.main.nodesComponents.length - 1]
 
       Flip.fit(this.els.submenuTitle.nodeWrapper, elTitleSubmenuSave)
 
