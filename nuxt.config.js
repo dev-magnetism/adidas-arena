@@ -42,7 +42,7 @@ export default {
       },
       {
         name: 'smartbanner:author',
-        content: 'Vivez l\'adidas arena avec l\'application'
+        content: 'Découvrez l\'application'
       },
       {
         name: 'smartbanner:price',
