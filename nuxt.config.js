@@ -38,11 +38,11 @@ export default {
       },
       {
         name: 'smartbanner:title',
-        content: 'Adidas Arena'
+        content: 'adidas arena'
       },
       {
         name: 'smartbanner:author',
-        content: 'Paris Entertainment Company'
+        content: 'Vivez l\'adidas arena avec notre application'
       },
       {
         name: 'smartbanner:price',
@@ -66,7 +66,7 @@ export default {
       },
       {
         name: 'smartbanner:button',
-        content: 'VOIR'
+        content: 'OUVRIR'
       },
       {
         name: 'smartbanner:button-url-apple',
