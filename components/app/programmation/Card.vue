@@ -414,6 +414,7 @@ export default {
     line-height: desktop-vw(58px);
     margin-top: desktop-vw(5px);
     margin-bottom: desktop-vw(70px);
+    letter-spacing:0;
 
     @include mobile {
       margin-top: mobile-vw(5px);
