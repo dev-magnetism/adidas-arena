@@ -49,7 +49,7 @@
         />
         <ERichText
           ref="paragraph"
-          :content="`<p class='app-tonnomsurlarena__intro__paragraph confirmation'>L'inscription pour mettre ton prénom sur l' Adidas Arena est maintenant close.</p>`"
+          :content="`<p class='app-tonnomsurlarena__intro__paragraph confirmation'>L'inscription pour mettre ton prénom sur l'Adidas Arena est maintenant close.</p>`"
           tag="p"
         />
 
