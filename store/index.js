@@ -69,6 +69,7 @@ export const state = () => ({
   cursorSliderDisabled: false,
   instructionsWebglVisible: true,
   step: 1,
+  concoursDatas: [],
 })
 
 export const getters = {
@@ -271,6 +272,9 @@ export const mutations = {
   setStep: (state, value) => {
     state.step = value
   },
+  setConcoursDatas: (state, value) => {
+    state.concoursDatas = value
+  },
 }
 
 export const actions = {
@@ -445,5 +449,16 @@ export const actions = {
     }
 
     commit('setProgrammes', programmes)
+
+
+    const _concoursDatas = [
+      { id: 1, name: "Laurent", numPics: "3" },
+      { id: 2, name: "Simon", numPics: "2" },
+      { id: 3, name: "Rémi", numPics: "1" },
+      { id: 4, name: "Aragorn", numPics: "1" }
+    ]
+
+    commit('setConcoursDatas', _concoursDatas);
+
   },
 }
