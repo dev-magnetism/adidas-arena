@@ -636,6 +636,10 @@ export default {
     grid-column: 4 / span 6;
     position: relative;
 
+    @media screen and (max-width: 768px) {
+      grid-column: 1 / span 11;
+    }
+
     &__cta-container {
       position: absolute;
       bottom: 0;
