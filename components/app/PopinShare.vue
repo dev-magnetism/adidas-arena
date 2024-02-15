@@ -8,10 +8,19 @@
     <div class="app-popin-share__wrapper">
       <AtomsCornerPoints :size-points="8" />
 
-      <ERichText tag="div" content="PARTAGER" class="app-popin-share__wrapper__title" />
+      <ERichText
+        tag="div"
+        content="PARTAGER"
+        class="app-popin-share__wrapper__title"
+      />
 
       <div class="app-popin-share__wrapper__item">
-        <a :href="`https://www.facebook.com/sharer/sharer.php?u=${window.location.origin + '/' + imageUrl}`" target="_blank">
+        <a
+          :href="`https://www.facebook.com/sharer/sharer.php?u=${
+            currentOrigin + '/' + imageUrl
+          }`"
+          target="_blank"
+        >
           <SvgFooterFacebook />
           <ERichText
             tag="p"
@@ -21,7 +30,10 @@
         </a>
       </div>
       <div class="app-popin-share__wrapper__item">
-        <a :href="`https://www.linkedin.com/sharing/share-offsite/?url=${window.location.origin + '/' + imageUrl}`" target="_blank">
+        <a
+          :href="`https://www.linkedin.com/sharing/share-offsite/?url=${imageUrl}`"
+          target="_blank"
+        >
           <SvgFooterLinkedin />
           <ERichText
             tag="p"
@@ -31,7 +43,7 @@
         </a>
       </div>
       <div class="app-popin-share__wrapper__item">
-        <a :href="`https://wa.me/?text=${window.location.origin + '/' + imageUrl}`" target="_blank">
+        <a :href="`https://wa.me/?text=${imageUrl}`" target="_blank">
           <SvgFooterWhatsapp />
           <ERichText
             tag="p"
@@ -41,7 +53,10 @@
         </a>
       </div>
       <div class="app-popin-share__wrapper__item">
-        <a :href="`https://twitter.com/intent/tweet?url=${window.location.origin + '/' + imageUrl}`" target="_blank">
+        <a
+          :href="`https://twitter.com/intent/tweet?url=${imageUrl}`"
+          target="_blank"
+        >
           <SvgFooterTwitter />
           <ERichText
             tag="p"
@@ -50,7 +65,6 @@
           />
         </a>
       </div>
-
 
       <span class="app-popin-share__close" @click="onClosePopin()">
         Fermer
@@ -74,8 +88,16 @@ export default {
     imageUrl: {
       type: String,
       required: true,
-      default: ""
+      default: '',
+    },
+  },
+  data() {
+    return {
+      currentOrigin: '',
     }
+  },
+  mounted() {
+    this.currentOrigin = window.location.origin
   },
 }
 </script>
