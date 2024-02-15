@@ -26,7 +26,7 @@
       </div>
       <div class="app-popin-share__wrapper__item">
         <a
-          :href="`https://www.linkedin.com/sharing/share-offsite/?url=${imageUrl}`"
+          :href="`https://www.linkedin.com/sharing/share-offsite/?url=${currentOrigin + '/' + imageUrl}`"
           target="_blank"
         >
           <SvgFooterLinkedin />
@@ -38,7 +38,7 @@
         </a>
       </div>
       <div class="app-popin-share__wrapper__item">
-        <a :href="`https://wa.me/?text=${imageUrl}`" target="_blank">
+        <a :href="`https://wa.me/?text=${currentOrigin + '/' + imageUrl}`" target="_blank">
           <SvgFooterWhatsapp />
           <ERichText
             tag="p"
@@ -49,7 +49,7 @@
       </div>
       <div class="app-popin-share__wrapper__item">
         <a
-          :href="`https://twitter.com/intent/tweet?url=${imageUrl}`"
+          :href="`https://twitter.com/intent/tweet?url=${currentOrigin + '/' + imageUrl}`"
           target="_blank"
         >
           <SvgFooterTwitter />
