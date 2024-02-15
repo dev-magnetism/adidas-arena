@@ -54,7 +54,7 @@
             id: 'autosuggest__input',
             ref: 'suggestfield',
             class: 'app-tonnomsurlarena__autosuggest__input',
-            placeholder: 'Recherche ton nom...',
+            placeholder: 'Recherche ton prénom...',
           }"
           component-attr-class-autosuggest-results-container="app-tonnomsurlarena__autosuggest__results-container"
           component-attr-class-autosuggest-results="app-tonnomsurlarena__autosuggest__results"
@@ -178,7 +178,7 @@ export default {
     },
     onSelected(item) {
       this.selected = item.item
-      this.selectedUrl = `imgs/tonnomsurlarena/pics/${this.selected.name}.jpg`
+      this.selectedUrl = `imgs/tonnomsurlarena/pics/${this.selected.name.toLowerCase()}.jpg`
     },
     onInputChange(text) {
       // event fired when the input changes
@@ -521,16 +521,25 @@ export default {
     top: desktop-vw(9px);
 
     .app-atoms-cta-click {
-      padding: desktop-vw(15px) desktop-vw(18px);
+      padding: 0 desktop-vw(18px) !important;
+      height: calc(100%);
     }
 
     .app-atoms-cta__arrow {
       width: desktop-vw(14px);
     }
 
+    .app-atoms-cta.arrow {
+      height: 100%;
+    }
+
     .P2.bold {
       font-size: desktop-vw(18px);
       line-height: desktop-vw(10px);
+
+      @media screen and (max-width: 768px) {
+        font-size: mobile-vw(18px);
+      }
     }
   }
 
@@ -538,10 +547,26 @@ export default {
     &__field {
       position: relative;
 
+      .app-atoms-cta-click {
+        padding: 0 desktop-vw(18px) !important;
+        height: calc(100%);
+      }
+  
+      .app-atoms-cta__arrow {
+        width: desktop-vw(14px);
+
+        @media screen and (max-width: 768px) {
+          width: mobile-vw(14px);
+        }
+      }
+  
+      .app-atoms-cta.arrow {
+        height: calc(100% - 10px);
+      }
+
       & > div:first-child {
         display: flex;
         flex-wrap: wrap;
-        margin: 0 0 desktop-vw(16px);
         width: 100%;
         border: 1px solid var(--c-black);
         padding: desktop-vw(12px);
@@ -559,9 +584,14 @@ export default {
       letter-spacing: desktop-vw(-1px);
       color: var(--c-black);
       text-transform: uppercase;
+
+      @media screen and (max-width: 768px) {
+        font-size: mobile-vw(30px);
+      }
     }
 
     &__results {
+      margin-top: desktop-vw(16px);
       &-container {
         position: absolute;
         width: 100%;
@@ -593,6 +623,11 @@ export default {
       color: var(--c-black);
       text-transform: uppercase;
       cursor: pointer;
+
+      @media screen and (max-width: 768px) {
+        font-size: mobile-vw(25px);
+        line-height: mobile-vw(30px);
+      }
     }
   }
 
@@ -610,6 +645,7 @@ export default {
       &__cta {
         .app-atoms-cta-click {
           padding: desktop-vw(15px) desktop-vw(18px);
+          white-space: nowrap;
         }
       }
     }
