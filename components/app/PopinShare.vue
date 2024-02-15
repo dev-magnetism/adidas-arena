@@ -15,12 +15,7 @@
       />
 
       <div class="app-popin-share__wrapper__item">
-        <a
-          :href="`https://www.facebook.com/sharer/sharer.php?u=${
-            currentOrigin + '/' + imageUrl
-          }`"
-          target="_blank"
-        >
+        <a :href="`https://www.facebook.com/sharer/sharer.php?u=${currentOrigin + '/' + imageUrl}`" target="_blank">
           <SvgFooterFacebook />
           <ERichText
             tag="p"
