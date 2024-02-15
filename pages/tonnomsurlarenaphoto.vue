@@ -1,16 +1,8 @@
 <template>
-  
   <main class="app-tonnomsurlarena">
-
-    <div 
-      class="app-tonnomsurlarena__step grid-inner"
-      >
-
-      <div
-        ref="step1visual"
-        class="app-tonnomsurlarena__visual">
+    <div class="app-tonnomsurlarena__step grid-inner">
+      <div ref="step1visual" class="app-tonnomsurlarena__visual">
         <EKinesis :speed="5">
-
           <div class="app-tonnomsurlarena__visual__container">
             <AppTonnomsurlarenaImage
               :src="`adidas-arena-vue-ext.jpg`"
@@ -20,7 +12,7 @@
                 desktop: 'w600,h600,fcrop,q85',
                 mobile: 'w600,h600,fcrop,q85',
               }"
-              />
+            />
           </div>
         </EKinesis>
 
@@ -37,16 +29,10 @@
             />
             <AtomsCornerPoints :size-points="6" />
           </EKinesis>
-
         </EParallax>
-
       </div>
 
-      <div 
-        ref="step1search"
-        class="app-tonnomsurlarena__search"
-        >
-
+      <div ref="step1search" class="app-tonnomsurlarena__search">
         <ERichText
           ref="title"
           :content="`<h1 class='H1 app-tonnomsurlarena__search__title confirmation regular'><span class='H1 bold'>Ça y est,</span><br/>l'Adidas Arena c'est TON Arena !</h1>`"
@@ -60,49 +46,70 @@
         />
 
         <vue-autosuggest
-          class="app-tonnomsurlarena__autosuggest__field"
           v-model="query"
+          class="app-tonnomsurlarena__autosuggest__field"
+          :get-suggestion-value="getSuggestionValue"
+          :should-render-suggestions="shouldRenderSuggestions"
+          :input-props="{
+            id: 'autosuggest__input',
+            ref: 'suggestfield',
+            class: 'app-tonnomsurlarena__autosuggest__input',
+            placeholder: 'Recherche ton nom...',
+          }"
+          component-attr-class-autosuggest-results-container="app-tonnomsurlarena__autosuggest__results-container"
+          component-attr-class-autosuggest-results="app-tonnomsurlarena__autosuggest__results"
+          component-attr-prefix="app-tonnomsurlarena__autosuggest"
           :suggestions="filteredOptions"
           @focus="focusMe"
           @click="clickHandler"
           @input="onInputChange"
           @selected="onSelected"
-          :get-suggestion-value="getSuggestionValue"
-          :should-render-suggestions="shouldRenderSuggestions"
-          :input-props="{id:'autosuggest__input', ref:'suggestfield', class:'app-tonnomsurlarena__autosuggest__input', placeholder:'Recherche ton nom...'}"
-          component-attr-class-autosuggest-results-container ="app-tonnomsurlarena__autosuggest__results-container" 
-          component-attr-class-autosuggest-results="app-tonnomsurlarena__autosuggest__results"
-          component-attr-prefix="app-tonnomsurlarena__autosuggest"
-          >
-          <template 
-            slot="after-input"
-            >
-            <AtomsCTA
-              class="app-tonnomsurlarena__cta"
-              button
-              disabled
-            >
+        >
+          <template slot="after-input">
+            <AtomsCTA class="app-tonnomsurlarena__cta" button disabled>
               Rechercher
             </AtomsCTA>
           </template>
-          <div slot-scope="{suggestion}" class="app-tonnomsurlarena__autosuggest__item">
-            <div style="{ display: 'flex', color: 'navyblue'}">{{suggestion.item.name}}</div>
+          <div
+            slot-scope="{ suggestion }"
+            class="app-tonnomsurlarena__autosuggest__item"
+          >
+            <div style="{ display: 'flex', color: 'navyblue'}">
+              {{ suggestion.item.name }}
+            </div>
           </div>
         </vue-autosuggest>
-
-
       </div>
-
-      <div 
-        class="app-tonnomsurlarena__pictures"
-        >
-
-      </div>
-
     </div>
 
+    <div v-if="selectedUrl !== ''" class="app-tonnomsurlarena__step grid-inner">
+      <div class="app-tonnomsurlarena__pictures">
+        <nuxt-picture :src="selectedUrl" format="webp" :alt="`Adidas`" />
+        <div class="app-tonnomsurlarena__pictures__cta-container">
+          <AtomsCTA
+            class="app-tonnomsurlarena__pictures__cta-container__cta"
+            button
+            :arrow="false"
+            :download="true"
+            @click.native="download()"
+          >
+            Telecharger
+            <SvgCtaDownload />
+          </AtomsCTA>
+          <AtomsCTA
+            class="app-tonnomsurlarena__pictures__cta-container__cta"
+            button
+            :arrow="false"
+            @click.native="openPopin()"
+          >
+            Partager
+            <SvgCtaShare />
+          </AtomsCTA>
+        </div>
+      </div>
+    </div>
+    <AppPopinShare :popin-share-open="isPopinOpen" :on-close-popin="closePopin" :image-url="selectedUrl" />
   </main>
-
 </template>
 
 <script>
@@ -120,32 +127,34 @@ export default {
     return pageTransition.basic
   },
   components: {
-    VueAutosuggest
+    VueAutosuggest,
   },
   asyncData({ params, store, $axios }) {
     //  const [artist, id] = params.id.split('--')
   },
   data() {
     return {
-      query: "",
-      selected: "",
-    };
+      query: '',
+      selected: '',
+      selectedUrl: '',
+      isPopinOpen: false
+    }
   },
   computed: {
     ...mapState({
       allLoadedFake: (state) => state.allLoadedFake,
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,
-      concoursDatas: (state) => state.concoursDatas
+      concoursDatas: (state) => state.concoursDatas,
     }),
     filteredOptions() {
       return [
-        { 
-          data: this.concoursDatas.filter(option => {
-            return option.name.toLowerCase().includes(this.query.toLowerCase());
-          })
-        }
-      ];
-    }
+        {
+          data: this.concoursDatas.filter((option) => {
+            return option.name.toLowerCase().includes(this.query.toLowerCase())
+          }),
+        },
+      ]
+    },
   },
   watch: {
     initialHeroDisplayed(newVal) {
@@ -164,10 +173,12 @@ export default {
       setAllowScroll: 'setAllowScroll',
     }),
     clickHandler(item) {
+      this.selected = ''
       // event fired when clicking on the input
     },
     onSelected(item) {
-      this.selected = item.item;
+      this.selected = item.item
+      this.selectedUrl = `imgs/tonnomsurlarena/pics/${this.selected.name.toLowerCase()}.jpg`
     },
     onInputChange(text) {
       // event fired when the input changes
@@ -177,27 +188,39 @@ export default {
      * This is what the <input/> value is set to when you are selecting a suggestion.
      */
     getSuggestionValue(suggestion) {
-      return suggestion.item.name;
+      return suggestion.item.name
     },
     shouldRenderSuggestions(size, loading) {
-    // This is the default behavior
-      console.log('size', size);
-      console.log('loading', loading);
-      return size >= 1 && this.query.length > 0
-      // && this.$refs.suggestfield.current.value !== "" 
+      // This is the default behavior
+      return size >= 1 && this.query.length > 0 && this.selected === ''
+      // && this.$refs.suggestfield.current.value !== ""
     },
     focusMe(e) {
       console.log(e) // FocusEvent
+    },
+    download() {
+      const link = document.createElement('a')
+      link.href = this.selectedUrl
+      link.download = this.selected.name
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    },
+    openPopin() {
+      this.isPopinOpen = true;
+    },
+    closePopin() {
+      this.isPopinOpen = false;
     }
   },
 }
 </script>
 
 <style lang="scss">
-.app-tonnomsurlarena{
-
+.app-tonnomsurlarena {
   @include desktop {
-    padding-top: desktop-vw(130px);
+    padding-top: desktop-vw(200px);
+    padding-bottom: desktop-vw(200px);
   }
 
   @include mobile {
@@ -205,38 +228,37 @@ export default {
     grid-gap: mobile-vw(10px);
   }
 
-  &__step{
+  &__step {
     width: 100%;
 
-    @include mobile{
+    @include mobile {
       transition: all 500ms ease-in-out;
     }
   }
 
-  &__visual{
+  &__visual {
     position: relative;
     display: flex;
     flex-direction: column;
 
-    @include mobile{
+    @include mobile {
       grid-column: 1 / span 11;
     }
 
-    @include desktop{
+    @include desktop {
       grid-column: 2 / span 5;
     }
 
-    &__container{
+    &__container {
       display: inline-block;
       overflow: hidden;
 
-
-      @include mobile{
+      @include mobile {
         width: 100%;
         max-height: mobile-vw(440px);
       }
 
-      @include desktop{
+      @include desktop {
         margin-top: desktop-vw(20px);
         width: 90%;
         transform: rotate(-4deg);
@@ -244,18 +266,18 @@ export default {
         max-height: desktop-vw(540px);
       }
 
-      .app-tonnomsurlarena-image{
-        @include desktop{
-         transform: rotate(4deg) scale(1.1);
+      .app-tonnomsurlarena-image {
+        @include desktop {
+          transform: rotate(4deg) scale(1.1);
         }
       }
     }
 
-    &__logo{
-      @include mobile{
+    &__logo {
+      @include mobile {
         display: none;
       }
-      @include desktop{
+      @include desktop {
         position: absolute;
         grid-row: 2;
         width: 30%;
@@ -270,7 +292,6 @@ export default {
         justify-content: center;
         height: auto;
         transform-origin: center center;
-
 
         .app-element-kinesis {
           display: flex;
@@ -289,55 +310,51 @@ export default {
     }
   }
 
-  &__search{
+  &__search {
     position: relative;
     display: flex;
     flex-direction: column;
 
-
-    &__lottie{
-      @include mobile{
+    &__lottie {
+      @include mobile {
         display: none;
       }
 
-      @include desktop{
+      @include desktop {
         position: absolute;
         top: desktop-vw(20px);
         left: desktop-vw(-80px);
         width: 80%;
         transform: translateY(-50%);
       }
-
     }
 
-    @include mobile{
+    @include mobile {
       grid-column: 1 / span 11;
     }
 
-    @include desktop{
+    @include desktop {
       grid-column: 7 / span 5;
     }
 
     &__title {
       width: 100%;
 
-      &.confirmation{
-        @include mobile{
+      &.confirmation {
+        @include mobile {
           margin-bottom: mobile-vw(20px);
         }
-        @include desktop{
+        @include desktop {
           margin-bottom: desktop-vw(50px);
         }
       }
 
-      &.H1.regular{
-
-
+      &.H1.regular {
         @include mobile {
           @include font-ITCFranklinGothicLT-DmCp();
           font-size: mobile-vw(50px);
           line-height: mobile-vw(50px);
-          letter-spacing: mobile-vw(.25px);
+          letter-spacing: mobile-vw(0.25px);
         }
 
         @include desktop {
@@ -346,17 +363,14 @@ export default {
           line-height: desktop-vw(90px);
           letter-spacing: 0;
         }
-
       }
 
-
       .H1.bold {
-
         @include mobile {
           @include font-ITCFranklinGothicLT-BkCp();
           font-size: mobile-vw(50px);
           line-height: mobile-vw(50px);
-          letter-spacing: mobile-vw(.25px);
+          letter-spacing: mobile-vw(0.25px);
         }
 
         @include desktop {
@@ -367,25 +381,25 @@ export default {
       }
     }
 
-    &__paragraph{
+    &__paragraph {
       width: 100%;
       text-transform: uppercase;
-          @include font-ITCFranklinGothicLT-BkCp();
+      @include font-ITCFranklinGothicLT-BkCp();
       color: var(--c-black);
 
-      .br-hidden{
-        @include mobile{
+      .br-hidden {
+        @include mobile {
           display: none;
         }
       }
 
-      @include mobile{
+      @include mobile {
         padding-left: mobile-vw(2px);
         font-size: mobile-vw(16px);
         line-height: mobile-vw(18px);
       }
 
-      @include desktop{
+      @include desktop {
         padding-left: desktop-vw(4px);
         font-size: desktop-vw(14px);
         line-height: desktop-vw(16px);
@@ -401,55 +415,54 @@ export default {
         line-height: desktop-vw(18px);
       }
 
-      &.confirmation{
-
-        @include mobile{
+      &.confirmation {
+        @include mobile {
           margin-bottom: mobile-vw(32px);
         }
 
-        @include desktop{
+        @include desktop {
           margin-bottom: desktop-vw(32px);
         }
       }
 
-      &.regular{
+      &.regular {
         width: 100%;
 
         @include font-ITCFranklinGothicLT-BkCp();
 
-        @include mobile{
+        @include mobile {
           margin-top: 0;
           font-size: mobile-vw(14px);
           line-height: mobile-vw(16px);
         }
 
-        @include desktop{
+        @include desktop {
           margin-top: 0;
           font-size: desktop-vw(14px);
           line-height: desktop-vw(16px);
         }
       }
 
-      &.list{
+      &.list {
         list-style: none;
 
-        li{
+        li {
           position: relative;
 
-          @include mobile{
+          @include mobile {
             padding: 0 0 0 mobile-vw(12px);
           }
 
-          @include desktop{
+          @include desktop {
             padding: 0 0 0 desktop-vw(24px);
           }
 
-          strong{
-           font-family:'ITCFranklinGothicLT-DmCp';
+          strong {
+            font-family: 'ITCFranklinGothicLT-DmCp';
           }
 
-          &:before{
-            content:'';
+          &:before {
+            content: '';
             position: absolute;
             top: 50%;
             line-height: 0;
@@ -457,13 +470,13 @@ export default {
             background-color: #000;
             transform: translateY(-50%);
 
-            @include mobile{
+            @include mobile {
               left: mobile-vw(5px);
               width: mobile-vw(2px);
               height: mobile-vw(2px);
             }
 
-            @include desktop{
+            @include desktop {
               left: desktop-vw(10px);
               width: desktop-vw(2px);
               height: desktop-vw(2px);
@@ -471,69 +484,61 @@ export default {
           }
         }
       }
-
     }
 
-    &__cta{
+    &__cta {
       width: 50%;
 
-      @include mobile{
+      @include mobile {
         margin-top: mobile-vw(30px);
         margin-bottom: mobile-vw(30px);
-
       }
 
-      @include desktop{
+      @include desktop {
         margin-top: desktop-vw(60px);
       }
     }
-
   }
 
-  &__confirm{
-
-
-    &__cta{
+  &__confirm {
+    &__cta {
       width: 50%;
 
-      @include mobile{
+      @include mobile {
         margin-top: mobile-vw(16px);
         margin-bottom: mobile-vw(30px);
-
       }
 
-      @include desktop{
+      @include desktop {
         margin-top: desktop-vw(30px);
       }
     }
   }
 
-
-  &__cta{
+  &__cta {
     position: absolute;
     right: desktop-vw(9px);
     top: desktop-vw(9px);
 
-    .app-atoms-cta-click{
+    .app-atoms-cta-click {
       padding: desktop-vw(15px) desktop-vw(18px);
     }
 
-    .app-atoms-cta__arrow{
+    .app-atoms-cta__arrow {
       width: desktop-vw(14px);
     }
 
-    .P2.bold{
+    .P2.bold {
       font-size: desktop-vw(18px);
       line-height: desktop-vw(10px);
     }
   }
 
-  &__autosuggest{
-
-    &__field{
+  &__autosuggest {
+    &__field {
       position: relative;
 
-      & > div:first-child{
+      & > div:first-child {
         display: flex;
         flex-wrap: wrap;
         margin: 0 0 desktop-vw(16px);
@@ -545,7 +550,7 @@ export default {
       }
     }
 
-    &__input{
+    &__input {
       display: inline-block;
       width: 100%;
       @include font-ITCFranklinGothicLT-BkCp();
@@ -556,41 +561,58 @@ export default {
       text-transform: uppercase;
     }
 
-    &__results{
-
-      &-container{
-
+    &__results {
+      &-container {
+        position: absolute;
+        width: 100%;
       }
 
       padding: desktop-vw(24px) desktop-vw(16px);
       width: 100%;
       border: 1px solid var(--c-black);
 
-      ul{
+      ul {
         list-style: none;
         margin: 0;
       }
 
-      &-item{
+      &-item {
         margin: 0 0 desktop-vw(16px);
 
-        &:last-child{
+        &:last-child {
           margin: 0;
         }
       }
     }
 
-    &__item{
+    &__item {
       @include font-ITCFranklinGothicLT-BkCp();
       font-size: desktop-vw(25px);
       line-height: desktop-vw(30px);
       letter-spacing: desktop-vw(-1px);
       color: var(--c-black);
       text-transform: uppercase;
-      cursor: pointer;  
+      cursor: pointer;
     }
   }
 
-}
+  &__pictures {
+    margin-top: desktop-vw(150px);
+    grid-column: 4 / span 6;
+    position: relative;
 
+    &__cta-container {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      display: flex;
+
+      &__cta {
+        .app-atoms-cta-click {
+          padding: desktop-vw(15px) desktop-vw(18px);
+        }
+      }
+    }
+  }
+}
 </style>
