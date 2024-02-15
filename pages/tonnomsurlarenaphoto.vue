@@ -218,13 +218,14 @@ export default {
 
 <style lang="scss">
 .app-tonnomsurlarena {
-  @include desktop {
+ @include desktop {
     padding-top: desktop-vw(200px);
     padding-bottom: desktop-vw(200px);
   }
 
   @include mobile {
     padding-top: mobile-vw(85px);
+    padding-bottom: desktop-vw(200px);
     grid-gap: mobile-vw(10px);
   }
 
