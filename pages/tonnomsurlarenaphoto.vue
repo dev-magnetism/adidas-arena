@@ -178,7 +178,7 @@ export default {
     },
     onSelected(item) {
       this.selected = item.item
-      this.selectedUrl = `imgs/tonnomsurlarena/pics/${this.selected.name.toLowerCase()}.jpg`
+      this.selectedUrl = `imgs/tonnomsurlarena/pics/${this.selected.name}.jpg`
     },
     onInputChange(text) {
       // event fired when the input changes
