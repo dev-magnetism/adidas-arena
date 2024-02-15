@@ -66,7 +66,7 @@
           @selected="onSelected"
         >
           <template slot="after-input">
-            <AtomsCTA class="app-tonnomsurlarena__cta" button disabled>
+            <AtomsCTA class="app-tonnomsurlarena__cta" button disabled @click.native="check()">
               Rechercher
             </AtomsCTA>
           </template>
@@ -108,7 +108,11 @@
         </div>
       </div>
     </div>
-    <AppPopinShare :popin-share-open="isPopinOpen" :on-close-popin="closePopin" :image-url="selectedUrl" />
+    <AppPopinShare
+      :popin-share-open="isPopinOpen"
+      :on-close-popin="closePopin"
+      :image-url="selectedUrl"
+    />
   </main>
 </template>
 
@@ -137,7 +141,7 @@ export default {
       query: '',
       selected: '',
       selectedUrl: '',
-      isPopinOpen: false
+      isPopinOpen: false,
     }
   },
   computed: {
@@ -179,6 +183,12 @@ export default {
     onSelected(item) {
       this.selected = item.item
       this.selectedUrl = `imgs/tonnomsurlarena/pics/${this.selected.name}.jpg`
+      setTimeout(() => {
+        window.scrollBy({
+          top: window.innerHeight,
+          behavior: 'smooth',
+        })
+      }, 750)
     },
     onInputChange(text) {
       // event fired when the input changes
@@ -207,25 +217,25 @@ export default {
       document.body.removeChild(link)
     },
     openPopin() {
-      this.isPopinOpen = true;
+      this.isPopinOpen = true
     },
     closePopin() {
-      this.isPopinOpen = false;
-    }
+      this.isPopinOpen = false
+    },
   },
 }
 </script>
 
 <style lang="scss">
 .app-tonnomsurlarena {
- @include desktop {
+  @include desktop {
     padding-top: desktop-vw(200px);
     padding-bottom: desktop-vw(200px);
   }
 
   @include mobile {
     padding-top: mobile-vw(85px);
-    padding-bottom: desktop-vw(200px);
+    padding-bottom: desktop-vw(500px);
     grid-gap: mobile-vw(10px);
   }
 
@@ -552,7 +562,7 @@ export default {
         padding: 0 desktop-vw(18px) !important;
         height: calc(100%);
       }
-  
+
       .app-atoms-cta__arrow {
         width: desktop-vw(14px);
 
@@ -560,9 +570,13 @@ export default {
           width: mobile-vw(14px);
         }
       }
-  
+
       .app-atoms-cta.arrow {
-        height: calc(100% - 10px);
+        height: calc(100% - 1.133333vw);
+
+        @include mobile {
+          height: calc(100% - 5px);
+        }
       }
 
       & > div:first-child {
@@ -587,7 +601,7 @@ export default {
       text-transform: uppercase;
 
       @media screen and (max-width: 768px) {
-        font-size: mobile-vw(30px);
+        font-size: mobile-vw(24px);
       }
     }
 
