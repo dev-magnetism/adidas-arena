@@ -54,7 +54,7 @@
             id: 'autosuggest__input',
             ref: 'suggestfield',
             class: 'app-tonnomsurlarena__autosuggest__input',
-            placeholder: 'Recherche ton prénom...',
+            placeholder: 'Tape ton prénom ici...',
           }"
           component-attr-class-autosuggest-results-container="app-tonnomsurlarena__autosuggest__results-container"
           component-attr-class-autosuggest-results="app-tonnomsurlarena__autosuggest__results"
@@ -228,6 +228,13 @@ export default {
 
 <style lang="scss">
 .app-tonnomsurlarena {
+::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+::-moz-placeholder {
+  font-style: italic;
+}
   @include desktop {
     padding-top: desktop-vw(200px);
     padding-bottom: desktop-vw(200px);
@@ -590,6 +597,8 @@ export default {
       }
     }
 
+   
+
     &__input {
       display: inline-block;
       width: 100%;
@@ -599,6 +608,7 @@ export default {
       letter-spacing: desktop-vw(-1px);
       color: var(--c-black);
       text-transform: uppercase;
+
 
       @media screen and (max-width: 768px) {
         font-size: mobile-vw(24px);
