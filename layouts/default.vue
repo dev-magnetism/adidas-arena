@@ -11,7 +11,7 @@
     <AppCursor />
     <AppPreloader />
     <AppCookie />
-    <AppPopinNewsletter />
+    <!-- AppPopinNewsletter / -->
     <AppHeader />
     <AppMenu v-if="this.webview !== 'ok'" />
     <AppScrollbar />
