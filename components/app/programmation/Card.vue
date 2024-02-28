@@ -31,8 +31,8 @@
         :alt="`card-image-${event.id}-${event.artist_reference}`"
         :lazy="true"
         :sizes="{
-          desktop: 'w600,h600,fcrop,q85',
-          mobile: 'w600,h600,fcrop,q85',
+          desktop: 'w800,h800,fcrop,q85',
+          mobile: 'w800,h800,fcrop,q85',
         }"
       />
     </div>
