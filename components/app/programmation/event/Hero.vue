@@ -478,7 +478,7 @@ export default {
     display: flex;
     flex-direction: column;
   }
-
+  .app-atoms-cta-form,
   .app-atoms-cta {
     width: 50%;
 
