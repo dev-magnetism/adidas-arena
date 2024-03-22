@@ -156,8 +156,10 @@ export default {
     onSubmit() {
       this.submited = true
 
-      const url =
-        'https://5ovs8mt0r8.execute-api.eu-central-1.amazonaws.com/prod/contact/'
+      //  const url = 'https://5ovs8mt0r8.execute-api.eu-central-1.amazonaws.com/prod/contact/'
+
+
+      const url = 'https://jyoxikyatc.execute-api.us-east-1.amazonaws.com/prod/contact/'
 
       const xhr = new XMLHttpRequest()
 
