@@ -40,7 +40,11 @@
       :index-date="event.sessions.length - 1 > 0 ? indexDate : 0"
     />
 
-    <!-- <AppProgrammationEventOffers ref="offers" /> -->
+    <AppProgrammationEventOffers 
+      ref="offers" 
+      v-if="event.offers?.length > 0"
+      :event="event"
+      />
 
     <AppProgrammationEventAboutArtist v-if="event.content.about_text !==''" :event="event" />
 
@@ -179,6 +183,8 @@ export default {
   mounted() {
     this.initScrollTrigger()
     this.initMatchMedia()
+
+    console.log('Event:', this.event);
   },
   beforeDestroy() {
     this.scrollTriggerCTA?.kill()

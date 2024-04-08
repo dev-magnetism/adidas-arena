@@ -248,6 +248,9 @@ export const mutations = {
   setProgrammationsContent: (state, value) => {
     state.programmationsContent = value
   },
+  setProgrammationOfferContent: (state, value) => {
+    state.programmationOfferContent = value
+  },
   setProgrammationsEventContent: (state, value) => {
     state.programmationsEventContent = value
   },
@@ -310,10 +313,20 @@ export const actions = {
 
     const programmations = await $directus.items('Programmations').readByQuery({
       limit: -1,
-      fields: ['*'],
+      fields: [
+        '*',
+        'offer.*'
+        ],
     })
 
     commit('setProgrammationsContent', programmations.data)
+
+    const programmationOffers = await $directus.items('Programmation_Offer').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+
+    commit('setProgrammationOfferContent', programmationOffers.data)
 
     const actualites = await $directus.items('Actualites').readByQuery({
       limit: -1,
@@ -388,6 +401,8 @@ export const actions = {
       const contents = payload.data
       const progDirectContents = programmations.data
 
+      const progOffersDirectContents = programmationOffers.data
+
       // 3 / Récupération des données complètes par Event
       for (let i = 0; i < contents.length; i++) {
         // Récupération du flux par event pour la clé 'instruction_id' qui n'est pas complète dans le flux global
@@ -405,6 +420,8 @@ export const actions = {
           (cont) => parseInt(cont.id_event) === contents[i].id
         )
 
+        //  console.log('progDirectContent offers', progDirectContent.offers)
+
         contents[i].is_draft = progDirectContent.is_draft
         contents[i].main_event = progDirectContent.main_event
         contents[i].inside_slider = progDirectContent.inside_slider
@@ -414,6 +431,15 @@ export const actions = {
 
         contents[i].spotify_link = progDirectContent.spotify_link
         contents[i].cover_video = progDirectContent.cover_video
+
+        contents[i].ticketing_std_title = (progDirectContent.ticketing_std_title)?progDirectContent.ticketing_std_title:programmationsEvent.data.ticketing_std_title
+        contents[i].ticketing_std_description = (progDirectContent.ticketing_std_description)?progDirectContent.ticketing_std_description:programmationsEvent.data.ticketing_std_description
+        contents[i].ticketing_prem_title = (progDirectContent.ticketing_prem_title)?progDirectContent.ticketing_prem_title:programmationsEvent.data.ticketing_prem_title
+        contents[i].ticketing_prem_description = (progDirectContent.ticketing_prem_description)?progDirectContent.ticketing_prem_description:programmationsEvent.data.ticketing_prem_description
+
+        contents[i].offers = progDirectContent.offer.map((_item)=>{
+            return progOffersDirectContents.find(_offer => _offer.id === _item.Programmation_Offer_id)
+        });
 
         contents[i].content = contents[i].translations.find(
           (translation) => translation.language === 'fr'
@@ -434,6 +460,9 @@ export const actions = {
             (translation) => translation.language === 'fr'
           )
         })
+
+
+
       }
 
       // Copie de l'array "contents" dans la variable "test".
