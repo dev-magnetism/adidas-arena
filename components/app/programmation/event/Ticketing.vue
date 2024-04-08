@@ -22,9 +22,9 @@
           class="app-programmation-event-ticketing__ticket"
         >
           <div class="app-programmation-event-ticketing__infos">
-            <TH2Bis>Standard</TH2Bis>
+            <TH2Bis>{{event.ticketing_std_title}}</TH2Bis>
             <TP2 weight="medium">
-              Achetez votre place et venez vivre une expérience inoubliable
+              {{event.ticketing_std_description}}
             </TP2>
           </div>
           <div class="app-programmation-event-ticketing__scan-code">
@@ -39,9 +39,9 @@
           class="app-programmation-event-ticketing__ticket"
         >
           <div class="app-programmation-event-ticketing__infos">
-            <TH2Bis>PREMIUM</TH2Bis>
+            <TH2Bis>{{event.ticketing_prem_title}}</TH2Bis>
             <TP2 weight="medium">
-              Achetez votre place et venez vivre une expérience inoubliable
+             {{event.ticketing_prem_description}}
             </TP2>
           </div>
           <div class="app-programmation-event-ticketing__scan-code">
