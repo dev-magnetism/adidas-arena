@@ -183,8 +183,6 @@ export default {
   mounted() {
     this.initScrollTrigger()
     this.initMatchMedia()
-
-    console.log('Event:', this.event);
   },
   beforeDestroy() {
     this.scrollTriggerCTA?.kill()
