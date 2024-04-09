@@ -6,49 +6,52 @@
       Les offres
     </TH2>
 
-    <div class="app-programmation-event-orders__items grid">
-
-      
-
-    </div>
-
-    <div class="app-programmation-event-orders-slider">
+    <div 
+      class="app-programmation-event-orders-slider"
+      >
       <div
         ref="wrapper"
-        :class="{ hold: cursorSliderHold }"
+        :class="{ hold: cursorSliderHold, 'slide-init' : (event.offers?.length > ($viewport.isLargeDesktop?4:3)) }"
         class="app-programmation-event-orders-slider__wrapper"
-        @mouseenter="event.offers?.length > 3?setCursorState('slider'):null"
-        @mouseleave="event.offers?.length > 3?setCursorState('hide'):null"
-        @click="event.offers?.length > 3?onClickSlider:null"
+        @mouseenter="(event.offers?.length > ($viewport.isLargeDesktop?4:3))?setCursorState('slider'):null"
+        @mouseleave="(event.offers?.length > ($viewport.isLargeDesktop?4:3))?setCursorState('hide'):null"
+        @click="(event.offers?.length > ($viewport.isLargeDesktop?4:3))?onClickSlider:null"
         >
-        <div class="app-programmation-event-orders-slider__inner">
+        <div 
+          class="app-programmation-event-orders-slider__inner"
+          >
 
           <div 
             v-for="(offer, index) in event.offers"
             :key="index"
-            class="app-programmation-event-orders__item"
+            class="app-programmation-event-orders__item-container"
             >
-            <picture class="app-programmation-event-orders__item__visual">
-              <nuxt-img
-                provider="directus"
-                :src="offer.visual"
-                :alt="offer.title"
-                format="webp"
-                loading="lazy"
-                sizes="sm:20vw md:10vw"
-                />
-            </picture>
-            <div class="app-programmation-event-orders__item__content">
-              <TH2Bis>{{offer.title}}</TH2Bis>
-              <TP1>
-                {{offer.description}}
-              </TP1>
-              <AtomsCTA
-                :href="offer.cta_url"
-                target="_blank"
-                >
-                {{offer.cta_label}}
-              </AtomsCTA>
+            <div class="app-programmation-event-orders__item">
+              <picture class="app-programmation-event-orders__item__visual">
+                <nuxt-img
+                  provider="directus"
+                  :src="offer.visual"
+                  :alt="offer.title"
+                  format="webp"
+                  loading="lazy"
+                  sizes="sm:20vw md:10vw"
+                  />
+              </picture>
+              <div class="app-programmation-event-orders__item__content">
+                <TH2Bis>{{offer.title}}</TH2Bis>
+                <TP1>
+                  {{offer.description}}
+                </TP1>
+                <AtomsCTA
+                  :href="offer.cta_url"
+                  target="_blank"
+                  ref="cta"
+                  @mouseenter.native="onMouseEnter"
+                  @mouseleave.native="onMouseLeave"
+                  >
+                  {{offer.cta_label}}
+                </AtomsCTA>
+              </div>
             </div>
           </div>
 
@@ -81,13 +84,15 @@ export default {
   },
   watch: {
     cursorSliderLeftZone() {
-      if(this.event.offers?.length > 3){
+      const _limit = this.$viewport.isLargeDesktop?4:3;
+      if(this.event.offers?.length > _limit){
         this.handleDisabledCursor()
       }
     },
   },
   mounted() {
-    if(this.event.offers?.length > 3){
+    const _limit = this.$viewport.isLargeDesktop?4:3;
+    if(this.event.offers?.length > _limit){
       this.embla = EmblaCarousel(this.$refs.wrapper, {
         dragFree: true,
         containScroll: 'keepSnaps',
@@ -110,13 +115,14 @@ export default {
     }
   },
   beforeDestroy() {
+    const _limit = this.$viewport.isLargeDesktop?4:3;
 
-    if(this.event.offers?.length > 3){
+    if(this.event.offers?.length > _limit){
       this.embla?.off('pointerUp', this.onPointerUp)
       this.embla?.off('pointerDown', this.onPointerDown)
 
       if (!this.$viewport.isMobile) {
-        if(this.event.offers?.length > 3){
+        if(this.event.offers?.length > _limit){
           this.embla?.off('init', this.onScroll)
           this.embla?.off('scroll', this.onScroll)
           this.embla?.off('resize', this.onScroll)
@@ -127,9 +133,25 @@ export default {
       this.embla?.destroy()
     }
   },methods: {
-    onClickSlider(e) {
+    onMouseEnter() {
+      const _limit = this.$viewport.isLargeDesktop?4:3;
+      if(this.event.offers?.length > _limit){
+        if (this.$viewport.isMobile) return
 
-      if(this.event.offers?.length > 3){
+        this.setCursorState('hide')
+      }
+    },
+    onMouseLeave() {
+      const _limit = this.$viewport.isLargeDesktop?4:3;
+      if(this.event.offers?.length > _limit){
+        if (this.$viewport.isMobile) return
+
+        this.setCursorState('slider')
+      }
+    },
+    onClickSlider(e) {
+      const _limit = this.$viewport.isLargeDesktop?4:3;
+      if(this.event.offers?.length > _limit){
         if (this.$viewport.isMobile) return
 
         const isLeft = e.clientX < this.$viewport.width / 2
@@ -145,17 +167,20 @@ export default {
     },
 
     onScroll() {
-      if(this.event.offers?.length > 3){
+      const _limit = this.$viewport.isLargeDesktop?4:3;
+      if(this.event.offers?.length > _limit){
        this.setParallax()
       }
     },
     onSelect(e) {
-      if(this.event.offers?.length > 3){
+      const _limit = this.$viewport.isLargeDesktop?4:3;
+      if(this.event.offers?.length > _limit){
         this.handleDisabledCursor()
       }
     },
     onPointerDown() {
-      if(this.event.offers?.length > 3){
+      const _limit = this.$viewport.isLargeDesktop?4:3;
+      if(this.event.offers?.length > _limit){
         if (this.allowScroll) {
           this.setAllowScroll(false)
         }
@@ -164,7 +189,8 @@ export default {
       }
     },
     onPointerUp() {
-      if(this.event.offers?.length > 3){
+      const _limit = this.$viewport.isLargeDesktop?4:3;
+      if(this.event.offers?.length > _limit){
         if (!this.allowScroll) {
           this.setAllowScroll(true)
         }
@@ -173,7 +199,8 @@ export default {
       }
     },
     handleDisabledCursor() {
-      if(this.event.offers?.length > 3){
+      const _limit = this.$viewport.isLargeDesktop?4:3;
+      if(this.event.offers?.length > _limit){
         const canScrollPrev = this.embla.canScrollPrev()
         const canScrollNext = this.embla.canScrollNext()
 
@@ -188,7 +215,8 @@ export default {
       }
     },
     calculateParallaxTransforms() {
-      if(this.event.offers?.length > 3){
+      const _limit = this.$viewport.isLargeDesktop?4:3;
+      if(this.event.offers?.length > _limit){
         const engine = this.embla.internalEngine()
         const scrollProgress = this.embla.scrollProgress()
 
@@ -212,7 +240,8 @@ export default {
       }
     },
     setParallax() {
-      if(this.event.offers?.length > 3){
+      const _limit = this.$viewport.isLargeDesktop?4:3;
+      if(this.event.offers?.length > _limit){
         const slides = this.embla.slideNodes()
 
         const layers = slides.map((s) =>
@@ -264,9 +293,29 @@ export default {
     }
 
     &__wrapper {
+      display: block;
       width: 100%;
-      overflow: hidden;
       padding: 0;
+
+      &.slide-init{
+        overflow: hidden;
+
+        .app-programmation-event-orders-slider__inner{
+          will-change: transform;
+        }
+
+        .app-programmation-event-orders__item-container{
+          flex: 0 0 33.333%;
+
+          @include mobile {
+            flex: 0 0 85%;
+          }
+
+          @include desktop-l {
+            flex: 0 0 25%;
+          }
+        }
+      }
 
       @include mobile {
         padding: 0;
@@ -275,45 +324,64 @@ export default {
 
     &__inner {
       display: flex;
-      column-gap: desktop-vw(20px);
       flex-direction: row;
-      will-change: transform;
+      margin: 0 desktop-vw(-10px);
+      //  column-gap: desktop-vw(20px);
 
       @include mobile {
-        column-gap: mobile-vw(20px);
+        //  column-gap: mobile-vw(20px);
+      }
+
+      @include desktop-l {
+        //  column-gap: desktop-vw(16px);
       }
     }
   }
 
-  &__items {
-  }
-
-  &__item {
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 32.3%;
-    background: var(--c-white);
-    border: 1px solid var(--c-black);
+  &__item-container {
+    display: block;
+    flex: 0 0 33.333%;
+    padding: 0 desktop-vw(10px);
 
     @include mobile {
       flex: 0 0 85%;
+      padding: 0 mobile-vw(10px);
     }
 
+    @include desktop-l {
+      flex: 0 0 25%;
+    }
+  }
+
+  &__item {
+    display: block;
+    width: 100%;
+    background: var(--c-white);
+    border: 1px solid var(--c-black);
+
+
     &__visual {
-      aspect-ratio: 435 / 300;
+      position: relative;
+      //  aspect-ratio: 435 / 300;
+      padding: 68.65% 0 0;
       width: 100%;
-      height: auto;
+      height: 0;
       display: block;
+      overflow: hidden;
 
       @include mobile {
-        aspect-ratio: 340 / 300;
+        //  aspect-ratio: 340 / 300;
       }
 
       img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
         width: 100%;
         height: 100%;
         object-fit: cover;
         display: block;
+        transform: translate(-50%, -50%);
       }
     }
 
@@ -344,6 +412,11 @@ export default {
 
         @include mobile {
           margin-bottom: mobile-vw(25px);
+        }
+
+        @include desktop-l {
+          font-size: desktop-vw(48px);
+          line-height: desktop-vw(42px);
         }
       }
 
