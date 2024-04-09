@@ -34,7 +34,7 @@
                   :alt="offer.title"
                   format="webp"
                   loading="lazy"
-                  sizes="sm:20vw md:10vw"
+                  sizes="sm:320 md:874"
                   />
               </picture>
               <div class="app-programmation-event-orders__item__content">
