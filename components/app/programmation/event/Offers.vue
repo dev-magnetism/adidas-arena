@@ -11,11 +11,11 @@
       >
       <div
         ref="wrapper"
-        :class="{ hold: cursorSliderHold, 'slide-init' : (event.offers?.length > ($viewport.isLargeDesktop?4:3)) }"
+        :class="{ hold: cursorSliderHold, 'slide-init' : (event.offers?.length > ($viewport.isLargeDesktop?4:$viewport.isDesktop?3:1)) }"
         class="app-programmation-event-orders-slider__wrapper"
-        @mouseenter="(event.offers?.length > ($viewport.isLargeDesktop?4:3))?setCursorState('slider'):null"
-        @mouseleave="(event.offers?.length > ($viewport.isLargeDesktop?4:3))?setCursorState('hide'):null"
-        @click="(event.offers?.length > ($viewport.isLargeDesktop?4:3))?onClickSlider:null"
+        @mouseenter="(event.offers?.length > ($viewport.isLargeDesktop?4:$viewport.isDesktop?3:1))?setCursorState('slider'):null"
+        @mouseleave="(event.offers?.length > ($viewport.isLargeDesktop?4:$viewport.isDesktop?3:1))?setCursorState('hide'):null"
+        @click="(event.offers?.length > ($viewport.isLargeDesktop?4:$viewport.isDesktop?3:1))?onClickSlider:null"
         >
         <div 
           class="app-programmation-event-orders-slider__inner"
@@ -84,14 +84,14 @@ export default {
   },
   watch: {
     cursorSliderLeftZone() {
-      const _limit = this.$viewport.isLargeDesktop?4:3;
+      const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
       if(this.event.offers?.length > _limit){
         this.handleDisabledCursor()
       }
     },
   },
   mounted() {
-    const _limit = this.$viewport.isLargeDesktop?4:3;
+    const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
     if(this.event.offers?.length > _limit){
       this.embla = EmblaCarousel(this.$refs.wrapper, {
         dragFree: true,
@@ -115,7 +115,7 @@ export default {
     }
   },
   beforeDestroy() {
-    const _limit = this.$viewport.isLargeDesktop?4:3;
+    const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
 
     if(this.event.offers?.length > _limit){
       this.embla?.off('pointerUp', this.onPointerUp)
@@ -134,7 +134,7 @@ export default {
     }
   },methods: {
     onMouseEnter() {
-      const _limit = this.$viewport.isLargeDesktop?4:3;
+      const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
       if(this.event.offers?.length > _limit){
         if (this.$viewport.isMobile) return
 
@@ -142,7 +142,7 @@ export default {
       }
     },
     onMouseLeave() {
-      const _limit = this.$viewport.isLargeDesktop?4:3;
+      const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
       if(this.event.offers?.length > _limit){
         if (this.$viewport.isMobile) return
 
@@ -150,7 +150,7 @@ export default {
       }
     },
     onClickSlider(e) {
-      const _limit = this.$viewport.isLargeDesktop?4:3;
+      const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
       if(this.event.offers?.length > _limit){
         if (this.$viewport.isMobile) return
 
@@ -167,19 +167,19 @@ export default {
     },
 
     onScroll() {
-      const _limit = this.$viewport.isLargeDesktop?4:3;
+      const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
       if(this.event.offers?.length > _limit){
        this.setParallax()
       }
     },
     onSelect(e) {
-      const _limit = this.$viewport.isLargeDesktop?4:3;
+      const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
       if(this.event.offers?.length > _limit){
         this.handleDisabledCursor()
       }
     },
     onPointerDown() {
-      const _limit = this.$viewport.isLargeDesktop?4:3;
+      const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
       if(this.event.offers?.length > _limit){
         if (this.allowScroll) {
           this.setAllowScroll(false)
@@ -189,7 +189,7 @@ export default {
       }
     },
     onPointerUp() {
-      const _limit = this.$viewport.isLargeDesktop?4:3;
+      const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
       if(this.event.offers?.length > _limit){
         if (!this.allowScroll) {
           this.setAllowScroll(true)
@@ -199,7 +199,7 @@ export default {
       }
     },
     handleDisabledCursor() {
-      const _limit = this.$viewport.isLargeDesktop?4:3;
+      const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
       if(this.event.offers?.length > _limit){
         const canScrollPrev = this.embla.canScrollPrev()
         const canScrollNext = this.embla.canScrollNext()
@@ -215,7 +215,7 @@ export default {
       }
     },
     calculateParallaxTransforms() {
-      const _limit = this.$viewport.isLargeDesktop?4:3;
+      const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
       if(this.event.offers?.length > _limit){
         const engine = this.embla.internalEngine()
         const scrollProgress = this.embla.scrollProgress()
@@ -240,7 +240,7 @@ export default {
       }
     },
     setParallax() {
-      const _limit = this.$viewport.isLargeDesktop?4:3;
+      const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
       if(this.event.offers?.length > _limit){
         const slides = this.embla.slideNodes()
 
