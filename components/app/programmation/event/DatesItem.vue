@@ -210,11 +210,12 @@ export default {
     flex-wrap: wrap;
     min-height: desktop-vw(94px);
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
 
     @include mobile {
       padding: 0 0 mobile-vw(13px) 0;
       min-height: unset;
+      justify-content: center;
     }
   }
 
@@ -261,7 +262,6 @@ export default {
 
   &__date {
     display: inline-block;
-    flex: 1 0 0%;
     width: auto;
     padding: 0 0 0 desktop-vw(16px);
 
@@ -291,11 +291,12 @@ export default {
   }
 
   &__info {
-    margin-top: auto;
-    width: 45%;
+    width: 15%;
 
     @include mobile {
       width: 85%;
+      text-align: center;
+      margin-bottom: mobile-vw(16px);
     }
   }
 }
