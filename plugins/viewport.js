@@ -16,6 +16,7 @@ const viewport = new Vue({
       isTablet: null,
       isLandscape: null,
       isDesktop: null,
+      isLargeDesktop: null,
       isFirefox: navigator.userAgent.toLowerCase().includes('firefox'),
     }
   },
@@ -39,6 +40,7 @@ const viewport = new Vue({
       this.isTablet =
         !this.isMobile && window.matchMedia('(max-width: 1024px)').matches
       this.isDesktop = window.matchMedia('(min-width: 1025px)').matches
+      this.isLargeDesktop = window.matchMedia('(min-width: 1920px)').matches
       this.isLandscape = window.matchMedia('(orientation: landscape)').matches
 
       // console.log(
