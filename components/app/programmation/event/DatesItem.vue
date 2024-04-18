@@ -54,7 +54,6 @@
 
       <AtomsCTA
         v-else-if="session.session_status === 'H'"
-        :href="session.content.url"
         :color="statutColor"
         :layer-color="statutColor"
         :bg="'grey'"
@@ -64,7 +63,6 @@
 
       <AtomsCTA
         v-else
-        :href="session.content.url"
         :color="statutColor"
         :layer-color="statutColor"
         :bg="'grey'"
@@ -243,6 +241,12 @@ export default {
       transform: unset;
       font-size: mobile-vw(24px);
       line-height: mobile-vw(24px);
+    }
+  }
+
+  .app-atoms-cta {
+    &:active {
+      pointer-events: none;
     }
   }
 
