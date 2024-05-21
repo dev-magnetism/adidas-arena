@@ -449,6 +449,9 @@ export const actions = {
           ? contents[i].content.category.toLowerCase()
           : 'no cat'
 
+        // Make sure dates are sorted properly
+        contents[i].sessions.sort((a, b) => new Date(a.date) - new Date(b.date))
+
         contents[i].sessions.forEach((session) => {
           session.content = session.translations.find(
             (translation) => translation.language === 'fr'
