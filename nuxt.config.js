@@ -23,6 +23,10 @@ export default {
     meta: [
       { charset: 'utf-8' },
       {
+        name: 'robots',
+        content:`${(process.env.SITE_ENV !== 'production')?'noindex, nofollow':'index, follow'}`
+      },
+      {
         name: 'viewport',
         content:
           'width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no',
