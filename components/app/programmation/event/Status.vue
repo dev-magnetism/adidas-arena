@@ -1,7 +1,17 @@
 <template>
-  <TH4 v-if="statusText" :color="color" class="app-programmation-event-status">
-    {{ statusText }}
-  </TH4>
+  <div class="app-programmation-event-statuses">
+
+    <div class="app-programmation-event-statuses__row">
+      <TH4 v-if="statusText" :color="'red-adidas'" class="app-programmation-event-status">
+        {{ statusText }}
+      </TH4>
+    </div>
+    <div class="app-programmation-event-statuses__row">
+      <TH5 v-if="reported && waitnewdate" :color="'blue-adidas'" class="app-programmation-event-status newdate">
+      {{this.programmationsEventContent.glossary_waiting_new_date}}
+      </TH5>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -9,15 +19,15 @@ import { mapState } from 'vuex'
 
 export default {
   props: {
-    color: {
-      type: String,
-      default: 'white',
-    },
     presale: {
       type: Boolean,
       default: false,
     },
     reported: {
+      type: Boolean,
+      default: false,
+    },
+    waitnewdate: {
       type: Boolean,
       default: false,
     },
@@ -66,17 +76,33 @@ export default {
 </script>
 
 <style lang="scss">
+.app-programmation-event-statuses__row{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .app-programmation-event-status {
+  display: block;
+  flex: 0 0 auto;
+  width: auto;
   padding: desktop-vw(5px) desktop-vw(8px);
-  display: inline-flex;
   background-color: #fbf5ee;
   border: 1px solid var(--c-black);
   z-index: 3;
   font-size: desktop-vw(28px);
+  color: var(--c-red-adidas);
 
   @include mobile {
     padding: mobile-vw(5px) mobile-vw(8px);
     font-size: mobile-vw(28px);
+  }
+
+  &.newdate{
+    flex: 1 0 0%;
+    width: 100%;
+    color: var(--c-blue-adidas);
+    font-size: desktop-vw(18px);
   }
 }
 </style>

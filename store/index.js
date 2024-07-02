@@ -84,8 +84,15 @@ export const getters = {
       }, {})
     )
 
+    const _reported = state.programmes.filter(_v => _v.reported);
+
+    console.log('programmesCategories / _reported', _reported);
+
     result.unshift({ category: 'Tout', count: state.programmes.length })
 
+    result.push({ category: 'Reports', count: _reported.length })
+
+    console.log('programmesCategories / result', result);
     return result
   },
   actualitesCategories: (state) => {
@@ -377,7 +384,8 @@ export const actions = {
       `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=1&page=1`
     )
 
-    // https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=1&page=1
+    // PROD     : `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=1&page=1`
+    // PREPROD  : `https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=1&page=1`
 
     const limit = 50
 
@@ -395,13 +403,17 @@ export const actions = {
       const payload = await this.$axios.$get(
         `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
       )
-      // https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}
+
+      // PROD     : `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
+      // PREPROD  : `https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
 
       // 2 / Récupération des données Programmations via Directus (réutilisation de la variable programmations plus haut)
       const contents = payload.data
       const progDirectContents = programmations.data
 
       const progOffersDirectContents = programmationOffers.data
+
+      let _testInd = 0;
 
       // 3 / Récupération des données complètes par Event
       for (let i = 0; i < contents.length; i++) {
@@ -410,7 +422,9 @@ export const actions = {
           `https://www.accorarena.com/api-svc/partners/adidas-arena/event/${contents[i].id}`
         )
 
-        // https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/event/${contents[i].id}
+        // PROD     : `https://www.accorarena.com/api-svc/partners/adidas-arena/event/${contents[i].id}`
+        // PREPROD  : `https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/event/${contents[i].id}`
+
 
         // Complétion des données 1 avec données 2 et 3
 
@@ -422,22 +436,38 @@ export const actions = {
 
         //  console.log('progDirectContent offers', progDirectContent.offers)
 
-        contents[i].is_draft = progDirectContent.is_draft
-        contents[i].main_event = progDirectContent.main_event
-        contents[i].inside_slider = progDirectContent.inside_slider
+        contents[i].is_draft = progDirectContent?.is_draft
+        contents[i].main_event = progDirectContent?.main_event
+        contents[i].inside_slider = progDirectContent?.inside_slider
         contents[i].instruction_id = contentEvent.instruction_id
           ? contentEvent.instruction_id
           : []
 
-        contents[i].spotify_link = progDirectContent.spotify_link
-        contents[i].cover_video = progDirectContent.cover_video
+        contents[i].spotify_link = progDirectContent?.spotify_link
+        contents[i].cover_video = progDirectContent?.cover_video
 
-        contents[i].ticketing_std_title = (progDirectContent.ticketing_std_title)?progDirectContent.ticketing_std_title:programmationsEvent.data.ticketing_std_title
-        contents[i].ticketing_std_description = (progDirectContent.ticketing_std_description)?progDirectContent.ticketing_std_description:programmationsEvent.data.ticketing_std_description
-        contents[i].ticketing_prem_title = (progDirectContent.ticketing_prem_title)?progDirectContent.ticketing_prem_title:programmationsEvent.data.ticketing_prem_title
-        contents[i].ticketing_prem_description = (progDirectContent.ticketing_prem_description)?progDirectContent.ticketing_prem_description:programmationsEvent.data.ticketing_prem_description
 
-        contents[i].offers = progDirectContent.offer.map((_item)=>{
+        // REPORTED USE CASE TEST
+        if(i % 2 === 0) {
+          contents[i].reported = true;
+          contents[i].initial_date = "2024-06-08 20:00:00";
+
+          if(_testInd % 2 === 0) {
+            contents[i].report_date_announcement = "2025-11-08 20:00:00";
+            contents[i].waiting_new_date = false;
+          } else {
+            contents[i].waiting_new_date = true;
+          }
+
+          _testInd = _testInd +1;
+        }
+
+        contents[i].ticketing_std_title = (progDirectContent?.ticketing_std_title)?progDirectContent.ticketing_std_title:programmationsEvent.data.ticketing_std_title
+        contents[i].ticketing_std_description = (progDirectContent?.ticketing_std_description)?progDirectContent.ticketing_std_description:programmationsEvent.data.ticketing_std_description
+        contents[i].ticketing_prem_title = (progDirectContent?.ticketing_prem_title)?progDirectContent.ticketing_prem_title:programmationsEvent.data.ticketing_prem_title
+        contents[i].ticketing_prem_description = (progDirectContent?.ticketing_prem_description)?progDirectContent.ticketing_prem_description:programmationsEvent.data.ticketing_prem_description
+
+        contents[i].offers = progDirectContent?.offer.map((_item)=>{
             return progOffersDirectContents.find(_offer => _offer.id === _item.Programmation_Offer_id)
         });
 
@@ -472,6 +502,8 @@ export const actions = {
       if (process.env.SITE_ENV === 'production') {
         finalContents = contents.filter((content) => !content.is_draft)
       }
+
+      console.log('EVENTS length ', contents.length);
 
       // Ajout de tous les éléments de "test" à "programmes".
       programmes.push(...finalContents)

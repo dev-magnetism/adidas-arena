@@ -127,6 +127,36 @@
   }
 }
 
+
+@mixin h5() {
+  font-size: desktop-vw(28px);
+  line-height: desktop-vw(28px);
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+
+  @include mobile {
+    font-size: mobile-vw(28px);
+    line-height: mobile-vw(26px);
+  }
+
+  &.bold-normal {
+    @include font-ITCFranklinGothicLT-DmCp();
+  }
+
+  &.regular {
+    @include font-ITCFranklinGothicLT-DmCp();
+  }
+
+  &.bold,
+  strong {
+    @include font-ITCFranklinGothicLT-DmCp();
+  }
+
+  &.medium {
+    @include font-ITCFranklinGothicLT-DmCp();
+  }
+}
+
 @mixin p1() {
   font-size: desktop-vw(18px);
   line-height: desktop-vw(20px);

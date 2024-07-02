@@ -6,6 +6,11 @@
       :content="contentList"
       />
 
+
+    <AppProgrammationReported 
+      :reported="this.programmes.filter(_v => _v.reported)"
+      />
+
     <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
@@ -84,7 +89,9 @@ export default {
       }
     }
   },
-  mounted() { },
+  mounted() { 
+    console.log('programmes', this.programmes);
+  },
   methods: {
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',
