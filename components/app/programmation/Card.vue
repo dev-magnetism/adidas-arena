@@ -13,7 +13,7 @@
         :presale="event.presale"
         :reported="event.reported"
         :status="event.status_code"
-        :color="statutColor"
+        :waitnewdate="event.waiting_new_date"
       />
 
       <div
@@ -46,7 +46,33 @@
               : ''
           }}
         </TP2>
-        <TP2 class="date" weight="medium" :color="whitedTexts" tag="h3">
+        <TP2 
+          v-if="event.reported"
+          class="date reported" 
+          weight="medium" 
+          :color="whitedTexts" 
+          tag="h3"
+        >
+          {{ $formatDate(event.initial_date, true) }}
+        </TP2>
+
+        <TP2 
+          v-if="event.reported && !event.waiting_new_date && event.report_date_announcement"
+          class="date" 
+          weight="medium" 
+          :color="whitedTexts" 
+          tag="h3"
+        >
+          {{ $formatDate(event.report_date_announcement, true) }}
+        </TP2>
+
+        <TP2 
+          v-if="!event.reported"
+          class="date" 
+          weight="medium" 
+          :color="whitedTexts" 
+          tag="h3"
+        >
           {{ $formatDate(event.sessions, true) }}
         </TP2>
       </div>
@@ -199,7 +225,7 @@ export default {
   },
   watch: {},
   mounted() {
-    // console.log('event', this.event);
+    console.log('event', this.event);
     this.initMatchMedia()
   },
   beforeDestroy() {
@@ -336,7 +362,7 @@ export default {
     position: relative;
     z-index: 0;
 
-    .app-programmation-event-status {
+    .app-programmation-event-statuses {
       position: absolute;
       right: 0;
       border-right: none;
@@ -391,6 +417,7 @@ export default {
   &__head {
     display: flex;
     justify-content: flex-start;
+    align-items: flex-start;
 
     .P2 {
       text-transform: uppercase;
@@ -401,10 +428,25 @@ export default {
       }
     }
     .type {
+      display:block;
+      flex: 0 0 auto;
+      max-width: 30%;
     }
 
     .date {
+      display:block;
+      flex: 0 0 auto;
       margin-left: desktop-vw(30px);
+
+      &.reported{
+        position: relative;
+        margin-left: desktop-vw(10px);
+        text-decoration: line-through;
+      }
+
+      &:last-child{
+        margin-left: desktop-vw(10px);
+      }
     }
   }
 

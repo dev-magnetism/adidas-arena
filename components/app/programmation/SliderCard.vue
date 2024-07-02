@@ -5,7 +5,7 @@
       :presale="event.presale"
       :reported="event.reported"
       :status="event.status_code"
-      :color="statutColor"
+      :waitnewdate="event.waiting_new_date"
     />
     <div class="app-programmation-slider-card__visual">
       <div class="app-programmation-slider-card__visual__wrapper">
@@ -60,7 +60,23 @@
           }}
         </TP2>
         <TP2
-          v-if="event.sessions"
+          v-if="event.reported"
+          class="date reported"
+          weight="medium"
+          :color="whitedTexts"
+        >
+          {{ $formatDate(event.initial_date) }}
+        </TP2>
+        <TP2
+          v-if="event.reported && !event.waiting_new_date"
+          class="date"
+          weight="medium"
+          :color="whitedTexts"
+        >
+          {{ $formatDate(event.report_date_announcement) }}
+        </TP2>
+        <TP2
+          v-if="!event.reported && event.sessions"
           class="date"
           weight="medium"
           :color="whitedTexts"
@@ -310,7 +326,7 @@ export default {
     flex: 0 0 25%;
   }
 
-  .app-programmation-event-status {
+  .app-programmation-event-statuses {
     position: absolute;
     right: 0;
     border-right: none;
@@ -400,7 +416,7 @@ export default {
 
   &__head {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
 
     .P2 {
       font-size: desktop-vw(18px);
@@ -410,6 +426,19 @@ export default {
       @include mobile{
         font-size: mobile-vw(14px);
         line-height: mobile-vw(18px);
+      }
+    }
+
+    .date{
+      margin-left: desktop-vw(30px);
+
+      &.reported{
+        position: relative;
+        text-decoration: line-through;
+      }
+
+      &:last-child{
+        margin-left: desktop-vw(10px);
       }
     }
 

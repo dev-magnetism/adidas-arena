@@ -169,7 +169,8 @@ export default {
         `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=1&page=1`
       )
 
-      // https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=1&page=1
+      // PROD     : `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=1&page=1`
+      // PREPROD  : `https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=1&page=1`
 
       const lengthPages = Math.ceil(response.data.meta.total_count / limit)
 
@@ -182,7 +183,8 @@ export default {
           `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
         )
 
-        // https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}
+        // PROD     : `https://www.accorarena.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
+        // PREPROD  : `https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
 
         const events = payload.data.data
 
@@ -195,7 +197,7 @@ export default {
 
           // TO DO : corriger convertToKebabCase(url) par convertToKebabCase(removeSpecialChar(url))
 
-          if (process.env.SITE_ENV !== 'production' && !event.is_draft) {
+          if (process.env.SITE_ENV !== 'production' && !event?.is_draft) {
             // Si l'environnement n'est pas en production et que l'élément n'est pas en mode brouillon
             routes.push(
               `/programmation/${convertToKebabCase(

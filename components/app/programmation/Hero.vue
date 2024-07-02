@@ -24,8 +24,7 @@
             :presale="content.event.presale"
             :reported="content.event.reported"
             :status="content.event.status_code"
-            :color="statutColor"
-            class="app-programmation-event-status"
+            :waitnewdate="content.event.waiting_new_date"
           />
 
           <AtomsSpotifyCardLink
@@ -52,9 +51,25 @@
                 >Complet</span
               >
             </TH3>
-            <TH4 class="app-programmation-hero__main-card__date">
-              {{ $formatDate(content.event.sessions) }}
-            </TH4>
+            <div class="app-programmation-hero__main-card__dates">
+
+              <TH4 
+                v-if="content.event.reported"
+                class="app-programmation-hero__main-card__date reported"
+              >
+                {{ $formatDate(content.event.initial_date) }}
+              </TH4>
+              <TH4 
+                v-if="content.event.reported && !content.event.waiting_new_date"
+                class="app-programmation-hero__main-card__date">
+                {{ $formatDate(content.event.report_date_announcement) }}
+              </TH4>
+              <TH4 
+                v-if="!content.event.reported"
+                class="app-programmation-hero__main-card__date">
+                {{ $formatDate(content.event.sessions) }}
+              </TH4>
+            </div>
             <TP2
               v-if="
                 content.event.min_price &&
@@ -485,7 +500,7 @@ export default {
     flex-direction: column;
     transform-origin: left center;
 
-    .app-programmation-event-status {
+    .app-programmation-event-statuses {
       position: absolute;
       right: 0;
       border-right: none;
@@ -606,7 +621,15 @@ export default {
       }
     }
 
+    &__dates {
+      display: flex;
+      wrap: flex-wrap;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
     &__date {
+      display: inline-block;
       margin-top: desktop-vw(15px);
 
       @include mobile {
@@ -621,6 +644,17 @@ export default {
       @include desktop-xl {
         font-size: desktop-vw(28px);
         line-height: desktop-vw(28px);
+      }
+
+
+      &.reported{
+        position: relative;
+        
+        text-decoration: line-through;
+      }
+
+      &:last-child{
+        margin-left: desktop-vw(10px);
       }
     }
 
