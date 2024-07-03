@@ -1,5 +1,5 @@
 <template>
-  <div class="app-programmation-list">
+  <div class="app-programmation-list__reported">
   
     <div
       class="container app-programmation-list-events grid-inner"
@@ -51,16 +51,18 @@ export default {
 </script>
 
 <style lang="scss">
-.app-programmation-list {
-  margin-top: desktop-vw(110px);
-  padding-top: desktop-vw(110px);
-  padding-bottom: desktop-vw(110px);
-  position: relative;
+.app-programmation-list{
+  &__reported {
+    margin-top: desktop-vw(110px);
+    padding-top: desktop-vw(110px);
+    padding-bottom: desktop-vw(110px);
+    position: relative;
 
-  @include mobile {
-    margin-top: mobile-vw(120px);
-    padding-top: mobile-vw(134px);
-    padding-bottom: mobile-vw(90px);
+    @include mobile {
+      margin-top: mobile-vw(30px);
+      padding-top: mobile-vw(34px);
+      padding-bottom: mobile-vw(90px);
+    }
   }
 
   &-events {
@@ -92,6 +94,11 @@ export default {
           position: absolute;
           bottom: desktop-vw(-32px);
           right: 0;
+
+          @include mobile {
+            width: 50%;
+            height: auto;
+          }
         }
 
 
@@ -100,6 +107,11 @@ export default {
           flex: 0 0 auto;
           width: auto;
           font-size: desktop-vw(101px);
+
+          @include mobile {
+            margin: 0 0 mobile-vw(48px);
+            font-size: mobile-vw(48px);
+          }
         }
       }
     }

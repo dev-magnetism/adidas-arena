@@ -89,6 +89,8 @@ export default {
   padding: desktop-vw(5px) desktop-vw(8px);
   background-color: #fbf5ee;
   border: 1px solid var(--c-black);
+  border-top: none;
+  border-right: none;
   z-index: 3;
   font-size: desktop-vw(28px);
   color: var(--c-red-adidas);
@@ -101,8 +103,14 @@ export default {
   &.newdate{
     flex: 1 0 0%;
     width: 100%;
+    margin-top: -1px;
     color: var(--c-blue-adidas);
     font-size: desktop-vw(18px);
+    border-top: 1px solid var(--c-black);
+
+    @include mobile {
+      font-size: mobile-vw(18px);
+    }
   }
 }
 </style>

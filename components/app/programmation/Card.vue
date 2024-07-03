@@ -53,7 +53,7 @@
           :color="whitedTexts" 
           tag="h3"
         >
-          {{ $formatDate(event.initial_date, true) }}
+          {{ $formatDate(event.initial_date, (!event.waiting_new_date)?false:true) }}
         </TP2>
 
         <TP2 
@@ -438,6 +438,7 @@ export default {
       flex: 0 0 auto;
       margin-left: desktop-vw(30px);
 
+
       &.reported{
         position: relative;
         margin-left: desktop-vw(10px);
@@ -445,7 +446,7 @@ export default {
       }
 
       &:last-child{
-        margin-left: desktop-vw(10px);
+        margin-left: desktop-vw(16px);
       }
     }
   }
