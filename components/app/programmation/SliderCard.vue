@@ -435,10 +435,11 @@ export default {
       &.reported{
         position: relative;
         text-decoration: line-through;
+
       }
 
       &:last-child{
-        margin-left: desktop-vw(10px);
+        margin-left: desktop-vw(16px);
       }
     }
 

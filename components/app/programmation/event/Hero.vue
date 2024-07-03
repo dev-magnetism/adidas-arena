@@ -528,6 +528,11 @@ export default {
       font-size: desktop-vw(32px);
       line-height: desktop-vw(32px);
 
+      @include mobile {
+        font-size: mobile-vw(18px);
+        line-height: mobile-vw(18px);
+      }
+
       &.wnd{
         font-size: desktop-vw(72px);
         line-height: desktop-vw(72px);

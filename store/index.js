@@ -86,13 +86,13 @@ export const getters = {
 
     const _reported = state.programmes.filter(_v => _v.reported);
 
-    console.log('programmesCategories / _reported', _reported);
+    //  console.log('programmesCategories / _reported', _reported);
 
     result.unshift({ category: 'Tout', count: state.programmes.length })
 
     result.push({ category: 'Reports', count: _reported.length })
 
-    console.log('programmesCategories / result', result);
+    //  console.log('programmesCategories / result', result);
     return result
   },
   actualitesCategories: (state) => {
@@ -506,7 +506,7 @@ export const actions = {
         finalContents = contents.filter((content) => !content.is_draft)
       }
 
-      console.log('EVENTS length ', contents.length);
+      //  console.log('EVENTS length ', contents.length);
 
       // Ajout de tous les éléments de "test" à "programmes".
       programmes.push(...finalContents)
