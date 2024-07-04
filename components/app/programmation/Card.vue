@@ -11,9 +11,9 @@
       <AppProgrammationEventStatus
         v-if="event.status_code !== 'C'"
         :presale="event.presale"
-        :reported="event.reported"
+        :reported="this.isReported"
         :status="event.status_code"
-        :waitnewdate="event.waiting_new_date"
+        :waitnewdate="this.isWaitingNewDate"
       />
 
       <div
@@ -47,33 +47,33 @@
           }}
         </TP2>
         <TP2 
-          v-if="event.reported"
+          v-if="this.isReported"
           class="date reported" 
           weight="medium" 
           :color="whitedTexts" 
           tag="h3"
         >
-          {{ $formatDate(event.initial_date, (!event.waiting_new_date)?false:true) }}
+          {{ $formatDate(event.sessions, true, true, false, (!this.isWaitingNewDate)?false:true) }}
         </TP2>
 
         <TP2 
-          v-if="event.reported && !event.waiting_new_date && event.report_date_announcement"
+          v-if="this.isReported && !this.isWaitingNewDate && event.sessions[0].report_date_announcement"
           class="date" 
           weight="medium" 
           :color="whitedTexts" 
           tag="h3"
         >
-          {{ $formatDate(event.report_date_announcement, true) }}
+          {{ $formatDate(event.sessions, true, false, true, true) }}
         </TP2>
 
         <TP2 
-          v-if="!event.reported"
+          v-if="!this.isReported"
           class="date" 
           weight="medium" 
           :color="whitedTexts" 
           tag="h3"
         >
-          {{ $formatDate(event.sessions, true) }}
+          {{ $formatDate(event.sessions, false, false, false, true) }}
         </TP2>
       </div>
       <TH2 :color="whitedTexts" weight="bold" tag="h2">
@@ -192,6 +192,8 @@ export default {
       isVisible: false, // If the card is visible in the listing
       isAppear: false, // If the layer card has already appeared
       inView: false, // If the card is present in the viewport zone
+      isReported: false, // Check if all available dates are reported
+      isWaitingNewDate: false, // Check if all available dates are waiting a new date
     }
   },
   computed: {
@@ -225,7 +227,28 @@ export default {
   },
   watch: {},
   mounted() {
-    console.log('event', this.event);
+    //  console.log('event', this.event);
+
+    let _reported = 0;
+    let _waitnewdate = 0;
+
+    this.event.sessions.map((_sess, _sessI)=>{
+
+      if(_sess.reported) _reported = _reported + 1;
+      if(_sess.waiting_new_date) _waitnewdate = _waitnewdate + 1;
+
+      return _sess;
+    })
+
+    if(_reported === this.event.sessions.length){
+      //  console.log(`all sessions for ${this.event.artist_reference} are reported`);
+      this.isReported = true;
+    }
+    if(_waitnewdate === this.event.sessions.length){
+      //  console.log(`all sessions for ${this.event.artist_reference} are waiting a new date`);
+      this.isWaitingNewDate = true;
+    }
+
     this.initMatchMedia()
   },
   beforeDestroy() {

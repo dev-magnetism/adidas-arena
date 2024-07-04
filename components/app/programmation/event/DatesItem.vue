@@ -7,33 +7,57 @@
       
     <div class="app-programmation-event-dates-item__wrapper">
       <AppProgrammationEventStatusShort
-        :status="session.session_status"
         :color="statutColor"
+        :reported="this.isReported"
+        :status="session.session_status"
+        :waitnewdate="this.isWaitingNewDate"
       />
+      <div 
+        class="app-programmation-event-dates-item__infos"
+        :class="{
+          'wnd': this.isReported && this.isWaitingNewDate,
+          'reported': this.isReported
+        }"
+        >
+        <TH4
+          v-if="this.isReported"
+          :color="whitedTexts ? 'white' : 'black'"
+          class="app-programmation-event-dates-item__date reported"
+          :class="{wnd: !this.isWaitingNewDate}"
+        >
+          {{ $formatDate(session, true, true, false, true) }}
+        </TH4>
+        <TH4
+          v-if="this.isReported && !this.isWaitingNewDate && session.report_date_announcement"
+          :color="whitedTexts ? 'white' : 'black'"
+          class="app-programmation-event-dates-item__date"
+        >
+          {{ $formatDate(session, true, false, true, true) }}
+        </TH4>
+        <TH4
+          v-if="!this.isReported"
+          :color="whitedTexts ? 'white' : 'black'"
+          class="app-programmation-event-dates-item__date"
+        >
+          {{ date }}
+        </TH4>
+        
+        <!-- TH2Bis
+          :color="whitedTexts ? 'white' : 'black'"
+          class="app-programmation-event-dates-item__artist"
+        >
+          {{ artist }}
+        </TH2Bis -->
 
-      <TH4
-        :color="whitedTexts ? 'white' : 'black'"
-        class="app-programmation-event-dates-item__date"
-      >
-        {{ date }}
-      </TH4>
-      
-      <!-- TH2Bis
-        :color="whitedTexts ? 'white' : 'black'"
-        class="app-programmation-event-dates-item__artist"
-      >
-        {{ artist }}
-      </TH2Bis -->
-
-      <TP2
-        v-if="session.session_status === 'K'"
-        weight="medium"
-        :color="whitedTexts ? 'white' : 'black'"
-        class="app-programmation-event-dates-item__info"
-      >
-        Show complet, inscrivez-vous sur la liste d’attente !
-      </TP2>
-
+        <TP2
+          v-if="session.session_status === 'K'"
+          weight="medium"
+          :color="whitedTexts ? 'white' : 'black'"
+          class="app-programmation-event-dates-item__info"
+        >
+          Show complet, inscrivez-vous sur la liste d’attente !
+        </TP2>
+      </div>
       <AtomsCTAForm
         v-if="
           session.session_status === 'K' ||
@@ -75,6 +99,12 @@
 
 <script>
 export default {
+  data() {
+    return {
+      isReported: false, // Check if all available dates are reported
+      isWaitingNewDate: false, // Check if all available dates are waiting 
+    }
+  },
   props: {
     index: {
       type: Number,
@@ -143,6 +173,12 @@ export default {
       return this.theme === 'grey' ? 'black' : this.theme
     },
   },
+  mounted() {
+
+    this.isReported = this.session.reported;
+    this.isWaitingNewDate = this.session.waiting_new_date;
+
+  }
 }
 </script>
 
@@ -211,16 +247,16 @@ export default {
     justify-content: space-between;
 
     @include mobile {
-      padding: 0 0 mobile-vw(13px) 0;
+      padding: 0;
       min-height: unset;
       justify-content: center;
     }
   }
 
-  .app-programmation-event-status-short {
+  .app-programmation-event-statuses-short {
     position: absolute;
     top: 50%;
-    left: desktop-vw(-29px);
+    left: desktop-vw(-25px);
     display: inline-block;
     flex: 0 0 auto;
     border-top: none;
@@ -242,6 +278,14 @@ export default {
       font-size: mobile-vw(24px);
       line-height: mobile-vw(24px);
     }
+
+    &.wnd{
+      left: desktop-vw(-7px);
+
+      @include mobile {
+        left: 0;
+      }
+    }
   }
 
   .app-atoms-cta {
@@ -259,15 +303,27 @@ export default {
     @include mobile {
       position: relative;
       margin: 0 auto;
-      width: auto;
+      width: 100%;
       align-self: flex-end;
     }
   }
 
-  &__date {
+  &__infos{
     display: inline-block;
     width: auto;
-    padding: 0 0 0 desktop-vw(16px);
+
+    @include mobile {
+      flex: 0 0 100%;
+      width: 100%;
+    } 
+
+  }
+
+  &__date {
+    display: block;
+    flex: 0 0 100%;
+    width: 100%;
+    padding: 0;
 
     @include mobile {
       display: inline-block;
@@ -276,12 +332,45 @@ export default {
       padding: mobile-vw(16px) 0;
       text-align: center;
     }
+
+    &.reported{
+      text-decoration: line-through;
+
+      &.wnd{
+        font-size: desktop-vw(13px);
+        line-height: desktop-vw(13px);
+
+        @include mobile {
+          font-size: mobile-vw(18px);
+          line-height: mobile-vw(18px);
+          padding: mobile-vw(2px) 0;
+
+        }
+      }
+    }
   }
-  .app-programmation-event-status-short + .app-programmation-event-dates-item__date{
-     padding: 0 0 0 desktop-vw(49px);
+
+  .app-programmation-event-dates-item__infos{
+     padding: 0 0 0 desktop-vw(32px);
 
      @include mobile{
-      padding: mobile-vw(49px) 0 mobile-vw(16px) 0;
+      padding: mobile-vw(24px) 0 mobile-vw(16px) 0;
+     }
+  }
+
+  .app-programmation-event-statuses-short.hasStatus + .app-programmation-event-dates-item__infos{
+     padding: 0 0 0 desktop-vw(55px);
+
+     @include mobile{
+      padding: mobile-vw(66px) 0 mobile-vw(16px) 0;
+     }
+  }
+
+  .app-programmation-event-statuses-short + .app-programmation-event-dates-item__infos.wnd{
+     padding: 0 0 0 desktop-vw(100px);
+
+     @include mobile{
+      padding: mobile-vw(66px) 0 mobile-vw(16px) 0;
      }
   }
 
@@ -295,12 +384,12 @@ export default {
   }
 
   &__info {
-    width: 15%;
+    margin-top: auto;
+    width: 100%;
 
     @include mobile {
-      width: 85%;
-      text-align: center;
-      margin-bottom: mobile-vw(16px);
+      width: 100%;
+      text-align: center
     }
   }
 }
