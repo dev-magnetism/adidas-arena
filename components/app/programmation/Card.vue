@@ -227,7 +227,7 @@ export default {
   },
   watch: {},
   mounted() {
-    //  console.log('event', this.event);
+    //  console.log('Card event', this.event);
 
     let _reported = 0;
     let _waitnewdate = 0;
@@ -244,7 +244,7 @@ export default {
       //  console.log(`all sessions for ${this.event.artist_reference} are reported`);
       this.isReported = true;
     }
-    if(_waitnewdate === this.event.sessions.length){
+    if(_waitnewdate > 0){
       //  console.log(`all sessions for ${this.event.artist_reference} are waiting a new date`);
       this.isWaitingNewDate = true;
     }

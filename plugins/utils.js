@@ -15,11 +15,11 @@ export default ({ app }, inject) => {
 
   inject('formatDate', (dates, reported = false, initial = false, newdate = false, displayTime = false) => {
     // let dates;
-     console.log('formatDate / dates', dates);
-     console.log('formatDate / reported', reported);
-     console.log('formatDate / initial', initial);
-     console.log('formatDate / newdate', newdate);
-     console.log('formatDate / displayTime', displayTime);
+     // console.log('formatDate / dates', dates);
+     // console.log('formatDate / reported', reported);
+     // console.log('formatDate / initial', initial);
+     // console.log('formatDate / newdate', newdate);
+     // console.log('formatDate / displayTime', displayTime);
 
     if(typeof dates === "undefined") return;
 
@@ -44,7 +44,7 @@ export default ({ app }, inject) => {
       This insures that date's format can be read by all browsers.
     */
     const _formatDates = dates.map((obj)=>{
-      console.log('formatDate obj', obj);
+      // console.log('formatDate obj', obj);
 
       let _date;
 
@@ -64,7 +64,7 @@ export default ({ app }, inject) => {
         _date = obj;
       }
       //  const _date = (typeof obj === 'object')?obj.date : obj;
-      console.log('formatDate _date', _date);
+      // console.log('formatDate _date', _date);
       return _date.replaceAll('-', '/');
     })
 

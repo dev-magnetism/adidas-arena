@@ -241,7 +241,7 @@ export default {
       //  console.log('all sessions are reported');
       this.isReported = true;
     }
-    if(_waitnewdate === this.event.sessions.length){
+    if(_waitnewdate > 0){
       //  console.log('all sessions are waiting a new date');
       this.isWaitingNewDate = true;
     }
