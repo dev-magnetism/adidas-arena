@@ -98,11 +98,11 @@ export default {
 
   &.newdate{
     color: var(--c-blue-adidas);
-    font-size: desktop-vw(12px);
+    font-size: desktop-vw(12px)!important;
     line-height: desktop-vw(12px);
 
     @include mobile {
-      font-size: mobile-vw(12px);
+      font-size: mobile-vw(12px)!important;
       line-height: mobile-vw(12px);
     }
   }
