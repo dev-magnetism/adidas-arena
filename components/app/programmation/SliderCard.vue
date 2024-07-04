@@ -3,9 +3,9 @@
     <AppProgrammationEventStatus
       v-if="event.status_code !== 'C'"
       :presale="event.presale"
-      :reported="event.reported"
+      :reported="this.isReported"
       :status="event.status_code"
-      :waitnewdate="event.waiting_new_date"
+      :waitnewdate="this.isWaitingNewDate"
     />
     <div class="app-programmation-slider-card__visual">
       <div class="app-programmation-slider-card__visual__wrapper">
@@ -60,28 +60,28 @@
           }}
         </TP2>
         <TP2
-          v-if="event.reported"
+          v-if="this.isReported"
           class="date reported"
           weight="medium"
           :color="whitedTexts"
         >
-          {{ $formatDate(event.initial_date) }}
+          {{ $formatDate(event.sessions, true, true, false, false) }}
         </TP2>
         <TP2
-          v-if="event.reported && !event.waiting_new_date"
+          v-if="this.isReported && !this.isWaitingNewDate"
           class="date"
           weight="medium"
           :color="whitedTexts"
         >
-          {{ $formatDate(event.report_date_announcement) }}
+          {{ $formatDate(event.sessions, true, false, true, false) }}
         </TP2>
         <TP2
-          v-if="!event.reported && event.sessions"
+          v-if="!this.isReported && event.sessions"
           class="date"
           weight="medium"
           :color="whitedTexts"
         >
-          {{ $formatDate(event.sessions) }}
+          {{ $formatDate(event.sessions, false) }}
         </TP2>
       </div>
       <TH2 :color="whitedTexts" weight="bold">
@@ -185,6 +185,8 @@ export default {
   data() {
     return {
       visible: false,
+      isReported: false, // Check if all available dates are reported
+      isWaitingNewDate: false, // Check if all available dates are waiting a new date
     }
   },
   computed: {
@@ -223,6 +225,27 @@ export default {
     },
   },
   mounted() {
+
+    let _reported = 0;
+    let _waitnewdate = 0;
+
+    this.event.sessions.map((_sess, _sessI)=>{
+
+      if(_sess.reported) _reported = _reported + 1;
+      if(_sess.waiting_new_date) _waitnewdate = _waitnewdate + 1;
+
+      return _sess;
+    })
+
+    if(_reported === this.event.sessions.length){
+      //  console.log('all sessions are reported');
+      this.isReported = true;
+    }
+    if(_waitnewdate === this.event.sessions.length){
+      //  console.log('all sessions are waiting a new date');
+      this.isWaitingNewDate = true;
+    }
+  
     if (this.$viewport.isMobile) return
 
     this.initTimelineArrow()

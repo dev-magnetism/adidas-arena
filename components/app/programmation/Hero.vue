@@ -22,9 +22,9 @@
           <AppProgrammationEventStatus
             v-if="content.event.status_code !== 'C'"
             :presale="content.event.presale"
-            :reported="content.event.reported"
+            :reported="this.isReported"
             :status="content.event.status_code"
-            :waitnewdate="content.event.waiting_new_date"
+            :waitnewdate="this.isWaitingNewDate"
           />
 
           <AtomsSpotifyCardLink
@@ -54,20 +54,20 @@
             <div class="app-programmation-hero__main-card__dates">
 
               <TH4 
-                v-if="content.event.reported"
+                v-if="this.isReported"
                 class="app-programmation-hero__main-card__date reported"
               >
-                {{ $formatDate(content.event.initial_date) }}
+                {{ $formatDate(content.event.sessions, true, true, false, false) }}
               </TH4>
               <TH4 
-                v-if="content.event.reported && !content.event.waiting_new_date"
+                v-if="this.isReported && !this.isWaitingNewDate"
                 class="app-programmation-hero__main-card__date">
-                {{ $formatDate(content.event.report_date_announcement) }}
+                {{ $formatDate(content.event.sessions, true, false, true, false) }}
               </TH4>
               <TH4 
-                v-if="!content.event.reported"
+                v-if="!this.isReported"
                 class="app-programmation-hero__main-card__date">
-                {{ $formatDate(content.event.sessions) }}
+                {{ $formatDate(content.event.sessions, false, false, false, false) }}
               </TH4>
             </div>
             <TP2
@@ -156,7 +156,12 @@ export default {
       default: () => {},
     },
   },
-
+  data(){
+    return{
+      isReported: false, // Check if all available dates are reported
+      isWaitingNewDate: false, // Check if all available dates are waiting a new date
+    }
+  },
   computed: {
     ...mapState({
       programmationsContent: (state) => state.programmationsContent,
@@ -196,6 +201,28 @@ export default {
     },
   },
   mounted() {
+
+
+    let _reported = 0;
+    let _waitnewdate = 0;
+
+    this.content.event.sessions.map((_sess, _sessI)=>{
+
+      if(_sess.reported) _reported = _reported + 1;
+      if(_sess.waiting_new_date) _waitnewdate = _waitnewdate + 1;
+
+      return _sess;
+    })
+
+    if(_reported === this.content.event.sessions.length){
+      //  console.log('all sessions are reported');
+      this.isReported = true;
+    }
+    if(_waitnewdate === this.content.event.sessions.length){
+      //  console.log('all sessions are waiting a new date');
+      this.isWaitingNewDate = true;
+    }
+
     if (this.allLoadedFake && !this.$viewport.isMobile) {
       this.initSplitText()
       this.appearHero(0.95)

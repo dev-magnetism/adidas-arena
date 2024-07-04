@@ -413,7 +413,7 @@ export const actions = {
 
       const progOffersDirectContents = programmationOffers.data
 
-      let _testInd = 0;
+      //  let _testInd = 0;
 
       // 3 / Récupération des données complètes par Event
       for (let i = 0; i < contents.length; i++) {
@@ -434,6 +434,9 @@ export const actions = {
           (cont) => parseInt(cont.id_event) === contents[i].id
         )
 
+        // Make sure dates are sorted properly
+        contents[i].sessions.sort((a, b) => new Date(a.date) - new Date(b.date))
+
         //  console.log('progDirectContent offers', progDirectContent.offers)
 
         contents[i].is_draft = progDirectContent?.is_draft
@@ -448,19 +451,27 @@ export const actions = {
 
 
         // REPORTED USE CASE TEST
-        if(i % 2 === 0) {
-          contents[i].reported = true;
-          contents[i].initial_date = "2024-06-08 20:00:00";
+        // if(i % 2 !== 0) {
+        //   contents[i].reported = true;
+        //   let _count = 8;
+        //   contents[i].sessions.map((_sess, _sessI)=>{
+          
+        //     _sess.reported = (_sessI % 2 !== 0); // (_sessI % 2 !== 0)
+        //     //  _sess.initial_date = "2024-06-08 20:00:00";
 
-          if(_testInd % 2 === 0) {
-            contents[i].report_date_announcement = "2025-11-08 20:00:00";
-            contents[i].waiting_new_date = false;
-          } else {
-            contents[i].waiting_new_date = true;
-          }
+        //     if(_testInd % 2 !== 0) {
+        //       _sess.report_date_announcement = `2025-11-0${_count} 20:00:00`;
+        //       _sess.waiting_new_date = false;
+        //       _count = _count + 1;
+        //     } else {
+        //       _sess.waiting_new_date = true;
+        //     }
 
-          _testInd = _testInd +1;
-        }
+        //     return _sess;
+        //   })
+
+        //   _testInd = _testInd +1;
+        // }
 
         contents[i].ticketing_std_title = (progDirectContent?.ticketing_std_title)?progDirectContent.ticketing_std_title:programmationsEvent.data.ticketing_std_title
         contents[i].ticketing_std_description = (progDirectContent?.ticketing_std_description)?progDirectContent.ticketing_std_description:programmationsEvent.data.ticketing_std_description

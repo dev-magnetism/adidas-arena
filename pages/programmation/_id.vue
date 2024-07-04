@@ -181,6 +181,7 @@ export default {
   },
 
   mounted() {
+    //  console.log('this.event', this.event);
     this.initScrollTrigger()
     this.initMatchMedia()
   },

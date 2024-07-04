@@ -8,7 +8,7 @@
 
 
     <AppProgrammationReported 
-      :reported="this.programmes.filter(_v => _v.reported)"
+      :reported="this.programmes.filter(_v => _v.sessions[0].reported)"
       />
 
     <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
@@ -90,7 +90,7 @@ export default {
     }
   },
   mounted() { 
-    console.log('programmes', this.programmes);
+    //  console.log('programmes', this.programmes);
   },
   methods: {
     ...mapMutations({

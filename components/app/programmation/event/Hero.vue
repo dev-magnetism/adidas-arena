@@ -6,7 +6,7 @@
         class="app-programmation-event-hero__full timeline-text"
       >
         {{
-          event.reported
+          this.isReported
             ? programmationsEventContent.glossary_deferred
             : event.status_code === 'H'
             ? programmationsEventContent.glossary_cancelled
@@ -15,7 +15,7 @@
             : ''
         }}
         {{
-          event.reported && event.waiting_new_date ? 
+          this.isReported && this.isWaitingNewDate ? 
           `- ${programmationsEventContent.glossary_waiting_new_date}`
           : ''
         }}
@@ -34,31 +34,31 @@
         }}
       </TH4>
       <TP2
-        v-if="event.reported"
+        v-if="this.isReported"
         ref="date"
         class="app-programmation-event-hero__date timeline-text reported 
         "
-        :class="{wnd: event.waiting_new_date}"
+        :class="{wnd: this.isWaitingNewDate}"
       >
-        {{ $formatDate(event.initial_date) }}
+        {{ $formatDate(event.sessions, true, true, false, false) }}
 
         <svg width="282" height="10" viewBox="0 0 282 10" fill="none" xmlns="http://www.w3.org/2000/svg" class="app-programmation-event-hero__date__reported">
         <path d="M1.00005 2.93108C19.0881 6.4139 38.2958 5.7748 56.8823 5.77187C98.8445 5.76525 140.765 6.77661 182.741 6.29452C199.436 6.10277 216.125 5.67327 232.815 5.19864C234.568 5.14878 249.798 3.4094 251.81 5.47882C252.322 6.00545 205.142 8.24187 202.309 8.19911C164.639 7.63048 126.921 7.48743 89.2819 6.32714C79.0612 6.01207 68.8647 5.50522 58.6554 5.06515C54.0727 4.86761 44.1044 5.96163 39.85 4.04125C30.7886 -0.0490227 60.9338 2.8422 71.4676 3.06006C141.066 4.49948 210.448 3.74217 280.097 2.37735" stroke="#FF4A48" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </TP2>
       <TH2Bis
-        v-if="event.reported && !event.waiting_new_date"
+        v-if="this.isReported && !this.isWaitingNewDate"
         ref="date"
         class="app-programmation-event-hero__date timeline-text"
       >
-        {{ $formatDate(event.report_date_announcement) }}
+        {{ $formatDate(event.sessions, true, false, true, false) }}
       </TH2Bis>
       <TH2Bis
-        v-if="!event.reported"
+        v-if="!this.isReported"
         ref="date"
         class="app-programmation-event-hero__date timeline-text"
       >
-        {{ $formatDate(event.sessions) }}
+        {{ $formatDate(event.sessions, false) }}
       </TH2Bis>
       <TH1
         ref="title"
@@ -206,6 +206,8 @@ export default {
         top: 0,
         bottom: 0,
       },
+      isReported: false, // Check if all available dates are reported
+      isWaitingNewDate: false, // Check if all available dates are waiting a new date
     }
   },
   computed: {
@@ -223,6 +225,26 @@ export default {
     },
   },
   mounted() {
+  
+    let _reported = 0;
+    let _waitnewdate = 0;
+
+    this.event.sessions.map((_sess, _sessI)=>{
+
+      if(_sess.reported) _reported = _reported + 1;
+      if(_sess.waiting_new_date) _waitnewdate = _waitnewdate + 1;
+
+      return _sess;
+    })
+
+    if(_reported === this.event.sessions.length){
+      //  console.log('all sessions are reported');
+      this.isReported = true;
+    }
+    if(_waitnewdate === this.event.sessions.length){
+      //  console.log('all sessions are waiting a new date');
+      this.isWaitingNewDate = true;
+    }
 
     // console.log('Page event', this.event)
     this.initSplitText()
