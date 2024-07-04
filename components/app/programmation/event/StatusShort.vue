@@ -88,7 +88,7 @@ export default {
   background-color: #fbf5ee;
   border: 1px solid var(--c-black);
   z-index: 3;
-  font-size: desktop-vw(28px);
+  font-size: desktop-vw(26px);
   white-space: wrap;
 
   @include mobile {
