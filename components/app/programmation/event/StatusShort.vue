@@ -1,7 +1,19 @@
 <template>
-  <TH4 v-if="statusText" :color="color" class="app-programmation-event-status-short">
-    {{ statusText }}
-  </TH4>
+  <div 
+    v-if="statusText"
+    class="app-programmation-event-statuses-short"
+    :class="{
+      'wnd': reported && waitnewdate,
+      'hasStatus': statusText
+    }"
+    >
+    <TH4 :color="color" class="app-programmation-event-status-short">
+      {{ statusText }}
+    </TH4>
+    <TH5 v-if="reported && waitnewdate" :color="'blue-adidas'" class="app-programmation-event-status-short newdate">
+    {{this.programmationsEventContent.glossary_waiting_new_date}}
+    </TH5>
+  </div>
 </template>
 
 <script>
@@ -24,6 +36,10 @@ export default {
     status: {
       type: String,
       default: 'D',
+    },
+    waitnewdate: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -68,15 +84,27 @@ export default {
 <style lang="scss">
 .app-programmation-event-status-short {
   padding: desktop-vw(5px) desktop-vw(8px);
-  display: inline-flex;
+  display: block;
   background-color: #fbf5ee;
   border: 1px solid var(--c-black);
   z-index: 3;
-  font-size: desktop-vw(28px);
+  font-size: desktop-vw(26px)!important;
+  white-space: wrap;
 
   @include mobile {
     padding: mobile-vw(5px) mobile-vw(8px);
-    font-size: mobile-vw(28px);
+    font-size: mobile-vw(28px)!important;
+  }
+
+  &.newdate{
+    color: var(--c-blue-adidas);
+    font-size: desktop-vw(12px)!important;
+    line-height: desktop-vw(12px);
+
+    @include mobile {
+      font-size: mobile-vw(12px)!important;
+      line-height: mobile-vw(12px);
+    }
   }
 }
 </style>

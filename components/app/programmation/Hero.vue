@@ -22,10 +22,9 @@
           <AppProgrammationEventStatus
             v-if="content.event.status_code !== 'C'"
             :presale="content.event.presale"
-            :reported="content.event.reported"
+            :reported="this.isReported"
             :status="content.event.status_code"
-            :color="statutColor"
-            class="app-programmation-event-status"
+            :waitnewdate="this.isWaitingNewDate"
           />
 
           <AtomsSpotifyCardLink
@@ -52,9 +51,25 @@
                 >Complet</span
               >
             </TH3>
-            <TH4 class="app-programmation-hero__main-card__date">
-              {{ $formatDate(content.event.sessions) }}
-            </TH4>
+            <div class="app-programmation-hero__main-card__dates">
+
+              <TH4 
+                v-if="this.isReported"
+                class="app-programmation-hero__main-card__date reported"
+              >
+                {{ $formatDate(content.event.sessions, true, true, false, false) }}
+              </TH4>
+              <TH4 
+                v-if="this.isReported && !this.isWaitingNewDate"
+                class="app-programmation-hero__main-card__date">
+                {{ $formatDate(content.event.sessions, true, false, true, false) }}
+              </TH4>
+              <TH4 
+                v-if="!this.isReported"
+                class="app-programmation-hero__main-card__date">
+                {{ $formatDate(content.event.sessions, false, false, false, false) }}
+              </TH4>
+            </div>
             <TP2
               v-if="
                 content.event.min_price &&
@@ -141,7 +156,12 @@ export default {
       default: () => {},
     },
   },
-
+  data(){
+    return{
+      isReported: false, // Check if all available dates are reported
+      isWaitingNewDate: false, // Check if all available dates are waiting a new date
+    }
+  },
   computed: {
     ...mapState({
       programmationsContent: (state) => state.programmationsContent,
@@ -181,6 +201,28 @@ export default {
     },
   },
   mounted() {
+
+
+    let _reported = 0;
+    let _waitnewdate = 0;
+
+    this.content.event.sessions.map((_sess, _sessI)=>{
+
+      if(_sess.reported) _reported = _reported + 1;
+      if(_sess.waiting_new_date) _waitnewdate = _waitnewdate + 1;
+
+      return _sess;
+    })
+
+    if(_reported === this.content.event.sessions.length){
+      //  console.log('all sessions are reported');
+      this.isReported = true;
+    }
+    if(_waitnewdate > 0){
+      //  console.log('all sessions are waiting a new date');
+      this.isWaitingNewDate = true;
+    }
+
     if (this.allLoadedFake && !this.$viewport.isMobile) {
       this.initSplitText()
       this.appearHero(0.95)
@@ -485,7 +527,7 @@ export default {
     flex-direction: column;
     transform-origin: left center;
 
-    .app-programmation-event-status {
+    .app-programmation-event-statuses {
       position: absolute;
       right: 0;
       border-right: none;
@@ -606,7 +648,15 @@ export default {
       }
     }
 
+    &__dates {
+      display: flex;
+      wrap: flex-wrap;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
     &__date {
+      display: inline-block;
       margin-top: desktop-vw(15px);
 
       @include mobile {
@@ -621,6 +671,17 @@ export default {
       @include desktop-xl {
         font-size: desktop-vw(28px);
         line-height: desktop-vw(28px);
+      }
+
+
+      &.reported{
+        position: relative;
+        
+        text-decoration: line-through;
+      }
+
+      &:last-child{
+        margin-left: desktop-vw(10px);
       }
     }
 
