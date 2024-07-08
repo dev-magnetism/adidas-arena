@@ -11,9 +11,9 @@
       <AppProgrammationEventStatus
         v-if="event.status_code !== 'C'"
         :presale="event.presale"
-        :reported="event.reported"
+        :reported="this.isReported"
         :status="event.status_code"
-        :color="statutColor"
+        :waitnewdate="this.isWaitingNewDate"
       />
 
       <div
@@ -31,8 +31,8 @@
         :alt="`card-image-${event.id}-${event.artist_reference}`"
         :lazy="true"
         :sizes="{
-          desktop: 'w600,h600,fcrop,q85',
-          mobile: 'w600,h600,fcrop,q85',
+          desktop: 'w800,h800,fcrop,q85',
+          mobile: 'w800,h800,fcrop,q85',
         }"
       />
     </div>
@@ -46,8 +46,34 @@
               : ''
           }}
         </TP2>
-        <TP2 class="date" weight="medium" :color="whitedTexts" tag="h3">
-          {{ $formatDate(event.sessions, true) }}
+        <TP2 
+          v-if="this.isReported"
+          class="date reported" 
+          weight="medium" 
+          :color="whitedTexts" 
+          tag="h3"
+        >
+          {{ $formatDate(event.sessions, true, true, false, (!this.isWaitingNewDate)?false:true) }}
+        </TP2>
+
+        <TP2 
+          v-if="this.isReported && !this.isWaitingNewDate && event.sessions[0].report_date_announcement"
+          class="date" 
+          weight="medium" 
+          :color="whitedTexts" 
+          tag="h3"
+        >
+          {{ $formatDate(event.sessions, true, false, true, true) }}
+        </TP2>
+
+        <TP2 
+          v-if="!this.isReported"
+          class="date" 
+          weight="medium" 
+          :color="whitedTexts" 
+          tag="h3"
+        >
+          {{ $formatDate(event.sessions, false, false, false, true) }}
         </TP2>
       </div>
       <TH2 :color="whitedTexts" weight="bold" tag="h2">
@@ -166,6 +192,8 @@ export default {
       isVisible: false, // If the card is visible in the listing
       isAppear: false, // If the layer card has already appeared
       inView: false, // If the card is present in the viewport zone
+      isReported: false, // Check if all available dates are reported
+      isWaitingNewDate: false, // Check if all available dates are waiting a new date
     }
   },
   computed: {
@@ -199,7 +227,28 @@ export default {
   },
   watch: {},
   mounted() {
-    // console.log('event', this.event);
+    //  console.log('Card event', this.event);
+
+    let _reported = 0;
+    let _waitnewdate = 0;
+
+    this.event.sessions.map((_sess, _sessI)=>{
+
+      if(_sess.reported) _reported = _reported + 1;
+      if(_sess.waiting_new_date) _waitnewdate = _waitnewdate + 1;
+
+      return _sess;
+    })
+
+    if(_reported === this.event.sessions.length){
+      //  console.log(`all sessions for ${this.event.artist_reference} are reported`);
+      this.isReported = true;
+    }
+    if(_waitnewdate > 0){
+      //  console.log(`all sessions for ${this.event.artist_reference} are waiting a new date`);
+      this.isWaitingNewDate = true;
+    }
+
     this.initMatchMedia()
   },
   beforeDestroy() {
@@ -336,7 +385,7 @@ export default {
     position: relative;
     z-index: 0;
 
-    .app-programmation-event-status {
+    .app-programmation-event-statuses {
       position: absolute;
       right: 0;
       border-right: none;
@@ -391,6 +440,7 @@ export default {
   &__head {
     display: flex;
     justify-content: flex-start;
+    align-items: flex-start;
 
     .P2 {
       text-transform: uppercase;
@@ -401,10 +451,26 @@ export default {
       }
     }
     .type {
+      display:block;
+      flex: 0 0 auto;
+      max-width: 30%;
     }
 
     .date {
+      display:block;
+      flex: 0 0 auto;
       margin-left: desktop-vw(30px);
+
+
+      &.reported{
+        position: relative;
+        margin-left: desktop-vw(10px);
+        text-decoration: line-through;
+      }
+
+      &:last-child{
+        margin-left: desktop-vw(16px);
+      }
     }
   }
 

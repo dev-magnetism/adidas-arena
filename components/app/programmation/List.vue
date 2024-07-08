@@ -137,7 +137,22 @@ export default {
       programmesMonths: 'programmesMonths',
     }),
     monthFilters() {
-      if (this.selectedCategory === 'tout') {
+      console.log('this.selectedCategory', this.selectedCategory);
+      if (this.selectedCategory === 'reports') {
+        return this.programmesMonths
+          .map((month) => {
+            const filteredMonthEvents = month.events.filter( _v => _v.reported )
+            console.log('filteredMonthEvents', filteredMonthEvents);
+            return {
+              month: month.month,
+              year: month.year,
+              events: filteredMonthEvents,
+            }
+          })
+          .filter((month) => month.events.length > 0);
+
+      } 
+      else if (this.selectedCategory === 'tout') {
         return this.programmesMonths
       } else {
         return this.programmesMonths
@@ -156,14 +171,24 @@ export default {
       }
     },
     monthsVisible() {
-      return this.programmesMonths.map((month) =>
+      const _m =  this.programmesMonths.map((month) =>
         this.selectedCategory === 'tout'
           ? true
+          :  this.selectedCategory === 'reports'
+          ?  month.events.some(
+              (event) =>
+                event.reported === true
+            )
+
           : month.events.some(
               (event) =>
                 event.content.category.toLowerCase() === this.selectedCategory
             )
       )
+
+      console.log('monthsVisible', _m);
+
+      return _m;
     },
   },
   watch: {
@@ -346,6 +371,7 @@ export default {
           this.$refs.events.forEach((item) => {
             const isMatch =
               this.selectedCategory === 'tout' ||
+              (this.selectedCategory === 'reports' && item.event.reported) || 
               item.event.content.category === this.selectedCategory
 
             if (isMatch) {

@@ -268,6 +268,8 @@ export default {
     @include mobile {
       grid-column: 1 / span 6;
       grid-row: 1;
+      min-height: mobile-vw(250px);
+      margin-bottom: mobile-vw(125px);
     }
   }
 
@@ -282,7 +284,8 @@ export default {
     @include mobile {
       aspect-ratio: 265 / 175;
       width: mobile-vw(265px);
-      top: mobile-vw(250px);
+      top: unset;
+      bottom: 0;
       left: mobile-vw(25px);
       transform: rotate(-4deg);
     }
@@ -393,7 +396,7 @@ export default {
       top: mobile-vw(0px);
       left: mobile-vw(20px);
       position: relative;
-      margin-bottom: mobile-vw(250px);
+      margin-bottom: mobile-vw(180px);
     }
 
     picture {
