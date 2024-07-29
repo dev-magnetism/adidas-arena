@@ -59,6 +59,7 @@
         class="app-programmation-event-hero__date timeline-text"
       >
         {{ $formatDate(event.sessions, false) }}
+        {{ (event.date_tbc)?` - ${programmationsEventContent.glossary_tbc}`:''}}
       </TH2Bis>
       <TH1
         ref="title"

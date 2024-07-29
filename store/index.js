@@ -440,6 +440,7 @@ export const actions = {
         //  console.log('progDirectContent offers', progDirectContent.offers)
 
         contents[i].is_draft = progDirectContent?.is_draft
+        contents[i].date_tbc = progDirectContent?.date_tbc
         contents[i].main_event = progDirectContent?.main_event
         contents[i].inside_slider = progDirectContent?.inside_slider
         contents[i].instruction_id = contentEvent.instruction_id
