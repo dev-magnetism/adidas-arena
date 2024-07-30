@@ -68,6 +68,7 @@
                 v-if="!this.isReported"
                 class="app-programmation-hero__main-card__date">
                 {{ $formatDate(content.event.sessions, false, false, false, false) }}
+                {{ (content.event.date_tbc)?` - ${programmationsEventContent.glossary_tbc}`:''}}
               </TH4>
             </div>
             <TP2

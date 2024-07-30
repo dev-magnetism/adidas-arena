@@ -60,12 +60,16 @@
         :total-items="event.sessions.length"
         :disabled="indexDate !== index && indexDate !== null"
         @click.native="onSelectDate(index)"
+        :tbc="event.date_tbc"
+        :tbc-glossary="programmationsEventContent.glossary_tbc"
       />
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   props: {
     event: {
@@ -85,6 +89,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      programmationsEventContent: (state) => state.programmationsEventContent,
+    }),
     sessions() {
       const sessions = JSON.parse(JSON.stringify(this.event.sessions))
 

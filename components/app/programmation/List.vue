@@ -432,7 +432,7 @@ export default {
 <style lang="scss">
 .app-programmation-list {
   margin-top: desktop-vw(110px);
-  padding-top: desktop-vw(110px);
+  padding-top: desktop-vw(160px);
   padding-bottom: desktop-vw(110px);
   position: relative;
 
