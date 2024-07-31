@@ -151,7 +151,7 @@ export default {
           })
           .filter((month) => month.events.length > 0);
 
-      } 
+      }
       else if (this.selectedCategory === 'tout') {
         return this.programmesMonths
       } else {
@@ -214,7 +214,6 @@ export default {
 
     if (category) {
       this.selectedCategory = category.category
-      this.updateFilters()
     }
 
     this.initScrollTrigger()
@@ -391,7 +390,7 @@ export default {
           this.$refs.events.forEach((item) => {
             const isMatch =
               this.selectedCategory === 'tout' ||
-              (this.selectedCategory === 'reports' && item.event.reported) || 
+              (this.selectedCategory === 'reports' && item.event.reported) ||
               item.event.content.category === this.selectedCategory
 
             if (isMatch) {
