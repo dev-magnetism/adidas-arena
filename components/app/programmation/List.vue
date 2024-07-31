@@ -197,9 +197,9 @@ export default {
 
       if (this.selectedCategory !== 'tout') {
         const categorySlug = this.programmesCategories.find((cat) => cat.category === this.selectedCategory).slug
-        url.searchParams.set('category', categorySlug)
+        url.searchParams.set('categorie', categorySlug)
       } else {
-        url.searchParams.delete('category')
+        url.searchParams.delete('categorie')
       }
 
       history.pushState(null, '', url);
@@ -209,7 +209,7 @@ export default {
   mounted() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString)
-    const urlCategory = urlParams.get('category')
+    const urlCategory = urlParams.get('categorie')
     const category = this.programmesCategories.find((cat) => cat.slug === urlCategory)
 
     if (category) {

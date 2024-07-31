@@ -89,9 +89,9 @@ export const getters = {
 
     //  console.log('programmesCategories / _reported', _reported);
 
-    result.unshift({ category: 'Tout', count: state.programmes.length })
+    result.unshift({ category: 'Tout', slug: slugify('Tout', { strict: true }), count: state.programmes.length })
 
-    result.push({ category: 'Reports', count: _reported.length })
+    result.push({ category: 'Reports', slug: slugify('Reports', { strict: true }), count: _reported.length })
 
     //  console.log('programmesCategories / result', result);
     return result
@@ -457,7 +457,7 @@ export const actions = {
         //   contents[i].reported = true;
         //   let _count = 8;
         //   contents[i].sessions.map((_sess, _sessI)=>{
-          
+
         //     _sess.reported = true; // (_sessI % 2 !== 0)
         //     //  _sess.initial_date = "2024-06-08 20:00:00";
 
