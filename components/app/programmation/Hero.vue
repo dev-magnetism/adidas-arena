@@ -68,9 +68,7 @@
                 v-if="!this.isReported"
                 class="app-programmation-hero__main-card__date">
                 {{ $formatDate(content.event.sessions, false, false, false, false) }}
-                <span class="app-programmation-hero__main-card__date__small">
-                {{ (content.event.date_tbc)?` - ${programmationsEventContent.glossary_tbc}`:''}}
-                </span>
+               {{ (content.event.date_tbc)?` - ${programmationsEventContent.glossary_tbc}`:''}}
               </TH4>
             </div>
             <TP2
@@ -697,10 +695,6 @@ export default {
         position: relative;
         
         text-decoration: line-through;
-      }
-
-      &:last-child{
-        margin-left: desktop-vw(10px);
       }
     }
 

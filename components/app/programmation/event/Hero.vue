@@ -535,6 +535,11 @@ export default {
   &__date {
     margin-bottom: desktop-vw(20px);
 
+    &.H2-bis.bold{
+      font-size: desktop-vw(60px);
+      line-height: desktop-vw(60px);
+    }
+
     &__reported{
       position: absolute;
       top: 50%;
