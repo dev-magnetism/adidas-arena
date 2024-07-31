@@ -121,8 +121,13 @@ export default {
     }
   },
   data() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString)
+    const urlCategory = urlParams.get('categorie')
+    const category = this.programmesCategories.find((cat) => cat.slug === urlCategory)
+
     return {
-      selectedCategory: 'tout',
+      selectedCategory: category?.category || 'tout',
       barActive: true,
       barSticky: false,
       scrollTriggerMonths: [],
@@ -207,15 +212,6 @@ export default {
     },
   },
   mounted() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString)
-    const urlCategory = urlParams.get('categorie')
-    const category = this.programmesCategories.find((cat) => cat.slug === urlCategory)
-
-    if (category) {
-      this.selectedCategory = category.category
-    }
-
     this.initScrollTrigger()
   },
   beforeDestroy() {
