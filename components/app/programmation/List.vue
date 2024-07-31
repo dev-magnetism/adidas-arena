@@ -121,13 +121,8 @@ export default {
     }
   },
   data() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString)
-    const urlCategory = urlParams.get('categorie')
-    const category = this.programmesCategories.find((cat) => cat.slug === urlCategory)
-
     return {
-      selectedCategory: category?.category || 'tout',
+      selectedCategory: 'tout',
       barActive: true,
       barSticky: false,
       scrollTriggerMonths: [],
@@ -210,6 +205,16 @@ export default {
       history.pushState(null, '', url);
       this.updateFilters()
     },
+  },
+  beforeMount() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString)
+    const urlCategory = urlParams.get('categorie')
+    const category = this.programmesCategories.find((cat) => cat.slug === urlCategory)
+
+    if (category) {
+      this.selectedCategory = category.category
+    }
   },
   mounted() {
     this.initScrollTrigger()
