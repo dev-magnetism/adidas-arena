@@ -359,10 +359,13 @@ export default {
         this.currentMonth = `${this.monthFilters[0].month}-${this.monthFilters[0].year}`
 
         if (window.lenis) {
-          window.lenis?.scrollTo?.(this.$el, {
+          const container = document.querySelector('.app-programmation-list-events')
+          const filters = document.querySelector('.app-programmation-list-bar__wrapper')
+          const top = container.getBoundingClientRect().top + window.scrollY - filters.clientHeight - 100 - window.innerHeight * 0.021333333333
+
+          window.lenis?.scrollTo?.(top, {
             immediate: true,
             force: true,
-            offset: -25,
           })
         }
 
