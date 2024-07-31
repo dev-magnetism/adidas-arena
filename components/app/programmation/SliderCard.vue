@@ -82,7 +82,8 @@
           :color="whitedTexts"
         >
           {{ $formatDate(event.sessions, false) }}
-          {{ (event.date_tbc)?` - ${programmationsEventContent.glossary_tbc}`:''}}
+          <br/>
+          {{ (event.date_tbc)?`${programmationsEventContent.glossary_tbc}`:''}}
         </TP2>
       </div>
       <TH2 :color="whitedTexts" weight="bold">
