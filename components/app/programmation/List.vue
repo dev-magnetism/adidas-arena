@@ -193,10 +193,30 @@ export default {
   },
   watch: {
     selectedCategory() {
+      const url = new URL(window.location)
+
+      if (this.selectedCategory !== 'tout') {
+        const categorySlug = this.programmesCategories.find((cat) => cat.category === this.selectedCategory).slug
+        url.searchParams.set('category', categorySlug)
+      } else {
+        url.searchParams.delete('category')
+      }
+
+      history.pushState(null, '', url);
       this.updateFilters()
     },
   },
   mounted() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString)
+    const urlCategory = urlParams.get('category')
+    const category = this.programmesCategories.find((cat) => cat.slug === urlCategory)
+
+    if (category) {
+      this.selectedCategory = category.category
+      this.updateFilters()
+    }
+
     this.initScrollTrigger()
   },
   beforeDestroy() {

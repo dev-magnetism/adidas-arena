@@ -1,4 +1,5 @@
 // export const strict = false
+import slugify from 'slugify'
 
 const convertToKebabCase = (string) => {
   return string
@@ -78,7 +79,7 @@ export const getters = {
       state.programmes.reduce((acc, { content: { category } }) => {
         const key = category ? category.toLowerCase() : 'no cat'
 
-        acc[key] = acc[key] || { category: key, count: 0 }
+        acc[key] = acc[key] || { category: key, slug: slugify(key, { strict: true }), count: 0 }
         acc[key].count++
         return acc
       }, {})
