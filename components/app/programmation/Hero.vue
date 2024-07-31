@@ -68,6 +68,7 @@
                 v-if="!this.isReported"
                 class="app-programmation-hero__main-card__date">
                 {{ $formatDate(content.event.sessions, false, false, false, false) }}
+               {{ (content.event.date_tbc)?` - ${programmationsEventContent.glossary_tbc}`:''}}
               </TH4>
             </div>
             <TP2
@@ -673,15 +674,27 @@ export default {
         line-height: desktop-vw(28px);
       }
 
+      &__small{
+        font-size: desktop-vw(16px);
+        line-height: desktop-vw(16px);
+
+
+        @include mobile {
+          font-size: mobile-vw(16px);
+          line-height: mobile-vw(16px);
+        }
+
+        @include desktop-xl {
+          font-size: desktop-vw(20px);
+          line-height: desktop-vw(20px);
+        }
+      }
+
 
       &.reported{
         position: relative;
         
         text-decoration: line-through;
-      }
-
-      &:last-child{
-        margin-left: desktop-vw(10px);
       }
     }
 

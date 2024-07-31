@@ -123,6 +123,7 @@ export default {
   data() {
     return {
       selectedCategory: 'tout',
+      animatedFilterChange: true,
       barActive: true,
       barSticky: false,
       scrollTriggerMonths: [],
@@ -151,7 +152,7 @@ export default {
           })
           .filter((month) => month.events.length > 0);
 
-      } 
+      }
       else if (this.selectedCategory === 'tout') {
         return this.programmesMonths
       } else {
@@ -193,10 +194,30 @@ export default {
   },
   watch: {
     selectedCategory() {
+      const url = new URL(window.location)
+
+      if (this.selectedCategory !== 'tout') {
+        const categorySlug = this.programmesCategories.find((cat) => cat.category === this.selectedCategory).slug
+        url.searchParams.set('categorie', categorySlug)
+      } else {
+        url.searchParams.delete('categorie')
+      }
+
+      history.pushState(null, '', url);
       this.updateFilters()
     },
   },
   mounted() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString)
+    const urlCategory = urlParams.get('categorie')
+    const category = this.programmesCategories.find((cat) => cat.slug === urlCategory)
+
+    if (category) {
+      this.animatedFilterChange = false
+      this.selectedCategory = category.category
+    }
+
     this.initScrollTrigger()
   },
   beforeDestroy() {
@@ -332,98 +353,109 @@ export default {
       const layerBlue = document.querySelector('.app-transition-layer.blue')
       const layerRed = document.querySelector('.app-transition-layer.red')
 
-      gsap
-        .timeline({
-          delay: 0.15,
-        })
-        .fromTo(
-          layerBlue,
-          { scaleY: 0 },
-          {
-            scaleY: 1,
-            duration: 1,
-            ease: 'power3.inOut',
-          }
-        )
-        .fromTo(
-          layerRed,
-          { scaleY: 0 },
-          {
-            scaleY: 1,
-            duration: 1,
-            ease: 'power3.inOut',
-          },
-          '<10%'
-        )
-        .add(() => {
-          this.filteringInProgress = true
+      const filterItems = () => {
+        this.filteringInProgress = true
 
-          this.currentMonth = `${this.monthFilters[0].month}-${this.monthFilters[0].year}`
+        this.currentMonth = `${this.monthFilters[0].month}-${this.monthFilters[0].year}`
 
-          if (window.lenis) {
-            window.lenis?.scrollTo?.(this.$el, {
-              immediate: true,
-              force: true,
-              offset: -25,
-            })
+        if (window.lenis) {
+          const container = document.querySelector('.app-programmation-list-events')
+          const filters = document.querySelector('.app-programmation-list-bar__wrapper')
+          const top = container.getBoundingClientRect().top + window.scrollY - filters.clientHeight - 100 - window.innerHeight * 0.021333333333
+
+          window.lenis?.scrollTo?.(top, {
+            immediate: true,
+            force: true,
+          })
+        }
+
+        this.$refs.events.forEach((item) => {
+          const isMatch =
+            this.selectedCategory === 'tout' ||
+            (this.selectedCategory === 'reports' && item.event.reported) ||
+            item.event.content.category === this.selectedCategory
+
+          if (isMatch) {
+            if (!item.isAppear) item.scrollTrigger?.enable()
+
+            item.scrollTriggerInView?.enable()
+          } else {
+            item.scrollTrigger?.disable()
+
+            item.scrollTriggerInView?.disable()
+            item.inView = false
           }
 
-          this.$refs.events.forEach((item) => {
-            const isMatch =
-              this.selectedCategory === 'tout' ||
-              (this.selectedCategory === 'reports' && item.event.reported) || 
-              item.event.content.category === this.selectedCategory
+          item.$el.style.display = isMatch ? 'inline-flex' : 'none'
+        })
 
-            if (isMatch) {
-              if (!item.isAppear) item.scrollTrigger?.enable()
+        this.$refs.eventsContainer.forEach((month) => {
+          const cards = month.querySelectorAll('.app-programmation-card')
 
-              item.scrollTriggerInView?.enable()
-            } else {
-              item.scrollTrigger?.disable()
+          const visibleArticles = Object.values(cards).filter(
+            (article) => article.style.display !== 'none'
+          )
 
-              item.scrollTriggerInView?.disable()
-              item.inView = false
+          if (visibleArticles.length <= 0) {
+            month.style.position = 'absolute'
+          } else if (
+            visibleArticles.length > 0 &&
+            month.style.position === 'absolute'
+          ) {
+            month.style.position = 'relative'
+          }
+        })
+
+        this.filteringInProgress = false
+
+        this.$nextTick(() => {
+          ScrollTrigger.refresh()
+        })
+      }
+
+      if (!this.animatedFilterChange) {
+        filterItems()
+      } else {
+        gsap
+          .timeline({
+            delay: 0.15,
+          })
+          .fromTo(
+            layerBlue,
+            { scaleY: 0 },
+            {
+              scaleY: 1,
+              duration: 1,
+              ease: 'power3.inOut',
             }
-
-            item.$el.style.display = isMatch ? 'inline-flex' : 'none'
+          )
+          .fromTo(
+            layerRed,
+            { scaleY: 0 },
+            {
+              scaleY: 1,
+              duration: 1,
+              ease: 'power3.inOut',
+            },
+            '<10%'
+          )
+          .add(filterItems)
+          .to([layerRed, layerBlue], {
+            scaleY: 0,
+            transformOrigin: 'center bottom',
+            duration: 0.85,
+            delay: 0.25,
+            onComplete: () => {
+              window.lenis?.start()
+            },
+            ease: 'power3.inOut',
           })
-
-          this.$refs.eventsContainer.forEach((month) => {
-            const cards = month.querySelectorAll('.app-programmation-card')
-
-            const visibleArticles = Object.values(cards).filter(
-              (article) => article.style.display !== 'none'
-            )
-
-            if (visibleArticles.length <= 0) {
-              month.style.position = 'absolute'
-            } else if (
-              visibleArticles.length > 0 &&
-              month.style.position === 'absolute'
-            ) {
-              month.style.position = 'relative'
-            }
+          .set([layerRed, layerBlue], {
+            transformOrigin: 'center top',
           })
+      }
 
-          this.filteringInProgress = false
-
-          this.$nextTick(() => {
-            ScrollTrigger.refresh()
-          })
-        })
-        .to([layerRed, layerBlue], {
-          scaleY: 0,
-          transformOrigin: 'center bottom',
-          duration: 0.85,
-          delay: 0.25,
-          onComplete: () => {
-            window.lenis?.start()
-          },
-          ease: 'power3.inOut',
-        })
-        .set([layerRed, layerBlue], {
-          transformOrigin: 'center top',
-        })
+      this.animatedFilterChange = true
     },
   },
 }
@@ -432,7 +464,7 @@ export default {
 <style lang="scss">
 .app-programmation-list {
   margin-top: desktop-vw(110px);
-  padding-top: desktop-vw(110px);
+  padding-top: desktop-vw(160px);
   padding-bottom: desktop-vw(110px);
   position: relative;
 

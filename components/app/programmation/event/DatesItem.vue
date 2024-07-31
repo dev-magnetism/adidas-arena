@@ -40,6 +40,8 @@
           class="app-programmation-event-dates-item__date"
         >
           {{ date }}
+          <span class="app-programmation-event-dates-item__date__small">{{ (tbc)?` - ${tbcGlossary}`:''}}</span>
+
         </TH4>
         
         <!-- TH2Bis
@@ -141,6 +143,14 @@ export default {
     session: {
       type: Object,
       default: () => {},
+    },
+    tbc: {
+      type: Boolean,
+      default: false,
+    },
+    tbcGlossary: {
+      type: String,
+      default: 'Date à confirmer',
     },
   },
   computed: {
@@ -331,6 +341,17 @@ export default {
       width: 100%;
       padding: mobile-vw(16px) 0;
       text-align: center;
+    }
+
+    &__small{
+      font-size: desktop-vw(20px);
+      line-height: desktop-vw(20px);
+
+      @include mobile {
+        font-size: mobile-vw(13px);
+        line-height: mobile-vw(13px);
+      }
+
     }
 
     &.reported{
