@@ -349,9 +349,27 @@ export const actions = {
         'body.item.items.*',
         'body.item.items.item.*',
         'body.item.items.item.picture.*',
+      ],
+    })
+
+    /* OLD
+    const actualites = await $directus.items('Actualites').readByQuery({
+      limit: -1,
+      fields: [
+        '*',
+        'cover.*',
+        'body.*',
+        'items.*',
+        'body.item.*',
+        'body.item.picture.*',
+        'body.item.items.*',
+        'body.item.items.item.*',
+        'body.item.items.item.picture.*',
         '*.collection',
       ],
     })
+
+    */
 
     // SORT ACTUALITES BY DATE DESC
     actualites.data = actualites.data.sort(function (a, b) {
