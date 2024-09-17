@@ -137,9 +137,11 @@ export default {
     onScroll() {
       this.setParallax()
     },
+
     onSelect(e) {
       this.handleDisabledCursor()
     },
+    
     onPointerDown() {
       if (this.allowScroll) {
         this.setAllowScroll(false)
