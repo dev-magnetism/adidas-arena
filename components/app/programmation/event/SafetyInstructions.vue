@@ -117,6 +117,9 @@ export default {
 
   @include mobile {
     // margin-top: mobile-vw(70px);
+    padding-top: mobile-vw(10px);
+    padding-bottom: mobile-vw(10px);
+    overflow-x: hidden;
   }
 
   &__lottie-top-left.app-element-lottie {
