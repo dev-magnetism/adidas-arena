@@ -17,8 +17,8 @@
       <ELottie
         id="Trait_2"
         class="app-programmation-event-additional-informations__lottie-top-center"
-        start="top center+=0%"
-        end="bottom center-=100%"
+        start="top center+=25%"
+        end="bottom center-=5%"
       />
 
       <ELottie
