@@ -282,12 +282,18 @@ export default {
 
 				@include mobile {
 					padding: mobile-vw(20px) mobile-vw(40px);
-					min-width: mobile-vw(250px);
+					min-width: unset;
 				}
 
 			}
 
 			&__label{
+
+
+				@include mobile {
+					display: block;
+				}
+
 				.H4{
 					font-size: desktop-vw(18px);
 					line-height: desktop-vw(18px);
@@ -295,6 +301,7 @@ export default {
 					@include mobile {
 						font-size: mobile-vw(18px);
 						line-height: mobile-vw(18px);
+						white-space: nowrap;
 					}
 				}
 			}
