@@ -193,6 +193,7 @@ export default {
     @include mobile {
       opacity: 1;
       width: 100%;
+      max-width: unset;
       transform: rotate(0deg);
       padding: mobile-vw(25px) mobile-vw(20px) mobile-vw(50px) mobile-vw(20px);
     }
