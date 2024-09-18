@@ -179,7 +179,7 @@ export default {
 
   &__wrapper {
     width: 58%;
-    max-width: 500px;
+    max-width: desktop-vw(500px);
     margin: 0 auto;
     background: linear-gradient(
         rgba(251, 245, 238, 0.8) 0.1em,
@@ -240,7 +240,7 @@ export default {
       display: flex;
       background: var(--c-black);
       margin-right: desktop-vw(10px);
-      transform: translateY(desktop-vw(8px));
+      transform: translateY(desktop-vw(5px));
 
       @include desktop-l{
         margin-right: desktop-vw(10px);
@@ -255,7 +255,7 @@ export default {
         height: mobile-vw(4px);
         min-height: mobile-vw(4px);
         margin-right: mobile-vw(4px);
-        transform: translateY(mobile-vw(2px));
+        transform: translateY(mobile-vw(5px));
       }
     }
 
@@ -281,8 +281,8 @@ export default {
 
         @include mobile {
           @include font-ITCFranklinGothicLT-BkCp();
-          font-size: mobile-vw(12px);
-          line-height: mobile-vw(14px);
+          font-size: mobile-vw(16px);
+          line-height: mobile-vw(16px);
         }
 
       }
@@ -293,8 +293,8 @@ export default {
       }
 
       @include mobile {
-        font-size: mobile-vw(12px);
-        line-height: mobile-vw(14px);
+        font-size: mobile-vw(16px);
+        line-height: mobile-vw(16px);
 
         @include font-ITCFranklinGothicLT-BkCp();
 
