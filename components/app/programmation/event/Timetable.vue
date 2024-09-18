@@ -272,6 +272,7 @@ export default {
 				padding: desktop-vw(20px) desktop-vw(40px);
 				background-color: #fff;
 				min-width: desktop-vw(250px);
+				user-select: none; 
 
 				&.rotate1{
 					transform: rotate(-6.572deg);
