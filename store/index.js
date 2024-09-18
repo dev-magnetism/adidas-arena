@@ -494,6 +494,10 @@ export const actions = {
         //   _testInd = _testInd +1;
         // }
 
+        contents[i].timetable_title = (progDirectContent.timetable_title)?progDirectContent.timetable_title:programmationsEvent.data.timetable_title;
+        contents[i].timetable_list = (progDirectContent.timetable_list)?progDirectContent.timetable_list:[];
+        contents[i].additional_informations_list = (progDirectContent.additional_informations_list)?progDirectContent.additional_informations_list:[];
+
         contents[i].ticketing_std_title = (progDirectContent?.ticketing_std_title)?progDirectContent.ticketing_std_title:programmationsEvent.data.ticketing_std_title
         contents[i].ticketing_std_description = (progDirectContent?.ticketing_std_description)?progDirectContent.ticketing_std_description:programmationsEvent.data.ticketing_std_description
         contents[i].ticketing_prem_title = (progDirectContent?.ticketing_prem_title)?progDirectContent.ticketing_prem_title:programmationsEvent.data.ticketing_prem_title
