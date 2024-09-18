@@ -116,6 +116,9 @@ export default {
 
   @include mobile {
     // margin-top: mobile-vw(70px);
+    padding-top: mobile-vw(10px);
+    padding-bottom: mobile-vw(10px);
+    overflow-x: hidden;
   }
 
   &__lottie-top-left.app-element-lottie {
@@ -135,16 +138,15 @@ export default {
 
   &__lottie-top-center.app-element-lottie {
     position: absolute;
-    width: desktop-vw(307px);
+    width: desktop-vw(207px);
     height: auto;
-    top: 25%;
+    top: 28%;
     right: 12%;
 
     @include mobile {
-      transform: scale(-1, -1) rotate(95deg);
-      width: mobile-vw(65px);
-      height: mobile-vw(100px);
-      right: 90%;
+      width: mobile-vw(207px);
+      top: 35%;
+      right: 20%;
     }
   }
 
@@ -173,7 +175,7 @@ export default {
 
   &__wrapper {
     width: 58%;
-    max-width: 782px;
+    max-width: 500px;
     margin: 0 auto;
     background: linear-gradient(
         rgba(251, 245, 238, 0.8) 0.1em,
@@ -199,11 +201,13 @@ export default {
   &__title {
     margin-bottom: desktop-vw(40px);
     text-align: center;
-    font-size: desktop-vw(64px);
+    font-size: desktop-vw(38px);
+    line-height: desktop-vw(38px);
 
 
     @include mobile{
-      font-size: mobile-vw(44px);
+      font-size: mobile-vw(38px);
+      line-height: mobile-vw(38px);
       margin-bottom: mobile-vw(40px);
     }
     
@@ -234,7 +238,7 @@ export default {
       display: flex;
       background: var(--c-black);
       margin-right: desktop-vw(10px);
-      transform: translateY(desktop-vw(12px));
+      transform: translateY(desktop-vw(5px));
 
       @include desktop-l{
         margin-right: desktop-vw(10px);
@@ -259,8 +263,8 @@ export default {
 
     .H4 {
       @include font-ITCFranklinGothicLT-BkCp();
-      font-size: desktop-vw(32px);
-      line-height: desktop-vw(32px);
+      font-size: desktop-vw(16px);
+      line-height: desktop-vw(16px);
       .p{
         margin: 0;
         @include h4();
@@ -282,13 +286,13 @@ export default {
       }
 
       @include desktop-l{
-        font-size: desktop-vw(32px);
-        line-height: desktop-vw(32px);
+        font-size: desktop-vw(16px);
+        line-height: desktop-vw(16px);
       }
 
       @include mobile {
-        font-size: mobile-vw(24px);
-        line-height: mobile-vw(24px);
+        font-size: mobile-vw(12px);
+        line-height: mobile-vw(14px);
 
         @include font-ITCFranklinGothicLT-BkCp();
 
