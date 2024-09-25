@@ -340,7 +340,6 @@ export const actions = {
         'body.item.items.*',
         'body.item.items.item.*',
         'body.item.items.item.picture.*',
-        '*.collection',
       ],
     })
 
@@ -420,8 +419,6 @@ export const actions = {
           (cont) => parseInt(cont.id_event) === contents[i].id
         )
 
-        //  console.log('progDirectContent offers', progDirectContent.offers)
-
         contents[i].is_draft = progDirectContent.is_draft
         contents[i].main_event = progDirectContent.main_event
         contents[i].inside_slider = progDirectContent.inside_slider
@@ -436,6 +433,8 @@ export const actions = {
         contents[i].ticketing_std_description = (progDirectContent.ticketing_std_description)?progDirectContent.ticketing_std_description:programmationsEvent.data.ticketing_std_description
         contents[i].ticketing_prem_title = (progDirectContent.ticketing_prem_title)?progDirectContent.ticketing_prem_title:programmationsEvent.data.ticketing_prem_title
         contents[i].ticketing_prem_description = (progDirectContent.ticketing_prem_description)?progDirectContent.ticketing_prem_description:programmationsEvent.data.ticketing_prem_description
+
+        contents[i].ticketing_main_url = (progDirectContent.ticketing_main_url)?progDirectContent.ticketing_main_url:false;
 
         contents[i].offers = progDirectContent.offer.map((_item)=>{
             return progOffersDirectContents.find(_offer => _offer.id === _item.Programmation_Offer_id)

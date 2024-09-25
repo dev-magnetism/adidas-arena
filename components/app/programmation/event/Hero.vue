@@ -95,7 +95,7 @@
           v-else-if="
             event.sessions.length > 1 && event.status_code === 'D'
           "
-          :href="event.sessions[0].content.url"
+          :href="(event.ticketing_main_url)?event.ticketing_main_url:event.sessions[0].content.url"
         >
           Réserver
         </AtomsCTA>
@@ -116,7 +116,7 @@
 
         <AtomsCTA
           v-else-if="event.status_code === 'D'"
-          :href="event.sessions[0].content.url"
+          :href="(event.ticketing_main_url)?event.ticketing_main_url:event.sessions[0].content.url"
         >
           Réserver mon billet
         </AtomsCTA>
