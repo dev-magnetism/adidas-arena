@@ -1,7 +1,10 @@
 <template>
   <div class="app-programmation-event-bar block-inner">
     <div class="app-programmation-event-bar__event">
-      <TP2 weight="medium" color="grey">{{ $formatDate(event.sessions) }}</TP2>
+      <TP2 weight="medium" color="grey">
+        {{ $formatDate(event.sessions, false) }} 
+        {{ (event.date_tbc)?` - ${programmationsEventContent.glossary_tbc}`:''}}
+      </TP2>
       <TH4 color="grey">{{ event.artist_reference }}</TH4>
     </div>
     <div class="app-programmation-event-bar__book">

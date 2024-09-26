@@ -40,6 +40,15 @@
       :index-date="event.sessions.length - 1 > 0 ? indexDate : 0"
     />
 
+     <AppProgrammationEventTimetable
+      :event="event"
+    />
+
+    <AppProgrammationEventAdditionalInformations 
+      :content="contentAdditionalInformations"
+      :event="event" 
+    />
+
     <AppProgrammationEventOffers 
       ref="offers" 
       v-if="event.offers?.length > 0"
@@ -137,6 +146,11 @@ export default {
       headerReduced: (state) => state.headerReduced,
       webview: (state) => state.webview,
     }),
+    contentAdditionalInformations() {
+      return {
+        title: this.programmationsEventContent.additional_informations_title,
+      }
+    },
     contentCancelation() {
       return {
         title: this.programmationsEventContent.cancelation_title,
@@ -181,6 +195,7 @@ export default {
   },
 
   mounted() {
+    //  console.log('Page event', this.event);
     this.initScrollTrigger()
     this.initMatchMedia()
   },

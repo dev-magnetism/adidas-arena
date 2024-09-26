@@ -53,19 +53,23 @@
         :index="index"
         :session="session"
         :event-id="event.id"
-        :date="$formatDate(session.date, true)"
-        :day="$formatDate(session.date, false)"
+        :date="$formatDate(session.date, false, false, false, true)"
+        :day="$formatDate(session.date, false, false, false, false)"
         :filtered-date="filteredDate"
         :artist="event.artist_reference"
         :total-items="event.sessions.length"
         :disabled="indexDate !== index && indexDate !== null"
         @click.native="onSelectDate(index)"
+        :tbc="event.date_tbc"
+        :tbc-glossary="programmationsEventContent.glossary_tbc"
       />
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   props: {
     event: {
@@ -85,6 +89,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      programmationsEventContent: (state) => state.programmationsEventContent,
+    }),
     sessions() {
       const sessions = JSON.parse(JSON.stringify(this.event.sessions))
 
