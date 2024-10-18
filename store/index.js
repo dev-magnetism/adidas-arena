@@ -1,4 +1,5 @@
 // export const strict = false
+import slugify from 'slugify'
 
 const convertToKebabCase = (string) => {
   return string
@@ -78,7 +79,7 @@ export const getters = {
       state.programmes.reduce((acc, { content: { category } }) => {
         const key = category ? category.toLowerCase() : 'no cat'
 
-        acc[key] = acc[key] || { category: key, count: 0 }
+        acc[key] = acc[key] || { category: key, slug: slugify(key, { strict: true }), count: 0 }
         acc[key].count++
         return acc
       }, {})
@@ -88,9 +89,10 @@ export const getters = {
 
     //  console.log('programmesCategories / _reported', _reported);
 
-    result.unshift({ category: 'Tout', count: state.programmes.length })
+    result.unshift({ category: 'tout', slug: slugify('tout', { strict: true }), count: state.programmes.length })
 
-    result.push({ category: 'Reports', count: _reported.length })
+    result.push({ category: 'reports', slug: slugify('reports', { strict: true }), count: _reported.length })
+
 
     //  console.log('programmesCategories / result', result);
     return result
@@ -461,6 +463,7 @@ export const actions = {
         contents[i].date_tbc = progDirectContent?.date_tbc
         contents[i].main_event = progDirectContent?.main_event
         contents[i].inside_slider = progDirectContent?.inside_slider
+        
         contents[i].instruction_id = contentEvent.instruction_id
           ? contentEvent.instruction_id
           : []
@@ -468,13 +471,14 @@ export const actions = {
         contents[i].spotify_link = progDirectContent?.spotify_link
         contents[i].cover_video = progDirectContent?.cover_video
 
+        contents[i].ticketing_main_url = (progDirectContent.ticketing_main_url)?progDirectContent.ticketing_main_url:false;
 
         // REPORTED USE CASE TEST
         // if(i % 2 !== 0) {
         //   contents[i].reported = true;
         //   let _count = 8;
         //   contents[i].sessions.map((_sess, _sessI)=>{
-          
+
         //     _sess.reported = true; // (_sessI % 2 !== 0)
         //     //  _sess.initial_date = "2024-06-08 20:00:00";
 
@@ -491,6 +495,10 @@ export const actions = {
 
         //   _testInd = _testInd +1;
         // }
+
+        contents[i].timetable_title = (progDirectContent.timetable_title)?progDirectContent.timetable_title:programmationsEvent.data.timetable_title;
+        contents[i].timetable_list = (progDirectContent.timetable_list)?progDirectContent.timetable_list:[];
+        contents[i].additional_informations_list = (progDirectContent.additional_informations_list)?progDirectContent.additional_informations_list:[];
 
         contents[i].ticketing_std_title = (progDirectContent?.ticketing_std_title)?progDirectContent.ticketing_std_title:programmationsEvent.data.ticketing_std_title
         contents[i].ticketing_std_description = (progDirectContent?.ticketing_std_description)?progDirectContent.ticketing_std_description:programmationsEvent.data.ticketing_std_description

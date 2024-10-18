@@ -1,63 +1,49 @@
 <template>
-  <div class="app-programmation-event-safety-instructions block-inner">
+  <div 
+    v-if="elHide" 
+    class="app-programmation-event-additional-informations block-inner"
+  >
     <div
       ref="wrapper"
-      class="app-programmation-event-safety-instructions__wrapper"
+      class="app-programmation-event-additional-informations__wrapper"
     >
       <ELottie
         id="404_Fleche_Rouge_01"
-        class="app-programmation-event-safety-instructions__lottie-top-left"
+        class="app-programmation-event-additional-informations__lottie-top-left"
+        start="top center+=25%"
+        end="bottom center-=5%"
+      />
+
+      <ELottie
+        id="Trait_2"
+        class="app-programmation-event-additional-informations__lottie-top-center"
         start="top center+=25%"
         end="bottom center-=5%"
       />
 
       <ELottie
         id="Fleche_2"
-        class="app-programmation-event-safety-instructions__lottie-middle-right"
+        class="app-programmation-event-additional-informations__lottie-middle-right"
         start="top center+=25%"
         end="bottom center-=5%"
-      />
-
-      <ELottie
-        id="404_Fleche_Bleu_01"
-        class="app-programmation-event-safety-instructions__lottie-bottom-left"
-        start="top center+=25%"
-        end="bottom center-=2.5%"
       />
 
       <AtomsCornerPoints :size-points="8" />
 
       <TH2Bis
         weight="bold"
-        class="app-programmation-event-safety-instructions__title"
+        class="app-programmation-event-additional-informations__title"
       >
         {{ content.title }}
       </TH2Bis>
-      <div
-        v-if="content.externalItems"
-        class="app-programmation-event-safety-instructions__list"
-      >
+      <div class="app-programmation-event-additional-informations__list">
         <div
-          v-for="(instruction, index) in content.items"
-          :key="`instruction-external-${index}`"
-          class="app-programmation-event-safety-instructions__item"
+          v-for="(info, index) in event.additional_informations_list"
+          :key="`additional_informations-${index}`"
+          class="app-programmation-event-additional-informations__item"
         >
           <TH4 weight="medium">
-            <ERichTextEvent 
-              :component="{ name: 'H4', weight: 'medium', tagTarget: 'p', tag: 'h4'}"
-              :content="instruction.content.description"
-            />
-          </TH4>
-        </div>
-      </div>
-      <div v-else class="app-programmation-event-safety-instructions__list">
-        <div
-          v-for="(instruction, index) in content.items"
-          :key="`instruction-external-${index}`"
-          class="app-programmation-event-safety-instructions__item"
-        >
-          <TH4 weight="medium">
-            {{ instruction.safety_instructions_item }}
+            {{ info.additional_informations_label }}
           </TH4>
         </div>
       </div>
@@ -70,10 +56,23 @@ import { gsap } from 'gsap'
 
 export default {
   props: {
+    event: {
+      type: Object,
+      default: () => {},
+    },
     content: {
       type: Object,
       default: () => {},
     },
+  },
+  computed: {
+
+    elHide() {
+      return (
+            this.event.additional_informations_list?.length > 0
+          )
+      },
+
   },
   mounted() {
     this.initMatchMedia()
@@ -90,7 +89,7 @@ export default {
 
       this.mm.add('(min-width: 768px)', (context) => {
         this.tween = gsap.to(this.$refs.wrapper, {
-          rotate: 4,
+          rotate: -3,
           opacity: 1,
           y: '0%',
           ease: 'power2.inOut',
@@ -112,7 +111,7 @@ export default {
 </script>
 
 <style lang="scss">
-.app-programmation-event-safety-instructions {
+.app-programmation-event-additional-informations {
   // margin-top: desktop-vw(160px);
 
   @include mobile {
@@ -137,20 +136,17 @@ export default {
     }
   }
 
-  &__lottie-bottom-left.app-element-lottie {
+  &__lottie-top-center.app-element-lottie {
     position: absolute;
-    transform: scale(1, 1) rotate(160deg);
-    width: desktop-vw(150px);
+    width: desktop-vw(207px);
     height: auto;
-    right: 95%;
-    bottom: 15%;
+    top: 28%;
+    right: 12%;
 
     @include mobile {
-      transform: scale(1, 1) rotate(160deg);
-      width: mobile-vw(70px);
-      height: auto;
-      right: 80%;
-      bottom: -2.5%;
+      width: mobile-vw(207px);
+      top: 35%;
+      right: 20%;
     }
   }
 
@@ -190,14 +186,14 @@ export default {
     background-size: 1.2em 1.2em;
     padding: desktop-vw(50px) desktop-vw(50px) desktop-vw(65px) desktop-vw(50px);
     position: relative;
-    transform: translate(0, 20%) rotate(8deg);
+    transform: translate(0, 20%) rotate(0);
     opacity: 0;
     height: 100%;
 
     @include mobile {
       opacity: 1;
-      max-width: unset;
       width: 100%;
+      max-width: unset;
       transform: rotate(0deg);
       padding: mobile-vw(25px) mobile-vw(20px) mobile-vw(50px) mobile-vw(20px);
     }
@@ -206,11 +202,13 @@ export default {
   &__title {
     margin-bottom: desktop-vw(40px);
     text-align: center;
-    font-size: desktop-vw(44px);
+    font-size: desktop-vw(38px);
+    line-height: desktop-vw(38px);
 
 
     @include mobile{
-      font-size: mobile-vw(44px);
+      font-size: mobile-vw(38px);
+      line-height: mobile-vw(38px);
       margin-bottom: mobile-vw(40px);
     }
     
