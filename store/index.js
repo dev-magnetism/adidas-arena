@@ -463,6 +463,7 @@ export const actions = {
         contents[i].date_tbc = progDirectContent?.date_tbc
         contents[i].main_event = progDirectContent?.main_event
         contents[i].inside_slider = progDirectContent?.inside_slider
+        
         contents[i].instruction_id = contentEvent.instruction_id
           ? contentEvent.instruction_id
           : []
@@ -470,6 +471,7 @@ export const actions = {
         contents[i].spotify_link = progDirectContent?.spotify_link
         contents[i].cover_video = progDirectContent?.cover_video
 
+        contents[i].ticketing_main_url = (progDirectContent.ticketing_main_url)?progDirectContent.ticketing_main_url:false;
 
         // REPORTED USE CASE TEST
         // if(i % 2 !== 0) {
@@ -493,6 +495,10 @@ export const actions = {
 
         //   _testInd = _testInd +1;
         // }
+
+        contents[i].timetable_title = (progDirectContent.timetable_title)?progDirectContent.timetable_title:programmationsEvent.data.timetable_title;
+        contents[i].timetable_list = (progDirectContent.timetable_list)?progDirectContent.timetable_list:[];
+        contents[i].additional_informations_list = (progDirectContent.additional_informations_list)?progDirectContent.additional_informations_list:[];
 
         contents[i].ticketing_std_title = (progDirectContent?.ticketing_std_title)?progDirectContent.ticketing_std_title:programmationsEvent.data.ticketing_std_title
         contents[i].ticketing_std_description = (progDirectContent?.ticketing_std_description)?progDirectContent.ticketing_std_description:programmationsEvent.data.ticketing_std_description

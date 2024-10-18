@@ -46,7 +46,7 @@
           !event.sessions[0].content.url_premium &&
           event.status_code === 'D'
         "
-        :href="event.sessions[0].content.url"
+        :href="(event.ticketing_main_url)?event.ticketing_main_url:event.sessions[0].content.url"
       >
         Réserver mon billet
       </AtomsCTA>
