@@ -140,12 +140,12 @@ export default {
     position: absolute;
     width: desktop-vw(207px);
     height: auto;
-    top: 28%;
-    right: 12%;
+    top: 17%;
+    right: 14%;
 
     @include mobile {
       width: mobile-vw(207px);
-      top: 35%;
+      top: 20%;
       right: 20%;
     }
   }
@@ -266,6 +266,11 @@ export default {
       @include font-ITCFranklinGothicLT-BkCp();
       font-size: desktop-vw(16px);
       line-height: desktop-vw(16px);
+
+      &.medium{
+        @include font-ITCFranklinGothicLT-BkCp();
+      }
+      
       .p{
         margin: 0;
         @include h4();

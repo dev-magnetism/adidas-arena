@@ -268,6 +268,12 @@ export default {
       @include font-ITCFranklinGothicLT-BkCp();
       font-size: desktop-vw(16px);
       line-height: desktop-vw(16px);
+
+
+      &.medium{
+        @include font-ITCFranklinGothicLT-BkCp();
+      }
+      
       .p{
         margin: 0;
         @include h4();
