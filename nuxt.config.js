@@ -14,7 +14,8 @@ const removeSpecialChar = (string) => {
 }
 
 export default {
-  target: 'static',
+  mode: 'universal',
+  target: 'server',
 
   head: {
     htmlAttrs: {
