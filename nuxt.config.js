@@ -220,7 +220,7 @@ export default {
 
       return routes
     },
-    interval: 250,
+    interval: 4000,
   },
 
   static: {
