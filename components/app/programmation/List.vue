@@ -19,6 +19,14 @@
             </option>
           </select>
         </AppProgrammationEventTag>
+        <div class="app-programmation-list-bar__searchForm">
+          <input
+            class="app-programmation-list-bar__searchInput P1 bold"
+            type="text"
+            placeholder="Rechercher..."
+            v-model="searchValue"
+          />
+        </div>
         <div class="app-programmation-list-bar__filters">
           <div
             v-for="(cat, catIndex) in programmesCategories"
@@ -104,6 +112,14 @@
         />
       </div>
     </div>
+
+    <div
+      ref="container"
+      class="container app-programmation-list__noResults grid-inner"
+      v-if="noResults"
+    >
+      <TH4>Votre recherche n'a donné aucun résultat</TH4>
+    </div>
   </div>
 </template>
 
@@ -123,6 +139,7 @@ export default {
   data() {
     return {
       selectedCategory: 'tout',
+      searchValue: '',
       animatedFilterChange: true,
       barActive: true,
       barSticky: false,
@@ -130,6 +147,7 @@ export default {
       currentMonth: null,
       directionMonth: 'up',
       filteringInProgress: false,
+      noResults: false
     }
   },
   computed: {
@@ -204,8 +222,11 @@ export default {
       }
 
       history.pushState(null, '', url);
-      this.updateFilters()
+      this.updateFilters(true)
     },
+    searchValue() {
+      this.updateFilters()
+    }
   },
   mounted() {
     const queryString = window.location.search;
@@ -344,7 +365,7 @@ export default {
 
       return d1 > d2
     },
-    updateFilters() {
+    updateFilters(withAnimation = false) {
       window.lenis?.stop()
 
       this.directionMonth = 'down'
@@ -369,16 +390,24 @@ export default {
           })
         }
 
+        const searchValue = this.searchValue.trim()
+        this.noResults = true
+
         this.$refs.events.forEach((item) => {
-          const isMatch =
-            this.selectedCategory === 'tout' ||
+          const isSearchResultValid = !searchValue || (item.event.content.title.toLowerCase().includes(searchValue.toLowerCase()) || item.event.content.tags?.includes(searchValue.toLowerCase()))
+
+          const isCategoryValid =
+            (this.selectedCategory === 'tout') ||
             (this.selectedCategory === 'reports' && item.event.reported) ||
-            item.event.content.category === this.selectedCategory
+            (item.event.content.category === this.selectedCategory)
+
+          const isMatch = isSearchResultValid && isCategoryValid
 
           if (isMatch) {
             if (!item.isAppear) item.scrollTrigger?.enable()
 
             item.scrollTriggerInView?.enable()
+            this.noResults = false
           } else {
             item.scrollTrigger?.disable()
 
@@ -387,6 +416,8 @@ export default {
           }
 
           item.$el.style.display = isMatch ? 'inline-flex' : 'none'
+
+          console.log(item.event.content.title, item.$el.style.display)
         })
 
         this.$refs.eventsContainer.forEach((month) => {
@@ -413,8 +444,9 @@ export default {
         })
       }
 
-      if (!this.animatedFilterChange) {
+      if (!this.animatedFilterChange || !withAnimation) {
         filterItems()
+        window.lenis?.start()
       } else {
         gsap
           .timeline({
@@ -464,7 +496,7 @@ export default {
 <style lang="scss">
 .app-programmation-list {
   margin-top: desktop-vw(110px);
-  padding-top: desktop-vw(160px);
+  padding-top: calc(desktop-vw(170px) + 52px);
   padding-bottom: desktop-vw(110px);
   position: relative;
 
@@ -472,6 +504,13 @@ export default {
     margin-top: mobile-vw(120px);
     padding-top: mobile-vw(134px);
     padding-bottom: mobile-vw(90px);
+  }
+
+  &__noResults {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: desktop-vw(50px);
   }
 
   &-events {
@@ -572,6 +611,33 @@ export default {
         -webkit-appearance: none;
         z-index: 1;
       }
+    }
+
+    &__searchForm {
+      display: flex;
+
+      @include mobile {
+        display: none;
+      }
+    }
+
+    &__searchInput {
+      display: flex;
+      flex-direction: row;
+      background-color: var(--c-grey);
+      border: 1px solid var(--c-black);
+      transition: background-color 0.4s 1s var(--ease-out-cubic),
+      border-color 0.4s 1s var(--ease-out-cubic);
+      padding: desktop-vw(10px) desktop-vw(12px);
+      margin-bottom: desktop-vw(10px);
+    }
+
+    &__clearSearch {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: desktop-vw(50px);
+      width: desktop-vw(50px);
     }
 
     &__filters {
