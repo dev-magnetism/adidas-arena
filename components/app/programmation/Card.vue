@@ -328,7 +328,7 @@ export default {
     grid-column: span 3;
   }
 
-  @include desktop-l {
+  @include desktop {
     grid-column: span 3;
   }
 
