@@ -120,6 +120,14 @@
           <SvgFooterFacebook />
         </a>
         <a
+          v-if="contents.data.social_networks_youtube_link"
+          :href="contents.data.social_networks_youtube_link"
+          target="_blank"
+          class="app-footer__social-network"
+        >
+          <SvgFooterYoutube />
+        </a>
+        <a
           v-if="contents.data.social_networks_linkedin_link"
           :href="contents.data.social_networks_linkedin_link"
           target="_blank"
