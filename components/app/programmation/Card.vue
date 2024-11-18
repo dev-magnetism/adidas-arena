@@ -311,7 +311,7 @@ export default {
 
 <style lang="scss">
 .app-programmation-card {
-  grid-column: span 4;
+  grid-column: span 3;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -319,10 +319,6 @@ export default {
   border: 1px solid var(--c-black);
   background-color: var(--bg);
   cursor: pointer;
-
-  @include mobile {
-    grid-column: span 6;
-  }
 
   @include mobile-l {
     grid-column: span 3;
@@ -400,7 +396,7 @@ export default {
         line-height: mobile-vw(15px);
       }
 
-      @include desktop-l {
+      @include desktop {
         font-size: desktop-vw(25px);
         line-height: desktop-vw(25px);
       }
@@ -434,7 +430,7 @@ export default {
       padding: mobile-vw(8px) mobile-vw(8px) mobile-vw(4px) mobile-vw(8px);
     }
 
-    @include desktop-l {
+    @include desktop {
       padding: desktop-vw(12px) desktop-vw(18px);
     }
   }
@@ -443,6 +439,11 @@ export default {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
+    flex-direction: column;
+
+    @include desktop {
+      flex-direction: row;
+    }
 
     .P2 {
       text-transform: uppercase;
@@ -455,23 +456,37 @@ export default {
     .type {
       display:block;
       flex: 0 0 auto;
-      max-width: 30%;
+      max-width: none;
+      margin-bottom: mobile-vw(5px);
+
+      @include desktop {
+        max-width: 30%;
+        margin-bottom: 0;
+      }
     }
 
     .date {
       display:block;
       flex: 0 0 auto;
-      margin-left: desktop-vw(30px);
 
+      @include desktop {
+        margin-left: desktop-vw(30px);
+      }
 
       &.reported{
         position: relative;
-        margin-left: desktop-vw(10px);
         text-decoration: line-through;
+
+        @include desktop {
+          margin-left: desktop-vw(10px);
+        }
       }
 
       &:last-child{
-        margin-left: desktop-vw(16px);
+
+        @include desktop {
+          margin-left: desktop-vw(30px);
+        }
       }
     }
   }
@@ -485,8 +500,8 @@ export default {
     letter-spacing:0;
 
     @include mobile {
-      margin-top: mobile-vw(5px);
-      margin-bottom: mobile-vw(85px);
+      margin-top: mobile-vw(10px);
+      // margin-bottom: mobile-vw(85px);
       font-size: mobile-vw(46px);
       line-height: mobile-vw(42px);
     }
@@ -519,7 +534,7 @@ export default {
       line-height: mobile-vw(10px);
     }
 
-    @include desktop-l {
+    @include desktop {
       font-size: desktop-vw(12px);
       line-height: desktop-vw(16px);
       width: 40%;
