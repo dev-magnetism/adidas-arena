@@ -46,31 +46,31 @@
               : ''
           }}
         </TP2>
-        <TP2 
+        <TP2
           v-if="this.isReported"
-          class="date reported" 
-          weight="medium" 
-          :color="whitedTexts" 
+          class="date reported"
+          weight="medium"
+          :color="whitedTexts"
           tag="h3"
         >
           {{ $formatDate(event.sessions, true, true, false, (!this.isWaitingNewDate)?false:true) }}
         </TP2>
 
-        <TP2 
+        <TP2
           v-if="this.isReported && !this.isWaitingNewDate && event.sessions[0].report_date_announcement"
-          class="date" 
-          weight="medium" 
-          :color="whitedTexts" 
+          class="date"
+          weight="medium"
+          :color="whitedTexts"
           tag="h3"
         >
           {{ $formatDate(event.sessions, true, false, true, true) }}
         </TP2>
 
-        <TP2 
+        <TP2
           v-if="!this.isReported"
-          class="date" 
-          weight="medium" 
-          :color="whitedTexts" 
+          class="date"
+          weight="medium"
+          :color="whitedTexts"
           tag="h3"
         >
           {{ $formatDate(event.sessions, false, false, false, true) }}
@@ -497,7 +497,7 @@ export default {
       line-height: mobile-vw(20px);
     }
 
-    @include desktop-l {
+    @include desktop {
       font-size: desktop-vw(32px);
       line-height: desktop-vw(26px);
     }
