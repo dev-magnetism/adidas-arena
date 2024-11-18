@@ -531,7 +531,7 @@ export default {
 
       @include mobile {
         grid-template-columns: repeat(6, 1fr);
-        grid-gap: mobile-vw(20px);
+        grid-gap: var(--layout-margin);
         margin-bottom: mobile-vw(18px);
       }
     }
