@@ -391,10 +391,10 @@ export default {
       top: 0;
       z-index: 10;
 
-      @include mobile-l {
-        font-size: mobile-vw(15px);
-        line-height: mobile-vw(15px);
-      }
+      // @include mobile-l {
+      //   font-size: mobile-vw(15px);
+      //   line-height: mobile-vw(15px);
+      // }
 
       @include desktop {
         font-size: desktop-vw(25px);
@@ -423,11 +423,11 @@ export default {
     border-top: 1px solid var(--c-black);
 
     @include mobile {
-      padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(76px) mobile-vw(15px);
+      padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(50px) mobile-vw(15px);
     }
 
     @include mobile-l {
-      padding: mobile-vw(8px) mobile-vw(8px) mobile-vw(4px) mobile-vw(8px);
+      padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(50px) mobile-vw(15px);
     }
 
     @include desktop {
@@ -449,8 +449,8 @@ export default {
       text-transform: uppercase;
 
       @include mobile-l {
-        font-size: mobile-vw(10px);
-        line-height: mobile-vw(8px);
+        // font-size: mobile-vw(10px);
+        // line-height: mobile-vw(8px);
       }
     }
     .type {
@@ -502,14 +502,15 @@ export default {
     @include mobile {
       margin-top: mobile-vw(10px);
       // margin-bottom: mobile-vw(85px);
-      font-size: mobile-vw(46px);
-      line-height: mobile-vw(42px);
+      font-size: mobile-vw(32px);
+      line-height: mobile-vw(26px);
     }
 
     @include mobile-l {
-      margin-bottom: mobile-vw(40px);
-      font-size: mobile-vw(24px);
-      line-height: mobile-vw(20px);
+      margin-top: mobile-vw(10px);
+      // margin-bottom: mobile-vw(85px);
+      font-size: mobile-vw(32px);
+      line-height: mobile-vw(26px);
     }
 
     @include desktop {
@@ -528,11 +529,10 @@ export default {
     }
 
     @include mobile-l {
-      width: 35%;
-      text-align: left;
-      font-size: mobile-vw(10px);
-      line-height: mobile-vw(10px);
+      width: 100%;
+      text-align: right;
     }
+
 
     @include desktop {
       font-size: desktop-vw(12px);
@@ -562,10 +562,10 @@ export default {
     }
 
     .P2 {
-      @include mobile-l {
-        font-size: mobile-vw(10px);
-        line-height: mobile-vw(8px);
-      }
+      // @include mobile-l {
+      //   font-size: mobile-vw(10px);
+      //   line-height: mobile-vw(8px);
+      // }
     }
   }
 }
