@@ -12,7 +12,7 @@ const removeSpecialChar = (string) => {
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036F]/g, '')
-    .replace(/[^\w\s]/gi, '-')
+    .replace(/[^\w\s]/gi, '-');
 }
 
 export default {
