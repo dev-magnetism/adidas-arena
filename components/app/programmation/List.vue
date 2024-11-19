@@ -138,7 +138,6 @@ export default {
       programmesMonths: 'programmesMonths',
     }),
     monthFilters() {
-      console.log('this.selectedCategory', this.selectedCategory);
       if (this.selectedCategory === 'reports') {
         return this.programmesMonths
           .map((month) => {
