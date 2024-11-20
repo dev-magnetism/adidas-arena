@@ -24,6 +24,7 @@
             	bg="white"
             	color="red-adidas"
             	href="/programmation"
+            	target="_blank"
             	layer-color="black"
           	>
             Toute la prog'
@@ -69,6 +70,7 @@
 						    <nuxt-link
 						      class="prog__events__slider__card__informations"
 						      to="programmation/paris-basketball-vs-virtus-bologna--469"
+            				target="_blank"
 
 						      :gtm-click="{
 						        id: `469`,
@@ -126,6 +128,7 @@
 						    <nuxt-link
 						      class="prog__events__slider__card__informations"
 						      to="programmation/disney-sur-glace-un-monde-de-reves--432"
+            				target="_blank"
 
 						      :gtm-click="{
 						        id: `432`,
@@ -183,6 +186,7 @@
 						    <nuxt-link
 						      class="prog__events__slider__card__informations"
 						      to="programmation/james-blunt--496"
+            				target="_blank"
 
 						      :gtm-click="{
 						        id: `496`,
@@ -240,6 +244,7 @@
 						    <nuxt-link
 						      class="prog__events__slider__card__informations"
 						      to="programmation/rimk--592"
+            				target="_blank"
 
 						      :gtm-click="{
 						        id: `592`,
@@ -297,6 +302,7 @@
 						    <nuxt-link
 						      class="prog__events__slider__card__informations"
 						      to="programmation/paris-basketball-vs-as-monaco-basket--453"
+            				target="_blank"
 
 						      :gtm-click="{
 						        id: `453`,
@@ -354,6 +360,7 @@
 						    <nuxt-link
 						      class="prog__events__slider__card__informations"
 						      to="programmation/hoshi--348"
+            				target="_blank"
 
 						      :gtm-click="{
 						        id: `348`,
@@ -411,6 +418,7 @@
 						    <nuxt-link
 						      class="prog__events__slider__card__informations"
 						      to="programmation/vampire-weekend--425"
+            				target="_blank"
 
 						      :gtm-click="{
 						        id: `425`,
@@ -468,6 +476,7 @@
 						    <nuxt-link
 						      class="prog__events__slider__card__informations"
 						      to="programmation/felix-wazekwa--423"
+            				target="_blank"
 
 						      :gtm-click="{
 						        id: `423`,
@@ -525,6 +534,7 @@
 						    <nuxt-link
 						      class="prog__events__slider__card__informations"
 						      to="programmation/waly-dia--389"
+            				target="_blank"
 
 						      :gtm-click="{
 						        id: `389`,
@@ -582,6 +592,7 @@
 						    <nuxt-link
 						      class="prog__events__slider__card__informations"
 						      to="programmation/jamie-xx--583"
+            				target="_blank"
 
 						      :gtm-click="{
 						        id: `583`,
@@ -639,6 +650,7 @@
 						    <nuxt-link
 						      class="prog__events__slider__card__informations"
 						      to="programmation/harlem-globetrotters--575"
+            				target="_blank"
 
 						      :gtm-click="{
 						        id: `575`,
@@ -696,6 +708,7 @@
 						    <nuxt-link
 						      class="prog__events__slider__card__informations"
 						      to="programmation/malik-bentalha--531"
+            				target="_blank"
 
 						      :gtm-click="{
 						        id: `531`,
@@ -801,8 +814,9 @@
 
 							    </div>
 
-							    <div
+							   <button
 							      class="offers__list__card__informations"
+				            	@click="onClickContact()"
 							      >
 							      <div class="offers__list__card__head">
 
@@ -851,7 +865,7 @@
 
 							      </div>
 
-							    </div>
+							   </button>
 							    
 							  </div>
 
@@ -878,8 +892,9 @@
 
 							    </div>
 
-							    <div
+							   <button
 							      class="offers__list__card__informations"
+				            	@click="onClickContact()"
 							      >
 							      <div class="offers__list__card__head">
 
@@ -928,7 +943,7 @@
 
 							      </div>
 
-							    </div>
+							   </button>
 							    
 							  </div>
 
@@ -955,8 +970,9 @@
 
 							    </div>
 
-							    <div
+							   <button
 							      class="offers__list__card__informations"
+				            	@click="onClickContact()"
 							      >
 							      <div class="offers__list__card__head">
 
@@ -1001,7 +1017,7 @@
 
 							      </div>
 
-							    </div>
+							   </button>
 							    
 							  </div>
 							
@@ -1031,6 +1047,20 @@ export default {
     if (!to || !from) return
 
     return pageTransition.basic
+  },
+  head({ $seo }) {
+    return $seo({
+      title: 'Nos offres GOAT',
+      description: 'Une nouvelle expérience qui casse les codes',
+      openGraph: {
+        title: 'Nos offres GOAT',
+        description: 'Une nouvelle expérience qui casse les codes',
+      },
+      twitter: {
+        title: 'Nos offres GOAT',
+        description: 'Une nouvelle expérience qui casse les codes',
+      },
+    })
   },
   computed: {
     ...mapState({
@@ -1241,8 +1271,8 @@ export default {
 				&__introduction{
 
 					text-transform: uppercase;
-		      @include font-ITCFranklinGothicLT-DmCp();
-		      color: var(--c-black);
+		      	@include font-ITCFranklinGothicLT-DmCp();
+		      	color: var(--c-black);
 
 					@include desktop {
 						margin-bottom: desktop-vw(40px);
@@ -1363,30 +1393,6 @@ export default {
 				    flex: 0 0 20%;
 				  }
 
-				  &__full {
-				    position: absolute;
-				    top: 0;
-				    right: 0;
-				    background: var(--c-grey);
-				    border: 1px solid var(--c-black);
-				    border-top: none;
-				    border-right: none;
-				    padding: desktop-vw(5px) desktop-vw(8px);
-				    display: none;
-
-				    &.full {
-				      display: block;
-				    }
-
-				    @include mobile {
-				      padding: mobile-vw(5px) mobile-vw(8px);
-				    }
-
-				    .P2 {
-				      text-transform: uppercase;
-				    }
-				  }
-
 				  &__visual {
 				    width: 100%;
 				    display: block;
@@ -1447,8 +1453,8 @@ export default {
 				    justify-content: flex-start;
 
 				    .P2 {
-				      font-size: desktop-vw(10px);
-				      line-height: desktop-vw(10px);
+				      font-size: desktop-vw(12px);
+				      line-height: desktop-vw(12px);
 				      text-transform: uppercase;
 
 				      @include mobile{
@@ -1654,6 +1660,7 @@ export default {
 			  flex: 0 0 33.333%;
 			  padding: 0  desktop-vw(8px);
 
+
 			  @include mobile {
 			  	position: relative;
 					flex: 0 0 100%;
@@ -1661,25 +1668,25 @@ export default {
 
 			    &:nth-child(1){
 			    	z-index: 1;
-							top: mobile-vw(20px);
+					top: mobile-vw(20px);
 			    }
 
 			    &:nth-child(2){
 			    	z-index: 2;
-							top: mobile-vw(-10px);
+					top: mobile-vw(-10px);
 			    }
 
 			    &:nth-child(3){
 			    	z-index: 3;
-						top: mobile-vw(-40px);
+					top: mobile-vw(-40px);
 
-						.offers__list__card__informations{
-							padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(70px);
-						}
+					.offers__list__card__informations{
+						padding: mobile-vw(15px) mobile-vw(15px) mobile-vw(70px);
+					}
 
-						.offers__list__card__foot{
-							bottom: mobile-vw(15px)
-						}
+					.offers__list__card__foot{
+						bottom: mobile-vw(15px)
+					}
 			    }
 
 				}
@@ -1691,6 +1698,7 @@ export default {
 			  background-color: var(--bg);
 			  border: 1px solid var(--c-black);
 			  transform: rotate(var(--rotation));
+			  height: 100%;
 
 
 			  @include mobile {
@@ -1699,30 +1707,6 @@ export default {
 
 			  @include desktop-l {
 			    flex: 0 0 33.333%;
-			  }
-
-			  &__full {
-			    position: absolute;
-			    top: 0;
-			    right: 0;
-			    background: var(--c-grey);
-			    border: 1px solid var(--c-black);
-			    border-top: none;
-			    border-right: none;
-			    padding: desktop-vw(5px) desktop-vw(8px);
-			    display: none;
-
-			    &.full {
-			      display: block;
-			    }
-
-			    @include mobile {
-			      padding: mobile-vw(5px) mobile-vw(8px);
-			    }
-
-			    .P2 {
-			      text-transform: uppercase;
-			    }
 			  }
 
 			  &__visual {
