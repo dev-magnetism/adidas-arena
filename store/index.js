@@ -281,7 +281,7 @@ export const actions = {
     { commit },
     { $config }
   ) {
-    const initialData = Object.keys($config.initialData).length || await getInitialData()
+    const initialData = Object.keys($config.initialData).length ? $config.initialData : await getInitialData()
     commit('setPartnersContent', initialData.partners)
     commit('setAppContent', initialData.app)
     commit('setMenuContent', initialData.menu)
