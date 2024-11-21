@@ -2,21 +2,6 @@
 import slugify from 'slugify'
 import getInitialData from '~/getInitialData'
 
-const convertToKebabCase = (string) => {
-  return string
-    .replace(/([a-z])([A-Z])/g, '$1-$2')
-    .replace(/[\s_]+/g, '-')
-    .toLowerCase()
-}
-
-const removeSpecialChar = (string) => {
-  return string
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036F]/g, '')
-    .replace(/[^\w\s]/gi, '-')
-}
-
 export const state = () => ({
   // Preloader
   fontsLoaded: false,
@@ -296,7 +281,7 @@ export const actions = {
     { commit },
     { $config }
   ) {
-    const initialData = $config.initialData || await getInitialData()
+    const initialData = Object.keys($config.initialData).length ? $config.initialData : await getInitialData()
     commit('setPartnersContent', initialData.partners)
     commit('setAppContent', initialData.app)
     commit('setMenuContent', initialData.menu)
