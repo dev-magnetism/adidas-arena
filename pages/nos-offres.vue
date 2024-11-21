@@ -1034,12 +1034,12 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
 import EmblaCarousel from 'embla-carousel'
-
+import { mapState, mapMutations } from 'vuex'
+import scroll from '@/mixins/scroll'
 import pageTransition from '@/mixins/page-transition'
 
-import scroll from '@/mixins/scroll'
+
 
 export default {
   mixins: [scroll],
@@ -1080,7 +1080,6 @@ export default {
     },
   },
   mounted() {
-    this.setAllowScroll(true);
     const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
     if(_limit < 12){
       this.embla = EmblaCarousel(this.$refs.wrapper, {
@@ -1100,6 +1099,7 @@ export default {
         this.embla.on('select', this.onSelect)
       }
     }
+    this.setAllowScroll(true);
   },
   beforeDestroy() {
     const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
@@ -1206,7 +1206,7 @@ export default {
 <style lang="scss">
 
 .app-lp-offres-nov-2024{
-
+	padding: 0;
 	@include desktop {
 		padding-top: desktop-vw(130px);
 	}
@@ -1595,7 +1595,7 @@ export default {
 
 				&__introduction{
 					text-transform: uppercase;
-		      @include font-ITCFranklinGothicLT-DmCp();
+		      	@include font-ITCFranklinGothicLT-DmCp();
 					color: var(--c-white);
 
 					@include desktop {
@@ -1744,7 +1744,7 @@ export default {
 			    display: flex;
 			    flex-direction: column;
 			    padding: desktop-vw(15px) desktop-vw(15px) desktop-vw(70px);
-			    height: 100%;
+			    
 			    border-top: 1px solid var(--c-black);
 			    cursor: pointer;
 
