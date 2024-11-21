@@ -160,6 +160,31 @@ export default {
       // }
 
       // xhr.send(JSON.stringify(data))
+
+
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      const raw = JSON.stringify({
+        "firstname": this.prenom,
+        "lastname": this.nom,
+        "email":this.email,
+        "phone": this.telephone,
+        "message": this.body
+      });
+
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+      };
+
+      fetch("https://services.groupe-pec.com/special/b2b-campaign", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.error(error));
+      
     },
     onKeyUp(e) {
       if (!this.overlayContactOpen) return
