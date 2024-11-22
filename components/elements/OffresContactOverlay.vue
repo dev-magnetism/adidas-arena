@@ -1,7 +1,7 @@
 <template>
   <div
     :class="{ open: overlayContactOpen }"
-    class="app-element-contact-overlay"
+    class="app-element-offrescontact-overlay"
   >
     <AtomsCTABack
       :class="{ submited }"
@@ -9,92 +9,92 @@
     >
       Retour
     </AtomsCTABack>
-    <div :class="{ submited }" class="app-element-contact-overlay__successful">
+    <div :class="{ submited }" class="app-element-offrescontact-overlay__successful">
       <TH2 tag="p">{{ appContent.data.contact_overlay_successful_title }}</TH2>
       <TH4 tag="p">{{
         appContent.data.contact_overlay_successful_subtitle
       }}</TH4>
     </div>
     <AtomsCornerPoints :size-points="8" />
-    <div data-lenis-prevent class="app-element-contact-overlay__wrapper">
+    <div data-lenis-prevent class="app-element-offrescontact-overlay__wrapper">
       <TH2
         tag="p"
         :class="{ submited }"
-        class="app-element-contact-overlay__title"
+        class="app-element-offrescontact-overlay__title"
       >
         {{ appContent.data.contact_overlay_title }}
       </TH2>
       <TP1
         :class="{ submited }"
         weight="medium"
-        class="app-element-contact-overlay__subtitle"
+        class="app-element-offrescontact-overlay__subtitle"
       >
         {{ formType }}
       </TP1>
 
       <form
         :class="{ submited }"
-        class="app-element-contact-overlay__form"
+        class="app-element-offrescontact-overlay__form"
         @submit.prevent="onSubmit"
       >
-        <div class="app-element-contact-overlay__field-group">
+        <div class="app-element-offrescontact-overlay__field-group">
           <input
             v-model="nom"
             placeholder=" "
             required
-            class="app-element-contact-overlay__field"
+            class="app-element-offrescontact-overlay__field"
             type="text"
           />
           <TH4 tag="p">Nom</TH4>
         </div>
-        <div class="app-element-contact-overlay__field-group">
+        <div class="app-element-offrescontact-overlay__field-group">
           <input
             v-model="prenom"
             placeholder=" "
             required
-            class="app-element-contact-overlay__field"
+            class="app-element-offrescontact-overlay__field"
             type="text"
           />
           <TH4 tag="p">Prénom</TH4>
         </div>
-        <div class="app-element-contact-overlay__field-group">
+        <div class="app-element-offrescontact-overlay__field-group">
           <input
             v-model="email"
             placeholder=" "
             required
-            class="app-element-contact-overlay__field"
+            class="app-element-offrescontact-overlay__field"
             type="email"
           />
           <TH4 tag="p">Email</TH4>
         </div>
-        <div class="app-element-contact-overlay__field-group">
+        <div class="app-element-offrescontact-overlay__field-group">
           <input
             v-model="telephone"
             required
             placeholder=" "
-            class="app-element-contact-overlay__field"
+            class="app-element-offrescontact-overlay__field"
             type="tel"
             pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$"
           />
           <TH4 tag="p">Téléphone</TH4>
         </div>
-        <div class="app-element-contact-overlay__field-group textarea">
+        <div class="app-element-offrescontact-overlay__field-group textarea">
           <textarea
             v-model="body"
             placeholder=" "
-            class="app-element-contact-overlay__field textarea"
+            class="app-element-offrescontact-overlay__field textarea"
             required
           />
           <TH4 tag="p">Votre message</TH4>
         </div>
-        <div class="app-element-contact-overlay__baseline">
+        <div class="app-element-offrescontact-overlay__baseline">
           <TP1 weight="bold">{{ appContent.data.contact_overlay_warning }}</TP1>
           <AtomsCTA type="submit" button> Envoyer </AtomsCTA>
         </div>
       </form>
     </div>
     <div
-      class="app-element-contact-overlay__zone-close"
+      class="app-element-offrescontact-overlay__zone-close"
       @click="setOverlayContactOpen(false)"
     />
   </div>
@@ -201,7 +201,7 @@ export default {
 </script>
 
 <style lang="scss">
-.app-element-contact-overlay {
+.app-element-offrescontact-overlay {
   position: fixed;
   top: 0;
   right: 0;
@@ -367,7 +367,7 @@ export default {
 
     &.textarea {
       flex-direction: column-reverse;
-      margin-top: desktop-vw(40px);
+      margin-top: desktop-vw(20px);
 
       .H4 {
         align-self: flex-start;
@@ -393,12 +393,19 @@ export default {
   }
 
   &__baseline {
+    position: absolute;
+    right: 0;
+    bottom: 0;
     display: flex;
+    width: 100%;
     justify-content: flex-end;
-    margin-top: desktop-vw(64px);
+    //  margin-top: desktop-vw(64px);
     align-items: center;
 
     @include mobile {
+      position: unset;
+      right: unset;
+      botto: unset;
       flex-direction: column;
       margin-top: mobile-vw(20px);
     }
@@ -423,8 +430,8 @@ export default {
     border-bottom: 2px dashed var(--c-black);
     padding: 0 0 0 desktop-vw(15px);
     @include h2();
-    font-size: desktop-vw(54px);
-    line-height: desktop-vw(48px);
+    font-size: desktop-vw(44px);
+    line-height: desktop-vw(38px);
     @include font-ITCFranklinGothicLT-DmCp();
 
     @include mobile {
