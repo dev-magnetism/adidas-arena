@@ -4,7 +4,6 @@
     class="app-element-offrescontact-overlay"
   >
     <AtomsCTABack
-      :class="{ submited }"
       @click.native="setOverlayContactOpen(false)"
     >
       Retour
@@ -226,7 +225,7 @@ export default {
     transform: translateX(0%);
     transition-delay: 0.35s;
 
-    .app-element-contact-overlay__zone-close {
+    .app-element-offrescontact-overlay__zone-close {
       pointer-events: all;
     }
   }
@@ -245,20 +244,11 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    pointer-events: none;
-    opacity: 0;
+      opacity: 1;
+      pointer-events: all;
     transition: opacity 0.5s var(--ease-in-out-cubic);
     z-index: 9;
 
-    @include mobile {
-      opacity: 1 !important;
-      pointer-events: all !important;
-    }
-
-    &.submited {
-      opacity: 1;
-      pointer-events: all;
-    }
   }
 
   &__successful {
