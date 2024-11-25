@@ -29,7 +29,7 @@
 	            	target="_blank"
 	            	layer-color="black"
 	          		>
-	           		Toute la prog'
+	           		Toute la programmation
 	          	</AtomsCTA>
 
    			</div>
@@ -49,118 +49,6 @@
 			         	>
 
 							<div style="--bg: var(--c-blue-adidas); --rotation: -1.29deg;" class="prog__events__slider__card">
-					    
-					   		<div class="prog__events__slider__card__visual">
-					      
-					      		<div class="prog__events__slider__card__visual__wrapper">
-					        
-						         	<div class="prog__events__slider__card__layer" />
-
-							        	<picture class="app-programmation-image">
-									    	<source media="(min-width: 768px)" srcset="/imgs/offres/parisbasketball-euroleague__desktop.jpg" />
-									   	<img src="/imgs/offres/parisbasketball-euroleague__mobile.jpg" alt="slider-image-parisbasketball-euroleague" loading="true" />
-									  	</picture>
-
-						     		</div>
-
-					    		</div>
-
-							   <nuxt-link
-							      class="prog__events__slider__card__informations"
-							      to="programmation/paris-basketball-vs-virtus-bologna--469"
-		         				target="_blank"
-
-							      :gtm-click="{
-							        id: `469`,
-							        name: `PARIS BASKETBALL VS VIRTUS BOLOGNA`,
-							        category: `Paris Basketball`,
-							        category2: ``,
-							        price: `13€`,
-							      }"
-							      @mouseenter.native="onMouseEnter"
-							      @mouseleave.native="onMouseLeave"
-							      >
-							      <div class="prog__events__slider__card__head">
-							        
-										<TP2 class="type" weight="bold" color="white" tag="h3">
-											Paris Basketball
-										</TP2>
-
-										<TP2
-											class="date"
-											weight="medium"
-											color="white"
-											>
-											28 novembre 2024
-										</TP2>
-
-							      </div>
-
-							      <TH2 color="white" weight="bold">
-							      	PARIS BASKETBALL VS VIRTUS BOLOGNA
-							      </TH2>
-
-							   </nuxt-link>
-
-							</div>
-
-							<div style="--bg: var(--c-red-adidas); --rotation: 2.42deg;" class="prog__events__slider__card">
-							    
-							   <div class="prog__events__slider__card__visual">
-							      
-							      <div class="prog__events__slider__card__visual__wrapper">
-							        
-							        	<div class="prog__events__slider__card__layer" />
-
-							        	<picture class="app-programmation-image">
-									   	<source media="(min-width: 768px)" srcset="/imgs/offres/disneysurglace__desktop.jpg" />
-									   	<img src="/imgs/offres/disneysurglace__mobile.jpg" alt="slider-image-disney-sur-glace-un-monde-de-reves" loading="true" />
-									  	</picture>
-
-							      </div>
-
-							   </div>
-
-							   <nuxt-link
-							      class="prog__events__slider__card__informations"
-							      to="programmation/disney-sur-glace-un-monde-de-reves--432"
-	            				target="_blank"
-
-							      :gtm-click="{
-							        id: `432`,
-							        name: `Disney sur Glace - Un Monde de Rêves`,
-							        category: ` Spectacle et comedie musicale`,
-							        category2: ``,
-							        price: `26€`,
-							      }"
-							      @mouseenter.native="onMouseEnter"
-							      @mouseleave.native="onMouseLeave"
-							   	>
-								   <div class="prog__events__slider__card__head">
-								        
-										<TP2 class="type" weight="bold" color="white" tag="h3">
-											Spectacle et comedie musicale
-										</TP2>
-
-										<TP2
-											class="date"
-											weight="medium"
-											color="white"
-											>
-											2 au 12 janvier 2025
-										</TP2>
-
-								   </div>
-
-							      <TH2 color="white" weight="bold">
-							      	Disney sur Glace - Un Monde de Rêves
-							      </TH2>
-
-								</nuxt-link>
-							    
-							</div>
-
-							<div style="--bg: var(--c-grey); --rotation: -1.86deg;" class="prog__events__slider__card">
 
 								<div class="prog__events__slider__card__visual">
 
@@ -194,79 +82,23 @@
 									>
 									<div class="prog__events__slider__card__head">
 
-										<TP2 class="type" weight="bold" color="black" tag="h3">
+										<TP2 class="type" weight="bold" color="white" tag="h3">
 											Concert
 										</TP2>
 
 										<TP2
 											class="date"
 											weight="medium"
-											color="black"
+											color="white"
 											>
 											20 février 2025
 										</TP2>
 
 									</div>
 
-									<TH2 color="black" weight="bold">
+									<TH2 color="white" weight="bold">
 										James Blunt
 									</TH2>
-
-								</nuxt-link>
-
-							</div>
-
-							<div style="--bg: var(--c-blue-adidas); --rotation: -1.29deg;" class="prog__events__slider__card">
-
-								<div class="prog__events__slider__card__visual">
-
-									<div class="prog__events__slider__card__visual__wrapper">
-
-										<div class="prog__events__slider__card__layer" />
-
-										<picture class="app-programmation-image">
-											<source media="(min-width: 768px)" srcset="/imgs/offres/rimk__desktop.jpg" />
-											<img src="/imgs/offres/rimk__mobile.jpg" alt="slider-image-rimk" loading="true" />
-										</picture>
-
-									</div>
-
-								</div>
-
-								<nuxt-link
-									class="prog__events__slider__card__informations"
-									to="programmation/rimk--592"
-									target="_blank"
-
-									:gtm-click="{
-									id: `592`,
-									name: `Rim'K`,
-									category: `Concert`,
-									category2: ``,
-									price: `45€`,
-									}"
-									@mouseenter.native="onMouseEnter"
-									@mouseleave.native="onMouseLeave"
-									>
-									<div class="prog__events__slider__card__head">
-
-									<TP2 class="type" weight="bold" color="white" tag="h3">
-										Concert
-									</TP2>
-
-									<TP2
-										class="date"
-										weight="medium"
-										color="white"
-										>
-										12 décembre 2025
-									</TP2>
-
-								</div>
-
-								<TH2 color="white" weight="bold">
-									Rim'K
-								</TH2>
 
 								</nuxt-link>
 
@@ -337,6 +169,231 @@
 										<div class="prog__events__slider__card__layer" />
 
 										<picture class="app-programmation-image">
+											<source media="(min-width: 768px)" srcset="/imgs/offres/rimk__desktop.jpg" />
+											<img src="/imgs/offres/rimk__mobile.jpg" alt="slider-image-rimk" loading="true" />
+										</picture>
+
+									</div>
+
+								</div>
+
+								<nuxt-link
+									class="prog__events__slider__card__informations"
+									to="programmation/rimk--592"
+									target="_blank"
+
+									:gtm-click="{
+									id: `592`,
+									name: `Rim'K`,
+									category: `Concert`,
+									category2: ``,
+									price: `45€`,
+									}"
+									@mouseenter.native="onMouseEnter"
+									@mouseleave.native="onMouseLeave"
+									>
+									<div class="prog__events__slider__card__head">
+
+									<TP2 class="type" weight="bold" color="black" tag="h3">
+										Concert
+									</TP2>
+
+									<TP2
+										class="date"
+										weight="medium"
+										color="black"
+										>
+										12 décembre 2025
+									</TP2>
+
+								</div>
+
+								<TH2 color="black" weight="bold">
+									Rim'K
+								</TH2>
+
+								</nuxt-link>
+
+							</div>
+
+
+							<div style="--bg: var(--c-blue-adidas); --rotation: -1.29deg;" class="prog__events__slider__card">
+
+								<div class="prog__events__slider__card__visual">
+
+									<div class="prog__events__slider__card__visual__wrapper">
+
+										<div class="prog__events__slider__card__layer" />
+
+										<picture class="app-programmation-image">
+											<source media="(min-width: 768px)" srcset="/imgs/offres/harlem-globetrotters__desktop.jpg" />
+											<img src="/imgs/offres/harlem-globetrotters__mobile.jpg" alt="slider-image-harlem-globetrotters" loading="true" />
+										</picture>
+
+									</div>
+
+								</div>
+
+								<nuxt-link
+									class="prog__events__slider__card__informations"
+									to="programmation/harlem-globetrotters--575"
+									target="_blank"
+
+									:gtm-click="{
+									id: `575`,
+									name: `Harlem Globetrotters`,
+									category: `Sport`,
+									category2: ``,
+									price: `49.95€`,
+									}"
+									@mouseenter.native="onMouseEnter"
+									@mouseleave.native="onMouseLeave"
+									>
+									<div class="prog__events__slider__card__head">
+
+										<TP2 class="type" weight="bold" color="white" tag="h3">
+											Sport
+										</TP2>
+
+										<TP2
+											class="date"
+											weight="medium"
+											color="white"
+											>
+											29 mars 2025
+										</TP2>
+
+									</div>
+
+									<TH2 color="white" weight="bold">
+										Harlem Globetrotters
+									</TH2>
+
+								</nuxt-link>
+
+							</div>
+
+							<div style="--bg: var(--c-red-adidas); --rotation: 2.42deg;" class="prog__events__slider__card">
+							    
+							   <div class="prog__events__slider__card__visual">
+							      
+							      <div class="prog__events__slider__card__visual__wrapper">
+							        
+							        	<div class="prog__events__slider__card__layer" />
+
+							        	<picture class="app-programmation-image">
+									   	<source media="(min-width: 768px)" srcset="/imgs/offres/disneysurglace__desktop.jpg" />
+									   	<img src="/imgs/offres/disneysurglace__mobile.jpg" alt="slider-image-disney-sur-glace-un-monde-de-reves" loading="true" />
+									  	</picture>
+
+							      </div>
+
+							   </div>
+
+							   <nuxt-link
+							      class="prog__events__slider__card__informations"
+							      to="programmation/disney-sur-glace-un-monde-de-reves--432"
+	            				target="_blank"
+
+							      :gtm-click="{
+							        id: `432`,
+							        name: `Disney sur Glace - Un Monde de Rêves`,
+							        category: ` Spectacle et comedie musicale`,
+							        category2: ``,
+							        price: `26€`,
+							      }"
+							      @mouseenter.native="onMouseEnter"
+							      @mouseleave.native="onMouseLeave"
+							   	>
+								   <div class="prog__events__slider__card__head">
+								        
+										<TP2 class="type" weight="bold" color="white" tag="h3">
+											Spectacle et comedie musicale
+										</TP2>
+
+										<TP2
+											class="date"
+											weight="medium"
+											color="white"
+											>
+											2 au 12 janvier 2025
+										</TP2>
+
+								   </div>
+
+							      <TH2 color="white" weight="bold">
+							      	Disney sur Glace - Un Monde de Rêves
+							      </TH2>
+
+								</nuxt-link>
+							    
+							</div>
+
+							<div style="--bg: var(--c-grey); --rotation: -1.86deg;" class="prog__events__slider__card">
+
+								<div class="prog__events__slider__card__visual">
+
+									<div class="prog__events__slider__card__visual__wrapper">
+
+										<div class="prog__events__slider__card__layer" />
+
+										<picture class="app-programmation-image">
+											<source media="(min-width: 768px)" srcset="/imgs/offres/malik-bentalha__desktop.jpg" />
+											<img src="/imgs/offres/malik-bentalha__mobile.jpg" alt="slider-image-malik-bentalha" loading="true" />
+										</picture>
+
+									</div>
+
+								</div>
+
+								<nuxt-link
+									class="prog__events__slider__card__informations"
+									to="programmation/malik-bentalha--531"
+									target="_blank"
+
+									:gtm-click="{
+									id: `531`,
+									name: `Malik Bentalha`,
+									category: `Humour et one (wo)man show`,
+									category2: ``,
+									price: `49€`,
+									}"
+									@mouseenter.native="onMouseEnter"
+									@mouseleave.native="onMouseLeave"
+									>
+									<div class="prog__events__slider__card__head">
+
+										<TP2 class="type" weight="bold" color="black" tag="h3">
+											Humour et one (wo)man show
+										</TP2>
+
+										<TP2
+											class="date"
+											weight="medium"
+											color="black"
+											>
+											11 avril 2025
+										</TP2>
+
+									</div>
+
+									<TH2 color="black" weight="bold">
+										Malik Bentalha
+									</TH2>
+
+								</nuxt-link>
+
+							</div>
+
+							<div style="--bg: var(--c-blue-adidas); --rotation: -1.29deg;" class="prog__events__slider__card">
+
+								<div class="prog__events__slider__card__visual">
+
+									<div class="prog__events__slider__card__visual__wrapper">
+
+										<div class="prog__events__slider__card__layer" />
+
+										<picture class="app-programmation-image">
 											<source media="(min-width: 768px)" srcset="/imgs/offres/hoshi__desktop.jpg" />
 											<img src="/imgs/offres/hoshi__mobile.jpg" alt="slider-image-hoshi" loading="true" />
 										</picture>
@@ -362,62 +419,6 @@
 									>
 									<div class="prog__events__slider__card__head">
 
-										<TP2 class="type" weight="bold" color="black" tag="h3">
-											Concert
-										</TP2>
-
-										<TP2
-											class="date"
-											weight="medium"
-											color="black"
-											>
-											12 décembre 2024
-										</TP2>
-
-									</div>
-
-									<TH2 color="black" weight="bold">
-										Hoshi
-									</TH2>
-
-								</nuxt-link>
-
-							</div>
-
-							<div style="--bg: var(--c-blue-adidas); --rotation: -1.29deg;" class="prog__events__slider__card">
-
-								<div class="prog__events__slider__card__visual">
-
-									<div class="prog__events__slider__card__visual__wrapper">
-
-										<div class="prog__events__slider__card__layer" />
-
-										<picture class="app-programmation-image">
-											<source media="(min-width: 768px)" srcset="/imgs/offres/vampire-weekend__desktop.jpg" />
-											<img src="/imgs/offres/vampire-weekend__mobile.jpg" alt="slider-image-vampire-weekend" loading="true" />
-										</picture>
-
-									</div>
-
-								</div>
-
-								<nuxt-link
-									class="prog__events__slider__card__informations"
-									to="programmation/vampire-weekend--425"
-									target="_blank"
-
-									:gtm-click="{
-									id: `425`,
-									name: `Vampire Weekend`,
-									category: `Concert`,
-									category2: ``,
-									price: `56.5€`,
-									}"
-									@mouseenter.native="onMouseEnter"
-									@mouseleave.native="onMouseLeave"
-									>
-									<div class="prog__events__slider__card__head">
-
 										<TP2 class="type" weight="bold" color="white" tag="h3">
 											Concert
 										</TP2>
@@ -427,13 +428,13 @@
 											weight="medium"
 											color="white"
 											>
-											13 décembre 2024
+											12 décembre 2024
 										</TP2>
 
 									</div>
 
 									<TH2 color="white" weight="bold">
-										Vampire Weekend
+										Hoshi
 									</TH2>
 
 								</nuxt-link>
@@ -449,8 +450,8 @@
 										<div class="prog__events__slider__card__layer" />
 
 										<picture class="app-programmation-image">
-											<source media="(min-width: 768px)" srcset="/imgs/offres/felix-wazekwa__desktop.jpg" />
-											<img src="/imgs/offres/felix-wazekwa__mobile.jpg" alt="slider-image-felix-wazekwa" loading="true" />
+											<source media="(min-width: 768px)" srcset="/imgs/offres/hugotsr__desktop.jpg" />
+											<img src="/imgs/offres/hugotsr__mobile.jpg" alt="slider-image-hugo-tsr" loading="true" />
 										</picture>
 
 									</div>
@@ -459,15 +460,15 @@
 
 								<nuxt-link
 									class="prog__events__slider__card__informations"
-									to="programmation/felix-wazekwa--423"
+									to="programmation/hugo-tsr--519"
 									target="_blank"
 
 									:gtm-click="{
-									id: `423`,
-									name: `Felix Wazekwa`,
+									id: `519`,
+									name: `Hugo TSR`,
 									category: `Concert`,
 									category2: ``,
-									price: `58.5€`,
+									price: `44€`,
 									}"
 									@mouseenter.native="onMouseEnter"
 									@mouseleave.native="onMouseLeave"
@@ -483,13 +484,13 @@
 											weight="medium"
 											color="white"
 											>
-											14 décembre 2024
+											8 novembre 2025
 										</TP2>
 
 									</div>
 
 									<TH2 color="white" weight="bold">
-										Felix Wazekwa
+										Hugo TSR
 									</TH2>
 
 								</nuxt-link>
@@ -561,6 +562,118 @@
 										<div class="prog__events__slider__card__layer" />
 
 										<picture class="app-programmation-image">
+											<source media="(min-width: 768px)" srcset="/imgs/offres/vampire-weekend__desktop.jpg" />
+											<img src="/imgs/offres/vampire-weekend__mobile.jpg" alt="slider-image-vampire-weekend" loading="true" />
+										</picture>
+
+									</div>
+
+								</div>
+
+								<nuxt-link
+									class="prog__events__slider__card__informations"
+									to="programmation/vampire-weekend--425"
+									target="_blank"
+
+									:gtm-click="{
+									id: `425`,
+									name: `Vampire Weekend`,
+									category: `Concert`,
+									category2: ``,
+									price: `56.5€`,
+									}"
+									@mouseenter.native="onMouseEnter"
+									@mouseleave.native="onMouseLeave"
+									>
+									<div class="prog__events__slider__card__head">
+
+										<TP2 class="type" weight="bold" color="white" tag="h3">
+											Concert
+										</TP2>
+
+										<TP2
+											class="date"
+											weight="medium"
+											color="white"
+											>
+											13 décembre 2024
+										</TP2>
+
+									</div>
+
+									<TH2 color="white" weight="bold">
+										Vampire Weekend
+									</TH2>
+
+								</nuxt-link>
+
+							</div>
+
+							<div style="--bg: var(--c-red-adidas); --rotation: 2.42deg;" class="prog__events__slider__card">
+					    
+					   		<div class="prog__events__slider__card__visual">
+					      
+					      		<div class="prog__events__slider__card__visual__wrapper">
+					        
+						         	<div class="prog__events__slider__card__layer" />
+
+							        	<picture class="app-programmation-image">
+									    	<source media="(min-width: 768px)" srcset="/imgs/offres/parisbasketball-euroleague__desktop.jpg" />
+									   	<img src="/imgs/offres/parisbasketball-euroleague__mobile.jpg" alt="slider-image-parisbasketball-euroleague" loading="true" />
+									  	</picture>
+
+						     		</div>
+
+					    		</div>
+
+							   <nuxt-link
+							      class="prog__events__slider__card__informations"
+							      to="programmation/paris-basketball-vs-virtus-bologna--469"
+		         				target="_blank"
+
+							      :gtm-click="{
+							        id: `469`,
+							        name: `PARIS BASKETBALL VS VIRTUS BOLOGNA`,
+							        category: `Paris Basketball`,
+							        category2: ``,
+							        price: `13€`,
+							      }"
+							      @mouseenter.native="onMouseEnter"
+							      @mouseleave.native="onMouseLeave"
+							      >
+							      <div class="prog__events__slider__card__head">
+							        
+										<TP2 class="type" weight="bold" color="white" tag="h3">
+											Paris Basketball
+										</TP2>
+
+										<TP2
+											class="date"
+											weight="medium"
+											color="white"
+											>
+											28 novembre 2024
+										</TP2>
+
+							      </div>
+
+							      <TH2 color="white" weight="bold">
+							      	PARIS BASKETBALL VS VIRTUS BOLOGNA
+							      </TH2>
+
+							   </nuxt-link>
+
+							</div>
+
+							<div style="--bg: var(--c-grey); --rotation: -1.86deg;" class="prog__events__slider__card">
+
+								<div class="prog__events__slider__card__visual">
+
+									<div class="prog__events__slider__card__visual__wrapper">
+
+										<div class="prog__events__slider__card__layer" />
+
+										<picture class="app-programmation-image">
 											<source media="(min-width: 768px)" srcset="/imgs/offres/jamie-xx__desktop.jpg" />
 											<img src="/imgs/offres/jamie-xx__mobile.jpg" alt="slider-image-jamie-xx" loading="true" />
 										</picture>
@@ -586,6 +699,63 @@
 									>
 									<div class="prog__events__slider__card__head">
 
+										<TP2 class="type" weight="bold" color="black" tag="h3">
+											Concert
+										</TP2>
+
+										<TP2
+											class="date"
+											weight="medium"
+											color="black"
+											>
+											21 mars 2025
+										</TP2>
+
+									</div>
+
+									<TH2 color="black" weight="bold">
+										Jamie XX
+									</TH2>
+
+								</nuxt-link>
+
+							</div>
+
+
+							<div style="--bg: var(--c-blue-adidas); --rotation: -1.29deg;" class="prog__events__slider__card">
+
+								<div class="prog__events__slider__card__visual">
+
+									<div class="prog__events__slider__card__visual__wrapper">
+
+										<div class="prog__events__slider__card__layer" />
+
+										<picture class="app-programmation-image">
+											<source media="(min-width: 768px)" srcset="/imgs/offres/lumineers__desktop.jpg" />
+											<img src="/imgs/offres/lumineers__mobile.jpg" alt="slider-image-lumineers" loading="true" />
+										</picture>
+
+									</div>
+
+								</div>
+
+								<nuxt-link
+									class="prog__events__slider__card__informations"
+									to="programmation/the-lumineers--577"
+									target="_blank"
+
+									:gtm-click="{
+									id: `577`,
+									name: `The Lumineers`,
+									category: `Concert`,
+									category2: ``,
+									price: `52.1€`,
+									}"
+									@mouseenter.native="onMouseEnter"
+									@mouseleave.native="onMouseLeave"
+									>
+									<div class="prog__events__slider__card__head">
+
 										<TP2 class="type" weight="bold" color="white" tag="h3">
 											Concert
 										</TP2>
@@ -595,13 +765,13 @@
 											weight="medium"
 											color="white"
 											>
-											21 mars 2025
+											20 mai 2025
 										</TP2>
 
 									</div>
 
 									<TH2 color="white" weight="bold">
-										Jamie XX
+										The Lumineers
 									</TH2>
 
 								</nuxt-link>
@@ -609,41 +779,41 @@
 							</div>
 
 							<div style="--bg: var(--c-red-adidas); --rotation: 2.42deg;" class="prog__events__slider__card">
+					    
+					   		<div class="prog__events__slider__card__visual">
+					      
+					      		<div class="prog__events__slider__card__visual__wrapper">
+					        
+						         	<div class="prog__events__slider__card__layer" />
 
-								<div class="prog__events__slider__card__visual">
+							        	<picture class="app-programmation-image">
+									    	<source media="(min-width: 768px)" srcset="/imgs/offres/pantera__desktop.jpg" />
+									   	<img src="/imgs/offres/pantera__mobile.jpg" alt="slider-image-pantera" loading="true" />
+									  	</picture>
 
-									<div class="prog__events__slider__card__visual__wrapper">
+						     		</div>
 
-										<div class="prog__events__slider__card__layer" />
+					    		</div>
 
-										<picture class="app-programmation-image">
-											<source media="(min-width: 768px)" srcset="/imgs/offres/harlem-globetrotters__desktop.jpg" />
-											<img src="/imgs/offres/harlem-globetrotters__mobile.jpg" alt="slider-image-harlem-globetrotters" loading="true" />
-										</picture>
+							   <nuxt-link
+							      class="prog__events__slider__card__informations"
+							      to="programmation/pantera--530"
+		         				target="_blank"
 
-									</div>
-
-								</div>
-
-								<nuxt-link
-									class="prog__events__slider__card__informations"
-									to="programmation/harlem-globetrotters--575"
-									target="_blank"
-
-									:gtm-click="{
-									id: `575`,
-									name: `Harlem Globetrotters`,
-									category: `Sport`,
-									category2: ``,
-									price: `49.95€`,
-									}"
-									@mouseenter.native="onMouseEnter"
-									@mouseleave.native="onMouseLeave"
-									>
-									<div class="prog__events__slider__card__head">
-
+							      :gtm-click="{
+							        id: `530`,
+							        name: `Pantera`,
+							        category: `Concert`,
+							        category2: ``,
+							        price: `69.7€`,
+							      }"
+							      @mouseenter.native="onMouseEnter"
+							      @mouseleave.native="onMouseLeave"
+							      >
+							      <div class="prog__events__slider__card__head">
+							        
 										<TP2 class="type" weight="bold" color="white" tag="h3">
-											Sport
+											Concert
 										</TP2>
 
 										<TP2
@@ -651,75 +821,18 @@
 											weight="medium"
 											color="white"
 											>
-											29 mars 2025
+											15 février 2025
 										</TP2>
 
-									</div>
+							      </div>
 
-									<TH2 color="white" weight="bold">
-										Harlem Globetrotters
-									</TH2>
+							      <TH2 color="white" weight="bold">
+							      	Pantera
+							      </TH2>
 
-								</nuxt-link>
+							   </nuxt-link>
 
 							</div>
-
-							<div style="--bg: var(--c-grey); --rotation: -1.86deg;" class="prog__events__slider__card">
-
-								<div class="prog__events__slider__card__visual">
-
-									<div class="prog__events__slider__card__visual__wrapper">
-
-										<div class="prog__events__slider__card__layer" />
-
-										<picture class="app-programmation-image">
-											<source media="(min-width: 768px)" srcset="/imgs/offres/malik-bentalha__desktop.jpg" />
-											<img src="/imgs/offres/malik-bentalha__mobile.jpg" alt="slider-image-malik-bentalha" loading="true" />
-										</picture>
-
-									</div>
-
-								</div>
-
-								<nuxt-link
-									class="prog__events__slider__card__informations"
-									to="programmation/malik-bentalha--531"
-									target="_blank"
-
-									:gtm-click="{
-									id: `531`,
-									name: `Malik Bentalha`,
-									category: `Humour et one (wo)man show`,
-									category2: ``,
-									price: `49€`,
-									}"
-									@mouseenter.native="onMouseEnter"
-									@mouseleave.native="onMouseLeave"
-									>
-									<div class="prog__events__slider__card__head">
-
-										<TP2 class="type" weight="bold" color="black" tag="h3">
-											Humour et one (wo)man show
-										</TP2>
-
-										<TP2
-											class="date"
-											weight="medium"
-											color="black"
-											>
-											11 avril 2025
-										</TP2>
-
-									</div>
-
-									<TH2 color="black" weight="bold">
-										Malik Bentalha
-									</TH2>
-
-								</nuxt-link>
-
-							</div>
-
 		        		</div>
 
 	    			</div>
@@ -739,14 +852,14 @@
    				<ERichText
 						ref="title"
 						class="offers__title__block__title"
-						:content="`<h1 class='H1 bold'>Offres <span class='app-atoms-stroke-text'>GOAT</span></h1>`"
+						:content="`<h1 class='H1 bold'>Les OFFRES <span class='app-atoms-stroke-text'>GOAT</span></h1>`"
 						tag="h1"
 						/>
 
 					<ERichText
 	          		ref="paragraph"
 		          	class="offers__title__block__introduction"
-		          	:content="`<p>UNE NOUVELLE EXPÉRIENCE <br/>QUI CASSE LES CODES</p>`"
+		          	:content="`<p>UNE NOUVELLE EXPÉRIENCE <br/>QUI CASSE LES CODES DES HOSPITALITÉS</p>`"
 		          	tag="p"
 		       	 	/>
 
@@ -758,7 +871,7 @@
 	            	button
 	            	@click.native="onClickContact()"
 	          		>
-	            	J'suis chaud
+	            	Je suis curieux
 	          	</AtomsCTA>
 
 					<EOffresContactOverlay
@@ -965,7 +1078,7 @@
 											weight="medium"
 											color="black"
 											>
-											un soir au Skybar, véritable pépite perchée tout en haut de la salle ! Ici, chaque soirée devient un show. Les codes et l’esprit de l’Entertainment made in USA avec le panache de Paris : une expérience hors normes unique en France à vivre absolument. 
+											Un soir au skybar, c’est surplomber le show dans un cadre deja mythique. Ici, chaque moment est exceptionnel. les codes et l’esprit de l’entertainment made in usa avec le panache de paris : une expérience hors normes unique en france à vivre absolument. 
 										</TP2>
 
 							      </div>
