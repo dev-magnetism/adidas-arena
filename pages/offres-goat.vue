@@ -1070,7 +1070,7 @@
 								      </TH2>
 							        
 										<TP2 class="title" weight="bold" color="black" tag="h3">
-											Moins cher qu’une paire de Samba :
+											Surplomber le show dans un cadre déjà mythique. 
 										</TP2>
 
 										<TP2
@@ -1078,7 +1078,7 @@
 											weight="medium"
 											color="black"
 											>
-											Un soir au skybar, c’est surplomber le show dans un cadre deja mythique. Ici, chaque moment est exceptionnel. les codes et l’esprit de l’entertainment made in usa avec le panache de paris : une expérience hors normes unique en france à vivre absolument. 
+											Ici, chaque moment est exceptionnel. les codes et l’esprit de l’entertainment made in usa avec le panache de paris : une expérience hors normes unique en france à vivre absolument. 
 										</TP2>
 
 							      </div>
