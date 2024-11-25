@@ -1,7 +1,7 @@
 <template>
    <main class="app-lp-offres-nov-2024">
 
-		<div class="prog">
+		<div class="prog" ref="prog">
 
 			<div class="prog__container">
 
@@ -1015,6 +1015,7 @@
 <script>
 import EmblaCarousel from 'embla-carousel'
 import { mapState, mapMutations } from 'vuex'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import scroll from '@/mixins/scroll'
 import pageTransition from '@/mixins/page-transition'
 
@@ -1079,6 +1080,8 @@ export default {
       }
     }
     this.setAllowScroll(true);
+
+    this.initScrollTrigger()
   },
   beforeDestroy() {
     const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
@@ -1138,6 +1141,20 @@ export default {
         }
       }
     },
+    initScrollTrigger() {
+
+    	// if(this.$viewport.isMobile){
+    	// 	this.setHeaderWhite(true);
+    	// }
+      this.scrollTrigger = ScrollTrigger.create({
+        trigger: this.$refs.prog,
+        start: 'top-=7.5% top',
+        onToggle: ((self) => {
+        	this.setHeaderWhite(!self.isActive)
+        	//	console.log('self', self);
+        }),
+      })
+    },
     onSelect(e) {
       const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
       if(_limit < 12){
@@ -1177,6 +1194,7 @@ export default {
       setCursorState: 'setCursorState',
       setCursorSliderHold: 'setCursorSliderHold',
       setCursorSliderDisabled: 'setCursorSliderDisabled',
+      setHeaderWhite: 'setHeaderWhite',
     }),
   },
 }
