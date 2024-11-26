@@ -852,7 +852,7 @@
    				<ERichText
 						ref="title"
 						class="offers__title__block__title"
-						:content="`<h1 class='H1 bold'>Les OFFRES <span class='app-atoms-stroke-text'>GOAT</span></h1>`"
+						:content="`<h1 class='H1 bold'>Les OFFRES <span class='app-atoms-stroke-text'>GOAT<sup class='sup'>*</sup></span></h1>`"
 						tag="h1"
 						/>
 
@@ -862,6 +862,15 @@
 		          	:content="`<p>UNE NOUVELLE EXPÉRIENCE <br/>QUI CASSE LES CODES DES HOSPITALITÉS</p>`"
 		          	tag="p"
 		       	 	/>
+
+		       	<div class="offers__title__block__notes">
+		       		<ERichText
+		          		ref="paragraph"
+			          	class="offers__title__block__notes__text"
+			          	:content="`<p>*Greatest Of All Time</p>`"
+			          	tag="p"
+			       	 	/>
+		       	</div>
 
 		         <AtomsCTA
 	            	class="offers__title__block__cta"
@@ -879,6 +888,8 @@
 				      subject="contents.emailSubject"
 				      mail-to="mail@domain.com"
 				   	/>
+
+
 
    			</div>
 
@@ -1070,7 +1081,7 @@
 								      </TH2>
 							        
 										<TP2 class="title" weight="bold" color="black" tag="h3">
-											Moins cher qu’une paire de Samba :
+											UN SOIR AU SKYBAR, C’EST SURPLOMBER LE SHOW DANS UN CADRE DEJA MYTHIQUE
 										</TP2>
 
 										<TP2
@@ -1078,7 +1089,7 @@
 											weight="medium"
 											color="black"
 											>
-											Un soir au skybar, c’est surplomber le show dans un cadre deja mythique. Ici, chaque moment est exceptionnel. les codes et l’esprit de l’entertainment made in usa avec le panache de paris : une expérience hors normes unique en france à vivre absolument. 
+											Ici, chaque moment est exceptionnel. les codes et l’esprit de l’entertainment made in USA avec le panache de Paris : une expérience hors normes unique en France à vivre et a faire vivre pour faire rayonner ton business.
 										</TP2>
 
 							      </div>
@@ -1656,6 +1667,7 @@ export default {
 	}
 
 	.offers{
+		position: relative;
 		flex: 0 0 100%;
 
 
@@ -1701,6 +1713,32 @@ export default {
 					width: 100%;
 				}
 
+				&__notes{
+					position: absolute;
+					bottom: desktop-vw(24px);
+					left: desktop-vw(42px);
+
+					@include mobile{
+						bottom: mobile-vw(16px);
+						left: mobile-vw(16px);
+					}
+
+					&__text{
+						text-transform: uppercase;
+			      	@include font-ITCFranklinGothicLT-DmCp();
+						color: var(--c-white);
+						font-size: desktop-vw(12px);
+						line-height: desktop-vw(12px);
+						color: var(--c-white);
+
+						@include mobile{
+							font-size: mobile-vw(12px);
+							line-height: mobile-vw(12px);
+						}
+
+					}
+				}
+
 				&__title{
 					.H1{
 						color: var(--c-white);
@@ -1717,6 +1755,16 @@ export default {
 							font-size: mobile-vw(64px);
 							line-height: mobile-vw(57px);
 							letter-spacing: mobile-vw(-1.92px);
+						}
+
+						.sup{
+							font-size: desktop-vw(50px);
+							vertical-align: super;
+
+							
+							@include mobile {
+								font-size: mobile-vw(32px);
+							}
 						}
 					}
 
