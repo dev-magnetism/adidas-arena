@@ -26,7 +26,7 @@
     "embla-carousel": "latest",
     "fontfaceobserver": "^2.3.0",
     "glslify-loader": "^2.0.0",
-    "gsap": "npm:@gsap/shockingly@^3.12.2",
+    "gsap": "file:gsap-bonus.tgz",
     "jssoup": "^0.0.15",
     "lottie-web": "^5.11.0",
     "nuxt": "2.17.2",
