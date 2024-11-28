@@ -8,6 +8,21 @@
       }"
       class="bloc"
     >
+      <a
+        :href="logo.logo_link"
+        target="_blank"
+        class="logo-link"
+        v-if="logo.logo_link"
+      >
+        <nuxt-img
+          provider="directus"
+          :src="logo.logo_white"
+          :alt="logo.logo_alt"
+          format="webp"
+          loading="lazy"
+          sizes="sm:20vw md:10vw"
+        />
+      </a>
       <nuxt-img
         provider="directus"
         :src="logo.logo_white"
@@ -15,6 +30,7 @@
         format="webp"
         loading="lazy"
         sizes="sm:20vw md:10vw"
+        v-if="!logo.logo_link"
       />
     </div>
   </div>
@@ -62,6 +78,15 @@ export default {
     img {
       width: 50%;
       height: auto;
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
     }
 
     &.visible {

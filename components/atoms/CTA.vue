@@ -34,7 +34,7 @@
     }"
     :to="(href)?href:''"
     :target="blank ? '_blank' : false"
-    
+
     @mouseenter.native="onMouseEnter"
     @mouseleave.native="onMouseLeave"
   >
@@ -270,10 +270,14 @@ export default {
       padding: desktop-vw(15px) desktop-vw(20px) desktop-vw(15px) desktop-vw(20px);
 
       @include mobile {
-        padding: mobile-vw(18px) mobile-vw(25px) mobile-vw(18px) mobile-vw(25px);
+        padding: mobile-vw(10px) mobile-vw(14px) mobile-vw(10px) mobile-vw(14px);
       }
 
-      @include desktop-l {
+      // @include mobile-l {
+      //   padding: mobile-vw(18px) mobile-vw(25px) mobile-vw(18px) mobile-vw(25px);
+      // }
+
+      @include desktop {
         padding: desktop-vw(10px) desktop-vw(15px) desktop-vw(10px) desktop-vw(15px) !important;
       }
     }
