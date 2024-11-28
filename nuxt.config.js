@@ -1,3 +1,5 @@
+import getInitialData from './getInitialData'
+
 const convertToKebabCase = (string) => {
   return string
     .replace(/([a-z])([A-Z])/g, '$1-$2')
@@ -10,7 +12,7 @@ const removeSpecialChar = (string) => {
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036F]/g, '')
-    .replace(/[^\w\s]/gi, '-')
+    .replace(/[^\w\s]/gi, '-');
 }
 
 export default {
@@ -99,6 +101,7 @@ export default {
     apiKeyDelightContest1: process.env.API_KEY_DELIGHT_CONTEST1 || 'NsURo5eO8i4IGA',
     apiKeyDelightContest2: process.env.API_KEY_DELIGHT_CONTEST2 || 'qHpk02SuYn-Myg',
     siteEnv: process.env.SITE_ENV || 'production',
+    initialData: {}
   },
 
   telemetry: false,
@@ -109,7 +112,7 @@ export default {
     { src: '~/plugins/utils.js' },
     { src: '~/plugins/raf.js', mode: 'client' },
     { src: '~/plugins/viewport.js', mode: 'client' },
-    { src: '~/plugins/smartbanner.min.js', mode: 'client' },
+    { src: '~/plugins/smartbanner.min.js', mode: 'client' }
   ],
 
   // vue: {
@@ -156,12 +159,24 @@ export default {
     },
   ],
 
+  hooks: {
+    async 'generate:before'(generator) {
+      try {
+        const t = await getInitialData();
+        generator.nuxt.options.publicRuntimeConfig.initialData = t;
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données :", error);
+        console.error("Arrêt du build.");
+        process.exit(1);
+      }
+    }
+  },
+
   generate: {
     fallback: true,
     subFolders: false,
     async routes() {
       const axios = require('axios')
-
       const limit = 50
       const routes = []
 
@@ -220,7 +235,6 @@ export default {
 
       return routes
     },
-    interval: 4000,
   },
 
   static: {
@@ -307,6 +321,7 @@ export default {
     hostname: process.env.BASE_URL || 'https://www.adidasarena.com/',
     path: '/sitemap.xml',
     exclude: [
+      '/offres-goat',
       '/tonnomsurlarena1',
       '/tonnomsurlarena2'
     ],

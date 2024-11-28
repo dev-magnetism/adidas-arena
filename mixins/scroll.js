@@ -56,28 +56,30 @@ export default {
     },
   },
   mounted() {
-    this.lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
-      syncTouch: true,
-      syncTouchLerp: 0.1, // default 0.1
-      touchMultiplier: 1.25, // default 2
-      touchInertiaMultiplier: 20, // default 35
-    })
+    if (!this.$viewport.isMobile) {
+      this.lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+        syncTouch: true,
+        syncTouchLerp: 0.1, // default 0.1
+        touchMultiplier: 1.25, // default 2
+        touchInertiaMultiplier: 20, // default 35
+      })
 
-    this.lenis.scrollTo(0, { immediate: true })
+      this.lenis.scrollTo(0, { immediate: true })
 
-    window.scrollTo(0, 0)
+      window.scrollTo(0, 0)
 
-    if (!this.allowScroll) this.lenis.stop()
+      if (!this.allowScroll) this.lenis.stop()
 
-    this.lenis.on('scroll', this.onScrollLenis)
+      this.lenis.on('scroll', this.onScrollLenis)
 
-    window.lenis = this.lenis
+      window.lenis = this.lenis
 
-    ScrollTrigger.refresh()
+      ScrollTrigger.refresh()
 
-    this.$raf.add(`scroller-${this._uid}`, this.onFrame, -1)
+      this.$raf.add(`scroller-${this._uid}`, this.onFrame, -1)
+    }
   },
   beforeDestroy() {
     this.$raf.remove(`scroller-${this._uid}`, this.onFrame)

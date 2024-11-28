@@ -132,7 +132,8 @@ export default {
 
       this.embla?.destroy()
     }
-  },methods: {
+  },
+  methods: {
     onMouseEnter() {
       const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
       if(this.event.offers?.length > _limit){
