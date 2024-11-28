@@ -321,6 +321,7 @@ export default {
     hostname: process.env.BASE_URL || 'https://www.adidasarena.com/',
     path: '/sitemap.xml',
     exclude: [
+      '/offres-goat',
       '/tonnomsurlarena1',
       '/tonnomsurlarena2'
     ],
