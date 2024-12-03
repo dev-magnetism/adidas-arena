@@ -38,7 +38,7 @@
           <TP2 weight="bold">
             {{ sponsor.sponsor_id.content.title }}
           </TP2>
-          <TP2 weight="regular">
+          <TP2 weight="regular" class="license">
             {{ sponsor.sponsor_id.content.description }}
           </TP2>
         </div>
@@ -152,6 +152,16 @@ export default {
 
       @include mobile {
         margin-left: mobile-vw(25px);
+      }
+
+      p.license{
+        font-size: desktop-vw(12px);
+        line-height: desktop-vw(18px);
+
+        @include mobile {
+          font-size: mobile-vw(12px);
+          line-height: mobile-vw(16px);
+        }
       }
     }
   }
