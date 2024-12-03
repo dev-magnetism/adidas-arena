@@ -34,9 +34,14 @@
             mobile: 'w116,h116,fcrop,q85',
           }"
         />
-        <TP2 weight="bold">
-          {{ sponsor.sponsor_id.content.title }}
-        </TP2>
+        <div class="app-programmation-event-more-information__item__text">
+          <TP2 weight="bold">
+            {{ sponsor.sponsor_id.content.title }}
+          </TP2>
+          <TP2 weight="regular" class="license">
+            {{ sponsor.sponsor_id.content.description }}
+          </TP2>
+        </div>
       </div>
     </div>
   </div>
@@ -140,13 +145,23 @@ export default {
       }
     }
 
-    p {
+    &__text{
       margin-left: desktop-vw(20px);
       opacity: 0.8;
       text-transform: uppercase;
 
       @include mobile {
         margin-left: mobile-vw(25px);
+      }
+
+      p.license{
+        font-size: desktop-vw(12px);
+        line-height: desktop-vw(18px);
+
+        @include mobile {
+          font-size: mobile-vw(12px);
+          line-height: mobile-vw(16px);
+        }
       }
     }
   }
