@@ -34,9 +34,14 @@
             mobile: 'w116,h116,fcrop,q85',
           }"
         />
-        <TP2 weight="bold">
-          {{ sponsor.sponsor_id.content.title }}
-        </TP2>
+        <div class="app-programmation-event-more-information__item__text">
+          <TP2 weight="bold">
+            {{ sponsor.sponsor_id.content.title }}
+          </TP2>
+          <TP2 weight="regular">
+            {{ sponsor.sponsor_id.content.description }}
+          </TP2>
+        </div>
       </div>
     </div>
   </div>
@@ -140,7 +145,7 @@ export default {
       }
     }
 
-    p {
+    &__text{
       margin-left: desktop-vw(20px);
       opacity: 0.8;
       text-transform: uppercase;
