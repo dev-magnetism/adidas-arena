@@ -9,10 +9,8 @@
       Retour
     </AtomsCTABack>
     <div :class="{ submited }" class="app-element-offrescontact-overlay__successful">
-      <TH2 tag="p">{{ appContent.data.contact_overlay_successful_title }}</TH2>
-      <TH4 tag="p">{{
-        appContent.data.contact_overlay_successful_subtitle
-      }}</TH4>
+      <TH2 tag="p">Merci</TH2>
+      <TH4 tag="p">Pour ton message!</TH4>
     </div>
     <AtomsCornerPoints :size-points="8" />
     <div data-lenis-prevent class="app-element-offrescontact-overlay__wrapper">
