@@ -1089,7 +1089,7 @@
 											weight="medium"
 											color="black"
 											>
-											Ici, chaque moment est exceptionnel. les codes et l’esprit de l’entertainment made in USA avec le panache de Paris : une expérience hors normes unique en France à vivre et a faire vivre pour faire rayonner ton business.
+											Ici, chaque moment est exceptionnel. les codes et l’esprit de l’entertainment made in USA avec le panache de Paris : une expérience hors normes unique en France à vivre et à faire vivre pour faire rayonner ton business.
 										</TP2>
 
 							      </div>
