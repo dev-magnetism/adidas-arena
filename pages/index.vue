@@ -2,6 +2,7 @@
   <main class="app-home">
     <AppHomeHero :contents="contentHero" />
     <ESliderProgrammation :content="contentSlider" />
+    <AppActusBlockYoutube v-if="contentVideo.url" :content="contentVideo" />
     <AppHomePresentation :contents="contentPresentation" />
     <EMarqueeScroll>
       <TH1 tag="p" weight="bold">
@@ -136,6 +137,13 @@ export default {
           src: this.content.data.hero_picture_bottom,
           alt: this.content.data.hero_picture_bottom_alt,
         },
+      }
+    },
+    contentVideo() {
+      return {
+        url: this.content.data.video_url,
+        poster: this.content.data.video_poster,
+        vertical_video: this.content.data.video_vertical_video,
       }
     },
     contentSlider() {
