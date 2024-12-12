@@ -4,14 +4,13 @@
       v-if="!content.isVideo"
       ref="picture"
       provider="directus"
-      class="picture-absolute"
       :src="content.picture"
       format="webp"
       :alt="content.alt"
       sizes="sm:50vw md:100vw"
       @load="onLoad"
     />
-    <div v-else class="picture-absolute" />
+    <div v-else />
   </div>
 </template>
 
@@ -496,161 +495,161 @@ export default {
   }
 
   &:nth-of-type(1) {
-    aspect-ratio: 215/260;
+    // aspect-ratio: 215/260;
     top: desktop-vw(240px);
     grid-column: 16 / span 2;
-    width: 100%;
+    // width: 100%;
   }
   &:nth-of-type(2) {
-    aspect-ratio: 260/270;
-    width: 100%;
+    // aspect-ratio: 260/270;
+    // width: 100%;
     left: desktop-vw(50px);
     top: desktop-vw(125px);
     grid-column: 18 / span 2;
   }
   &:nth-of-type(3) {
-    aspect-ratio: 410/270;
+    // aspect-ratio: 410/270;
     left: desktop-vw(50px);
     top: desktop-vw(185px);
     grid-column: 22 / span 3;
-    width: 100%;
+    // width: 100%;
   }
   &:nth-of-type(4) {
-    aspect-ratio: 290/190;
+    // aspect-ratio: 290/190;
     grid-column: 12 / span 3;
-    width: 85%;
+    // width: 85%;
     left: desktop-vw(0px);
     top: desktop-vw(90px);
   }
   &:nth-of-type(5) {
-    aspect-ratio: 255/170;
+    // aspect-ratio: 255/170;
     top: desktop-vw(430px);
     z-index: 1;
     grid-column: 18 / span 2;
-    width: 100%;
+    // width: 100%;
     left: 30%;
   }
   &:nth-of-type(6) {
     grid-column: 20 / span 1;
-    width: 100%;
-    aspect-ratio: 118/142;
+    // width: 100%;
+    // aspect-ratio: 118/142;
     left: desktop-vw(20px);
     top: desktop-vw(380px);
     z-index: 9;
   }
   &:nth-of-type(7) {
-    aspect-ratio: 230 / 135;
+    // aspect-ratio: 230 / 135;
     grid-column: 14 / span 2;
-    width: 100%;
+    // width: 100%;
     left: desktop-vw(70px);
     top: desktop-vw(540px);
   }
   &:nth-of-type(8) {
-    width: 100%;
-    aspect-ratio: 685 / 715;
+    // width: 100%;
+    // aspect-ratio: 685 / 715;
     grid-column: 19 / span 6;
     bottom: desktop-vw(0px);
   }
   &:nth-of-type(9) {
     grid-column: 12 / span 3;
-    width: 100%;
-    aspect-ratio: 335/390;
+    // width: 100%;
+    // aspect-ratio: 335/390;
     bottom: desktop-vw(220px);
   }
   &:nth-of-type(10) {
-    width: 100%;
+    // width: 100%;
     grid-column: 16 / span 2;
-    aspect-ratio: 230 / 190;
+    // aspect-ratio: 230 / 190;
     bottom: desktop-vw(120px);
   }
   &:nth-of-type(11) {
-    width: 100%;
+    // width: 100%;
     grid-column: 8 / span 3;
-    aspect-ratio: 340/510;
+    // aspect-ratio: 340/510;
     top: desktop-vw(300px);
   }
   &:nth-of-type(12) {
-    width: 100%;
+    // width: 100%;
     grid-column: 6 / span 3;
-    aspect-ratio: 330/225;
+    // aspect-ratio: 330/225;
     top: desktop-vw(150px);
   }
   &:nth-of-type(13) {
-    width: 100%;
+    // width: 100%;
     grid-column: 1 / span 3;
-    aspect-ratio: 330/220;
+    // aspect-ratio: 330/220;
     top: desktop-vw(150px);
   }
   &:nth-of-type(14) {
-    width: 100%;
+    // width: 100%;
     grid-column: 2 / span 3;
-    aspect-ratio: 330/435;
+    // aspect-ratio: 330/435;
     top: desktop-vw(550px);
   }
   &:nth-of-type(15) {
-    width: 100%;
+    // width: 100%;
     grid-column: 5 / span 3;
-    aspect-ratio: 330/195;
+    // aspect-ratio: 330/195;
     bottom: desktop-vw(275px);
   }
   &:nth-of-type(16) {
-    width: 100%;
+    // width: 100%;
     grid-column: 4 / span 2;
-    aspect-ratio: 215/290;
+    // aspect-ratio: 215/290;
     bottom: desktop-vw(25px);
   }
   &:nth-of-type(17) {
-    width: 100%;
+    // width: 100%;
     grid-column: 9 / span 2;
-    aspect-ratio: 215/140;
+    // aspect-ratio: 215/140;
     bottom: desktop-vw(165px);
   }
   &:nth-of-type(18) {
-    aspect-ratio: 120 / 165;
-    width: 55%;
+    // aspect-ratio: 120 / 165;
+    // width: 55%;
     grid-column: 27 / span 2;
     top: desktop-vw(80px);
   }
   &:nth-of-type(19) {
-    aspect-ratio: 330 / 220;
+    // aspect-ratio: 330 / 220;
     grid-column: 29 / span 3;
-    width: 100%;
+    // width: 100%;
     top: desktop-vw(315px);
   }
   &:nth-of-type(20) {
-    width: 100%;
-    aspect-ratio: 325 / 420;
+    // width: 100%;
+    // aspect-ratio: 325 / 420;
     grid-column: 33 / span 3;
     top: desktop-vw(35px);
   }
   &:nth-of-type(21) {
-    width: 100%;
-    aspect-ratio: 330/215;
+    // width: 100%;
+    // aspect-ratio: 330/215;
     grid-column: 26 / span 3;
     top: desktop-vw(600px);
   }
   &:nth-of-type(22) {
-    width: 100%;
-    aspect-ratio: 235/160;
+    // width: 100%;
+    // aspect-ratio: 235/160;
     grid-column: 31 / span 2;
     top: desktop-vw(650px);
   }
   &:nth-of-type(23) {
-    width: 100%;
-    aspect-ratio: 210/275;
+    // width: 100%;
+    // aspect-ratio: 210/275;
     grid-column: 33 / span 2;
     top: desktop-vw(680px);
     left: desktop-vw(-60px);
   }
   &:nth-of-type(24) {
-    width: 100%;
-    aspect-ratio: 210/275;
+    // width: 100%;
+    // aspect-ratio: 210/275;
     grid-column: 28 / span 2;
     bottom: desktop-vw(100px);
   }
   &:nth-of-type(25) {
-    width: 100%;
-    aspect-ratio: 475/315;
+    // width: 100%;
+    // aspect-ratio: 475/315;
     grid-column: 32 / span 4;
     bottom: desktop-vw(50px);
     left: desktop-vw(-60px);
