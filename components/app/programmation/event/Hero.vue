@@ -128,9 +128,19 @@
           Réserver
         </AtomsCTA>
 
+        <AtomsCTA
+          v-else-if="
+            event.status_code === 'H'
+          "
+          href="https://faq.adidasarena.com/hc/fr"
+        >
+          Remboursement
+        </AtomsCTA>
+
         <AtomsCTAForm
           v-else-if="
             event.status_code === 'K' ||
+            event.status_code === 'C' ||
             (event.status_code === 'B' && event.presale)
           "
           :session="event.sessions[0]"
@@ -139,7 +149,11 @@
           :event-date="event.sessions[0].date"
           :status-code="event.status_code"
         >
-          Liste d'attente
+          {{
+            event.status_code === 'K'
+              ? "Liste d'attente"
+              : "Je m'inscris"
+          }}
         </AtomsCTAForm>
 
         <AtomsCTA
