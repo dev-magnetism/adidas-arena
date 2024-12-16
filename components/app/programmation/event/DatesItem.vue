@@ -75,7 +75,11 @@
         :layer-color="statutColor"
         :bg="'grey'"
       >
-        Liste d'attente
+        {{
+          session.session_status === 'K'
+            ? "Liste d'attente"
+            : "Je m'inscris"
+        }}
       </AtomsCTAForm>
 
       <AtomsCTA
@@ -83,8 +87,9 @@
         :color="statutColor"
         :layer-color="statutColor"
         :bg="'grey'"
+        href="https://faq.adidasarena.com/hc/fr"
       >
-        En savoir +
+        Remboursement
       </AtomsCTA>
 
       <AtomsCTA
