@@ -1,9 +1,9 @@
 <template>
-  <div class="app-programmation-list__reported">
-  
+  <div class="app-programmation-list__reported" v-if="reported.length > 0">
+
     <div
       class="container app-programmation-list-events grid-inner"
-    > 
+    >
 
       <TH3
        class="app-programmation-list-events__reported__title"
