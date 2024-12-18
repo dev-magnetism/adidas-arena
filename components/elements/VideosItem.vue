@@ -1,7 +1,7 @@
 <template>
 
 	<div class="app-el-videositem">
-  	
+
 	  	<div
 	     	class="app-el-videositem__video"
 	      	>
@@ -71,7 +71,7 @@ export default {
       if (videoItem && videoItem !== 'undefined') {
         videoItem.id = this.getYouTubeVideoId(videoItem.youtube_url)
       }
-      
+
       return videoItem && videoItem !== 'undefined' ? { video: videoItem, image } : false
       //  return videoItem ? { video: videoItem, image } : false
     },
@@ -83,8 +83,7 @@ export default {
   },
   methods: {
     getYouTubeVideoId(url) {
-      const match = url.match(/[?&]v=([^&#]*)/)
-      return match ? match[1] : false
+      return this.$getYoutubeVideoID(url)
     },
 
   }
@@ -230,7 +229,7 @@ export default {
     		}
     	}
     }
-	
+
 }
 
 </style>

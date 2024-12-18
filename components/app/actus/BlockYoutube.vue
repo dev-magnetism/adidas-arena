@@ -4,6 +4,7 @@
       <EParallax
         ref="video"
         class="app-actualites-block-youtube__video"
+        :class="{ portrait: content.vertical_video }"
         :speed="0.85"
       >
         <EKinesis :speed="5">
@@ -51,8 +52,7 @@ export default {
   },
   computed: {
     youTubeVideoId() {
-      const match = this.content.url.match(/[?&]v=([^&#]*)/)
-      return match ? match[1] : false
+      return this.$getYoutubeVideoID(this.content.url)
     },
   },
 }
@@ -74,6 +74,17 @@ export default {
     aspect-ratio: 850 / 560;
     width: 100%;
     transform: rotate(-2deg);
+
+    &.portrait {
+      aspect-ratio: 9 / 16;
+      width: desktop-vw(380px);
+      margin: 0 auto;
+
+      @include mobile {
+        aspect-ratio: 9 / 16;
+        width: desktop-vw(200px);
+      }
+    }
 
     @include mobile {
       aspect-ratio: 340 / 225;

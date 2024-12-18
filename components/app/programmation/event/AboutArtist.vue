@@ -42,6 +42,7 @@
       <EParallax
         v-if="videoFrame"
         ref="video"
+        :class="{ portrait: event.vertical_video }"
         class="app-programmation-event-about-artist__video"
         :speed="1"
       >
@@ -125,7 +126,7 @@ export default {
       return mediaGallery
     },
     imageFrame() {
-      return this.mediaGalleryImages.length >= 1 
+      return this.mediaGalleryImages.length >= 1
         ? this.mediaGalleryImages[0].image
         : null
     },
@@ -148,7 +149,7 @@ export default {
       if (videoItem && videoItem !== 'undefined') {
         videoItem.id = this.getYouTubeVideoId(videoItem.youtube_url)
       }
-      
+
       return videoItem && videoItem !== 'undefined' ? { video: videoItem, image } : false
       //  return videoItem ? { video: videoItem, image } : false
     },
@@ -239,8 +240,7 @@ export default {
       })
     },
     getYouTubeVideoId(url) {
-      const match = url.match(/[?&]v=([^&#]*)/)
-      return match ? match[1] : false
+      return this.$getYoutubeVideoID(url)
     },
   },
 }
@@ -289,6 +289,22 @@ export default {
       left: mobile-vw(25px);
       transform: rotate(-4deg);
     }
+
+    &.portrait {
+      aspect-ratio: 9 / 16;
+      width: desktop-vw(300px);
+      top: desktop-vw(250px);
+      left: desktop-vw(280px);
+      z-index: 2;
+
+      @include mobile {
+        aspect-ratio: 9 / 16;
+        width: desktop-vw(200px);
+        top: unset;
+        left: desktop-vw(50px);
+      }
+    }
+
 
     .app-element-kinesis {
       display: flex;
