@@ -299,9 +299,10 @@ export default {
 
       @include mobile {
         aspect-ratio: 9 / 16;
-        width: desktop-vw(200px);
+        width: mobile-vw(180px);
         top: unset;
-        left: desktop-vw(50px);
+        left: mobile-vw(90px);
+        bottom: mobile-vw(-100px);
       }
     }
 
