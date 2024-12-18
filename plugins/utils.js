@@ -1,25 +1,55 @@
 export default ({ app }, inject) => {
   inject('convertToKebabCase', (string) => {
     return string
-      .replace(/([a-z])([A-Z])/g, '$1-$2')
-      .replace(/[\s_]+/g, '-')
-      .toLowerCase()
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/[\s_]+/g, '-')
+    .toLowerCase()
   })
 
   inject('removeSpecialChar', (string) => {
     return  string.toLowerCase()
-                  .normalize('NFD')
-                  .replace(/[\u0300-\u036F]/g, '')
-                  .replace(/[^\w\s]/gi, '-');
+    .normalize('NFD')
+    .replace(/[\u0300-\u036F]/g, '')
+    .replace(/[^\w\s]/gi, '-');
+  })
+
+  inject('getYoutubeVideoID', (url) => {
+    try {
+      // Create a URL object to ensure the input is properly formatted
+      const parsedUrl = new URL(url)
+
+      // Case for regular YouTube videos (https://www.youtube.com/watch?v=VIDEO_ID)
+      if (parsedUrl.hostname === "www.youtube.com" || parsedUrl.hostname === "youtube.com") {
+        if (parsedUrl.pathname === "/watch") {
+          return parsedUrl.searchParams.get("v")
+        }
+
+        // Case for YouTube Shorts (https://www.youtube.com/shorts/VIDEO_ID)
+        if (parsedUrl.pathname.startsWith("/shorts/")) {
+          return parsedUrl.pathname.split("/")[2]
+        }
+      }
+
+      // Case for shortened URLs (https://youtu.be/VIDEO_ID)
+      if (parsedUrl.hostname === "youtu.be") {
+        return parsedUrl.pathname.slice(1)
+      }
+
+      // Return null if none of the cases match
+      return null
+    } catch (e) {
+      console.error("Invalid URL:", e)
+      return null
+    }
   })
 
   inject('formatDate', (dates, reported = false, initial = false, newdate = false, displayTime = false) => {
     // let dates;
-     // console.log('formatDate / dates', dates);
-     // console.log('formatDate / reported', reported);
-     // console.log('formatDate / initial', initial);
-     // console.log('formatDate / newdate', newdate);
-     // console.log('formatDate / displayTime', displayTime);
+    // console.log('formatDate / dates', dates);
+    // console.log('formatDate / reported', reported);
+    // console.log('formatDate / initial', initial);
+    // console.log('formatDate / newdate', newdate);
+    // console.log('formatDate / displayTime', displayTime);
 
     if(typeof dates === "undefined") return;
 
@@ -41,7 +71,7 @@ export default ({ app }, inject) => {
 
 
     /*
-      This insures that date's format can be read by all browsers.
+    This insures that date's format can be read by all browsers.
     */
     const _formatDates = dates.map((obj)=>{
       // console.log('formatDate obj', obj);
@@ -72,8 +102,8 @@ export default ({ app }, inject) => {
     const dateObjects = [];
 
     /*
-      We need to exclude already existing dates with an id, 
-      create a date set to midnight (for later comparison)
+    We need to exclude already existing dates with an id,
+    create a date set to midnight (for later comparison)
     */
     for(let i = 0; i < _formatDates.length; i++){
       const _date = new Date(_formatDates[i]);
@@ -87,7 +117,7 @@ export default ({ app }, inject) => {
       }
 
       if(dateObjects.findIndex(dateobj => dateobj.id === _obj.id) < 0){
-          dateObjects.push(_obj)
+        dateObjects.push(_obj)
       }
     }
 
@@ -101,11 +131,11 @@ export default ({ app }, inject) => {
       const startDay = currentDate.getDate()
       //  console.log('startDay', startDay);
 
-      /* 
-        Carefull : this compares 2 dates with a 24 hours difference,
-        but a date object contains hours/minutes/seconds, so its tricky.
-        That's why I use 'compdate', event if it doesn't contain the correct
-        time.
+      /*
+      Carefull : this compares 2 dates with a 24 hours difference,
+      but a date object contains hours/minutes/seconds, so its tricky.
+      That's why I use 'compdate', event if it doesn't contain the correct
+      time.
       */
       // while (
       //   index < dateObjects.length - 1 &&
@@ -141,13 +171,13 @@ export default ({ app }, inject) => {
     }
 
     const lastDate = dateObjects[dateObjects.length - 1].date
-      //  console.log('lastDate', lastDate);
+    //  console.log('lastDate', lastDate);
     const month = lastDate
-      .toLocaleString('fr-FR', { month: 'long' })
-      .toUpperCase()
-      //  console.log('month', month);
+    .toLocaleString('fr-FR', { month: 'long' })
+    .toUpperCase()
+    //  console.log('month', month);
     const year = lastDate.getFullYear()
-      //  console.log('year', year);
+    //  console.log('year', year);
 
     let time = ''
     if (displayTime && dateObjects.length === 1) {

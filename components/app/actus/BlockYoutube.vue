@@ -52,8 +52,7 @@ export default {
   },
   computed: {
     youTubeVideoId() {
-      const match = this.content.url.match(/[?&]v=([^&#]*)/)
-      return match ? match[1] : false
+      return this.$getYoutubeVideoID(this.content.url)
     },
   },
 }

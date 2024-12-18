@@ -240,8 +240,7 @@ export default {
       })
     },
     getYouTubeVideoId(url) {
-      const match = url.match(/[?&]v=([^&#]*)/)
-      return match ? match[1] : false
+      return this.$getYoutubeVideoID(url)
     },
   },
 }
