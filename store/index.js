@@ -77,8 +77,9 @@ export const getters = {
 
     result.unshift({ category: 'tout', slug: slugify('tout', { strict: true }), count: state.programmes.length })
 
-    result.push({ category: 'reports', slug: slugify('reports', { strict: true }), count: _reported.length })
-
+    if (_reported.length) {
+      result.push({ category: 'reports', slug: slugify('reports', { strict: true }), count: _reported.length })
+    }
 
     //  console.log('programmesCategories / result', result);
     return result
