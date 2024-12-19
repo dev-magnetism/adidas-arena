@@ -25,6 +25,7 @@ export default {
   margin-bottom: desktop-vw(250px);
 
   @include mobile {
+    overflow: hidden;
     padding: 0px mobile-vw(20px);
     margin-top: mobile-vw(120px);
     margin-bottom: mobile-vw(135px);
