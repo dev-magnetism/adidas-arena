@@ -33,7 +33,7 @@
 	          	</AtomsCTA>
 
    			</div>
-   			
+
    			<div class="prog__events__slider">
 
    				<div
@@ -44,7 +44,7 @@
 		        		@mouseleave="setCursorState('hide')"
 		        		@click="onClickSlider"
         				>
-			        	<div 
+			        	<div
 			          	class="prog__events__slider__inner"
 			         	>
 
@@ -274,11 +274,11 @@
 							</div>
 
 							<div style="--bg: var(--c-red-adidas); --rotation: 2.42deg;" class="prog__events__slider__card">
-							    
+
 							   <div class="prog__events__slider__card__visual">
-							      
+
 							      <div class="prog__events__slider__card__visual__wrapper">
-							        
+
 							        	<div class="prog__events__slider__card__layer" />
 
 							        	<picture class="app-programmation-image">
@@ -306,7 +306,7 @@
 							      @mouseleave.native="onMouseLeave"
 							   	>
 								   <div class="prog__events__slider__card__head">
-								        
+
 										<TP2 class="type" weight="bold" color="white" tag="h3">
 											Spectacle et comedie musicale
 										</TP2>
@@ -326,7 +326,7 @@
 							      </TH2>
 
 								</nuxt-link>
-							    
+
 							</div>
 
 							<div style="--bg: var(--c-grey); --rotation: -1.86deg;" class="prog__events__slider__card">
@@ -610,11 +610,11 @@
 							</div>
 
 							<div style="--bg: var(--c-red-adidas); --rotation: 2.42deg;" class="prog__events__slider__card">
-					    
+
 					   		<div class="prog__events__slider__card__visual">
-					      
+
 					      		<div class="prog__events__slider__card__visual__wrapper">
-					        
+
 						         	<div class="prog__events__slider__card__layer" />
 
 							        	<picture class="app-programmation-image">
@@ -642,7 +642,7 @@
 							      @mouseleave.native="onMouseLeave"
 							      >
 							      <div class="prog__events__slider__card__head">
-							        
+
 										<TP2 class="type" weight="bold" color="white" tag="h3">
 											Paris Basketball
 										</TP2>
@@ -779,11 +779,11 @@
 							</div>
 
 							<div style="--bg: var(--c-red-adidas); --rotation: 2.42deg;" class="prog__events__slider__card">
-					    
+
 					   		<div class="prog__events__slider__card__visual">
-					      
+
 					      		<div class="prog__events__slider__card__visual__wrapper">
-					        
+
 						         	<div class="prog__events__slider__card__layer" />
 
 							        	<picture class="app-programmation-image">
@@ -811,7 +811,7 @@
 							      @mouseleave.native="onMouseLeave"
 							      >
 							      <div class="prog__events__slider__card__head">
-							        
+
 										<TP2 class="type" weight="bold" color="white" tag="h3">
 											Concert
 										</TP2>
@@ -900,11 +900,11 @@
 						<div class="offers__list__item">
 
    						<div style="--bg: var(--c-blue-adidas); --rotation: 4deg;" class="offers__list__card">
-						    
+
 						   	<div class="offers__list__card__visual">
-						      
+
 						      	<div class="offers__list__card__visual__wrapper">
-						        
+
 						       		<div class="offers__list__card__layer" />
 
 							        	<picture class="app-programmation-image">
@@ -925,7 +925,7 @@
 								      <TH2 class="name" color="white" weight="bold">
 								      	LA PRIVAT’
 								      </TH2>
-						        
+
 										<TP2 class="title" weight="bold" color="white" tag="h3">
 											Salon privé. Design unique. La privat’ est pensée pour impressionner.
 										</TP2>
@@ -969,7 +969,7 @@
 					      		</div>
 
 						   	</button>
-						    
+
 						  	</div>
 
 						</div>
@@ -977,11 +977,11 @@
 						<div class="offers__list__item">
 
    						<div style="--bg: var(--c-red-adidas); --rotation: -2deg;" class="offers__list__card">
-						    
+
 						   	<div class="offers__list__card__visual">
-						      
+
 						      	<div class="offers__list__card__visual__wrapper">
-						        
+
 						        		<div class="offers__list__card__layer" />
 
 										<picture class="app-programmation-image">
@@ -1002,7 +1002,7 @@
 								      <TH2 class="name" color="white" weight="bold">
 								      	LE LOFT
 								      </TH2>
-							        
+
 										<TP2 class="title" weight="bold" color="white" tag="h3">
 											Entre dans l’univers 3 bandes de l’adidas arena.
 										</TP2>
@@ -1046,7 +1046,7 @@
 							      </div>
 
 							   </button>
-						    
+
 						  	</div>
 
 						</div>
@@ -1054,11 +1054,11 @@
 						<div class="offers__list__item">
 
    						<div style="--bg: var(--c-grey); --rotation: 1deg;" class="offers__list__card">
-						    
+
 						    	<div class="offers__list__card__visual">
-						      
+
 						     		<div class="offers__list__card__visual__wrapper">
-						        
+
 										<div class="offers__list__card__layer" />
 
 										<picture class="app-programmation-image">
@@ -1079,7 +1079,7 @@
 								      <TH2 class="name" color="white" weight="bold">
 								      	LE SKYBAR
 								      </TH2>
-							        
+
 										<TP2 class="title" weight="bold" color="black" tag="h3">
 											UN SOIR AU SKYBAR, C’EST SURPLOMBER LE SHOW DANS UN CADRE DEJA MYTHIQUE
 										</TP2>
@@ -1119,9 +1119,9 @@
 							      </div>
 
 							   </button>
-						    
+
 						  	</div>
-						
+
 						</div>
 
 					</div>
@@ -1185,6 +1185,7 @@ export default {
   },
   mounted() {
     const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
+    this.setHeaderWhite(true);
     if(_limit < 12){
       this.embla = EmblaCarousel(this.$refs.wrapper, {
         dragFree: true,
@@ -1336,16 +1337,7 @@ export default {
 		display: block;
 		flex: 0 0 100%;
 		width: 100%;
-
-		@include desktop {
-			order: 1;
-			padding-top: desktop-vw(130px);
-		}
-		
-		@include mobile {
-			order: 2;
-			padding-top: mobile-vw(40px);
-		}
+    order: 2;
 
 		&__container{
 			display: flex;
@@ -1356,11 +1348,11 @@ export default {
 			align-items: flex-start;
 
 			@include desktop {
-				padding: 0 0 desktop-vw(40px) desktop-vw(40px);
+				padding: desktop-vw(40px) 0 desktop-vw(40px) desktop-vw(40px);
 			}
-			
+
 			@include mobile {
-				padding: 0 0 mobile-vw(40px) mobile-vw(16px);
+				padding: mobile-vw(85px) 0 mobile-vw(40px) mobile-vw(16px);
 			}
 		}
 
@@ -1387,7 +1379,7 @@ export default {
 							line-height: desktop-vw(90px);
 							letter-spacing: desktop-vw(-3px);
 						}
-						
+
 						@include mobile {
 							margin-bottom: mobile-vw(40px);
 							font-size: mobile-vw(64px);
@@ -1414,7 +1406,7 @@ export default {
 						font-size: desktop-vw(18px);
 						line-height: desktop-vw(20px);
 					}
-					
+
 					@include mobile {
 						margin-bottom: mobile-vw(20px);
 						font-size: mobile-vw(20px);
@@ -1435,7 +1427,7 @@ export default {
 							font-size: desktop-vw(16px);
 							line-height: desktop-vw(20px);
 						}
-						
+
 						@include mobile {
 							font-size: mobile-vw(16px);
 							line-height: mobile-vw(20px);
@@ -1467,7 +1459,7 @@ export default {
 
 			  &__wrapper {
 			    width: 100%;
-			    
+
 			    padding: 0;
 
 			    @include mobile {
@@ -1670,15 +1662,6 @@ export default {
 		position: relative;
 		flex: 0 0 100%;
 
-
-		@include desktop {
-			order: 2;
-		}
-		
-		@include mobile {
-			order: 1;
-		}
-
 		&__container{
 			display: flex;
 			flex-wrap: wrap;
@@ -1690,11 +1673,11 @@ export default {
 			background-blend-mode: overlay, normal;
 
 			@include desktop {
-				padding: desktop-vw(40px) 0 desktop-vw(40px) desktop-vw(40px);
+				padding: desktop-vw(150px) 0 desktop-vw(40px) desktop-vw(40px);
 			}
-			
+
 			@include mobile {
-				padding: mobile-vw(85px) mobile-vw(16px) mobile-vw(40px);
+				padding: mobile-vw(40px) mobile-vw(16px) mobile-vw(40px);
 			}
 		}
 
@@ -1749,7 +1732,7 @@ export default {
 							line-height: desktop-vw(90px);
 							letter-spacing: desktop-vw(-3px);
 						}
-						
+
 						@include mobile {
 							margin-bottom: mobile-vw(10px);
 							font-size: mobile-vw(64px);
@@ -1761,7 +1744,7 @@ export default {
 							font-size: desktop-vw(50px);
 							vertical-align: super;
 
-							
+
 							@include mobile {
 								font-size: mobile-vw(32px);
 							}
@@ -1785,7 +1768,7 @@ export default {
 						font-size: desktop-vw(18px);
 						line-height: desktop-vw(20px);
 					}
-					
+
 					@include mobile {
 						margin-bottom: mobile-vw(10px);
 						font-size: mobile-vw(18px);
@@ -1806,7 +1789,7 @@ export default {
 							font-size: desktop-vw(16px);
 							line-height: desktop-vw(20px);
 						}
-						
+
 						@include mobile {
 							font-size: mobile-vw(16px);
 							line-height: mobile-vw(20px);
@@ -1829,11 +1812,11 @@ export default {
 			&__block{
 				display: flex;
 				flex-wrap: wrap;
-				padding: 0 desktop-vw(32px); 
+				padding: 0 desktop-vw(32px);
 
 				@include mobile {
 					display: block;
-					padding: 0 mobile-vw(16px); 
+					padding: 0 mobile-vw(16px);
 				}
 
 			}
@@ -1884,7 +1867,7 @@ export default {
 
 
 			  @include mobile {
-			    flex: 0 0 100%;				  
+			    flex: 0 0 100%;
 			  }
 
 			  @include desktop-l {
@@ -1926,7 +1909,7 @@ export default {
 			    display: flex;
 			    flex-direction: column;
 			    padding: desktop-vw(15px) desktop-vw(15px) desktop-vw(70px);
-			    
+
 			    border-top: 1px solid var(--c-black);
 			    cursor: pointer;
 
