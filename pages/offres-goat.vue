@@ -25,7 +25,7 @@
 	            	class="prog__title__block__cta"
 	            	bg="white"
 	            	color="red-adidas"
-	            	href="/programmation"
+	            	href="/programmation?categorie=concert"
 	            	target="_blank"
 	            	layer-color="black"
 	          		>
@@ -852,7 +852,7 @@
    				<ERichText
 						ref="title"
 						class="offers__title__block__title"
-						:content="`<h1 class='H1 bold'>Les OFFRES <span class='app-atoms-stroke-text'>GOAT<sup class='sup'>*</sup></span></h1>`"
+						:content="`<h1 class='H1 bold'>Les OFFRES <span class='app-atoms-stroke-text'>VIP</span></h1>`"
 						tag="h1"
 						/>
 
@@ -862,15 +862,6 @@
 		          	:content="`<p>UNE NOUVELLE EXPÉRIENCE <br/>QUI CASSE LES CODES DES HOSPITALITÉS</p>`"
 		          	tag="p"
 		       	 	/>
-
-		       	<div class="offers__title__block__notes">
-		       		<ERichText
-		          		ref="paragraph"
-			          	class="offers__title__block__notes__text"
-			          	:content="`<p>*Greatest Of All Time</p>`"
-			          	tag="p"
-			       	 	/>
-		       	</div>
 
 		         <AtomsCTA
 	            	class="offers__title__block__cta"
@@ -1154,14 +1145,14 @@ export default {
   },
   head({ $seo }) {
     return $seo({
-      title: 'Nos offres GOAT',
+      title: 'Nos offres VIP',
       description: 'Une nouvelle expérience qui casse les codes',
       openGraph: {
-        title: 'Nos offres GOAT',
+        title: 'Nos offres VIP',
         description: 'Une nouvelle expérience qui casse les codes',
       },
       twitter: {
-        title: 'Nos offres GOAT',
+        title: 'Nos offres VIP',
         description: 'Une nouvelle expérience qui casse les codes',
       },
     })
