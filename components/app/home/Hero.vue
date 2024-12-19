@@ -528,10 +528,12 @@ export default {
 
       const { exterior, camera, renderer, scissors } = useWebGL()
 
-      exterior.position.y = (window.lenis?.scroll + scissors.mask?.y) / (camera.zoom - camera.zoom * 0.125)
-       
-      scissors.current.y = window.lenis?.scroll + scissors.mask?.y
+      const _scroll = (window.lenis?.scroll)?window.lenis.scroll:window.scrollY;
 
+      exterior.position.y = (_scroll + scissors.mask?.y) / (camera.zoom - camera.zoom * 0.125)
+       
+      scissors.current.y = _scroll + scissors.mask?.y
+    
       renderer.setScissor(
         scissors.current.x,
         scissors.current.y,
@@ -545,9 +547,13 @@ export default {
       const { left, top, height, width } =
         this.$refs.view.getBoundingClientRect()
 
+      const _scroll = (window.lenis?.scroll)?window.lenis.scroll:window.scrollY;
+      
+      const _y = this.$viewport.height - top - height - _scroll;
+
       scissors.mask = {
         x: left,
-        y: this.$viewport.height - top - height - window.lenis?.scroll,
+        y: _y,
         width,
         height,
       }
@@ -987,6 +993,7 @@ export default {
       min-width: initial;
       aspect-ratio: 115 / 145;
       top: mobile-vw(500px);
+      bottom: unset;
     }
   }
 

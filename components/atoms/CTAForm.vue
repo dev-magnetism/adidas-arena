@@ -6,7 +6,7 @@
     data-tf-iframe-props="title=Test Adidas Arena" 
     data-tf-transitive-search-params 
     data-tf-medium="snippet" 
-    :data-tf-hidden="`list_name=${statusCode==='K'?'ListeD’Attente_':'PRV_'}${eventName}_${eventDate},api_key=EBu7rZdGJLInGv`" 
+    :data-tf-hidden="`list_name=${statusCode==='K'?'Waitinglist_':'PRV_'}${eventName}_${eventDate},api_key=EBu7rZdGJLInGv`" 
 
     class="app-atoms-cta-form"
     :class="classes"
