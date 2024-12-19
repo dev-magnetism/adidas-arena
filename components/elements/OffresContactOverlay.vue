@@ -36,6 +36,16 @@
       >
         <div class="app-element-offrescontact-overlay__field-group">
           <input
+            v-model="entreprise"
+            placeholder=" "
+            required
+            class="app-element-offrescontact-overlay__field"
+            type="text"
+          />
+          <TH4 tag="p">Entreprise</TH4>
+        </div>
+        <div class="app-element-offrescontact-overlay__field-group">
+          <input
             v-model="nom"
             placeholder=" "
             required
@@ -117,6 +127,7 @@ export default {
   data() {
     return {
       submited: false,
+      entreprise: '',
       prenom: '',
       nom: '',
       telephone: '',
@@ -163,6 +174,7 @@ export default {
       myHeaders.append("Content-Type", "application/json");
 
       const raw = JSON.stringify({
+        "company": this.entreprise,
         "firstname": this.prenom,
         "lastname": this.nom,
         "email":this.email,
@@ -181,7 +193,7 @@ export default {
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.error(error));
-      
+
     },
     onKeyUp(e) {
       if (!this.overlayContactOpen) return
@@ -431,7 +443,7 @@ export default {
     &.textarea {
       @include p1();
       @include font-ITCFranklinGothicLT-BkCp();
-      height: desktop-vw(85px);
+      height: desktop-vw(70px);
       text-transform: initial;
 
       @include mobile {
