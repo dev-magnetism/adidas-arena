@@ -5,25 +5,41 @@
         ref="barWrapper"
         class="app-programmation-list-bar__wrapper grid-inner"
       >
-        <AppProgrammationEventTag
-          class="app-programmation-list-bar__filters-mobile"
-        >
-          FILTRER
-          <select v-model="selectedCategory">
-            <option
-              v-for="(cat, catIndex) in programmesCategories"
-              :key="`key-${cat.category}-${catIndex}`"
-              :value="cat.category.toLowerCase()"
-            >
-              {{ cat.category }} ({{ cat.count.toString().padStart(2, '0') }})
-            </option>
-          </select>
-        </AppProgrammationEventTag>
+        <div class="filters-bar-mobile">
+          <AppProgrammationEventTag
+            class="app-programmation-list-bar__filters-mobile"
+          >
+            FILTRER
+            <select v-model="selectedCategory">
+              <option
+                v-for="(cat, catIndex) in programmesCategories"
+                :key="`key-${cat.category}-${catIndex}`"
+                :value="cat.category.toLowerCase()"
+              >
+                {{ cat.category }} ({{ cat.count.toString().padStart(2, '0') }})
+              </option>
+            </select>
+          </AppProgrammationEventTag>
+
+          <div ref="searchBar" class="app-programmation-list-bar__search-bar">
+            <form @submit.prevent="onSearch">
+              <input
+                v-model="searchText"
+                type="text"
+                placeholder="Rechercher"
+                name="search"
+              />
+              <button type="submit"><SvgSearch /></button>
+            </form>
+          </div>
+        </div>
+
         <div class="app-programmation-list-bar__filters">
           <div
             v-for="(cat, catIndex) in programmesCategories"
             :key="`key-${cat.category}-${catIndex}`"
             class="app-programmation-list-bar__filters__radio"
+            :class="{ 'search-active': searchInProgress }"
           >
             <input
               :id="`${cat.category.toLowerCase()}`"
@@ -43,6 +59,17 @@
                 {{ cat.count.toString().padStart(2, '0') }}
               </TP1>
             </label>
+          </div>
+          <div ref="searchBar" class="app-programmation-list-bar__search-bar">
+            <form @submit.prevent="onSearch">
+              <input
+                v-model="searchText"
+                type="text"
+                placeholder="Rechercher un évènement"
+                name="search"
+              />
+              <button type="submit"><SvgSearch /></button>
+            </form>
           </div>
         </div>
 
@@ -130,6 +157,8 @@ export default {
       currentMonth: null,
       directionMonth: 'up',
       filteringInProgress: false,
+      searchText: null,
+      searchInProgress: false,
     }
   },
   computed: {
@@ -193,6 +222,8 @@ export default {
   },
   watch: {
     selectedCategory() {
+      if (this.searchInProgress) return
+
       const url = new URL(window.location)
 
       if (this.selectedCategory !== 'tout') {
@@ -205,6 +236,14 @@ export default {
       history.pushState(null, '', url);
       this.updateFilters()
     },
+    searchText(newVal) {
+      if (
+        (newVal === null || !newVal.length) &&
+        this.$refs.searchBar.classList.contains('wrong-search')
+      ) {
+        this.$refs.searchBar.classList.remove('wrong-search')
+      }
+    }
   },
   mounted() {
     const queryString = window.location.search;
@@ -228,18 +267,23 @@ export default {
     })
   },
   methods: {
+    onSearch() {
+      if (this.searchText === null || /^\s*$/.test(this.searchText)) return // If searchText is null OR contain only spaces --> return
+
+      this.updateFilters(true)
+    },
     initScrollTrigger() {
       this.scrollTriggerBar = ScrollTrigger.create({
         trigger: this.$refs.bar,
         start: 'top bottom',
         end: 'bottom bottom',
         onLeave: (e) => {
-          if (this.filteringInProgress) return
+          if (this.filteringInProgress || this.searchInProgress) return
 
           this.barActive = false
         },
         onEnterBack: (e) => {
-          if (this.filteringInProgress) return
+          if (this.filteringInProgress || this.searchInProgress) return
 
           this.barActive = true
         },
@@ -343,7 +387,37 @@ export default {
 
       return d1 > d2
     },
-    updateFilters() {
+    updateFilters(search = false) {
+      if (search) {
+        console.log(this.$refs.events)
+        const searchExist = this.$refs.events.some((item) => {
+          console.log(item)
+          const normalizeText = (text) =>
+            text
+              .toLowerCase()
+              .normalize('NFD')
+              .replace(/[\u0300-\u036F]/g, '')
+
+          const itemTitle = normalizeText(item.event.content.title)
+          const itemDescription = normalizeText(item.event.content.description)
+          const searchText = normalizeText(this.searchText)
+
+          return (
+            itemTitle.includes(searchText) || itemDescription.includes(searchText)
+          )
+        })
+
+        if (searchExist) {
+          this.$refs.searchBar.classList.remove('wrong-search')
+        } else {
+          this.$refs.searchBar.classList.add('wrong-search')
+        }
+
+        if (!searchExist) {
+          return
+        }
+      }
+
       window.lenis?.stop()
 
       this.directionMonth = 'down'
@@ -369,10 +443,44 @@ export default {
         }
 
         this.$refs.events.forEach((item) => {
-          const isMatch =
-            this.selectedCategory === 'tout' ||
-            (this.selectedCategory === 'reports' && item.event.reported) ||
-            item.event.content.category === this.selectedCategory
+          let isMatch = false
+
+          if (search) {
+            this.searchInProgress = true
+
+            isMatch =
+              item.event.content.title
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036F]/g, '')
+                .includes(
+                  this.searchText
+                    .toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036F]/g, '')
+                ) ||
+              item.event.content.description
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036F]/g, '')
+                .includes(
+                  this.searchText
+                    .toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036F]/g, '')
+                )
+          } else {
+            isMatch =
+              this.selectedCategory === 'tout' ||
+              (this.selectedCategory === 'reports' && item.event.reported) ||
+              item.event.content.category === this.selectedCategory
+
+            this.searchText = null
+          }
+
+          if (search) {
+            this.selectedCategory = null
+          }
 
           if (isMatch) {
             if (!item.isAppear) item.scrollTrigger?.enable()
@@ -405,9 +513,9 @@ export default {
           }
         })
 
-        this.filteringInProgress = false
-
         this.$nextTick(() => {
+          this.filteringInProgress = false
+          this.searchInProgress = false
           ScrollTrigger.refresh()
         })
       }
@@ -461,6 +569,16 @@ export default {
 </script>
 
 <style lang="scss">
+.filters-bar-mobile {
+  display: none;
+
+  @include mobile {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: var(--layout-margin);
+    justify-content: flex-start;
+  }
+}
 .app-programmation-list {
   margin-top: desktop-vw(110px);
   padding-top: desktop-vw(160px);
@@ -469,7 +587,7 @@ export default {
 
   @include mobile {
     margin-top: mobile-vw(120px);
-    padding-top: mobile-vw(134px);
+    padding-top: mobile-vw(100px);
     padding-bottom: mobile-vw(90px);
   }
 
@@ -519,9 +637,10 @@ export default {
       width: 100%;
       row-gap: 0;
       pointer-events: all;
-      align-items: center;
 
       @include mobile {
+        display: flex;
+        flex-direction: column-reverse;
 
         &::after {
           content: '';
@@ -547,6 +666,7 @@ export default {
       justify-content: center;
       padding: mobile-vw(8px) mobile-vw(15px);
       order: 2;
+      position: relative;
 
       @include desktop {
         display: none;
@@ -639,6 +759,8 @@ export default {
       order: 2;
 
       @include mobile{
+      position: absolute;
+      top: mobile-vw(-20px);
        order: 1;
        margin-top: 0;
        margin-bottom: mobile-vw(16px);
@@ -656,6 +778,7 @@ export default {
 
       @include mobile {;
         grid-column: 3 / span 4;
+        margin-bottom: mobile-vw(5px);
       }
 
       select {
@@ -675,7 +798,7 @@ export default {
       svg {
         position: absolute;
         right: 0;
-        top: 50%;
+        top: desktop-vw(32px);
         transform: translate(0%, -50%);
       }
 
@@ -728,6 +851,75 @@ export default {
         }
       }
     }
+
+    &__search-bar {
+        grid-column: 10 / span 3;
+        width: desktop-vw(280px);
+        justify-self: flex-end;
+        border: 1px solid var(--c-black);
+        align-self: flex-start;
+        background: var(--c-grey);
+        margin-bottom: desktop-vw(10px);
+
+        @include mobile {
+          grid-column: 3 / span 4;
+          width: auto;
+          margin-bottom: 0;
+        }
+
+        &.wrong-search {
+          border: 1px solid var(--c-red-adidas);
+
+          input {
+            border-right: 1px solid var(--c-red-adidas);
+          }
+
+          svg {
+            path {
+              fill: var(--c-red-adidas);
+              stroke: var(--c-red-adidas);
+            }
+          }
+        }
+
+        form {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          @include mobile {
+            align-items: stretch;
+            height: 100%;
+          }
+        }
+
+        input {
+          width: 85%;
+          padding: desktop-vw(10px) desktop-vw(15px);
+          border-right: 1px solid var(--c-black);
+          @include p1();
+          @include font-ITCFranklinGothicLT-DmCp();
+
+          @include mobile {
+            padding: mobile-vw(8px) mobile-vw(12px);
+          }
+
+          &::placeholder {
+            opacity: 1;
+            color: var(--c-black);
+          }
+        }
+
+        button {
+          width: 15%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          position: relative;
+          align-self: stretch;
+        }
+      }
   }
 }
 
