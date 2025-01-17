@@ -40,7 +40,6 @@
         </EKinesis>
       </EParallax>
       <EParallax
-        v-if="videoFrame"
         ref="video"
         :class="{ portrait: event.vertical_video }"
         class="app-programmation-event-about-artist__video"
@@ -48,7 +47,7 @@
       >
         <EKinesis :speed="5">
           <div
-            v-if="videoFrame.image && videoFrame.image !== ''"
+            v-if="videoFrame?.image && videoFrame?.image !== ''"
             :class="{ invisible: hideVideoOverlay }"
             class="app-programmation-event-about-artist__video__overlay"
             @click="hideVideoOverlay = true"
