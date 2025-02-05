@@ -42,6 +42,7 @@
       <EParallax
         ref="video"
         :class="{ portrait: event.vertical_video }"
+        v-if="videoFrame?.video?.id"
         class="app-programmation-event-about-artist__video"
         :speed="1"
       >
