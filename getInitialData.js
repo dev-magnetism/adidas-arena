@@ -153,6 +153,10 @@ export const getInitialData = async () => {
         (cont) => parseInt(cont.id_event) === contents[i].id
       )
 
+      if (!progDirectContent) {
+        console.log(`WARNING: Event ${contents[i].id} does not exist.`)
+      }
+
       // Make sure dates are sorted properly
       contents[i].sessions.sort((a, b) => new Date(a.date) - new Date(b.date))
 
@@ -171,7 +175,7 @@ export const getInitialData = async () => {
       contents[i].cover_video = progDirectContent?.cover_video
       contents[i].vertical_video = progDirectContent?.vertical_video
 
-      contents[i].ticketing_main_url = (progDirectContent.ticketing_main_url)?progDirectContent.ticketing_main_url:false;
+      contents[i].ticketing_main_url = progDirectContent?.ticketing_main_url || false
 
       // REPORTED USE CASE TEST
       // if(i % 2 !== 0) {
