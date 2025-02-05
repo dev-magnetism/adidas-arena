@@ -127,12 +127,19 @@ export const getInitialData = async () => {
     // PREPROD  : `https://www.accorarena-onepointpprod.com/api-svc/partners/adidas-arena/events?limit=${limit}&page=${index}`
 
     // 2 / Récupération des données Programmations via Directus (réutilisation de la variable programmations plus haut)
-    const contents = payload.data.data
+    const initialContents = payload.data.data
+
+
+
     const progDirectContents = cachedData.programmations.data
 
     const progOffersDirectContents = cachedData.programmationOffers.data
 
-    //  let _testInd = 0;
+    const contents = initialContents.filter((el) => {
+      const res = progDirectContents.find((el2) => parseInt(el2.id_event) === parseInt(el.id))
+      console.log(el.id, res)
+      return res
+    })
 
     // 3 / Récupération des données complètes par Event
     for (let i = 0; i < contents.length; i++) {
@@ -150,7 +157,7 @@ export const getInitialData = async () => {
       const contentEvent = payloadEvent.data
 
       const progDirectContent = progDirectContents.find(
-        (cont) => parseInt(cont.id_event) === contents[i].id
+        (cont) => parseInt(cont.id_event) === parseInt(contents[i].id)
       )
 
       if (!progDirectContent) {
@@ -175,7 +182,7 @@ export const getInitialData = async () => {
       contents[i].cover_video = progDirectContent?.cover_video
       contents[i].vertical_video = progDirectContent?.vertical_video
 
-      contents[i].ticketing_main_url = progDirectContent?.ticketing_main_url || false
+      contents[i].ticketing_main_url = progDirectContent?.ticketing_main_url
 
       // REPORTED USE CASE TEST
       // if(i % 2 !== 0) {
