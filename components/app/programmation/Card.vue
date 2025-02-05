@@ -165,7 +165,7 @@
         {{
           event.status_code === 'K' ||
           (event.status_code === 'B' && event.presale)
-            ? `Liste d'attente`
+            ? `Je m'inscris`
             : `Réserver`
         }}
       </AtomsCTA>
