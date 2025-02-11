@@ -158,7 +158,8 @@ export default {
       directionMonth: 'up',
       filteringInProgress: false,
       searchText: null,
-      searchInProgress: false,
+      lastSearchText: null,
+      searchInProgress: false
     }
   },
   computed: {
@@ -167,7 +168,7 @@ export default {
       programmesMonths: 'programmesMonths',
     }),
     monthFilters() {
-      if (this.selectedCategory === 'reports') {
+      if (this.selectedCategory === 'reports' && !this.lastSearchText) {
         return this.programmesMonths
           .map((month) => {
             const filteredMonthEvents = month.events.filter( _v => _v.reported )
@@ -179,27 +180,76 @@ export default {
             }
           })
           .filter((month) => month.events.length > 0);
-
       }
-      else if (this.selectedCategory === 'tout') {
+
+      if (this.selectedCategory === 'tout' || !this.lastSearchText) {
         return this.programmesMonths
-      } else {
+      }
+
+      if (this.lastSearchText) {
         return this.programmesMonths
           .map((month) => {
-            const filteredMonthEvents = month.events.filter(
-              (event) =>
-                event.content.category.toLowerCase() === this.selectedCategory
-            )
+            const filteredMonthEvents = month.events.filter((item) => {
+              const normalizeText = (text) =>
+                text
+                  .toLowerCase()
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036F]/g, '')
+
+              const itemTitle = normalizeText(item.content.title)
+              const itemDescription = normalizeText(item.content.description)
+              const searchText = normalizeText(this.searchText)
+
+              return (
+                itemTitle.includes(searchText) || itemDescription.includes(searchText)
+              )
+            })
+
             return {
               month: month.month,
               year: month.year,
               events: filteredMonthEvents,
             }
           })
-          .filter((month) => month.events.length > 0)
+          .filter((month) => month.events.length > 0);
       }
+
+      return this.programmesMonths
+        .map((month) => {
+          const filteredMonthEvents = month.events.filter(
+            (event) =>
+              event.content.category.toLowerCase() === this.selectedCategory
+          )
+          return {
+            month: month.month,
+            year: month.year,
+            events: filteredMonthEvents,
+          }
+        })
+        .filter((month) => month.events.length > 0)
     },
     monthsVisible() {
+      if (this.lastSearchText) {
+        return this.programmesMonths
+          .map((month) => {
+            return month.events.some((item) => {
+              const normalizeText = (text) =>
+                text
+                  .toLowerCase()
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036F]/g, '')
+
+              const itemTitle = normalizeText(item.content.title)
+              const itemDescription = normalizeText(item.content.description)
+              const searchText = normalizeText(this.searchText)
+
+              return (
+                itemTitle.includes(searchText) || itemDescription.includes(searchText)
+              )
+            })
+          })
+      }
+
       const _m =  this.programmesMonths.map((month) =>
         this.selectedCategory === 'tout'
           ? true
@@ -268,9 +318,9 @@ export default {
   },
   methods: {
     onSearch() {
-      if (this.searchText === null || /^\s*$/.test(this.searchText)) return // If searchText is null OR contain only spaces --> return
-
-      this.updateFilters(true)
+      if (this.searchText !== this.lastSearchText) {
+        this.updateFilters(true)
+      }
     },
     initScrollTrigger() {
       this.scrollTriggerBar = ScrollTrigger.create({
@@ -389,6 +439,11 @@ export default {
     },
     updateFilters(search = false) {
       if (search) {
+        if (!this.searchText) {
+          this.selectedCategory = 'tout'
+          return
+        }
+
         console.log(this.$refs.events)
         const searchExist = this.$refs.events.some((item) => {
           console.log(item)
@@ -429,7 +484,7 @@ export default {
       const filterItems = () => {
         this.filteringInProgress = true
 
-        this.currentMonth = `${this.monthFilters[0].month}-${this.monthFilters[0].year}`
+        this.currentMonth = `${this.monthFilters[0]?.month}-${this.monthFilters[0]?.year}`
 
         if (window.lenis) {
           const container = document.querySelector('.app-programmation-list-events')
@@ -476,6 +531,7 @@ export default {
               item.event.content.category === this.selectedCategory
 
             this.searchText = null
+            this.lastSearchText = null
           }
 
           if (search) {
@@ -516,6 +572,7 @@ export default {
         this.$nextTick(() => {
           this.filteringInProgress = false
           this.searchInProgress = false
+          this.lastSearchText = this.searchText
           ScrollTrigger.refresh()
         })
       }
@@ -859,7 +916,7 @@ export default {
         border: 1px solid var(--c-black);
         align-self: flex-start;
         background: var(--c-grey);
-        margin-bottom: desktop-vw(10px);
+        margin-bottom: 0;
 
         @include mobile {
           grid-column: 3 / span 4;
