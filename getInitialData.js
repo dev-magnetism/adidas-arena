@@ -137,7 +137,6 @@ export const getInitialData = async () => {
 
     const contents = initialContents.filter((el) => {
       const res = progDirectContents.find((el2) => parseInt(el2.id_event) === parseInt(el.id))
-      console.log(el.id, res)
       return res
     })
 
