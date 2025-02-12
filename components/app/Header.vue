@@ -7,17 +7,17 @@
     class="app-header"
     @click.stop="() => {}"
   >
-    <nuxt-link
+    <a
       v-if="this.webview !== 'ok'"
       :class="{ reduced: headerReduced, white: headerWhite }"
       class="app-header__logo"
-      to="/"
+      href="/"
     >
       <TH1 :tag="$route.name === 'index' ? 'h1' : 'p'">Adidas Arena</TH1>
       <SvgArenaLogo />
-    </nuxt-link>
+    </a>
 
-    <div 
+    <div
       v-else
       :class="{ reduced: headerReduced, white: headerWhite }"
       class="app-header__logo"
