@@ -76,6 +76,9 @@ export default {
     menuName() {
       return this.appContent.data.menu_name
     },
+    menuBusiness() {
+      return this.menuContent.data.find((el) => el.business)
+    },
     menuProgrammation() {
       return this.menuContent.data.find((el) => el.programmation)
     },

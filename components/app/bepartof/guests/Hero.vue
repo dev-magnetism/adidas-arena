@@ -109,12 +109,12 @@ export default {
 
       const _scroll = (window.lenis?.scroll)?window.lenis.scroll:window.scrollY;
 
-      interior.position.y =
-        _scroll / (camera.zoom - camera.zoom * 0.125)
+      interior.position.y = _scroll / (camera.zoom - camera.zoom * 0.125)
 
       scissors.current = { ...scissors.hero }
 
       scissors.current.y = _scroll + scissors.hero?.y
+
 
       renderer.setScissor(
         scissors.current.x,

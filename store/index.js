@@ -21,6 +21,10 @@ export const state = () => ({
   programmationsContent: null,
   programmationsEventContent: null,
   actualitesArticleContent: null,
+  businessContent: null,
+  businessCatContent: null,
+  businessOptContent: null,
+  businessArtContent: null,
   programmes: null,
   actualites: null,
 
@@ -253,6 +257,18 @@ export const mutations = {
   setActualitesArticleContent: (state, value) => {
     state.actualitesArticleContent = value
   },
+  setBusinessContent: (state, value) => {
+    state.businessContent = value
+  },
+  setBusinessCatContent: (state, value) => {
+    state.businessCatContent = value
+  },
+  setBusinessOptContent: (state, value) => {
+    state.businessOptContent = value
+  },
+  setBusinessArtContent: (state, value) => {
+    state.businessArtContent = value
+  },
   setMenuContent: (state, value) => {
     state.menuContent = value
   },
@@ -292,6 +308,10 @@ export const actions = {
     commit('setProgrammationOfferContent', initialData.programmationOffers.data)
     commit('setProgrammationsEventContent', initialData.programmationsEvent.data)
     commit('setActualitesArticleContent', initialData.actualitesArticle.data)
+    commit('setBusinessContent', initialData.business.data)
+    commit('setBusinessCatContent', initialData.businessCat.data)
+    commit('setBusinessOptContent', initialData.businessOpt.data)
+    commit('setBusinessArtContent', initialData.businessArt.data)
     commit('setProgrammes', initialData.programmes)
     commit('setConcoursDatas', initialData.concoursDatas)
   },
