@@ -84,9 +84,9 @@
 
 					</div>
 
-   				</div>
-
    			</div>
+
+   		</div>
 
 		</div>
 
@@ -152,7 +152,7 @@
 
 	    		</div>
 
-   			</div>
+   		</div>
 
 		</div>
 
@@ -175,11 +175,10 @@
 
 			<div class="app-business-map__webview">
 
-				<AppBepartofGuestsHero />
+				<AppBusinessMap />
 
 			</div>
 		</div>
-
 
     	<AppBusinessExperience v-if="experienceContents" :content="experienceContents" />
 
@@ -212,15 +211,6 @@ export default {
 		if (!to || !from) return
 
 		return pageTransition.basic
-	},
-	async asyncData({ $directus }) {
-		const content = await $directus.items('Hospitalite_page').readByQuery({
-			limit: -1,
-		})
-
-		return {
-			content,
-		}
 	},
 	data() {
 		return {
@@ -302,9 +292,9 @@ export default {
 	mounted() {
 		const _limit = this.$viewport.isLargeDesktop?4:this.$viewport.isDesktop?3:1;
 		this.setHeaderWhite(true);
-		console.log('Business Categories :', this.businessCatContent);
-		console.log('Business Options :', this.businessOptContent);
-		console.log('Business Articles :', this.businessArtContent);
+		//	console.log('Business Categories :', this.businessCatContent);
+		//	console.log('Business Options :', this.businessOptContent);
+		//	console.log('Business Articles :', this.businessArtContent);
 
 		this.selectedCategory = this.businessCatContent[0].id;
 
@@ -317,7 +307,7 @@ export default {
     		image2:this.businessContent.Experience_Image_2,
 		}
 
-		console.log('this.experienceContents', this.experienceContents);
+		//	console.log('this.experienceContents', this.experienceContents);
 
 		if(_limit < 12){
 			this.embla = EmblaCarousel(this.$refs.wrapper, {
@@ -1019,7 +1009,6 @@ export default {
 	}
 
 	&-map{
-		position: relative;
 		display: block;
 		flex: 0 0 100%;
 		width: 100%;

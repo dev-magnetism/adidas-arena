@@ -25,6 +25,7 @@ export const state = () => ({
   businessCatContent: null,
   businessOptContent: null,
   businessArtContent: null,
+  chapelleContent: null,
   programmes: null,
   actualites: null,
 
@@ -269,6 +270,9 @@ export const mutations = {
   setBusinessArtContent: (state, value) => {
     state.businessArtContent = value
   },
+  setChapelleContent: (state, value) => {
+    state.chapelleContent = value
+  },
   setMenuContent: (state, value) => {
     state.menuContent = value
   },
@@ -312,6 +316,7 @@ export const actions = {
     commit('setBusinessCatContent', initialData.businessCat.data)
     commit('setBusinessOptContent', initialData.businessOpt.data)
     commit('setBusinessArtContent', initialData.businessArt.data)
+    commit('setChapelleContent', initialData.chapelle.data)
     commit('setProgrammes', initialData.programmes)
     commit('setConcoursDatas', initialData.concoursDatas)
   },

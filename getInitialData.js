@@ -139,6 +139,13 @@ export const getInitialData = async () => {
 
     return _art
   })
+
+  cachedData.chapelle = await fetchWithLogs('CentralChapelle_Page', () =>
+    $directus.items('CentralChapelle_Page').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
  
   cachedData.programmationsEvent = await fetchWithLogs('Programmation_Event', () =>
     $directus.items('Programmation_Event').readByQuery({ limit: -1 })
