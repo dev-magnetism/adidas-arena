@@ -22,6 +22,7 @@
       <ETwoColumnsStick
         :left-content="contentTwoColumns.left"
         :right-content="contentTwoColumns.right"
+        :smallText="true"
       />
 
       <AppCchapelleEdito v-if="edito?.text" :content="edito" />
@@ -182,7 +183,7 @@ export default {
             @include mobile {
               bottom: mobile-vw(10px);
             }
-            
+
 
           }
 
@@ -228,13 +229,6 @@ export default {
         top: 50%;
         transform: translate(-50%, -50%) rotate(5deg) !important;
       }
-    }
-  }
-  .app-footer {
-    margin-top: desktop-vw(25px);
-
-    @include mobile {
-      margin-top: mobile-vw(80px);
     }
   }
 }
