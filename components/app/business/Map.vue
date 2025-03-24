@@ -16,10 +16,9 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { mapState, mapMutations } from 'vuex'
-
-import useWebGL from '~/hooks/webgl'
 
 export default {
   data() {
@@ -68,12 +67,20 @@ export default {
       onToggle: (self) => this.onToggle(self),
     })
 
-    this.$raf.add(`app-business-map__webview__container`, this.onFrame)
+    setTimeout(() => {
+      gsap.set('.app-webgl', {
+        position: 'absolute',
+        top: document.querySelector('.app-business-map__webview').offsetTop
+      })
+    }, 300)
   },
   beforeDestroy() {
     this.scrollTrigger?.kill()
 
-    this.$raf.remove(`app-business-map__webview__container`, this.onFrame)
+    gsap.set('.app-webgl', {
+      position: 'fixed',
+      top: 0
+    })
   },
   methods: {
     onToggle(self) {
@@ -96,37 +103,6 @@ export default {
       setTimeout(() => {
         this.setInteriorIndexFloor({ id: 4, immediate: false })
       }, delay)
-    },
-    onFrame() {
-      if (
-        !window.lenis ||
-        !this.interiorVisible ||
-        !this.scrollTrigger.isActive
-      )
-        return
-
-      const { interior, scissors, renderer } = useWebGL() // Initially calling 'camera' too.
-
-      const _scroll = (window.lenis?.scroll)?window.lenis.scroll:window.scrollY;
-
-      const _containerOT = document.getElementById('app-business-map').offsetTop;
-      
-      //	const _intPosY = _scroll / (camera.zoom - camera.zoom * 0.125); // initial setting of the interior.position.y value.
-
-    	interior.position.y =  0; // Set to 0 because old value doesn't work when element is not on top of the page.
-
-      scissors.current = { ...scissors.hero }
-
-      const _scissY =  _scroll - _containerOT + scissors.hero?.y;
-
-      scissors.current.y = _scissY;
-
-      renderer.setScissor(
-        scissors.current.x,
-        scissors.current.y,
-        scissors.current.width,
-        scissors.current.height
-      )
     },
     ...mapMutations({
       setInteriorVisible: 'setInteriorVisible',

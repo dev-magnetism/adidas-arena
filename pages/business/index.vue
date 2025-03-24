@@ -1,7 +1,7 @@
 <template>
    <main class="app-business">
 
-		<div class="app-business-offers">
+		<div class="app-business-offers" ref="offers">
 
 			<div class="app-business-offers-filters">
 				<div
@@ -281,9 +281,9 @@ export default {
 		},
 
 		selectedCategory() {
-			
+
 			console.log('watch selectedCategory:', this.selectedCategory);
-			
+
 			this.selectContents = this.businessArtContent.filter(_art => _art.Category === this.selectedCategory);
 
 			console.log('watch selectContents:', this.selectContents);
@@ -394,10 +394,10 @@ export default {
 			// 	this.setHeaderWhite(true);
 			// }
 			this.scrollTrigger = ScrollTrigger.create({
-				trigger: this.$refs.prog,
+				trigger: this.$refs.offers,
 				start: 'top-=7.5% top',
 				onToggle: ((self) => {
-					this.setHeaderWhite(!self.isActive)
+					this.setHeaderWhite(self.isActive)
 					//	console.log('self', self);
 				}),
 			})
@@ -513,6 +513,10 @@ export default {
 					padding: desktop-vw(10px) desktop-vw(12px);
 					transition: color 0.4s var(--ease-out-cubic),
 					border-color 0.4s var(--ease-out-cubic);
+
+          @include mobile {
+            padding: mobile-vw(10px) mobile-vw(12px)
+          }
 				}
 
 				.P1.regular {
@@ -1173,7 +1177,7 @@ export default {
 		    margin-top: desktop-vw(175px);
 
 		    @include mobile {
-				margin-bottom: mobile-vw(120px);
+				margin-bottom: 0;
 		    }
 		}
 		&-newsletter{
@@ -1186,7 +1190,7 @@ export default {
 		margin-top: desktop-vw(175px);
 
 		@include mobile {
-			margin-bottom: mobile-vw(120px);
+			margin-bottom: 0;
 		}
 	}
 	.app-contact-actus {
