@@ -1,6 +1,6 @@
 <template>
 
-	<div 
+	<div
     	:style="styles"
 		class="app-business-offers__card"
 	>
@@ -30,17 +30,17 @@
       	>
       		<div class="app-business-offers__card__head">
 
-				<TH2 
-					class="name" 
+				<TH2
+					class="name"
 					weight="bold"
 					color="white"
 				>
 					{{offer.Name}}
 				</TH2>
 
-				<TP2 
-					class="title" 
-					weight="bold" 
+				<TP2
+					class="title"
+					weight="bold"
 					tag="h3"
            			:color="whitedTexts"
 				>
@@ -57,17 +57,17 @@
 
       		</div>
 
-	      	<div 
+	      	<div
 	      		class="app-business-offers__card__foot"
+            :class="svgColor"
     			:style="{ color: `var(--c-${whitedTexts})` }"
 	      		>
-
-		      	<div 
+		      	<div
 		      		class="app-business-offers__card__foot__item"
 		      		v-for="(option) in offer.Options"
 		      		:key="`offer-${offer.id}-option-${option}`"
 					ref="option"
-					
+
 					>
 					<div
 						v-html="options?.find(_opt => _opt.id === option)?.SVG"
@@ -139,6 +139,11 @@ export default {
         '--bg': `var(--c-${this.theme})`,
       }
     },
+    svgColor() {
+      return this.theme === 'blue' || this.theme === 'red'
+        ? 'white'
+        : 'blue'
+    },
     whitedTexts() {
       return this.theme === 'blue' || this.theme === 'red'
         ? 'white'
@@ -149,7 +154,6 @@ export default {
   mounted() {
     //	console.log('Card Business Offer', this.offer);
     //	console.log('Card Business Options', this.options);
-
   },
   beforeDestroy() {
 
@@ -301,6 +305,7 @@ export default {
 				display: flex;
 				width: calc(100% - desktop-vw(30px));
 				justify-content: space-between;
+        align-items: center;
 
 				@include mobile{
 					bottom: mobile-vw(55px);
@@ -316,10 +321,22 @@ export default {
 
 					svg{
 						font-size: desktop-vw(30px);
+            width: desktop-vw(30px);
+            height: auto;
+            max-height: desktop-vw(30px);
 
 						@include mobile{
 							font-size: mobile-vw(30px);
+
+              width: mobile-vw(30px);
+              max-height: mobile-vw(30px);
 						}
+
+            .blue & {
+              path {
+                fill:  var(--c-blue-adidas);
+              }
+            }
 					}
 
 				}
