@@ -68,14 +68,15 @@ export default {
     })
 
     setTimeout(() => {
-      gsap.set('.app-webgl', {
-        position: 'absolute',
-        top: document.querySelector('.app-business-map__webview').offsetTop
-      })
+      this.setMapPosition()
     }, 300)
+
+    window.addEventListener('resize', this.setMapPosition)
   },
   beforeDestroy() {
     this.scrollTrigger?.kill()
+
+    window.removeEventListener('resize', this.setMapPosition)
 
     gsap.set('.app-webgl', {
       position: 'fixed',
@@ -87,6 +88,12 @@ export default {
       if (!this.allLoadedFake) return
 
       this.setInteriorVisible(self.isActive)
+    },
+    setMapPosition() {
+      gsap.set('.app-webgl', {
+        position: 'absolute',
+        top: document.querySelector('.app-business-map__webview').offsetTop
+      })
     },
     scrollHero() {
       if (!window.lenis) return

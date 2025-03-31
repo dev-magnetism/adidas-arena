@@ -197,12 +197,20 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
 import EmblaCarousel from 'embla-carousel'
 import { mapState, mapMutations, mapGetters } from 'vuex'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import scroll from '@/mixins/scroll'
 import pageTransition from '@/mixins/page-transition'
 
+const removeSpecialChar = (string) => {
+  return string
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036F]/g, '')
+    .replace(/[^\w\s]/gi, '-');
+}
 
 
 export default {
@@ -281,12 +289,21 @@ export default {
 		},
 
 		selectedCategory() {
-
 			console.log('watch selectedCategory:', this.selectedCategory);
 
 			this.selectContents = this.businessArtContent.filter(_art => _art.Category === this.selectedCategory);
 
 			console.log('watch selectContents:', this.selectContents);
+
+      const newCat = this.businessCatContent.find((cat) => cat.id === this.selectedCategory)
+      this.$router.replace({ query: { ...this.$route.query, category: removeSpecialChar(newCat.name) } });
+
+      setTimeout(() => {
+        gsap.set('.app-webgl', {
+        position: 'absolute',
+        top: document.querySelector('.app-business-map__webview').offsetTop
+      })
+      }, 100)
 		},
 	},
 	mounted() {
@@ -307,7 +324,16 @@ export default {
     		image2:this.businessContent.Experience_Image_2,
 		}
 
-		//	console.log('this.experienceContents', this.experienceContents);
+    console.log(this.businessCatContent)
+    console.log("Catégorie :", this.$route.query.category);
+
+    const catFromUrl = this.businessCatContent.find((cat) => removeSpecialChar(cat.name) === this.$route.query.category)
+
+    if (catFromUrl) {
+      this.selectedCategory = catFromUrl.id
+    }
+
+			// console.log('this.experienceContents', this.experienceContents);
 
 		if(_limit < 12){
 			this.embla = EmblaCarousel(this.$refs.wrapper, {
