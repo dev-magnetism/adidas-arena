@@ -88,12 +88,14 @@ export default {
   background-color: #fbf5ee;
   border: 1px solid var(--c-black);
   z-index: 3;
-  font-size: desktop-vw(26px)!important;
+  font-size: desktop-vw(17px)!important;
+  line-height:desktop-vw(17px)!important;
   white-space: wrap;
 
   @include mobile {
     padding: mobile-vw(5px) mobile-vw(8px);
     font-size: mobile-vw(28px)!important;
+    line-height:mobile-vw(28px)!important;
   }
 
   &.newdate{
