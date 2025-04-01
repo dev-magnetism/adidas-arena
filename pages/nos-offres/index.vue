@@ -183,7 +183,7 @@
     	<AppBusinessExperience v-if="experienceContents" :content="experienceContents" />
 
 		<div class="app-business-contact-question">
-	    	<AppContactQuestion ref="questform" :contents="contentContactQuestion" />
+	    	<AppBusinessContactQuestion ref="questform" :contents="contentContactQuestion" />
 		</div>
 
 		<div class="app-business-contact-newsletter">
