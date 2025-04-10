@@ -1,6 +1,6 @@
 <template>
-  <div :data-allow-drag="true" class="app-guests-hero">
-    <div :data-allow-drag="true" class="app-guests-hero__wrapper">
+  <div :data-allow-drag="true" class="app-business-map__webview__container" id="app-business-map">
+    <div :data-allow-drag="true" class="app-business-map__webview__container__wrapper">
       <AtomsCornerPoints :size-points="12" />
       <EInteriorZoneInformations />
       <EInteriorInteractions />
@@ -16,10 +16,9 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { mapState, mapMutations } from 'vuex'
-
-import useWebGL from '~/hooks/webgl'
 
 export default {
   data() {
@@ -68,12 +67,21 @@ export default {
       onToggle: (self) => this.onToggle(self),
     })
 
-    this.$raf.add(`be-part-of-guests-hero`, this.onFrame)
+    setTimeout(() => {
+      this.setMapPosition()
+    }, 300)
+
+    window.addEventListener('resize', this.setMapPosition)
   },
   beforeDestroy() {
     this.scrollTrigger?.kill()
 
-    this.$raf.remove(`be-part-of-guests-hero`, this.onFrame)
+    window.removeEventListener('resize', this.setMapPosition)
+
+    gsap.set('.app-webgl', {
+      position: 'fixed',
+      top: 0
+    })
   },
   methods: {
     onToggle(self) {
@@ -81,10 +89,16 @@ export default {
 
       this.setInteriorVisible(self.isActive)
     },
+    setMapPosition() {
+      gsap.set('.app-webgl', {
+        position: 'absolute',
+        top: document.querySelector('.app-business-map__webview').offsetTop
+      })
+    },
     scrollHero() {
       if (!window.lenis) return
 
-      window.lenis.scrollTo('.app-two-columns-stick', {
+      window.lenis.scrollTo('.app-business-experience', {
         duration: 1.2,
       })
     },
@@ -97,32 +111,6 @@ export default {
         this.setInteriorIndexFloor({ id: 4, immediate: false })
       }, delay)
     },
-    onFrame() {
-      if (
-        !window.lenis ||
-        !this.interiorVisible ||
-        !this.scrollTrigger.isActive
-      )
-        return
-
-      const { interior, camera, scissors, renderer } = useWebGL()
-
-      const _scroll = (window.lenis?.scroll)?window.lenis.scroll:window.scrollY;
-
-      interior.position.y = _scroll / (camera.zoom - camera.zoom * 0.125)
-
-      scissors.current = { ...scissors.hero }
-
-      scissors.current.y = _scroll + scissors.hero?.y
-
-
-      renderer.setScissor(
-        scissors.current.x,
-        scissors.current.y,
-        scissors.current.width,
-        scissors.current.height
-      )
-    },
     ...mapMutations({
       setInteriorVisible: 'setInteriorVisible',
       setExteriorFullscreen: 'setExteriorFullscreen',
@@ -134,8 +122,8 @@ export default {
 </script>
 
 <style lang="scss">
-.app-guests-hero {
-  height: 100vh;
+.app-business-map__webview__container {
+  height: 100vH;
   padding: var(--layout-margin);
   position: relative;
 

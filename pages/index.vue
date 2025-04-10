@@ -150,7 +150,8 @@ export default {
       return {
         title: this.content.data.slider_programmation_title,
         cta: this.content.data.slider_programmation_cta,
-        spotifyLink: this.content.data.slider_programmation_spotify_link
+        spotifyLink: this.content.data.slider_programmation_spotify_link,
+        spotifyLabel: this.content.data.slider_programmation_spotify_label
       }
     },
     contentArticles() {

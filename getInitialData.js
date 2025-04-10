@@ -89,6 +89,64 @@ export const getInitialData = async () => {
     actu.slug = convertToKebabCase(_slug)
   })
 
+  cachedData.business = await fetchWithLogs('Business_Page', () =>
+    $directus.items('Business_Page').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+  cachedData.businessCat = await fetchWithLogs('BusinessCat', () =>
+    $directus.items('BusinessCat').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+  cachedData.businessOpt = await fetchWithLogs('BusinessOptions', () =>
+    $directus.items('BusinessOptions').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+  cachedData.businessArt = await fetchWithLogs('BusinessArt', () =>
+    $directus.items('BusinessArt').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+
+  cachedData.businessArtOptions = await fetchWithLogs('BusinessArt_BusinessOptions_1', () =>
+    $directus.items('BusinessArt_BusinessOptions_1').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+  cachedData.businessCat.data = cachedData.businessCat.data.map((_cat)=>{
+    const _articles = cachedData.businessArt.data.filter(_art=>_art.Category === _cat.id);
+    _cat.numArt = _articles.length;
+    return _cat
+  })
+
+
+  cachedData.businessArt.data = cachedData.businessArt.data.map((_art)=>{
+    _art.Options = _art.Options.map((_opt)=>{
+      return cachedData.businessArtOptions.data.find(_artopt=>_artopt.id === _opt).BusinessOptions_id;
+    })
+
+    return _art
+  })
+
+  cachedData.chapelle = await fetchWithLogs('CentralChapelle_Page', () =>
+    $directus.items('CentralChapelle_Page').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+ 
   cachedData.programmationsEvent = await fetchWithLogs('Programmation_Event', () =>
     $directus.items('Programmation_Event').readByQuery({ limit: -1 })
   );
@@ -96,6 +154,8 @@ export const getInitialData = async () => {
   cachedData.actualitesArticle = await fetchWithLogs('Actualites_article', () =>
     $directus.items('Actualites_article').readByQuery({ limit: -1 })
   );
+
+
 
 
   console.log('Building events data with SVC API...')

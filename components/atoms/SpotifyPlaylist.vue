@@ -16,7 +16,7 @@
       </div>
       <div class="app-atoms-spotify-playlist__title">
         <div class="app-atoms-spotify-playlist__title-container">
-          <TH4>Playlist du mois</TH4>
+          <TH4>{{ ctaLabel || 'Playlist du mois' }}</TH4>
         </div>
       </div>
     </div>
@@ -31,6 +31,10 @@ export default {
       default: false
     },
     ctaLink: {
+      type: String,
+      default: '',
+    },
+    ctaLabel: {
       type: String,
       default: '',
     },

@@ -4,7 +4,7 @@
     class="app-programmation-event-dates-item"
     :style="{ 'background-color': `var(--c-${theme})` }"
     >
-      
+
     <div class="app-programmation-event-dates-item__wrapper">
       <AppProgrammationEventStatusShort
         :color="statutColor"
@@ -12,7 +12,7 @@
         :status="session.session_status"
         :waitnewdate="this.isWaitingNewDate"
       />
-      <div 
+      <div
         class="app-programmation-event-dates-item__infos"
         :class="{
           'wnd': this.isReported && this.isWaitingNewDate,
@@ -43,7 +43,7 @@
           <span class="app-programmation-event-dates-item__date__small">{{ (tbc)?` - ${tbcGlossary}`:''}}</span>
 
         </TH4>
-        
+
         <!-- TH2Bis
           :color="whitedTexts ? 'white' : 'black'"
           class="app-programmation-event-dates-item__artist"
@@ -109,7 +109,7 @@ export default {
   data() {
     return {
       isReported: false, // Check if all available dates are reported
-      isWaitingNewDate: false, // Check if all available dates are waiting 
+      isWaitingNewDate: false, // Check if all available dates are waiting
     }
   },
   props: {
@@ -160,7 +160,7 @@ export default {
   },
   computed: {
     theme() {
-      
+
       if(this.$viewport.isMobile){
         return this.index % 3 === 0
           ? 'blue-adidas'
@@ -271,7 +271,7 @@ export default {
   .app-programmation-event-statuses-short {
     position: absolute;
     top: 50%;
-    left: desktop-vw(-25px);
+    left: desktop-vw(-13px);
     display: inline-block;
     flex: 0 0 auto;
     border-top: none;
@@ -330,7 +330,7 @@ export default {
     @include mobile {
       flex: 0 0 100%;
       width: 100%;
-    } 
+    }
 
   }
 
@@ -385,7 +385,7 @@ export default {
   }
 
   .app-programmation-event-statuses-short.hasStatus + .app-programmation-event-dates-item__infos{
-     padding: 0 0 0 desktop-vw(55px);
+     padding: 0 0 0 desktop-vw(110px);
 
      @include mobile{
       padding: mobile-vw(66px) 0 mobile-vw(16px) 0;

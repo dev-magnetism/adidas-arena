@@ -4,11 +4,11 @@
     class="app-two-columns-stick"
   >
     <div class="app-two-columns-stick__column left">
-      <ERichText tag="div" :content="leftContent" />
+      <ERichText :class="{ small: smallText }" tag="div" :content="leftContent" />
     </div>
 
     <div class="app-two-columns-stick__column right">
-      <ERichText tag="div" :content="rightContent" />
+      <ERichText :class="{ small: smallText }" tag="div" :content="rightContent" />
     </div>
   </div>
 </template>
@@ -26,6 +26,11 @@ export default {
       default: '',
       require: true,
     },
+    smallText: {
+      type: Boolean,
+      default: false,
+      require: false
+    }
   },
 }
 </script>
@@ -50,6 +55,19 @@ export default {
 
     @include mobile {
       flex: none;
+    }
+
+    .small {
+      .wysiwyg-text.H2 {
+        @include desktop {
+          font-size: desktop-vw(75px) !important;
+          line-height: desktop-vw(65px) !important;
+        }
+        @include mobile {
+          font-size: mobile-vw(60px) !important;
+          line-height: mobile-vw(55px) !important;
+        }
+      }
     }
 
     &.left {

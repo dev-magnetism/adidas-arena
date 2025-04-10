@@ -1,0 +1,446 @@
+<template>
+  <div class="page-cchapelle-edito grid-inner" :class="{novideo: !videoFrame}">
+    <div
+      v-if="imageFrame || imageWithoutFrame || videoFrame"
+      class="page-cchapelle-edito__left"
+    >
+      <EParallax
+        v-if="imageFrame"
+        ref="withFrame"
+        class="page-cchapelle-edito__visual-with-frame"
+        :speed="0.85"
+      >
+        <EKinesis :speed="6">
+
+			<nuxt-img
+				:src="imageFrame"
+				:alt="content.Experience_Title"
+				provider="directus"
+				loading="lazy"
+				sizes="sm:35vw md:20vw"
+			/>
+
+         	<ELottie id="Cadre_01" start="top bottom-=15%" />
+        </EKinesis>
+      </EParallax>
+      <EParallax
+        v-if="imageWithoutFrame"
+        ref="withoutFrame"
+        class="page-cchapelle-edito__visual-without-frame"
+        :speed="0.95"
+      >
+        <EKinesis :speed="7">
+			<nuxt-img
+				:src="imageWithoutFrame"
+				:alt="content.Experience_Title"
+				provider="directus"
+				loading="lazy"
+				sizes="sm:35vw md:20vw"
+			/>
+        </EKinesis>
+      </EParallax>
+      <EParallax
+        ref="video"
+        v-if="videoFrame?.video?.id"
+        class="page-cchapelle-edito__video"
+        :speed="1"
+      >
+        <EKinesis :speed="5">
+          <div
+            v-if="videoFrame?.image && videoFrame?.image !== ''"
+            :class="{ invisible: hideVideoOverlay }"
+            class="page-cchapelle-edito__video__overlay"
+            @click="hideVideoOverlay = true"
+          >
+            <TH1 tag="p" weight="bold" color="white">PLAY</TH1>
+			<nuxt-img
+				:src="videoFrame.image"
+				:alt="content.Experience_Title"
+				provider="directus"
+				loading="lazy"
+				sizes="sm:35vw md:20vw"
+			/>
+
+          </div>
+          <client-only>
+            <iframe
+              :class="{ invisible: videoFrame.image && videoFrame.image !== ''?!hideVideoOverlay:hideVideoOverlay }"
+              :src="`https://www.youtube-nocookie.com/embed/${videoFrame.video.id}?modestbranding=1&rel=0&cc_load_policy=1&iv_load_policy=3&hl=fr-fr&fs=0&controls=0&disablekb=1`"
+              frameborder="0"
+            />
+          </client-only>
+        </EKinesis>
+      </EParallax>
+    </div>
+    <div class="page-cchapelle-edito__right">
+      <TH2 weight="bold" v-html="content.title"></TH2>
+      <ERichTextEvent
+      	v-if="content.text"
+        :component="{ name: 'TP2', weight: 'medium', tagTarget: 'p', tag: 'p' }"
+        :content="content.text"
+      />
+    </div>
+  </div>
+</template>
+
+<script>
+import { gsap } from 'gsap'
+
+export default {
+  props: {
+    content: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  data() {
+    return {
+      hideVideoOverlay: false,
+    }
+  },
+  computed: {
+    mediaGalleryImages() {
+
+      const _mediaGallery = [];
+
+      if(this.content?.image1?.trim() !== "") _mediaGallery.push(this.content.image1);
+
+      if(this.content?.image2?.trim() !== "") _mediaGallery.push(this.content.image2);
+      return _mediaGallery
+    },
+
+    imageFrame() {
+      return this.mediaGalleryImages.length >= 1
+        ? this.mediaGalleryImages[0]
+        : null
+    },
+    imageWithoutFrame() {
+      return this.mediaGalleryImages.length >= 2
+        ? this.mediaGalleryImages[1]
+        : null
+    },
+    videoFrame() {
+      const videoItem = {};
+      videoItem.url = this.content.video_url;
+      const itemCover = this.content.video_cover
+
+      // console.log('itemCover', itemCover)
+
+      const image = (itemCover && itemCover != null)? itemCover : ''
+
+      // console.log('image', image)
+
+    	console.log('videoFrame / videoItem', videoItem);
+
+      if (videoItem && videoItem.url != null) {
+        videoItem.id = this.getYouTubeVideoId(videoItem.url);
+      }
+
+      return videoItem && videoItem.url !== null ? { video: videoItem, image } : false
+      //  return videoItem ? { video: videoItem, image } : false
+    },
+  },
+
+  mounted() {
+  	console.log('Experience.vue / content', this.content);
+    this.initMatchMedia()
+  },
+  beforeDestroy() {
+    this.mm?.revert()
+  },
+  methods: {
+    initMatchMedia() {
+      this.mm = gsap.matchMedia()
+
+      this.mm.add('(min-width: 768px)', (context) => {
+        let tweenFrame
+
+        if (this.imageFrame) {
+          tweenFrame = gsap.fromTo(
+            this.$refs.withFrame.$el,
+            {
+              rotate: -8,
+            },
+            {
+              rotate: -2,
+              scrollTrigger: {
+                trigger: this.$refs.withFrame.$el,
+                scrub: 0.5,
+                end: 'bottom top',
+              },
+            }
+          )
+        }
+
+        let tweenVideo
+
+        if (this.videoFrame) {
+          tweenVideo = gsap.fromTo(
+            this.$refs.video.$el,
+            {
+              rotate: -8,
+            },
+            {
+              rotate: -4,
+              scrollTrigger: {
+                trigger: this.$refs.video.$el,
+                scrub: 0.5,
+                end: 'bottom top',
+              },
+            }
+          )
+        }
+
+        let tweenWithoutFrame
+
+        if (this.imageWithoutFrame) {
+          tweenWithoutFrame = gsap.fromTo(
+            this.$refs.withoutFrame.$el,
+            {
+              rotate: 4,
+            },
+            {
+              rotate: 1,
+              scrollTrigger: {
+                trigger: this.$refs.withoutFrame.$el,
+                scrub: 0.5,
+                end: 'bottom top',
+              },
+            }
+          )
+        }
+
+        return () => {
+          tweenFrame?.kill()
+          tweenWithoutFrame?.kill()
+          tweenVideo?.kill()
+        }
+      })
+    },
+    getYouTubeVideoId(url) {
+      return this.$getYoutubeVideoID(url)
+    },
+  },
+}
+</script>
+
+<style lang="scss">
+.page-cchapelle-edito {
+  position: relative;
+  margin-top: desktop-vw(350px);
+  margin-bottom: desktop-vw(185px);
+
+  &.novideo{
+    margin-bottom: 0;
+  }
+
+  @include mobile {
+    margin-top: mobile-vw(110px);
+    margin-bottom: mobile-vw(110px);
+  }
+
+  &__left {
+    grid-column: 1 / span 8;
+    position: relative;
+
+    @include mobile {
+      grid-column: 1 / span 6;
+      grid-row: 1;
+      min-height: mobile-vw(250px);
+      margin-bottom: mobile-vw(125px);
+    }
+  }
+
+  &__video.app-parallax {
+    position: absolute;
+    aspect-ratio: 640 / 425;
+    width: desktop-vw(640px);
+    top: desktop-vw(375px);
+    left: desktop-vw(100px);
+    transform: rotate(-8deg);
+
+    @include mobile {
+      aspect-ratio: 265 / 175;
+      width: mobile-vw(265px);
+      top: unset;
+      bottom: 0;
+      left: mobile-vw(25px);
+      transform: rotate(-4deg);
+    }
+
+    &.portrait {
+      aspect-ratio: 9 / 16;
+      width: desktop-vw(300px);
+      top: desktop-vw(250px);
+      left: desktop-vw(280px);
+      z-index: 2;
+
+      @include mobile {
+        aspect-ratio: 9 / 16;
+        width: mobile-vw(180px);
+        top: unset;
+        left: mobile-vw(90px);
+        bottom: mobile-vw(-100px);
+      }
+    }
+
+
+    .app-element-kinesis {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      @include hover {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+    iframe {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      &.invisible {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        display: none;
+      }
+    }
+
+    picture {
+      width: 100%;
+      height: 100%;
+      display: block;
+      pointer-events: none;
+    }
+
+    .page-cchapelle-edito__video__overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+      transition: opacity 0.4s 0.1s var(--ease-in-out-cubic);
+
+      &.invisible {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.2);
+        pointer-events: none;
+      }
+
+      .H1 {
+        position: absolute;
+        z-index: 1;
+        pointer-events: none;
+      }
+    }
+  }
+
+  &__visual-without-frame.app-parallax {
+    position: absolute;
+    aspect-ratio: 315 / 425;
+    width: desktop-vw(315px);
+    top: desktop-vw(50px);
+    right: desktop-vw(100px);
+    transform: rotate(2deg);
+
+    @include mobile {
+      aspect-ratio: 135 / 180;
+      width: mobile-vw(130px);
+      top: mobile-vw(75px);
+      right: mobile-vw(20px);
+    }
+
+    picture {
+      width: 100%;
+      height: 100%;
+      display: block;
+      @include noise();
+    }
+  }
+
+  &__visual-with-frame.app-parallax {
+    position: absolute;
+    aspect-ratio: 440 / 550;
+    width: desktop-vw(440px);
+    top: desktop-vw(-175px);
+    left: desktop-vw(50px);
+    transform: rotate(-10deg);
+    z-index: 1;
+
+    @include mobile {
+      aspect-ratio: 185 / 230;
+      width: mobile-vw(185px);
+      top: mobile-vw(0px);
+      left: mobile-vw(20px);
+      position: relative;
+      margin-bottom: mobile-vw(180px);
+    }
+
+    picture {
+      width: 100%;
+      height: 100%;
+      display: block;
+      @include noise();
+    }
+
+    .app-element-lottie {
+      width: 110%;
+      top: 50%;
+      left: 50%;
+      height: auto;
+      transform: translate(-50%, -50%) rotate(6deg);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+    }
+  }
+
+  &__right {
+    grid-column: 9 / span 4;
+    min-height: desktop-vw(652px);
+
+    @include mobile {
+      grid-row: 2;
+      grid-column: 1 / span 6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: unset;
+    }
+
+    .H2 {
+      margin-bottom: desktop-vw(25px);
+
+      @include mobile {
+        margin-bottom: mobile-vw(25px);
+      }
+    }
+
+    .P2 {
+      margin-bottom: desktop-vw(50px);
+
+      @include mobile {
+        margin-bottom: mobile-vw(45px);
+      }
+    }
+  }
+}
+</style>
