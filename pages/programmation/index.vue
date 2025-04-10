@@ -2,12 +2,12 @@
   <main class="app-programmation">
     <AppProgrammationHero :content="contentHero" />
 
-    <AppProgrammationList 
+    <AppProgrammationList
       :content="contentList"
       />
 
 
-    <AppProgrammationReported 
+    <AppProgrammationReported
       :reported="this.programmes.filter(_v => _v.sessions[0].reported)"
       />
 
@@ -85,11 +85,12 @@ export default {
     },
     contentList() {
       return {
-        spotifyLink: this.content.data.spotify_link
+        spotifyLink: this.content.data.spotify_link,
+        spotifyLabel: this.content.data.spotify_label
       }
     }
   },
-  mounted() { 
+  mounted() {
     //  console.log('programmes', this.programmes);
   },
   methods: {
