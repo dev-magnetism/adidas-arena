@@ -19,6 +19,7 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { mapState, mapMutations } from 'vuex'
+import useWebGL from '~/hooks/webgl'
 
 export default {
   data() {
@@ -90,10 +91,20 @@ export default {
       this.setInteriorVisible(self.isActive)
     },
     setMapPosition() {
+      const {  renderer } = useWebGL()
+      const rect = document.querySelector('.app-business-map__webview__container__wrapper')?.getBoundingClientRect()
+
       gsap.set('.app-webgl', {
         position: 'absolute',
         top: document.querySelector('.app-business-map__webview').offsetTop
       })
+
+      renderer.setScissor(
+        rect.x,
+        rect.x,
+        rect.width,
+        rect.height
+      )
     },
     scrollHero() {
       if (!window.lenis) return
