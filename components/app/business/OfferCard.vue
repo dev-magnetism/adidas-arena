@@ -17,7 +17,6 @@
 							:alt="offer.Name"
 							provider="directus"
 							loading="lazy"
-							sizes="sm:35vw md:20vw"
 						/>
 
 	      	</div>
