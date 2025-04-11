@@ -146,7 +146,7 @@ export const getInitialData = async () => {
       fields: ['*'],
     })
   );
- 
+
   cachedData.programmationsEvent = await fetchWithLogs('Programmation_Event', () =>
     $directus.items('Programmation_Event').readByQuery({ limit: -1 })
   );
@@ -275,9 +275,12 @@ export const getInitialData = async () => {
       contents[i].ticketing_prem_title = (progDirectContent?.ticketing_prem_title)?progDirectContent.ticketing_prem_title:cachedData.programmationsEvent.data.ticketing_prem_title
       contents[i].ticketing_prem_description = (progDirectContent?.ticketing_prem_description)?progDirectContent.ticketing_prem_description:cachedData.programmationsEvent.data.ticketing_prem_description
 
-      contents[i].offers = progDirectContent?.offer.map((_item)=>{
-          return progOffersDirectContents.find(_offer => _offer.id === _item.Programmation_Offer_id)
+      const progOffers = progDirectContent?.offer.map((_item)=>{
+        return progOffersDirectContents.find(_offer => _offer.id === _item.Programmation_Offer_id)
       });
+
+      const defaultOffers = progOffersDirectContents.filter((offer) => offer.isDefault)
+      contents[i].offers = [...new Set([...defaultOffers, ...progOffers])]
 
       contents[i].content = contents[i].translations.find(
         (translation) => translation.language === 'fr'
