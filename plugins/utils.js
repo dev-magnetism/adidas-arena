@@ -127,9 +127,14 @@ export default ({ app }, inject) => {
     let index = 0
 
     while (index < dateObjects.length) {
+      const locale = 'en-UK';
       const currentDate = dateObjects[index].date
-      const startDay = currentDate.getDate()
-      //  console.log('startDay', startDay);
+      const startDay = currentDate.getDate();
+      const startMonth = currentDate.toLocaleDateString(locale, { month: 'numeric'});
+      const startYear = currentDate.toLocaleDateString(locale, { year: 'numeric'});
+      // console.log('startDay', startDay);
+      // console.log('startMonth', startMonth);
+      // console.log('startYear', startYear);
 
       /*
       Carefull : this compares 2 dates with a 24 hours difference,
@@ -152,7 +157,13 @@ export default ({ app }, inject) => {
       }
 
       const endDay = dateObjects[index].date.getDate()
-      //  console.log('endDay', endDay);
+      const endMonth = dateObjects[index].date.toLocaleDateString(locale, { month: 'numeric'});
+      const endYear = dateObjects[index].date.toLocaleDateString(locale, { year: 'numeric'});
+      
+
+      const _isSameYear = (endYear === startYear);
+      const _isSameMonth = (endMonth === startMonth);
+      // const _isSameDay = (endDay == startDay);
 
       let _formattedDate;
 
@@ -161,7 +172,7 @@ export default ({ app }, inject) => {
       } else if (endDay - startDay === 1) {
         _formattedDate = `${startDay} & ${endDay}`
       } else {
-        _formattedDate = `${startDay} au ${endDay}`
+        _formattedDate = `${startDay}${(!_isSameMonth)?` ${currentDate.toLocaleDateString('fr-FR', { month: 'long'})}`:''}${(!_isSameYear)? ` ${startYear}`:''} au ${endDay}`
       }
       //  console.log('_formattedDate', _formattedDate);
 
