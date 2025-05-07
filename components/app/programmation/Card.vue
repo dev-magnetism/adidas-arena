@@ -466,8 +466,8 @@ export default {
     }
 
     .date {
-      display:block;
-      flex: 0 0 auto;
+      display:inline-block;
+      flex: 1 0 0%;
 
       @include desktop {
         margin-left: desktop-vw(30px);
