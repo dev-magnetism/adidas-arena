@@ -48,25 +48,23 @@
       >
         <EKinesis :speed="5">
           <div
-            v-if="videoFrame?.image && videoFrame?.image !== ''"
+            v-if="videoFrame?.cover && videoFrame?.cover !== ''"
             :class="{ invisible: hideVideoOverlay }"
             class="app-programmation-event-about-artist__video__overlay"
             @click="hideVideoOverlay = true"
           >
             <TH1 tag="p" weight="bold" color="white">PLAY</TH1>
 
-            <AppProgrammationImage
-              :src="videoFrame.image.filename_disk"
-              :alt="videoFrame.image.title"
-              :sizes="{
-                desktop: 'w400,h400,fcrop,q85',
-                mobile: 'w400,h400,fcrop,q85',
-              }"
+            <nuxt-img
+              :src="videoFrame.cover"
+              :alt="'Play video'"
+              provider="directus"
+              loading="lazy"
             />
           </div>
           <client-only>
             <iframe
-              :class="{ invisible: videoFrame.image && videoFrame.image !== ''?!hideVideoOverlay:hideVideoOverlay }"
+              :class="{ invisible: videoFrame.cover && videoFrame.cover !== ''?!hideVideoOverlay:hideVideoOverlay }"
               :src="`https://www.youtube-nocookie.com/embed/${videoFrame.video.id}?modestbranding=1&rel=0&cc_load_policy=1&iv_load_policy=3&hl=fr-fr&fs=0&controls=0&disablekb=1`"
               frameborder="0"
             />
@@ -140,17 +138,17 @@ export default {
       const videoItem = itemsMedia.find((item) => item.youtube_url);
       const itemCover = this.event.cover_video
 
-      // console.log('itemCover', itemCover)
+      console.log('itemCover', itemCover)
 
-      const image = (itemCover && itemCover != null && itemCover.image)? itemCover.image : ''
+      const image = (itemCover && itemCover != null)? itemCover : ''
 
-      // console.log('image', image)
+      console.log('image', image)
 
       if (videoItem && videoItem !== 'undefined') {
         videoItem.id = this.getYouTubeVideoId(videoItem.youtube_url)
       }
 
-      return videoItem && videoItem !== 'undefined' ? { video: videoItem, image } : false
+      return videoItem && videoItem !== 'undefined' ? { video: videoItem, cover: image } : false
       //  return videoItem ? { video: videoItem, image } : false
     },
     elHide() {

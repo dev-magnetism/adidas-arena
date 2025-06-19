@@ -65,7 +65,7 @@ export default {
 
     @include mobile{
       margin-top: mobile-vw(16px);
-      width: mobile-vw(160px);
+      width: mobile-vw(170px);
       height: mobile-vw(32px);
 
       &.hide{

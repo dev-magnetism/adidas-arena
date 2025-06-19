@@ -239,6 +239,7 @@ export const getInitialData = async () => {
 
       contents[i].spotify_link = progDirectContent?.spotify_link
       contents[i].cover_video = progDirectContent?.cover_video
+
       contents[i].vertical_video = progDirectContent?.vertical_video
 
       contents[i].ticketing_main_url = progDirectContent?.ticketing_main_url
