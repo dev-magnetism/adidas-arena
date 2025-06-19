@@ -89,6 +89,64 @@ export const getInitialData = async () => {
     actu.slug = convertToKebabCase(_slug)
   })
 
+  cachedData.business = await fetchWithLogs('Business_Page', () =>
+    $directus.items('Business_Page').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+  cachedData.businessCat = await fetchWithLogs('BusinessCat', () =>
+    $directus.items('BusinessCat').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+  cachedData.businessOpt = await fetchWithLogs('BusinessOptions', () =>
+    $directus.items('BusinessOptions').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+  cachedData.businessArt = await fetchWithLogs('BusinessArt', () =>
+    $directus.items('BusinessArt').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+
+  cachedData.businessArtOptions = await fetchWithLogs('BusinessArt_BusinessOptions_1', () =>
+    $directus.items('BusinessArt_BusinessOptions_1').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+  cachedData.businessCat.data = cachedData.businessCat.data.map((_cat)=>{
+    const _articles = cachedData.businessArt.data.filter(_art=>_art.Category === _cat.id);
+    _cat.numArt = _articles.length;
+    return _cat
+  })
+
+
+  cachedData.businessArt.data = cachedData.businessArt.data.map((_art)=>{
+    _art.Options = _art.Options.map((_opt)=>{
+      return cachedData.businessArtOptions.data.find(_artopt=>_artopt.id === _opt).BusinessOptions_id;
+    })
+
+    return _art
+  })
+
+  cachedData.chapelle = await fetchWithLogs('CentralChapelle_Page', () =>
+    $directus.items('CentralChapelle_Page').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
   cachedData.programmationsEvent = await fetchWithLogs('Programmation_Event', () =>
     $directus.items('Programmation_Event').readByQuery({ limit: -1 })
   );
@@ -96,6 +154,8 @@ export const getInitialData = async () => {
   cachedData.actualitesArticle = await fetchWithLogs('Actualites_article', () =>
     $directus.items('Actualites_article').readByQuery({ limit: -1 })
   );
+
+
 
 
   console.log('Building events data with SVC API...')
@@ -179,6 +239,7 @@ export const getInitialData = async () => {
 
       contents[i].spotify_link = progDirectContent?.spotify_link
       contents[i].cover_video = progDirectContent?.cover_video
+
       contents[i].vertical_video = progDirectContent?.vertical_video
 
       contents[i].ticketing_main_url = progDirectContent?.ticketing_main_url
@@ -215,9 +276,12 @@ export const getInitialData = async () => {
       contents[i].ticketing_prem_title = (progDirectContent?.ticketing_prem_title)?progDirectContent.ticketing_prem_title:cachedData.programmationsEvent.data.ticketing_prem_title
       contents[i].ticketing_prem_description = (progDirectContent?.ticketing_prem_description)?progDirectContent.ticketing_prem_description:cachedData.programmationsEvent.data.ticketing_prem_description
 
-      contents[i].offers = progDirectContent?.offer.map((_item)=>{
-          return progOffersDirectContents.find(_offer => _offer.id === _item.Programmation_Offer_id)
+      const progOffers = progDirectContent?.offer.map((_item)=>{
+        return progOffersDirectContents.find(_offer => _offer.id === _item.Programmation_Offer_id)
       });
+
+      const defaultOffers = progOffersDirectContents.filter((offer) => offer.isDefault)
+      contents[i].offers = [...new Set([...defaultOffers, ...progOffers])]
 
       contents[i].content = contents[i].translations.find(
         (translation) => translation.language === 'fr'

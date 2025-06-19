@@ -1,70 +1,70 @@
 <template>
-  <div v-if="elHide" class="app-programmation-event-about-artist grid-inner" :class="{novideo: !videoFrame}">
+  <div class="page-cchapelle-edito grid-inner" :class="{novideo: !videoFrame}">
     <div
       v-if="imageFrame || imageWithoutFrame || videoFrame"
-      class="app-programmation-event-about-artist__left"
+      class="page-cchapelle-edito__left"
     >
       <EParallax
         v-if="imageFrame"
         ref="withFrame"
-        class="app-programmation-event-about-artist__visual-with-frame"
+        class="page-cchapelle-edito__visual-with-frame"
         :speed="0.85"
       >
         <EKinesis :speed="6">
-          <AppProgrammationImage
-            :src="imageFrame.filename_disk"
-            :alt="imageFrame.title"
-            :sizes="{
-              desktop: 'w400,h400,fcrop,q85',
-              mobile: 'w400,h400,fcrop,q85',
-            }"
-          />
-          <ELottie id="Cadre_01" start="top bottom-=15%" />
+
+			<nuxt-img
+				:src="imageFrame"
+				:alt="content.Experience_Title"
+				provider="directus"
+				loading="lazy"
+				sizes="sm:35vw md:20vw"
+			/>
+
+         	<ELottie id="Cadre_01" start="top bottom-=15%" />
         </EKinesis>
       </EParallax>
       <EParallax
         v-if="imageWithoutFrame"
         ref="withoutFrame"
-        class="app-programmation-event-about-artist__visual-without-frame"
+        class="page-cchapelle-edito__visual-without-frame"
         :speed="0.95"
       >
         <EKinesis :speed="7">
-          <AppProgrammationImage
-            :src="imageWithoutFrame.filename_disk"
-            :alt="imageWithoutFrame.title"
-            :sizes="{
-              desktop: 'w400,h400,fcrop,q85',
-              mobile: 'w400,h400,fcrop,q85',
-            }"
-          />
+			<nuxt-img
+				:src="imageWithoutFrame"
+				:alt="content.Experience_Title"
+				provider="directus"
+				loading="lazy"
+				sizes="sm:35vw md:20vw"
+			/>
         </EKinesis>
       </EParallax>
       <EParallax
         ref="video"
-        :class="{ portrait: event.vertical_video }"
         v-if="videoFrame?.video?.id"
-        class="app-programmation-event-about-artist__video"
+        class="page-cchapelle-edito__video"
         :speed="1"
       >
         <EKinesis :speed="5">
           <div
-            v-if="videoFrame?.cover && videoFrame?.cover !== ''"
+            v-if="videoFrame?.image && videoFrame?.image !== ''"
             :class="{ invisible: hideVideoOverlay }"
-            class="app-programmation-event-about-artist__video__overlay"
+            class="page-cchapelle-edito__video__overlay"
             @click="hideVideoOverlay = true"
           >
             <TH1 tag="p" weight="bold" color="white">PLAY</TH1>
+			<nuxt-img
+				:src="videoFrame.image"
+				:alt="content.Experience_Title"
+				provider="directus"
+				loading="lazy"
+				sizes="sm:35vw md:20vw"
+			/>
 
-            <nuxt-img
-              :src="videoFrame.cover"
-              :alt="'Play video'"
-              provider="directus"
-              loading="lazy"
-            />
           </div>
           <client-only>
             <iframe
-              :class="{ invisible: videoFrame.cover && videoFrame.cover !== ''?!hideVideoOverlay:hideVideoOverlay }"
+              :class="{ invisible: videoFrame.image && videoFrame.image !== ''?!hideVideoOverlay:hideVideoOverlay }"
               :src="`https://www.youtube-nocookie.com/embed/${videoFrame.video.id}?modestbranding=1&rel=0&cc_load_policy=1&iv_load_policy=3&hl=fr-fr&fs=0&controls=0&disablekb=1`"
               frameborder="0"
             />
@@ -72,20 +72,12 @@
         </EKinesis>
       </EParallax>
     </div>
-    <div class="app-programmation-event-about-artist__right">
-      <TH2 v-if="event.content.about_headline" weight="bold">{{
-        event.content.about_headline
-      }}</TH2>
+    <div class="page-cchapelle-edito__right">
+      <TH2 weight="bold" v-html="content.title"></TH2>
       <ERichTextEvent
-        v-if="event.content.about_text"
+      	v-if="content.text"
         :component="{ name: 'TP2', weight: 'medium', tagTarget: 'p', tag: 'p' }"
-        :content="event.content.about_text"
-      />
-      <AtomsSpotify
-        v-for="(tile, index) in event.content.spotify_tiles"
-        :key="index"
-        :index="index"
-        :tile="tile"
+        :content="content.text"
       />
     </div>
   </div>
@@ -96,7 +88,7 @@ import { gsap } from 'gsap'
 
 export default {
   props: {
-    event: {
+    content: {
       type: Object,
       default: () => {},
     },
@@ -109,60 +101,48 @@ export default {
   computed: {
     mediaGalleryImages() {
 
-      const _mediaGallery = JSON.parse(JSON.stringify(this.event.content.media_gallery))
+      const _mediaGallery = [];
 
-      const mediaGallery = _mediaGallery.filter(
-        (item) => !item.youtube_url
-      )
+      if(this.content?.image1?.trim() !== "") _mediaGallery.push(this.content.image1);
 
-      //  const mediaVideo = _mediaGallery.filter(
-      //    (item) => item.youtube_url
-      //  )
-
-      // mediaGallery = (mediaVideo && !mediaVideo.image)? mediaGallery.splice(0, mediaGallery.length - 1): mediaGallery;
-
-      return mediaGallery
+      if(this.content?.image2?.trim() !== "") _mediaGallery.push(this.content.image2);
+      return _mediaGallery
     },
+
     imageFrame() {
       return this.mediaGalleryImages.length >= 1
-        ? this.mediaGalleryImages[0].image
+        ? this.mediaGalleryImages[0]
         : null
     },
     imageWithoutFrame() {
       return this.mediaGalleryImages.length >= 2
-        ? this.mediaGalleryImages[1].image
+        ? this.mediaGalleryImages[1]
         : null
     },
     videoFrame() {
-      const itemsMedia = this.event.content.media_gallery || []
-      const videoItem = itemsMedia.find((item) => item.youtube_url);
-      const itemCover = this.event.cover_video
+      const videoItem = {};
+      videoItem.url = this.content.video_url;
+      const itemCover = this.content.video_cover
 
-      console.log('itemCover', itemCover)
+      // console.log('itemCover', itemCover)
 
       const image = (itemCover && itemCover != null)? itemCover : ''
 
-      console.log('image', image)
+      // console.log('image', image)
 
-      if (videoItem && videoItem !== 'undefined') {
-        videoItem.id = this.getYouTubeVideoId(videoItem.youtube_url)
+    	console.log('videoFrame / videoItem', videoItem);
+
+      if (videoItem && videoItem.url != null) {
+        videoItem.id = this.getYouTubeVideoId(videoItem.url);
       }
 
-      return videoItem && videoItem !== 'undefined' ? { video: videoItem, cover: image } : false
+      return videoItem && videoItem.url !== null ? { video: videoItem, image } : false
       //  return videoItem ? { video: videoItem, image } : false
-    },
-    elHide() {
-      return (
-        this.imageFrame ||
-        this.imageWithoutFrame ||
-        this.videoFrame ||
-        this.event.content.about_headline ||
-        this.event.content.about_text
-      )
     },
   },
 
   mounted() {
+  	console.log('Experience.vue / content', this.content);
     this.initMatchMedia()
   },
   beforeDestroy() {
@@ -245,7 +225,7 @@ export default {
 </script>
 
 <style lang="scss">
-.app-programmation-event-about-artist {
+.page-cchapelle-edito {
   position: relative;
   margin-top: desktop-vw(350px);
   margin-bottom: desktop-vw(185px);
@@ -337,7 +317,7 @@ export default {
       pointer-events: none;
     }
 
-    .app-programmation-event-about-artist__video__overlay {
+    .page-cchapelle-edito__video__overlay {
       position: absolute;
       top: 0;
       left: 0;

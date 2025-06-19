@@ -100,9 +100,11 @@ export default {
       headerReduced: (state) => state.headerReduced,
     }),
     menu() {
-      return this.menuContent.data.filter(
-        (el) => !el.submenu_element && !el.homepage
-      )
+      return this.menuContent.data
+        .filter(
+          (el) => !el.submenu_element && !el.homepage
+        )
+        .sort((a, b) => a.manual_sort - b.manual_sort)
     },
     menuVisuals() {
       return this.menuContent.data.filter((el) => !el.submenu_element)

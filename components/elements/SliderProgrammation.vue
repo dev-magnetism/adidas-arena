@@ -15,11 +15,12 @@
       >
         {{ content.cta }}
       </AtomsCTA>
-      
+
       <AtomsSpotifyPlaylist
         v-if="content.spotifyLink !== '' && content.spotifyLink !== null"
         :cta-link="content.spotifyLink"
-        />
+        :cta-label="content.spotifyLabel"
+      />
     </div>
 
 
@@ -141,7 +142,7 @@ export default {
     onSelect(e) {
       this.handleDisabledCursor()
     },
-    
+
     onPointerDown() {
       if (this.allowScroll) {
         this.setAllowScroll(false)

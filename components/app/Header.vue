@@ -26,16 +26,18 @@
       <SvgArenaLogo />
     </div>
 
-    <nuxt-link
-      v-if="this.webview !== 'ok'"
-      :class="{ reduced: headerReduced, white: headerWhite }"
-      class="app-header__programmation"
-      :to="menuProgrammation.url"
-    >
-      <TP1 weight="bold" :color="headerWhite ? 'grey' : 'black'">
-        {{ menuProgrammation.name }}
-      </TP1>
-    </nuxt-link>
+    <div class="app-header__nav" v-if="this.webview !== 'ok'">
+      <nuxt-link
+        v-for="(item, i) in navItems"
+        :key="i"
+        :class="{ reduced: headerReduced, white: headerWhite }"
+        :to="item.Link"
+      >
+        <TP1 weight="bold" :color="headerWhite ? 'grey' : 'black'">
+          {{ item.Label }}
+        </TP1>
+      </nuxt-link>
+    </div>
 
     <div
       v-if="this.webview !== 'ok'"
@@ -76,8 +78,14 @@ export default {
     menuName() {
       return this.appContent.data.menu_name
     },
+    menuBusiness() {
+      return this.menuContent.data.find((el) => el.business)
+    },
     menuProgrammation() {
       return this.menuContent.data.find((el) => el.programmation)
+    },
+    navItems() {
+      return this.appContent.data.header_nav
     },
     headerNameMobile() {
       return this.appContent.data.header_name_mobile
@@ -159,11 +167,13 @@ export default {
     pointer-events: none;
   }
 
-  &__programmation {
+  &__nav {
     margin-left: auto;
     margin-right: desktop-vw(25px);
     align-self: center;
     cursor: pointer;
+    display: flex;
+    gap: desktop-vw(25px);
 
     @include mobile {
       display: none;

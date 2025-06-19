@@ -83,10 +83,6 @@ export default {
       })
     }
   },
-  destroyed() {
-    this.tween?.kill()
-    this.animation?.destroy()
-  },
   methods: {
     LottieScrollTrigger(vars) {
       const playhead = { frame: 0 }

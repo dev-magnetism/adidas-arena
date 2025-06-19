@@ -47,12 +47,12 @@ export default {
     if (this.$viewport.isMobile) {
       gui.hidden = true
     }
-    
+
     this.setWebview(this.$route.query.webview);
 
     window.addEventListener('load', this.handleSmartBanner)
 
-    
+
 
   },
 

@@ -76,6 +76,7 @@
         <AtomsSpotifyPlaylist
           v-if="content.spotifyLink !== '' && content.spotifyLink !== null"
           :cta-link="content.spotifyLink"
+          :cta-label="content.spotifyLabel"
           :barsticky="barSticky"
           ref="spotify"
           />
