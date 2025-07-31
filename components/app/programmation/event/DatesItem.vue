@@ -87,7 +87,7 @@
         :color="statutColor"
         :layer-color="statutColor"
         :bg="'grey'"
-        href="https://faq.adidasarena.com/hc/fr"
+        href="https://faq.adidasarena.com/hc/fr/articles/12043307806748-L-%C3%A9v%C3%A9nement-est-annul%C3%A9-comment-puis-je-me-faire-rembourser"
       >
         Remboursement
       </AtomsCTA>

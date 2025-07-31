@@ -15,7 +15,7 @@
             : ''
         }}
         {{
-          this.isReported && this.isWaitingNewDate ? 
+          this.isReported && this.isWaitingNewDate ?
           `- ${programmationsEventContent.glossary_waiting_new_date}`
           : ''
         }}
@@ -28,7 +28,7 @@
         {{
           event.presale && event.status_code === 'B'
             ? programmationsEventContent.glossary_presales
-            : event.status_code === 'B' 
+            : event.status_code === 'B'
             ? programmationsEventContent.glossary_soon_available
             : ''
         }}
@@ -36,7 +36,7 @@
       <TP2
         v-if="this.isReported"
         ref="date"
-        class="app-programmation-event-hero__date timeline-text reported 
+        class="app-programmation-event-hero__date timeline-text reported
         "
         :class="{wnd: this.isWaitingNewDate}"
       >
@@ -132,7 +132,7 @@
           v-else-if="
             event.status_code === 'H'
           "
-          href="https://faq.adidasarena.com/hc/fr"
+          href="https://faq.adidasarena.com/hc/fr/articles/12043307806748-L-%C3%A9v%C3%A9nement-est-annul%C3%A9-comment-puis-je-me-faire-rembourser"
         >
           Remboursement
         </AtomsCTA>
@@ -240,7 +240,7 @@ export default {
     },
   },
   mounted() {
-  
+
     let _reported = 0;
     let _waitnewdate = 0;
 

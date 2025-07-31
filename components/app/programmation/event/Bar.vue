@@ -2,7 +2,7 @@
   <div class="app-programmation-event-bar block-inner">
     <div class="app-programmation-event-bar__event">
       <TP2 weight="medium" color="grey">
-        {{ $formatDate(event.sessions, false) }} 
+        {{ $formatDate(event.sessions, false) }}
         {{ (event.date_tbc)?` - ${programmationsEventContent.glossary_tbc}`:''}}
       </TP2>
       <TH4 color="grey">{{ event.artist_reference }}</TH4>
@@ -55,7 +55,7 @@
         v-else-if="
           event.status_code === 'H'
         "
-        href="https://faq.adidasarena.com/hc/fr"
+        href="https://faq.adidasarena.com/hc/fr/articles/12043307806748-L-%C3%A9v%C3%A9nement-est-annul%C3%A9-comment-puis-je-me-faire-rembourser"
       >
         Remboursement
       </AtomsCTA>
