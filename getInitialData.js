@@ -244,6 +244,16 @@ export const getInitialData = async () => {
 
       contents[i].ticketing_main_url = progDirectContent?.ticketing_main_url
 
+      if (progDirectContent?.custom_status) {
+        contents[i].status_code = progDirectContent?.custom_status
+      }
+
+      if (progDirectContent?.custom_ticketing_opening_date) {
+        const dt = new Date(progDirectContent?.custom_ticketing_opening_date);
+        const formatted = dt.toISOString().slice(0,19).replace("T", " ");
+        contents[i].opening = formatted
+      }
+
       // REPORTED USE CASE TEST
       // if(i % 2 !== 0) {
       //   contents[i].reported = true;
@@ -302,8 +312,6 @@ export const getInitialData = async () => {
           (translation) => translation.language === 'fr'
         )
       })
-
-
 
     }
 
