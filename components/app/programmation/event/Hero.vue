@@ -70,7 +70,7 @@
       </TH1>
 
       <div
-        v-if="event.opening && event.status_code === 'B' && event.presale"
+        v-if="event.opening && event.status_code === 'B' && event.presale && !event.ticketing_date_unknown"
         class="app-programmation-event-hero__ticket-office-opening timeline-block"
       >
         <TH4> {{ programmationsEventContent.glossary_opening_tickets }} </TH4>

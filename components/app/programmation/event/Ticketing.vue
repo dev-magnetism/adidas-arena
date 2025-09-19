@@ -16,8 +16,8 @@
         class="app-programmation-event-ticketing__tickets__wrapper grid"
       >
         <a
-          v-if="session.content.url"
-          :href="session.content.url"
+          v-if="event.ticketing_main_url || session.content.url"
+          :href="event.ticketing_main_url || session.content.url"
           target="_blank"
           class="app-programmation-event-ticketing__ticket"
         >
