@@ -285,6 +285,7 @@ export const getInitialData = async () => {
       contents[i].ticketing_std_description = (progDirectContent?.ticketing_std_description)?progDirectContent.ticketing_std_description:cachedData.programmationsEvent.data.ticketing_std_description
       contents[i].ticketing_prem_title = (progDirectContent?.ticketing_prem_title)?progDirectContent.ticketing_prem_title:cachedData.programmationsEvent.data.ticketing_prem_title
       contents[i].ticketing_prem_description = (progDirectContent?.ticketing_prem_description)?progDirectContent.ticketing_prem_description:cachedData.programmationsEvent.data.ticketing_prem_description
+      contents[i].ticketing_date_unknown = progDirectContent?.ticketing_date_unknown
 
       const progOffers = progDirectContent?.offer.map((_item)=>{
         return progOffersDirectContents.find(_offer => _offer.id === _item.Programmation_Offer_id)
