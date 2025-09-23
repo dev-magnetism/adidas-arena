@@ -244,6 +244,16 @@ export const getInitialData = async () => {
 
       contents[i].ticketing_main_url = progDirectContent?.ticketing_main_url
 
+      if (progDirectContent?.custom_status) {
+        contents[i].status_code = progDirectContent?.custom_status
+      }
+
+      if (progDirectContent?.custom_ticketing_opening_date) {
+        const dt = new Date(progDirectContent?.custom_ticketing_opening_date);
+        const formatted = dt.toISOString().slice(0,19).replace("T", " ");
+        contents[i].opening = formatted
+      }
+
       // REPORTED USE CASE TEST
       // if(i % 2 !== 0) {
       //   contents[i].reported = true;
@@ -275,6 +285,7 @@ export const getInitialData = async () => {
       contents[i].ticketing_std_description = (progDirectContent?.ticketing_std_description)?progDirectContent.ticketing_std_description:cachedData.programmationsEvent.data.ticketing_std_description
       contents[i].ticketing_prem_title = (progDirectContent?.ticketing_prem_title)?progDirectContent.ticketing_prem_title:cachedData.programmationsEvent.data.ticketing_prem_title
       contents[i].ticketing_prem_description = (progDirectContent?.ticketing_prem_description)?progDirectContent.ticketing_prem_description:cachedData.programmationsEvent.data.ticketing_prem_description
+      contents[i].ticketing_date_unknown = progDirectContent?.ticketing_date_unknown
 
       const progOffers = progDirectContent?.offer.map((_item)=>{
         return progOffersDirectContents.find(_offer => _offer.id === _item.Programmation_Offer_id)
@@ -302,8 +313,6 @@ export const getInitialData = async () => {
           (translation) => translation.language === 'fr'
         )
       })
-
-
 
     }
 

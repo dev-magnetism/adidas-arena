@@ -123,22 +123,25 @@ export default {
 	},
 
 	mounted() {
+		try{
+			this.embla = EmblaCarousel(this.$refs.wrapper, {
+				dragFree: true,
+				containScroll: 'keepSnaps',
+				speed: 7.5,
+				slidesToScroll: 1,
+				breakpoints: {
+					'(max-width: 800px)': { dragFree: false, skipSnaps: false, speed: 10 },
+				},
+			})
 
-		this.embla = EmblaCarousel(this.$refs.wrapper, {
-			dragFree: true,
-			containScroll: 'keepSnaps',
-			speed: 7.5,
-			slidesToScroll: 1,
-			breakpoints: {
-				'(max-width: 800px)': { dragFree: false, skipSnaps: false, speed: 10 },
-			},
-		})
+			this.embla.on('pointerUp', this.onPointerUp)
+			this.embla.on('pointerDown', this.onPointerDown)
 
-		this.embla.on('pointerUp', this.onPointerUp)
-		this.embla.on('pointerDown', this.onPointerDown)
-
-		if (!this.$viewport.isMobile) {
-			this.embla.on('select', this.onSelect)
+			if (!this.$viewport.isMobile) {
+				this.embla.on('select', this.onSelect)
+			}
+		} catch(e){
+			//
 		}
 
 	},
