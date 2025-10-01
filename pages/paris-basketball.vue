@@ -24,6 +24,7 @@
 		<AppPbbEntertainment :contents="contentEntertainement" />
 		<AppPbbMCs :contents="contentMCs" />
 		<AppPbbDJ :contents="contentDJ" />
+		<AppPbbAnimations :contents="contentAnimations" />
 
     	<AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
 	</main>
@@ -94,6 +95,17 @@ export default {
 					label: "Je m'abonne",
 					link: "#",
 				}
+			}
+		},
+		contentAnimations() {
+			return{
+
+				text: `
+					<p class="P2 wysiwyg-text">
+						En avant match, pendant les temps morts, quart-temps, mi-temps, des animations <span style="color: var(--c-carmin-red);">rythment</span> le match pour divertir les spectateurs au-delà du sport. C’est ça aussi <span id="Trait_1" class="lottie-word" style="color: blue;">l’expérience Paris</span> Basketball à l’<span class="app-atoms-stroke-text wysiwyg-stroke">Adidas Arena</span>!
+					</p>
+				`
+
 			}
 		},
 		contentClassement() {
