@@ -1,0 +1,284 @@
+<template>
+
+	<div class="app-paris-basketball-dj grid-inner">
+
+    	<EParallax
+			ref="imageFirst"
+			class="app-paris-basketball-dj__visual-first"
+			:speed="0.65"
+		>
+			
+				<AppPbbImage
+	                :src="contents.pictureFirst.src"
+	                :alt="contents.pictureFirst.alt"
+	                :lazy="true"
+	                :sizes="{
+	                  desktop: 'w600,h600,fcrop,q85',
+	                  mobile: 'w600,h600,fcrop,q85',
+	                }"
+	             />
+			
+   		</EParallax>
+
+    	<div class="app-paris-basketball-dj__content">
+	    	<ERichText
+				ref="maintitle"
+				tag="h2"
+				weight="regular"
+				:content="contents.maintitle"
+				class="app-paris-basketball-dj__content__title"
+			/>
+
+			<ERichText
+				ref="paragraph"
+				tag="p"
+				weight="regular"
+				:content="contents.paragraph"
+			    :scrub="true"
+				class="app-paris-basketball-dj__content__paragraph"
+			/>
+		</div>
+
+		<EParallax
+			ref="imageSecond"
+			class="app-paris-basketball-dj__visual-second"
+			:speed="0.85"
+		>
+			<EKinesis :speed="5">
+				<AppPbbImage
+	                :src="contents.pictureSecond.src"
+	                :alt="contents.pictureSecond.alt"
+	                :lazy="true"
+	                :sizes="{
+	                  desktop: 'w600,h600,fcrop,q85',
+	                  mobile: 'w600,h600,fcrop,q85',
+	                }"
+	             />
+			</EKinesis>
+    	</EParallax>
+
+		
+
+	</div>
+
+</template>
+
+<script>
+import { gsap } from 'gsap'
+
+export default {
+	props: {
+		contents: {
+			type: Object,
+			default: () => {},
+		},
+	},
+	mounted() {
+		this.initMatchMedia()
+	},
+	beforeDestroy() {
+		this.mm?.revert()
+	},
+	methods: {
+		initMatchMedia() {
+			this.mm = gsap.matchMedia()
+
+			this.mm.add('(min-width: 768px)', (context) => {
+				const tweenImageFirst = gsap.fromTo(
+					this.$refs.imageFirst.$el,
+					{
+						top: -300,
+					},
+					{
+						top: 0,
+						scrollTrigger: {
+							trigger: this.$refs.imageFirst.$el,
+							scrub: 0.5,
+							end: 'top bottom',
+						},
+					}
+				)
+				const tweenImageSecond = gsap.fromTo(
+					this.$refs.imageSecond.$el,
+					{
+						top: 300,
+					},
+					{
+						top: 0,
+						scrollTrigger: {
+							trigger: this.$refs.imageSecond.$el,
+							scrub: 0.5,
+							end: 'bottom top',
+						},
+					}
+				)
+
+				return () => {
+					tweenImageFirst?.kill()
+					tweenImageSecond?.kill()
+				}
+			})
+		},
+	},	
+
+}
+</script>
+
+<style lang="scss">
+	.app-paris-basketball-dj {
+		position: relative;
+		padding-top: desktop-vw(145px);
+		padding-bottom: desktop-vw(180px);
+		row-gap: desktop-vw(85px);
+		background-color: var(--c-black);
+
+		@include mobile {
+			overflow-x: hidden;
+		}
+
+		&__visual-first {
+			position: absolute;
+			grid-column: 1 / span 4;
+			aspect-ratio: 346 / 431;
+			width: 80%;
+			top: desktop-vw(200px);
+
+			@include mobile {
+				grid-column: 4 / span 3;
+				top: mobile-vw(180px);
+				aspect-ratio: 150 / 205;
+			}
+
+		}
+
+
+		&__content {
+			position: relative;
+			grid-column: 5 / span 4;
+
+			@include mobile {
+				grid-row: 2;
+				grid-column: 1 / span 6;
+			}
+
+			&__title{
+				margin: 0 0 desktop-vw(25px);
+
+				.H2{
+					@include font-ITCFranklinGothicLT-BkCp();
+					letter-spacing: desktop-vw(-2px);
+					color: var(--c-white) !important;
+					text-align: center;
+
+					strong{
+						letter-spacing: desktop-vw(-3px);
+					}
+				}
+
+			}
+
+			&__paragraph{
+				margin: 0 auto;
+				width: 80%;
+
+				.P2 {
+					font-size: desktop-vw(17px);
+					color: var(--c-white) !important;
+					text-transform: initial;
+					text-align: center;
+
+					@include mobile{
+						font-size: mobile-vw(16px);
+					}
+				}
+			}
+
+		}
+
+		&__visual-second {
+			position: absolute;
+			grid-column: 9 / span 4;
+			aspect-ratio: 346 / 431;
+			width: 80%;
+			top: desktop-vw(200px);
+
+			@include mobile {
+				grid-column: 1 / span 4;
+				aspect-ratio: 210 / 260;
+				margin-bottom: mobile-vw(140px);
+			}
+
+		}
+
+
+		&__list{
+			&__item{
+				margin: 0 0 desktop-vw(25px);
+
+				&__head{
+					display: flex;
+					flex-wrap: wrap;
+					margin: 0 0 desktop-vw(25px);
+
+				}
+
+				&__name{
+					display: block;
+					flex: 0 0 auto;
+					@include font-ITCFranklinGothicLT-BkCp();
+					font-size: desktop-vw(18px);
+					line-height: desktop-vw(20px);
+					color: var(--c-white);
+					text-transform: uppercase;
+
+				}
+
+				&__instagram{
+					display: block;
+					flex: 0 0 auto;
+					margin: 0 0 0 desktop-vw(8px);
+
+					@include font-ITCFranklinGothicLT-BkCp();
+					font-size: desktop-vw(18px);
+					line-height: desktop-vw(20px);
+					color: var(--c-white);
+					text-transform: uppercase;
+
+					&__link{
+						font-size: desktop-vw(18px);
+						line-height: desktop-vw(20px);
+						cursor:pointer;
+						text-decoration: underline;
+					}
+
+
+				}
+
+				&__text.app-element-rich-text {
+					opacity: 0.8;
+
+					.P2 {
+						font-size: desktop-vw(17px);
+						color: var(--c-white) !important;
+						text-transform: initial;
+
+						@include mobile{
+							font-size: mobile-vw(16px);
+						}
+					}
+				}
+				&:nth-child(1){
+					.app-paris-basketball-dj__list__item__instagram__link{
+						color: var(--c-blue-adidas);
+					}
+				}
+				&:nth-child(2){
+					.app-paris-basketball-dj__list__item__instagram__link{
+						color: var(--c-carmin-red);
+					}
+				}
+			}
+		}
+
+	}
+</style>
