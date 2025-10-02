@@ -24,29 +24,9 @@
 				tag="p"
 				weight="medium"
 				:content="contents.paragraph1"
-				class="app-paris-basketball-introduction__s-row__content__text"
+				class="app-paris-basketball-introduction__f-row__content__text"
 			/>
    		</div>
-
-		<div
-			ref="bigVisual"
-			v-if="contents.pictureFramed?.src"
-			class="app-paris-basketball-introduction__f-row__visual"
-		>
-			<EKinesis :speed="5">
-				<AppPbbImage
-	                :src="contents.pictureFramed.src"
-	                :alt="contents.pictureFramed.alt"
-	                :lazy="true"
-	                :sizes="{
-	                  desktop: 'w600,h600,fcrop,q85',
-	                  mobile: 'w600,h600,fcrop,q85',
-	                }"
-	             />
-				<ELottie id="Cadre_02" />
-			</EKinesis>
-    	</div>
-
 
 	    <EKinesis
 			:speed="7.5"
@@ -85,6 +65,27 @@
 
 			<AtomsCornerPoints :size-points="8" />
 	    </EKinesis>
+
+		<div
+			ref="bigVisual"
+			v-if="contents.pictureFramed?.src"
+			class="app-paris-basketball-introduction__f-row__visual"
+		>
+			<EKinesis :speed="5">
+				<AppPbbImage
+	                :src="contents.pictureFramed.src"
+	                :alt="contents.pictureFramed.alt"
+	                :lazy="true"
+	                :sizes="{
+	                  desktop: 'w600,h600,fcrop,q85',
+	                  mobile: 'w600,h600,fcrop,q85',
+	                }"
+	             />
+				<ELottie id="Cadre_02" />
+			</EKinesis>
+    	</div>
+
+
 	    
 		<div
 			ref="pointsVisual"
@@ -112,7 +113,7 @@
 				tag="h4"
 				weight="regular"
 				:content="contents.title2"
-				class="app-paris-basketball-introduction__f-row__content__subtitle"
+				class="app-paris-basketball-introduction__s-row__content__title"
 			/>
 
 			<ERichText
@@ -330,36 +331,44 @@ export default {
 
 		&__visual-transparent.app-element-kinesis {
 			position: absolute;
-			width: columns(1.5);
-			grid-column: 6 / span 2;
-			top: desktop-vw(25px);
-			transform: rotate(7deg);
-			aspect-ratio: 128 / 128;
-			// left: 30%;
+			z-index: 10;
+			top: desktop-vw(160px);
+			left: desktop-vw(-50px);
+
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			height: auto;
 
+			grid-column: 6 / span 2;
+			width: columns(1.5);
+
+			transform: rotate(8deg);
+			aspect-ratio: 128 / 128;
+
 			@include mobile {
-				aspect-ratio: 64/64;
-				width: 70%;
-				grid-column: 5 / span 2;
-				top: mobile-vw(25px);
+				position: relative;
+				top: unset;
+				left: mobile-vw(20px);
+				grid-column: 1 / span 2;
+				margin-top: mobile-vw(80px);
+				width: 100%;
+				aspect-ratio: 150/150;
+				grid-row: 2;
 			}
 
 			@include fake-transparent();
 
 			svg {
 				display: block;
-				width: 85%;
+				width: 94%;
 				height: auto;
 			}
 		}
 
 		&__f-row {
 			&__content {
-				grid-column: 2 / span 5;
+				grid-column: 2 / span 4;
 				grid-row: 1;
 
 				@include mobile {
@@ -367,48 +376,110 @@ export default {
 				}
 
 				&__title {
+					margin-bottom: desktop-vw(160px);
+
+					@include mobile {
+						margin-bottom: mobile-vw(78px);
+					}
+
+					.H2{
+						@include font-ITCFranklinGothicLT-BkCp();
+						font-size: desktop-vw(100px);
+						line-height:desktop-vw(100px);
+						font-weight: 400;
+						letter-spacing: desktop-vw(-2px);
+
+						@include mobile {
+							font-size: mobile-vw(96px);
+							line-height:mobile-vw(96px);
+							letter-spacing: mobile-vw(-2px);
+						}
+
+						strong{
+							font-weight: 600;
+							letter-spacing: desktop-vw(-3px);
+
+							@include mobile {
+								letter-spacing: mobile-vw(-3px);
+							}
+						}
+
+						.app-element-lottie-word.Cercle_2 svg{
+							width: 70% !important;
+							height: auto !important;
+							transform: scale(1, 1.75) !important;
+						}
+					}
 				}
 
 				&__subtitle {
-					text-transform: uppercase;
-					margin-top: desktop-vw(20px);
-					width: 65%;
+					margin-bottom: desktop-vw(32px);
 
 					@include mobile {
-						margin-top: mobile-vw(20px);
+						margin-bottom: mobile-vw(32px);
+					}
+
+					.H4{
+						font-size: desktop-vw(32px);
+						line-height: desktop-vw(32px);
+						text-transform: uppercase;
+						letter-spacing: desktop-vw(-0.32px);
+
+						@include mobile {
+							font-size: mobile-vw(32px);
+							line-height: mobile-vw(32px);
+							letter-spacing: mobile-vw(-0.32px);
+						}
+
 					}
 				}
-				&__subtitle-list {
-					margin-top: desktop-vw(25px);
+
+				&__text{
 					width: 80%;
 
-					li {
-						list-style-position: outside;
-						margin-left: 1em;
+					@include mobile {
+						width: 100%;
 					}
 
-					@include mobile {
-						margin-top: mobile-vw(20px);
+					.P2{
+						font-size: desktop-vw(17px);
+						line-height: desktop-vw(20px);
+
+						@include mobile {
+							font-size: mobile-vw(17px);
+							line-height: mobile-vw(20px);
+						}
+
+						strong{	
+							font-size: desktop-vw(18px);
+							text-transform: uppercase;
+
+							@include mobile {
+								font-size: mobile-vw(18px);
+							}
+						}
 					}
 				}
 			}
+
 			&__visual {
 				position: relative;
-				grid-column: 8 / span 5;
+				grid-column: 6 / span 6;
 				aspect-ratio: 650 / 785;
-				left: columns(-1);
-				margin-top: desktop-vw(150px);
+				margin-top: desktop-vw(220px);
 				transform: rotate(-5deg);
 				grid-row: 1;
+				left: 10%;
+				width: 90%;
 
 				@include mobile {
-					grid-column: 2 / span 5;
+					grid-column: 2 / span 6;
 					left: 0;
 					top: 0;
 					grid-row: 2;
-					margin-top: mobile-vw(20px);
-					aspect-ratio: 270/320;
-					margin-bottom: mobile-vw(185px);
+					margin-top: mobile-vw(120px);
+					aspect-ratio: 333/413;
+					margin-bottom: mobile-vw(270px);
 				}
 
 				picture {
@@ -431,7 +502,7 @@ export default {
 
 		&__s-row {
 			&__content {
-				grid-column: 9 / span 4;
+				grid-column: 8 / span 4;
 				grid-row: 2;
 
 				@include mobile {
@@ -440,38 +511,90 @@ export default {
 				}
 
 				&__title {
+					margin-bottom: desktop-vw(53px);
+
 					@include mobile {
-						text-align: right;
+						margin-bottom: mobile-vw(53px);
+					}
+
+					.H4{
+						font-size: desktop-vw(32px);
+						line-height: desktop-vw(32px);
+						text-transform: uppercase;
+						letter-spacing: desktop-vw(-0.32px);
+
+						@include mobile {
+							font-size: mobile-vw(32px);
+							line-height: mobile-vw(32px);
+							letter-spacing: mobile-vw(-0.32px);
+						}
+
 					}
 				}
 
 				&__text {
-					margin-left: columns(1.35);
-					margin-top: desktop-vw(30px);
+					margin-left: columns(1.15);
 					width: 65%;
 
 					@include mobile {
-						margin-top: mobile-vw(30px);
-						margin-left: auto;
-						width: 75%;
+						
+						margin-left: 0;
+						width: 100%;
+					}
+
+					.P2{
+
+						font-size: desktop-vw(17px);
+						line-height: desktop-vw(20px);
+
+						@include mobile {
+							font-size: mobile-vw(17px);
+							line-height: mobile-vw(20px);
+						}
+					}
+
+					ul{
+
+						li{
+							@include font-ITCFranklinGothicLT-BkCp();
+							font-size: desktop-vw(17px);
+							line-height: desktop-vw(20px);
+							font-weight: 400;
+							list-style-position: inside;
+
+							@include mobile {
+								font-size: mobile-vw(17px);
+								line-height: mobile-vw(20px);
+							}
+
+							&::marker{
+								font-size: desktop-vw(8px);
+
+								@include mobile {
+									font-size: mobile-vw(8px);
+								}
+							}
+						}
 					}
 				}
 			}
+
 			&__visual {
-				grid-column: 4 / span 4;
+				grid-column: 3 / span 5;
 				aspect-ratio: 460/550;
 				transform: rotate(5.5deg);
 				left: 0;
 				position: absolute;
-				top: desktop-vw(-100px);
+				top: desktop-vw(-140px);
 				grid-row: 2;
-				width: 100%;
+				width: 90%;
 
 				@include mobile {
-					grid-column: 1 / span 4;
+					grid-column: 1 / span 5;
 					top: 0;
-					aspect-ratio: 230/290;
-					top: mobile-vw(230px);
+					left: mobile-vw(20px);
+					aspect-ratio: 230/275;
+					top: mobile-vw(387px);
 				}
 
 				picture {
@@ -483,16 +606,18 @@ export default {
 
 		&__social-networks {
 			display: flex;
+			margin-left: columns(1.15);
 			margin-top: desktop-vw(36px);
 
 			@include mobile {
+				margin-left: 0;
 				margin-top: mobile-vw(24px);
 			}
 		}
 
 		&__social-network {
-			width: 56px;
-			height: 56px;
+			width: desktop-vw(56px);
+			height: desktop-vw(56px);
 			display: flex;
 			justify-content: center;
 			align-items: center;
@@ -501,6 +626,11 @@ export default {
 			border-bottom: 1px solid var(--c-black);
 			cursor: pointer;
 			position: relative;
+
+			@include mobile {
+				width: mobile-vw(56px);
+				height: mobile-vw(56px);
+			}
 
 			svg {
 				z-index: 1;

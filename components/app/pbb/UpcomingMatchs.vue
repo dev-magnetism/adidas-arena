@@ -1,17 +1,17 @@
 <template>
-	<div class="app-element-programmation-slider">
-		<div class="app-element-programmation-slider__heading grid-inner">
+	<div class="app-element-upcomingmatches-slider">
+		<div class="app-element-upcomingmatches-slider__heading grid-inner">
 			<ERichText
 				:split="true"
 				:scrub="false"
 				:overflow="true"
-				class="app-element-programmation-slider__heading__title"
+				class="app-element-upcomingmatches-slider__heading__title"
 				:content="contents.title"
 				tag="h3"
 			/>
 			<AtomsCTA
 				:href="contents.cta.link"
-				class="app-element-programmation-slider__cta"
+				class="app-element-upcomingmatches-slider__cta"
 			>
 				{{ contents.cta.label }}
 			</AtomsCTA>
@@ -21,12 +21,12 @@
 		<div
 			ref="wrapper"
 			:class="{ hold: cursorSliderHold }"
-			class="app-element-programmation-slider__wrapper"
+			class="app-element-upcomingmatches-slider__wrapper"
 			@mouseenter="setCursorState('slider')"
 			@mouseleave="setCursorState('hide')"
 			@click="onClickSlider"
 		>
-			<div class="app-element-programmation-slider__inner">
+			<div class="app-element-upcomingmatches-slider__inner">
 				<AppProgrammationSliderCard
 					v-for="(event, index) in contents.list"
 					:key="`programmation-slider-${index}`"
@@ -198,7 +198,7 @@ export default {
 </script>
 
 <style lang="scss">
-.app-element-programmation-slider {
+.app-element-upcomingmatches-slider {
   width: 100%;
   position: relative;
   margin-top: desktop-vw(130px);
@@ -216,10 +216,10 @@ export default {
   &__wrapper {
     width: 100%;
     overflow: hidden;
-    padding: desktop-vw(65px) 0;
+    padding: desktop-vw(50px) 0 desktop-vw(170px);
 
     @include mobile {
-      padding: mobile-vw(65px) 0;
+      padding: mobile-vw(32px) 0 mobile-vw(64px) ;
     }
   }
 
@@ -232,6 +232,22 @@ export default {
     @include mobile {
       column-gap: mobile-vw(30px);
     }
+
+    .app-programmation-slider-card{
+      flex: 0 0 30%;
+
+      @include mobile {
+        flex: 0 0 83%;
+      }
+    }
+
+    .app-programmation-slider-card:nth-child(2n+2){
+        top: desktop-vw(156px);
+
+        @include mobile {
+          top: mobile-vw(32px);
+        }
+    }
   }
 
   &__cta.app-atoms-cta {
@@ -241,7 +257,8 @@ export default {
     margin-left: auto;
 
     @include mobile {
-      display: none;
+      grid-column: 1 / span 6;
+      width: 100%;
     }
   }
 
@@ -261,11 +278,16 @@ export default {
 
     @include mobile {
       row-gap: 0px;
-      margin-bottom: mobile-vw(0px);
+      margin-bottom: mobile-vw(20px);
     }
 
     &__title {
       grid-column: 1 / span 8;
+
+
+      @include mobile {
+        margin-bottom: mobile-vw(25px);
+      }
 
       .app-atoms-stroke-text {
         -webkit-text-stroke: 1px var(--c-black);

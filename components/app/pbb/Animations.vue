@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import { gsap } from 'gsap'
 
 export default {
 	props: {
@@ -51,54 +50,6 @@ export default {
 			default: () => {},
 		},
 	},
-	mounted() {
-		//	this.initMatchMedia()
-	},
-	beforeDestroy() {
-		this.mm?.revert()
-	},
-	methods: {
-		initMatchMedia() {
-			this.mm = gsap.matchMedia()
-
-			this.mm.add('(min-width: 768px)', (context) => {
-				const tweenImageFirst = gsap.fromTo(
-					this.$refs.imageFirst.$el,
-					{
-						top: -300,
-					},
-					{
-						top: 0,
-						scrollTrigger: {
-							trigger: this.$refs.imageFirst.$el,
-							scrub: 0.5,
-							end: 'top bottom',
-						},
-					}
-				)
-				const tweenImageSecond = gsap.fromTo(
-					this.$refs.imageSecond.$el,
-					{
-						top: 300,
-					},
-					{
-						top: 0,
-						scrollTrigger: {
-							trigger: this.$refs.imageSecond.$el,
-							scrub: 0.5,
-							end: 'bottom top',
-						},
-					}
-				)
-
-				return () => {
-					tweenImageFirst?.kill()
-					tweenImageSecond?.kill()
-				}
-			})
-		},
-	},	
-
 }
 </script>
 
@@ -156,6 +107,7 @@ export default {
 		&__content {
 			position: relative;
 			grid-column: 4 / span 6;
+				left: columns(-0.25);
 
 			@include mobile {
 				grid-row: 2;

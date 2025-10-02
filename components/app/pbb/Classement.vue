@@ -319,11 +319,19 @@ export default {
 				width: auto;
 				height: desktop-vw(395px);
 				transform: translate(-50%, -50%);
+
+				@include mobile{
+					height: mobile-vw(167px);
+				}
 			}
 		}
 
 		&__content{
 			padding: 0 desktop-vw(40px);
+
+			@include mobile{
+				padding: 0 mobile-vw(16px);
+			}
 		}
 
 		&__menu{
@@ -335,7 +343,8 @@ export default {
 			justify-content: center;
 
 			@include mobile {
-				margin: 0 0 mobile-vw(60px);
+				margin: 0 0 mobile-vw(56px);
+				gap: mobile-vw(8px);
 			}
 
 			&__radio {
@@ -371,7 +380,9 @@ export default {
 					color: var(--c-white) !important;
 
 					@include mobile {
-						padding: mobile-vw(10px) mobile-vw(12px)
+						padding: mobile-vw(10px) mobile-vw(10px);
+						font-size: mobile-vw(16px);
+						letter-spacing: mobile-vw(-0.86px);
 					}
 				}
 
@@ -397,9 +408,20 @@ export default {
 		&__title{
 			margin: 0 0  desktop-vw(80px);
 
+			@include mobile{
+				margin: 0 0  mobile-vw(56px);
+			}
+
 			.H2{
+				font-size: desktop-vw(135px);
+				line-height: desktop-vw(135px);
 				color: var(--c-white) !important;
 				text-align: center;
+
+				@include mobile{
+					font-size: mobile-vw(80px);
+					line-height: mobile-vw(72px);
+				}
 
 				.line-parent{
 					display: flex !important;
@@ -435,12 +457,20 @@ export default {
 				max-width: 100%;
 				border-bottom: 1px solid var(--c-white);
 
+				@include mobile{
+					padding: 0 0 mobile-vw(24px);
+				}
+
 				tr{
 					display: flex;
 					flex-wrap: wrap;
 					margin: 0 desktop-vw(-12px);
 					justify-content: flex-start;
 					align-items: center;
+
+					@include mobile{
+						margin: 0 mobile-vw(-6px)
+					}
 				}
 
 				th{
@@ -450,6 +480,16 @@ export default {
 					text-transform: uppercase;
 					font-weight: 600;
 					@include font-ITCFranklinGothicLT-BkCp();
+
+					@include mobile{
+						padding: 0 mobile-vw(6px);
+						font-size: mobile-vw(18px);
+						line-height: mobile-vw(18px);
+
+						&.app-paris-basketball-classement__goal_average{
+							text-align: right;
+						}
+					}
 				}
 			}
 
@@ -473,6 +513,10 @@ export default {
 					background: linear-gradient(180deg, rgba(24, 24, 24, 0.00) 0%, #181818 82.3%);
 					opacity: 0;
 					transition: opacity 360ms ease-in-out;
+
+					@include mobile{
+						height: mobile-vw(160px);
+					}
 				}
 
 				&.closed{
@@ -495,6 +539,11 @@ export default {
 				align-items: center;
 				cursor: pointer;
 
+				@include mobile{
+					margin: 0 mobile-vw(-6px);
+					padding: mobile-vw(16px) 0;
+				}
+
 				td{
 					position:relative;
 					z-index: 1;
@@ -502,6 +551,11 @@ export default {
 					line-height: desktop-vw(17px);
 					text-transform: uppercase;
 					@include font-ITCFranklinGothicLT-BkCp();
+
+					@include mobile{
+						font-size: mobile-vw(14px);
+						line-height: mobile-vw(14px);
+					}
 				}
 
 				&:before{
@@ -514,6 +568,11 @@ export default {
 					height: 100%;
 					background-color: var(--c-black);
 					transition: background-color 360ms ease-in-out;
+
+					@include mobile{
+						left: mobile-vw(12px);
+						width: calc(100% -  mobile-vw(24px));
+					}
 				}
 
 				&:hover{
@@ -532,6 +591,12 @@ export default {
 					line-height: 0px;
 
 					background-color: rgba(245, 245, 243, 0.30);
+
+					@include mobile{
+						left: mobile-vw(12px);
+						width: calc(100% -  mobile-vw(24px));
+						height: mobile-vw(1px);
+					}
 				}
 			}
 
@@ -545,12 +610,23 @@ export default {
 				font-weight: 600;
 				border-bottom: 1px solid var(--c-white);
 				text-transform: uppercase;
+
+				@include mobile{
+					margin: mobile-vw(40px) auto 0;
+					font-size: mobile-vw(16px);
+					line-height: mobile-vw(24px);
+				}
 			}
 		}
 
 		&__num{
 			width: 6.804%;
 			padding: 0 desktop-vw(12px) 0  desktop-vw(20px);
+
+			@include mobile{
+				width: 10%;
+				padding: 0 mobile-vw(6px) 0  mobile-vw(10px);
+			}
 
 			&__container{
 				display: flex;
@@ -569,6 +645,10 @@ export default {
 				display: inline-block;
 				flex: 0 0 auto;
 				font-size: desktop-vw(16px);
+
+				@include mobile{
+					display: none;
+				}
 			}
 		}
 
@@ -578,12 +658,22 @@ export default {
 
 			padding: 0 desktop-vw(12px);
 
+			@include mobile{
+				padding: 0 mobile-vw(6px);
+			}
+
 			&__logo{
 				display: inline-block;
 				margin: 0 desktop-vw(16px) 0 0;
 				width: desktop-vw(48px);
 				height: desktop-vw(48px);
 				vertical-align: middle;
+
+				@include mobile{
+					margin: 0 mobile-vw(8px) 0 0;
+					width: mobile-vw(24px);
+					height: mobile-vw(24px);
+				}
 			}
 
 			&__name{
@@ -595,6 +685,10 @@ export default {
 		&__percent{
 			width: 6.804%;
 			text-align: center;
+
+			@include mobile{
+				width: 15%;
+			}
 		}
 
 		&__played{
@@ -646,6 +740,12 @@ export default {
 			width: 13.757%;
 			padding: 0 desktop-vw(20px) 0  desktop-vw(12px);
 			text-align: center;
+
+
+			@include mobile{
+				width: 18%;
+				padding: 0 mobile-vw(10px) 0  mobile-vw(12px);
+			}
 		}
 	}
 </style>

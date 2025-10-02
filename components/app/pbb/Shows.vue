@@ -1,15 +1,14 @@
 <template>
-	<div class="app-paris-basketball-abonnement grid-inner">
+	<div class="app-paris-basketball-shows grid-inner">
 
 		
-    	<div class="app-paris-basketball-abonnement__content">
+    	<div class="app-paris-basketball-shows__content">
 			<ERichText
 				ref="maintitle"
 				tag="h2"
 				weight="regular"
-				:split="false"
 				:content="contents.maintitle"
-				class="app-paris-basketball-abonnement__content__title"
+				class="app-paris-basketball-shows__content__title"
 			/>
 
 			<ERichText
@@ -17,7 +16,7 @@
 				tag="p"
 				weight="medium"
 				:content="contents.introduction"
-				class="app-paris-basketball-abonnement__content__introduction"
+				class="app-paris-basketball-shows__content__text"
 			/>
 
 			<ERichText
@@ -25,24 +24,17 @@
 				tag="p"
 				weight="medium"
 				:content="contents.detail"
-				class="app-paris-basketball-abonnement__content__text"
+				class="app-paris-basketball-shows__content__text"
 			/>
 
-			<AtomsCTA
-				:href="contents.cta.link"
-				class="app-paris-basketball-abonnement__content__cta"
-			>
-				{{ contents.cta.label }}
-			</AtomsCTA>
    		</div>
 
 		<div
-			ref="bigVisual"
+			ref="withFrame"
 			v-if="contents.pictureFramed?.src"
-			class="app-paris-basketball-abonnement__visual"
+			class="app-paris-basketball-shows__visual-frame"
 		>
 			<EKinesis :speed="5">
-				<AtomsCornerPoints :size-points="8" />
 				<AppPbbImage
 	                :src="contents.pictureFramed.src"
 	                :alt="contents.pictureFramed.alt"
@@ -52,11 +44,29 @@
 	                  mobile: 'w600,h600,fcrop,q85',
 	                }"
 	             />
-				
+				<ELottie id="Cadre_02" />
+			</EKinesis>
+    	</div>
+
+		<div
+			ref="withoutFrame"
+			v-if="contents.picture?.src"
+			class="app-paris-basketball-shows__visual"
+		>
+			<EKinesis :speed="5">
+				<AppPbbImage
+	                :src="contents.picture.src"
+	                :alt="contents.picture.alt"
+	                :lazy="true"
+	                :sizes="{
+	                  desktop: 'w600,h600,fcrop,q85',
+	                  mobile: 'w600,h600,fcrop,q85',
+	                }"
+	             />
 			</EKinesis>
     	</div>
 	</div>
-	
+
 </template>
 
 <script>
@@ -124,23 +134,73 @@ export default {
 					},
 					'texts'
 				)
+				.fromTo(
+					[this.$refs.introduction, this.$refs.detail.$el],
+					{
+						y: -30,
+					},
+					{
+						y: 0,
+						duration: 0.6,
+						ease: 'power3.out',
+					},
+					'texts+=15%'
+				)
+				.fromTo(
+					[this.$refs.introduction, this.$refs.detail.$el],
+					{
+						opacity: 0,
+					},
+					{
+						opacity: 1,
+						duration: 0.85,
+						ease: 'power3.out',
+					},
+					'texts+=15%'
+				)
 				.addLabel('visuals', 'texts')
 				.fromTo(
-					this.$refs.bigVisual,
+					this.$refs.withFrame,
 					{
 						y: '50%',
-						rotate: 10,
+						rotate: -10,
 					},
 					{
 						y: '0%',
-						rotate: 5,
+						rotate: -5,
 						duration: 0.5,
 						ease: 'power3.out',
 					},
 					'visuals'
 				)
 				.fromTo(
-					this.$refs.bigVisual,
+					this.$refs.withFrame,
+					{
+						opacity: 0,
+					},
+					{
+						opacity: 1,
+						duration: 0.55,
+						ease: 'power3.out',
+					},
+					'visuals+=5%'
+				)
+				.fromTo(
+					this.$refs.withoutFrame,
+					{
+						y: '50%',
+						rotate: -10,
+					},
+					{
+						y: '0%',
+						rotate: -5,
+						duration: 0.5,
+						ease: 'power3.out',
+					},
+					'visuals'
+				)
+				.fromTo(
+					this.$refs.withoutFrame,
 					{
 						opacity: 0,
 					},
@@ -158,7 +218,17 @@ export default {
 			this.mm.add('(min-width: 768px)', (context) => {
     			this.setAllowScroll(true)
 
-				const tweenBigVisual = gsap.to(this.$refs.bigVisual, {
+				const tweenWithFrame = gsap.to(this.$refs.withFrame, {
+					yPercent: -20,
+					rotate: 0,
+					scrollTrigger: {
+						trigger: this.$el,
+						scrub: 0.5,
+						start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
+					},
+				})
+
+				const tweenWithoutFrame = gsap.to(this.$refs.withoutFrame, {
 					yPercent: -20,
 					rotate: 0,
 					scrollTrigger: {
@@ -169,7 +239,8 @@ export default {
 				})
 
 				return () => {
-					tweenBigVisual?.kill()
+					tweenWithFrame?.kill()
+					tweenWithoutFrame?.kill()
 				}
 			})
 		},
@@ -181,96 +252,54 @@ export default {
 </script>
 
 <style lang="scss">
-	.app-paris-basketball-abonnement {
+	.app-paris-basketball-shows {
 		position: relative;
-		margin-bottom: desktop-vw(130px);
 		row-gap: desktop-vw(85px);
+		background-color: var(--c-black);
 
 		@include mobile {
-			margin-bottom: mobile-vw(130px);
 			overflow-x: hidden;
-			row-gap: mobile-vw(32px);
 		}
 
 		&__content {
-			grid-column: 1 / span 10;
-			grid-row: 1;
+			grid-column: 2 / span 4;
 
 			@include mobile {
 				grid-column: 1 / span 6;
-				grid-row: 2;
 			}
 
 			&__title {
-				margin-bottom: desktop-vw(40px);
-
-				@include mobile{
-					margin-bottom: mobile-vw(40px);
-				}
-
+				margin: 0 0 desktop-vw(25px);
 				.H2{
-					@include font-ITCFranklinGothicLT-BkCp();
-					font-size: desktop-vw(135px);
-					line-height: desktop-vw(135px);
-					font-weight: 400;
-					letter-spacing: desktop-vw(-4.05px);
+					color: var(--c-white) !important;
 
-					@include mobile{
-						font-size: mobile-vw(64px);
-						line-height: mobile-vw(64px);
-						letter-spacing: mobile-vw(-1.92px);
+					.app-atoms-stroke-text{
+						-webkit-text-stroke: 1px var(--c-white);
+						-webkit-text-fill-color: transparent;
 					}
 
-					strong{
-						display: unset !important;
-						font-weight: 600;
-					}
 				}
 			}
 
 			&__introduction {
-				margin: 0 0 desktop-vw(41px) desktop-vw(115px);
-				width: 30%;
-
-				text-transform: uppercase;
-
-				@include mobile {
-					margin: 0 auto mobile-vw(20px);
-					width: 100%;
-				}
+				margin: 0 0 desktop-vw(25px);
 
 				.P2{
 
-					font-size: desktop-vw(18px);
-					line-height: desktop-vw(20px);
-
-					@include mobile {
-						font-size: mobile-vw(18px);
-						line-height: mobile-vw(20px);
-					}
+					color: var(--c-white) !important;
+					text-transform: uppercase;
 				}
-
 
 			}
 
 			&__text {
-				margin: 0 0 desktop-vw(064px) desktop-vw(115px);
-				width: 30%;
-
-				@include mobile {
-					margin: 0 auto mobile-vw(20px);
-					width: 100%;
-				}
+				
 
 				.P2{
-
-					font-size: desktop-vw(17px);
+					margin: 0 0 desktop-vw(20px);
+					font-size: desktop-vw(18px);
 					line-height: desktop-vw(20px);
-
-					@include mobile {
-						font-size: mobile-vw(17px);
-						line-height: mobile-vw(20px);
-					}
+					color: var(--c-white) !important;
 				}
 
 				ul{
@@ -280,52 +309,33 @@ export default {
 						font-size: desktop-vw(17px);
 						line-height: desktop-vw(20px);
 						font-weight: 400;
+						color: var(--c-white);
 						list-style-position: inside;
-
-						@include mobile {
-							font-size: mobile-vw(17px);
-							line-height: mobile-vw(20px);
-						}
 
 						&::marker{
 							font-size: desktop-vw(8px);
-
-							@include mobile {
-								font-size: mobile-vw(8px);
-							}
 						}
 					}
 				}
 			}
 
-			&__cta{
-				margin: 0 0 desktop-vw(20px) desktop-vw(115px);
-				width: 25%;
-
-				@include mobile {
-					margin: 0 0 mobile-vw(20px);
-					width: 66%;
-				}
-
-			}
 		}
-		&__visual {
+		&__visual-frame {
 			position: relative;
-			grid-column: 8 / span 7;
-			aspect-ratio: 669 / 680;
-			left: columns(-1);
-			margin-top: desktop-vw(400px);
-			transform: rotate(5deg);
+			grid-column: 6 / span 4;
+			aspect-ratio: 440 / 548;
+			margin-top: desktop-vw(206px);
+			transform: rotate(-5deg);
 			grid-row: 1;
 
 			@include mobile {
 				grid-column: 2 / span 5;
-				left: columns(-0.25);
+				left: 0;
 				top: 0;
-				grid-row: 1;
+				grid-row: 2;
 				margin-top: mobile-vw(20px);
-				aspect-ratio: 325/330;
-				margin-bottom: mobile-vw(45px);
+				aspect-ratio: 270/320;
+				margin-bottom: mobile-vw(185px);
 			}
 
 			picture {
@@ -333,6 +343,40 @@ export default {
 				@include noise();
 			}
 
+			svg,
+			canvas {
+				position: absolute;
+				top: 50%;
+				left: 0;
+				height: 115% !important;
+				width: auto !important;
+				left: 50%;
+				transform: translate(-50%, -50%) rotate(4deg) !important;
+			}
+		}
+
+		&__visual {
+			position: relative;
+			grid-column: 11 / span 2;
+			aspect-ratio: 250 / 340;
+			left: columns(-2);
+			transform: rotate(-5deg);
+			grid-row: 1;
+
+			@include mobile {
+				grid-column: 2 / span 5;
+				left: 0;
+				top: 0;
+				grid-row: 2;
+				margin-top: mobile-vw(20px);
+				aspect-ratio: 270/320;
+				margin-bottom: mobile-vw(185px);
+			}
+
+			picture {
+				z-index: 0;
+				@include noise();
+			}
 		}
 	}
 </style>

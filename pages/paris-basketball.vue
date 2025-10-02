@@ -25,6 +25,10 @@
 		<AppPbbMCs :contents="contentMCs" />
 		<AppPbbDJ :contents="contentDJ" />
 		<AppPbbAnimations :contents="contentAnimations" />
+		<AppPbbShows :contents="contentShows" />
+		<AppPbbExperience :contents="contentExperience" />
+		<AppPbbHypeTeam :contents="contentHypeTeam" />
+		<AppPbbGallery :contents="contentGallery" />
 
     	<AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
 	</main>
@@ -611,9 +615,84 @@ export default {
 				]
 			}
 		},
+		contentExperience() {
+			return {
+				maintitle: `<h2 class="H2 wysiwyg-text" style="font-size: 100px;"><strong>L'expérience</strong><br/>Paris Basketball</h2>`,
+				bloc1: {
+					title: `<h4 class="H4 wysiwyg-text" style="font-size: 18px;">KOPP PARISII</h4>`,
+					paragraph: `
+						<p class="P2 wysiwyg-text">
+							Pas seulement un groupe de supporters, c’est une véritable famille unie par l’amour du basket et au rayonnement du Basketball parisien.<br/>
+							Depuis la création du club, les Parisii sont le cœur de l’ambiance au Paris Basketball, soutenant l’équipe à chaque match depuis Carpentier.
+							<br/><br/>
+							Ils ont aujourd’hui leur propre espace à l’adidas arena, continuant d’apporter leur soutien indéfectible. Leur passion et leur énergie sont une partie essentielle de notre histoire et de nos valeurs.
+							<br/><br/>
+							<strong>Envie de rejoindre le KOPP PARISII ?</strong>
+						</p>
+					`,
+					cta: {
+						label: 'Rejoindre le KOP',
+						url: '#'
+					}
+				},
+				bloc2: {
+					title: `<h4 class="H4 wysiwyg-text" style="font-size: 32px;">HYPE TEAM</h4>`,
+					subtitle: `<h5 class="H5 wysiwyg-text" style="font-size: 18px;">DES SOIRS DE MATCHS ENFLAMMÉS<br/> PAR NOTRE HYPE TEAM</h5>`,
+			
+					paragraph: `
+						<p class="P2 wysiwyg-text">
+							La HYPE Team est un collectif de danseurs breakers qui offrent des spectacles époustouflants à chaque soir de match. Leur énergie débordante et leurs acrobaties spectaculaires ajoutent une dimension excitante à l’expérience des spectateurs.
+							<br/><br/>
+							En plus de divertir le public avec leurs performances, ils offrent également de nombreux cadeaux tout au long du match, créant ainsi une atmosphère de fête et de célébration dans les gradins. Leur interaction avec le public, empreinte d’humour et de dynamisme, les rend incontournables lors de nos événements, où ils accompagnent les spectateurs dans divers jeux et animations.
+						</p>
+					`,
+				},
+				pictureFramed: {
+					src: 'imgs/pbb/introduction-projet.jpg',
+					alt: 'Le projet',
+				},
+				picture: {
+					src: 'imgs/pbb/introduction-projet.jpg',
+					alt: 'le Club',
+				},
+			}
+		},
+		contentGallery() {
+			return{
+				items:[
+					{	
+						picture: '/imgs/pbb/entertainment-visuel01.jpg',
+						title: 'John Doe',
+					},
+					{	
+						picture: '/imgs/pbb/entertainment-visuel01.jpg',
+						title: 'John Doe',
+					},
+					{	
+						picture: '/imgs/pbb/entertainment-visuel01.jpg',
+						title: 'John Doe',
+					},
+					{	
+						picture: '/imgs/pbb/entertainment-visuel01.jpg',
+						title: 'John Doe',
+					}
+				]
+			}
+		},
+		contentHypeTeam() {
+			return{
+
+				text: `
+					<p class="P2 wysiwyg-text">
+						<span id="Cercle_1" class="lottie-word" style="color: blue;"><strong>Prêts à danser</strong></span>,<br/><span style="text-decoration: underline;">chanter et jouer</span><br/> avec notre hype team ?
+					</p>
+				`
+
+			}
+		},
 		contentIntroduction() {
 			return {
-				maintitle: `<h2 class="H2 wysiwyg-text" style="font-size: 100px;"><strong>Paris</strong> Basketball</h2>`,
+				maintitle: `<h2 class="H2 wysiwyg-text" style="font-size: 100px;"><strong>Paris</strong><br/><span id="Cercle_2" class="lottie-word" style="color: blue;">Basketball</span></h2>`,
 				title1: `<h4 class="H4 wysiwyg-text" style="font-size: 32px;">Le projet</h4>`,
 				paragraph1: `
 					<p class="P2 wysiwyg-text">
@@ -637,6 +716,7 @@ export default {
 						<li>Green Game</li>
 					</ul>
 					<p class="P2 wysiwyg-text">
+						<br/>
 						Installé depuis février 2024 à l’adidas arena, le Paris Basketball passe un nouveau cap : continuer d’asseoir sa place dans le basket français et mondial.
 					</p>
 					<p class="P2 wysiwyg-text">
@@ -664,7 +744,7 @@ export default {
 		},
 		contentMatchs() {
 			return {
-				title: `Prochains matchs`,
+				title: `<h2 class="H2 wysiwyg-text" style="font-size: 100px;"><span class="app-atoms-stroke-text wysiwyg-stroke">Prochains</span> matchs</h2>`,
 				cta: {
 					label: `Voir tout`,
 					link: `/programmation?categorie=paris-basketball`
@@ -756,6 +836,37 @@ export default {
 				}
 			}
 		},
+		contentShows() {
+			return {
+				maintitle: `<h2 class="H2 wysiwyg-text" style="font-size: 100px;"><strong>des shows</strong><br/><span class="app-atoms-stroke-text wysiwyg-stroke">made in paris</span></h2>`,
+				introduction: `
+					<p class="P2 wysiwyg-text">
+						<strong>
+							Vivez un mélange unique lors de nos matchs, comme l’inoubliable défilé de mode lors de la réception de l’AS Monaco en janvier 2024 à l’Accor Arena ou encore le showcase de Zola pour l’inauguration de l’adidas Arena en février 2024.
+						</strong>
+					</p>
+				`,
+				detail: `
+					<p class="P2 wysiwyg-text">
+						De nombreux matchs à thèmes sont encore au programme cette saison :
+					</p>
+					<ul>
+						<li>Christmas Game</li>
+						<li>Student Game</li>
+						<li>Africa Game</li>
+						<li>Fan Game</li>
+					</ul>
+				`,
+				pictureFramed: {
+					src: 'imgs/pbb/introduction-projet.jpg',
+					alt: 'Le projet',
+				},
+				picture: {
+					src: 'imgs/pbb/introduction-projet.jpg',
+					alt: 'Le projet',
+				},
+			}
+		},
 	},
 
 	mounted() {
@@ -770,13 +881,24 @@ export default {
 		margin-top: desktop-vw(208px);
 
 		@include mobile {
-	   		margin-top: mobile-vw(115px);
+	   		margin-top: mobile-vw(158px);
 		}
 
 		&-backlogo{
 			position: absolute;
-			top: desktop-vw(0px);
-			left: desktop-vw(0px);
+			top: 0;
+			left: 0;
+
+			@include mobile {
+				left: mobile-vw(-90px);
+			}
+
+			svg{
+				@include mobile {
+			   		width: 120%;
+			   		height: auto;
+				}
+			}
 		}
 	}
 

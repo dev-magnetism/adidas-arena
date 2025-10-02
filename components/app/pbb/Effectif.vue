@@ -183,11 +183,19 @@
 				width: auto;
 				height: desktop-vw(395px);
 				transform: translate(-50%, -50%);
+
+				@include mobile{
+					height: mobile-vw(167px);
+				}
 			}
 		}
 
 		&__title{
-			margin: 0 0  desktop-vw(80px);
+			margin: 0 0 desktop-vw(80px);
+
+			@include mobile{
+				margin: 0 0 mobile-vw(32px);
+			}
 
 			.H2{
 				color: var(--c-white) !important;
@@ -209,6 +217,10 @@
 
 		&__content{
 			padding: 0 desktop-vw(40px);
+
+			@include mobile{
+				padding: 0 mobile-vw(16px);
+			}
 		}
 
 		&__players{
@@ -217,6 +229,10 @@
 			margin: 0 desktop-vw(-12px);
 			justify-content: flex-start;
 			align-items: flext-start;
+
+			@include mobile{
+				margin: 0 mobile-vw(-6px);
+			}
 		}
 
 		&__player{
@@ -225,9 +241,18 @@
 			flex: 0 0 33.333%;
 			padding: desktop-vw(12px);
 
+			@include mobile{
+				flex: 0 0 50%;
+				padding: mobile-vw(6px);
+			}
+
 			&__content{
 				position:relative;
 				padding: desktop-vw(4px);
+
+				@include mobile{
+					padding: mobile-vw(4px);
+				}
 
 				&:hover{
 
@@ -237,6 +262,10 @@
 						color: #5a5a5a;
 						left: desktop-vw(4px);
 						transform: translateX(0);
+
+						@include mobile{
+							left: mobile-vw(4px);
+						}
 					}
 					.app-paris-basketball-effectif__player__number{
 						color: #878686;
@@ -251,6 +280,11 @@
 						top: desktop-vw(4px);
 						left: desktop-vw(4px);
 						transform: translateX(0);
+
+						@include mobile{
+							top: mobile-vw(4px);
+							left: mobile-vw(4px);
+						}
 					}
 
 					.app-paris-basketball-effectif__player__sheet{
@@ -275,6 +309,13 @@
 					left: desktop-vw(4px);
 					height: desktop-vw(1px);
 					width: calc(100% - desktop-vw(8px));
+
+					@include mobile{
+						top: mobile-vw(4px);
+						left: mobile-vw(4px);
+						height: mobile-vw(1px);
+						width: calc(100% - mobile-vw(8px));
+					}
 				}
 
 				&:nth-of-type(6){
@@ -282,6 +323,13 @@
 					right: desktop-vw(4px);
 					height: calc(100% - desktop-vw(8px));
 					width: desktop-vw(1px);
+
+					@include mobile{
+						top: mobile-vw(4px);
+						right: mobile-vw(4px);
+						height: calc(100% - mobile-vw(8px));
+						width: mobile-vw(1px);
+					}
 				}
 
 				&:nth-of-type(7){
@@ -290,6 +338,13 @@
 					right: desktop-vw(4px);
 					height: desktop-vw(1px);
 					width: calc(100% - desktop-vw(8px));
+
+					@include mobile{
+						bottom: mobile-vw(4px);
+						right: mobile-vw(4px);
+						height: mobile-vw(1px);
+						width: calc(100% - mobile-vw(8px));
+					}
 				}
 
 				&:nth-of-type(8){
@@ -298,6 +353,13 @@
 					left: desktop-vw(4px);
 					height: calc(100% - desktop-vw(8px));
 					width: desktop-vw(1px);
+
+					@include mobile{
+						bottom: mobile-vw(4px);
+						left: mobile-vw(4px);
+						height: calc(100% - mobile-vw(8px));
+						width: mobile-vw(1px);
+					}
 				}
 			}
 
@@ -320,6 +382,17 @@
 				text-transform: uppercase;
 				white-space: nowrap;
 				transition: all 240ms ease-in-out;
+
+				@include mobile{
+					left: mobile-vw(4px);
+					bottom: mobile-vw(4px);
+					transform: unset;
+					width: calc(100% - mobile-vw(8px));
+					padding: mobile-vw(8px) mobile-vw(8px);
+					font-size: mobile-vw(24px);
+					line-height: mobile-vw(24px);
+					letter-spacing: mobile-vw(-0.96px);
+				}
 			}
 
 			&__number{
@@ -336,6 +409,14 @@
 				letter-spacing: desktop-vw(1.1px);
 				opacity: .5;
 				transition: all 360ms ease-in-out;
+
+				@include mobile{
+					right: mobile-vw(11px);
+					top: mobile-vw(11px);
+					font-size: mobile-vw(56px);
+					line-height: mobile-vw(56px);
+					letter-spacing: mobile-vw(0.56px);
+				}
 			}
 
 			&__picture{
@@ -369,6 +450,16 @@
 				letter-spacing: desktop-vw(-1.92px);
 				text-transform: uppercase;				
 				transition: all 120ms ease-in-out;
+
+				@include mobile{
+					top: mobile-vw(4px);
+					left: mobile-vw(4px);
+					transform: unset;
+					padding: mobile-vw(8px) mobile-vw(8px);
+					font-size: mobile-vw(14px);
+					line-height: mobile-vw(14px);
+					letter-spacing: mobile-vw(-0.56px);
+				}
 			}
 
 			&__sheet{
@@ -383,6 +474,13 @@
 				align-items: center;
 				opacity: 0;
 				transition: opacity 360ms ease-in-out;
+
+				@include mobile{
+					top: mobile-vw(4px);
+					right: mobile-vw(4px);
+					bottom: mobile-vw(4px);
+					left: mobile-vw(4px);
+				}
 			}
 
 			&__square{
@@ -392,6 +490,11 @@
 				width: desktop-vw(8px);
 				background-color: var(--c-white);
 				line-height: 0;
+
+				@include mobile{
+					height: mobile-vw(8px);
+					width: mobile-vw(8px);
+				}
 
 				&:nth-of-type(1){
 					top: 0;
@@ -424,6 +527,13 @@
 			border-bottom: 1px solid var(--c-white);
 			text-transform: uppercase;
 			cursor: pointer;
+
+
+			@include mobile{
+				margin: mobile-vw(40px) auto 0;
+				font-size: mobile-vw(16px);
+				line-height: mobile-vw(24px);
+			}
 		}
 
 	}
