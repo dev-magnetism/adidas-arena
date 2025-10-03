@@ -362,11 +362,9 @@ export default {
     gzip: {
       threshold: 1024,
       cache: true,
-      minLength: 1024,
     },
     brotli: {
       threshold: 1024,
-      minLength: 1024,
     },
   },
 
