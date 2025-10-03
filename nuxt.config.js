@@ -39,6 +39,22 @@ export default {
         content: 'sCUfvG-_I5Fmsll2gdkBf35SJrj3BEnNWilC4NsuG1Q',
       },
       {
+        name: 'description',
+        content: 'Adidas Arena - La nouvelle arène parisienne pour le sport et les spectacles. Découvrez notre programmation, nos événements et notre expérience unique.'
+      },
+      {
+        property: 'og:type',
+        content: 'website'
+      },
+      {
+        property: 'og:locale',
+        content: 'fr_FR'
+      },
+      {
+        name: 'twitter:site',
+        content: '@adidasarena'
+      },
+      {
         name: 'smartbanner:api',
         content: 'true'
       },
@@ -91,7 +107,16 @@ export default {
         content: 'Fermer'
       },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'preload', href: '/fonts/ITCFranklinGothicLT-DmCp/ITCFranklinGothicLT-DmCp.woff2', as: 'font', type: 'font/woff2', crossorigin: '' },
+      { rel: 'preload', href: '/fonts/ITCFranklinGothicLT-BkCp/ITCFranklinGothicLT-BkCp.woff2', as: 'font', type: 'font/woff2', crossorigin: '' },
+      { rel: 'preload', href: '/fonts/ITCFranklinGothicStd-DmCp/ITCFranklinGothicStd-DmCp.woff2', as: 'font', type: 'font/woff2', crossorigin: '' },
+      { rel: 'dns-prefetch', href: 'https://adidasarena.directus.app' },
+      { rel: 'dns-prefetch', href: 'https://www.accorarena.com' },
+      { rel: 'preconnect', href: 'https://adidasarena.directus.app', crossorigin: '' },
+      { rel: 'preconnect', href: 'https://www.accorarena.com', crossorigin: '' }
+    ],
   },
 
   publicRuntimeConfig: {
@@ -112,7 +137,11 @@ export default {
     { src: '~/plugins/utils.js' },
     { src: '~/plugins/raf.js', mode: 'client' },
     { src: '~/plugins/viewport.js', mode: 'client' },
-    { src: '~/plugins/smartbanner.min.js', mode: 'client' }
+    { src: '~/plugins/smartbanner.min.js', mode: 'client' },
+    { src: '~/plugins/webgl-optimization.js', mode: 'client' },
+    { src: '~/plugins/structured-data.js' },
+    { src: '~/plugins/lazy-loading.js', mode: 'client' },
+    { src: '~/plugins/cache-optimization.js', mode: 'client' }
   ],
 
   // vue: {
@@ -334,11 +363,13 @@ export default {
 
   'nuxt-compress': {
     gzip: {
-      // threshold: 8192,
+      threshold: 1024,
       cache: true,
+      minLength: 1024,
     },
     brotli: {
-      threshold: 10240,
+      threshold: 1024,
+      minLength: 1024,
     },
   },
 
@@ -373,22 +404,89 @@ export default {
   render: {
     bundleRenderer: {
       shouldPreload: (file, type) => {
-        return ['script', 'style', 'font'].includes(type)
+        // Précharger les ressources critiques
+        if (type === 'script') {
+          return file.includes('app') || file.includes('vendor')
+        }
+        if (type === 'style') {
+          return true
+        }
+        if (type === 'font') {
+          return file.includes('ITCFranklinGothic')
+        }
+        return false
+      },
+      shouldPrefetch: (file, type) => {
+        // Préfetcher les ressources non critiques
+        if (type === 'script') {
+          return file.includes('chunk') && !file.includes('app')
+        }
+        return false
       },
     },
+    // Optimiser les ressources statiques
+    static: {
+      maxAge: '1y',
+      etag: true,
+      lastModified: true
+    }
   },
 
   loading: false,
 
   build: {
     extractCSS: true,
+    optimization: {
+      splitChunks: {
+        layouts: true,
+        pages: true,
+        commons: true,
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10
+          },
+          webgl: {
+            test: /[\\/]node_modules[\\/](three|gsap)[\\/]/,
+            name: 'webgl',
+            chunks: 'all',
+            priority: 20
+          }
+        }
+      }
+    },
     transpile: ['three', 'gsap', '@studio-freight/lenis'],
+    terser: {
+      terserOptions: {
+        compress: {
+          drop_console: process.env.NODE_ENV === 'production',
+          drop_debugger: process.env.NODE_ENV === 'production'
+        },
+        mangle: true
+      }
+    },
     extend(config, ctx) {
       config.resolve.alias.vue = 'vue/dist/vue.common'
       config.module.rules.push({
         test: /\.(glsl|vs|fs)$/,
         use: [{ loader: 'raw-loader' }, { loader: 'glslify-loader' }],
       })
+      
+      // Optimiser les chunks
+      if (ctx.isClient) {
+        config.optimization.splitChunks.cacheGroups = {
+          ...config.optimization.splitChunks.cacheGroups,
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10
+          }
+        }
+      }
     },
   },
 }

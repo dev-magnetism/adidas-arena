@@ -1,26 +1,29 @@
 @font-face {
   font-family: "ITCFranklinGothicLT-BkCp";
-  src: url("~assets/fonts/ITCFranklinGothicLT-BkCp/ITCFranklinGothicLT-BkCp.woff")format("woff"),
-    url("~assets/fonts/ITCFranklinGothicLT-BkCp/ITCFranklinGothicLT-BkCp.woff2")format("woff2");
+  src: url("~assets/fonts/ITCFranklinGothicLT-BkCp/ITCFranklinGothicLT-BkCp.woff2") format("woff2"),
+    url("~assets/fonts/ITCFranklinGothicLT-BkCp/ITCFranklinGothicLT-BkCp.woff") format("woff");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
   font-family: "ITCFranklinGothicLT-DmCp";
-  src: url("~assets/fonts/ITCFranklinGothicLT-DmCp/ITCFranklinGothicLT-DmCp.woff")format("woff"),
-    url("~assets/fonts/ITCFranklinGothicLT-DmCp/ITCFranklinGothicLT-DmCp.woff2")format("woff2");
+  src: url("~assets/fonts/ITCFranklinGothicLT-DmCp/ITCFranklinGothicLT-DmCp.woff2") format("woff2"),
+    url("~assets/fonts/ITCFranklinGothicLT-DmCp/ITCFranklinGothicLT-DmCp.woff") format("woff");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
   font-family: "ITCFranklinGothicLT-DmXtraCp";
-  src: url("~assets/fonts/ITCFranklinGothicLT-DmXtraCp/ITCFranklinGothicLT-DmXtraCp.woff")format("woff"),
-    url("~assets/fonts/ITCFranklinGothicLT-DmXtraCp/ITCFranklinGothicLT-DmXtraCp.woff2")format("woff2");
+  src: url("~assets/fonts/ITCFranklinGothicLT-DmXtraCp/ITCFranklinGothicLT-DmXtraCp.woff2") format("woff2"),
+    url("~assets/fonts/ITCFranklinGothicLT-DmXtraCp/ITCFranklinGothicLT-DmXtraCp.woff") format("woff");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }

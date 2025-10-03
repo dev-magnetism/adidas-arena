@@ -1,9 +1,14 @@
 <template>
-  <!-- sizes="sm:35vw md:15vw" -->
-  <picture class="app-tonnomsurlarena-image">
-    <source media="(min-width: 768px)" :srcset="srcDesktop" />
-    <img :src="srcMobile" :alt="alt" :loading="lazy ? 'lazy' : 'eager'" />
-  </picture>
+  <nuxt-picture
+    class="app-tonnomsurlarena-image"
+    :src="optimizedSrc"
+    :alt="alt"
+    :loading="lazy ? 'lazy' : 'eager'"
+    format="webp"
+    :sizes="sizesString"
+    quality="85"
+    :placeholder="tiny"
+  />
 </template>
 
 <script>
@@ -27,17 +32,17 @@ export default {
     },
     sizes: {
       type: Object,
-      default: () => {},
+      default: () => ({ desktop: '800x600', mobile: '400x300' }),
     },
   },
   computed: {
-    srcDesktop() {
-      const src = this.src
-      return `imgs/tonnomsurlarena/${src}`
+    optimizedSrc() {
+      // Utiliser les images locales optimisées
+      return `imgs/tonnomsurlarena/${this.src}`
     },
-    srcMobile() {
-      const src = this.src
-      return `imgs/tonnomsurlarena/${src}`
+    sizesString() {
+      // Convertir les tailles en format responsive
+      return 'sm:50vw md:40vw lg:30vw'
     },
   },
 }

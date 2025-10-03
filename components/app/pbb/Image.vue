@@ -1,9 +1,14 @@
 <template>
-  <!-- sizes="sm:35vw md:15vw" -->
-  <picture class="app-paris-basketball-image picture-absolute">
-    <source media="(min-width: 768px)" :srcset="srcDesktop" />
-    <img :src="srcMobile" :alt="alt" :loading="lazy ? 'lazy' : 'eager'" />
-  </picture>
+  <nuxt-picture
+    class="app-paris-basketball-image picture-absolute"
+    :src="src"
+    :alt="alt"
+    :loading="lazy ? 'lazy' : 'eager'"
+    format="webp"
+    :sizes="sizesString"
+    quality="85"
+    :placeholder="tiny"
+  />
 </template>
 
 <script>
@@ -27,17 +32,13 @@ export default {
     },
     sizes: {
       type: Object,
-      default: () => {},
+      default: () => ({ desktop: '800x600', mobile: '400x300' }),
     },
   },
   computed: {
-    srcDesktop() {
-      const src = this.src
-      return `${src}`
-    },
-    srcMobile() {
-      const src = this.src
-      return `${src}`
+    sizesString() {
+      // Convertir les tailles en format responsive
+      return 'sm:50vw md:40vw lg:30vw'
     },
   },
 }
