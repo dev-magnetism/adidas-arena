@@ -138,10 +138,7 @@ export default {
     { src: '~/plugins/raf.js', mode: 'client' },
     { src: '~/plugins/viewport.js', mode: 'client' },
     { src: '~/plugins/smartbanner.min.js', mode: 'client' },
-    { src: '~/plugins/webgl-optimization.js', mode: 'client' },
-    { src: '~/plugins/structured-data.js' },
-    { src: '~/plugins/lazy-loading.js', mode: 'client' },
-    { src: '~/plugins/cache-optimization.js', mode: 'client' }
+    { src: '~/plugins/structured-data.js' }
   ],
 
   // vue: {
@@ -436,28 +433,6 @@ export default {
 
   build: {
     extractCSS: true,
-    optimization: {
-      splitChunks: {
-        layouts: true,
-        pages: true,
-        commons: true,
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-            priority: 10
-          },
-          webgl: {
-            test: /[\\/]node_modules[\\/](three|gsap)[\\/]/,
-            name: 'webgl',
-            chunks: 'all',
-            priority: 20
-          }
-        }
-      }
-    },
     transpile: ['three', 'gsap', '@studio-freight/lenis'],
     terser: {
       terserOptions: {
@@ -475,15 +450,23 @@ export default {
         use: [{ loader: 'raw-loader' }, { loader: 'glslify-loader' }],
       })
       
-      // Optimiser les chunks
+      // Optimiser les chunks pour le client uniquement
       if (ctx.isClient) {
-        config.optimization.splitChunks.cacheGroups = {
-          ...config.optimization.splitChunks.cacheGroups,
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-            priority: 10
+        config.optimization.splitChunks = {
+          chunks: 'all',
+          cacheGroups: {
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              chunks: 'all',
+              priority: 10
+            },
+            webgl: {
+              test: /[\\/]node_modules[\\/](three|gsap)[\\/]/,
+              name: 'webgl',
+              chunks: 'all',
+              priority: 20
+            }
           }
         }
       }

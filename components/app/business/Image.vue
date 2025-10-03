@@ -1,14 +1,14 @@
 <template>
-  <nuxt-picture
-    class="app-business-offers__card-image"
-    :src="optimizedSrc"
-    :alt="alt"
-    :loading="lazy ? 'lazy' : 'eager'"
-    format="webp"
-    :sizes="sizesString"
-    quality="85"
-    :placeholder="tiny"
-  />
+  <picture class="app-business-offers__card-image">
+    <source media="(min-width: 768px)" :srcset="srcDesktop" />
+    <img 
+      :src="srcMobile" 
+      :alt="alt" 
+      :loading="lazy ? 'lazy' : 'eager'"
+      :decoding="lazy ? 'async' : 'sync'"
+      :fetchpriority="lazy ? 'low' : 'high'"
+    />
+  </picture>
 </template>
 
 <script>
@@ -36,13 +36,13 @@ export default {
     },
   },
   computed: {
-    optimizedSrc() {
-      // Utiliser l'URL optimisée d'Accor Arena
-      return `https://www.accorarena.com/uploads/aha/generated/${this.sizes.desktop}/${this.src}`
+    srcDesktop() {
+      const src = this.src
+      return `https://www.accorarena.com/uploads/aha/generated/${this.sizes.desktop}/${src}`
     },
-    sizesString() {
-      // Convertir les tailles en format responsive
-      return 'sm:50vw md:40vw lg:30vw'
+    srcMobile() {
+      const src = this.src
+      return `https://www.accorarena.com/uploads/aha/generated/${this.sizes.mobile}/${src}`
     },
   },
 }

@@ -1,14 +1,14 @@
 <template>
-  <nuxt-picture
-    class="app-paris-basketball-image picture-absolute"
-    :src="src"
-    :alt="alt"
-    :loading="lazy ? 'lazy' : 'eager'"
-    format="webp"
-    :sizes="sizesString"
-    quality="85"
-    :placeholder="tiny"
-  />
+  <picture class="app-paris-basketball-image picture-absolute">
+    <source media="(min-width: 768px)" :srcset="src" />
+    <img 
+      :src="src" 
+      :alt="alt" 
+      :loading="lazy ? 'lazy' : 'eager'"
+      :decoding="lazy ? 'async' : 'sync'"
+      :fetchpriority="lazy ? 'low' : 'high'"
+    />
+  </picture>
 </template>
 
 <script>
@@ -33,12 +33,6 @@ export default {
     sizes: {
       type: Object,
       default: () => ({ desktop: '800x600', mobile: '400x300' }),
-    },
-  },
-  computed: {
-    sizesString() {
-      // Convertir les tailles en format responsive
-      return 'sm:50vw md:40vw lg:30vw'
     },
   },
 }
