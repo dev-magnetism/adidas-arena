@@ -16,7 +16,7 @@
 				tag="p"
 				weight="medium"
 				:content="contents.introduction"
-				class="app-paris-basketball-shows__content__text"
+				class="app-paris-basketball-shows__content__introduction"
 			/>
 
 			<ERichText
@@ -259,6 +259,7 @@ export default {
 
 		@include mobile {
 			overflow-x: hidden;
+			row-gap: mobile-vw(85px);
 		}
 
 		&__content {
@@ -270,8 +271,21 @@ export default {
 
 			&__title {
 				margin: 0 0 desktop-vw(25px);
+
+				@include mobile{
+					margin: 0 0 mobile-vw(25px);
+				}
+
+
 				.H2{
+					font-size: desktop-vw(100px);
+					line-height: desktop-vw(90px);
 					color: var(--c-white) !important;
+
+					@include mobile{
+						font-size: mobile-vw(64px);
+						line-height: mobile-vw(57px);
+					}
 
 					.app-atoms-stroke-text{
 						-webkit-text-stroke: 1px var(--c-white);
@@ -284,10 +298,20 @@ export default {
 			&__introduction {
 				margin: 0 0 desktop-vw(25px);
 
-				.P2{
+				@include mobile{
+					margin: 0 0 mobile-vw(25px);
+				}
 
+				.P2{
+					font-size: desktop-vw(18px);
+					line-height: desktop-vw(20px);
 					color: var(--c-white) !important;
 					text-transform: uppercase;
+
+					@include mobile{
+						font-size: mobile-vw(18px);
+						line-height: mobile-vw(20px);
+					}
 				}
 
 			}
@@ -297,9 +321,15 @@ export default {
 
 				.P2{
 					margin: 0 0 desktop-vw(20px);
-					font-size: desktop-vw(18px);
+					font-size: desktop-vw(17px);
 					line-height: desktop-vw(20px);
 					color: var(--c-white) !important;
+
+					@include mobile{
+						margin: 0 0 mobile-vw(20px);
+						font-size: mobile-vw(17px);
+						line-height: mobile-vw(20px);
+					}
 				}
 
 				ul{
@@ -312,8 +342,17 @@ export default {
 						color: var(--c-white);
 						list-style-position: inside;
 
+						@include mobile{
+							font-size: mobile-vw(17px);
+							line-height: mobile-vw(20px);
+						}
+
 						&::marker{
 							font-size: desktop-vw(8px);
+
+							@include mobile{
+								font-size: mobile-vw(8px);
+							}
 						}
 					}
 				}
@@ -329,13 +368,13 @@ export default {
 			grid-row: 1;
 
 			@include mobile {
-				grid-column: 2 / span 5;
+				grid-column: 1 / span 4;
 				left: 0;
 				top: 0;
 				grid-row: 2;
-				margin-top: mobile-vw(20px);
-				aspect-ratio: 270/320;
-				margin-bottom: mobile-vw(185px);
+				margin-top: mobile-vw(50px);
+				aspect-ratio: 299/373;
+				margin-bottom: mobile-vw(100px);
 			}
 
 			picture {
@@ -364,13 +403,14 @@ export default {
 			grid-row: 1;
 
 			@include mobile {
-				grid-column: 2 / span 5;
-				left: 0;
-				top: 0;
+				grid-column: 5 / span 2;
+				left: columns(-0.5);
+				top: mobile-vw(-100px);
 				grid-row: 2;
-				margin-top: mobile-vw(20px);
-				aspect-ratio: 270/320;
+				aspect-ratio: 170/231;
 				margin-bottom: mobile-vw(185px);
+				transform: rotate(5deg);
+				width: 140%;
 			}
 
 			picture {

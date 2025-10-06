@@ -473,7 +473,7 @@ export default {
 				width: 90%;
 
 				@include mobile {
-					grid-column: 2 / span 6;
+					grid-column: 2 / span 5;
 					left: 0;
 					top: 0;
 					grid-row: 2;
@@ -590,7 +590,7 @@ export default {
 				width: 90%;
 
 				@include mobile {
-					grid-column: 1 / span 5;
+					grid-column: 1 / span 4;
 					top: 0;
 					left: mobile-vw(20px);
 					aspect-ratio: 230/275;

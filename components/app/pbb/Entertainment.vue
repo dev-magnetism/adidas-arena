@@ -319,7 +319,11 @@
 				&__titles {
 					flex: 2;
 					margin-right: desktop-vw(40px);
+
 					@include mobile {
+						display: flex;
+        				justify-content: space-between;
+						width: 100%;
 						margin-right: 0px;
 						margin-bottom: mobile-vw(15px);
 					}
@@ -331,6 +335,7 @@
 					letter-spacing: desktop-vw(-1.92px);
 
 					@include mobile {
+						display: inline-block;
 						font-size: mobile-vw(40px);
 						line-height: mobile-vw(40px);
 					}
@@ -345,6 +350,7 @@
 					letter-spacing: desktop-vw(1.36px);
 
 					@include mobile {
+						display: inline-block;
 						margin-top: mobile-vw(15px);
 						font-size: mobile-vw(20px);
 						line-height: mobile-vw(20px);

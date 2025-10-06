@@ -151,6 +151,9 @@ export default {
 
 		@include mobile {
 			overflow-x: hidden;
+			padding-top: mobile-vw(100px);
+			margin-bottom: mobile-vw(175px);
+			row-gap: mobile-vw(85px);
 		}
 
 		&__f-row {
@@ -163,12 +166,21 @@ export default {
 				}
 
 				&__title {
+
+					@include mobile{
+						margin-bottom: mobile-vw(500px);
+					}
+
 					.H2{
 						@include font-ITCFranklinGothicLT-BkCp();
 						font-weight: 400;
 
 						strong{
 							font-weight: 600;
+						}
+
+						@include mobile{
+							font-size: mobile-vx(64px);
 						}
 					}
 				}
@@ -181,6 +193,11 @@ export default {
 			bottom: desktop-vw(10px);
 			left: desktop-vw(45px);
 			height: auto !important;
+
+			@include mobile {
+				bottom: mobile-vw(10px);
+				left: mobile-vw(45px);
+			}
 
 		}
 
@@ -195,7 +212,11 @@ export default {
 			height: auto !important;
 
 			@include mobile {
-				display: none;
+				grid-column: 4 / span 3;
+				top: mobile-vw(150px);
+				left: mobile-vw(75px);
+				width: 35%;
+				transform: rotate(30deg);
 			}
 		}
 
@@ -210,8 +231,12 @@ export default {
 			margin-bottom: desktop-vw(300px);
 
 			@include mobile {
-				grid-column: 1 / span 4;
-				aspect-ratio: 210 / 260;
+				position: absolute;
+				grid-column: 1 / span 6;
+				aspect-ratio: 382 / 254;
+				top: mobile-vw(300px);
+				left: mobile-vw(-5px);
+				width: 100%;
 				margin-bottom: mobile-vw(140px);
 			}
 
@@ -227,9 +252,11 @@ export default {
 			transform: rotate(8deg);
 
 			@include mobile {
-				grid-column: 4 / span 3;
-				top: mobile-vw(180px);
-				aspect-ratio: 150 / 205;
+				grid-column: 2 / span 4;
+				top: mobile-vw(500px);
+				left: mobile-vw(10px);
+				width: 90%;
+				aspect-ratio: 238 / 290;
 			}
 
 			picture {
@@ -261,6 +288,11 @@ export default {
 
 			&__paragraph.app-element-rich-text {
 				margin: 0 0 desktop-vw(48px);
+
+				@include mobile{
+					margin: 0 0 mobile-vw(48px);
+				}
+
 				.P2 {
 					font-size: desktop-vw(17px);
 
@@ -282,11 +314,12 @@ export default {
 				}
 			}
 
-			.app-atoms-link {
+			.app-atoms-cta {
 				margin-top: desktop-vw(50px);
 
 				@include mobile {
 					margin-top: mobile-vw(25px);
+					width: 75%;
 				}
 
 				&::after {

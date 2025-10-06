@@ -210,9 +210,6 @@
 		position: relative;
 		background-color: var(--c-black);
 
-		@include mobile {
-			margin-bottom: mobile-vw(120px);
-		}
 
 		&__wrapper {
 			overflow: hidden;
@@ -280,8 +277,8 @@
 					color: var(--c-white) !important;
 
 					@include mobile {
-						font-size: mobile-vw(40px);
-						line-height: mobile-vw(40px);
+						font-size: mobile-vw(18px);
+						line-height: mobile-vw(18px);
 					}
 				}
 

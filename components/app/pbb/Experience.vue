@@ -270,6 +270,7 @@ export default {
 
 		@include mobile {
 			overflow-x: hidden;
+			row-gap: mobile-vw(85px);
 		}
 
 		&__f-row {
@@ -284,6 +285,10 @@ export default {
 				&__title {
 					margin-bottom: desktop-vw(72px);
 
+					@include mobile {
+						margin-bottom: mobile-vw(35px);
+					}
+
 					.H2{
 						@include font-ITCFranklinGothicLT-BkCp();
 						font-size: desktop-vw(100px);
@@ -291,6 +296,12 @@ export default {
 						color: var(--c-white) !important;
 						font-weight: 400;
 						letter-spacing: desktop-vw(-3px);
+
+						@include mobile {
+							font-size: mobile-vw(64px);
+							line-height: mobile-vw(57px);
+							letter-spacing: mobile-vw(-1.92px);
+						}
 
 						strong{
 							font-weight: 600;
@@ -310,16 +321,30 @@ export default {
 						line-height: desktop-vw(20px);
 						color: var(--c-white) !important;
 						text-transform: uppercase;
+
+						@include mobile{
+							font-size: mobile-vw(18px);
+							line-height: mobile-vw(20px);
+						}
 					}
 				}
 
 				&__text {
 					margin-bottom: desktop-vw(25px);
 
+					@include mobile{
+						margin-bottom: mobile-vw(25px);
+					}
+
 					.P2{
 						font-size: desktop-vw(17px);
 						line-height: desktop-vw(20px);
 						color: var(--c-white) !important;
+
+						@include mobile{
+							font-size: mobile-vw(17px);
+							line-height: mobile-vw(20px);
+						}
 					}
 
 				}
@@ -333,6 +358,11 @@ export default {
 					cursor:pointer;
 					text-decoration: underline;
 					text-transform: uppercase;
+
+					@include mobile{
+						font-size: mobile-vw(16px);
+						line-height: mobile-vw(24px);
+					}
 				}
 			}
 
@@ -347,13 +377,14 @@ export default {
 				border: desktop-vw(20px) solid var(--c-red-adidas);
 
 				@include mobile {
-					grid-column: 2 / span 5;
-					left: 0;
+					grid-column: 3 / span 4;
+					left: columns(-0.125);
 					top: 0;
 					grid-row: 2;
-					margin-top: mobile-vw(20px);
-					aspect-ratio: 270/320;
-					margin-bottom: mobile-vw(185px);
+					margin-top: 0;
+					aspect-ratio: 239/298;
+					margin-bottom: mobile-vw(280px);
+					border: mobile-vw(10px) solid var(--c-red-adidas);
 				}
 
 				picture {
@@ -376,6 +407,10 @@ export default {
 				&__title {
 					margin-bottom: desktop-vw(43px);
 
+					@include mobile{
+						margin-bottom: mobile-vw(24px);
+					}
+
 					.H4{
 						@include font-ITCFranklinGothicLT-BkCp();
 						font-size: desktop-vw(32px);
@@ -383,6 +418,12 @@ export default {
 						color: var(--c-white) !important;
 						letter-spacing: desktop-vw(-0.32px);
 						font-weight: 600;
+
+						@include mobile{
+							font-size: mobile-vw(18px);
+							line-height: mobile-vw(20px);
+							font-weight: 600;
+						}
 					}
 				}
 
@@ -398,6 +439,13 @@ export default {
 						line-height: desktop-vw(20px);
 						color: var(--c-white) !important;
 						text-transform: uppercase;
+
+						@include mobile {
+							@include font-ITCFranklinGothicLT-BkCp();
+							font-size: mobile-vw(18px);
+							line-height: mobile-vw(20px);
+							font-weight: 400;
+						}
 					}
 				}
 
@@ -407,6 +455,11 @@ export default {
 						font-size: desktop-vw(17px);
 						line-height: desktop-vw(20px);
 						color: var(--c-white) !important;
+
+						@include mobile {
+							font-size: mobile-vw(17px);
+							line-height: mobile-vw(20px);
+						}
 					}
 
 				}
@@ -424,10 +477,12 @@ export default {
 				width: 100%;
 
 				@include mobile {
-					grid-column: 1 / span 4;
+					grid-column: 1 / span 5;
 					top: 0;
-					aspect-ratio: 230/290;
+					aspect-ratio: 239/298;
+					left: 0;
 					top: mobile-vw(230px);
+					transform: rotate(-3.5deg);
 				}
 
 				picture {

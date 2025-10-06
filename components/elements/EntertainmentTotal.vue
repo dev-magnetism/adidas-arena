@@ -89,7 +89,7 @@ export default {
   flex-direction: column;
 
   @include mobile {
-    display: none;
+    grid-row: 2;
   }
 
   &__number {
@@ -102,15 +102,18 @@ export default {
       display: inline-block;
       will-change: transform;
       transform: translateY(-100%);
+      font-size: desktop-vw(135px);
+      line-height: desktop-vw(135px);
+      letter-spacing: desktop-vw(-6.75px);
 
       @include mobile {
         transform: translateY(0%);
+        font-size: mobile-vw(80px);
+        line-height: mobile-vw(80px);
+        letter-spacing: mobile-vw(-4px);
       }
 
-      &:first-child {
-        -webkit-text-stroke: 1.5px var(--c-black);
-        -webkit-text-fill-color: transparent;
-      }
+     
     }
   }
 
@@ -120,6 +123,11 @@ export default {
     opacity: 0.35;
     will-change: transform;
     transform: translateY(-65%);
+
+    @include mobile{
+      font-size: mobile-vw(24px);
+      line-height: mobile-vw(24px);
+    }
   }
 }
 </style>

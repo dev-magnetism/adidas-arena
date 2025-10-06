@@ -5,7 +5,7 @@
     	<EParallax
 			ref="imageFirst"
 			class="app-paris-basketball-dj__visual-first"
-			:speed="0.65"
+			:speed="0.85"
 		>
 			
 				<AppPbbImage
@@ -37,6 +37,30 @@
 			    :scrub="true"
 				class="app-paris-basketball-dj__content__paragraph"
 			/>
+
+			<div 
+				class="app-paris-basketball-dj__content__dj"
+				v-if="contents.dj"
+				>
+				<div class="app-paris-basketball-dj__content__dj__name">
+					{{contents.dj?.name}}
+				</div>
+				<div 
+					class="app-paris-basketball-dj__content__dj__link"
+					v-if="contents.dj?.link"
+					>
+					(
+					<a
+						:href="contents.dj.link.url"
+						target="_blank"
+						class="app-paris-basketball-dj__content__dj__link__cta"
+					>
+						{{contents.dj.link.label}}
+					</a>
+					)
+				</div>
+			</div>
+
 		</div>
 
 		<EParallax
@@ -87,7 +111,7 @@ export default {
 				const tweenImageFirst = gsap.fromTo(
 					this.$refs.imageFirst.$el,
 					{
-						top: -300,
+						top: 300,
 					},
 					{
 						top: 0,
@@ -134,6 +158,9 @@ export default {
 
 		@include mobile {
 			overflow-x: hidden;
+			padding-top: mobile-vw(46px);
+			padding-bottom: mobile-vw(180px);
+			row-gap: mobile-vw(85px);
 		}
 
 		&__visual-first {
@@ -144,9 +171,13 @@ export default {
 			top: desktop-vw(200px);
 
 			@include mobile {
-				grid-column: 4 / span 3;
-				top: mobile-vw(180px);
-				aspect-ratio: 150 / 205;
+				position: relative;
+				grid-column: 1 / span 4;
+				grid-row: 2;
+				top: 0;
+				width: 100%;
+				aspect-ratio: 244 / 304;
+				transform: rotate(-3deg);
 			}
 
 		}
@@ -156,22 +187,40 @@ export default {
 			position: relative;
 			grid-column: 5 / span 4;
 
+
 			@include mobile {
-				grid-row: 2;
+				grid-row: 1;
 				grid-column: 1 / span 6;
 			}
 
 			&__title{
 				margin: 0 0 desktop-vw(25px);
 
+				@include mobile{
+					margin: 0 0 mobile-vw(25px);
+				}
+
 				.H2{
 					@include font-ITCFranklinGothicLT-BkCp();
-					letter-spacing: desktop-vw(-2px);
+					font-size: desktop-vw(100px);
+					line-height: desktop-vw(90px);
+					letter-spacing: desktop-vw(-3px);
 					color: var(--c-white) !important;
 					text-align: center;
 
+					@include mobile{
+						font-size: mobile-vw(64px);
+						line-height: mobile-vw(57px);
+						letter-spacing: mobile-vw(-1.92px);
+						text-align: left;
+					}
+
 					strong{
 						letter-spacing: desktop-vw(-3px);
+
+						@include mobile{
+							letter-spacing: mobile-vw(-1.92px);
+						}
 					}
 				}
 
@@ -181,16 +230,80 @@ export default {
 				margin: 0 auto;
 				width: 80%;
 
+				@include mobile{
+					margin: 0 0 mobile-vw(8px);
+					width: 100%;
+				}
+
 				.P2 {
 					font-size: desktop-vw(17px);
+					line-height: desktop-vw(20px);
 					color: var(--c-white) !important;
 					text-transform: initial;
 					text-align: center;
 
 					@include mobile{
-						font-size: mobile-vw(16px);
+						font-size: mobile-vw(17px);
+						line-height: mobile-vw(20px);
+						text-align: left;
 					}
 				}
+			}
+
+			&__dj{
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+
+				@include font-ITCFranklinGothicLT-BkCp();
+				font-size: desktop-vw(18px);
+				line-height: desktop-vw(20px);
+				color: var(--c-white);
+				text-transform: uppercase;
+
+				@include mobile{
+					justify-content: flex-start;
+					font-size: mobile-vw(18px);
+					line-height: mobile-vw(20px);
+				}
+
+				&__name{
+					display: block;
+					flex: 0 0 auto;
+					@include font-ITCFranklinGothicLT-BkCp();
+					font-size: desktop-vw(18px);
+					line-height: desktop-vw(20px);
+					color: var(--c-white);
+					text-transform: uppercase;
+
+					@include mobile{
+						font-size: mobile-vw(18px);
+						line-height: mobile-vw(20px);
+					}
+
+				}
+
+
+				&__link{
+					margin: 0 0 0 desktop-vw(8px);
+					font-size: desktop-vw(18px);
+					line-height: desktop-vw(20px);
+					cursor:pointer;
+					text-decoration: none;
+
+					@include mobile{
+						margin: 0 0 0 mobile-vw(8px);
+						font-size: mobile-vw(18px);
+						line-height: mobile-vw(20px);
+					}
+
+					&__cta{
+						color: var(--c-carmin-red);
+					}
+					
+				}
+
+
 			}
 
 		}
@@ -203,9 +316,14 @@ export default {
 			top: desktop-vw(200px);
 
 			@include mobile {
-				grid-column: 1 / span 4;
-				aspect-ratio: 210 / 260;
-				margin-bottom: mobile-vw(140px);
+				position: relative;
+				grid-column: 4 / span 3;
+				grid-row: 2;
+				left: 0;
+				top: mobile-vw(202px);
+				width: 100%;
+				aspect-ratio: 191 / 238;
+				transform: rotate(3deg);
 			}
 
 		}
@@ -215,10 +333,18 @@ export default {
 			&__item{
 				margin: 0 0 desktop-vw(25px);
 
+				@include mobile {
+					margin: 0 0 mobile-vw(25px);
+				}
+
 				&__head{
 					display: flex;
 					flex-wrap: wrap;
 					margin: 0 0 desktop-vw(25px);
+
+					@include mobile {
+						margin: 0 0 mobile-vw(25px);
+					}
 
 				}
 
@@ -230,6 +356,11 @@ export default {
 					line-height: desktop-vw(20px);
 					color: var(--c-white);
 					text-transform: uppercase;
+
+					@include mobile {
+						font-size: mobile-vw(18px);
+						line-height: mobile-vw(20px);
+					}
 
 				}
 
@@ -244,11 +375,22 @@ export default {
 					color: var(--c-white);
 					text-transform: uppercase;
 
+					@include mobile {
+						margin: 0 0 0 mobile-vw(8px);
+						font-size: mobile-vw(18px);
+						line-height: mobile-vw(20px);
+					}
+
 					&__link{
 						font-size: desktop-vw(18px);
 						line-height: desktop-vw(20px);
 						cursor:pointer;
 						text-decoration: underline;
+
+						@include mobile {
+							font-size: mobile-vw(18px);
+							line-height: mobile-vw(20px);
+						}
 					}
 
 

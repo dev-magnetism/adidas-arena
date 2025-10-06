@@ -2,7 +2,7 @@
 
 	<div class="app-paris-basketball-mcs grid-inner">
 
-    	<EParallax
+    <EParallax
 			ref="frameWrapper"
 			class="app-paris-basketball-mcs__visual-with-frame"
 			:speed="0.85"
@@ -19,7 +19,7 @@
 	             />
 				<ELottie id="Cadre_01" />
 			</EKinesis>
-   		</EParallax>
+   	</EParallax>
 
 		<EParallax
 			ref="withoutFrame"
@@ -37,7 +37,7 @@
 	                }"
 	             />
 			</EKinesis>
-    	</EParallax>
+    </EParallax>
 
 		<EKinesis
 			:speed="9.5"
@@ -182,6 +182,9 @@ export default {
 
 		@include mobile {
 			overflow-x: hidden;
+			padding-top: mobile-vw(69px);
+			padding-bottom: mobile-vw(80px);
+			row-gap: mobile-vw(85px);
 		}
 
 		&__visual-with-frame {
@@ -194,9 +197,15 @@ export default {
 			transform: rotate(8deg);
 
 			@include mobile {
-				grid-column: 4 / span 3;
-				top: mobile-vw(180px);
-				aspect-ratio: 150 / 205;
+				position: relative;
+				z-index: 1;
+				grid-row: 3;
+				grid-column: 1 / span 3;
+				top: mobile-vw(-120px);
+				left: mobile-vw(-50px);
+				width: 175%;
+				aspect-ratio: 327 / 408;
+				transform: rotate(-6deg);
 			}
 
 			picture {
@@ -223,9 +232,14 @@ export default {
 			transform: rotate(1deg);
 
 			@include mobile {
-				grid-column: 1 / span 4;
-				aspect-ratio: 210 / 260;
-				margin-bottom: mobile-vw(140px);
+				position:relative;
+				z-index: 3;
+				grid-row: 3;
+				grid-column: 4 / span 3;
+				aspect-ratio: 208 / 280;
+				width: 125%;
+				top: mobile-vw(50px);
+				left: mobile-vw(20px);
 			}
 
 		}
@@ -243,9 +257,15 @@ export default {
 			@include fake-transparent();
 
 			@include mobile {
-				grid-column: 1 / span 4;
-				aspect-ratio: 210 / 260;
-				margin-bottom: mobile-vw(140px);
+				position: relative;
+				z-index: 2;
+				grid-row: 2;
+				grid-column: 4 / span 3;
+				aspect-ratio: 260 / 260;
+				top: unset;
+				left: unset;
+				width: unset;
+				height: unset;
 			}
 
 			.app-paris-basketball-image{
@@ -256,6 +276,10 @@ export default {
 				width: 50%;
 				height: auto;
 				transform: translate(-50%, -50%) rotate(6deg);
+
+				@include mobile{
+					width: 60%;
+				}
 			}
 		}
 
@@ -264,15 +288,27 @@ export default {
 			grid-column: 9 / span 4;
 
 			@include mobile {
-				grid-row: 2;
+				grid-row: 1;
 				grid-column: 1 / span 6;
 			}
 
 			&__title{
 				margin: 0 0 desktop-vw(25px);
 
+				@include mobile{
+					margin: 0 0 mobile-vw(25px);
+				}
+
 				.H2{
+					font-size: desktop-vw(100px);
+					line-height: desktop-vw(90px);
 					letter-spacing: desktop-vw(-3px);
+
+					@include mobile{
+						font-size: mobile-vw(64px);
+						line-height: mobile-vw(57px);
+						letter-spacing: mobile-vw(-1.92px);
+					}
 
 					strong{
 						color: var(--c-white);
@@ -291,10 +327,18 @@ export default {
 			&__item{
 				margin: 0 0 desktop-vw(25px);
 
+				@include mobile{
+					margin: 0 0 mobile-vw(25px);
+				}
+
 				&__head{
 					display: flex;
 					flex-wrap: wrap;
 					margin: 0 0 desktop-vw(25px);
+
+					@include mobile{
+						margin: 0 0 mobile-vw(25px);
+					}
 
 				}
 
@@ -306,6 +350,11 @@ export default {
 					line-height: desktop-vw(20px);
 					color: var(--c-white);
 					text-transform: uppercase;
+
+					@include mobile{
+						font-size: mobile-vw(18px);
+						line-height: mobile-vw(20px);
+					}
 
 				}
 
@@ -320,11 +369,20 @@ export default {
 					color: var(--c-white);
 					text-transform: uppercase;
 
+					@include mobile{
+						margin: 0 0 0 mobile-vw(8px);
+					}
+
 					&__link{
 						font-size: desktop-vw(18px);
 						line-height: desktop-vw(20px);
 						cursor:pointer;
 						text-decoration: underline;
+
+						@include mobile{
+							font-size: mobile-vw(18px);
+							line-height: mobile-vw(20px);
+						}
 					}
 
 

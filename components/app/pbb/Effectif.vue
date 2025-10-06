@@ -291,12 +291,30 @@
 						opacity: 1;
 					}
 				}
+
+				.app-atoms-cta{
+					display: block;
+					flex: 0 0 auto;
+
+				    &.arrow{
+				    	.app-atoms-cta-click{
+							@include mobile{
+								padding: mobile-vw(10px);
+							}
+
+				    	}
+				    }
+
+					.P2{
+						@include mobile{
+							font-size: mobile-vw(11px);
+						}
+
+					}
+
+				}
 			}
 
-			&__cta{
-				display: block;
-				flex: 0 0 auto;
-			}
 
 			&__line{
 				position: absolute;

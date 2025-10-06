@@ -50,6 +50,9 @@ export default {
 
 		@include mobile {
 			overflow-x: hidden;
+			padding-top: mobile-vw(145px);
+			padding-bottom: mobile-vw(180px);
+			row-gap: mobile-vw(85px);
 		}
 
 		&__lottie-croix1.app-element-lottie {
@@ -61,7 +64,8 @@ export default {
 			height: auto !important;
 
 			@include mobile {
-				display: none;
+				bottom: mobile-vw(-35px);
+				right: mobile-vw(90px);
 			}
 		}
 
@@ -70,7 +74,6 @@ export default {
 			grid-column: 3 / span 8;
 
 			@include mobile {
-				grid-row: 2;
 				grid-column: 1 / span 6;
 			}
 
@@ -84,12 +87,18 @@ export default {
 					letter-spacing: desktop-vw(-3px);
 
 					@include mobile{
-						font-size: mobile-vw(16px);
+						font-size: mobile-vw(64px);
+						line-height: mobile-vw(57px);
+						letter-spacing: mobile-vw(-1.92px);
 					}
 
 					.app-element-lottie-word.Cercle_1 svg{
 						top: desktop-vw(20px);
 						transform: translate(-50%, -50%) scale(1, .65) !important;
+
+						@include mobile{
+							top: mobile-vw(20px);
+						}
 					}
 
 				}

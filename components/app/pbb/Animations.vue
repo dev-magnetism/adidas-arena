@@ -63,6 +63,9 @@ export default {
 
 		@include mobile {
 			overflow-x: hidden;
+			padding-top: mobile-vw(80px);
+			padding-bottom: mobile-vw(140px);
+			row-gap: mobile-vw(85px);
 		}
 
 		&__lottie-arrow2.app-element-lottie {
@@ -74,7 +77,9 @@ export default {
 			height: auto !important;
 
 			@include mobile {
-				display: none;
+				width: 10%;
+				bottom: mobile-vw(-80px);
+				left: mobile-vw(40px);
 			}
 		}
 
@@ -87,7 +92,7 @@ export default {
 			height: auto !important;
 
 			@include mobile {
-				display: none;
+				top: mobile-vw(-70px);
 			}
 		}
 
@@ -100,22 +105,29 @@ export default {
 			height: auto !important;
 
 			@include mobile {
-				display: none;
+				top: mobile-vw(-80px);
 			}
 		}
 
 		&__content {
 			position: relative;
 			grid-column: 4 / span 6;
-				left: columns(-0.25);
+			left: columns(-0.25);
 
 			@include mobile {
 				grid-row: 2;
 				grid-column: 1 / span 6;
+				left: unset;
 			}
 
 			&__paragraph{
 				width: 125%;
+
+
+				@include mobile{
+					width: 100%;
+				}
+
 				.P2 {
 					font-size: desktop-vw(64px);
 					line-height: desktop-vw(57px);
@@ -125,7 +137,9 @@ export default {
 					letter-spacing: desktop-vw(-1.28px);
 
 					@include mobile{
-						font-size: mobile-vw(16px);
+						font-size: mobile-vw(40px);
+						line-height: mobile-vw(36px);
+						letter-spacing: mobile-vw(-0.8px);
 					}
 
 

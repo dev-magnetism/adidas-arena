@@ -475,6 +475,13 @@ export default {
 					src: 'imgs/pbb/merchandising-visuel02.jpg',
 					alt: 'Retrouvez maillots, collections streetwear et accessoires exclusifs toute l’année.',
 				},
+				dj:{
+					name: 'Ashty',
+					link: {
+						label: '@dj.ashty',
+						url: '#'
+					}
+				}
 			}
 		},
 		contentEffectif() {
@@ -891,6 +898,7 @@ export default {
 
 			@include mobile {
 				left: mobile-vw(-90px);
+				height: auto;
 			}
 
 			svg{
