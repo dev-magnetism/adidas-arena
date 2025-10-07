@@ -329,7 +329,7 @@
 
 			&__line{
 				position: absolute;
-				z-index: 10;
+				z-index: 13;
 				background-color: var(--c-white);
 				line-height: 0;
 
@@ -362,7 +362,7 @@
 				}
 
 				&:nth-of-type(7){
-					z-index: 12;
+					z-index: 13;
 					bottom: desktop-vw(4px);
 					right: desktop-vw(4px);
 					height: desktop-vw(1px);
@@ -377,7 +377,7 @@
 				}
 
 				&:nth-of-type(8){
-					z-index: 10;
+					z-index: 13;
 					bottom: desktop-vw(4px);
 					left: desktop-vw(4px);
 					height: calc(100% - desktop-vw(8px));
@@ -395,9 +395,8 @@
 			&__name{
 				position: absolute;
 				z-index: 11;
-				left: desktop-vw(140px);
+				left: desktop-vw(4px);
 				bottom: desktop-vw(4px);
-				transform: translateX(-50%);
 				padding: desktop-vw(10px) desktop-vw(19px);
 				width: auto;
 				border: 1px solid var(--c-white);
@@ -411,6 +410,8 @@
 				text-transform: uppercase;
 				white-space: nowrap;
 				transition: all 240ms ease-in-out;
+        border-left: none;
+        border-bottom: none;
 
 				@include mobile{
 					left: mobile-vw(4px);
@@ -465,9 +466,8 @@
 			&__pos{
 				position: absolute;
 				z-index:11;
-				left: desktop-vw(62px);
-				top: 0;
-				transform: translateX(-50%);
+				left: desktop-vw(4px);
+				top: desktop-vw(4px);
 				padding: desktop-vw(10px) desktop-vw(19px);
 				border: 1px solid var(--c-white);
 				background-color: var(--c-black);
@@ -479,6 +479,8 @@
 				letter-spacing: desktop-vw(-1.92px);
 				text-transform: uppercase;
 				transition: all 120ms ease-in-out;
+        border-left: none;
+        border-top: none;
 
 				@include mobile{
 					top: mobile-vw(4px);
