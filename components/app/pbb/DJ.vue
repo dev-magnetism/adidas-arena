@@ -6,19 +6,19 @@
 			ref="imageFirst"
 			class="app-paris-basketball-dj__visual-first"
 			:speed="0.85"
-		>
-			
+			>
+			<EKinesis :speed="5">
 				<AppPbbImage
-	                :src="contents.pictureFirst.src"
-	                :alt="contents.pictureFirst.alt"
-	                :lazy="true"
-	                :sizes="{
-	                  desktop: 'w600,h600,fcrop,q85',
-	                  mobile: 'w600,h600,fcrop,q85',
-	                }"
-	             />
-			
-   		</EParallax>
+		          :src="contents.pictureFirst.src"
+		          :alt="contents.pictureFirst.alt"
+		          :lazy="true"
+		          :sizes="{
+		            desktop: 'w600,h600,fcrop,q85',
+		            mobile: 'w600,h600,fcrop,q85',
+		          }"
+		       />
+	   		</EKinesis>
+	   	</EParallax>
 
     	<div class="app-paris-basketball-dj__content">
 	    	<ERichText
@@ -118,7 +118,7 @@ export default {
 						scrollTrigger: {
 							trigger: this.$refs.imageFirst.$el,
 							scrub: 0.5,
-							end: 'top bottom',
+							end: 'bottom top',
 						},
 					}
 				)
@@ -314,6 +314,7 @@ export default {
 			aspect-ratio: 346 / 431;
 			width: 80%;
 			top: desktop-vw(200px);
+			left: columns(1);
 
 			@include mobile {
 				position: relative;
