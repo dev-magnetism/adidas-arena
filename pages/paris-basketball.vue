@@ -63,6 +63,44 @@ export default {
 			},
 		})
 	},
+  data() {
+    return {
+      classementBetclic: null,
+      classementEuroleague: null,
+      effectifParis: null,
+    }
+  },
+  async mounted() {
+    // Appel API Betclic ÉLITE
+    try {
+      const { data } = await this.$axios.get('/api/basketball/betclic-elite/standings')
+      if (data.success) {
+        this.classementBetclic = data.data
+      }
+    } catch (error) {
+      // Silence, le classement ne sera simplement pas affiché
+    }
+
+    // Appel API Euroleague
+    try {
+      const { data } = await this.$axios.get('/api/basketball/euroleague/standings')
+      if (data.success) {
+        this.classementEuroleague = data.data
+      }
+    } catch (error) {
+      // Silence, le classement ne sera simplement pas affiché
+    }
+
+    // Appel API Effectif
+    try {
+      const { data } = await this.$axios.get('/api/basketball/effectif')
+      if (data.success) {
+        this.effectifParis = data.data
+      }
+    } catch (error) {
+      // Silence, l'effectif ne sera simplement pas affiché
+    }
+  },
 	computed: {
 		...mapState({
 			partnersContent: (state) => state.partnersContent,
@@ -113,347 +151,22 @@ export default {
 			}
 		},
 		contentClassement() {
-			return{
+			const sources = []
+
+			// Ajouter le classement Betclic si disponible
+			if (this.classementBetclic) {
+				sources.push(this.classementBetclic)
+			}
+
+			// Ajouter le classement Euroleague si disponible
+			if (this.classementEuroleague) {
+				sources.push(this.classementEuroleague)
+			}
+
+			return {
 				maintitle: `<h2 class="H2 wysiwyg-text" style="font-size: 135px;">Classement</h2>`,
-				sources: [
-					{
-						id: 'betclic',
-						headers: {
-							games:{
-								lose:'Défaites',
-								percent:'%',
-								played: 'MJ',
-								win: 'Victoires'
-							},
-							pos: {
-								label: 'Pos.'
-							},
-							stats:{
-								goal_average:'Goal average',
-								neg:'-',
-								pos: '+'
-							},
-							team: {
-								label: 'Équipe',
-							}
-						},
-						name: 'Betclic Elite',
-						datas: [
-							{
-								games:{
-									lose: '3',
-									percent:'76.7',
-									played: '30',
-									win: '27',
-								},
-								pos: {
-									value: '1',
-									status: 'inc'
-								},
-								stats:{
-									goal_average: '300',
-									neg:'2547',
-									pos: '2847'
-								},
-								team: {
-									logo: 'imgs/pbb/classement-team-pbb-logo.png',
-									name: 'Paris basketball',
-								}
-							},
-							{
-								team: {
-									logo: 'imgs/pbb/classement-team-lyon-logo.png',
-									name: 'lyon-villeurbanne',
-								},
-								pos: {
-									value: '2',
-									status: ''
-								},
-								games:{
-									lose: '4',
-									percent:'76.7',
-									played: '30',
-									win: '26',
-								},
-								stats:{
-									goal_average: '299',
-									neg:'2527',
-									pos: '2827'
-								}
-							},
-
-							{
-								team: {
-									logo: 'imgs/pbb/classement-team-monaco-logo.png',
-									name: 'Monaco',
-								},
-								pos: {
-									value: '3',
-									status: 'dec'
-								},
-								games:{
-									lose: '4',
-									percent:'76.7',
-									played: '30',
-									win: '26',
-								},
-								stats:{
-									goal_average: '298',
-									neg:'2422',
-									pos: '2826'
-								}
-							},
-
-							{
-								team: {
-									logo: 'imgs/pbb/classement-team-monaco-logo.png',
-									name: 'Cholet',
-								},
-								pos: {
-									value: '4',
-									status: ''
-								},
-								games:{
-									lose: '4',
-									percent:'76.7',
-									played: '30',
-									win: '26',
-								},
-								stats:{
-									goal_average: '298',
-									neg:'2422',
-									pos: '2826'
-								}
-							},
-
-							{
-								team: {
-									logo: 'imgs/pbb/classement-team-monaco-logo.png',
-									name: 'bourg-en-bresse',
-								},
-								pos: {
-									value: '5',
-									status: ''
-								},
-								games:{
-									lose: '4',
-									percent:'76.7',
-									played: '30',
-									win: '26',
-								},
-								stats:{
-									goal_average: '298',
-									neg:'2422',
-									pos: '2826'
-								}
-							},
-
-							{
-								team: {
-									logo: 'imgs/pbb/classement-team-monaco-logo.png',
-									name: 'Le Mans',
-								},
-								pos: {
-									value: '6',
-									status: ''
-								},
-								games:{
-									lose: '4',
-									percent:'76.7',
-									played: '30',
-									win: '26',
-								},
-								stats:{
-									goal_average: '298',
-									neg:'2422',
-									pos: '2826'
-								}
-							},
-
-							{
-								team: {
-									logo: 'imgs/pbb/classement-team-monaco-logo.png',
-									name: 'Chalon/saône',
-								},
-								pos: {
-									value: '7',
-									status: ''
-								},
-								games:{
-									lose: '4',
-									percent:'76.7',
-									played: '30',
-									win: '26',
-								},
-								stats:{
-									goal_average: '298',
-									neg:'2422',
-									pos: '2826'
-								}
-							},
-
-							{
-								team: {
-									logo: 'imgs/pbb/classement-team-monaco-logo.png',
-									name: 'Dijon',
-								},
-								pos: {
-									value: '8',
-									status: 'dec'
-								},
-								games:{
-									lose: '4',
-									percent:'76.7',
-									played: '30',
-									win: '26',
-								},
-								stats:{
-									goal_average: '298',
-									neg:'2422',
-									pos: '2826'
-								}
-							},
-
-							{
-								team: {
-									logo: 'imgs/pbb/classement-team-monaco-logo.png',
-									name: 'nancy',
-								},
-								pos: {
-									value: '9',
-									status: 'inc'
-								},
-								games:{
-									lose: '4',
-									percent:'76.7',
-									played: '30',
-									win: '26',
-								},
-								stats:{
-									goal_average: '298',
-									neg:'2422',
-									pos: '2826'
-								}
-							},
-
-							{
-								team: {
-									logo: 'imgs/pbb/classement-team-monaco-logo.png',
-									name: 'saint-quentin',
-								},
-								pos: {
-									value: '10',
-									status: ''
-								},
-								games:{
-									lose: '4',
-									percent:'76.7',
-									played: '30',
-									win: '26',
-								},
-								stats:{
-									goal_average: '298',
-									neg:'2422',
-									pos: '2826'
-								}
-							},
-						]
-					},
-
-					{
-						id: 'euroleague',
-						headers: {
-							games:{
-								lose:'Défaites',
-								percent:'%',
-								played: 'MJ',
-								win: 'Victoires'
-							},
-							pos: {
-								label: 'Pos.'
-							},
-							stats:{
-								goal_average:'Goal average',
-								neg:'-',
-								pos: '+'
-							},
-							team: {
-								label: 'Équipe',
-							}
-						},
-						name: 'Euroleague',
-						datas: [
-							
-							{
-								team: {
-									logo: 'imgs/pbb/classement-team-pbb-logo.png',
-									name: 'Paris basketball',
-								},
-								pos: {
-									value: '3',
-									status: 'inc'
-								},
-								games:{
-									lose: '3',
-									percent:'76.7',
-									played: '30',
-									win: '27',
-								},
-								stats:{
-									goal_average: '300',
-									neg:'2547',
-									pos: '2847'
-								}
-							},
-							{
-								team: {
-									logo: 'imgs/pbb/classement-team-lyon-logo.png',
-									name: 'lyon-villeurbanne',
-								},
-								pos: {
-									value: '2',
-									status: ''
-								},
-								games:{
-									lose: '4',
-									percent:'76.7',
-									played: '30',
-									win: '26',
-								},
-								stats:{
-									goal_average: '299',
-									neg:'2527',
-									pos: '2827'
-								}
-							},
-
-							{
-								team: {
-									logo: 'imgs/pbb/classement-team-monaco-logo.png',
-									name: 'Monaco',
-								},
-								pos: {
-									value: '1',
-									status: 'dec'
-								},
-								games:{
-									lose: '4',
-									percent:'76.7',
-									played: '30',
-									win: '26',
-								},
-								stats:{
-									goal_average: '298',
-									neg:'2422',
-									pos: '2826'
-								}
-							},
-
-
-						]
-					}
-				],
-				cta:{
+				sources,
+				cta: {
 					all: 'Voir tout le classement',
 					less: 'Refermer le classement'
 				}
@@ -485,107 +198,10 @@ export default {
 			}
 		},
 		contentEffectif() {
-			return{
+			return {
 				maintitle: `<h2 class="H2 wysiwyg-text" style="font-size: 135px;">Effectif</h2>`,
-				sources: [
-					{
-						id:'1',
-						name: 'T. J. SHORTS',
-						position: '1',
-						number: '1',
-						picture: 'imgs/pbb/effectif-nadir-hifi.png',
-						url: 'https://parisbasketball.com/player/nadir-hifi/'
-					},
-					{
-						id:'2',
-						name: 'collin malcolm',
-						position: '2',
-						number: '2',
-						picture: 'imgs/pbb/effectif-nadir-hifi.png',
-						url: 'https://parisbasketball.com/player/nadir-hifi/'
-					},
-					{
-						id:'3',
-						name: 'nadir hifi',
-						position: '3',
-						number: '4',
-						picture: 'imgs/pbb/effectif-nadir-hifi.png',
-						url: 'https://parisbasketball.com/player/nadir-hifi/'
-					},
-					{
-						id:'4',
-						name: 'tyson ward',
-						position: '4',
-						number: '8',
-						picture: 'imgs/pbb/effectif-nadir-hifi.png',
-						url: 'https://parisbasketball.com/player/nadir-hifi/'
-					},
-					{
-						id:'5',
-						name: 'léopold cavaliere',
-						position: '5',
-						number: '9',
-						picture: 'imgs/pbb/effectif-nadir-hifi.png',
-						url: 'https://parisbasketball.com/player/nadir-hifi/'
-					},
-					{
-						id:'6',
-						name: 'banja sy',
-						position: '1',
-						number: '11',
-						picture: 'imgs/pbb/effectif-nadir-hifi.png',
-						url: 'https://parisbasketball.com/player/nadir-hifi/'
-					},
-					{
-						id:'7',
-						name: 'T. J. SHORTS',
-						position: '2',
-						number: '16',
-						picture: 'imgs/pbb/effectif-nadir-hifi.png',
-						url: 'https://parisbasketball.com/player/nadir-hifi/'
-					},
-					{
-						id:'8',
-						name: 'collin malcolm',
-						position: '3',
-						number: '19',
-						picture: 'imgs/pbb/effectif-nadir-hifi.png',
-						url: 'https://parisbasketball.com/player/nadir-hifi/'
-					},
-					{
-						id:'9',
-						name: 'nadir hifi',
-						position: '4',
-						number: '22',
-						picture: 'imgs/pbb/effectif-nadir-hifi.png',
-						url: 'https://parisbasketball.com/player/nadir-hifi/'
-					},
-					{
-						id:'10',
-						name: 'tyson ward',
-						position: '5',
-						number: '3',
-						picture: 'imgs/pbb/effectif-nadir-hifi.png',
-						url: 'https://parisbasketball.com/player/nadir-hifi/'
-					},
-					{
-						id:'11',
-						name: 'léopold cavaliere',
-						position: '1',
-						number: '7 ',
-						picture: 'imgs/pbb/effectif-nadir-hifi.png',
-						url: 'https://parisbasketball.com/player/nadir-hifi/'
-					},
-					{
-						id:'12',
-						name: 'banja sy',
-						position: '2',
-						number: '6',
-						picture: 'imgs/pbb/effectif-nadir-hifi.png',
-						url: 'https://parisbasketball.com/player/nadir-hifi/'
-					}
-				],
-				cta:{
+				sources: this.effectifParis || [],
+				cta: {
 					all: 'Voir toute l\'équipe',
 					less: 'Refermer l\'équipe'
 				}
@@ -595,25 +211,25 @@ export default {
 			return{
 				title: `<h2 class="H2 wysiwyg-text" style="font-size: 135px;">Entertainment<br/> <strong>Fan zone</strong></h2>`,
 				items:[
-					{	
+					{
 						paragraph: 'Dès votre entrée, vous entendrez résonner la musique de DJ BIGBEN et vous accompagnera tout le long de votre entrée afin de profiter des différentes activités présentes en fan zone.',
 						picture: '/imgs/pbb/entertainment-visuel01.jpg',
 						subtitle: '@THEBIGB.E.N',
 						title: 'DJ BIG BEN',
 					},
-					{	
+					{
 						paragraph: 'La boutique officielle de Paris Basketball est votre destination incontournable pour découvrir et acheter tout l’équipement des fans du club parisien. Que vous soyez à la recherche de maillots, d’accessoires, ou de vêtements exclusifs, vous y trouverez tout ce qu’il faut pour afficher fièrement vos couleurs.',
 						picture: '/imgs/pbb/entertainment-visuel01.jpg',
 						subtitle: '',
 						title: 'Boutique',
 					},
-					{	
+					{
 						paragraph: 'Déguster nos produits Eat is Family, l’adresse gourmande qui réveille vos papilles à chaque coin du stade ! Un menu savoureux et varié pour les amateurs de street food.',
 						picture: '/imgs/pbb/entertainment-visuel01.jpg',
 						subtitle: '',
 						title: 'food truck',
 					},
-					{	
+					{
 						paragraph: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vehicula luctus risus, ut placerat metus ultrices eu. Phasellus aliquam condimentum interdum. Pellentesque tempor placerat imperdiet. ',
 						picture: '/imgs/pbb/entertainment-visuel01.jpg',
 						subtitle: '',
@@ -645,7 +261,7 @@ export default {
 				bloc2: {
 					title: `<h4 class="H4 wysiwyg-text" style="font-size: 32px;">HYPE TEAM</h4>`,
 					subtitle: `<h5 class="H5 wysiwyg-text" style="font-size: 18px;">DES SOIRS DE MATCHS ENFLAMMÉS<br/> PAR NOTRE HYPE TEAM</h5>`,
-			
+
 					paragraph: `
 						<p class="P2 wysiwyg-text">
 							La HYPE Team est un collectif de danseurs breakers qui offrent des spectacles époustouflants à chaque soir de match. Leur énergie débordante et leurs acrobaties spectaculaires ajoutent une dimension excitante à l’expérience des spectateurs.
@@ -667,19 +283,19 @@ export default {
 		contentGallery() {
 			return{
 				items:[
-					{	
+					{
 						picture: '/imgs/pbb/entertainment-visuel01.jpg',
 						title: 'John Doe',
 					},
-					{	
+					{
 						picture: '/imgs/pbb/entertainment-visuel01.jpg',
 						title: 'John Doe',
 					},
-					{	
+					{
 						picture: '/imgs/pbb/entertainment-visuel01.jpg',
 						title: 'John Doe',
 					},
-					{	
+					{
 						picture: '/imgs/pbb/entertainment-visuel01.jpg',
 						title: 'John Doe',
 					}
@@ -874,10 +490,6 @@ export default {
 				},
 			}
 		},
-	},
-
-	mounted() {
-		console.log('programmes', this.programmes);
 	},
 }
 

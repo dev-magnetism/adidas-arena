@@ -282,6 +282,10 @@ export default {
     },
   },
 
+  serverMiddleware: [
+    { path: '/api', handler: '~/serverMiddleware/api.js' },
+  ],
+
   modules: [
     [
       '~/modules/directus',

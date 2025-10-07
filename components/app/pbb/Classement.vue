@@ -2,10 +2,10 @@
 	<div class="app-paris-basketball-classement">
 
 		<div class="app-paris-basketball-classement__banner">
-			<img 
-				class="app-paris-basketball-classement__banner__img" 
-				src="/imgs/pbb/banner_paris-pour-paris.png" 
-				alt="Paris pour Paris" 
+			<img
+				class="app-paris-basketball-classement__banner__img"
+				src="/imgs/pbb/banner_paris-pour-paris.png"
+				alt="Paris pour Paris"
 			/>
 		</div>
 
@@ -19,32 +19,35 @@
 			tag="h2"
 		/>
 
-		<div class="app-paris-basketball-classement__menu">
-			<div
-				v-for="(cat) in this.contents.sources"
-				:key="`key-${cat.id}`"
-				class="app-paris-basketball-classement__menu__radio"
-				@click="switchCategory(cat.id)"
-			>
-				<input
-					:id="`menu_${cat.id}`"
-					:checked="selectedCategory === cat.id"
-					:value="cat.id"
-					type="radio"
-					name="menu-radio"
-				/>
-				<label :for="`menu_${cat.id}`">
-					<TP1 weight="regular">
-						Classement {{cat.name}}
-					</TP1>
-					<TP1 weight="regular">
-						N°{{cat.datas.find(_o => _o.team.name === 'Paris basketball').pos.value}}
-					</TP1>
-				</label>
-			</div>
+	<div v-if="contents.sources && contents.sources.length > 0" class="app-paris-basketball-classement__menu">
+		<div
+			v-for="(cat) in this.contents.sources"
+			:key="`key-${cat.id}`"
+			class="app-paris-basketball-classement__menu__radio"
+			@click="switchCategory(cat.id)"
+		>
+			<input
+				:id="`menu_${cat.id}`"
+				:checked="selectedCategory === cat.id"
+				:value="cat.id"
+				type="radio"
+				name="menu-radio"
+			/>
+			<label :for="`menu_${cat.id}`">
+				<TP1 weight="regular">
+					Classement {{cat.name}}
+				</TP1>
+				<TP1 weight="regular">
+					N°{{cat.datas.find(_o => _o.team.name === 'Paris Basketball')?.pos?.value || '-'}}
+				</TP1>
+			</label>
 		</div>
+	</div>
+	<div v-else class="app-paris-basketball-classement__menu">
+		<p>Chargement du classement...</p>
+	</div>
 
-		<div 
+		<div
 			v-if="this.selectContents?.datas?.length > 0"
 			class="app-paris-basketball-classement__content"
 			>
@@ -55,55 +58,55 @@
 					>
 					<tr
 						>
-						<th 
+						<th
 							v-if="this.selectContents?.headers?.pos"
 							class="app-paris-basketball-classement__num"
 							>
 							{{this.selectContents.headers.pos.label}}
 						</th>
-						<th 
+						<th
 							v-if="this.selectContents?.headers?.team"
 							class="app-paris-basketball-classement__team"
 							>
 							{{this.selectContents.headers.team.label}}
 						</th>
-						<th 
+						<th
 							v-if="this.selectContents?.headers?.games?.percent"
 							class="app-paris-basketball-classement__percent"
 							>
 							{{this.selectContents.headers.games.percent}}
 						</th>
-						<th 
+						<th
 							v-if="this.selectContents?.headers?.games?.played && !$viewport.isMobile"
 							class="app-paris-basketball-classement__played"
 							>
 							{{this.selectContents.headers.games.played}}
 						</th>
-						<th 
+						<th
 							v-if="this.selectContents?.headers?.games?.win && !$viewport.isMobile"
 							class="app-paris-basketball-classement__win"
 							>
 							{{this.selectContents.headers.games.win}}
 						</th>
-						<th 
+						<th
 							v-if="this.selectContents?.headers?.games?.lose && !$viewport.isMobile"
 							class="app-paris-basketball-classement__lose"
 							>
 							{{this.selectContents.headers.games.lose}}
 						</th>
-						<th 
+						<th
 							v-if="this.selectContents?.headers?.stats?.pos && !$viewport.isMobile"
 							class="app-paris-basketball-classement__pos"
 							>
 							{{this.selectContents.headers.stats.pos}}
 						</th>
-						<th 
+						<th
 							v-if="this.selectContents?.headers?.stats?.neg && !$viewport.isMobile"
 							class="app-paris-basketball-classement__neg"
 							>
 							{{this.selectContents.headers.stats.neg}}
 						</th>
-						<th 
+						<th
 							v-if="this.selectContents?.headers?.stats?.goal_average"
 							class="app-paris-basketball-classement__goal_average"
 							>
@@ -114,13 +117,13 @@
 				<tbody
 					:class="`app-paris-basketball-classement__table__body ${(displayedContents === displayNumber && selectContents.datas?.length > displayNumber)?'closed':''}`"
 					>
-					<tr
-						v-for="(row, rowI) in this.selectContents?.datas.sort((a,b)=>a.pos.value-b.pos.value).slice(0, this.displayedContents)"
-						:key="`classement-${selectContents.id}-${rowI}`"
-						class="app-paris-basketball-classement__table__row"
+				<tr
+					v-for="(row, rowI) in sortedDatas"
+					:key="`classement-${selectContents.id}-${rowI}`"
+					class="app-paris-basketball-classement__table__row"
 						>
 
-						<td 
+						<td
 							v-if="row.pos"
 							 class="app-paris-basketball-classement__num"
 							>
@@ -128,24 +131,24 @@
 								<div class="app-paris-basketball-classement__num__label">
 									{{row.pos.value}}
 								</div>
-								<svg 
+								<svg
 									class="app-paris-basketball-classement__num__svg"
 									v-if="row.pos.status === 'dec'"
-									height="1em" 
-									viewBox="0 0 17 16" 
-									fill="none" 
+									height="1em"
+									viewBox="0 0 17 16"
+									fill="none"
 									xmlns="http://www.w3.org/2000/svg"
 									>
 									<path d="M7.76953 14.2563C7.7604 14.2187 7.74695 14.1653 7.72949 14.0981C7.69105 13.9503 7.63192 13.7364 7.55078 13.479C7.38779 12.9619 7.13906 12.2789 6.79492 11.6011C6.11754 10.2669 5.2095 9.21392 4.06445 9.07666L3.83203 9.06201L3.16504 9.05518L3.17969 7.72119L3.8457 7.729L4.03906 7.73584C5.82863 7.85014 7.02665 9.27801 7.76953 10.5972L7.76953 1.33252L9.10352 1.33252L9.10352 10.7534C9.87942 9.43215 11.1158 8.01864 12.9736 7.73584L13.6328 7.63623L13.834 8.95361L13.1748 9.0542C11.7744 9.26733 10.751 10.4607 10.0479 11.7944C9.7065 12.442 9.46443 13.0792 9.30762 13.5562C9.22963 13.7934 9.17302 13.989 9.13672 14.1235C9.12265 14.1757 9.11178 14.2189 9.10352 14.2515L9.10352 14.6685L7.76953 14.6685L7.76953 14.2563Z" fill="#FF4A48"/>
 								</svg>
 
 
-								<svg 
+								<svg
 									class="app-paris-basketball-classement__num__svg"
 									v-if="row.pos.status === 'inc'"
-									height="1em" 
-									viewBox="0 0 17 16" 
-									fill="none" 
+									height="1em"
+									viewBox="0 0 17 16"
+									fill="none"
 									xmlns="http://www.w3.org/2000/svg"
 									>
 									<path d="M9.23047 1.74365C9.2396 1.78126 9.25309 1.83489 9.27051 1.90186C9.30895 2.04968 9.36813 2.26373 9.44922 2.521C9.61221 3.03804 9.86101 3.72119 10.2051 4.39893C10.8824 5.73296 11.7906 6.78609 12.9355 6.92334L13.168 6.93799L13.835 6.94482L13.8203 8.27881L13.1543 8.271L12.9609 8.26416C11.1711 8.14984 9.97333 6.72115 9.23047 5.40186L9.23047 14.6675L7.89648 14.6675L7.89648 5.24658C7.12057 6.5678 5.88416 7.9814 4.02637 8.26416L3.36719 8.36377L3.16602 7.04639L3.8252 6.9458C5.22562 6.73269 6.249 5.53934 6.95215 4.20557C7.29357 3.55788 7.53555 2.92086 7.69238 2.44385C7.77041 2.20652 7.82697 2.01109 7.86328 1.87646C7.87734 1.82434 7.88821 1.78113 7.89648 1.74854L7.89648 1.33154L9.23047 1.33154L9.23047 1.74365Z" fill="#3171FF"/>
@@ -153,7 +156,7 @@
 							</div>
 						</td>
 
-						<td 
+						<td
 							v-if="row.team"
 							 class="app-paris-basketball-classement__team"
 							>
@@ -170,49 +173,49 @@
 							</div>
 						</td>
 
-						<td 
+						<td
 							v-if="row.games?.percent"
 							 class="app-paris-basketball-classement__percent"
 							>
 							{{row.games.percent}}%
 						</td>
 
-						<td 
+						<td
 							v-if="row.games?.played && !$viewport.isMobile"
 							 class="app-paris-basketball-classement__played"
 							>
 							{{row.games.played}}
 						</td>
 
-						<td 
+						<td
 							v-if="row.games?.win && !$viewport.isMobile"
 							 class="app-paris-basketball-classement__win"
 							>
 							{{row.games.win}}
 						</td>
 
-						<td 
+						<td
 							v-if="row.games?.lose && !$viewport.isMobile"
 							 class="app-paris-basketball-classement__lose"
 							>
 							{{row.games.lose}}
 						</td>
 
-						<td 
+						<td
 							v-if="row.stats?.pos && !$viewport.isMobile"
 							 class="app-paris-basketball-classement__pos"
 							>
 							{{row.stats.pos}}
 						</td>
 
-						<td 
+						<td
 							v-if="row.stats?.neg && !$viewport.isMobile"
 							 class="app-paris-basketball-classement__neg"
 							>
 							{{row.stats.neg}}
 						</td>
 
-						<td 
+						<td
 							v-if="row.stats?.goal_average"
 							 class="app-paris-basketball-classement__goal_average"
 							>
@@ -230,7 +233,7 @@
 			>
 				<div>
 					{{ (this.displayedContents === this.displayNumber && this.selectContents.datas?.length > this.displayNumber)?this.contents.cta.all: this.contents.cta.less}}
-					
+
 				</div>
 			</button>
 
@@ -253,18 +256,36 @@ export default {
 			type: Number,
 			default: () => 8,
 		}
-	},	
+	},
 
 	data() {
 		return {
-			selectedCategory: this.contents?.sources[0].id,
-			selectContents: this.contents?.sources[0],
+			selectedCategory: this.contents?.sources?.[0]?.id || null,
+			selectContents: this.contents?.sources?.[0] || null,
 			displayedContents: this.displayNumber,
 		}
 	},
 
 	watch: {
-		
+		'contents.sources': {
+			handler(newSources) {
+				if (newSources && newSources.length > 0 && !this.selectedCategory) {
+					this.selectedCategory = newSources[0].id
+					this.selectContents = newSources[0]
+				}
+			},
+			immediate: true,
+		}
+	},
+
+	computed: {
+		sortedDatas() {
+			if (!this.selectContents?.datas) return []
+			// Créer une copie du tableau avant de trier pour éviter la boucle infinie
+			return [...this.selectContents.datas]
+				.sort((a, b) => a.pos.value - b.pos.value)
+				.slice(0, this.displayedContents)
+		}
 	},
 
 	mounted() {
@@ -699,7 +720,7 @@ export default {
 				display: none;
 			}
 		}
-		
+
 		&__win{
 			width: 9.467%;
 			text-align: center;
@@ -708,7 +729,7 @@ export default {
 				display: none;
 			}
 		}
-			
+
 		&__lose{
 			width: 9.467%;
 			text-align: center;
@@ -717,7 +738,7 @@ export default {
 				display: none;
 			}
 		}
-			
+
 		&__pos{
 			width: 4.733%;
 			text-align: center;
@@ -726,7 +747,7 @@ export default {
 				display: none;
 			}
 		}
-		
+
 		&__neg{
 			width: 4.733%;
 			text-align: center;
@@ -735,7 +756,7 @@ export default {
 				display: none;
 			}
 		}
-		
+
 		&__goal_average{
 			width: 13.757%;
 			padding: 0 desktop-vw(20px) 0  desktop-vw(12px);

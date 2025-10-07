@@ -10,16 +10,16 @@
 		/>
 
 
-		<div 
+		<div
 			v-if="this.selectContents?.length > 0"
 			class="app-paris-basketball-effectif__content"
 		>
 
 			<div class="app-paris-basketball-effectif__players">
-				<div 
+				<div
 					class="app-paris-basketball-effectif__player"
-					v-for="(player, playerI) in this.selectContents?.sort((a,b)=>a.number - b.number).slice(0, this.displayedContents)"
-					:key="`effectif-${selectContents.id}-${playerI}`"
+					v-for="(player, playerI) in sortedPlayers"
+					:key="`effectif-${player.id}-${playerI}`"
 				>
 					<div class="app-paris-basketball-effectif__player__content">
 
@@ -32,31 +32,25 @@
 						<div class="app-paris-basketball-effectif__player__line"></div>
 						<div class="app-paris-basketball-effectif__player__line"></div>
 
-						<div 
+						<div
 							class="app-paris-basketball-effectif__player__number"
 							v-if="player.number"
 						>
 							{{player.number}}
 						</div>
-						<div 
+						<div
 							class="app-paris-basketball-effectif__player__name"
 							v-if="player.name"
 						>
 							{{player.name}}
 						</div>
-						<div 
-							class="app-paris-basketball-effectif__player__pos"
-							v-if="player.position"
-						>
-							{{
-								(player.position === '1')?'Meneur':
-								(player.position === '2')?'Arrière':
-								(player.position === '3')?'Ailier':
-								(player.position === '4')?'Ailier Fort':
-								(player.position === '5')?'Pivot':''
-							}}
-						</div>
-						<div 
+					<div
+						class="app-paris-basketball-effectif__player__pos"
+						v-if="player.position"
+					>
+						{{player.position}}
+					</div>
+						<div
 							class="app-paris-basketball-effectif__player__picture"
 							v-if="player.picture"
 						>
@@ -91,7 +85,7 @@
 			>
 				<div>
 					{{ (this.displayedContents === this.displayNumber && this.selectContents?.length > this.displayNumber)?this.contents.cta.all: this.contents.cta.less}}
-					
+
 				</div>
 			</button>
 
@@ -99,10 +93,10 @@
 
 
 		<div class="app-paris-basketball-effectif__banner">
-			<img 
-				class="app-paris-basketball-effectif__banner__img" 
-				src="/imgs/pbb/banner_paris-pour-paris.png" 
-				alt="Paris pour Paris" 
+			<img
+				class="app-paris-basketball-effectif__banner__img"
+				src="/imgs/pbb/banner_paris-pour-paris.png"
+				alt="Paris pour Paris"
 			/>
 		</div>
 
@@ -123,18 +117,35 @@
 				type: Number,
 				default: () => 6,
 			}
-		},	
-
-		data() {
-			return {
-				selectContents: this.contents?.sources,
-				displayedContents: this.displayNumber,
-			}
 		},
 
-		watch: {
-			
-		},
+	data() {
+		return {
+			selectContents: this.contents?.sources || [],
+			displayedContents: this.displayNumber,
+		}
+	},
+
+	watch: {
+		'contents.sources': {
+			handler(newSources) {
+				if (newSources && newSources.length > 0) {
+					this.selectContents = newSources
+				}
+			},
+			immediate: true,
+		}
+	},
+
+	computed: {
+		sortedPlayers() {
+			if (!this.selectContents || this.selectContents.length === 0) return []
+			// Créer une copie du tableau avant de trier pour éviter la boucle infinie
+			return [...this.selectContents]
+				.sort((a, b) => parseInt(a.number) - parseInt(b.number))
+				.slice(0, this.displayedContents)
+		}
+	},
 
 		mounted() {
 
@@ -236,7 +247,7 @@
 		}
 
 		&__player{
-			
+
 			display: block;
 			flex: 0 0 33.333%;
 			padding: desktop-vw(12px);
@@ -441,21 +452,21 @@
 				position:relative;
 				z-index:0;
 				padding: 125.171% 0 0;
-				
-				
+
+
 
 				.app-paris-basketball-image{
 					filter: grayscale(100%);
 					transition: opacity 360ms ease-in-out;
 				}
-				
+
 			}
 
 			&__pos{
 				position: absolute;
 				z-index:11;
 				left: desktop-vw(62px);
-				top: 0;				
+				top: 0;
 				transform: translateX(-50%);
 				padding: desktop-vw(10px) desktop-vw(19px);
 				border: 1px solid var(--c-white);
@@ -466,7 +477,7 @@
 				color: var(--c-white);
 				font-weight: 600;
 				letter-spacing: desktop-vw(-1.92px);
-				text-transform: uppercase;				
+				text-transform: uppercase;
 				transition: all 120ms ease-in-out;
 
 				@include mobile{
