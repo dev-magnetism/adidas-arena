@@ -73,7 +73,7 @@ export default {
   async mounted() {
     // Appel API Betclic ÉLITE
     try {
-      const { data } = await this.$axios.get('/api/basketball/betclic-elite/standings')
+      const { data } = await this.$axios.get('/api/paris-basketball/standings/betclic-elite')
       if (data.success) {
         this.classementBetclic = data.data
       }
@@ -83,7 +83,7 @@ export default {
 
     // Appel API Euroleague
     try {
-      const { data } = await this.$axios.get('/api/basketball/euroleague/standings')
+      const { data } = await this.$axios.get('/api/paris-basketball/standings/euroleague')
       if (data.success) {
         this.classementEuroleague = data.data
       }
@@ -93,7 +93,7 @@ export default {
 
     // Appel API Effectif
     try {
-      const { data } = await this.$axios.get('/api/basketball/effectif')
+      const { data } = await this.$axios.get('/api/paris-basketball/effectif')
       if (data.success) {
         this.effectifParis = data.data
       }

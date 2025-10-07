@@ -22,7 +22,7 @@ module.exports = async function (req, res, next) {
   const url = req.url
 
   // Route pour récupérer le classement Betclic ÉLITE
-  if (url.startsWith('/basketball/betclic-elite/standings') && req.method === 'GET') {
+  if (url.startsWith('/paris-basketball/standings/betclic-elite') && req.method === 'GET') {
     try {
       const API_KEY = process.env.ALTRSTAT_API_KEY
       const COMPETITION_ID = process.env.ALTRSTAT_COMPETITION_ID || '287'
@@ -127,7 +127,7 @@ module.exports = async function (req, res, next) {
   }
 
   // Route pour récupérer le classement Euroleague
-  if (url.startsWith('/basketball/euroleague/standings') && req.method === 'GET') {
+  if (url.startsWith('/paris-basketball/standings/euroleague') && req.method === 'GET') {
     try {
       const EUROLEAGUE_CODE_COMPETITION = process.env.EUROLEAGUE_CODE_COMPETITION || 'E'
       const EUROLEAGUE_CODE_SAISON = process.env.EUROLEAGUE_CODE_SAISON || 'E2025'
@@ -252,7 +252,7 @@ module.exports = async function (req, res, next) {
   }
 
   // Route pour récupérer l'effectif Paris Basketball
-  if (url.startsWith('/basketball/effectif') && req.method === 'GET') {
+  if (url.startsWith('/paris-basketball/effectif') && req.method === 'GET') {
     try {
       const response = await axios.get(
         'https://parisbasketball.com/arena-effectif.json',
