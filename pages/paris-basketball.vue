@@ -18,8 +18,8 @@
 		<AppPbbIntroduction :contents="contentIntroduction" />
 		<AppPbbUpcomingMatchs :contents="contentMatchs" />
 		<AppPbbAbonnement :contents="contentAbonnement" />
-		<AppPbbClassement :contents="contentClassement" />
-		<AppPbbEffectif :contents="contentEffectif" />
+		<AppPbbClassement v-if="contentClassement" :contents="contentClassement" />
+		<AppPbbEffectif v-if="contentEffectif" :contents="contentEffectif" />
 		<AppPbbMerchandising :contents="contentMerchandising" />
 		<AppPbbEntertainment :contents="contentEntertainement" />
 		<AppPbbMCs :contents="contentMCs" />
@@ -65,40 +65,6 @@ export default {
 	},
   data() {
     return {
-      classementBetclic: null,
-      classementEuroleague: null,
-      effectifParis: null,
-    }
-  },
-  async mounted() {
-    // Appel API Betclic ÉLITE
-    try {
-      const { data } = await this.$axios.get('/api/paris-basketball/standings/betclic-elite')
-      if (data.success) {
-        this.classementBetclic = data.data
-      }
-    } catch (error) {
-      // Silence, le classement ne sera simplement pas affiché
-    }
-
-    // Appel API Euroleague
-    try {
-      const { data } = await this.$axios.get('/api/paris-basketball/standings/euroleague')
-      if (data.success) {
-        this.classementEuroleague = data.data
-      }
-    } catch (error) {
-      // Silence, le classement ne sera simplement pas affiché
-    }
-
-    // Appel API Effectif
-    try {
-      const { data } = await this.$axios.get('/api/paris-basketball/effectif')
-      if (data.success) {
-        this.effectifParis = data.data
-      }
-    } catch (error) {
-      // Silence, l'effectif ne sera simplement pas affiché
     }
   },
 	computed: {
@@ -111,6 +77,9 @@ export default {
 			appContent: (state) => state.appContent,
 			programmes: (state) => state.programmes.filter(_o => _o.content?.category === "paris basketball").slice(0,8),
 			webview: (state) => state.webview,
+			classementBetclic: (state) => state.classementBetclic,
+			classementEuroleague: (state) => state.classementEuroleague,
+			effectifParis: (state) => state.effectifParis,
 		}),
 		contentAbonnement() {
 			return {
@@ -147,6 +116,11 @@ export default {
 				sources.push(this.classementEuroleague)
 			}
 
+			// Ne retourner le contenu que si on a au moins un classement
+			if (sources.length === 0) {
+				return null
+			}
+
 			return {
 				maintitle: `<h2 class="H2 wysiwyg-text" style="font-size: 135px;">Classement</h2>`,
 				sources,
@@ -178,9 +152,14 @@ export default {
 			}
 		},
 		contentEffectif() {
+			// Ne retourner le contenu que si on a l'effectif
+			if (!this.effectifParis || this.effectifParis.length === 0) {
+				return null
+			}
+
 			return {
 				maintitle: `<h2 class="H2 wysiwyg-text" style="font-size: 135px;">Effectif</h2>`,
-				sources: this.effectifParis || [],
+				sources: this.effectifParis,
 				cta: {
 					all: 'Voir toute l\'équipe',
 					less: 'Refermer l\'équipe'

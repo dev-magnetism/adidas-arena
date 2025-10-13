@@ -29,6 +29,9 @@ export const state = () => ({
   pbbContent: null,
   programmes: null,
   actualites: null,
+  classementBetclic: null,
+  classementEuroleague: null,
+  effectifParis: null,
 
   // Exterior scene
   exteriorVisible: true,
@@ -307,6 +310,15 @@ export const mutations = {
   setConcoursDatas: (state, value) => {
     state.concoursDatas = value
   },
+  setClassementBetclic: (state, value) => {
+    state.classementBetclic = value
+  },
+  setClassementEuroleague: (state, value) => {
+    state.classementEuroleague = value
+  },
+  setEffectifParis: (state, value) => {
+    state.effectifParis = value
+  },
 }
 
 
@@ -336,5 +348,8 @@ export const actions = {
     commit('setPbbMcsContent', initialData.pbbMcs.data)
     commit('setProgrammes', initialData.programmes)
     commit('setConcoursDatas', initialData.concoursDatas)
+    commit('setClassementBetclic', initialData.classementBetclic)
+    commit('setClassementEuroleague', initialData.classementEuroleague)
+    commit('setEffectifParis', initialData.effectifParis)
   },
 }
