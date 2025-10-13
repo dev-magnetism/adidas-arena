@@ -43,7 +43,14 @@
 		>
 			<EKinesis :speed="5">
 				<AtomsCornerPoints :size-points="8" />
-				<AppPbbImage
+				<nuxt-picture
+					provider="directus"
+					:src="contents.pictureFramed.src"
+					format="webp"
+					:alt="contents.pictureFramed.alt"
+					sizes="sm:35vw md:50vw"
+					/>
+				<!-- AppPbbImage
 	                :src="contents.pictureFramed.src"
 	                :alt="contents.pictureFramed.alt"
 	                :lazy="true"
@@ -51,7 +58,7 @@
 	                  desktop: 'w600,h600,fcrop,q85',
 	                  mobile: 'w600,h600,fcrop,q85',
 	                }"
-	             />
+	             / -->
 				
 			</EKinesis>
     	</div>

@@ -147,6 +147,34 @@ export const getInitialData = async () => {
     })
   );
 
+  cachedData.pbbPage = await fetchWithLogs('Parisbasketball_page', () =>
+    $directus.items('Parisbasketball_page').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+  cachedData.pbbEntertainment = await fetchWithLogs('Parisbasketball_entertainment', () =>
+    $directus.items('Parisbasketball_entertainment').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+  cachedData.pbbGallery = await fetchWithLogs('Parisbasketball_gallery', () =>
+    $directus.items('Parisbasketball_gallery').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+  cachedData.pbbMcs = await fetchWithLogs('Parisbasketball_mcs', () =>
+    $directus.items('Parisbasketball_mcs').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
   cachedData.programmationsEvent = await fetchWithLogs('Programmation_Event', () =>
     $directus.items('Programmation_Event').readByQuery({ limit: -1 })
   );

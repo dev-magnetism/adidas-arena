@@ -3,12 +3,20 @@
 	<div class="app-paris-basketball-dj grid-inner">
 
     	<EParallax
+    		v-if="contents.pictureFirst.src"
 			ref="imageFirst"
 			class="app-paris-basketball-dj__visual-first"
 			:speed="0.85"
 			>
 			<EKinesis :speed="5">
-				<AppPbbImage
+				<nuxt-picture
+					provider="directus"
+					:src="contents.pictureFirst.src"
+					format="webp"
+					:alt="contents.pictureFirst.alt"
+					sizes="sm:35vw md:50vw"
+					/>
+				<!-- AppPbbImage
 		          :src="contents.pictureFirst.src"
 		          :alt="contents.pictureFirst.alt"
 		          :lazy="true"
@@ -16,7 +24,7 @@
 		            desktop: 'w600,h600,fcrop,q85',
 		            mobile: 'w600,h600,fcrop,q85',
 		          }"
-		       />
+		       / -->
 	   		</EKinesis>
 	   	</EParallax>
 
@@ -64,12 +72,20 @@
 		</div>
 
 		<EParallax
+    		v-if="contents.pictureSecond.src"
 			ref="imageSecond"
 			class="app-paris-basketball-dj__visual-second"
 			:speed="0.85"
 		>
 			<EKinesis :speed="5">
-				<AppPbbImage
+				<nuxt-picture
+					provider="directus"
+					:src="contents.pictureSecond.src"
+					format="webp"
+					:alt="contents.pictureSecond.alt"
+					sizes="sm:35vw md:50vw"
+					/>
+				<!-- AppPbbImage
 	                :src="contents.pictureSecond.src"
 	                :alt="contents.pictureSecond.alt"
 	                :lazy="true"
@@ -77,7 +93,7 @@
 	                  desktop: 'w600,h600,fcrop,q85',
 	                  mobile: 'w600,h600,fcrop,q85',
 	                }"
-	             />
+	             / -->
 			</EKinesis>
     	</EParallax>
 
@@ -109,28 +125,28 @@ export default {
 
 			this.mm.add('(min-width: 768px)', (context) => {
 				const tweenImageFirst = gsap.fromTo(
-					this.$refs.imageFirst.$el,
+					this.$refs.imageFirst?.$el,
 					{
 						top: 300,
 					},
 					{
 						top: 0,
 						scrollTrigger: {
-							trigger: this.$refs.imageFirst.$el,
+							trigger: this.$refs.imageFirst?.$el,
 							scrub: 0.5,
 							end: 'bottom top',
 						},
 					}
 				)
 				const tweenImageSecond = gsap.fromTo(
-					this.$refs.imageSecond.$el,
+					this.$refs.imageSecond?.$el,
 					{
 						top: 300,
 					},
 					{
 						top: 0,
 						scrollTrigger: {
-							trigger: this.$refs.imageSecond.$el,
+							trigger: this.$refs.imageSecond?.$el,
 							scrub: 0.5,
 							end: 'bottom top',
 						},

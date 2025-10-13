@@ -13,30 +13,22 @@
 		</div>
 
 		<EParallax
+			v-if="contents.pictureFramed?.src"
 			ref="withoutFrame"
 			class="app-paris-basketball-merch__visual-without-frame"
 			:speed="0.75"
 		>
 			<EKinesis :speed="5">
-				<AppPbbImage
-	                :src="contents.pictureFramed.src"
-	                :alt="contents.pictureFramed.alt"
-	                :lazy="true"
-	                :sizes="{
-	                  desktop: 'w600,h600,fcrop,q85',
-	                  mobile: 'w600,h600,fcrop,q85',
-	                }"
-	             />
-			</EKinesis>
-    	</EParallax>
 
-    	<EParallax
-			ref="frameWrapper"
-			class="app-paris-basketball-merch__visual-with-frame"
-			:speed="0.85"
-		>
-			<EKinesis :speed="8.5">
-				<AppPbbImage
+				<nuxt-picture
+					provider="directus"
+					:src="contents.picture.src"
+					format="webp"
+					:alt="contents.picture.alt"
+					sizes="sm:35vw md:50vw"
+					/>
+
+				<!-- AppPbbImage
 	                :src="contents.picture.src"
 	                :alt="contents.picture.alt"
 	                :lazy="true"
@@ -44,7 +36,35 @@
 	                  desktop: 'w600,h600,fcrop,q85',
 	                  mobile: 'w600,h600,fcrop,q85',
 	                }"
-	             />
+	             / -->
+			</EKinesis>
+    	</EParallax>
+
+    	<EParallax
+			v-if="contents.picture?.src"
+			ref="frameWrapper"
+			class="app-paris-basketball-merch__visual-with-frame"
+			:speed="0.85"
+		>
+			<EKinesis :speed="8.5">
+
+				<nuxt-picture
+					provider="directus"
+					:src="contents.pictureFramed.src"
+					format="webp"
+					:alt="contents.pictureFramed.alt"
+					sizes="sm:35vw md:50vw"
+					/>
+
+				<!-- AppPbbImage
+	                :src="contents.pictureFramed.src"
+	                :alt="contents.pictureFramed.alt"
+	                :lazy="true"
+	                :sizes="{
+	                  desktop: 'w600,h600,fcrop,q85',
+	                  mobile: 'w600,h600,fcrop,q85',
+	                }"
+	             / -->
 				<ELottie id="Cadre_02" />
 			</EKinesis>
    		</EParallax>
@@ -103,28 +123,28 @@ export default {
 
 			this.mm.add('(min-width: 768px)', (context) => {
 				const tweenFrame = gsap.fromTo(
-					this.$refs.frameWrapper.$el,
+					this.$refs.frameWrapper?.$el,
 					{
 						rotate: -10,
 					},
 					{
 						rotate: -6,
 						scrollTrigger: {
-							trigger: this.$refs.frameWrapper.$el,
+							trigger: this.$refs.frameWrapper?.$el,
 							scrub: 0.5,
 							end: 'bottom top',
 						},
 					}
 				)
 				const tweenWithoutFrame = gsap.fromTo(
-					this.$refs.withoutFrame.$el,
+					this.$refs.withoutFrame?.$el,
 					{
 						rotate: 14,
 					},
 					{
 						rotate: 2,
 						scrollTrigger: {
-							trigger: this.$refs.withoutFrame.$el,
+							trigger: this.$refs.withoutFrame?.$el,
 							scrub: 0.5,
 							end: 'bottom top',
 						},
@@ -240,6 +260,21 @@ export default {
 				margin-bottom: mobile-vw(140px);
 			}
 
+
+			picture {
+				
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				display: block;
+
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+				}
+			}
+
 		}
 
 		&__visual-with-frame {
@@ -261,6 +296,17 @@ export default {
 
 			picture {
 				@include noise();
+
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				display: block;
+
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+				}
 			}
 
 			.app-element-lottie {

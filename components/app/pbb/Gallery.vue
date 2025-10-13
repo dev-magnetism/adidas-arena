@@ -16,13 +16,23 @@
 					ref="items"
 					class="app-paris-basketball-gallery__item"
 				>
-					<div class="app-paris-basketball-gallery__item__wrapper-visual">
+					<div 
+						v-if="item.parisbasketballgallery_picture"
+						class="app-paris-basketball-gallery__item__wrapper-visual">
 						<div class="app-paris-basketball-gallery__item__visual">
-							<AppPbbImage
-								:src="item.picture"
-								:alt="item.title"
+							<nuxt-picture
+								provider="directus"
+								:src="item.parisbasketballgallery_picture"
+								format="webp"
+								:alt="item.parisbasketballgallery_picture_alt"
+								sizes="sm:35vw md:50vw"
+								/>
+
+							<!-- AppPbbImage
+								:src="item.parisbasketballgallery_picture"
+								:alt="item.parisbasketballgallery_picture_alt"
 								:lazy="true"
-							/>
+							/ -->
 						</div>
 					</div>
 
@@ -30,22 +40,10 @@
 						<div class="app-paris-basketball-gallery__item__content__titles">
 							<TH4 tag="h3" class="app-paris-basketball-gallery__item__content__maintitle">
 								{{
-									item.title
+									item.parisbasketballgallery_name
 								}}
 							</TH4>
-							<TH5 
-								tag="h4" 
-								class="app-paris-basketball-gallery__item__content__subtitle"
-								v-if="item.subtitle"
-							>
-								{{
-									item.subtitle
-								}}
-							</TH5>
 						</div>
-						<TP2 class="app-paris-basketball-gallery__item__content__text">
-							{{ item.paragraph }}
-						</TP2>
 					</div>
 				</div>
 			</div>

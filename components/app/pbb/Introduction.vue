@@ -72,7 +72,14 @@
 			class="app-paris-basketball-introduction__f-row__visual"
 		>
 			<EKinesis :speed="5">
-				<AppPbbImage
+				<nuxt-picture
+					provider="directus"
+					:src="contents.pictureFramed.src"
+					format="webp"
+					:alt="contents.pictureFramed.alt"
+					sizes="sm:35vw md:50vw"
+					/>
+				<!-- AppPbbImage
 	                :src="contents.pictureFramed.src"
 	                :alt="contents.pictureFramed.alt"
 	                :lazy="true"
@@ -80,7 +87,7 @@
 	                  desktop: 'w600,h600,fcrop,q85',
 	                  mobile: 'w600,h600,fcrop,q85',
 	                }"
-	             />
+	             / -->
 				<ELottie id="Cadre_02" />
 			</EKinesis>
     	</div>
@@ -94,7 +101,14 @@
 		>
 			<EKinesis :speed="8.5">
 				<AtomsCornerPoints :size-points="8" />
-				<AppPbbImage
+				<nuxt-picture
+					provider="directus"
+					:src="contents.picture.src"
+					format="webp"
+					:alt="contents.picture.alt"
+					sizes="sm:35vw md:50vw"
+					/>
+				<!-- AppPbbImage
 	                :src="contents.picture.src"
 	                :alt="contents.picture.alt"
 	                :lazy="true"
@@ -102,7 +116,8 @@
 	                  desktop: 'w600,h600,fcrop,q85',
 	                  mobile: 'w600,h600,fcrop,q85',
 	                }"
-	             />
+	             / -->
+	             
 			</EKinesis>
    		</div>
 
@@ -485,6 +500,17 @@ export default {
 				picture {
 					z-index: 0;
 					@include noise();
+
+					position: absolute;
+					width: 100%;
+					height: 100%;
+					display: block;
+
+					img {
+						width: 100%;
+						height: 100%;
+						object-fit: cover;
+					}
 				}
 
 				svg,
@@ -600,6 +626,17 @@ export default {
 				picture {
 					z-index: 0;
 					@include noise();
+					
+					position: absolute;
+					width: 100%;
+					height: 100%;
+					display: block;
+
+					img {
+						width: 100%;
+						height: 100%;
+						object-fit: cover;
+					}
 				}
 			}
 		}

@@ -104,49 +104,33 @@ export default {
 	computed: {
 		...mapState({
 			partnersContent: (state) => state.partnersContent,
+			pbbPageContent: (state) => state.pbbPageContent,
+			pbbEntertainmentContent: (state) => state.pbbEntertainmentContent,
+			pbbGalleryContent: (state) => state.pbbGalleryContent,
+			pbbMcsContent: (state) => state.pbbMcsContent,
 			appContent: (state) => state.appContent,
 			programmes: (state) => state.programmes.filter(_o => _o.content?.category === "paris basketball").slice(0,8),
 			webview: (state) => state.webview,
 		}),
 		contentAbonnement() {
 			return {
-				maintitle: `<h2 class="H2 wysiwyg-text" style="font-size: 135px;"><strong>L'abonnement<br/>Mi-Saison</strong> 2024/2025</h2>`,
-				introduction: `
-					<p class="P2 wysiwyg-text">
-						<strong>
-							Il n’est pas trop tard pour vivre chaque instant d’une saison déjà historique.
-							<br/><br/>
-							L’abonnement mi-saison est désormais disponible, vous donnant accès à 17 matchs à domicile à compter du 3 janvier 2025.
-						</strong>
-					</p>
-				`,
-				detail: `
-					<p class="P2 wysiwyg-text">
-						Détails :
-					</p>
-					<ul>
-						<li>Nombreux avantages (priorité billetterie, réductions merchandising, événements exclusifs, jeux concours réguliers)</li>
-						<li>Placement : Cat Or à Cat 6</li>
-					</ul>
-				`,
+				maintitle: this.pbbPageContent.abonnement_title,
+				introduction: this.pbbPageContent.abonnement_introduction,
+				detail: this.pbbPageContent.abonnement_detail,
 				pictureFramed: {
-					src: 'imgs/pbb/introduction-projet.jpg',
-					alt: 'Le projet',
+					src: this.pbbPageContent.abonnement_picture_framed,
+					alt: this.pbbPageContent.abonnement_picture_framed_alt,
 				},
 				cta:{
-					label: "Je m'abonne",
-					link: "#",
+					label: this.pbbPageContent.abonnement_cta_label,
+					link: this.pbbPageContent.abonnement_cta_url,
 				}
 			}
 		},
 		contentAnimations() {
 			return{
 
-				text: `
-					<p class="P2 wysiwyg-text">
-						En avant match, pendant les temps morts, quart-temps, mi-temps, des animations <span style="color: var(--c-carmin-red);">rythment</span> le match pour divertir les spectateurs au-delà du sport. C’est ça aussi <span id="Trait_1" class="lottie-word" style="color: blue;">l’expérience Paris</span> Basketball à l’<span class="app-atoms-stroke-text wysiwyg-stroke">Adidas Arena</span>!
-					</p>
-				`
+				text: this.pbbPageContent.animations_paragraph
 
 			}
 		},
@@ -174,25 +158,21 @@ export default {
 		},
 		contentDJ() {
 			return{
-				maintitle: `<h2 class="H2 wysiwyg-text" weight="regular" style="font-size: 100px;"><strong>DJ</strong> <br/>du paris basketball</h2>`,
-				paragraph: `
-					<p class="P2 wysiwyg-text">
-						Si vous êtes adeptes des meilleures soirées parisiennes, vous avez forcément dansé sur les rythmes endiablés, calmes, doux mais toujours sucrés de ASHTY. Il sait absolument tout jouer pour accompagner musicalement les actions sur le parquet.
-					</p>
-				`,
+				maintitle: this.pbbPageContent.dj_title,
+				paragraph: this.pbbPageContent.dj_paragraph,
 				pictureFirst: {
-					src: 'imgs/pbb/merchandising-visuel02.jpg',
-					alt: 'Retrouvez maillots, collections streetwear et accessoires exclusifs toute l’année.',
+					src: this.pbbPageContent.dj_picture_first,
+					alt: this.pbbPageContent.dj_picture_first_alt,
 				},
 				pictureSecond: {
-					src: 'imgs/pbb/merchandising-visuel02.jpg',
-					alt: 'Retrouvez maillots, collections streetwear et accessoires exclusifs toute l’année.',
+					src: this.pbbPageContent.dj_picture_second,
+					alt: this.pbbPageContent.dj_picture_second_alt,
 				},
 				dj:{
-					name: 'Ashty',
+					name: this.pbbPageContent.dj_name,
 					link: {
-						label: '@dj.ashty',
-						url: '#'
+						label: this.pbbPageContent.dj_cta_label,
+						url: this.pbbPageContent.dj_cta_url
 					}
 				}
 			}
@@ -209,159 +189,69 @@ export default {
 		},
 		contentEntertainement() {
 			return{
-				title: `<h2 class="H2 wysiwyg-text" style="font-size: 135px;">Entertainment<br/> <strong>Fan zone</strong></h2>`,
-				items:[
-					{
-						paragraph: 'Dès votre entrée, vous entendrez résonner la musique de DJ BIGBEN et vous accompagnera tout le long de votre entrée afin de profiter des différentes activités présentes en fan zone.',
-						picture: '/imgs/pbb/entertainment-visuel01.jpg',
-						subtitle: '@THEBIGB.E.N',
-						title: 'DJ BIG BEN',
-					},
-					{
-						paragraph: 'La boutique officielle de Paris Basketball est votre destination incontournable pour découvrir et acheter tout l’équipement des fans du club parisien. Que vous soyez à la recherche de maillots, d’accessoires, ou de vêtements exclusifs, vous y trouverez tout ce qu’il faut pour afficher fièrement vos couleurs.',
-						picture: '/imgs/pbb/entertainment-visuel01.jpg',
-						subtitle: '',
-						title: 'Boutique',
-					},
-					{
-						paragraph: 'Déguster nos produits Eat is Family, l’adresse gourmande qui réveille vos papilles à chaque coin du stade ! Un menu savoureux et varié pour les amateurs de street food.',
-						picture: '/imgs/pbb/entertainment-visuel01.jpg',
-						subtitle: '',
-						title: 'food truck',
-					},
-					{
-						paragraph: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vehicula luctus risus, ut placerat metus ultrices eu. Phasellus aliquam condimentum interdum. Pellentesque tempor placerat imperdiet. ',
-						picture: '/imgs/pbb/entertainment-visuel01.jpg',
-						subtitle: '',
-						title: 'PLAYGROUND PARIS BASKETBALL',
-					}
-				]
+				title: this.pbbPageContent.entertainment_title,
+				items: this.pbbEntertainmentContent || [],
 			}
 		},
 		contentExperience() {
 			return {
-				maintitle: `<h2 class="H2 wysiwyg-text" style="font-size: 100px;"><strong>L'expérience</strong><br/>Paris Basketball</h2>`,
+				maintitle: this.pbbPageContent.experience_title,
 				bloc1: {
-					title: `<h4 class="H4 wysiwyg-text" style="font-size: 18px;">KOPP PARISII</h4>`,
-					paragraph: `
-						<p class="P2 wysiwyg-text">
-							Pas seulement un groupe de supporters, c’est une véritable famille unie par l’amour du basket et au rayonnement du Basketball parisien.<br/>
-							Depuis la création du club, les Parisii sont le cœur de l’ambiance au Paris Basketball, soutenant l’équipe à chaque match depuis Carpentier.
-							<br/><br/>
-							Ils ont aujourd’hui leur propre espace à l’adidas arena, continuant d’apporter leur soutien indéfectible. Leur passion et leur énergie sont une partie essentielle de notre histoire et de nos valeurs.
-							<br/><br/>
-							<strong>Envie de rejoindre le KOPP PARISII ?</strong>
-						</p>
-					`,
+					title: this.pbbPageContent.experience_bloc1_title,
+					paragraph: this.pbbPageContent.experience_bloc1_paragraph,
 					cta: {
-						label: 'Rejoindre le KOP',
-						url: '#'
+						label: this.pbbPageContent.experience_bloc1_cta_label,
+						url: this.pbbPageContent.experience_bloc1_cta_url
 					}
 				},
 				bloc2: {
-					title: `<h4 class="H4 wysiwyg-text" style="font-size: 32px;">HYPE TEAM</h4>`,
-					subtitle: `<h5 class="H5 wysiwyg-text" style="font-size: 18px;">DES SOIRS DE MATCHS ENFLAMMÉS<br/> PAR NOTRE HYPE TEAM</h5>`,
+					title: this.pbbPageContent.experience_bloc2_title,
+					subtitle: this.pbbPageContent.experience_bloc2_subtitle,
 
-					paragraph: `
-						<p class="P2 wysiwyg-text">
-							La HYPE Team est un collectif de danseurs breakers qui offrent des spectacles époustouflants à chaque soir de match. Leur énergie débordante et leurs acrobaties spectaculaires ajoutent une dimension excitante à l’expérience des spectateurs.
-							<br/><br/>
-							En plus de divertir le public avec leurs performances, ils offrent également de nombreux cadeaux tout au long du match, créant ainsi une atmosphère de fête et de célébration dans les gradins. Leur interaction avec le public, empreinte d’humour et de dynamisme, les rend incontournables lors de nos événements, où ils accompagnent les spectateurs dans divers jeux et animations.
-						</p>
-					`,
+					paragraph: this.pbbPageContent.experience_bloc2_paragraph,
 				},
 				pictureFramed: {
-					src: 'imgs/pbb/introduction-projet.jpg',
-					alt: 'Le projet',
+					src: this.pbbPageContent.experience_picture_framed,
+					alt: this.pbbPageContent.experience_picture_framed_alt,
 				},
 				picture: {
-					src: 'imgs/pbb/introduction-projet.jpg',
-					alt: 'le Club',
+					src: this.pbbPageContent.experience_picture,
+					alt: this.pbbPageContent.experience_picture_alt,
 				},
 			}
 		},
 		contentGallery() {
 			return{
-				items:[
-					{
-						picture: '/imgs/pbb/entertainment-visuel01.jpg',
-						title: 'John Doe',
-					},
-					{
-						picture: '/imgs/pbb/entertainment-visuel01.jpg',
-						title: 'John Doe',
-					},
-					{
-						picture: '/imgs/pbb/entertainment-visuel01.jpg',
-						title: 'John Doe',
-					},
-					{
-						picture: '/imgs/pbb/entertainment-visuel01.jpg',
-						title: 'John Doe',
-					}
-				]
+				items: this.pbbGalleryContent || [],
 			}
 		},
 		contentHypeTeam() {
 			return{
 
-				text: `
-					<p class="P2 wysiwyg-text">
-						<span id="Cercle_1" class="lottie-word" style="color: blue;"><strong>Prêts à danser</strong></span>,<br/><span style="text-decoration: underline;">chanter et jouer</span><br/> avec notre hype team ?
-					</p>
-				`
+				text: this.pbbPageContent.hypeteam_paragraph
 
 			}
 		},
 		contentIntroduction() {
 			return {
-				maintitle: `<h2 class="H2 wysiwyg-text" style="font-size: 100px;"><strong>Paris</strong><br/><span id="Cercle_2" class="lottie-word" style="color: blue;">Basketball</span></h2>`,
-				title1: `<h4 class="H4 wysiwyg-text" style="font-size: 32px;">Le projet</h4>`,
-				paragraph1: `
-					<p class="P2 wysiwyg-text">
-						<strong>Au- delà du club, la création du Paris Basketball est un projet qui vient incarner une culture : celle du basketball parisien.</strong>
-						<br/><br/>
-						Une culture qui s’est construite en marge des lumières du championnat professionnel et des circuits officiels.
-						<br/><br/>
-						Sur les playgrounds de Pigalle à Bir Hakeim, dans les gymnases de Paris à Cergy, dans les clubs amateurs du Grand Paris et pendant les tournois d’été à Carpentier ou au Trocadero, cette culture a fait de Paris l’une des capitales du basketball dans le monde.
-						<br/><br/>
-						Le projet est en marche : établir le Paris Basketball comme une place forte du basket français mais aussi continental.
-					</p>
-				`,
-				title2: `<h4 class="H4 wysiwyg-text" style="font-size: 32px;">Le Club</h4>`,
-				paragraph2: `
-					<p class="P2 wysiwyg-text">
-						L’ambition du club est d’offrir un spectacle sur et en dehors du terrain avec des matchs à thèmes qui célèbrent les communautés parisiennes :
-					</p>
-					<ul>
-						<li>Africa Game</li>
-						<li>Nouvel An Chinois</li>
-						<li>Green Game</li>
-					</ul>
-					<p class="P2 wysiwyg-text">
-						<br/>
-						Installé depuis février 2024 à l’adidas arena, le Paris Basketball passe un nouveau cap : continuer d’asseoir sa place dans le basket français et mondial.
-					</p>
-					<p class="P2 wysiwyg-text">
-						L’adidas arena permet au club d’offrir un spectacle, des prestations et une expérience à la hauteur de ses ambitions et des meilleurs standards européens.
-					</p>
-					<p class="P2 wysiwyg-text">
-						Le club vit sa 4e saison dans l’Élite, avec un effectif ultra-compétitif composé de jeunes talents et dirigé par le nouveau technicien brésilien : Tiago Splitter.
-					</p>
-				`,
+				maintitle: this.pbbPageContent.introduction_title,
+				title1: this.pbbPageContent.introduction_subtitle1,
+				paragraph1: this.pbbPageContent.introduction_paragraph1,
+				title2: this.pbbPageContent.introduction_subtitle2,
+				paragraph2: this.pbbPageContent.introduction_paragraph2,
 				pictureFramed: {
-					src: 'imgs/pbb/introduction-projet.jpg',
-					alt: 'Le projet',
+					src: this.pbbPageContent.introduction_picture_framed,
+					alt: this.pbbPageContent.introduction_picture_framed_alt,
 				},
 				picture: {
-					src: 'imgs/pbb/introduction-projet.jpg',
-					alt: 'le Club',
+					src: this.pbbPageContent.introduction_picture,
+					alt: this.pbbPageContent.introduction_picture_alt,
 				},
 				social_networks:{
-					facebook_link: "https://facebook.com",
-					linkedin_link: "https://linkedin.com",
-					instagram_link: "https://instagram.com",
-					twitter_link: "https://x.com"
+					facebook_link: this.pbbPageContent.introduction_social_facebook,
+					linkedin_link: this.pbbPageContent.introduction_social_linkedin,
+					instagram_link: this.pbbPageContent.introduction_social_instagram,
+					twitter_link: this.pbbPageContent.introduction_social_twitterx
 				}
 			}
 		},
@@ -377,116 +267,57 @@ export default {
 		},
 		contentMCs() {
 			return{
-				maintitle: `<h2 class="H2 wysiwyg-text" style="font-size: 100px;"><strong>Les MC’s</strong><span class="app-atoms-stroke-text wysiwyg-stroke">du paris basketball</span></h2>`,
-				items: [
-					{
-						name: 'Rama',
-						instagram: {
-							label: '@ramaaaaa2',
-							url: '#'
-						},
-						text: `
-							<p class="P2 wysiwyg-text">
-								Rama est la speakerine officielle du Paris BASKETBALL. Elle officie à la Halle Georges Carpentier depuis la saison 2018/2019. Joueuse et arbitre officielle sur les terrains d’Île-de-France, Rama est parfaite pour expliquer en toute pédagogie ce qui se passe sur le terrain.
-							</p>
-						`
-					},
-					{
-						name: 'Dandy',
-						instagram: {
-							label: '@Dandyguel',
-							url: '#'
-						},
-						text: `
-							<p class="P2 wysiwyg-text">
-								Dandy est le super maître de cérémonie du Paris BASKETBALL. Il est au club depuis sa création. Dandy est l’ambianceur en chef de l’Adidas Arena. Danser, chanter, commenter les grosses actions comme les dunks, Dandy sait tout bien faire.
-							</p>
-						`
-					},
-					{
-						name: 'YVAN',
-						text: `
-							<p class="P2 wysiwyg-text">
-								Yvan insuffle une énergie électrisante à chaque match. Sa voix résonne avec force, rythmant chaque action avec une intensité qui fait vibrer le public. Maître de l’ambiance, il sait exactement comment faire monter la tension lors des moments décisifs et célébrer les exploits des joueurs.
-							</p>
-						`
-					},
-				],
+				maintitle: this.pbbPageContent.mcs_title,
+				items: this.pbbMcsContent || [],
 				pictureFramed: {
-					src: 'imgs/pbb/merchandising-visuel01.jpg',
-					alt: 'boutique officielle du Paris Basketball',
+					src: this.pbbPageContent.mcs_picture_framed,
+					alt: this.pbbPageContent.mcs_picture_framed_alt,
 				},
 				picture: {
-					src: 'imgs/pbb/merchandising-visuel02.jpg',
-					alt: 'Retrouvez maillots, collections streetwear et accessoires exclusifs toute l’année.',
+					src: this.pbbPageContent.mcs_picture,
+					alt: this.pbbPageContent.mcs_picture_alt,
 				},
 				pictureTransparent: {
-					src: 'imgs/pbb/merchandising-visuel02.jpg',
-					alt: 'Retrouvez maillots, collections streetwear et accessoires exclusifs toute l’année.',
+					src: this.pbbPageContent.mcs_picture_transparent,
+					alt: this.pbbPageContent.mcs_picture_transparent_alt,
 				},
 
 			}
 		},
 		contentMerchandising() {
 			return {
-				maintitle: `<h2 class="H2 wysiwyg-text" style="font-size: 100px;">Le merch, <strong>toute l'année</strong></h2>`,
-				paragraph: `
-					<p class="P2 wysiwyg-text">
-						La boutique officielle du Paris Basketball vient d’ouvrir ses portes.<br/>
-						Retrouvez maillots, collections streetwear et accessoires exclusifs toute l’année.<br/>
-						<br/>
-						Ouverture : <br/>
-						<span id="Trait_1" class="lottie-word" style="color: #ab5733;">
-						Jours de matchs + mercredi et samedi après-midi.
-						</span>
-					</p>
-				`,
+				maintitle: this.pbbPageContent.merchandising_title,
+				paragraph: this.pbbPageContent.merchandising_paragraph,
 				pictureFramed: {
-					src: 'imgs/pbb/merchandising-visuel01.jpg',
-					alt: 'boutique officielle du Paris Basketball',
+					src: this.pbbPageContent.merchandising_picture_framed,
+					alt: this.pbbPageContent.merchandising_picture_framed_alt,
 				},
 				pictureTransparent: {
-					src: 'imgs/pbb/merchandising-visuel02.jpg',
-					alt: 'Retrouvez maillots, collections streetwear et accessoires exclusifs toute l’année.',
+					src: this.pbbPageContent.merchandising_picture_transparent,
+					alt: this.pbbPageContent.merchandising_picture_transparent_alt,
 				},
 				picture: {
-					src: 'imgs/pbb/merchandising-visuel02.jpg',
-					alt: 'Retrouvez maillots, collections streetwear et accessoires exclusifs toute l’année.',
+					src: this.pbbPageContent.merchandising_picture,
+					alt: this.pbbPageContent.merchandising_picture_alt,
 				},
 				cta:{
-					label: "Voir la boutique",
-					link: "#",
+					label: this.pbbPageContent.merchandising_cta_label,
+					link: this.pbbPageContent.merchandising_cta_url,
 				}
 			}
 		},
 		contentShows() {
 			return {
-				maintitle: `<h2 class="H2 wysiwyg-text" style="font-size: 100px;"><strong>des shows</strong><br/><span class="app-atoms-stroke-text wysiwyg-stroke">made in paris</span></h2>`,
-				introduction: `
-					<p class="P2 wysiwyg-text">
-						<strong>
-							Vivez un mélange unique lors de nos matchs, comme l’inoubliable défilé de mode lors de la réception de l’AS Monaco en janvier 2024 à l’Accor Arena ou encore le showcase de Zola pour l’inauguration de l’adidas Arena en février 2024.
-						</strong>
-					</p>
-				`,
-				detail: `
-					<p class="P2 wysiwyg-text">
-						De nombreux matchs à thèmes sont encore au programme cette saison :
-					</p>
-					<ul>
-						<li>Christmas Game</li>
-						<li>Student Game</li>
-						<li>Africa Game</li>
-						<li>Fan Game</li>
-					</ul>
-				`,
+				maintitle: this.pbbPageContent.shows_title,
+				introduction: this.pbbPageContent.shows_introduction,
+				detail: this.pbbPageContent.shows_detail,
 				pictureFramed: {
-					src: 'imgs/pbb/introduction-projet.jpg',
-					alt: 'Le projet',
+					src: this.pbbPageContent.shows_picture_framed,
+					alt: this.pbbPageContent.shows_picture_framed_alt,
 				},
 				picture: {
-					src: 'imgs/pbb/introduction-projet.jpg',
-					alt: 'Le projet',
+					src: this.pbbPageContent.shows_picture,
+					alt: this.pbbPageContent.shows_picture_alt,
 				},
 			}
 		},

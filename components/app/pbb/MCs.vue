@@ -3,55 +3,87 @@
 	<div class="app-paris-basketball-mcs grid-inner">
 
     <EParallax
+    	v-if="contents.pictureFramed?.src"
 			ref="frameWrapper"
 			class="app-paris-basketball-mcs__visual-with-frame"
 			:speed="0.85"
 		>
 			<EKinesis :speed="8.5">
-				<AppPbbImage
-	                :src="contents.pictureFramed.src"
-	                :alt="contents.pictureFramed.alt"
-	                :lazy="true"
-	                :sizes="{
-	                  desktop: 'w600,h600,fcrop,q85',
-	                  mobile: 'w600,h600,fcrop,q85',
-	                }"
-	             />
+
+
+				<nuxt-picture
+					provider="directus"
+					:src="contents.pictureFramed.src"
+					format="webp"
+					:alt="contents.pictureFramed.alt"
+					sizes="sm:35vw md:50vw"
+					/>
+
+				<!-- AppPbbImage
+            :src="contents.pictureFramed.src"
+            :alt="contents.pictureFramed.alt"
+            :lazy="true"
+            :sizes="{
+              desktop: 'w600,h600,fcrop,q85',
+              mobile: 'w600,h600,fcrop,q85',
+            }"
+         / -->
 				<ELottie id="Cadre_01" />
 			</EKinesis>
    	</EParallax>
 
 		<EParallax
+    	v-if="contents.picture?.src"
 			ref="withoutFrame"
 			class="app-paris-basketball-mcs__visual-without-frame"
 			:speed="0.75"
 		>
 			<EKinesis :speed="5">
-				<AppPbbImage
-	                :src="contents.picture.src"
-	                :alt="contents.picture.alt"
-	                :lazy="true"
-	                :sizes="{
-	                  desktop: 'w600,h600,fcrop,q85',
-	                  mobile: 'w600,h600,fcrop,q85',
-	                }"
-	             />
+
+				<nuxt-picture
+					provider="directus"
+					:src="contents.picture.src"
+					format="webp"
+					:alt="contents.picture.alt"
+					sizes="sm:35vw md:50vw"
+					/>
+
+				<!-- AppPbbImage
+            :src="contents.picture.src"
+            :alt="contents.picture.alt"
+            :lazy="true"
+            :sizes="{
+              desktop: 'w600,h600,fcrop,q85',
+              mobile: 'w600,h600,fcrop,q85',
+            }"
+         / -->
 			</EKinesis>
     </EParallax>
 
 		<EKinesis
+    	v-if="contents.pictureTransparent?.src"
 			:speed="9.5"
 			class="app-paris-basketball-mcs__visual-with-transparency"
 	    >
-	    	<AppPbbImage
-                :src="contents.pictureTransparent.src"
-                :alt="contents.pictureTransparent.alt"
-                :lazy="true"
-                :sizes="{
-                  desktop: 'w600,h600,fcrop,q85',
-                  mobile: 'w600,h600,fcrop,q85',
-                }"
-             />
+
+				<nuxt-picture
+					provider="directus"
+					:src="contents.pictureTransparent.src"
+					format="webp"
+					:alt="contents.pictureTransparent.alt"
+					sizes="sm:35vw md:50vw"
+					/>
+
+	    	<!-- AppPbbImage
+            :src="contents.pictureTransparent.src"
+            :alt="contents.pictureTransparent.alt"
+            :lazy="true"
+            :sizes="{
+              desktop: 'w600,h600,fcrop,q85',
+              mobile: 'w600,h600,fcrop,q85',
+            }"
+         / -->
+         
 			<AtomsCornerPoints 
 				:size-points="8" 
 				:border-color="'white'" 
@@ -78,19 +110,19 @@
 				>
 					<div class="app-paris-basketball-mcs__list__item__head">
 						<div class="app-paris-basketball-mcs__list__item__name">
-							{{item.name}}
+							{{item.parisbasketballmcs_name}}
 						</div>
 						<div 
 							class="app-paris-basketball-mcs__list__item__instagram"
-							v-if="item.instagram"
+							v-if="item.parisbasketballmcs_cta_url"
 							>
 							(
 							<a
-								:href="item.instagram.url"
+								:href="item.parisbasketballmcs_cta_url"
 								target="_blank"
 								class="app-paris-basketball-mcs__list__item__instagram__link"
 							>
-								{{item.instagram.label}}
+								{{item.parisbasketballmcs_cta_label}}
 							</a>
 							)
 						</div>
@@ -98,7 +130,7 @@
 					<ERichText
 						tag="p"
 						weight="regular"
-						:content="item.text"
+						:content="item.parisbasketballmcs_text"
 						class="app-paris-basketball-mcs__list__item__text"
 					/>
 				</div>
@@ -133,28 +165,28 @@ export default {
 
 			this.mm.add('(min-width: 768px)', (context) => {
 				const tweenFrame = gsap.fromTo(
-					this.$refs.frameWrapper.$el,
+					this.$refs.frameWrapper?.$el,
 					{
 						rotate: -10,
 					},
 					{
 						rotate: -6,
 						scrollTrigger: {
-							trigger: this.$refs.frameWrapper.$el,
+							trigger: this.$refs.frameWrapper?.$el,
 							scrub: 0.5,
 							end: 'bottom top',
 						},
 					}
 				)
 				const tweenWithoutFrame = gsap.fromTo(
-					this.$refs.withoutFrame.$el,
+					this.$refs.withoutFrame?.$el,
 					{
 						rotate: 8,
 					},
 					{
 						rotate: 1,
 						scrollTrigger: {
-							trigger: this.$refs.withoutFrame.$el,
+							trigger: this.$refs.withoutFrame?.$el,
 							scrub: 0.5,
 							end: 'bottom top',
 						},
@@ -210,6 +242,17 @@ export default {
 
 			picture {
 				@include noise();
+
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				display: block;
+
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+				}
 			}
 
 			.app-element-lottie {

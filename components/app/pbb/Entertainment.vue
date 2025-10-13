@@ -31,36 +31,50 @@
 					ref="items"
 					class="app-paris-basketball-entertainment__item"
 				>
-					<div class="app-paris-basketball-entertainment__item__wrapper-visual">
+					<div 
+						v-if="item.parisbasketballentertainment_picture"
+						class="app-paris-basketball-entertainment__item__wrapper-visual">
 						<div class="app-paris-basketball-entertainment__item__visual">
-							<AppPbbImage
-								:src="item.picture"
-								:alt="item.title"
+							<nuxt-picture
+								provider="directus"
+								:src="item.parisbasketballentertainment_picture"
+								format="webp"
+								:alt="item.parisbasketballentertainment_picture_alt"
+								sizes="sm:35vw md:50vw"
+								/>
+							<!-- AppPbbImage
+								v-if="item.parisbasketballentertainment_picture"
+								:src="item.parisbasketballentertainment_picture"
+								:alt="item.parisbasketballentertainment_picture_alt"
 								:lazy="true"
-							/>
+							/ -->
 						</div>
 					</div>
 
 					<div class="app-paris-basketball-entertainment__item__content">
 						<div class="app-paris-basketball-entertainment__item__content__titles">
-							<TH4 tag="h3" class="app-paris-basketball-entertainment__item__content__maintitle">
-								{{
-									item.title
-								}}
-							</TH4>
-							<TH5 
-								tag="h4" 
+
+							<ERichText
+								tag="h4"
+								weight="bold"
+								:content="item.parisbasketballentertainment_title"
+								class="app-paris-basketball-entertainment__item__content__maintitle"
+							/>
+
+							<ERichText
+								v-if="item.parisbasketballentertainment_cta_label"
+								tag="h5"
+								weight="regular"
+								:content="item.parisbasketballentertainment_cta_label"
 								class="app-paris-basketball-entertainment__item__content__subtitle"
-								v-if="item.subtitle"
-							>
-								{{
-									item.subtitle
-								}}
-							</TH5>
+							/>
 						</div>
-						<TP2 class="app-paris-basketball-entertainment__item__content__text">
-							{{ item.paragraph }}
-						</TP2>
+						<ERichText
+							tag="p"
+							weight="regular"
+							:content="item.parisbasketballentertainment_text"
+							class="app-paris-basketball-entertainment__item__content__text"
+						/>
 					</div>
 				</div>
 			</div>
@@ -329,41 +343,49 @@
 					}
 				}
 
-				&__maintitle.H4 {
-					font-size: desktop-vw(48px);
-					line-height: desktop-vw(48px);
-					letter-spacing: desktop-vw(-1.92px);
+				&__maintitle{
+					.H4 {
+						@include font-ITCFranklinGothicLT-BkCp();
+						font-size: desktop-vw(48px);
+						line-height: desktop-vw(48px);
+						letter-spacing: desktop-vw(-1.92px);
+						font-weight: 600;
 
-					@include mobile {
-						display: inline-block;
-						font-size: mobile-vw(40px);
-						line-height: mobile-vw(40px);
+						@include mobile {
+							display: inline-block;
+							font-size: mobile-vw(40px);
+							line-height: mobile-vw(40px);
+						}
 					}
 				}
 
-				&__subtitle.H5 {
-					margin-top: desktop-vw(10px);
-					@include font-ITCFranklinGothicLT-BkCp();
-					font-size: desktop-vw(17px);
-					line-height: desktop-vw(20px);
-					font-weight: 400;
-					letter-spacing: desktop-vw(1.36px);
+				&__subtitle {
+					.H5 {
+						margin-top: desktop-vw(10px);
+						@include font-ITCFranklinGothicLT-BkCp();
+						font-size: desktop-vw(17px);
+						line-height: desktop-vw(20px);
+						font-weight: 400;
+						letter-spacing: desktop-vw(1.36px);
 
-					@include mobile {
-						display: inline-block;
-						margin-top: mobile-vw(15px);
-						font-size: mobile-vw(20px);
-						line-height: mobile-vw(20px);
+						@include mobile {
+							display: inline-block;
+							margin-top: mobile-vw(15px);
+							font-size: mobile-vw(20px);
+							line-height: mobile-vw(20px);
+						}
 					}
 				}
-				&__text.P2 {
+				&__text{
 					flex: 3;
 					margin-right: desktop-vw(60px);
-					text-transform: uppercase;
+					.P2 {
+						text-transform: uppercase;
 
-					@include mobile {
-						margin-right: mobile-vw(0px);
-						margin-left: mobile-vw(40px);
+						@include mobile {
+							margin-right: mobile-vw(0px);
+							margin-left: mobile-vw(40px);
+						}
 					}
 				}
 			}
