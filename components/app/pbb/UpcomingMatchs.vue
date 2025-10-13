@@ -225,7 +225,7 @@ export default {
 
   &__inner {
     display: flex;
-    column-gap: desktop-vw(60px);
+    column-gap: desktop-vw(30px);
     flex-direction: row;
     will-change: transform;
 
@@ -234,7 +234,7 @@ export default {
     }
 
     .app-programmation-slider-card{
-      flex: 0 0 30%;
+      flex: 0 0 27.5%;
 
       @include mobile {
         flex: 0 0 83%;
@@ -242,7 +242,7 @@ export default {
     }
 
     .app-programmation-slider-card:nth-child(2n+2){
-        top: desktop-vw(156px);
+        top: desktop-vw(136px);
 
         @include mobile {
           top: mobile-vw(32px);
