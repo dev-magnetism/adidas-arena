@@ -273,11 +273,15 @@ export default {
 	.app-paris-basketball-shows {
 		position: relative;
 		row-gap: desktop-vw(85px);
+		padding-top: desktop-vw(50px);
+		padding-bottom: desktop-vw(50px);
 		background-color: var(--c-black);
 
 		@include mobile {
 			overflow-x: hidden;
 			row-gap: mobile-vw(85px);
+			padding-top: mobile-vw(50px);
+			padding-bottom: mobile-vw(50px);
 		}
 
 		&__content {
