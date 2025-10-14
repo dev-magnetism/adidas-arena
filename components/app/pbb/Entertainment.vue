@@ -219,9 +219,12 @@
 				)
 				const parallaxTransforms = this.calculateParallaxTransforms()
 
-				parallaxTransforms.forEach((transform, index) => {
-					layers[index].style.transform = `translateX(${transform}%)`
-				})
+				
+					parallaxTransforms.forEach((transform, index) => {
+						if(layers[index]){
+							layers[index].style.transform = `translateX(${transform}%)`
+						}
+					})
 			},
 			...mapMutations({
 				setCursorState: 'setCursorState',
