@@ -18,10 +18,10 @@
 		<AppPbbIntroduction :contents="contentIntroduction" />
 		<AppPbbUpcomingMatchs :contents="contentMatchs" />
 		<AppPbbAbonnement :contents="contentAbonnement" />
-		<AppPbbClassement v-if="contentClassement" :contents="contentClassement" />
+		<AppPbbClassement ref="classement" v-if="contentClassement" :contents="contentClassement" />
 		<AppPbbEffectif v-if="contentEffectif" :contents="contentEffectif" />
-		<AppPbbMerchandising :contents="contentMerchandising" />
-		<AppPbbEntertainment :contents="contentEntertainement" />
+		<AppPbbMerchandising ref="merchandising" :contents="contentMerchandising" />
+		<AppPbbEntertainment ref="entertainment" :contents="contentEntertainement" />
 		<AppPbbMCs :contents="contentMCs" />
 		<AppPbbDJ :contents="contentDJ" />
 		<AppPbbAnimations :contents="contentAnimations" />
@@ -30,13 +30,14 @@
 		<AppPbbHypeTeam :contents="contentHypeTeam" />
 		<AppPbbGallery :contents="contentGallery" />
 
-    	<AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
+    	<AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" :disable-header-trigger="true" />
 	</main>
 </template>
 
 <script>
 
-import { mapState } from 'vuex';
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { mapState, mapMutations } from 'vuex';
 
 import scroll from '@/mixins/scroll';
 import pageTransition from '@/mixins/page-transition';
@@ -65,7 +66,117 @@ export default {
 	},
   data() {
     return {
+      scrollTriggerClassement: null,
+      scrollTriggerMerchandising: null,
+      scrollTriggerEntertainment: null,
     }
+  },
+  mounted() {
+    this.$nuxt.$on(
+      'global:forceInitScrollTrigger',
+      this.onForceInitScrollTrigger
+    )
+
+    this.$nextTick(() => {
+      this.initScrollTrigger()
+    })
+  },
+  beforeDestroy() {
+    this.$nuxt.$off(
+      'global:forceInitScrollTrigger',
+      this.onForceInitScrollTrigger
+    )
+
+    this.scrollTriggerClassement?.kill()
+    this.scrollTriggerMerchandising?.kill()
+    this.scrollTriggerEntertainment?.kill()
+  },
+  methods: {
+    onForceInitScrollTrigger() {
+      this.scrollTriggerClassement?.kill()
+      this.scrollTriggerMerchandising?.kill()
+      this.scrollTriggerEntertainment?.kill()
+      this.initScrollTrigger()
+    },
+    initScrollTrigger() {
+      // ScrollTrigger pour activer le header blanc à partir de AppPbbClassement jusqu'à la fin
+      // Couvre toute la zone de Classement jusqu'au footer
+      if (this.$refs.classement && this.$refs.classement.$el) {
+        this.scrollTriggerClassement = ScrollTrigger.create({
+          trigger: this.$refs.classement.$el,
+          start: 'top-=7.5% top',
+          end: 'max', // Jusqu'à la fin du document
+          onEnter: () => {
+            // Scroll vers le bas : on active le blanc
+            this.setHeaderWhite(true)
+          },
+          onLeave: () => {
+            // On ne fait rien si on sort par le bas (on reste blanc)
+          },
+          onEnterBack: () => {
+            // On rentre par le bas en scrollant vers le haut : on reste blanc
+            this.setHeaderWhite(true)
+          },
+          onLeaveBack: () => {
+            // Scroll vers le haut : on sort de la zone, on désactive le blanc
+            this.setHeaderWhite(false)
+          },
+        })
+      }
+
+      // ScrollTrigger pour forcer le noir sur AppPbbMerchandising (exception - fond blanc)
+      if (this.$refs.merchandising && this.$refs.merchandising.$el) {
+        this.scrollTriggerMerchandising = ScrollTrigger.create({
+          trigger: this.$refs.merchandising.$el,
+          start: 'top-=7.5% top',
+          end: 'bottom-=7.5% top',
+          onEnter: () => {
+            // On entre dans Merchandising par le haut : noir
+            this.setHeaderWhite(false)
+          },
+          onLeave: () => {
+            // On sort de Merchandising par le bas : blanc
+            this.setHeaderWhite(true)
+          },
+          onEnterBack: () => {
+            // On rentre dans Merchandising par le bas : noir
+            this.setHeaderWhite(false)
+          },
+          onLeaveBack: () => {
+            // On sort de Merchandising par le haut : blanc
+            this.setHeaderWhite(true)
+          },
+        })
+      }
+
+      // ScrollTrigger pour forcer le noir sur AppPbbEntertainment (exception - fond blanc)
+      if (this.$refs.entertainment && this.$refs.entertainment.$el) {
+        this.scrollTriggerEntertainment = ScrollTrigger.create({
+          trigger: this.$refs.entertainment.$el,
+          start: 'top-=7.5% top',
+          end: 'bottom-=7.5% top',
+          onEnter: () => {
+            // On entre dans Entertainment par le haut : noir
+            this.setHeaderWhite(false)
+          },
+          onLeave: () => {
+            // On sort de Entertainment par le bas : blanc
+            this.setHeaderWhite(true)
+          },
+          onEnterBack: () => {
+            // On rentre dans Entertainment par le bas : noir
+            this.setHeaderWhite(false)
+          },
+          onLeaveBack: () => {
+            // On sort de Entertainment par le haut : blanc
+            this.setHeaderWhite(true)
+          },
+        })
+      }
+    },
+    ...mapMutations({
+      setHeaderWhite: 'setHeaderWhite',
+    }),
   },
 	computed: {
 		...mapState({
