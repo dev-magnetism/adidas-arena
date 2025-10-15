@@ -338,7 +338,7 @@ export default {
 				top:0;
 				left: 50%;
 				width: auto;
-				height: desktop-vw(395px);
+				height: desktop-vw(250px);
 				transform: translate(-50%, -50%);
 
 				@include mobile{

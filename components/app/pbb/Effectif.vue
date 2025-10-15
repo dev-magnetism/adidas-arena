@@ -170,12 +170,12 @@
 	.app-paris-basketball-effectif {
 		position: relative;
 		background-color: var(--c-black);
-		padding-top: desktop-vw(96px);
+		padding-top: desktop-vw(48px);
 		padding-bottom: desktop-vw(160px);
 
 
 		@include mobile {
-			padding-top: mobile-vw(100px);
+			padding-top: mobile-vw(50px);
 			padding-bottom: mobile-vw(100px);
 		}
 
@@ -192,7 +192,7 @@
 				top:0;
 				left: 50%;
 				width: auto;
-				height: desktop-vw(395px);
+				height: desktop-vw(250px);
 				transform: translate(-50%, -50%);
 
 				@include mobile{
