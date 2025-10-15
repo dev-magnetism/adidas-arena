@@ -6,12 +6,7 @@
 
 
     	<div class="app-paris-basketball-introduction__f-row__content">
-      <EKinesis
-        :speed="12"
-        class="app-paris-basketball-introduction__arrow"
-	    >
-        <img src="/imgs/arrow.png" alt="Arrow" />
-      </EKinesis>
+
 			<ERichText
 				ref="maintitle"
 				tag="h2"
@@ -101,7 +96,9 @@
 			</EKinesis>
     	</div>
 
-
+    <div class="app-paris-basketball-introduction__arrow">
+      <img src="/imgs/arrow.png" alt="Arrow" />
+    </div>
 
 		<div
 			ref="pointsVisual"
@@ -127,7 +124,7 @@
 	                }"
 	             / -->
 
-			</EKinesis>
+			  </EKinesis>
    		</div>
 
     	<div class="app-paris-basketball-introduction__s-row__content">
@@ -355,18 +352,24 @@ export default {
 
     &__arrow {
       position: absolute;
-      width: 8vw;
-      height: auto;
       bottom: 9vh;
       left: 9vw;
+
+      img {
+        width: 8vw;
+        height: auto;
+      }
 
       @include mobile {
         left: auto;
         right: 5vw;
         bottom: 25%;
-        width: 20vw;
-        height: auto;
         transform: scaleX(-1);
+
+        img {
+          width: 20vw;
+          height: auto;
+        }
 			}
     }
 
