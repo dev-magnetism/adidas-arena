@@ -83,11 +83,11 @@
               mobile: 'w600,h600,fcrop,q85',
             }"
          / -->
-         
-			<AtomsCornerPoints 
-				:size-points="8" 
-				:border-color="'white'" 
-				:points-color="'white'" 
+
+			<AtomsCornerPoints
+				:size-points="8"
+				:border-color="'white'"
+				:points-color="'white'"
 
 			/>
 	    </EKinesis>
@@ -103,7 +103,7 @@
 
 			<div class="app-paris-basketball-mcs__list">
 
-				<div 
+				<div
 					class="app-paris-basketball-mcs__list__item"
 					v-for="(item, index) in contents.items"
 					:key="`mcs-${index}`"
@@ -112,7 +112,7 @@
 						<div class="app-paris-basketball-mcs__list__item__name">
 							{{item.parisbasketballmcs_name}}
 						</div>
-						<div 
+						<div
 							class="app-paris-basketball-mcs__list__item__instagram"
 							v-if="item.parisbasketballmcs_cta_url"
 							>
@@ -199,7 +199,7 @@ export default {
 				}
 			})
 		},
-	},	
+	},
 
 }
 </script>
@@ -295,7 +295,7 @@ export default {
 			left: desktop-vw(-200px);
 			transform: rotate(6deg);
 			width: desktop-vw(270px);
-			height: desktop-vw(270px);
+			height: desktop-vw(270px) !important;
 
 			@include fake-transparent();
 
