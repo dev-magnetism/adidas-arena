@@ -1,8 +1,17 @@
 <template>
 	<div class="app-paris-basketball-introduction grid-inner">
 
-		
+
+
+
+
     	<div class="app-paris-basketball-introduction__f-row__content">
+      <EKinesis
+        :speed="12"
+        class="app-paris-basketball-introduction__arrow"
+	    >
+        <img src="/imgs/arrow.png" alt="Arrow" />
+      </EKinesis>
 			<ERichText
 				ref="maintitle"
 				tag="h2"
@@ -93,7 +102,7 @@
     	</div>
 
 
-	    
+
 		<div
 			ref="pointsVisual"
 			v-if="contents.picture?.src"
@@ -117,7 +126,7 @@
 	                  mobile: 'w600,h600,fcrop,q85',
 	                }"
 	             / -->
-	             
+
 			</EKinesis>
    		</div>
 
@@ -188,7 +197,7 @@ export default {
 			type: Object,
 			default: () => {},
 		},
-	},	
+	},
 	computed: {
 		...mapState({
 			allLoadedFake: (state) => state.allLoadedFake,
@@ -344,6 +353,24 @@ export default {
 			overflow-x: hidden;
 		}
 
+    &__arrow {
+      position: absolute;
+      width: 8vw;
+      height: auto;
+      bottom: 9vh;
+      left: 9vw;
+
+      @include mobile {
+        left: auto;
+        right: 5vw;
+        bottom: 25%;
+        width: 20vw;
+        height: auto;
+        transform: scaleX(-1);
+			}
+    }
+
+
 		&__visual-transparent.app-element-kinesis {
 			position: absolute;
 			z-index: 10;
@@ -465,7 +492,7 @@ export default {
 							line-height: mobile-vw(20px);
 						}
 
-						strong{	
+						strong{
 							font-size: desktop-vw(18px);
 							text-transform: uppercase;
 
@@ -563,7 +590,7 @@ export default {
 					width: 65%;
 
 					@include mobile {
-						
+
 						margin-left: 0;
 						width: 100%;
 					}
@@ -626,7 +653,7 @@ export default {
 				picture {
 					z-index: 0;
 					@include noise();
-					
+
 					position: absolute;
 					width: 100%;
 					height: 100%;

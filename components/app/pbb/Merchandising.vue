@@ -22,9 +22,9 @@
 
 				<nuxt-picture
 					provider="directus"
-					:src="contents.picture.src"
+					:src="contents.pictureFramed.src"
 					format="webp"
-					:alt="contents.picture.alt"
+					:alt="contents.pictureFramed.alt"
 					sizes="sm:35vw md:50vw"
 					/>
 
@@ -50,9 +50,9 @@
 
 				<nuxt-picture
 					provider="directus"
-					:src="contents.pictureFramed.src"
+					:src="contents.picture.src"
 					format="webp"
-					:alt="contents.pictureFramed.alt"
+					:alt="contents.picture.alt"
 					sizes="sm:35vw md:50vw"
 					/>
 
@@ -157,7 +157,7 @@ export default {
 				}
 			})
 		},
-	},	
+	},
 
 }
 </script>
@@ -262,7 +262,7 @@ export default {
 
 
 			picture {
-				
+
 				position: absolute;
 				width: 100%;
 				height: 100%;
