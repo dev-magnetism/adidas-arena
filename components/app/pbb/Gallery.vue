@@ -16,7 +16,7 @@
 					ref="items"
 					class="app-paris-basketball-gallery__item"
 				>
-					<div 
+					<div
 						v-if="item.parisbasketballgallery_picture"
 						class="app-paris-basketball-gallery__item__wrapper-visual">
 						<div class="app-paris-basketball-gallery__item__visual">
@@ -25,7 +25,7 @@
 								:src="item.parisbasketballgallery_picture"
 								format="webp"
 								:alt="item.parisbasketballgallery_picture_alt"
-								sizes="sm:35vw md:50vw"
+								sizes="sm:80vw md:90vw lg:100vw"
 								/>
 
 							<!-- AppPbbImage
@@ -282,7 +282,7 @@
 					}
 				}
 
-				
+
 			}
 
 			&__wrapper-visual {

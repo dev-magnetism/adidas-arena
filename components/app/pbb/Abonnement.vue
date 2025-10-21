@@ -1,7 +1,7 @@
 <template>
 	<div class="app-paris-basketball-abonnement grid-inner">
 
-		
+
     	<div class="app-paris-basketball-abonnement__content">
 			<ERichText
 				ref="maintitle"
@@ -48,7 +48,7 @@
 					:src="contents.pictureFramed.src"
 					format="webp"
 					:alt="contents.pictureFramed.alt"
-					sizes="sm:35vw md:50vw"
+					sizes="sm:80vw md:90vw lg:100vw"
 					/>
 				<!-- AppPbbImage
 	                :src="contents.pictureFramed.src"
@@ -59,11 +59,11 @@
 	                  mobile: 'w600,h600,fcrop,q85',
 	                }"
 	             / -->
-				
+
 			</EKinesis>
     	</div>
 	</div>
-	
+
 </template>
 
 <script>
@@ -76,7 +76,7 @@ export default {
 			type: Object,
 			default: () => {},
 		},
-	},	
+	},
 	computed: {
 		...mapState({
 			allLoadedFake: (state) => state.allLoadedFake,

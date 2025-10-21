@@ -1,7 +1,7 @@
 <template>
 	<div class="app-paris-basketball-experience grid-inner">
 
-		
+
     	<div class="app-paris-basketball-experience__f-row__content">
 			<ERichText
 				ref="maintitle"
@@ -48,7 +48,7 @@
 					:src="contents.pictureFramed.src"
 					format="webp"
 					:alt="contents.pictureFramed.alt"
-					sizes="sm:35vw md:50vw"
+					sizes="sm:80vw md:90vw lg:100vw"
 					/>
 				<!-- AppPbbImage
 	                :src="contents.pictureFramed.src"
@@ -62,7 +62,7 @@
 			</EKinesis>
     	</div>
 
-	    
+
 		<div
 			ref="withoutFrame"
 			v-if="contents.picture?.src"
@@ -74,7 +74,7 @@
 					:src="contents.picture.src"
 					format="webp"
 					:alt="contents.picture.alt"
-					sizes="sm:35vw md:50vw"
+					sizes="sm:80vw md:90vw lg:100vw"
 					/>
 				<!-- AppPbbImage
 	                :src="contents.picture.src"
@@ -128,7 +128,7 @@ export default {
 			type: Object,
 			default: () => {},
 		},
-	},	
+	},
 	computed: {
 		...mapState({
 			allLoadedFake: (state) => state.allLoadedFake,
@@ -464,7 +464,7 @@ export default {
 				}
 
 				&__text {
-					
+
 					.P2{
 						font-size: desktop-vw(17px);
 						line-height: desktop-vw(20px);

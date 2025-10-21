@@ -25,7 +25,7 @@
 					:src="contents.pictureFramed.src"
 					format="webp"
 					:alt="contents.pictureFramed.alt"
-					sizes="sm:35vw md:50vw"
+					sizes="sm:80vw md:90vw lg:100vw"
 					/>
 
 				<!-- AppPbbImage
@@ -53,7 +53,7 @@
 					:src="contents.picture.src"
 					format="webp"
 					:alt="contents.picture.alt"
-					sizes="sm:35vw md:50vw"
+					sizes="sm:80vw md:90vw lg:100vw"
 					/>
 
 				<!-- AppPbbImage

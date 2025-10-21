@@ -31,7 +31,7 @@
 					ref="items"
 					class="app-paris-basketball-entertainment__item"
 				>
-					<div 
+					<div
 						v-if="item.parisbasketballentertainment_picture"
 						class="app-paris-basketball-entertainment__item__wrapper-visual">
 						<div class="app-paris-basketball-entertainment__item__visual">
@@ -40,7 +40,7 @@
 								:src="item.parisbasketballentertainment_picture"
 								format="webp"
 								:alt="item.parisbasketballentertainment_picture_alt"
-								sizes="sm:35vw md:50vw"
+								sizes="sm:80vw md:90vw lg:100vw"
 								/>
 							<!-- AppPbbImage
 								v-if="item.parisbasketballentertainment_picture"
@@ -219,7 +219,7 @@
 				)
 				const parallaxTransforms = this.calculateParallaxTransforms()
 
-				
+
 					parallaxTransforms.forEach((transform, index) => {
 						if(layers[index]){
 							layers[index].style.transform = `translateX(${transform}%)`

@@ -9,13 +9,13 @@
 			:speed="0.85"
 			>
 			<EKinesis :speed="5">
-				<nuxt-picture
-					provider="directus"
-					:src="contents.pictureFirst.src"
-					format="webp"
-					:alt="contents.pictureFirst.alt"
-					sizes="sm:35vw md:50vw"
-					/>
+			<nuxt-picture
+				provider="directus"
+				:src="contents.pictureFirst.src"
+				format="webp"
+				:alt="contents.pictureFirst.alt"
+				sizes="sm:80vw md:90vw lg:100vw"
+				/>
 				<!-- AppPbbImage
 		          :src="contents.pictureFirst.src"
 		          :alt="contents.pictureFirst.alt"
@@ -46,14 +46,14 @@
 				class="app-paris-basketball-dj__content__paragraph"
 			/>
 
-			<div 
+			<div
 				class="app-paris-basketball-dj__content__dj"
 				v-if="contents.dj"
 				>
 				<div class="app-paris-basketball-dj__content__dj__name">
 					{{contents.dj?.name}}
 				</div>
-				<div 
+				<div
 					class="app-paris-basketball-dj__content__dj__link"
 					v-if="contents.dj?.link"
 					>
@@ -78,13 +78,13 @@
 			:speed="0.85"
 		>
 			<EKinesis :speed="5">
-				<nuxt-picture
-					provider="directus"
-					:src="contents.pictureSecond.src"
-					format="webp"
-					:alt="contents.pictureSecond.alt"
-					sizes="sm:35vw md:50vw"
-					/>
+			<nuxt-picture
+				provider="directus"
+				:src="contents.pictureSecond.src"
+				format="webp"
+				:alt="contents.pictureSecond.alt"
+				sizes="sm:80vw md:90vw lg:100vw"
+				/>
 				<!-- AppPbbImage
 	                :src="contents.pictureSecond.src"
 	                :alt="contents.pictureSecond.alt"
@@ -97,7 +97,7 @@
 			</EKinesis>
     	</EParallax>
 
-		
+
 
 	</div>
 
@@ -159,7 +159,7 @@ export default {
 				}
 			})
 		},
-	},	
+	},
 
 }
 </script>
@@ -316,7 +316,7 @@ export default {
 					&__cta{
 						color: var(--c-carmin-red);
 					}
-					
+
 				}
 
 
