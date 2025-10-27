@@ -270,6 +270,7 @@ export default {
 				}
 
 				.P2{
+					@include font-ITCFranklinGothicLT-BkCp();
 
 					font-size: desktop-vw(17px);
 					line-height: desktop-vw(20px);
