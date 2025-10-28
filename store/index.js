@@ -26,8 +26,12 @@ export const state = () => ({
   businessOptContent: null,
   businessArtContent: null,
   chapelleContent: null,
+  pbbContent: null,
   programmes: null,
   actualites: null,
+  classementBetclic: null,
+  classementEuroleague: null,
+  effectifParis: null,
 
   // Exterior scene
   exteriorVisible: true,
@@ -273,6 +277,18 @@ export const mutations = {
   setChapelleContent: (state, value) => {
     state.chapelleContent = value
   },
+  setPbbPageContent: (state, value) => {
+    state.pbbPageContent = value
+  },
+  setPbbEntertainmentContent: (state, value) => {
+    state.pbbEntertainmentContent = value
+  },
+  setPbbGalleryContent: (state, value) => {
+    state.pbbGalleryContent = value
+  },
+  setPbbMcsContent: (state, value) => {
+    state.pbbMcsContent = value
+  },
   setMenuContent: (state, value) => {
     state.menuContent = value
   },
@@ -293,6 +309,15 @@ export const mutations = {
   },
   setConcoursDatas: (state, value) => {
     state.concoursDatas = value
+  },
+  setClassementBetclic: (state, value) => {
+    state.classementBetclic = value
+  },
+  setClassementEuroleague: (state, value) => {
+    state.classementEuroleague = value
+  },
+  setEffectifParis: (state, value) => {
+    state.effectifParis = value
   },
 }
 
@@ -317,7 +342,14 @@ export const actions = {
     commit('setBusinessOptContent', initialData.businessOpt.data)
     commit('setBusinessArtContent', initialData.businessArt.data)
     commit('setChapelleContent', initialData.chapelle.data)
+    commit('setPbbPageContent', initialData.pbbPage.data)
+    commit('setPbbEntertainmentContent', initialData.pbbEntertainment.data)
+    commit('setPbbGalleryContent', initialData.pbbGallery.data)
+    commit('setPbbMcsContent', initialData.pbbMcs.data)
     commit('setProgrammes', initialData.programmes)
     commit('setConcoursDatas', initialData.concoursDatas)
+    commit('setClassementBetclic', initialData.classementBetclic)
+    commit('setClassementEuroleague', initialData.classementEuroleague)
+    commit('setEffectifParis', initialData.effectifParis)
   },
 }

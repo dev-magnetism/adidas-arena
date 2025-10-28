@@ -28,6 +28,14 @@
 
     <div class="app-header__nav" v-if="this.webview !== 'ok'">
       <nuxt-link
+        :class="{ reduced: headerReduced, white: headerWhite }"
+        class="pbb"
+        to="/paris-basketball"
+      >
+        <img v-if="headerWhite" src="/imgs/logo-pbb-white.svg" alt="Paris Basketball" />
+        <img v-else src="/imgs/logo-pbb-color.svg" alt="Paris Basketball" />
+      </nuxt-link>
+      <nuxt-link
         v-for="(item, i) in navItems"
         :key="i"
         :class="{ reduced: headerReduced, white: headerWhite }"
@@ -174,9 +182,14 @@ export default {
     cursor: pointer;
     display: flex;
     gap: desktop-vw(25px);
+    align-items: center;
 
     @include mobile {
       display: none;
+    }
+
+    .pbb {
+      width: 3rem;
     }
 
     .P1.bold {

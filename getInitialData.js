@@ -147,6 +147,34 @@ export const getInitialData = async () => {
     })
   );
 
+  cachedData.pbbPage = await fetchWithLogs('Parisbasketball_page', () =>
+    $directus.items('Parisbasketball_page').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+  cachedData.pbbEntertainment = await fetchWithLogs('Parisbasketball_entertainment', () =>
+    $directus.items('Parisbasketball_entertainment').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+  cachedData.pbbGallery = await fetchWithLogs('Parisbasketball_gallery', () =>
+    $directus.items('Parisbasketball_gallery').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+  cachedData.pbbMcs = await fetchWithLogs('Parisbasketball_mcs', () =>
+    $directus.items('Parisbasketball_mcs').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
   cachedData.programmationsEvent = await fetchWithLogs('Programmation_Event', () =>
     $directus.items('Programmation_Event').readByQuery({ limit: -1 })
   );
@@ -332,6 +360,245 @@ export const getInitialData = async () => {
 
   cachedData.programmes = programmes
   console.log('Building events data with SVC API OK')
+
+  // Récupération des données Paris Basketball
+  console.log('Fetching Paris Basketball data...')
+
+  // Helper pour décoder les entités HTML
+  const decodeHTMLEntities = (text) => {
+    if (!text) return text
+    return text
+      .replace(/&rsquo;/g, "'")
+      .replace(/&lsquo;/g, "'")
+      .replace(/&quot;/g, '"')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&#(\d+);/g, (match, dec) => String.fromCharCode(dec))
+  }
+
+  // Classement Betclic ÉLITE
+  cachedData.classementBetclic = null
+  try {
+    const API_KEY = process.env.ALTRSTAT_API_KEY
+    const COMPETITION_ID = process.env.ALTRSTAT_COMPETITION_ID || '287'
+    const SEASON = process.env.ALTRSTAT_SEASON || '2025'
+
+    if (API_KEY) {
+      const response = await axios.get(
+        `https://apim.altrstat.xyz/lnb/v2/standings/${SEASON}/g`,
+        {
+          headers: {
+            'apiKey': API_KEY,
+          },
+          timeout: 10000,
+        }
+      )
+
+      const filteredData = response.data.find(
+        standing => standing.competition?.id === parseInt(COMPETITION_ID)
+      )
+
+      if (filteredData) {
+        cachedData.classementBetclic = {
+          id: 'betclic',
+          name: filteredData.competition?.long_name || 'Betclic Elite',
+          headers: {
+            games: {
+              lose: 'Défaites',
+              percent: '%',
+              played: 'MJ',
+              win: 'Victoires'
+            },
+            pos: {
+              label: 'Pos.'
+            },
+            stats: {
+              goal_average: 'Goal average',
+              neg: '-',
+              pos: '+'
+            },
+            team: {
+              label: 'Équipe',
+            }
+          },
+          datas: Object.values(filteredData.standings || {}).map(team => ({
+            team: {
+              logo: team.logoWhite?.md || team.logoBlack?.md || '',
+              name: team.name === 'Paris' ? 'Paris Basketball' : decodeHTMLEntities(team.name || ''),
+            },
+            pos: {
+              value: String(team.rank || ''),
+              status: ''
+            },
+            games: {
+              lose: String(team.game?.loss || '0'),
+              percent: team.game?.winPercent ? parseFloat(team.game.winPercent).toFixed(1) : '0.0',
+              played: String(team.game?.played || '0'),
+              win: String(team.game?.win || '0'),
+            },
+            stats: {
+              goal_average: String(team.point?.goalAverage || '0'),
+              neg: String(team.point?.allowed || '0'),
+              pos: String(team.point?.scored || '0')
+            }
+          }))
+        }
+        console.log('Fetching Paris Basketball Betclic standings OK')
+      }
+    } else {
+      console.log('ALTRSTAT_API_KEY not configured, skipping Betclic standings')
+    }
+  } catch (error) {
+    console.error('Error fetching Paris Basketball Betclic standings:', error.message)
+  }
+
+  // Classement Euroleague
+  cachedData.classementEuroleague = null
+  try {
+    const EUROLEAGUE_CODE_COMPETITION = process.env.EUROLEAGUE_CODE_COMPETITION || 'E'
+    const EUROLEAGUE_CODE_SAISON = process.env.EUROLEAGUE_CODE_SAISON || 'E2025'
+
+    const roundsResponse = await axios.get(
+      `https://api-live.euroleague.net/v2/competitions/${EUROLEAGUE_CODE_COMPETITION}/seasons/${EUROLEAGUE_CODE_SAISON}/rounds`,
+      {
+        timeout: 10000,
+      }
+    )
+
+    const regularSeasonRounds = roundsResponse.data.data.filter(
+      round => round.phaseTypeCode === 'RS'
+    )
+
+    if (regularSeasonRounds && regularSeasonRounds.length > 0) {
+      const now = new Date()
+      let validRounds = regularSeasonRounds.filter(round => {
+        const endDate = new Date(round.maxGameStartDate)
+        return endDate <= now
+      })
+
+      if (!validRounds || validRounds.length === 0) {
+        validRounds = regularSeasonRounds
+      }
+
+      validRounds.sort((a, b) => {
+        const dateA = new Date(a.maxGameStartDate)
+        const dateB = new Date(b.maxGameStartDate)
+        return dateB - dateA
+      })
+
+      const latestRound = validRounds[0].round
+
+      const standingsResponse = await axios.get(
+        `https://api-live.euroleague.net/v2/competitions/${EUROLEAGUE_CODE_COMPETITION}/seasons/${EUROLEAGUE_CODE_SAISON}/rounds/${latestRound}/standings`,
+        {
+          timeout: 10000,
+        }
+      )
+
+      const standings = standingsResponse.data[0]?.standings || []
+
+      cachedData.classementEuroleague = {
+        id: 'euroleague',
+        name: 'Euroleague',
+        headers: {
+          games: {
+            lose: 'Défaites',
+            percent: '%',
+            played: 'MJ',
+            win: 'Victoires'
+          },
+          pos: {
+            label: 'Pos.'
+          },
+          stats: {
+            goal_average: 'Goal average',
+            neg: '-',
+            pos: '+'
+          },
+          team: {
+            label: 'Équipe',
+          }
+        },
+        datas: standings.map(team => ({
+          team: {
+            logo: team.club?.images?.crest || '',
+            name: decodeHTMLEntities(team.club?.name || ''),
+          },
+          pos: {
+            value: String(team.data?.position || ''),
+            status: ''
+          },
+          games: {
+            lose: String(team.data?.gamesLost || '0'),
+            percent: team.data?.gamesPlayed > 0 ? String(((team.data.gamesWon / team.data.gamesPlayed) * 100).toFixed(1)) : '0',
+            played: String(team.data?.gamesPlayed || '0'),
+            win: String(team.data?.gamesWon || '0'),
+          },
+          stats: {
+            goal_average: String((team.data?.pointsFavour || 0) - (team.data?.pointsAgainst || 0)),
+            neg: String(team.data?.pointsAgainst || '0'),
+            pos: String(team.data?.pointsFavour || '0')
+          }
+        }))
+      }
+      console.log('Fetching Paris Basketball Euroleague standings OK')
+    }
+  } catch (error) {
+    console.error('Error fetching Paris Basketball Euroleague standings:', error.message)
+  }
+
+  // Effectif Paris Basketball
+  cachedData.effectifParis = null
+  try {
+    const response = await axios.get(
+      'https://parisbasketball.com/arena-effectif.json',
+      {
+        timeout: 10000,
+      }
+    )
+
+    const teamData = Object.values(response.data)[0]
+    const playersData = teamData?.players || {}
+
+    const positionMap = {
+      '1': 'Meneur',
+      '2': 'Arrière',
+      '3': 'Ailier',
+      '4': 'Ailier Fort',
+      '5': 'Pivot'
+    }
+
+    const players = Object.entries(playersData).map(([id, player]) => {
+      const slug = player.full_name
+        ? player.full_name
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036F]/g, '')
+            .replace(/['\s]+/g, '-')
+            .replace(/[^a-z0-9-]/g, '')
+        : ''
+
+      return {
+        id,
+        name: decodeHTMLEntities(player.full_name || ''),
+        position: positionMap[player.position] || player.position,
+        number: player.number || '',
+        picture: player.portrait || '',
+        url: `https://parisbasketball.com/player/${slug}/`
+      }
+    })
+
+    cachedData.effectifParis = players.sort((a, b) => {
+      const numA = parseInt(a.number) || 0
+      const numB = parseInt(b.number) || 0
+      return numA - numB
+    })
+
+    console.log('Fetching Paris Basketball effectif OK')
+  } catch (error) {
+    console.error('Error fetching Paris Basketball effectif:', error.message)
+  }
 
   cachedData.concoursDatas = [
     { name: 'REMY' },

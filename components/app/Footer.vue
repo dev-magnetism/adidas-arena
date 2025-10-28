@@ -194,6 +194,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    disableHeaderTrigger: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -259,11 +263,14 @@ export default {
       this.initScrollTrigger()
     },
     initScrollTrigger() {
-      this.scrollTrigger = ScrollTrigger.create({
-        trigger: this.$el,
-        start: 'top-=7.5% top',
-        onToggle: (self) => this.setHeaderWhite(self.isActive),
-      })
+      // Ne créer le ScrollTrigger que si on n'a pas désactivé le trigger du header
+      if (!this.disableHeaderTrigger) {
+        this.scrollTrigger = ScrollTrigger.create({
+          trigger: this.$el,
+          start: 'top-=7.5% top',
+          onToggle: (self) => this.setHeaderWhite(self.isActive),
+        })
+      }
     },
     onMouseEnterEl() {
       this.setCursorState('hide')
