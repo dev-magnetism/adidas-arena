@@ -1,19 +1,42 @@
 <template>
   <main class="page-cchapelle">
 
-    <div class="page-cchapelle__introduction">
+    <div class="page-cchapelle-content">
 
-        <div class="page-cchapelle__introduction__logo">
-          <nuxt-img
-            :src="this.chapelleContent.logo"
-            alt="Central Chapelle"
-            provider="directus"
-            loading="lazy"
-            sizes="sm:35vw md:20vw"
-          />
-        </div>
+      <div class="page-cchapelle__title__block">
 
+        <ERichText
+          ref="title"
+          class="page-cchapelle__title__block__title"
+          :content="chapelleContent.tmp_title"
+          tag="h1"
+        />
+        <ERichText
+          ref="title"
+          class="page-cchapelle__title__block__subtitle"
+          :content="chapelleContent.tmp_subtitle"
+          tag="h4"
+        />
+      </div>
 
+      <ETwoColumnsStick
+        :left-content="contentTwoColumns.left"
+        :right-content="contentTwoColumns.right"
+        :smallText="true"
+      />
+
+      <AppCchapelleEdito v-if="edito?.text" :content="edito" />
+
+      <AppCchapelleComingSoon>
+        <TH1 tag="p" weight="bold">
+          {{ contentMarquees.firstRow }}
+        </TH1>
+      </AppCchapelleComingSoon>
+      <AppCchapelleComingSoon :inverted="true">
+        <TH1 tag="p" weight="bold">
+          {{ contentMarquees.secondRow }}
+        </TH1>
+      </AppCchapelleComingSoon>
 
     </div>
 

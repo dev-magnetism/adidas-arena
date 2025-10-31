@@ -66,6 +66,7 @@ export const state = () => ({
   instructionsWebglVisible: true,
   step: 1,
   concoursDatas: [],
+  navCCActive: false,
 })
 
 export const getters = {
@@ -277,6 +278,9 @@ export const mutations = {
   setChapelleContent: (state, value) => {
     state.chapelleContent = value
   },
+  setChapelleFoodContent: (state, value) => {
+    state.chapelleFoodContent = value
+  },
   setPbbPageContent: (state, value) => {
     state.pbbPageContent = value
   },
@@ -319,6 +323,9 @@ export const mutations = {
   setEffectifParis: (state, value) => {
     state.effectifParis = value
   },
+  setNavCCActive: (state, value) => {
+    state.navCCActive = value
+  },
 }
 
 
@@ -342,6 +349,7 @@ export const actions = {
     commit('setBusinessOptContent', initialData.businessOpt.data)
     commit('setBusinessArtContent', initialData.businessArt.data)
     commit('setChapelleContent', initialData.chapelle.data)
+    commit('setChapelleFoodContent', initialData.chapellefood.data)
     commit('setPbbPageContent', initialData.pbbPage.data)
     commit('setPbbEntertainmentContent', initialData.pbbEntertainment.data)
     commit('setPbbGalleryContent', initialData.pbbGallery.data)
@@ -351,5 +359,6 @@ export const actions = {
     commit('setClassementBetclic', initialData.classementBetclic)
     commit('setClassementEuroleague', initialData.classementEuroleague)
     commit('setEffectifParis', initialData.effectifParis)
+    commit('setNavCCActive', initialData.navCCActive)
   },
 }

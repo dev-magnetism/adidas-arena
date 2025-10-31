@@ -147,6 +147,13 @@ export const getInitialData = async () => {
     })
   );
 
+  cachedData.chapellefood = await fetchWithLogs('CentralChapelle_Food', () =>
+    $directus.items('CentralChapelle_Food').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
   cachedData.pbbPage = await fetchWithLogs('Parisbasketball_page', () =>
     $directus.items('Parisbasketball_page').readByQuery({
       limit: -1,
