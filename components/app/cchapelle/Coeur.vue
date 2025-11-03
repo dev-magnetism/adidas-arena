@@ -46,15 +46,11 @@
 							<div class="page-cchapelle__coeur__map__sticker__content">
 
 								<div class="page-cchapelle__coeur__map__sticker__header">
-									Terrasse Nord
+									{{contents.map.zone1.title}}
 								</div>
 								<div class="page-cchapelle__coeur__map__sticker__body">
 									<p>
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
-										labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-										laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
-										voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
-										non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+										{{contents.map.zone1.text}}
 									</p>
 								</div>
 
@@ -75,15 +71,11 @@
 							<div class="page-cchapelle__coeur__map__sticker__content">
 
 								<div class="page-cchapelle__coeur__map__sticker__header">
-									Espace Concert & Club
+									{{contents.map.zone2.title}}
 								</div>
 								<div class="page-cchapelle__coeur__map__sticker__body">
 									<p>
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
-										labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-										laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
-										voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
-										non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+										{{contents.map.zone2.text}}
 									</p>
 								</div>
 
@@ -104,15 +96,11 @@
 							<div class="page-cchapelle__coeur__map__sticker__content">
 
 								<div class="page-cchapelle__coeur__map__sticker__header">
-									Court Central
+									{{contents.map.zone3.title}}
 								</div>
 								<div class="page-cchapelle__coeur__map__sticker__body">
 									<p>
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
-										labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-										laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
-										voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
-										non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+										{{contents.map.zone3.text}}
 									</p>
 								</div>
 
@@ -133,15 +121,11 @@
 							<div class="page-cchapelle__coeur__map__sticker__content">
 
 								<div class="page-cchapelle__coeur__map__sticker__header">
-									Terrasse Sud
+									{{contents.map.zone4.title}}
 								</div>
 								<div class="page-cchapelle__coeur__map__sticker__body">
 									<p>
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
-										labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-										laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
-										voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
-										non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+										{{contents.map.zone4.text}}
 									</p>
 								</div>
 
@@ -162,15 +146,11 @@
 							<div class="page-cchapelle__coeur__map__sticker__content">
 
 								<div class="page-cchapelle__coeur__map__sticker__header">
-									Central Café
+									{{contents.map.zone5.title}}
 								</div>
 								<div class="page-cchapelle__coeur__map__sticker__body">
 									<p>
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
-										labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-										laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
-										voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
-										non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+										{{contents.map.zone5.text}}
 									</p>
 								</div>
 
@@ -189,11 +169,11 @@
 							<div class="page-cchapelle__coeur__map__sticker__content">
 
 								<div class="page-cchapelle__coeur__map__sticker__header">
-									Espace Originals
+									{{contents.map.originals.title}}
 								</div>
 								<div class="page-cchapelle__coeur__map__sticker__body">
 									<p>
-										Un espace dédié aux communautés et à la culture créé par Adidas.
+										{{contents.map.originals.text}}
 									</p>
 								</div>
 

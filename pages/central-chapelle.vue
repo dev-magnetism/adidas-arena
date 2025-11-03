@@ -136,6 +136,32 @@ export default {
       const _content = {
         title: this.chapelleContent.coeur_title,
         text: this.chapelleContent.coeur_text,
+        map: {
+          zone1:{
+            title: this.chapelleContent.coeur_zone1_title,
+            text: this.chapelleContent.coeur_zone1_text,
+          },
+          zone2:{
+            title: this.chapelleContent.coeur_zone2_title,
+            text: this.chapelleContent.coeur_zone2_text,
+          },
+          zone3:{
+            title: this.chapelleContent.coeur_zone3_title,
+            text: this.chapelleContent.coeur_zone3_text,
+          },
+          zone4:{
+            title: this.chapelleContent.coeur_zone4_title,
+            text: this.chapelleContent.coeur_zone4_text,
+          },
+          zone5:{
+            title: this.chapelleContent.coeur_zone5_title,
+            text: this.chapelleContent.coeur_zone5_text,
+          },
+          originals:{
+            title: this.chapelleContent.coeur_originals_title,
+            text: this.chapelleContent.coeur_originals_text,
+          },
+        }
       }
       return _content;
     },
