@@ -180,6 +180,13 @@
 							</div>
 						</div>
 
+						<div 
+							class="page-cchapelle__coeur__map__sticker logo-adidasarena"
+							:style="{'top': this.zoneStickers?.arrowIn?.top +'px', 'left': this.zoneStickers?.arrowIn?.left +'px'}"
+							>
+							 <SvgArenaLogo />
+						</div>
+
 						<div class="page-cchapelle__coeur__map__plan" ref="plan">
 							<div 
 								class="page-cchapelle__coeur__map__item zone-1"
@@ -281,10 +288,24 @@
 								<div class="page-cchapelle__coeur__map__item__square"></div>
 								<div class="page-cchapelle__coeur__map__item__square"></div>
 								<div class="page-cchapelle__coeur__map__item__square"></div>
+								<div class="page-cchapelle__coeur__map__item__square"
+									ref="arrowIn"
+								>
+									<div class="page-cchapelle__coeur__map__item__arrow in">
+										<div class="page-cchapelle__coeur__map__item__arrow__stick"></div>
+										<div class="page-cchapelle__coeur__map__item__arrow__tip"></div>
+									</div>
+								</div>
+								<div class="page-cchapelle__coeur__map__item__square"
+									ref="arrowOut"
+								>
+									<div class="page-cchapelle__coeur__map__item__arrow out">
+										<div class="page-cchapelle__coeur__map__item__arrow__stick"></div>
+										<div class="page-cchapelle__coeur__map__item__arrow__tip"></div>
+									</div>
+								</div>
 								<div class="page-cchapelle__coeur__map__item__square"></div>
 								<div class="page-cchapelle__coeur__map__item__square"></div>
-								<div class="page-cchapelle__coeur__map__item__square"></div>
-								<div class="page-cchapelle__coeur__map__item__square"></div>-
 								<div class="page-cchapelle__coeur__map__item__square float pos1"></div>
 								<div class="page-cchapelle__coeur__map__item__square float pos2"></div>
 								<div class="page-cchapelle__coeur__map__item__square float pos3"></div>
@@ -431,6 +452,7 @@ export default {
 	    	const _zone4sticker = this.$refs.zone4sticker.getBoundingClientRect();
 	    	const _zone5sticker = this.$refs.zone5sticker.getBoundingClientRect();
 	    	const _originalsSticker = this.$refs.originalsSticker.getBoundingClientRect();
+	    	const _arrowIn = this.$refs.arrowIn.getBoundingClientRect();
 
 	    	const _obj = {
 	    		zone1: {
@@ -457,6 +479,10 @@ export default {
 	    			top: (_originalsSticker.top + _originalsSticker.height / 2) - _mapcontent.top,
 	    			left: (_originalsSticker.left + _originalsSticker.width / 2) - _mapcontent.left,
 	    		},
+	    		arrowIn: {
+	    			top: (_arrowIn.top + _arrowIn.height / 2) - _mapcontent.top,
+	    			left: (_arrowIn.left + _arrowIn.width / 2) - _mapcontent.left,
+	    		}
 	    	}
 
 	    	console.log('checkStickers / _obj', _obj);
@@ -783,6 +809,19 @@ export default {
 					}
 				}
 
+				&.logo-adidasarena{
+					transform: translate(-150%, 150%);
+					svg{
+						height: desktop-vw(20px);
+						width: auto;
+
+						@include mobile{
+							height: mobile-vw(16px);
+						}
+					}
+
+				}
+
 
 			}
 
@@ -833,6 +872,73 @@ export default {
 						background-color: #c6c6c6;
 						cursor: default;
 					}
+				}
+
+				&__arrow{
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%,-50%);
+
+
+					&__stick{
+						position: absolute;
+						left: 50%;
+						top: 0;
+						width: desktop-vw(6px);
+						height: desktop-vw(100px);
+						background-color: var(--c-black);
+						transform: translateX(-50%);
+
+						@include mobile{
+							width: mobile-vw(4px);
+							height: mobile-vw(50px);
+						}
+					}
+
+					&__tip{
+						position: absolute;
+						left: 0;
+						top: 0;
+						//	border: solid black;
+						//	border-width: 0 desktop-vw(6px) desktop-vw(6px) 0;
+
+
+						//	display: inline-block;
+						//	padding: desktop-vw(6px);
+
+						height: 0;
+ 						 width:0;
+
+						border-width: desktop-vw(12px) 0 desktop-vw(12px) desktop-vw(16px);
+						border-style: solid;
+						border-color: transparent transparent transparent black;
+
+						transform: translate(-50%, -50%) rotate(-90deg);
+
+						@include mobile{
+							border-width: mobile-vw(8px) 0 mobile-vw(8px) mobile-vw(10px);
+						}
+					}
+
+
+					&.in{
+						.page-cchapelle__coeur__map__item__arrow__tip{
+
+						}
+					}
+
+					&.out{
+						.page-cchapelle__coeur__map__item__arrow__tip{
+							top: desktop-vw(100px);
+							transform: translate(-50%, -50%) rotate(90deg);
+
+							@include mobile{
+								top: mobile-vw(50px);
+							}
+						}
+					}
+
 				}
 
 				&__circle{
@@ -1026,6 +1132,7 @@ export default {
 				}
 
 				&__square{
+					position: relative;
 					display: flex;
 					flex: 0 0 auto;
 					width: desktop-vw(64px);
