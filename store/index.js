@@ -67,6 +67,7 @@ export const state = () => ({
   step: 1,
   concoursDatas: [],
   navCCActive: false,
+  mapCCCoeurActive: false,
 })
 
 export const getters = {
@@ -326,6 +327,9 @@ export const mutations = {
   setNavCCActive: (state, value) => {
     state.navCCActive = value
   },
+  setMapCCCoeurActive: (state, value) => {
+    state.mapCCCoeurActive = value
+  },
 }
 
 
@@ -360,5 +364,7 @@ export const actions = {
     commit('setClassementEuroleague', initialData.classementEuroleague)
     commit('setEffectifParis', initialData.effectifParis)
     commit('setNavCCActive', initialData.navCCActive)
+     commit('setMapCCCoeurActive', initialData.mapCCCoeurActive)
+    
   },
 }

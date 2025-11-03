@@ -292,7 +292,6 @@ export default {
 							}
 						}
 
-
 						.app-element-lottie-word.lottie-word.Trait_3 svg{
 							position: absolute;
 							bottom: desktop-vw(-30px);
@@ -302,6 +301,7 @@ export default {
 								bottom: mobile-vw(-30px);
 							}
 						}
+						
 						.app-atoms-stroke-text{
 							display: unset;
 							-webkit-text-stroke: 1px var(--c-white);
