@@ -226,7 +226,7 @@ export default {
 
 				return () => {
 					tweenBigVisual?.kill()
-					tweenPointsVisual?.kill()
+					
 				}
 			})
 		},

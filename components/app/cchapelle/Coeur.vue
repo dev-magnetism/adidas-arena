@@ -423,14 +423,18 @@ export default {
 	},
 	mounted() {
 
-		console.log('Coeur / contents', this.contents);
-		setTimeout(this.checkStickers(), 500);
+		//	console.log('Coeur / contents', this.contents);
 
-		//	window.onresize = setTimeout(this.checkStickers(), 500);
-		
+		const oThis = this;
+
+		oThis.checkStickers()
+				
 		window.addEventListener("resize", ()=>{
-			clearTimeout(this.resizeTimer);
-			this.resizeTimer = setTimeout(this.checkStickers(), 500);
+
+			oThis.checkStickers();
+
+			//	clearTimeout(this.resizeTimer);
+			//	this.resizeTimer = setTimeout(function(){oThis.checkStickers()}, 100);
 		});
 
 	},
@@ -439,14 +443,17 @@ export default {
 	      setMapCCCoeurActive: 'setMapCCCoeurActive',
 	    }),
 	    checkStickers(){
+	    	//	const oThis = this;
 
 	    	this.$refs.plan.style="transform: scaleY(.5) rotate(45deg)";
 
 	    	const _mapcontent = this.$refs.mapcontent.getBoundingClientRect();
 	    	const _plan = this.$refs.plan.getBoundingClientRect();
-	    	//	this.$refs.mapcontent.style=`width: ${_plan.width}px; height: ${_plan.height}px; margin: 0 auto;`;
+	    	
 	    	this.$refs.plan.style=`width: ${_plan.width}px; height: ${_plan.height}px; transform: scaleY(.5) rotate(45deg); `;
-	    	const _zone1sticker = this.$refs.zone1sticker.getBoundingClientRect();
+	    	this.$refs.mapcontent.style=` height: ${_plan.height}px;`;
+
+		    const _zone1sticker = this.$refs.zone1sticker.getBoundingClientRect();
 	    	const _zone2sticker = this.$refs.zone2sticker.getBoundingClientRect();
 	    	const _zone3sticker = this.$refs.zone3sticker.getBoundingClientRect();
 	    	const _zone4sticker = this.$refs.zone4sticker.getBoundingClientRect();
@@ -456,23 +463,23 @@ export default {
 
 	    	const _obj = {
 	    		zone1: {
-	    			top: (_zone1sticker.top + _zone1sticker.height / 2) - _mapcontent.top,
-	    			left: (_zone1sticker.left + _zone1sticker.width / 2) - _mapcontent.left,
+	    			top: (_zone1sticker.top + (_zone1sticker.height / 2)) - _mapcontent.top,
+	    			left: (_zone1sticker.left + (_zone1sticker.width / 2)) - _mapcontent.left,
 	    		},
 	    		zone2: {
-	    			top: (_zone2sticker.top + _zone2sticker.height / 2) - _mapcontent.top,
+	    			top: (_zone2sticker.top + (_zone2sticker.height / 2)) - _mapcontent.top,
 	    			left: (_zone2sticker.left + _zone2sticker.width / 2) - _mapcontent.left,
 	    		},
 	    		zone3: {
-	    			top: (_zone3sticker.top + _zone3sticker.height / 2) - _mapcontent.top,
+	    			top: (_zone3sticker.top + (_zone3sticker.height / 2)) - _mapcontent.top,
 	    			left: (_zone3sticker.left + _zone3sticker.width / 2) - _mapcontent.left,
 	    		},
 	    		zone4: {
-	    			top: (_zone4sticker.top + _zone4sticker.height / 2) - _mapcontent.top,
-	    			left: (_zone4sticker.left + _zone4sticker.width / 2) - _mapcontent.left,
+	    			top: (_zone4sticker.top + (_zone4sticker.height / 2)) - _mapcontent.top,
+	    			left: (_zone4sticker.left + (_zone4sticker.width / 2)) - _mapcontent.left,
 	    		},
 	    		zone5: {
-	    			top: (_zone5sticker.top + _zone5sticker.height / 2) - _mapcontent.top,
+	    			top: (_zone5sticker.top + (_zone5sticker.height / 2)) - _mapcontent.top,
 	    			left: (_zone5sticker.left + _zone5sticker.width / 2) - _mapcontent.left,
 	    		},
 	    		originals: {
@@ -485,12 +492,12 @@ export default {
 	    		}
 	    	}
 
-	    	console.log('checkStickers / _obj', _obj);
+	    	//	console.log('checkStickers / _obj', _obj);
 
 	    	this.zoneStickers = _obj;
 	    },
 	    showZone(_id){
-	    	console.log('showZone / _id', _id);
+	    	//	console.log('showZone / _id', _id);
 	    	this.setMapCCCoeurActive(_id);
 	    },
 	    resetZone(){
@@ -515,8 +522,6 @@ export default {
 			padding-bottom: mobile-vw(60px);
 		}
 
-
-
 		&__mobilescroll{
 			grid-column: 2 / span 10;
 			margin-top: desktop-vw(200px);
@@ -533,7 +538,7 @@ export default {
 		}
 
 		&__map{
-			--square : 64px;
+			//	--square : 64px;
 
 			position: relative;
 			//	justify-items: center;
@@ -637,11 +642,8 @@ export default {
 				}
 
 				&__body{
-					margin: -2px 0 0;
-					border: 2px solid var(--c-black);
-					border-top: none;
+					margin: 0;
 					
-					background-color: var(--c-white);
 					height: 0;
 					max-height: fit-content;
 					overflow: hidden;
@@ -649,6 +651,9 @@ export default {
 
 
 					p{
+						border: 2px solid var(--c-black);
+						background-color: var(--c-white);
+						border-top: none;
 						padding: desktop-vw(4px) desktop-vw(8px) desktop-vw(4px);
 						@include font-ITCFranklinGothicLT-BkCp();
 						font-size: desktop-vw(12px);
@@ -768,8 +773,12 @@ export default {
 					}
 
 					.page-cchapelle__coeur__map__sticker__body{
-						background: none;
+						
 						height: fit-content;
+
+						p{
+							background: none;
+						}
 					}
 
 					.page-cchapelle__coeur__map__sticker__lineV{
@@ -1141,7 +1150,7 @@ export default {
 					//	height: var(--square);
 					border: 2px solid var(--c-black);
 					margin: 0 -2px -2px 0;
-					transition: all 360ms ease-in-out;
+					transition: background-color 360ms ease-in-out;
 					cursor: pointer;
 
 					@include mobile{
