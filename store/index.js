@@ -47,6 +47,7 @@ export const state = () => ({
   interiorTimelineFloorsInProgress: false,
 
   // UI
+  facilitiAvailable: false,
   webview: false,
   allowScroll: false,
   webglInFront: false,
@@ -183,6 +184,9 @@ export const mutations = {
   },
   setHeaderHide: (state, value) => {
     state.headerHide = value
+  },
+  setFacilitiAvailable: (state, value) => {
+    state.facilitiAvailable = value
   },
   setWebview: (state, value) => {
     state.webview = value

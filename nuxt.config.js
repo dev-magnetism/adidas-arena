@@ -112,7 +112,8 @@ export default {
     { src: '~/plugins/utils.js' },
     { src: '~/plugins/raf.js', mode: 'client' },
     { src: '~/plugins/viewport.js', mode: 'client' },
-    { src: '~/plugins/smartbanner.min.js', mode: 'client' }
+    { src: '~/plugins/smartbanner.min.js', mode: 'client' },
+    { src: '~/plugins/faciliti.js', mode: 'client' }
   ],
 
   // vue: {

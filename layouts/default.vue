@@ -18,6 +18,7 @@
     <nuxt class="app-main" />
     <AppScene />
     <WebglScene />
+    <AppFacilitiButton />
     <!-- <WebglInfo /> -->
   </div>
 </template>
