@@ -75,9 +75,9 @@
     		v-if="contents.pictureSecond.src"
 			ref="imageSecond"
 			class="app-paris-basketball-dj__visual-second"
-			:speed="0.85"
+			:speed="0.70"
 		>
-			<EKinesis :speed="5">
+			<EKinesis :speed="3">
 			<nuxt-picture
 				provider="directus"
 				:src="contents.pictureSecond.src"
@@ -124,30 +124,32 @@ export default {
 			this.mm = gsap.matchMedia()
 
 			this.mm.add('(min-width: 768px)', (context) => {
+				// Première image : réaction très rapide au scroll
 				const tweenImageFirst = gsap.fromTo(
 					this.$refs.imageFirst?.$el,
 					{
-						top: 300,
+						top: 240,
 					},
 					{
-						top: 0,
+						top: 15,
 						scrollTrigger: {
 							trigger: this.$refs.imageFirst?.$el,
-							scrub: 0.5,
+							scrub: 0.15,
 							end: 'bottom top',
 						},
 					}
 				)
+				// Seconde image : réaction beaucoup plus lente (effet très doux, décalé)
 				const tweenImageSecond = gsap.fromTo(
 					this.$refs.imageSecond?.$el,
 					{
-						top: 300,
+						top: 360,
 					},
 					{
-						top: 0,
+						top: -25,
 						scrollTrigger: {
 							trigger: this.$refs.imageSecond?.$el,
-							scrub: 0.5,
+							scrub: 1.2,
 							end: 'bottom top',
 						},
 					}
