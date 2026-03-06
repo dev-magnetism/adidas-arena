@@ -625,6 +625,18 @@ export default {
         flex: 0 0 50%;
       }
 
+      &.first-column {
+        @include mobile {
+          flex: 0 0 42%;
+        }
+      }
+
+      &.second-column {
+        @include mobile {
+          flex: 0 0 58%;
+        }
+      }
+
       .P2 {
         @include font-ITCFranklinGothicLT-BkCp();
         text-transform: uppercase;
