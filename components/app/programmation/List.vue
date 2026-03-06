@@ -129,6 +129,8 @@
           ref="events"
           :class="$convertToKebabCase(event.content.category.toLowerCase())"
           :event="event"
+          :list-current-month="currentMonth"
+          :list-selected-category="selectedCategory"
         />
       </div>
     </div>
@@ -160,7 +162,8 @@ export default {
       filteringInProgress: false,
       searchText: null,
       lastSearchText: null,
-      searchInProgress: false
+      searchInProgress: false,
+      isRestoringSession: false
     }
   },
   computed: {
@@ -273,7 +276,7 @@ export default {
   },
   watch: {
     selectedCategory() {
-      if (this.searchInProgress) return
+      if (this.isRestoringSession || this.searchInProgress) return
 
       const url = new URL(window.location)
 
@@ -297,7 +300,7 @@ export default {
     }
   },
   mounted() {
-    const queryString = window.location.search;
+    const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
     const urlCategory = urlParams.get('categorie')
     const category = this.programmesCategories.find((cat) => cat.slug === urlCategory)
@@ -308,6 +311,8 @@ export default {
     }
 
     this.initScrollTrigger()
+    this.restoreScrollPosition()
+    this.scrollToMonthFromUrl()
   },
   beforeDestroy() {
     this.scrollTriggerBar?.kill()
@@ -318,6 +323,167 @@ export default {
     })
   },
   methods: {
+    monthKeyToSlug(monthKey) {
+      if (!monthKey) return ''
+      return monthKey
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036F]/g, '')
+    },
+    slugToMonthKey(slug) {
+      if (!slug || !this.programmesMonths?.length) return null
+      const normalized = slug.toLowerCase()
+      const found = this.programmesMonths.find((m) => {
+        const key = `${m.month}-${m.year}`
+        return this.monthKeyToSlug(key) === normalized
+      })
+      return found ? `${found.month}-${found.year}` : null
+    },
+    updateUrlMonth(monthKey) {
+      const slug = this.monthKeyToSlug(monthKey)
+      if (!slug) return
+      const url = new URL(window.location.href)
+      url.searchParams.set('mois', slug)
+      history.replaceState(null, '', url)
+    },
+    restoreScrollPosition() {
+      try {
+        const saved = sessionStorage.getItem('programmationListRestore')
+        if (!saved) return
+        const data = JSON.parse(saved)
+        const {
+          scrollPosition,
+          currentMonth: savedMonth,
+          selectedCategory: savedCategory,
+        } = data
+        this.isRestoringSession = true
+        if (
+          savedCategory != null &&
+          savedCategory !== '' &&
+          this.programmesCategories?.some((c) => c.category === savedCategory)
+        ) {
+          this.animatedFilterChange = false
+          this.selectedCategory = savedCategory
+          const url = new URL(window.location.href)
+          const cat = this.programmesCategories.find(
+            (c) => c.category === savedCategory
+          )
+          if (cat?.slug) {
+            url.searchParams.set('categorie', cat.slug)
+          } else {
+            url.searchParams.delete('categorie')
+          }
+          history.replaceState(null, '', url)
+          this.$nextTick(() => {
+            this.updateFilters(false, { skipScroll: true })
+          })
+        }
+        if (savedMonth != null && savedMonth !== '') {
+          this.currentMonth = savedMonth
+        }
+        const doRestore = () => {
+          const hasLenis = typeof window !== 'undefined' && window.lenis
+          if (hasLenis) {
+            window.lenis.scrollTo(scrollPosition, { immediate: true })
+          }
+          if (typeof window.scrollTo === 'function' && typeof scrollPosition === 'number' && scrollPosition >= 0) {
+            window.scrollTo(0, scrollPosition)
+          }
+          if (hasLenis || (typeof scrollPosition === 'number' && scrollPosition > 0)) {
+            ScrollTrigger.refresh()
+          }
+          sessionStorage.removeItem('programmationListRestore')
+          this.filteringInProgress = false
+          this.isRestoringSession = false
+          return true
+        }
+        this.filteringInProgress = true
+        this.$nextTick(() => {
+          const tryRestore = (attempt = 0) => {
+            if (doRestore()) return
+            if (attempt < 50) setTimeout(() => tryRestore(attempt + 1), 100)
+            else {
+              this.filteringInProgress = false
+              this.isRestoringSession = false
+            }
+          }
+          setTimeout(() => tryRestore(), 350)
+        })
+      } catch (e) {
+        this.isRestoringSession = false
+      }
+    },
+    scrollToMonthFromUrl() {
+      const moisSlug =
+        this.$route?.query?.mois ||
+        (typeof window !== 'undefined' &&
+          new URLSearchParams(window.location.search).get('mois'))
+      if (!moisSlug) return
+      const monthKey = this.slugToMonthKey(moisSlug)
+      if (!monthKey) return
+      this.filteringInProgress = true
+      this.currentMonth = monthKey
+      this.$nextTick(() => {
+        const doScrollOnce = () => {
+          if (!window.lenis || !this.$refs.eventsContainer?.length) return false
+          const escapedMonth =
+            typeof CSS !== 'undefined' && CSS.escape
+              ? CSS.escape(monthKey)
+              : monthKey.replace(/([^\w-])/g, '\\$1')
+          const el = this.$el.querySelector(
+            `.app-programmation-list-events__month.${escapedMonth}`
+          )
+          if (!el) return false
+          this.scrollToMonthElement(el)
+          return true
+        }
+        const tryScroll = (attempt = 0) => {
+          if (doScrollOnce()) {
+            setTimeout(() => {
+              doScrollOnce()
+              this.filteringInProgress = false
+            }, 350)
+            return
+          }
+          if (attempt < 50) setTimeout(() => tryScroll(attempt + 1), 100)
+          else this.filteringInProgress = false
+        }
+        setTimeout(() => tryScroll(), 350)
+      })
+    },
+    scrollToMonthElement(el) {
+      if (!window.lenis) return
+      const valueInVw = this.$viewport.isMobile
+        ? (85 * 100) / 375
+        : (85 * 100) / 1400
+      const valueInPx = (this.$viewport.width * valueInVw) / 100
+      const currentScroll = window.lenis.scroll ?? window.scrollY ?? 0
+      const top = el.getBoundingClientRect().top + currentScroll - valueInPx
+      const targetY = Math.max(0, Math.round(top))
+      window.lenis.scrollTo(targetY, { immediate: true })
+      if (typeof window.scrollTo === 'function') {
+        window.scrollTo(0, targetY)
+      }
+      ScrollTrigger.refresh()
+    },
+    scrollToMonth(monthKey) {
+      if (!window.lenis) return
+      const valueInVw = this.$viewport.isMobile
+        ? (85 * 100) / 375
+        : (85 * 100) / 1400
+      const valueInPx = (this.$viewport.width * valueInVw) / 100
+      window.lenis.scrollTo(
+        `.app-programmation-list-events__month.${monthKey}`,
+        {
+          duration: 0.8,
+          offset: valueInPx * -1,
+          immediate: false,
+          onComplete: () => {
+            this.filteringInProgress = false
+          },
+        }
+      )
+    },
     onSearch() {
       if (this.searchText !== this.lastSearchText) {
         this.updateFilters(true)
@@ -438,7 +604,8 @@ export default {
 
       return d1 > d2
     },
-    updateFilters(search = false) {
+    updateFilters(search = false, options = {}) {
+      const skipScroll = options.skipScroll === true
       if (search) {
         if (!this.searchText) {
           this.selectedCategory = 'tout'
@@ -474,7 +641,9 @@ export default {
         }
       }
 
-      window.lenis?.stop()
+      if (!skipScroll) {
+        window.lenis?.stop()
+      }
 
       this.directionMonth = 'down'
       this.barActive = this.scrollTriggerBar.isActive
@@ -485,17 +654,19 @@ export default {
       const filterItems = () => {
         this.filteringInProgress = true
 
-        this.currentMonth = `${this.monthFilters[0]?.month}-${this.monthFilters[0]?.year}`
+        if (!skipScroll) {
+          this.currentMonth = `${this.monthFilters[0]?.month}-${this.monthFilters[0]?.year}`
 
-        if (window.lenis) {
-          const container = document.querySelector('.app-programmation-list-events')
-          const filters = document.querySelector('.app-programmation-list-bar__wrapper')
-          const top = container.getBoundingClientRect().top + window.scrollY - filters.clientHeight - 100 - window.innerHeight * 0.021333333333
+          if (window.lenis) {
+            const container = document.querySelector('.app-programmation-list-events')
+            const filters = document.querySelector('.app-programmation-list-bar__wrapper')
+            const top = container.getBoundingClientRect().top + window.scrollY - filters.clientHeight - 100 - window.innerHeight * 0.021333333333
 
-          window.lenis?.scrollTo?.(top, {
-            immediate: true,
-            force: true,
-          })
+            window.lenis?.scrollTo?.(top, {
+              immediate: true,
+              force: true,
+            })
+          }
         }
 
         this.$refs.events.forEach((item) => {
@@ -575,6 +746,9 @@ export default {
           this.searchInProgress = false
           this.lastSearchText = this.searchText
           ScrollTrigger.refresh()
+          if (this.$viewport?.isMobile && typeof window?.scrollTo === 'function') {
+            window.scrollTo(0, 0)
+          }
         })
       }
 
@@ -612,6 +786,9 @@ export default {
             delay: 0.25,
             onComplete: () => {
               window.lenis?.start()
+              if (this.$viewport?.isMobile && typeof window?.scrollTo === 'function') {
+                window.scrollTo(0, 0)
+              }
             },
             ease: 'power3.inOut',
           })

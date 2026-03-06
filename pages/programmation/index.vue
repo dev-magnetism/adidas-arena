@@ -91,11 +91,12 @@ export default {
     }
   },
   mounted() {
-    //  console.log('programmes', this.programmes);
+    this.setAllowScroll(true)
   },
   methods: {
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',
+      setAllowScroll: 'setAllowScroll',
     }),
   },
 }

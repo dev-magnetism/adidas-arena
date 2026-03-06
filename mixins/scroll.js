@@ -82,11 +82,11 @@ export default {
     }
   },
   beforeDestroy() {
-    this.$raf.remove(`scroller-${this._uid}`, this.onFrame)
-
-    this.lenis.destroy()
-
-    window.lenis = null
+    if (this.lenis) {
+      this.$raf.remove(`scroller-${this._uid}`, this.onFrame)
+      this.lenis.destroy()
+      window.lenis = null
+    }
   },
   methods: {
     onScrollLenis(args) {

@@ -188,6 +188,14 @@ export default {
       type: String,
       default: 'grey',
     },
+    listCurrentMonth: {
+      type: String,
+      default: null,
+    },
+    listSelectedCategory: {
+      type: String,
+      default: null,
+    },
   },
   data() {
     return {
@@ -260,6 +268,22 @@ export default {
   },
   methods: {
     onRouterPush() {
+      try {
+        if (typeof window !== 'undefined') {
+          const scrollPosition = window.lenis
+            ? window.lenis.scroll
+            : window.scrollY ?? window.pageYOffset ?? 0
+          sessionStorage.setItem(
+            'programmationListRestore',
+            JSON.stringify({
+              scrollPosition,
+              currentMonth: this.listCurrentMonth,
+              selectedCategory: this.listSelectedCategory,
+            })
+          )
+        }
+      } catch (e) {}
+
       this.$router.push({
         name: 'programmation-id',
         params: {
