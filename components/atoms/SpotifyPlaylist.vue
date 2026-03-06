@@ -130,6 +130,7 @@ export default {
         flex-wrap: wrap;
         height: 100%;
         align-items: center;
+        white-space: nowrap;
       }
 
       .H4{
