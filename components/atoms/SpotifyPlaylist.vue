@@ -76,7 +76,7 @@ export default {
 
     &__row{
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       width: 100%;
       height: 100%;
 
