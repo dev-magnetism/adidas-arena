@@ -170,6 +170,11 @@
       <AtomsLink :href="contents.data.footer_cookies_link">
         <TP2 color="grey"> {{ contents.data.footer_cookies_title }}</TP2>
       </AtomsLink>
+      <AtomsLink :href="contents.data.footer_accessibilite_link">
+        <TP2 color="grey">
+          {{ contents.data.footer_accessibilite_title }}
+        </TP2>
+      </AtomsLink>
       <AtomsLink :href="contents.data.footer_mentions_legales_link">
         <TP2 color="grey">
           {{ contents.data.footer_mentions_legales_title }}
