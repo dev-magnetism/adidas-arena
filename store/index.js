@@ -51,6 +51,7 @@ export const state = () => ({
   webview: false,
   allowScroll: false,
   webglInFront: false,
+  webglInFlow: false,
   initialHeroDisplayed: false,
   menuActive: false,
   popinNewsletterClosedInSession: false,
@@ -156,6 +157,9 @@ export const mutations = {
   },
   setWebglInFront: (state, value) => {
     state.webglInFront = value
+  },
+  setWebglInFlow: (state, value) => {
+    state.webglInFlow = value
   },
 
   setActualites: (state, value) => {

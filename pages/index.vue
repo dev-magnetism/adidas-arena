@@ -1,5 +1,6 @@
 <template>
   <main class="app-home">
+    <div ref="webglContainer" class="app-home__webgl" />
     <AppHomeHero :contents="contentHero" />
     <ESliderProgrammation :content="contentSlider" />
     <AppActusBlockYoutube v-if="contentVideo.url" :content="contentVideo" />
@@ -168,7 +169,15 @@ export default {
       }
     },
   },
-  mounted() { },
+  inject: {
+    setWebglMount: { default: () => () => {} },
+  },
+  mounted() {},
+  beforeDestroy() {
+    if (this.setWebglMount) {
+      this.setWebglMount(null)
+    }
+  },
   methods: {
     ...mapMutations({
       setExteriorVisible: 'setExteriorVisible',
@@ -179,6 +188,11 @@ export default {
 
 <style lang="scss">
 .app-home {
+  &__webgl {
+    height: 0;
+    overflow: hidden;
+  }
+
   .app-footer {
     margin-top: desktop-vw(25px);
 

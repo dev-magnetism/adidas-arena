@@ -139,9 +139,15 @@ export default {
 
     this.mm = gsap.matchMedia()
 
+    const observerTarget =
+      this.$viewport.isMobile
+        ? document.querySelector('.app-home-hero__view-exterior') ||
+          this.$nuxt.$el
+        : this.$nuxt.$el
+
     this.observer = Observer.create({
       axis: 'x',
-      target: this.$nuxt.$el,
+      target: observerTarget,
       type: 'touch,pointer',
       onDrag: this.onDrag,
       onDragStart: (e) => {
@@ -242,9 +248,11 @@ export default {
     onDrag(e) {
       if (!this.drag.enabled || !this.exteriorVisible) return
 
-      const allowDrag = e.event.target.getAttribute('data-allow-drag')
+      const el = e.event.target
+      const allowDrag =
+        el.getAttribute('data-allow-drag') || el.closest('[data-allow-drag]')
 
-      if (!allowDrag || allowDrag === null) return
+      if (!allowDrag) return
 
       const delta = e.deltaX * this.drag.dragSpeed
 

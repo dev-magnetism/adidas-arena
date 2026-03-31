@@ -1466,7 +1466,9 @@ export default {
     onDrag(e) {
       if (!this.drag.enabled || !this.interiorVisible) return
 
-      const allowDrag = e.event.target.getAttribute('data-allow-drag')
+      const el = e.event.target
+      const allowDrag =
+        el.getAttribute('data-allow-drag') || el.closest('[data-allow-drag]')
 
       if (!allowDrag || allowDrag === null) return
 
