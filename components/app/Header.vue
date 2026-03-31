@@ -1,66 +1,108 @@
 <template>
   <div
+    class="app-header-shell"
     :class="{
-      reduced: headerReduced,
-      hide: headerHide || overlayContactOpen,
+      'app-header-shell--announcement-collapsed':
+        hasAnnouncement && !bannerAtTop,
     }"
-    class="app-header"
-    @click.stop="() => {}"
   >
-    <a
-      v-if="this.webview !== 'ok'"
-      :class="{ reduced: headerReduced, white: headerWhite }"
-      class="app-header__logo"
-      href="/"
-    >
-      <TH1 :tag="$route.name === 'index' ? 'h1' : 'p'">Adidas Arena</TH1>
-      <SvgArenaLogo />
-    </a>
-
     <div
-      v-else
-      :class="{ reduced: headerReduced, white: headerWhite }"
-      class="app-header__logo"
-      >
-      <TH1 :tag="$route.name === 'index' ? 'h1' : 'p'">Adidas Arena</TH1>
-      <SvgArenaLogo />
+      v-if="hasAnnouncement"
+      class="app-header__announcement"
+      role="region"
+      aria-label="Annonce"
+    >
+      <div class="app-header__announcement__inner">
+        <TP2
+          weight="bold"
+          color="white"
+          class="app-header__announcement__text app-header__announcement__text--lead"
+        >
+          {{ announcementText }}<a
+            v-if="showAnnouncementCta && announcementCtaIsExternal"
+            :href="announcementCtaLink"
+            class="app-header__announcement__cta"
+            target="_blank"
+            rel="noopener noreferrer"
+          >{{ announcementCtaLabel }}</a><nuxt-link
+            v-else-if="showAnnouncementCta"
+            :to="announcementCtaLink"
+            class="app-header__announcement__cta"
+            target="_blank"
+            rel="noopener noreferrer"
+          >{{ announcementCtaLabel }}</nuxt-link>
+        </TP2>
+      </div>
     </div>
 
-    <div class="app-header__nav" v-if="this.webview !== 'ok'">
-      <nuxt-link
+    <div
+      ref="headerRow"
+      class="app-header"
+      :class="{
+        reduced: headerReduced,
+        hide: headerHide || overlayContactOpen,
+      }"
+      @click.stop="() => {}"
+    >
+      <a
+        v-if="this.webview !== 'ok'"
         :class="{ reduced: headerReduced, white: headerWhite }"
-        class="pbb"
-        to="/paris-basketball"
+        class="app-header__logo"
+        href="/"
       >
-        <img v-if="headerWhite" src="/imgs/logo-pbb-white.svg" alt="Paris Basketball" />
-        <img v-else src="/imgs/logo-pbb-color.svg" alt="Paris Basketball" />
-      </nuxt-link>
-      <nuxt-link
-        v-for="(item, i) in navItems"
-        :key="i"
+        <TH1 :tag="$route.name === 'index' ? 'h1' : 'p'">Adidas Arena</TH1>
+        <SvgArenaLogo />
+      </a>
+
+      <div
+        v-else
         :class="{ reduced: headerReduced, white: headerWhite }"
-        :to="item.Link"
+        class="app-header__logo"
       >
-        <TP1 weight="bold" :color="headerWhite ? 'grey' : 'black'">
-          {{ item.Label }}
+        <TH1 :tag="$route.name === 'index' ? 'h1' : 'p'">Adidas Arena</TH1>
+        <SvgArenaLogo />
+      </div>
+
+      <div v-if="this.webview !== 'ok'" class="app-header__nav">
+        <nuxt-link
+          :class="{ reduced: headerReduced, white: headerWhite }"
+          class="pbb"
+          to="/paris-basketball"
+        >
+          <img
+            v-if="headerWhite"
+            src="/imgs/logo-pbb-white.svg"
+            alt="Paris Basketball"
+          />
+          <img v-else src="/imgs/logo-pbb-color.svg" alt="Paris Basketball" />
+        </nuxt-link>
+        <nuxt-link
+          v-for="(item, i) in navItems"
+          :key="i"
+          :class="{ reduced: headerReduced, white: headerWhite }"
+          :to="item.Link"
+        >
+          <TP1 weight="bold" :color="headerWhite ? 'grey' : 'black'">
+            {{ item.Label }}
+          </TP1>
+        </nuxt-link>
+      </div>
+
+      <div
+        v-if="this.webview !== 'ok'"
+        :class="{ reduced: headerReduced, white: headerWhite }"
+        class="app-header__burger"
+        @click="setMenuActive(true)"
+      >
+        <TP1
+          weight="bold"
+          class="app-header__burger__menu"
+          :color="headerWhite ? 'grey' : 'black'"
+        >
+          {{ menuName }}
         </TP1>
-      </nuxt-link>
-    </div>
-
-    <div
-      v-if="this.webview !== 'ok'"
-      :class="{ reduced: headerReduced, white: headerWhite }"
-      class="app-header__burger"
-      @click="setMenuActive(true)"
-    >
-      <TP1
-        weight="bold"
-        class="app-header__burger__menu"
-        :color="headerWhite ? 'grey' : 'black'"
-      >
-        {{ menuName }}
-      </TP1>
-      <div class="app-header__burger__icon" />
+        <div class="app-header__burger__icon" />
+      </div>
     </div>
   </div>
 </template>
@@ -69,7 +111,20 @@
 import { mapMutations, mapState } from 'vuex'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
+const validUrl = require('valid-url')
+
+const DEBUG_HEADER_ANNOUNCEMENT = 'Offrez la liberté de vibrer avec la e-carte cadeau adidas arena.'
+const DEBUG_HEADER_ANNOUNCEMENT_MOBILE = 'Offrez la liberté de vibrer avec la e-carte cadeau adidas arena.'
+const DEBUG_HEADER_ANNOUNCEMENT_CTA_LABEL = 'En savoir plus'
+const DEBUG_HEADER_ANNOUNCEMENT_CTA_LINK = '#'
+
 export default {
+  data() {
+    return {
+      bannerAtTop: true,
+      viewportMobile: false,
+    }
+  },
   computed: {
     ...mapState({
       menuContent: (state) => state.menuContent,
@@ -81,7 +136,7 @@ export default {
       overlayContactOpen: (state) => state.overlayContactOpen,
       interiorVisible: (state) => state.interiorVisible,
       exteriorVisible: (state) => state.exteriorVisible,
-      webview: (state) => state.webview
+      webview: (state) => state.webview,
     }),
     menuName() {
       return this.appContent.data.menu_name
@@ -98,32 +153,123 @@ export default {
     headerNameMobile() {
       return this.appContent.data.header_name_mobile
     },
+    announcementBodyDesktop() {
+      if (DEBUG_HEADER_ANNOUNCEMENT) return DEBUG_HEADER_ANNOUNCEMENT.trim()
+      const t = this.appContent?.data?.header_announcement_text
+      return typeof t === 'string' ? t.trim() : ''
+    },
+    announcementBodyMobile() {
+      if (DEBUG_HEADER_ANNOUNCEMENT_MOBILE)
+        return DEBUG_HEADER_ANNOUNCEMENT_MOBILE.trim()
+      const t = this.appContent?.data?.header_announcement_text_mobile
+      return typeof t === 'string' ? t.trim() : ''
+    },
+    announcementText() {
+      const desktop = this.announcementBodyDesktop
+      const mobile = this.announcementBodyMobile
+      if (this.viewportMobile && mobile.length > 0) return mobile
+      if (desktop.length > 0) return desktop
+      return mobile
+    },
+    announcementEnabled() {
+      if (DEBUG_HEADER_ANNOUNCEMENT) return true
+      const v = this.appContent?.data?.header_announcement_enabled
+      if (v === false || v === 0 || v === '0' || v === 'false') return false
+      return true
+    },
+    hasAnnouncement() {
+      if (!this.announcementEnabled) return false
+      return (
+        this.announcementBodyDesktop.length > 0 ||
+        this.announcementBodyMobile.length > 0
+      )
+    },
+    announcementCtaLabel() {
+      if (DEBUG_HEADER_ANNOUNCEMENT_CTA_LABEL)
+        return DEBUG_HEADER_ANNOUNCEMENT_CTA_LABEL
+      const t = this.appContent?.data?.header_announcement_cta_label
+      return typeof t === 'string' ? t.trim() : ''
+    },
+    announcementCtaLink() {
+      if (DEBUG_HEADER_ANNOUNCEMENT_CTA_LINK)
+        return DEBUG_HEADER_ANNOUNCEMENT_CTA_LINK
+      const t = this.appContent?.data?.header_announcement_cta_link
+      return typeof t === 'string' ? t.trim() : ''
+    },
+    showAnnouncementCta() {
+      return (
+        this.announcementCtaLabel.length > 0 &&
+        this.announcementCtaLink.length > 0
+      )
+    },
+    announcementCtaIsExternal() {
+      const href = this.announcementCtaLink
+      if (!href) return false
+      return validUrl.isUri(href)
+    },
+  },
+
+  created() {
+    if (process.client && this.$viewport) {
+      this.syncViewportMobile()
+    }
   },
 
   mounted() {
+    this.syncViewportMobile()
+    if (this.$viewport?.events) {
+      this.$viewport.events.on('resize', this.syncViewportMobile)
+    }
+
     this.$nuxt.$on(
       'global:forceInitScrollTrigger',
       this.onForceInitScrollTrigger
     )
+    this.$nuxt.$on('app:scroll', this.onAppScroll)
+
+    window.addEventListener('scroll', this.onWindowScroll, { passive: true })
+    this.updateBannerFromScroll()
 
     this.initScrollTrigger()
   },
   beforeDestroy() {
+    if (this.$viewport?.events) {
+      this.$viewport.events.off('resize', this.syncViewportMobile)
+    }
+
     this.$nuxt.$off(
       'global:forceInitScrollTrigger',
       this.onForceInitScrollTrigger
     )
+    this.$nuxt.$off('app:scroll', this.onAppScroll)
+
+    window.removeEventListener('scroll', this.onWindowScroll)
 
     this.scrollTrigger?.kill()
   },
   methods: {
+    syncViewportMobile() {
+      if (!this.$viewport || this.$viewport.isMobile == null) return
+      this.viewportMobile = Boolean(this.$viewport.isMobile)
+    },
+    onAppScroll() {
+      this.updateBannerFromScroll()
+    },
+    onWindowScroll() {
+      this.updateBannerFromScroll()
+    },
+    updateBannerFromScroll() {
+      const y = window.lenis?.scroll ?? window.scrollY ?? 0
+      this.bannerAtTop = y < 12
+    },
     onForceInitScrollTrigger() {
       this.scrollTrigger?.kill()
       this.initScrollTrigger()
     },
     initScrollTrigger() {
+      const trigger = this.$refs.headerRow || this.$el
       this.scrollTrigger = ScrollTrigger.create({
-        trigger: this.$el,
+        trigger,
         start: 'top+=20px top',
         end: 'max',
         fastScrollEnd: true,
@@ -144,6 +290,114 @@ export default {
 </script>
 
 <style lang="scss">
+.app-header-shell {
+  pointer-events: none;
+
+  > * {
+    pointer-events: auto;
+  }
+}
+
+.app-header__announcement {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+  height: 32.5px;
+  max-height: 32.5px;
+  padding: 0 desktop-vw(20px);
+  background-color: var(--c-blue-adidas);
+  color: var(--c-white);
+  transition: max-height 0.45s var(--ease-out-cubic),
+    height 0.45s var(--ease-out-cubic),
+    opacity 0.35s var(--ease-in-out-cubic), padding 0.35s var(--ease-in-out-cubic);
+  overflow: hidden;
+
+  &__inner {
+    display: block;
+    max-width: 95%;
+    margin: 0 auto;
+    text-align: center;
+    min-width: 0;
+    white-space: nowrap;
+
+    @include mobile {
+      white-space: normal;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &__cta {
+    display: inline;
+    margin-left: 0.35em;
+    vertical-align: baseline;
+    color: inherit !important;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-color: currentColor;
+    text-underline-offset: 0.12em;
+    text-decoration-thickness: 1px;
+    text-decoration-skip-ink: auto;
+    white-space: nowrap;
+  }
+
+  @include mobile {
+    height: auto;
+    max-height: 88px;
+    padding: mobile-vw(6px) var(--layout-margin);
+  }
+
+  &__text.P2 {
+    font-size: desktop-vw(13px);
+    line-height: 1.3;
+    max-width: 90%;
+    color: #ffffff !important;
+
+    @include mobile {
+      font-size: mobile-vw(12px);
+      max-width: 100%;
+    }
+  }
+
+  &__text--lead.P2 {
+    display: inline-block;
+    max-width: min(70vw, 42rem);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+    text-align: center;
+
+    @include mobile {
+      display: block;
+      max-width: 100%;
+      overflow: visible;
+      text-overflow: unset;
+      white-space: normal;
+    }
+  }
+}
+
+.app-header-shell--announcement-collapsed .app-header__announcement {
+  max-height: 0;
+  height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  pointer-events: none;
+
+  @include mobile {
+    height: 0;
+  }
+}
+
 .app-header {
   position: fixed;
   top: 60px;
@@ -152,7 +406,7 @@ export default {
   width: 50%;
   justify-content: space-between;
   transition: transform 0.65s var(--ease-out-cubic),
-    opacity 0.35s 0.4s var(--ease-in-out-cubic);
+    opacity 0.35s 0.4s var(--ease-in-out-cubic), top 0.45s var(--ease-out-cubic);
   will-change: transform;
   z-index: 3;
   height: 40px;
