@@ -236,8 +236,24 @@ export default {
       &__title.app-element-rich-text {
         width: columns(2.5);
 
+       
+
         @include mobile {
           width: 75%;
+        }
+
+       
+
+        .H2.medium{
+          @include font-ITCFranklinGothicLT-BkCp();
+          .wysiwyg-stroke{
+            @include font-ITCFranklinGothicLT-DmCp();
+            -webkit-text-stroke: 1px #181818;
+          }
+
+          strong{
+            @include font-ITCFranklinGothicLT-DmCp();
+          }
         }
       }
 
@@ -377,7 +393,19 @@ export default {
       }
 
       &__title.app-element-rich-text {
+        .H2.medium{
+          @include font-ITCFranklinGothicLT-BkCp();
+          .wysiwyg-stroke{
+            @include font-ITCFranklinGothicLT-DmCp();
+            -webkit-text-stroke: 1px #181818;
+          }
+
+          strong{
+            @include font-ITCFranklinGothicLT-DmCp();
+          }
+        }
       }
+
 
       &__paragraph.app-element-rich-text {
         margin-top: desktop-vw(25px);

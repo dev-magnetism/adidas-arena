@@ -1,64 +1,69 @@
 <template>
   <div class="app-arena-introduction grid-inner">
-    <div class="app-arena-introduction__row-framed-content">
-      <ERichText ref="title" tag="h1" :content="contents.title" />
-      <ERichText ref="paragraph" :content="contents.subtitle" />
+    <div class="app-arena-introduction__title">
+      <ERichText ref="title" :split="false" tag="h1" :content="contents.title" />
     </div>
 
-    <div ref="visualFramed" class="app-arena-introduction__row-framed-visual">
-      <EKinesis :speed="5">
-        <EFramedPicture color="red-adidas">
-          <EKinesis :speed="-3.5">
-            <nuxt-picture
-              provider="directus"
-              :src="contents.pictureFramedImage"
-              format="webp"
-              :alt="contents.pictureFramedAlt"
-              sizes="sm:35vw md:50vw"
-            />
-          </EKinesis>
-        </EFramedPicture>
-      </EKinesis>
-    </div>
-
-    <div
-      ref="visualBigger"
-      class="app-arena-introduction__row-second-visual-principal"
-    >
-      <EKinesis :speed="5">
-        <TH3 tag="p"> {{ contents.pictureLabelText }} </TH3>
-        <nuxt-picture
-          provider="directus"
-          :src="contents.pictureLabelImage"
-          :alt="contents.pictureLabelAlt"
-          format="webp"
-          sizes="sm:35vw md:50vw"
-        />
-      </EKinesis>
-    </div>
+    
 
     <EParallax
-      ref="visualTransparent"
-      :speed="0.6"
-      class="app-arena-introduction__row-second-visual-transparent"
+      ref="video"
+      v-if="videoFrame?.video?.id"
+      class="app-arena-introduction__video"
+      :speed="1"
     >
-      <EKinesis :speed="10">
-        <nuxt-picture
-          :src="contents.pictureLogoImage"
-          provider="directus"
-          format="webp"
-          :alt="contents.pictureLogoAlt"
-        />
-        <AtomsCornerPoints :size-points="6" />
+      <EKinesis :speed="5">
+        <div
+          v-if="videoFrame?.image && videoFrame?.image !== ''"
+          :class="{ invisible: hideVideoOverlay }"
+          class="app-arena-introduction__video__overlay"
+          @click="hideVideoOverlay = true"
+        >
+          <TH1 tag="p" weight="bold" color="white">PLAY</TH1>
+          <nuxt-img
+            :src="videoFrame.image"
+            :alt="contents.title"
+            provider="directus"
+            loading="lazy"
+            sizes="sm:35vw md:20vw"
+          />
+
+        </div>
+        <client-only>
+          <iframe
+            :class="{ invisible: videoFrame.image && videoFrame.image !== ''?!hideVideoOverlay:hideVideoOverlay }"
+            :src="`https://www.youtube-nocookie.com/embed/${videoFrame.video.id}?modestbranding=1&rel=0&cc_load_policy=1&iv_load_policy=3&hl=fr-fr&fs=0&controls=0&disablekb=1`"
+            frameborder="0"
+          />
+        </client-only>
       </EKinesis>
     </EParallax>
 
-    <div class="app-arena-introduction__row-second-content">
-      <TH4 tag="p">{{ contents.whyTitle }}</TH4>
+    <div class="app-arena-introduction__row2 grid-inner">
+      <div ref="visualFramed" class="app-arena-introduction__visual">
+        <EKinesis :speed="5">
+         <nuxt-picture
+            provider="directus"
+            :src="contents.pictureFramedImage"
+            format="webp"
+            :alt="contents.pictureFramedAlt"
+            sizes="sm:35vw md:50vw"
+          />
+        </EKinesis>
+      </div>
 
-      <ERichText :content="contents.whyParagraph" />
+      <div class="app-arena-introduction__text">
+        <ERichText
+          ref="paragraph"
+          tag="p"
+          weight="medium"
+          :content="contents.paragraph"
+        />
+      </div>
     </div>
+
   </div>
+
 </template>
 
 <script>
@@ -73,6 +78,11 @@ export default {
       default: () => {},
     },
   },
+  data() {
+    return {
+      hideVideoOverlay: false,
+    }
+  },
   computed: {
     ...mapState({
       interiorVisible: (state) => state.interiorVisible,
@@ -81,6 +91,26 @@ export default {
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,
       fontsLoaded: (state) => state.fontsLoaded,
     }),
+    videoFrame() {
+      const videoItem = {};
+      videoItem.url = this.contents.video_url;
+      const itemCover = this.contents.video_cover;
+
+      //  console.log('itemCover', itemCover)
+
+      const image = (itemCover && itemCover != null)? itemCover : ''
+
+      // console.log('image', image)
+
+      //  console.log('videoFrame / videoItem', videoItem);
+
+      if (videoItem && videoItem.url != null) {
+        videoItem.id = this.getYouTubeVideoId(videoItem.url);
+      }
+
+      return videoItem && videoItem.url !== null ? { video: videoItem, image } : false
+      //  return videoItem ? { video: videoItem, image } : false
+    },
   },
   watch: {
     initialHeroDisplayed(newVal) {
@@ -93,18 +123,19 @@ export default {
       }
     },
     fontsLoaded(newVal) {
-      if (!newVal || this.$viewport.isMobile) return
+      //  if (!newVal || this.$viewport.isMobile) return
 
-      this.initSplitText()
+      //  this.initSplitText()
     },
   },
   mounted() {
     if (this.allLoadedFake && !this.$viewport.isMobile) {
-      this.initSplitText()
+      // this.initSplitText()
       this.appearHero(0.85)
     } else if (this.allLoadedFake && this.$viewport.isMobile) {
       this.setAllowScroll(true)
     }
+    this.initMatchMedia();
   },
   beforeDestroy() {
     this.mm?.revert()
@@ -137,20 +168,7 @@ export default {
         })
         .addLabel('texts')
         .fromTo(
-          this.splittingChild.lines,
-          {
-            y: '-120%',
-          },
-          {
-            y: '0',
-            duration: 0.6,
-            stagger: 0.085,
-            ease: 'power3.out',
-          },
-          'texts'
-        )
-        .fromTo(
-          this.$refs.paragraph.$el,
+          [this.$refs.paragraph.$el],
           {
             y: -30,
           },
@@ -162,7 +180,7 @@ export default {
           'texts+=15%'
         )
         .fromTo(
-          this.$refs.paragraph.$el,
+          [this.$refs.paragraph.$el],
           {
             opacity: 0,
           },
@@ -178,11 +196,11 @@ export default {
           this.$refs.visualFramed,
           {
             y: '40%',
-            rotate: 10,
+            rotate: -10,
           },
           {
             y: '0%',
-            rotate: 4,
+            rotate: -4,
             duration: 0.5,
             ease: 'power3.out',
           },
@@ -200,32 +218,7 @@ export default {
           },
           'visuals+=5%'
         )
-        .fromTo(
-          this.$refs.visualBigger,
-          {
-            y: '30%',
-            rotate: -10,
-          },
-          {
-            y: '0%',
-            rotate: -2,
-            duration: 0.5,
-            ease: 'power3.out',
-          },
-          'visuals+=50%'
-        )
-        .fromTo(
-          this.$refs.visualBigger,
-          {
-            opacity: 0,
-          },
-          {
-            opacity: 1,
-            duration: 0.55,
-            ease: 'power3.out',
-          },
-          'visuals+=50%'
-        )
+
     },
     initMatchMedia() {
       this.setAllowScroll(true)
@@ -243,39 +236,37 @@ export default {
           },
         })
 
-        const tweenBigger = gsap.to(this.$refs.visualBigger, {
-          yPercent: -20,
-          rotate: 2,
-          scrollTrigger: {
-            trigger: this.$el,
-            scrub: 0.5,
-            start: `top top+=${window.innerWidth * 0.138888}`, // padding-top value
-          },
-        })
+        let tweenVideo
 
-        const tweenTransparent = gsap.fromTo(
-          this.$refs.visualTransparent.$el,
-          {
-            rotate: -9,
-          },
-          {
-            rotate: -4,
-            scrollTrigger: {
-              trigger: this.$refs.visualTransparent.$el,
-              scrub: 0.5,
-              end: 'bottom top',
+        if (this.videoFrame) {
+          tweenVideo = gsap.fromTo(
+            this.$refs.video.$el,
+            {
+              rotate: 10,
             },
-          }
-        )
+            {
+              rotate: 4,
+              scrollTrigger: {
+                trigger: this.$refs.video.$el,
+                scrub: 0.5,
+                end: 'bottom top',
+              },
+            }
+          )
+        }
+
+        
 
         return () => {
           tweenFramed?.kill()
-          tweenBigger?.kill()
-          tweenTransparent?.kill()
+          tweenVideo?.kill()
         }
       })
     },
-
+    
+    getYouTubeVideoId(url) {
+      return this.$getYoutubeVideoID(url)
+    },
     ...mapMutations({
       setAllowScroll: 'setAllowScroll',
     }),
@@ -286,62 +277,55 @@ export default {
 <style lang="scss">
 .app-arena-introduction {
   position: relative;
+  margin-top: desktop-vw(130px);
 
   @include mobile{
     margin-top: mobile-vw(40px);
   }
 
-  &__row-framed-content {
-    grid-column: 2 / span 6;
+  &__title {
+    grid-column: 1 / span 8;
     grid-row: 1;
     display: flex;
     flex-direction: column;
-    width: 90%;
+    width: 100%;
 
     @include mobile {
       grid-column: 1 / span 6;
       width: 100%;
     }
 
-    .P2.wysiwyg-text {
-      width: 80%;
-      font-size: desktop-vw(18px);
-      text-transform: uppercase;
-      @include font-ITCFranklinGothicLT-BkCp();
-      // font-weight: 700;
+    .H2.medium{
+      font-size: desktop-vw(135px);
+      line-height: desktop-vw(127px);
 
       @include mobile {
-        font-size: mobile-vw(16px);
-        width: 65%;
+        font-size: mobile-vw(54px);
+        line-height: mobile-vw(50px);
       }
 
-      &:first-child {
-        margin-top: desktop-vw(30px);
-
-        @include mobile {
-          margin-top: mobile-vw(20px);
-        }
+      .wysiwyg-stroke{
+        @include font-ITCFranklinGothicLT-DmCp();
+        -webkit-text-stroke: 1px #181818;
       }
     }
+
   }
 
-  &__row-framed-visual {
-    grid-column: 7 / span 5;
+  &__visual {
+    grid-column: 2 / span 4;
     grid-row: 1;
-    aspect-ratio: 545 / 670;
-    margin-top: desktop-vw(50px);
-    width: 95%;
-    margin-left: desktop-vw(50px);
+    aspect-ratio: 310 / 385;
+    width: 90%;
     z-index: 2;
-    transform: rotate(4deg);
-    // transform-origin: left top;
+    transform: rotate(-10deg);
 
     @include mobile {
       grid-row: 2;
-      grid-column: 2 / span 5;
+      grid-column: 2 / span 4;
       margin-left: 0px;
-      margin-top: mobile-vw(65px);
-      aspect-ratio: 260 / 315;
+      margin-top: mobile-vw(25px);
+      aspect-ratio: 310 / 385;
     }
 
     picture {
@@ -354,117 +338,126 @@ export default {
     }
   }
 
-  &__row-second-visual-transparent {
+  &__video.app-parallax {
     position: absolute;
-    grid-row: 2;
-    width: 100%;
-    grid-column: 6 / span 2;
-    top: 20%;
-    transform: rotate(-9deg);
-    aspect-ratio: 200 / 130;
-    left: 30%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: auto;
-    transform-origin: center center;
+    aspect-ratio: 640 / 425;
+    width: desktop-vw(640px);
+    top: desktop-vw(450px);
+    left: desktop-vw(400px);
+    transform: rotate(10deg);
+    z-index: 3;
 
     @include mobile {
-      grid-row: 3;
-      grid-column: 4 / span 2;
-      left: 0%;
-      aspect-ratio: 200/130;
+      aspect-ratio: 640 / 425;
+      width: mobile-vw(265px);
+      top: mobile-vw(200px);
+      left: mobile-vw(50px);
+      transform: rotate(-4deg);
     }
 
     .app-element-kinesis {
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
 
-      @include fake-transparent();
+      @include hover {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+    iframe {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      &.invisible {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        display: none;
+      }
     }
 
     picture {
+      width: 100%;
+      height: 100%;
       display: block;
-      width: 55%;
-      height: auto;
+      pointer-events: none;
+    }
+
+    .app-arena-introduction__video__overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 4;
+      transition: opacity 0.4s 0.1s var(--ease-in-out-cubic);
+
+      &.invisible {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.2);
+        pointer-events: none;
+      }
+
+      .H1 {
+        position: absolute;
+        z-index: 1;
+        pointer-events: none;
+      }
     }
   }
 
-  &__row-second-content {
-    grid-column: 9 / span 3;
-    margin-top: desktop-vw(100px);
+  &__row2{
     grid-row: 2;
+    grid-column: 1 / span 12;
+    margin-top: desktop-vw(500px);
+
+     @include mobile {
+      grid-column: 1 / span 6;
+      margin-top: mobile-vw(100px);
+     }
+  }
+  
+  &__text {
+    grid-column: 7 / span 6;
 
     @include mobile {
-      grid-column: 2 / span 5;
+      grid-column: 1 / span 6;
       margin-top: mobile-vw(-25px);
       grid-row: 4;
     }
 
     .app-element-rich-text {
       .P2.wysiwyg-text {
-        font-size: desktop-vw(18px);
-        @include font-ITCFranklinGothicLT-BkCp();
+        font-size: desktop-vw(67px);
+        line-height: desktop-vw(60px);
+        @include font-ITCFranklinGothicLT-DmCp();
+        text-transform: uppercase;
 
         @include mobile {
-         font-size: mobile-vw(16px);
+          font-size: mobile-vw(32px);
+          line-height: mobile-vw(26px);
         }
 
         &:first-child {
           margin-top: desktop-vw(30px);
         }
-      }
-    }
-  }
-
-  &__row-second-visual-principal {
-    grid-column: 2 / span 6;
-    position: relative;
-    transform: translateY(-30%) rotate(-2deg);
-    width: 95%;
-    margin-left: desktop-vw(25px);
-    grid-row: 2;
-    margin-top: desktop-vw(-150px);
-    // transform-origin: right top;
-
-    @include mobile {
-      grid-row: 3;
-      width: 100%;
-      grid-column: 1 / span 4;
-      transform: translateY(-20%) rotate(-2deg);
-      margin-top: mobile-vw(0px);
-      margin-left: mobile-vw(0px);
-    }
-
-    .app-element-kinesis {
-      display: flex;
-    }
-
-    .H3 {
-      font-size: desktop-vw(22px);
-      line-height: desktop-vw(28px);
-      letter-spacing: -0.04em;
-      align-self: flex-end;
-      writing-mode: vertical-rl;
-      transform: scale(-1);
-
-      margin-right: desktop-vw(20px);
-
-      @include mobile {
-        display: none;
-      }
-    }
-
-    picture {
-      aspect-ratio: 595 / 740;
-      width: 100%;
-      display: block;
-      position: relative;
-      @include noise();
-
-      @include mobile {
-        aspect-ratio: 220 / 275;
       }
     }
   }

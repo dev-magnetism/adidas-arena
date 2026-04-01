@@ -21,7 +21,7 @@ export default {
 <style lang="scss">
 .app-arena__catch-phrase {
   position: relative;
-  margin-top: desktop-vw(100px);
+  margin-top: desktop-vw(200px);
   margin-bottom: desktop-vw(250px);
 
   @include mobile {
@@ -39,6 +39,10 @@ export default {
       grid-column: 1 / span 6;
     }
 
+    .H2.medium{
+       @include font-ITCFranklinGothicLT-BkCp();
+    }
+
     .app-element-lottie-word {
       svg {
         left: 50%;
@@ -51,13 +55,13 @@ export default {
   }
 
   &__lottie {
-    grid-column: 10 / span 2;
+    grid-column: 2 / span 2;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     aspect-ratio: 190 / 300;
-    transform: translateY(-40%);
+    transform: translate(10%, -100%) scaleX(-1);
 
     @include mobile {
       grid-column: 5 / span 2;

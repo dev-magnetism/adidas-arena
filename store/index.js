@@ -32,6 +32,8 @@ export const state = () => ({
   classementBetclic: null,
   classementEuroleague: null,
   effectifParis: null,
+  navArenaActive: null,
+  arenaGymnases: null,
 
   // Exterior scene
   exteriorVisible: true,
@@ -323,6 +325,12 @@ export const mutations = {
   setEffectifParis: (state, value) => {
     state.effectifParis = value
   },
+  setNavArenaActive: (state, value) => {
+    state.navArenaActive = value
+  },
+  setArenaGymnases: (state, value) => {
+    state.arenaGymnases = value
+  },
 }
 
 
@@ -355,5 +363,7 @@ export const actions = {
     commit('setClassementBetclic', initialData.classementBetclic)
     commit('setClassementEuroleague', initialData.classementEuroleague)
     commit('setEffectifParis', initialData.effectifParis)
+    commit('setNavArenaActive', initialData.navArenaActive)
+    commit('setArenaGymnases', initialData.arenaGymnases)
   },
 }

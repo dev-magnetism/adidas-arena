@@ -1,21 +1,7 @@
 <template>
   <div class="app-arena-plan">
     <div class="app-arena-plan__inner grid-inner">
-      <div class="app-arena-plan__content">
-        <ERichText
-          class="app-arena-plan__content__title"
-          :content="contents.title"
-          tag="h2"
-        />
 
-        <TP1 weight="bold" class="app-arena-plan__content__subtitle"
-          >{{ contents.subtitle }}
-        </TP1>
-        <ERichText
-          class="app-arena-plan__content__paragraph"
-          :content="contents.paragraph"
-        />
-      </div>
       <div class="app-arena-plan__visual">
         <AtomsCornerPoints :size-points="8" />
         <AtomsTitleTag
@@ -50,6 +36,25 @@
         <div ref="cross" class="app-arena-plan__visual__cross" />
         <div ref="crossCircle" class="app-arena-plan__visual__cross-circle" />
       </div>
+
+
+      <div class="app-arena-plan__content">
+        <ERichText
+          class="app-arena-plan__content__title"
+          :content="contents.title"
+          tag="h2"
+        />
+
+        <TP1 weight="bold" class="app-arena-plan__content__subtitle"
+          >{{ contents.subtitle }}
+        </TP1>
+        <ERichText
+          class="app-arena-plan__content__paragraph"
+          :content="contents.paragraph"
+        />
+      </div>
+
+
     </div>
   </div>
 </template>
@@ -395,7 +400,7 @@ export default {
   }
 
   &__content {
-    grid-column: 1 / span 4;
+    grid-column: 9 / span 4;
     margin-top: desktop-vw(50px);
 
     @include mobile {
@@ -441,7 +446,7 @@ export default {
   }
 
   &__visual {
-    grid-column: 5 / span 7;
+    grid-column: 1 / span 7;
     aspect-ratio: 860/540;
     transform: rotate(4deg);
     width: 107.5%;

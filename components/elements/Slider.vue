@@ -9,6 +9,11 @@
         :content="contents.title"
         tag="h2"
       />
+      <ERichText
+        v-if="contents.text"
+        class="app-element-slider__heading__paragraph"
+        :content="contents.text"
+      />
       <EPartnersTotal
         class="app-element-slider__heading__spaces"
         :total="contents.items.length"
@@ -243,6 +248,20 @@ export default {
         grid-column: 1 / span 6;
         grid-row: 1;
         width: 85%;
+      }
+    }
+
+    &__paragraph {
+      grid-column: 1 / span 6;
+
+      @include font-ITCFranklinGothicLT-BkCp();
+      font-size: desktop-vw(17px);
+
+      @include mobile {
+        grid-column: 1 / span 6;
+        grid-row: 2;
+        width: 85%;
+        font-size: mobile-vw(17px);
       }
     }
 
