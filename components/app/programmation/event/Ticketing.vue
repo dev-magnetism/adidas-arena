@@ -88,7 +88,7 @@ export default {
       this.initializationTickets = newVal === null || oldVal === null
 
       if (newVal !== null) {
-        window.lenis.scrollTo('.app-programmation-event-ticketing', {
+        window.lenis?.scrollTo?.('.app-programmation-event-ticketing', {
           duration: 0.85,
         })
       }

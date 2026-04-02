@@ -457,7 +457,7 @@ export default {
         ? (85 * 100) / 375
         : (85 * 100) / 1400
       const valueInPx = (this.$viewport.width * valueInVw) / 100
-      const currentScroll = window.lenis.scroll ?? window.scrollY ?? 0
+      const currentScroll = window.lenis?.scroll ?? window.scrollY ?? 0
       const top = el.getBoundingClientRect().top + currentScroll - valueInPx
       const targetY = Math.max(0, Math.round(top))
       window.lenis.scrollTo(targetY, { immediate: true })

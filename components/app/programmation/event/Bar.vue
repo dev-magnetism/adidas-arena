@@ -111,7 +111,7 @@ export default {
     scrollToDates() {
       if (!window.lenis) return
 
-      window.lenis.scrollTo('.app-programmation-event-dates', {
+      window.lenis?.scrollTo?.('.app-programmation-event-dates', {
         lock: true,
         duration: 0.75,
         offset: -35,
