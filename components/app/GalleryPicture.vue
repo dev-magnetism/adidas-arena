@@ -403,6 +403,11 @@ export default {
 
       if (this.content.isVideo) this.texture.update()
 
+      const currentScroll =
+        typeof window !== 'undefined'
+          ? window.lenis?.scroll ?? window.scrollY ?? window.pageYOffset ?? 0
+          : 0
+
       const x = gsap.utils.wrap(
         Math.min(this.$viewport.width / -2, xMin.picture.boundingRect.xThree) -
           xMin.picture.boundingRect.width, // left
@@ -413,7 +418,7 @@ export default {
 
       const position = new Vector3(
         x,
-        this.mesh?.initialPosition?.y + window.lenis.scroll,
+        this.mesh?.initialPosition?.y + currentScroll,
         this.mesh?.position?.z
       )
 
