@@ -135,7 +135,7 @@ export default {
         title: this.content.data.arena_gymnases_title,
         subtitle: this.content.data.arena_gymnases_subtitle,
         paragraph: this.content.data.arena_gymnases_paragraph,
-        list: this.arenaGymnases.data,
+        list: this.arenaGymnases?.data,
       }
     },
     contentIntroduction() {

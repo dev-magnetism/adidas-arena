@@ -89,6 +89,13 @@ export const getInitialData = async () => {
     actu.slug = convertToKebabCase(_slug)
   })
 
+  cachedData.arenaGymnases = await fetchWithLogs('Arena_gymnases', () =>
+    $directus.items('Arena_gymnases').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
   cachedData.business = await fetchWithLogs('Business_Page', () =>
     $directus.items('Business_Page').readByQuery({
       limit: -1,
