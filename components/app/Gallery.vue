@@ -411,6 +411,7 @@ export default {
   &__pictures {
     width: 300vw;
     position: absolute;
+    z-index: 1;
     top: 0;
     left: 50%;
     height: 100%;

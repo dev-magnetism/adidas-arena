@@ -275,7 +275,7 @@ export default {
       const _section1 = this.$refs.arena.$el;
       //  console.log('_section1', _section1);
       const _section1T = _section1.offsetTop;
-      const _section1H = _section1.offsetHeight;
+      //  const _section1H = _section1.offsetHeight;
       const _section2 = this.$refs.pbb.$el;
       //  console.log('_section2', _section2);
       const _section2T = _section2.offsetTop;
@@ -294,7 +294,7 @@ export default {
       //  console.log('_section2H', _section2H);
       //  console.log('_section3H', _section3H);
 
-      if(_wT + (_wH/2) >= _section1T && _wT <= _section1T+_section1H){
+      if(_wT + (_wH/2) >= _section1T && _wT + (_wH/2) <= _section2T){
         this.setNavArenaActive('arena');
       } else if(_wT + (_wH/2) >= _section2T && _wT <= _section2T+_section2H){
         this.setNavArenaActive('pbb');
@@ -358,7 +358,7 @@ export default {
     position: fixed;
     display: flex;
     flex-wrap: nowrap;
-    z-index: 10;
+    z-index: 200;
     bottom: desktop-vw(42px);
     left: desktop-vw(40px);
     border: 1px solid var(--c-black);
