@@ -1,24 +1,55 @@
 <template>
   <main class="app-arena">
-    <AppArenaHero />
+
+    <div class="app-arena__nav">
+      <button
+        class="app-arena__nav__btn"
+        :class="{active: this.navArenaActive === 'arena'}"
+        @click="scrollToSection('arena')"
+        >
+        {{this.content.data.arena_navsticky_btn1}}
+      </button>
+      <button
+        class="app-arena__nav__btn"
+        :class="{active: this.navArenaActive === 'pbb'}"
+        @click="scrollToSection('pbb')"
+        >
+        {{this.content.data.arena_navsticky_btn2}}
+      </button>
+      <button
+        class="app-arena__nav__btn"
+        :class="{active: this.navArenaActive === 'gymnases'}"
+        @click="scrollToSection('gymnases')"
+        >
+        {{this.content.data.arena_navsticky_btn3}}
+      </button>
+      <button
+        class="app-arena__nav__btn"
+        :class="{active: this.navArenaActive === 'lieudevie'}"
+        @click="scrollToSection('lieudevie')"
+        >
+        {{this.content.data.arena_navsticky_btn4}}
+      </button>
+    </div>
+    <AppArenaHero ref="arena" />
     <AppArenaIntroduction :contents="contentIntroduction" />
     <AppArenaCatchPhrase :contents="contentCatchphrase" />
-    <AppArenaParisBasketClub :contents="contentParisBasketClub" />
-    <ESlider :contents="contentSlider" />
-    <!-- EFullwidth :contents="contentFullwidth" / -->
-    <!-- AppArenaPartners :contents="contentPartners" / -->
-    <EVideosList :contents="contentVideos" />
     <AppArenaPlan :contents="contentPlan" />
+    <AppArenaPresentation :contents="contentPresentation" />
     <AppArenaTwoColumns :contents="contentTwoColumns"/>
+    <AppArenaParisBasketClub ref="pbb" :contents="contentParisBasketClub" />
+    <AppArenaGymnases ref="gymnases" :contents="contentGymnases" />
+    <ESlider ref="lieudevie" :contents="contentSlider" />
     <AppGallery :contents="contentGallery" />
     <AppFooter v-if="this.webview !== 'ok'" :contents="appContent" :logos="partnersContent.data" />
   </main>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 import scroll from '@/mixins/scroll'
+
 import pageTransition from '@/mixins/page-transition'
 
 export default {
@@ -80,6 +111,8 @@ export default {
       partnersContent: (state) => state.partnersContent,
       appContent: (state) => state.appContent,
       webview: (state) => state.webview,
+      navArenaActive: (state) => state.navArenaActive,
+      arenaGymnases: (state) => state.arenaGymnases,
     }),
     contentCatchphrase() {
       return {
@@ -97,25 +130,24 @@ export default {
         items: this.galerie.data,
       }
     },
+    contentGymnases() {
+      return {
+        title: this.content.data.arena_gymnases_title,
+        subtitle: this.content.data.arena_gymnases_subtitle,
+        paragraph: this.content.data.arena_gymnases_paragraph,
+        list: this.arenaGymnases.data,
+      }
+    },
     contentIntroduction() {
       return {
         title: this.content.data.arena_introduction_title,
-        subtitle: this.content.data.arena_introduction_subtitle,
-        whyTitle: this.content.data.arena_introduction_why_title,
-        whyParagraph: this.content.data.arena_introduction_why_paragraph,
+        paragraph: this.content.data.arena_introduction_paragraph,
         pictureFramedImage:
           this.content.data.arena_introduction_picture_framed_image,
         pictureFramedAlt:
           this.content.data.arena_introduction_picture_framed_alt,
-        pictureLabelImage:
-          this.content.data.arena_introduction_picture_label_image,
-        pictureLabelAlt:
-          this.content.data.arena_introduction_picture_label_alt,
-        pictureLabelText:
-          this.content.data.arena_introduction_picture_label_text,
-        pictureLogoImage:
-          this.content.data.arena_introduction_picture_logo_image,
-        pictureLogoAlt: this.content.data.arena_introduction_picture_logo_alt,
+        video_url: this.content.data.arena_introduction_video_url,
+        video_cover: this.content.data.arena_introduction_video_cover
       }
     },
     contentParisBasketClub() {
@@ -159,9 +191,31 @@ export default {
         basilique: this.content.data.arena_plan_basilique_place,
       }
     },
+    contentPresentation() {
+      return {
+        title: this.content.data.arena_presentation_title,
+        subtitle: this.content.data.arena_presentation_subtitle,
+        whyTitle: this.content.data.arena_presentation_why_title,
+        whyParagraph: this.content.data.arena_presentation_why_paragraph,
+        pictureFramedImage:
+          this.content.data.arena_presentation_picture_framed_image,
+        pictureFramedAlt:
+          this.content.data.arena_presentation_picture_framed_alt,
+        pictureLabelImage:
+          this.content.data.arena_presentation_picture_label_image,
+        pictureLabelAlt:
+          this.content.data.arena_presentation_picture_label_alt,
+        pictureLabelText:
+          this.content.data.arena_presentation_picture_label_text,
+        pictureLogoImage:
+          this.content.data.arena_presentation_picture_logo_image,
+        pictureLogoAlt: this.content.data.arena_presentation_picture_logo_alt,
+      }
+    },
     contentSlider() {
       return {
         title: this.content.data.slider_title,
+        text: this.content.data.slider_paragraph,
         totalText: this.content.data.slider_total_text,
         items: this.slider.data,
       }
@@ -200,9 +254,70 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() {
+
+    this.setAllowScroll(true);
+
+    window.addEventListener('scroll', this.checkScroll.bind(this));
+
+  },
   beforeDestroy() {},
-  methods: {},
+  methods: {
+    ...mapMutations({
+      setAllowScroll: 'setAllowScroll',
+      setNavArenaActive: 'setNavArenaActive',
+    }),
+
+    checkScroll(e){
+      const _wT = window.scrollY;
+      const _wH = window.outerHeight;
+
+      const _section1 = this.$refs.arena.$el;
+      //  console.log('_section1', _section1);
+      const _section1T = _section1.offsetTop;
+      const _section1H = _section1.offsetHeight;
+      const _section2 = this.$refs.pbb.$el;
+      //  console.log('_section2', _section2);
+      const _section2T = _section2.offsetTop;
+      const _section2H = _section2.offsetHeight;
+      const _section3 = this.$refs.gymnases.$el;
+      //  console.log('_section3', _section3);
+      const _section3T = _section3.offsetTop;
+      const _section3H = _section3.offsetHeight;
+      const _section4 = this.$refs.lieudevie.$el;
+      //  console.log('_section4', _section4);
+      const _section4T = _section4.offsetTop;
+      const _section4H = _section4.offsetHeight;
+
+
+      //  console.log('_section1H', _section1H);
+      //  console.log('_section2H', _section2H);
+      //  console.log('_section3H', _section3H);
+
+      if(_wT + (_wH/2) >= _section1T && _wT <= _section1T+_section1H){
+        this.setNavArenaActive('arena');
+      } else if(_wT + (_wH/2) >= _section2T && _wT <= _section2T+_section2H){
+        this.setNavArenaActive('pbb');
+      } else if(_wT + (_wH/2) >= _section3T && _wT <= _section3T+_section3H){
+         this.setNavArenaActive('gymnases');
+      } else if(_wT + (_wH/2) >= _section4T && _wT <= _section4T+_section4H){
+         this.setNavArenaActive('lieudevie');
+      } else {
+        this.setNavArenaActive(false);
+      }
+
+    },
+
+    scrollToSection(_section){
+      //  console.log('scrollToSection/ _section', _section);
+      const _el = this.$refs[_section].$el;
+      //  console.log('scrollToSection/ _el', _el);
+      _el.scrollIntoView({ 
+        behavior: 'smooth' 
+      });
+
+    }
+  },
 }
 </script>
 
@@ -210,13 +325,85 @@ export default {
 .app-arena {
   .app-arena-gallery {
     margin-top: desktop-vw(130px);
+
+    @include mobile{
+       margin-top: mobile-vw(60px);
+    }
+
   }
   .app-footer {
     margin-top: desktop-vw(165px);
+
+    @include mobile{
+       margin-top: mobile-vw(80px);
+    }
   }
   .app-element-slider{
     @include mobile{
       margin: mobile-vw(60px) 0;
+    }
+
+    &__heading__title{
+      .H1.medium{
+        @include font-ITCFranklinGothicLT-BkCp();
+
+        strong{
+          @include font-ITCFranklinGothicLT-DmCp();
+        }
+      }
+    }
+  }
+
+  &__nav{
+    position: fixed;
+    display: flex;
+    flex-wrap: nowrap;
+    z-index: 10;
+    bottom: desktop-vw(42px);
+    left: desktop-vw(40px);
+    border: 1px solid var(--c-black);
+    background-color: var(--c-black);
+
+    @include mobile{
+      bottom: mobile-vw(14px);
+      left: mobile-vw(16px);
+    }
+
+    &__btn{
+      display: block;
+      flex: 0 0 auto;
+      width: auto;
+      margin: 0 1px 0 0;
+      padding: desktop-vw(12px) desktop-vw(12px) desktop-vw(8px);
+      border: none;
+      background-color: var(--c-white);
+      @include font-ITCFranklinGothicLT-DmXtraCp();
+      font-size: desktop-vw(16px);
+      line-height: desktop-vw(12px);
+      font-weight: 600;
+      color: var(--c-black);
+      text-align: center;
+      text-transform: uppercase;
+      transition: all 360ms ease-in-out;
+      cursor: pointer;
+
+      @include mobile{
+        padding: mobile-vw(12px) mobile-vw(12px) mobile-vw(8px);
+        font-size: mobile-vw(16px);
+        line-height: mobile-vw(12px);
+      }
+
+      &:hover{
+        background-color: #FF4A48;
+      }
+
+      &.active{
+         background-color: #FF4A48;
+      }
+
+      &:last-child{
+        margin: 0;
+      }
     }
   }
 }
