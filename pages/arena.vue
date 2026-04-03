@@ -74,15 +74,10 @@ export default {
       limit: -1,
     })
 
-    const videos = await $directus.items('Arena_videos').readByQuery({
-      limit: -1,
-    })
-
     return {
       content,
       galerie,
       slider,
-      videos,
     }
   },
   head({ $seo }) {
@@ -245,12 +240,6 @@ export default {
           cardParagraph:
             this.content.data.arena_two_columns_second_row_card_paragraph,
         },
-      }
-    },
-    contentVideos() {
-      return {
-        title: this.content.data.videos_title,
-        items: this.videos.data,
       }
     },
   },
