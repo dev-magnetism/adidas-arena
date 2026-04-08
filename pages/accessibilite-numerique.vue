@@ -9,10 +9,11 @@
       <TP2 weight="bold" class="app-accessibilite-numerique__subtitle">{{
         content.data.subtitle
       }}</TP2>
-      <div
+      <TP2
+        weight="medium"
         class="app-accessibilite-numerique__content"
         v-html="content.data.content"
-      ></div>
+      ></TP2>
     </div>
   </div>
 </template>
