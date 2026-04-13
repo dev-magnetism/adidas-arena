@@ -73,6 +73,10 @@
         :data-allow-drag="true"
         @click="!viewExteriorOpen && !$viewport.isMobile ? onVisit() : ''"
       >
+        <div
+          ref="webglMount"
+          class="app-home-hero__view-exterior__webgl"
+        />
         <div class="app-home-hero__view-exterior__baseline">
           <AtomsTitleTag
             :class="{ hide: viewExteriorOpen || !DOMVisible }"
@@ -128,6 +132,9 @@ export default {
       default: () => {},
     },
   },
+  inject: {
+    setWebglMount: { default: () => () => {} },
+  },
   data() {
     return {
       viewExteriorOpen: false,
@@ -139,6 +146,7 @@ export default {
     ...mapState({
       fontsLoaded: (state) => state.fontsLoaded,
       exteriorVisible: (state) => state.exteriorVisible,
+      webglInFlow: (state) => state.webglInFlow,
       allLoadedFake: (state) => state.allLoadedFake,
       allLoadedActual: (state) => state.allLoadedActual,
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,
@@ -174,6 +182,8 @@ export default {
     viewExteriorOpen(newVal) {
       const { exterior } = useWebGL()
 
+      gsap.killTweensOf(exterior.position)
+      gsap.killTweensOf(exterior.drag)
 
       if (newVal) {
 
@@ -190,14 +200,16 @@ export default {
         gsap.to(exterior.position, {
           x: exterior.homeCustomPosition.x,
           z: exterior.homeCustomPosition.z,
-          duration: 0.85,
-          ease: 'power2.inOut',
+          duration: 1.1,
+          delay: 0.05,
+          ease: 'power3.out',
         })
 
         gsap.to(exterior.drag, {
           target: 0,
-          duration: 0.85,
-          ease: 'power2.inOut',
+          duration: 1.1,
+          delay: 0.05,
+          ease: 'power3.out',
         })
 
         if (!this.$viewport.isMobile) this.appearDOM()
@@ -224,6 +236,14 @@ export default {
     this.resizeObserver.observe(this.$refs.view)
 
     this.$raf.add(`home-hero`, this.onFrame)
+
+    this.$nextTick(() => {
+      // Keep legacy desktop framing/mask behavior; use in-flow mount only on mobile.
+      if (this.$viewport.isMobile && this.$refs.webglMount && this.setWebglMount) {
+        this.setWebglMount(this.$refs.webglMount)
+        this.$nextTick(() => this.onResizePreviewExterior())
+      }
+    })
 
     window.addEventListener('keyup', this.onKeyUp)
   },
@@ -501,39 +521,93 @@ export default {
       const { exterior } = useWebGL()
 
       if (this.$viewport.isMobile) {
+        // Prevent transition frame where the in-flow canvas can overflow
+        // while leaving home: move it back to the global fixed mount first.
+        if (this.setWebglMount) this.setWebglMount(null)
         this.$router.push({ path: '/arena' })
       } else {
+        const isOpening = !this.viewExteriorOpen
+        const state = Flip.getState(this.$refs.view)
+
         this.viewExteriorOpen = !this.viewExteriorOpen
         this.setExteriorFullscreen(!this.exteriorFullscreen)
 
         exterior.drag.enabled = this.viewExteriorOpen
 
-        const state = Flip.getState(this.$refs.view)
-
         this.$refs.view.classList.toggle('fullwidth')
 
         Flip.from(state, {
-          absolute: true,
-          duration: 0.65,
-          delay: 0.15,
-          onUpdate: () => {
+          absolute: false,
+          simple: true,
+          transformOrigin: 'right bottom',
+          duration: isOpening ? 0.65 : 0.95,
+          delay: isOpening ? 0.15 : 0.05,
+          onStart: () => {
+            this.$refs.view.style.top = 'auto'
+            this.$refs.view.style.bottom = '0'
+            this.$refs.view.style.left = 'auto'
+            this.$refs.view.style.right = '0'
             this.onResizePreviewExterior()
           },
-          ease: 'power1.inOut',
+          onUpdate: () => {
+            this.$refs.view.style.top = 'auto'
+            this.$refs.view.style.bottom = '0'
+            this.onResizePreviewExterior()
+          },
+          onComplete: () => {
+            this.$refs.view.style.top = ''
+            this.$refs.view.style.bottom = ''
+            this.$refs.view.style.left = ''
+            this.$refs.view.style.right = ''
+            this.onResizePreviewExterior()
+          },
+          ease: isOpening ? 'power1.inOut' : 'power3.out',
         })
       }
     },
     onFrame() {
-      if (!window.lenis && !this.exteriorVisible) return
+      if (!this.exteriorVisible) return
 
       const { exterior, camera, renderer, scissors } = useWebGL()
 
-      const _scroll = (window.lenis?.scroll)?window.lenis.scroll:window.scrollY;
+      if (this.webglInFlow && this.$refs.view) {
+        const mount = this.$refs.webglMount || this.$refs.view
+        const w = Math.max(1, mount.clientWidth || Math.floor(this.$refs.view.getBoundingClientRect().width))
+        const h = Math.max(1, mount.clientHeight || Math.floor(this.$refs.view.getBoundingClientRect().height))
 
-      exterior.position.y = (_scroll + scissors.mask?.y) / (camera.zoom - camera.zoom * 0.125)
-       
-      scissors.current.y = _scroll + scissors.mask?.y
-    
+        // In flow mode, the canvas is mounted in the hero frame:
+        // render/scissor in local coordinates to keep WebGL clipped to this frame on scroll.
+        scissors.current = { x: 0, y: 0, width: w, height: h }
+        renderer.setScissor(0, 0, w, h)
+        renderer.setViewport(0, 0, w, h)
+        exterior.position.y = 0
+
+        const canvas = renderer.domElement
+        if (canvas) {
+          canvas.style.width = '100%'
+          canvas.style.height = '100%'
+          canvas.style.left = '0'
+          canvas.style.top = '0'
+        }
+        return
+      }
+
+      if (!this.$refs.view) return
+
+      const { left, top, height, width } =
+        this.$refs.view.getBoundingClientRect()
+
+      const scissorY = this.$viewport.height - top - height
+      scissors.current = {
+        x: left,
+        y: scissorY,
+        width,
+        height,
+      }
+
+      exterior.position.y =
+        scissorY / (camera.zoom - camera.zoom * 0.125)
+
       renderer.setScissor(
         scissors.current.x,
         scissors.current.y,
@@ -542,22 +616,35 @@ export default {
       )
     },
     onResizePreviewExterior() {
-      const { scissors, renderer } = useWebGL()
+      if (!this.$refs.view) return
 
-      const { left, top, height, width } =
-        this.$refs.view.getBoundingClientRect()
+      const { width, height } = this.$refs.view.getBoundingClientRect()
+      const webgl = useWebGL()
+      const { camera, renderer, composer } = webgl
 
-      const _scroll = (window.lenis?.scroll)?window.lenis.scroll:window.scrollY;
-      
-      const _y = this.$viewport.height - top - height - _scroll;
-
-      scissors.mask = {
-        x: left,
-        y: _y,
-        width,
-        height,
+      if (this.webglInFlow) {
+        const mount = this.$refs.webglMount || this.$refs.view
+        const w = Math.max(1, mount.clientWidth || Math.floor(width))
+        const h = Math.max(1, mount.clientHeight || Math.floor(height))
+        renderer.setSize(w, h, false)
+        if (composer) composer.setSize(w, h)
+        camera.left = -w / 2
+        camera.right = w / 2
+        camera.top = h / 2
+        camera.bottom = -h / 2
+        camera.updateProjectionMatrix()
+        renderer.setScissor(0, 0, w, h)
+        renderer.setViewport(0, 0, w, h)
+        return
       }
 
+      const { scissors } = webgl
+      const { left, top } = this.$refs.view.getBoundingClientRect()
+      // Keep this consistent with onFrame scissor math to avoid visible jumps
+      // during Flip transitions (open/close exterior view).
+      const _y = this.$viewport.height - top - height
+
+      scissors.mask = { x: left, y: _y, width, height }
       scissors.current = { ...scissors.mask }
 
       renderer.setScissor(
@@ -579,7 +666,9 @@ export default {
 
         },
         onUpdate: (self) => {
-          if (self.isActive || this.exteriorVisible) {
+          // In-flow WebGL is already clipped to its mount; resizing on each scroll tick
+          // causes visible resize jitter on mobile.
+          if (!this.webglInFlow && (self.isActive || this.exteriorVisible)) {
             this.onResizePreviewExterior()
           }
         }
@@ -817,6 +906,26 @@ export default {
       margin-top: mobile-vw(120px);
       width: 100%;
       position: relative;
+    }
+
+    &__webgl {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
+      contain: paint;
+      isolation: isolate;
+
+      canvas {
+        position: absolute !important;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
     }
 
     &.fullwidth {

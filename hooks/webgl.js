@@ -290,19 +290,47 @@ class GL {
   onWindowResize() {
     this.calculateScissors()
 
+    const canvasParent = this.renderer?.domElement?.parentElement
+    const inFlowMount =
+      canvasParent &&
+      (canvasParent.classList?.contains('app-home-hero__view-exterior__webgl') ||
+        canvasParent.classList?.contains('app-arena-hero__webgl'))
+    const targetWidth = inFlowMount ? canvasParent.clientWidth : Viewport.width
+    const targetHeight = inFlowMount ? canvasParent.clientHeight : Viewport.height
+    const width = Math.max(1, targetWidth || Viewport.width)
+    const height = Math.max(1, targetHeight || Viewport.height)
+    const prevWidth = this._lastResizeWidth
+    const prevHeight = this._lastResizeHeight
+
+    // On mobile, browser chrome show/hide can spam tiny viewport height changes on scroll.
+    // Ignore those so the scene does not "breathe" while scrolling.
+    if (
+      !inFlowMount &&
+      Viewport.isMobile &&
+      typeof prevWidth === 'number' &&
+      typeof prevHeight === 'number'
+    ) {
+      const widthUnchanged = Math.abs(width - prevWidth) < 1
+      const heightDelta = Math.abs(height - prevHeight)
+      const isChromeBarResize = widthUnchanged && heightDelta > 0 && heightDelta < 120
+      if (isChromeBarResize) return
+    }
+
     if (this.camera.type === 'OrthographicCamera') {
-      this.camera.left = Viewport.width / -2
-      this.camera.right = Viewport.width / 2
-      this.camera.top = Viewport.height / 2
-      this.camera.bottom = Viewport.height / -2
+      this.camera.left = width / -2
+      this.camera.right = width / 2
+      this.camera.top = height / 2
+      this.camera.bottom = height / -2
     } else {
-      this.camera.aspect = Viewport.width / Viewport.height
+      this.camera.aspect = width / height
     }
 
     this.camera.updateProjectionMatrix()
 
-    this.renderer.setSize(Viewport.width, Viewport.height)
-    this.composer.setSize(Viewport.width, Viewport.height)
+    this.renderer.setSize(width, height, false)
+    this.composer.setSize(width, height)
+    this._lastResizeWidth = width
+    this._lastResizeHeight = height
   }
 
   update({ deltaTime }) {

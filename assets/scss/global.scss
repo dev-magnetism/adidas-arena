@@ -51,6 +51,8 @@ body {
 }
 
 body {
+  width: 100vw !important;
+  overflow-x: hidden !important;
   background-color: var(--c-grey) !important;
 }
 

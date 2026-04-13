@@ -1,6 +1,7 @@
 <template>
   <div :data-allow-drag="true" class="app-arena-hero">
-    <div :data-allow-drag="true" class="app-arena-hero__wrapper grid">
+    <div ref="frame" :data-allow-drag="true" class="app-arena-hero__wrapper grid">
+      <div ref="webglMount" class="app-arena-hero__webgl" />
       <EEnterArena
         :class="{
           hide:
@@ -26,6 +27,9 @@ import { mapState, mapMutations } from 'vuex'
 import useWebGL from '~/hooks/webgl'
 
 export default {
+  inject: {
+    setWebglMount: { default: () => () => {} },
+  },
   data() {
     return {
       alreadyAppearedOnce: false,
@@ -43,6 +47,7 @@ export default {
       exteriorArenaHovered: (state) => state.exteriorArenaHovered,
       exteriorFullscreen: (state) => state.exteriorFullscreen,
       instructionsWebglVisible: (state) => state.instructionsWebglVisible,
+      webglInFlow: (state) => state.webglInFlow,
     }),
   },
   watch: {
@@ -81,9 +86,16 @@ export default {
       }
     }
 
+    this.$nextTick(() => {
+      if (this.$refs.webglMount && this.setWebglMount) {
+        this.setWebglMount(this.$refs.webglMount)
+      }
+    })
+
     this.$raf.add(`arena-hero`, this.onFrame)
   },
   beforeDestroy() {
+    if (this.setWebglMount) this.setWebglMount(null)
     this.scrollTrigger?.kill()
 
     this.$raf.remove(`arena-hero`, this.onFrame)
@@ -279,25 +291,61 @@ export default {
         return
 
       const { interior, exterior, camera, scissors, renderer } = useWebGL()
+      if (!this.$refs.frame) return
 
-      const _scroll = (window.lenis?.scroll)?window.lenis.scroll:window.scrollY;
+      if (this.webglInFlow) {
+        const mount = this.$refs.webglMount || this.$refs.frame
+        const w = Math.max(1, mount.clientWidth || 0)
+        const h = Math.max(1, mount.clientHeight || 0)
+
+        if (this.interiorVisible) interior.position.y = 0
+        if (this.exteriorVisible) exterior.position.y = 0
+
+        scissors.current = { x: 0, y: 0, width: w, height: h }
+        renderer.setScissor(0, 0, w, h)
+        renderer.setViewport(0, 0, w, h)
+
+        const canvas = renderer.domElement
+        if (canvas) {
+          canvas.style.width = '100%'
+          canvas.style.height = '100%'
+          canvas.style.left = '0'
+          canvas.style.top = '0'
+        }
+        return
+      }
+
+      const rect = this.$refs.frame.getBoundingClientRect()
+      const viewportW = this.$viewport.width
+      const viewportH = this.$viewport.height
+      const _scroll = window.lenis?.scroll ? window.lenis.scroll : window.scrollY
+
+      const x1 = Math.max(0, Math.floor(rect.left))
+      const y1 = Math.max(0, Math.floor(rect.top))
+      const x2 = Math.min(viewportW, Math.ceil(rect.right))
+      const y2 = Math.min(viewportH, Math.ceil(rect.bottom))
+      const width = Math.max(0, x2 - x1)
+      const height = Math.max(0, y2 - y1)
+      const scissorY = viewportH - y2
 
       if (this.interiorVisible || this.exteriorVisible) {
         if (this.interiorVisible) {
-          interior.position.y =
-            _scroll / (camera.zoom - camera.zoom * 0.125)
+          interior.position.y = _scroll / (camera.zoom - camera.zoom * 0.125)
         }
 
         if (this.exteriorVisible) {
-          exterior.position.y =
-            _scroll / (camera.zoom - camera.zoom * 0.125)
+          exterior.position.y = _scroll / (camera.zoom - camera.zoom * 0.125)
         }
 
-        scissors.current = { ...scissors.hero }
-
-        scissors.current.y = _scroll + scissors.hero?.y
+        scissors.current = { x: x1, y: scissorY, width, height }
 
         renderer.setScissor(
+          scissors.current.x,
+          scissors.current.y,
+          scissors.current.width,
+          scissors.current.height
+        )
+        renderer.setViewport(
           scissors.current.x,
           scissors.current.y,
           scissors.current.width,
@@ -331,6 +379,23 @@ export default {
     position: relative;
     width: 100%;
     height: 100%;
+  }
+
+  &__webgl {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    contain: paint;
+    isolation: isolate;
+
+    canvas {
+      position: absolute !important;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
   }
 }
 </style>

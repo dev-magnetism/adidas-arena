@@ -16,7 +16,7 @@
     <AppMenu v-if="this.webview !== 'ok'" />
     <AppScrollbar />
     <nuxt class="app-main" />
-    <AppScene />
+    <AppScene v-show="!webglInFlow" ref="appScene" />
     <WebglScene />
     <AppFacilitiButton />
     <!-- <WebglInfo /> -->
@@ -27,14 +27,21 @@
 import { mapState, mapMutations } from 'vuex'
 
 import useGUI from '~/hooks/gui'
+import useWebGL from '~/hooks/webgl'
 
 export default {
   layout: 'DefaultLayout',
+  provide() {
+    return {
+      setWebglMount: this.setWebglMount,
+    }
+  },
   computed: {
     ...mapState({
       cursorState: (state) => state.cursorState,
       appCursor: (state) => state.appCursor,
-      webview: (state) => state.webview
+      webview: (state) => state.webview,
+      webglInFlow: (state) => state.webglInFlow,
     }),
     devToolsHidden() {
       return process.env.NODE_ENV !== 'development'
@@ -61,7 +68,54 @@ export default {
   methods: {
     ...mapMutations({
       setWebview: 'setWebview',
+      setWebglInFlow: 'setWebglInFlow',
     }),
+    setWebglMount(el) {
+      const webgl = useWebGL()
+      const canvas = webgl.renderer.domElement
+      const defaultContainer = this.$refs.appScene?.$el
+      if (!canvas || !defaultContainer) return
+      const target = el || defaultContainer
+      if (target.contains(canvas)) return
+      target.appendChild(canvas)
+      if (el) {
+        const w = Math.max(1, el.clientWidth || 0)
+        const h = Math.max(1, el.clientHeight || 0)
+        canvas.style.position = 'absolute'
+        canvas.style.left = '0'
+        canvas.style.top = '0'
+        canvas.style.width = '100%'
+        canvas.style.height = '100%'
+        if (w > 0 && h > 0) {
+          webgl.renderer.setSize(w, h, false)
+          if (webgl.composer) webgl.composer.setSize(w, h)
+          webgl.camera.left = -w / 2
+          webgl.camera.right = w / 2
+          webgl.camera.top = h / 2
+          webgl.camera.bottom = -h / 2
+          webgl.camera.updateProjectionMatrix()
+          webgl.renderer.setScissor(0, 0, w, h)
+          webgl.renderer.setViewport(0, 0, w, h)
+        }
+      } else {
+        canvas.style.left = ''
+        canvas.style.top = ''
+        canvas.style.position = ''
+        canvas.style.width = ''
+        canvas.style.height = ''
+        const w = this.$viewport?.width ?? window.innerWidth
+        const h = this.$viewport?.height ?? window.innerHeight
+        webgl.renderer.setSize(w, h)
+        if (webgl.composer) webgl.composer.setSize(w, h)
+        webgl.camera.left = -w / 2
+        webgl.camera.right = w / 2
+        webgl.camera.top = h / 2
+        webgl.camera.bottom = -h / 2
+        webgl.camera.updateProjectionMatrix()
+        webgl.renderer.setScissor(0, 0, w, h)
+      }
+      this.setWebglInFlow(!!el)
+    },
     handleSmartBanner(){
       if(this.$route.query.webview !== 'ok'){
         smartbanner.publish();
