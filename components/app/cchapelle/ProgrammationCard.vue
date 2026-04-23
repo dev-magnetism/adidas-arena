@@ -11,12 +11,7 @@
       </div>
     </div>
 
-    <a
-      class="app-cchapelle-programmation-card__informations"
-      :href="event.url"
-      target="_blank"
-      rel="noopener"
-    >
+    <div class="app-cchapelle-programmation-card__informations">
       <div class="app-cchapelle-programmation-card__head">
         <TP2 class="type" weight="bold">{{ allGenres }}</TP2>
         <TP2 class="date" weight="medium">{{ formattedDate }}</TP2>
@@ -28,15 +23,22 @@
         >A partir de {{ ticketPrice }}EUR</TP2
       >
 
-      <TP2
-        class="cta"
-        weight="bold"
-        @mouseenter.native="onCtaMouseEnter"
-        @mouseleave.native="onCtaMouseLeave"
+      <a
+        class="app-cchapelle-programmation-card__cta-link"
+        :href="event.url"
+        target="_blank"
+        rel="noopener"
       >
-        Reserver
-      </TP2>
-    </a>
+        <TP2
+          class="cta"
+          weight="bold"
+          @mouseenter.native="onCtaMouseEnter"
+          @mouseleave.native="onCtaMouseLeave"
+        >
+          Reserver
+        </TP2>
+      </a>
+    </div>
   </article>
 </template>
 
@@ -165,6 +167,10 @@ export default {
     border-top: 1px solid var(--c-black);
     padding: desktop-vw(15px) desktop-vw(20px);
     color: var(--c-black);
+  }
+
+  &__cta-link {
+    align-self: flex-end;
     text-decoration: none;
   }
 
