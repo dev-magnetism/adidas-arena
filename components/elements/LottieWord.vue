@@ -23,6 +23,7 @@ export default {
   },
   computed: {
     src() {
+
       switch (this.id) {
         case 'Croix_circle':
           return require(`@/assets/lotties/Croix_circle.json`)
@@ -36,12 +37,20 @@ export default {
           return require(`@/assets/lotties/Petite_Fleche_02.json`)
         case 'Petite_Fleche_03':
           return require(`@/assets/lotties/Petite_Fleche_03.json`)
+        case 'Petite_Fleche_04':
+          return require(`@/assets/lotties/Petite_Fleche_04.json`)
+        case 'Petite_Fleche_05':
+          return require(`@/assets/lotties/Petite_Fleche_05.json`)
         case 'Fleche_2':
           return require(`@/assets/lotties/Fleche_2.json`)
+        case 'Fleche_3':
+          return require(`@/assets/lotties/Fleche_3.json`)
         case 'Cadre_01':
           return require(`@/assets/lotties/Cadre_01.json`)
         case 'Cadre_02':
           return require(`@/assets/lotties/Cadre_02.json`)
+        case 'Trait_3':
+          return require(`@/assets/lotties/Trait_3.json`)
         case 'Trait_2':
           return require(`@/assets/lotties/Trait_2.json`)
         case 'Trait_1':
@@ -54,6 +63,10 @@ export default {
           return require(`@/assets/lotties/Cercle_3.json`)
         case 'Cercle_4':
           return require(`@/assets/lotties/Cercle_4.json`)
+        case 'Cercle_5':
+          return require(`@/assets/lotties/Cercle_5.json`)
+        case 'Cercle_6':
+          return require(`@/assets/lotties/Cercle_6.json`)
         case 'Fleche_Match':
           return require(`@/assets/lotties/Fleche_Match.json`)
         default:
@@ -74,6 +87,7 @@ export default {
 
       this.animation.goToAndStop(this.animation.totalFrames - 1, true)
     } else {
+      
       this.LottieScrollTrigger({
         target: this.$el,
         animation: this.src,
@@ -94,7 +108,7 @@ export default {
         end: vars.end || 'bottom center',
         scrub: vars.scrub,
       }
-
+     
       this.animation = lottie.loadAnimation({
         container: target,
         // renderer: vars.renderer || 'svg',

@@ -74,12 +74,20 @@ export default {
           return require(`@/assets/lotties/Petite_Fleche_02.json`)
         case 'Petite_Fleche_03':
           return require(`@/assets/lotties/Petite_Fleche_03.json`)
+        case 'Petite_Fleche_04':
+          return require(`@/assets/lotties/Petite_Fleche_04.json`)
+        case 'Petite_Fleche_05':
+          return require(`@/assets/lotties/Petite_Fleche_05.json`)
         case 'Fleche_2':
           return require(`@/assets/lotties/Fleche_2.json`)
+        case 'Fleche_3':
+          return require(`@/assets/lotties/Fleche_3.json`)
         case 'Cadre_01':
           return require(`@/assets/lotties/Cadre_01.json`)
         case 'Cadre_02':
           return require(`@/assets/lotties/Cadre_02.json`)
+        case 'Trait_3':
+          return require(`@/assets/lotties/Trait_3.json`)
         case 'Trait_2':
           return require(`@/assets/lotties/Trait_2.json`)
         case 'Trait_1':
@@ -94,6 +102,8 @@ export default {
           return require(`@/assets/lotties/Cercle_4.json`)
         case 'Circle_5':
           return require(`@/assets/lotties/Cercle_5.json`)
+        case 'Circle_6':
+          return require(`@/assets/lotties/Cercle_6.json`)
         case 'Fleche_Match':
           return require(`@/assets/lotties/Fleche_Match.json`)
         case '404_Fleche_Rouge_01':
@@ -116,6 +126,8 @@ export default {
       })
 
       this.animation.goToAndStop(this.animation.totalFrames - 1, true)
+
+
     } else {
       this.LottieScrollTrigger({
         target: this.$el,

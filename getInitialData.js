@@ -154,6 +154,40 @@ export const getInitialData = async () => {
     })
   );
 
+  cachedData.chapellefood = await fetchWithLogs('CentralChapelle_Food', () =>
+    $directus.items('CentralChapelle_Food').readByQuery({
+      limit: -1,
+      fields: ['*'],
+    })
+  );
+
+  const CENTRALCHAPELLE_SHOTGUN_ORGANIZER_ID =
+    process.env.CENTRALCHAPELLE_SHOTGUN_ORGANIZER_ID
+  const CENTRALCHAPELLE_SHOTGUN_TOKEN =
+    process.env.CENTRALCHAPELLE_SHOTGUN_TOKEN
+  cachedData.chapelleEvents = []
+
+  if (
+    CENTRALCHAPELLE_SHOTGUN_ORGANIZER_ID &&
+    CENTRALCHAPELLE_SHOTGUN_TOKEN
+  ) {
+    const shotgunUrl = `https://smartboard-api.shotgun.live/api/shotgun/organizers/${CENTRALCHAPELLE_SHOTGUN_ORGANIZER_ID}/events?key=${encodeURIComponent(
+      CENTRALCHAPELLE_SHOTGUN_TOKEN
+    )}`
+
+    const shotgunEvents = await fetchWithLogs('Shotgun Events', () =>
+      axios.get(shotgunUrl, {
+        timeout: 10000,
+      })
+    )
+
+    cachedData.chapelleEvents = shotgunEvents?.data?.data || []
+  } else {
+    console.log(
+      'CENTRALCHAPELLE_SHOTGUN_ORGANIZER_ID/CENTRALCHAPELLE_SHOTGUN_TOKEN not configured, skipping Shotgun events'
+    )
+  }
+
   cachedData.pbbPage = await fetchWithLogs('Parisbasketball_page', () =>
     $directus.items('Parisbasketball_page').readByQuery({
       limit: -1,
