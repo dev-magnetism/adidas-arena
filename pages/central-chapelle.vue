@@ -28,17 +28,17 @@
     <AppCchapelleIntroduction
       :contents="introduction"
       />
-    
+
     <AppCchapelleAbout
       :contents="about"
       ref="about"
       />
-    
+
     <AppCchapelleProgrammation
       :contents="programmation"
       ref="music"
       />
-    
+
     <AppCchapelleCoeur
       :contents="coeur"
       />
@@ -81,6 +81,7 @@ export default {
       appContent: (state) => state.appContent,
       chapelleContent: (state) => state.chapelleContent,
       chapelleFoodContent: (state) => state.chapelleFoodContent,
+      chapelleEvents: (state) => state.chapelleEvents,
       partnersContent: (state) => state.partnersContent,
       webview: (state) => state.webview,
       navCCActive: (state) => state.navCCActive,
@@ -111,7 +112,7 @@ export default {
             title: this.chapelleContent.centralcourt_paragraph1_card_title,
             subtitle: this.chapelleContent.centralcourt_paragraph1_card_subtitle,
             text: this.chapelleContent.centralcourt_paragraph1_card_text,
-          } 
+          }
         },
         paragraph2: {
           title: this.chapelleContent.centralcourt_paragraph2_title,
@@ -199,10 +200,8 @@ export default {
       const _content = {
         title: this.chapelleContent.programmation_title,
         cta_label: this.chapelleContent.programmation_cta_label,
-        cta_link: "#",
-        list:[
-
-        ]
+        cta_link: this.chapelleContent.programmation_cta_link,
+        list: this.chapelleEvents || []
       }
       return _content;
     }
@@ -258,8 +257,8 @@ export default {
       //  console.log('scrollToSection/ _section', _section);
       const _el = this.$refs[_section].$el;
       //  console.log('scrollToSection/ _el', _el);
-      _el.scrollIntoView({ 
-        behavior: 'smooth' 
+      _el.scrollIntoView({
+        behavior: 'smooth'
       });
 
     }

@@ -11,6 +11,7 @@
 			/>
 			<AtomsCTA
 				:href="contents.cta_link"
+        target="_blank"
 				class="page-cchapelle__programmation-slider__cta"
 			>
 				{{ contents.cta_label }}
@@ -27,9 +28,9 @@
 			@click="onClickSlider"
 		>
 			<div class="page-cchapelle__programmation-slider__inner">
-				<AppProgrammationSliderCard
+				<AppCchapelleProgrammationCard
 					v-for="(event, index) in contents.list"
-					:key="`programmation-slider-${index}`"
+					:key="`programmation-slider-${event.id || index}`"
 					:event="event"
 					:theme="index % 3 === 0 ? 'grey' : index % 3 === 1 ? 'red' : 'blue'"
 					:rotate-negative="!(index % 2)"
@@ -230,7 +231,7 @@ export default {
       column-gap: mobile-vw(30px);
     }
 
-    .app-programmation-slider-card{
+    .app-cchapelle-programmation-card{
       flex: 0 0 27.5%;
 
       @include mobile {
@@ -238,12 +239,8 @@ export default {
       }
     }
 
-    .app-programmation-slider-card:nth-child(2n+2){
-        top: desktop-vw(136px);
-
-        @include mobile {
-          top: mobile-vw(32px);
-        }
+    .app-cchapelle-programmation-card:nth-child(2n+2){
+        top: 0;
     }
   }
 

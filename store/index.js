@@ -26,6 +26,7 @@ export const state = () => ({
   businessOptContent: null,
   businessArtContent: null,
   chapelleContent: null,
+  chapelleEvents: [],
   pbbContent: null,
   programmes: null,
   actualites: null,
@@ -282,6 +283,9 @@ export const mutations = {
   setChapelleFoodContent: (state, value) => {
     state.chapelleFoodContent = value
   },
+  setChapelleEvents: (state, value) => {
+    state.chapelleEvents = value
+  },
   setPbbPageContent: (state, value) => {
     state.pbbPageContent = value
   },
@@ -354,6 +358,7 @@ export const actions = {
     commit('setBusinessArtContent', initialData.businessArt.data)
     commit('setChapelleContent', initialData.chapelle.data)
     commit('setChapelleFoodContent', initialData.chapellefood.data)
+    commit('setChapelleEvents', initialData.chapelleEvents || [])
     commit('setPbbPageContent', initialData.pbbPage.data)
     commit('setPbbEntertainmentContent', initialData.pbbEntertainment.data)
     commit('setPbbGalleryContent', initialData.pbbGallery.data)
