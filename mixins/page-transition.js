@@ -72,7 +72,10 @@ export default {
 
               this.$nuxt.$emit('menu:reset')
 
-              ScrollTrigger.getAll().forEach((t) => t.kill())
+              // revert=true (défaut) tue les tweens scrub et réinitialise la frame Lottie à 0
+              // → SVG invisible pendant la transition. false + allowAnimation évite ça ; les
+              // composants (ex. LottieWord) font tween.kill() dans leur beforeDestroy.
+              ScrollTrigger.getAll().forEach((t) => t.kill(false, true))
 
               this.$nuxt.$emit('global:forceInitScrollTrigger')
 
@@ -171,7 +174,7 @@ export default {
 
             this.$nuxt.$emit('menu:reset')
 
-            ScrollTrigger.getAll().forEach((t) => t.kill())
+            ScrollTrigger.getAll().forEach((t) => t.kill(false, true))
 
             this.$nuxt.$emit('global:forceInitScrollTrigger')
 

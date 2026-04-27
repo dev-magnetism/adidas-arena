@@ -23,8 +23,8 @@
 			ref="wrapper"
 			:class="{ hold: cursorSliderHold }"
 			class="page-cchapelle__programmation-slider__wrapper"
-			@mouseenter="setCursorState('slider')"
-			@mouseleave="setCursorState('hide')"
+			@mouseenter="onSliderMouseEnter"
+			@mouseleave="onSliderMouseLeave"
 			@click="onClickSlider"
 		>
 			<div class="page-cchapelle__programmation-slider__inner">
@@ -104,6 +104,16 @@ export default {
     this.embla?.destroy()
   },
   methods: {
+    onSliderMouseEnter() {
+      if (this.$viewport.isMobile) return
+      this.setCursorState('slider')
+      this.setAppCursor('none')
+    },
+    onSliderMouseLeave() {
+      if (this.$viewport.isMobile) return
+      this.setCursorState('hide')
+      this.setAppCursor('initial')
+    },
     onClickSlider(e) {
       if (this.$viewport.isMobile) return
 
@@ -190,6 +200,7 @@ export default {
     },
     ...mapMutations({
       setCursorState: 'setCursorState',
+      setAppCursor: 'setAppCursor',
       setCursorSliderHold: 'setCursorSliderHold',
       setCursorSliderDisabled: 'setCursorSliderDisabled',
       setAllowScroll: 'setAllowScroll',

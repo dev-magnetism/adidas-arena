@@ -4,15 +4,15 @@
 		<div class="page-cchapelle__centralcourt__introduction grid">
 			<div class="page-cchapelle__centralcourt__introduction__content">
 
-    		<ELottie 
-    			id="Petite_Fleche_04" 
+    		<ELottie
+    			id="Petite_Fleche_04"
 				start="top bottom-=15%"
 				color="blue-adidas"
 				class="page-cchapelle__centralcourt__introduction__arrowsmall1"
     			/>
 
-    		<ELottie 
-    			id="Petite_Fleche_05" 
+    		<ELottie
+    			id="Petite_Fleche_05"
 				start="top bottom-=15%"
 				color="white"
 				class="page-cchapelle__centralcourt__introduction__arrowsmall2"
@@ -27,8 +27,8 @@
 					class="page-cchapelle__centralcourt__introduction__content__paragraph"
 				/>
 
-    		<ELottie 
-    			id="Fleche_3" 
+    		<ELottie
+    			id="Fleche_3"
 				start="top bottom-=15%"
 				color="white"
 				class="page-cchapelle__centralcourt__introduction__arrowsmall3"
@@ -106,11 +106,16 @@
 					tag="h3"
 				/>
 				<ERichText
+					v-if="hasParagraph2Text"
 					class="page-cchapelle__centralcourt__s-r__content__paragraph"
 					:content="contents.paragraph2.text"
 				/>
-				<AtomsCTA 
-					bg="blue-adidas" 
+				<AtomsCTA
+					:class="{
+						'page-cchapelle__centralcourt__s-r__content__cta--no-paragraph':
+							!hasParagraph2Text,
+					}"
+					bg="blue-adidas"
 					color="white"
 					:href="contents.paragraph2.cta.url"
 					>
@@ -162,7 +167,7 @@
 							>
 								{{ contents.paragraph2.card.text }}
 							</TH4>
-							
+
 						</div>
 					</EKinesis>
 				</EParallax>
@@ -178,6 +183,12 @@ export default {
 		contents: {
 			type: Object,
 			default: () => {},
+		},
+	},
+	computed: {
+		hasParagraph2Text() {
+			const t = this.contents?.paragraph2?.text
+			return Boolean(t && String(t).trim())
 		},
 	},
 	mounted() {
@@ -301,7 +312,7 @@ export default {
 								bottom: mobile-vw(-30px);
 							}
 						}
-						
+
 						.app-atoms-stroke-text{
 							display: unset;
 							-webkit-text-stroke: 1px var(--c-white);
@@ -386,7 +397,7 @@ export default {
 
 
 					.page-cchapelle__centralcourt__s-r__card__content__title {
-						
+
 						position: relative;
 						display: inline-block;
 
@@ -429,7 +440,7 @@ export default {
 
 					.page-cchapelle__centralcourt__s-r__card__content__paragraph {
 						opacity: 0.4;
-						margin-top: desktop-vw(20px);						
+						margin-top: desktop-vw(20px);
 						@include font-ITCFranklinGothicLT-DmXtraCp();
 
 						@include mobile{
@@ -451,7 +462,7 @@ export default {
 				}
 
 				&__title.app-element-rich-text {
-					
+
 
 					@include mobile {
 						width: 75%;
@@ -503,11 +514,19 @@ export default {
 					}
 				}
 
+				&__cta--no-paragraph.app-atoms-cta {
+					margin-top: desktop-vw(25px);
+
+					@include mobile {
+						margin-top: mobile-vw(20px);
+					}
+				}
+
 				.app-atoms-cta{
 					left: columns(1);
-					width: columns(3);
+					width: columns(2.5);
 					@include mobile {
-						width: 80%;
+						width: 68%;
 						left: unset;
 					}
 				}
@@ -603,7 +622,7 @@ export default {
 					}
 
 					.page-cchapelle__centralcourt__f-r__card__content__subtitle {
-						
+
 						display: inline-block;
 						position: relative;
 

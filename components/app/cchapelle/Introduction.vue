@@ -24,7 +24,7 @@
 					ref="paragraph"
 					tag="div"
 					weight="regular"
-					:content="contents.title"
+					:content="delayedTitleContent"
 					:scrub="false"
 					class="page-cchapelle__introduction__title"
 				/>
@@ -93,7 +93,14 @@ export default {
 		return {
 			timer: null, 
      		countdown: false,
+			lottieDelayTimer: null,
+			lottiesVisible: false,
 		}
+	},
+	computed: {
+		delayedTitleContent() {
+			return this.decorateLottieTags(this.contents.title)
+		},
 	},
 	props: {
 		contents: {
@@ -105,12 +112,28 @@ export default {
 
 		console.log('Introduction / contents', this.contents);
 
+		// Sécurité : en cas de réutilisation de l'instance, repartir caché.
+		this.lottiesVisible = false
 		this.openingCount();
+
+		// Le rideau de transition dure ~2s ; on déclenche le dessin des lotties
+		// quelques secondes après la fin perçue de l'animation d'arrivée.
+		this.lottieDelayTimer = setTimeout(() => {
+			this.lottiesVisible = true
+			this.$nuxt?.$emit('centralChapelle:triggerLottieAnimation')
+		}, 1000)
 	}, 
 	beforeUnmount() { // ou beforeDestroy() si Vue 2
 		if (this.timer) clearInterval(this.timer);
+		if (this.lottieDelayTimer) clearTimeout(this.lottieDelayTimer);
 	},
 	methods: {
+		decorateLottieTags(content = '') {
+			return content.replace(
+				/<lottie-word\b/gi,
+				'<lottie-word deferred-draw="true" deferred-duration="1.8"'
+			)
+		},
    		openingCount() {
 			this.updateCount(); // appel initial
       		this.timer = setInterval(this.updateCount, 1000);
@@ -257,10 +280,6 @@ export default {
 				aspect-ratio: 380/453;
 				grid-row: 4;
 			}
-		}
-
-		&__logo{
-
 		}
 
 		&__title{

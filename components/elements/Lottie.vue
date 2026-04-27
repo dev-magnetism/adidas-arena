@@ -8,6 +8,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import lottie from 'lottie-web'
 
 export default {
+  data() {
+    return {
+      initRafId: null,
+      syncScrollRafId: null,
+    }
+  },
   props: {
     y: {
       type: String,
@@ -116,6 +122,8 @@ export default {
     },
   },
   mounted() {
+    if (!this.src) return
+
     if (this.$viewport.isMobile) {
       this.animation = lottie.loadAnimation({
         container: this.$el,
@@ -129,20 +137,52 @@ export default {
 
 
     } else {
-      this.LottieScrollTrigger({
-        target: this.$el,
-        start: this.start,
-        end: this.end,
-        scrub: this.scrub,
+      this.$nextTick(() => {
+        this.initRafId = requestAnimationFrame(() => {
+          this.initRafId = null
+          if (this._isBeingDestroyed || this._isDestroyed || !this.$el) return
+          if (!this.src) return
+          this.LottieScrollTrigger({
+            target: this.$el,
+            start: this.start,
+            end: this.end,
+            scrub: this.scrub,
+          })
+        })
       })
     }
   },
   beforeDestroy() {
-    this.animation?.destroy()
+    if (this.initRafId != null) {
+      cancelAnimationFrame(this.initRafId)
+      this.initRafId = null
+    }
+    if (this.syncScrollRafId != null) {
+      cancelAnimationFrame(this.syncScrollRafId)
+      this.syncScrollRafId = null
+    }
     this.tween?.kill()
+    this.tween = null
   },
   methods: {
+    syncFrameFromScrollTrigger(minFrame = 1) {
+      if (!this.animation || !this.tween?.scrollTrigger) return
+
+      const totalFrames = Math.max(1, this.animation.totalFrames - 1)
+      const progress = Math.min(
+        1,
+        Math.max(0, this.tween.scrollTrigger.progress || 0)
+      )
+      const frame = Math.max(
+        minFrame,
+        Math.round(totalFrames * progress)
+      )
+
+      this.animation.goToAndStop(frame, true)
+    },
     LottieScrollTrigger(vars) {
+      if (this._isBeingDestroyed || this._isDestroyed || !this.$el) return
+
       const playhead = { frame: 0 }
       const target = gsap.utils.toArray(vars.target)[0]
 
@@ -161,6 +201,7 @@ export default {
         autoplay: false,
         animationData: this.src,
       })
+      this.animation.goToAndStop(1, true)
 
       for (const p in vars) {
         st[p] = vars[p]
@@ -178,6 +219,24 @@ export default {
       // in case there are any other ScrollTriggers on the page and the loading of this Lottie asset caused layout changes
       ScrollTrigger.sort()
       ScrollTrigger.refresh()
+
+      if (this.syncScrollRafId != null) {
+        cancelAnimationFrame(this.syncScrollRafId)
+      }
+      this.syncScrollRafId = requestAnimationFrame(() => {
+        this.syncScrollRafId = null
+        if (this._isBeingDestroyed || this._isDestroyed || !this.$el) return
+        if (!this.tween || !this.animation) return
+        this.tween.scrollTrigger?.refresh()
+        ScrollTrigger.update()
+        this.syncFrameFromScrollTrigger(1)
+      })
+
+      // Force une frame cohérente dès le chargement, avant le premier scroll utilisateur.
+      requestAnimationFrame(() => {
+        if (this._isBeingDestroyed || this._isDestroyed || !this.$el) return
+        this.syncFrameFromScrollTrigger(1)
+      })
     },
   },
 }

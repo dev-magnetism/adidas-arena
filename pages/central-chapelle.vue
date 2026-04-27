@@ -241,7 +241,7 @@ export default {
       //  console.log('_section2H', _section2H);
       //  console.log('_section3H', _section3H);
 
-      if(_wT + (_wH/2) >= _section1T && _wT <= _section1T+_section1H){
+      if(_wT <= _section1T+_section1H){
         this.setNavCCActive('about');
       } else if(_wT + (_wH/2) >= _section2T && _wT <= _section2T+_section2H){
         this.setNavCCActive('music');

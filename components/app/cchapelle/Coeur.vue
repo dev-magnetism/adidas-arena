@@ -3,7 +3,7 @@
 
    		<div class="page-cchapelle__coeur__content grid-inner">
 
-			
+
 
 			<div class="page-cchapelle__coeur__col-left">
 				<ERichText
@@ -32,7 +32,7 @@
 
 					<div class="page-cchapelle__coeur__map__content" ref="mapcontent">
 
-						<div 
+						<div
 							class="page-cchapelle__coeur__map__sticker zone-1"
 							:class="{
 							 active: this.mapCCCoeurActive && this.mapCCCoeurActive === 'zone-1',
@@ -57,7 +57,7 @@
 							</div>
 						</div>
 
-						<div 
+						<div
 							class="page-cchapelle__coeur__map__sticker zone-2"
 							:class="{
 							 active: this.mapCCCoeurActive && this.mapCCCoeurActive === 'zone-2',
@@ -82,7 +82,7 @@
 							</div>
 						</div>
 
-						<div 
+						<div
 							class="page-cchapelle__coeur__map__sticker zone-3"
 							:class="{
 							 active: this.mapCCCoeurActive && this.mapCCCoeurActive === 'zone-3',
@@ -107,7 +107,7 @@
 							</div>
 						</div>
 
-						<div 
+						<div
 							class="page-cchapelle__coeur__map__sticker zone-4"
 							:class="{
 							 active: this.mapCCCoeurActive && this.mapCCCoeurActive === 'zone-4',
@@ -132,7 +132,7 @@
 							</div>
 						</div>
 
-						<div 
+						<div
 							class="page-cchapelle__coeur__map__sticker zone-5"
 							:class="{
 							 active: this.mapCCCoeurActive && this.mapCCCoeurActive === 'zone-5',
@@ -156,7 +156,7 @@
 
 							</div>
 						</div>
-						<div 
+						<div
 							class="page-cchapelle__coeur__map__sticker originals"
 							:class="{
 								 inactive: this.mapCCCoeurActive && this.mapCCCoeurActive !== 'originals'
@@ -180,7 +180,7 @@
 							</div>
 						</div>
 
-						<div 
+						<div
 							class="page-cchapelle__coeur__map__sticker logo-adidasarena"
 							:style="{'top': this.zoneStickers?.arrowIn?.top +'px', 'left': this.zoneStickers?.arrowIn?.left +'px'}"
 							>
@@ -188,7 +188,7 @@
 						</div>
 
 						<div class="page-cchapelle__coeur__map__plan" ref="plan">
-							<div 
+							<div
 								class="page-cchapelle__coeur__map__item zone-1"
 								:class="{
 									 active: this.mapCCCoeurActive && this.mapCCCoeurActive === 'zone-1',
@@ -208,7 +208,7 @@
 								<div class="page-cchapelle__coeur__map__item__square"></div>
 								<div class="page-cchapelle__coeur__map__item__square"></div>
 								<div class="page-cchapelle__coeur__map__item__square"></div>
-								<div 
+								<div
 									class="page-cchapelle__coeur__map__item__square anchor"
 									ref="zone1sticker"
 								>
@@ -222,7 +222,7 @@
 								<div class="page-cchapelle__coeur__map__item__square"></div>
 							</div>
 
-							<div 
+							<div
 								class="page-cchapelle__coeur__map__item zone-2"
 								:class="{
 									 active: this.mapCCCoeurActive && this.mapCCCoeurActive === 'zone-2',
@@ -252,7 +252,7 @@
 								<div class="page-cchapelle__coeur__map__item__square"></div>
 							</div>
 
-							<div 
+							<div
 								class="page-cchapelle__coeur__map__item zone-3"
 								:class="{
 									 active: this.mapCCCoeurActive && this.mapCCCoeurActive === 'zone-3',
@@ -311,7 +311,7 @@
 								<div class="page-cchapelle__coeur__map__item__square float pos3"></div>
 							</div>
 
-							<div 
+							<div
 								class="page-cchapelle__coeur__map__item zone-4"
 								:class="{
 									 active: this.mapCCCoeurActive && this.mapCCCoeurActive === 'zone-4',
@@ -338,7 +338,7 @@
 								<div class="page-cchapelle__coeur__map__item__square"></div>
 							</div>
 
-							<div 
+							<div
 								class="page-cchapelle__coeur__map__item zone-5"
 								:class="{
 									 active: this.mapCCCoeurActive && this.mapCCCoeurActive === 'zone-5',
@@ -372,18 +372,18 @@
 								<div class="page-cchapelle__coeur__map__item__square float pos1"></div>
 							</div>
 
-							<div 
+							<div
 								class="page-cchapelle__coeur__map__item lonely-island"
 								>
 								<div class="page-cchapelle__coeur__map__item__square"></div>
 							</div>
 
-							<div 
+							<div
 								class="page-cchapelle__coeur__map__item west-aisle"
 								>
 								<div class="page-cchapelle__coeur__map__item__circle"></div>
 							</div>
-							<div 
+							<div
 								class="page-cchapelle__coeur__map__item right-aisle"
 								>
 							</div>
@@ -406,7 +406,7 @@ import { mapState, mapMutations } from 'vuex'
 export default {
 	data() {
 		return {
-			zoneStickers: null, 
+			zoneStickers: null,
 			resizeTimer: null,
 		}
 	},
@@ -428,7 +428,7 @@ export default {
 		const oThis = this;
 
 		oThis.checkStickers()
-				
+
 		window.addEventListener("resize", ()=>{
 
 			oThis.checkStickers();
@@ -449,7 +449,7 @@ export default {
 
 	    	const _mapcontent = this.$refs.mapcontent.getBoundingClientRect();
 	    	const _plan = this.$refs.plan.getBoundingClientRect();
-	    	
+
 	    	this.$refs.plan.style=`width: ${_plan.width}px; height: ${_plan.height}px; transform: scaleY(.5) rotate(45deg); `;
 	    	this.$refs.mapcontent.style=` height: ${_plan.height}px;`;
 
@@ -550,8 +550,8 @@ export default {
 
 			&__sticker{
 				position: absolute;
-				transform: translate(-50%, -50%); 
-				
+				transform: translate(-50%, -50%);
+
 				z-index:3;
 				pointer-events: none;
 				transition: opacity 500ms ease-in-out;
@@ -643,7 +643,7 @@ export default {
 
 				&__body{
 					margin: 0;
-					
+
 					height: 0;
 					max-height: fit-content;
 					overflow: hidden;
@@ -773,7 +773,7 @@ export default {
 					}
 
 					.page-cchapelle__coeur__map__sticker__body{
-						
+
 						height: fit-content;
 
 						p{
@@ -808,12 +808,13 @@ export default {
 						left: unset;
 						right:  desktop-vw(100px);
 						top: desktop-vw(258px);
-						min-width: auto;
+						min-width: 16vw;
 						transform: translateY(-50%);
 
 						@include mobile{
 							right:  mobile-vw(50px);
 							top: mobile-vw(158px);
+              min-width: 60vw;
 						}
 					}
 				}
@@ -848,7 +849,7 @@ export default {
 					margin: 0;
 				}
 			}
-			
+
 			&__item{
 				position: absolute;
 				z-index: 2;
@@ -876,7 +877,7 @@ export default {
 						left: calc(mobile-vw(32px) * 10 - (2px * 10) + (mobile-vw(32px) * 0.69));
 						width: calc(mobile-vw(32px) * 1);
 					}
-					
+
 					.page-cchapelle__coeur__map__item__square{
 						background-color: #c6c6c6;
 						cursor: default;
@@ -991,7 +992,7 @@ export default {
 					//	top: calc(var(--square) * 1.5 + var(--square) * 6 - (2px * 6));
 					//	left: calc(var(--square) * 13 - (2px * 13) - var(--square) * 0.5);
 					height: desktop-vw(1200px);
-					
+
 					border-right: 1px dotted #a4a4a4;
 					overflow: hidden;
 
@@ -1077,7 +1078,7 @@ export default {
 							}
 						}
 					}
-					
+
 					&.inactive{
 						.page-cchapelle__coeur__map__item__square{
 							background-color: #e9d8d1;
@@ -1095,7 +1096,7 @@ export default {
 					.page-cchapelle__coeur__map__item__square{
 						background-color: #77a248;
 					}
-					
+
 					&.inactive{
 						.page-cchapelle__coeur__map__item__square{
 							background-color: #d0dfbf;
@@ -1132,7 +1133,7 @@ export default {
 							}
 						}
 					}
-					
+
 					&.inactive{
 						.page-cchapelle__coeur__map__item__square{
 							background-color: #fefce7;
@@ -1180,7 +1181,7 @@ export default {
 
 		&__title{
 
-			@include mobile{				
+			@include mobile{
 				padding-right: mobile-vw(30px);
 				padding-left: mobile-vw(30px);
 			}
@@ -1228,7 +1229,7 @@ export default {
 				padding-right: mobile-vw(30px);
 				padding-left: mobile-vw(30px);
 			}
-			
+
 			.P1{
 				font-size: desktop-vw(17px);
 				line-height: desktop-vw(20px);

@@ -20,8 +20,8 @@
 			ref="wrapper"
 			:class="{ cursorSliderHold }"
 			class="page-cchapelle__food__wrapper"
-			@mouseenter="setCursorState('slider')"
-			@mouseleave="setCursorState('hide')"
+			@mouseenter="onSliderMouseEnter"
+			@mouseleave="onSliderMouseLeave"
 			@click="onClickSlider"
 		>
 			<div class="page-cchapelle__food__inner">
@@ -142,6 +142,16 @@
 			this.embla?.destroy()
 		},
 		methods: {
+			onSliderMouseEnter() {
+				if (this.$viewport.isMobile) return
+				this.setCursorState('slider')
+				this.setAppCursor('none')
+			},
+			onSliderMouseLeave() {
+				if (this.$viewport.isMobile) return
+				this.setCursorState('hide')
+				this.setAppCursor('initial')
+			},
 			onClickSlider(e) {
 				if (this.$viewport.isMobile) return
 
@@ -225,6 +235,7 @@
 			},
 			...mapMutations({
 				setCursorState: 'setCursorState',
+				setAppCursor: 'setAppCursor',
 				setCursorSliderHold: 'setCursorSliderHold',
 				setAllowScroll: 'setAllowScroll',
 				setCursorSliderDisabled: 'setCursorSliderDisabled',
@@ -319,12 +330,12 @@
 		}
 
 		&__item {
-			flex: 0 0 45%;
+			flex: 0 0 41%;
 			display: flex;
 			flex-direction: column;
 
 			@include mobile {
-				flex: 0 0 77.5%;
+				flex: 0 0 72%;
 			}
 
 			&:first-child {

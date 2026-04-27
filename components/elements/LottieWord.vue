@@ -1,5 +1,6 @@
 <template>
   <div ref="lottie" class="app-element-lottie-word">
+    <div ref="animationContainer" class="app-element-lottie-word__animation" />
     <slot />
   </div>
 </template>
@@ -10,6 +11,15 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import lottie from 'lottie-web'
 
 export default {
+  data() {
+    return {
+      initRafId: null,
+      syncScrollRafId: null,
+      waitForDeferredTrigger: false,
+      hasStartedDeferredAnimation: false,
+      deferredPlayhead: null,
+    }
+  },
   props: {
     y: {
       type: String,
@@ -19,6 +29,14 @@ export default {
       type: String,
       default: null,
       require: true,
+    },
+    deferredDraw: {
+      type: Boolean,
+      default: false,
+    },
+    deferredDuration: {
+      type: Number,
+      default: 1.6,
     },
   },
   computed: {
@@ -75,9 +93,26 @@ export default {
     },
   },
   mounted() {
+    if (!this.$refs.animationContainer || !this.src) return
+
+    const isInCchapelleIntro = !!this.$el?.closest(
+      '.page-cchapelle__introduction'
+    )
+    const shouldUseDeferredDraw = this.deferredDraw || isInCchapelleIntro
+
+    if (shouldUseDeferredDraw) {
+      this.waitForDeferredTrigger = true
+      this.$nuxt?.$on(
+        'centralChapelle:triggerLottieAnimation',
+        this.onDeferredDrawTrigger
+      )
+      this.initDeferredDrawAnimation()
+      return
+    }
+
     if (this.$viewport.isMobile) {
       this.animation = lottie.loadAnimation({
-        container: this.$el,
+        container: this.$refs.animationContainer,
         // renderer: vars.renderer || 'svg',
         renderer: 'svg',
         loop: false,
@@ -87,20 +122,104 @@ export default {
 
       this.animation.goToAndStop(this.animation.totalFrames - 1, true)
     } else {
-      
-      this.LottieScrollTrigger({
-        target: this.$el,
-        animation: this.src,
-        start: 'top bottom-=10%',
-        end: 'top center',
-        scrub: 1,
+      // Après navigation client, layout / scroll (Lenis) pas encore stables au 1er tick.
+      this.$nextTick(() => {
+        this.initRafId = requestAnimationFrame(() => {
+          this.initRafId = null
+          if (this._isBeingDestroyed || this._isDestroyed || !this.$el) return
+          if (!this.$refs.animationContainer) return
+          this.LottieScrollTrigger({
+            target: this.$refs.animationContainer,
+            animation: this.src,
+            start: 'top bottom-=10%',
+            end: 'top center',
+            scrub: 1,
+          })
+        })
       })
     }
   },
+  beforeDestroy() {
+    if (this.initRafId != null) {
+      cancelAnimationFrame(this.initRafId)
+      this.initRafId = null
+    }
+    if (this.syncScrollRafId != null) {
+      cancelAnimationFrame(this.syncScrollRafId)
+      this.syncScrollRafId = null
+    }
+    // Ne pas appeler animation.destroy() ici : ça vide le SVG tout de suite pendant
+    // la transition de sortie. Voir destroyed().
+    if (this.waitForDeferredTrigger) {
+      this.$nuxt?.$off(
+        'centralChapelle:triggerLottieAnimation',
+        this.onDeferredDrawTrigger
+      )
+      this.waitForDeferredTrigger = false
+    }
+    this.tween?.kill()
+    this.tween = null
+  },
   methods: {
+    initDeferredDrawAnimation() {
+      if (!this.$refs.animationContainer || !this.src) return
+
+      this.animation = lottie.loadAnimation({
+        container: this.$refs.animationContainer,
+        renderer: 'svg',
+        loop: false,
+        autoplay: false,
+        animationData: this.src,
+      })
+
+      this.deferredPlayhead = { frame: 0 }
+      this.animation.goToAndStop(0, true)
+    },
+    onDeferredDrawTrigger() {
+      if (!this.waitForDeferredTrigger || this.hasStartedDeferredAnimation) return
+      if (!this.animation) return
+
+      const maxFrame = Math.max(1, this.animation.totalFrames - 1)
+      this.hasStartedDeferredAnimation = true
+
+      this.tween = gsap.to(this.deferredPlayhead, {
+        frame: maxFrame,
+        duration:
+          Number.isFinite(this.deferredDuration) && this.deferredDuration > 0
+            ? this.deferredDuration
+            : 1.6,
+        ease: 'power2.out',
+        onUpdate: () =>
+          this.animation?.goToAndStop(this.deferredPlayhead?.frame || 0, true),
+      })
+
+      this.$nuxt?.$off(
+        'centralChapelle:triggerLottieAnimation',
+        this.onDeferredDrawTrigger
+      )
+      this.waitForDeferredTrigger = false
+    },
+    syncFrameFromScrollTrigger(minFrame = 1) {
+      if (!this.animation || !this.tween?.scrollTrigger) return
+
+      const totalFrames = Math.max(1, this.animation.totalFrames - 1)
+      const progress = Math.min(
+        1,
+        Math.max(0, this.tween.scrollTrigger.progress || 0)
+      )
+      const frame = Math.max(
+        minFrame,
+        Math.round(totalFrames * progress)
+      )
+
+      this.animation.goToAndStop(frame, true)
+    },
     LottieScrollTrigger(vars) {
+      if (this._isBeingDestroyed || this._isDestroyed || !this.$el) return
+
       const playhead = { frame: 0 }
       const target = gsap.utils.toArray(vars.target)[0]
+      if (!target) return
 
       const st = {
         trigger: target,
@@ -117,6 +236,7 @@ export default {
         autoplay: false,
         animationData: vars.animation,
       })
+      this.animation.goToAndStop(1, true)
 
       for (const p in vars) {
         st[p] = vars[p]
@@ -134,6 +254,25 @@ export default {
       // in case there are any other ScrollTriggers on the page and the loading of this Lottie asset caused layout changes
       ScrollTrigger.sort()
       ScrollTrigger.refresh()
+
+      if (this.syncScrollRafId != null) {
+        cancelAnimationFrame(this.syncScrollRafId)
+      }
+      this.syncScrollRafId = requestAnimationFrame(() => {
+        this.syncScrollRafId = null
+        if (this._isBeingDestroyed || this._isDestroyed || !this.$el) return
+        if (!this.tween || !this.animation) return
+        this.tween.scrollTrigger?.refresh()
+        ScrollTrigger.update()
+        this.syncFrameFromScrollTrigger(1)
+      })
+
+      // La toute première valeur d'un scrub peut rester à 0 tant qu'aucun scroll n'a lieu.
+      // On synchronise explicitement la frame avec le progress calculé à l'init.
+      requestAnimationFrame(() => {
+        if (this._isBeingDestroyed || this._isDestroyed || !this.$el) return
+        this.syncFrameFromScrollTrigger(1)
+      })
     },
   },
 }
@@ -177,8 +316,13 @@ export default {
     }
   }
 
-  svg,
-  canvas {
+  &__animation {
+    position: absolute;
+    inset: 0;
+  }
+
+  &__animation svg,
+  &__animation canvas {
     position: absolute;
     left: 0;
     width: 100%;

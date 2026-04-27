@@ -750,7 +750,7 @@ export default {
   }
 
   &__paris-e-c {
-    margin-top: auto;
+    margin-top: 1px;
     outline: 1px solid white;
     display: flex;
     width: 80%;
