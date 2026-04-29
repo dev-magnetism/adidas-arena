@@ -113,11 +113,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const validUrl = require('valid-url')
 
-const DEBUG_HEADER_ANNOUNCEMENT = 'Offrez la liberté de vibrer avec la e-carte cadeau adidas arena.'
-const DEBUG_HEADER_ANNOUNCEMENT_MOBILE = 'Offrez la liberté de vibrer avec la e-carte cadeau adidas arena.'
-const DEBUG_HEADER_ANNOUNCEMENT_CTA_LABEL = 'En savoir plus'
-const DEBUG_HEADER_ANNOUNCEMENT_CTA_LINK = '#'
-
 export default {
   data() {
     return {
@@ -154,13 +149,10 @@ export default {
       return this.appContent.data.header_name_mobile
     },
     announcementBodyDesktop() {
-      if (DEBUG_HEADER_ANNOUNCEMENT) return DEBUG_HEADER_ANNOUNCEMENT.trim()
       const t = this.appContent?.data?.header_announcement_text
       return typeof t === 'string' ? t.trim() : ''
     },
     announcementBodyMobile() {
-      if (DEBUG_HEADER_ANNOUNCEMENT_MOBILE)
-        return DEBUG_HEADER_ANNOUNCEMENT_MOBILE.trim()
       const t = this.appContent?.data?.header_announcement_text_mobile
       return typeof t === 'string' ? t.trim() : ''
     },
@@ -172,7 +164,6 @@ export default {
       return mobile
     },
     announcementEnabled() {
-      if (DEBUG_HEADER_ANNOUNCEMENT) return true
       const v = this.appContent?.data?.header_announcement_enabled
       if (v === false || v === 0 || v === '0' || v === 'false') return false
       return true
@@ -185,14 +176,10 @@ export default {
       )
     },
     announcementCtaLabel() {
-      if (DEBUG_HEADER_ANNOUNCEMENT_CTA_LABEL)
-        return DEBUG_HEADER_ANNOUNCEMENT_CTA_LABEL
       const t = this.appContent?.data?.header_announcement_cta_label
       return typeof t === 'string' ? t.trim() : ''
     },
     announcementCtaLink() {
-      if (DEBUG_HEADER_ANNOUNCEMENT_CTA_LINK)
-        return DEBUG_HEADER_ANNOUNCEMENT_CTA_LINK
       const t = this.appContent?.data?.header_announcement_cta_link
       return typeof t === 'string' ? t.trim() : ''
     },
