@@ -75,6 +75,20 @@ export default {
 
     return pageTransition.basic
   },
+  head({ $seo }) {
+    return $seo({
+      title: this.chapelleContent.page_title,
+      description: this.chapelleContent.page_description_seo,
+      openGraph: {
+        title: this.chapelleContent.page_title,
+        description: this.chapelleContent.page_description_seo,
+      },
+      twitter: {
+        title: this.chapelleContent.page_title,
+        description: this.chapelleContent.page_description_seo,
+      },
+    })
+  },
   computed: {
     ...mapState({
       allLoadedFake: (state) => state.allLoadedFake,
