@@ -213,8 +213,8 @@ export default {
 
           // TO DO : corriger convertToKebabCase(url) par convertToKebabCase(removeSpecialChar(url))
 
-          if (process.env.SITE_ENV !== 'production' && !event?.is_draft) {
-            // Si l'environnement n'est pas en production et que l'élément n'est pas en mode brouillon
+          if (process.env.SITE_ENV === 'production' && !event?.is_draft) {
+            // Si l'environnement est en production et que l'élément n'est pas en mode brouillon
             routes.push(
               `/programmation/${convertToKebabCase(
                 removeSpecialChar(url)
