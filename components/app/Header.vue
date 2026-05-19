@@ -168,8 +168,29 @@ export default {
       if (v === false || v === 0 || v === '0' || v === 'false') return false
       return true
     },
+    announcementPathPatterns() {
+      const raw = this.appContent?.data?.header_announcement_paths
+      if (Array.isArray(raw)) {
+        return raw.map((s) => String(s).trim()).filter(Boolean)
+      }
+      if (typeof raw === 'string' && raw.trim()) {
+        return raw
+          .split(/[\n,]+/)
+          .map((s) => s.trim())
+          .filter(Boolean)
+      }
+      return []
+    },
+    announcementVisibleOnCurrentPage() {
+      const patterns = this.announcementPathPatterns
+      if (patterns.length === 0) return true
+
+      const path = this.$route.path
+      return patterns.some((pattern) => path.includes(pattern))
+    },
     hasAnnouncement() {
       if (!this.announcementEnabled) return false
+      if (!this.announcementVisibleOnCurrentPage) return false
       return (
         this.announcementBodyDesktop.length > 0 ||
         this.announcementBodyMobile.length > 0
@@ -338,7 +359,7 @@ export default {
   @include mobile {
     height: auto;
     max-height: 88px;
-    padding: mobile-vw(6px) var(--layout-margin);
+    padding: mobile-vw(4px) var(--layout-margin);
   }
 
   &__text.P2 {
