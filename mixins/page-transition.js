@@ -75,6 +75,7 @@ export default {
               ScrollTrigger.getAll().forEach((t) => t.kill())
 
               this.$nuxt.$emit('global:forceInitScrollTrigger')
+              this.$nuxt.$emit('page:transitionEnd')
 
               done()
             },
@@ -174,6 +175,7 @@ export default {
             ScrollTrigger.getAll().forEach((t) => t.kill())
 
             this.$nuxt.$emit('global:forceInitScrollTrigger')
+            this.$nuxt.$emit('page:transitionEnd')
 
             done()
           },

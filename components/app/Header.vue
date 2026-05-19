@@ -118,6 +118,7 @@ export default {
     return {
       bannerAtTop: true,
       viewportMobile: false,
+      announcementRoutePath: '',
     }
   },
   computed: {
@@ -185,7 +186,7 @@ export default {
       const patterns = this.announcementPathPatterns
       if (patterns.length === 0) return true
 
-      const path = this.$route.path
+      const path = this.announcementRoutePath || this.$route.path
       return patterns.some((pattern) => path.includes(pattern))
     },
     hasAnnouncement() {
@@ -218,6 +219,7 @@ export default {
   },
 
   created() {
+    this.announcementRoutePath = this.$route.path
     if (process.client && this.$viewport) {
       this.syncViewportMobile()
     }
@@ -234,6 +236,7 @@ export default {
       this.onForceInitScrollTrigger
     )
     this.$nuxt.$on('app:scroll', this.onAppScroll)
+    this.$nuxt.$on('page:transitionEnd', this.syncAnnouncementRoutePath)
 
     window.addEventListener('scroll', this.onWindowScroll, { passive: true })
     this.updateBannerFromScroll()
@@ -250,6 +253,7 @@ export default {
       this.onForceInitScrollTrigger
     )
     this.$nuxt.$off('app:scroll', this.onAppScroll)
+    this.$nuxt.$off('page:transitionEnd', this.syncAnnouncementRoutePath)
 
     window.removeEventListener('scroll', this.onWindowScroll)
 
@@ -259,6 +263,9 @@ export default {
     syncViewportMobile() {
       if (!this.$viewport || this.$viewport.isMobile == null) return
       this.viewportMobile = Boolean(this.$viewport.isMobile)
+    },
+    syncAnnouncementRoutePath() {
+      this.announcementRoutePath = this.$route.path
     },
     onAppScroll() {
       this.updateBannerFromScroll()
