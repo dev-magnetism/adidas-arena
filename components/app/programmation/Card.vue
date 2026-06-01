@@ -28,6 +28,7 @@
 
       <AppProgrammationImage
         :src="event?.presentation_event?.filename_disk"
+        :image-provider="event?.presentation_event?.image_provider || 'accorarena'"
         :alt="`card-image-${event.id}-${event.artist_reference}`"
         :lazy="true"
         :sizes="{

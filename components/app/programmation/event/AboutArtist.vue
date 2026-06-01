@@ -13,6 +13,7 @@
         <EKinesis :speed="6">
           <AppProgrammationImage
             :src="imageFrame.filename_disk"
+            :image-provider="imageFrame.image_provider || 'accorarena'"
             :alt="imageFrame.title"
             :sizes="{
               desktop: 'w400,h400,fcrop,q85',
@@ -31,6 +32,7 @@
         <EKinesis :speed="7">
           <AppProgrammationImage
             :src="imageWithoutFrame.filename_disk"
+            :image-provider="imageWithoutFrame.image_provider || 'accorarena'"
             :alt="imageWithoutFrame.title"
             :sizes="{
               desktop: 'w400,h400,fcrop,q85',

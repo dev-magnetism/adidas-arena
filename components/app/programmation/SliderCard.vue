@@ -22,6 +22,7 @@
         <AppProgrammationImage
           class="app-programmation-slider-card__visual__picture"
           :src="event?.presentation_event?.filename_disk"
+          :image-provider="event?.presentation_event?.image_provider || 'accorarena'"
           :alt="`slider-image-${event.artist_reference}`"
           :lazy="true"
           :sizes="{

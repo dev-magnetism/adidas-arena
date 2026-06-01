@@ -186,7 +186,8 @@
 
       <AppProgrammationImage
         :src="event?.presentation_event?.filename_disk"
-        :alt="`image-`"
+        :image-provider="event?.presentation_event?.image_provider || 'accorarena'"
+        :alt="event?.presentation_event?.title || `image-${event.artist_reference}`"
         :lazy="false"
         :sizes="{
           desktop: 'w800,h800,fcrop,q85',

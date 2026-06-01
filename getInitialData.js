@@ -15,6 +15,80 @@ const removeSpecialChar = (string) => {
     .replace(/[^\w\s]/gi, '-')
 }
 
+const getDirectusFileRef = (file) => {
+  if (!file) return null
+  if (typeof file === 'object') {
+    return file.id || file.filename_disk || null
+  }
+  return file
+}
+
+const findMediaGalleryPhotoIndex = (gallery, photoIndex) => {
+  let photoCount = 0
+
+  for (let i = 0; i < gallery.length; i++) {
+    if (!gallery[i]?.youtube_url) {
+      if (photoCount === photoIndex) {
+        return i
+      }
+      photoCount++
+    }
+  }
+
+  return -1
+}
+
+const ensureMediaGalleryPhotoSlot = (gallery, photoIndex) => {
+  const next = [...(gallery || [])]
+  let slotIndex = findMediaGalleryPhotoIndex(next, photoIndex)
+
+  if (slotIndex >= 0) {
+    return { gallery: next, slotIndex }
+  }
+
+  let photoCount = 0
+  for (let i = 0; i < next.length; i++) {
+    if (!next[i]?.youtube_url) {
+      photoCount++
+    }
+  }
+
+  while (photoCount <= photoIndex) {
+    next.push({})
+    photoCount++
+  }
+
+  slotIndex = findMediaGalleryPhotoIndex(next, photoIndex)
+
+  return { gallery: next, slotIndex }
+}
+
+/** Remplace la n-ième photo de la galerie (hors entrées YouTube), comme dans AboutArtist. */
+const overrideMediaGalleryPhoto = (gallery, photoIndex, file, alt) => {
+  const fileRef = getDirectusFileRef(file)
+  if (!fileRef) return gallery
+
+  const { gallery: next, slotIndex } = ensureMediaGalleryPhotoSlot(
+    gallery,
+    photoIndex
+  )
+  const existing = next[slotIndex] || {}
+
+  next[slotIndex] = {
+    ...existing,
+    image: {
+      ...(existing.image || {}),
+      filename_disk: fileRef,
+      title: alt || existing.image?.title,
+      image_provider: 'directus',
+    },
+  }
+
+  return next
+}
+
+const overrideMediaGalleryImage = overrideMediaGalleryPhoto
+
 export const getInitialData = async () => {
   const axios = require('axios')
   const $directus = new Directus('https://adidasarena.directus.app'); // Remplacez par votre URL Directus
@@ -50,7 +124,13 @@ export const getInitialData = async () => {
   cachedData.programmations = await fetchWithLogs('Programmations', () =>
     $directus.items('Programmations').readByQuery({
       limit: -1,
-      fields: ['*', 'offer.*'],
+      fields: [
+        '*',
+        'offer.*',
+        'custom_presentation_image.*',
+        'custom_media_gallery_image_1.*',
+        'custom_media_gallery_image_2.*',
+      ],
     })
   );
 
@@ -370,6 +450,37 @@ export const getInitialData = async () => {
       contents[i].content.category = contents[i].content.category
         ? contents[i].content.category.toLowerCase()
         : 'no cat'
+
+      const presentationFileRef = getDirectusFileRef(
+        progDirectContent?.custom_presentation_image
+      )
+      if (presentationFileRef) {
+        contents[i].presentation_event = {
+          filename_disk: presentationFileRef,
+          title:
+            progDirectContent?.custom_presentation_image_alt ||
+            contents[i].presentation_event?.title ||
+            contents[i].artist_reference,
+          image_provider: 'directus',
+        }
+      }
+
+      let mediaGallery = contents[i].content?.media_gallery
+      mediaGallery = overrideMediaGalleryPhoto(
+        mediaGallery,
+        0,
+        progDirectContent?.custom_media_gallery_image_1,
+        progDirectContent?.custom_media_gallery_image_1_alt
+      )
+      mediaGallery = overrideMediaGalleryPhoto(
+        mediaGallery,
+        1,
+        progDirectContent?.custom_media_gallery_image_2,
+        progDirectContent?.custom_media_gallery_image_2_alt
+      )
+      if (mediaGallery) {
+        contents[i].content.media_gallery = mediaGallery
+      }
 
       contents[i].sessions.forEach((session) => {
         session.content = session.translations.find(
