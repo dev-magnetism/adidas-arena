@@ -79,7 +79,7 @@
           color="red-adidas"
           class="app-programmation-event-hero__ticket-office-opening__date"
         >
-          le {{ $formatDate(event.opening) }}
+          le {{ $formatDate(event.opening, false, false, false, showOpeningTime) }}
         </TH4>
       </div>
 
@@ -231,6 +231,20 @@ export default {
       initialHeroDisplayed: (state) => state.initialHeroDisplayed,
       programmationsEventContent: (state) => state.programmationsEventContent,
     }),
+    showOpeningTime() {
+      const opening = this.event?.opening
+      if (!opening) return false
+
+      const timePart = String(opening).trim().split(/\s+/)[1]
+      if (timePart) {
+        return timePart !== '00:00:00' && !/^00:00(?::00)?$/.test(timePart)
+      }
+
+      const date = new Date(String(opening).replaceAll('-', '/'))
+      if (Number.isNaN(date.getTime())) return false
+
+      return date.getHours() !== 0 || date.getMinutes() !== 0
+    },
   },
   watch: {
     initialHeroDisplayed(newVal) {
