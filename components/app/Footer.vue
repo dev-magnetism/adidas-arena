@@ -167,6 +167,9 @@
         ©{{ new Date().getFullYear() }} -
         {{ contents.data.footer_all_rights_reserved }}
       </TP2>
+      <AtomsLink v-if="contents.data.footer_sustainability_link" :href="contents.data.footer_sustainability_link" target="_blank">
+        <TP2 color="grey"> {{ contents.data.footer_sustainability_title }}</TP2>
+      </AtomsLink>
       <AtomsLink :href="contents.data.footer_cookies_link">
         <TP2 color="grey"> {{ contents.data.footer_cookies_title }}</TP2>
       </AtomsLink>
@@ -340,12 +343,19 @@ export default {
 
     @include mobile {
       grid-column: 1 / span 6;
-      justify-content: space-between;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: mobile-vw(10px);
       margin-left: initial;
+      margin-top: mobile-vw(40px);
     }
 
     a {
       margin-left: desktop-vw(50px);
+
+      @include mobile {
+        margin-left: 0;
+      }
     }
 
     .P2 {
@@ -354,20 +364,7 @@ export default {
       text-transform: uppercase;
 
       @include mobile {
-        font-size: 14px;
-
-        &:nth-child(1),
-        &:nth-child(3) {
-          flex: 2;
-        }
-        &:nth-child(2) {
-          flex: 1;
-          text-align: center;
-        }
-
-        &:nth-child(3) {
-          text-align: right;
-        }
+        letter-spacing: normal;
       }
     }
   }
