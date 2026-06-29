@@ -2,6 +2,27 @@
 import slugify from 'slugify'
 import getInitialData from '~/getInitialData'
 
+const FRENCH_MONTH_INDEX = {
+  janvier: 0,
+  février: 1,
+  mars: 2,
+  avril: 3,
+  mai: 4,
+  juin: 5,
+  juillet: 6,
+  août: 7,
+  septembre: 8,
+  octobre: 9,
+  novembre: 10,
+  décembre: 11,
+}
+
+const getProgrammeDate = (program) => {
+  const dateStr = program.sessions?.[0]?.date || program.start
+  if (!dateStr) return new Date(0)
+  return new Date(dateStr.toString().replaceAll('-', '/'))
+}
+
 export const state = () => ({
   // Preloader
   fontsLoaded: false,
@@ -119,34 +140,39 @@ export const getters = {
     return state.programmes.slice(0, 8)
   },
   programmesMonths: (state) => {
-    return (
-      Object.values(
-        state.programmes
-          .filter((event) => !event.is_cover)
-          .reduce((groups, program) => {
-            // Create a date object from the program's start date
-            const date = new Date(program.start)
-            // Format the month name using the French locale
-            const monthName = new Intl.DateTimeFormat('fr', {
-              month: 'long',
-            }).format(date)
-            // Get the year of the program's start date
-            const year = date.getFullYear()
-            // Create a key for the group by combining the month name and year
-            const key = `${monthName}-${year}`
-            // If the group doesn't exist yet, create it with an empty events array
-            if (!groups[key]) {
-              groups[key] = { month: monthName, year, events: [] }
-            }
-            // Add the program to the events array of the corresponding group
-            groups[key].events.push(program)
-            // Return the updated groups object
-            return groups
-          }, {})
-      )
-        // Filter out any empty groups and return an array of group objects
-        .filter((group) => group.events.length > 0)
-    )
+    if (!state.programmes) return []
+
+    const groups = state.programmes
+      .filter((event) => !event.is_cover)
+      .reduce((acc, program) => {
+        const date = getProgrammeDate(program)
+        const monthName = new Intl.DateTimeFormat('fr', {
+          month: 'long',
+        }).format(date)
+        const year = date.getFullYear()
+        const key = `${monthName}-${year}`
+
+        if (!acc[key]) {
+          acc[key] = { month: monthName, year, events: [] }
+        }
+
+        acc[key].events.push(program)
+        return acc
+      }, {})
+
+    return Object.values(groups)
+      .filter((group) => group.events.length > 0)
+      .map((group) => ({
+        ...group,
+        events: group.events.sort(
+          (a, b) => getProgrammeDate(a) - getProgrammeDate(b)
+        ),
+      }))
+      .sort((a, b) => {
+        const yearDiff = a.year - b.year
+        if (yearDiff !== 0) return yearDiff
+        return FRENCH_MONTH_INDEX[a.month] - FRENCH_MONTH_INDEX[b.month]
+      })
   },
 }
 

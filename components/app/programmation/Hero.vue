@@ -709,8 +709,9 @@ export default {
       }
     }
 
-    picture {
-      aspect-ratio: 540/480;
+    picture,
+    .app-programmation-image--directus {
+      aspect-ratio: 540 / 480;
       width: 100%;
       height: auto;
       display: block;
