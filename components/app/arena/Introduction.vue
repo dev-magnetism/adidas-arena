@@ -445,14 +445,11 @@ export default {
 
     .app-element-rich-text {
       .P2.wysiwyg-text {
-        font-size: desktop-vw(67px);
-        line-height: desktop-vw(60px);
-        @include font-ITCFranklinGothicLT-DmCp();
-        text-transform: uppercase;
+        font-size: desktop-vw(18px);
+        @include font-ITCFranklinGothicLT-BkCp();
 
         @include mobile {
-          font-size: mobile-vw(32px);
-          line-height: mobile-vw(26px);
+          font-size: mobile-vw(16px);
         }
 
         &:first-child {
