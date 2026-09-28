@@ -15,6 +15,7 @@
   line-height: desktop-vw(120px);
   text-transform: uppercase;
   letter-spacing: -0.25rem;
+  @include font-ITCFranklinGothicLT-DmCp();
 
   @include mobile {
     font-size: mobile-vw(80px);
@@ -37,6 +38,7 @@
   line-height: desktop-vw(90px);
   text-transform: uppercase;
   letter-spacing: -0.05em;
+  @include font-ITCFranklinGothicLT-DmCp();
 
   @include mobile {
     font-size: mobile-vw(64px);
@@ -58,6 +60,7 @@
   font-size: desktop-vw(64px);
   line-height: desktop-vw(58px);
   text-transform: uppercase;
+  @include font-ITCFranklinGothicLT-DmXtraCp();
 
   @include mobile {
     font-size: mobile-vw(56px);
@@ -103,6 +106,7 @@
   line-height: desktop-vw(32px);
   letter-spacing: -0.04em;
   text-transform: uppercase;
+  @include font-ITCFranklinGothicLT-DmCp();
 
   @include mobile {
     font-size: mobile-vw(32px);
@@ -133,6 +137,7 @@
   line-height: desktop-vw(28px);
   letter-spacing: -0.04em;
   text-transform: uppercase;
+  @include font-ITCFranklinGothicLT-DmCp();
 
   @include mobile {
     font-size: mobile-vw(28px);
@@ -162,6 +167,7 @@
   line-height: desktop-vw(20px);
   // letter-spacing: -0.02em;
   text-transform: uppercase;
+  @include font-ITCFranklinGothicLT-BkCp();
 
   @include mobile {
     font-size: mobile-vw(14px);
@@ -185,6 +191,7 @@
 @mixin p2() {
   font-size: desktop-vw(16px);
   line-height: desktop-vw(20px);
+  @include font-ITCFranklinGothicLT-BkCp();
 
   @include mobile {
     font-size: mobile-vw(14px);
